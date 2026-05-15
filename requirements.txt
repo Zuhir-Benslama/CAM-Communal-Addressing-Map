@@ -2,7 +2,7 @@ PyJWT==2.10.1
 toml==0.10.2
 SQLAlchemy==2.0.39
 GeoAlchemy2==0.17.1
-geopandas==1.0.1
+geopandas==1.1.2
 pandas==2.2.2
 marshmallow==3.26.1
 matplotlib==3.10.0
