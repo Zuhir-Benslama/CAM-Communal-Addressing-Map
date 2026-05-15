@@ -1,0 +1,320 @@
+"""Layer editing mixin for adding and updating features via forms."""
+
+import logging
+
+from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtWidgets import QMessageBox
+from qgis.core import QgsProject
+
+from ..layer.editing import update_layer
+from ..db.writers import (
+    add_panel_sign, add_organization, add_road,
+    add_numbering, add_subdivision, add_zone,
+)
+from ..constants import (
+    LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
+    LAYER_ZONES, LAYER_NUMBERING, LAYER_PANELS, validate_text,
+)
+
+logger = logging.getLogger(__name__)
+
+
+class LayerEditMixin:
+    """Mixin for updating layer geometries and adding features via forms."""
+
+    def update_road(self) -> None:
+        """Enable geometry editing for the roads layer."""
+        layers = QgsProject.instance().mapLayersByName(LAYER_ROADS)
+        if not layers: return
+        layer = layers[0]
+        try: layer.geometryChanged.disconnect(self.on_geometry_changed)
+        except TypeError: pass
+        layer.geometryChanged.connect(self.on_geometry_changed)
+        update_layer(self.iface, LAYER_ROADS)
+
+    def update_organization(self) -> None:
+        """Enable geometry editing for the organizations layer."""
+        layers = QgsProject.instance().mapLayersByName(LAYER_FACILITIES)
+        if not layers: return
+        layer = layers[0]
+        try: layer.geometryChanged.disconnect(self.on_geometry_changed)
+        except TypeError: pass
+        layer.geometryChanged.connect(self.on_geometry_changed)
+        update_layer(self.iface, LAYER_FACILITIES)
+
+    def update_city(self) -> None:
+        """Enable geometry editing for the subdivisions layer."""
+        layers = QgsProject.instance().mapLayersByName(LAYER_SUBDIVISIONS)
+        if not layers: return
+        layer = layers[0]
+        try: layer.geometryChanged.disconnect(self.on_geometry_changed)
+        except TypeError: pass
+        layer.geometryChanged.connect(self.on_geometry_changed)
+        update_layer(self.iface, LAYER_SUBDIVISIONS)
+
+    def update_numbering(self) -> None:
+        """Enable geometry editing for the numbering layer."""
+        layers = QgsProject.instance().mapLayersByName(LAYER_NUMBERING)
+        if not layers: return
+        layer = layers[0]
+        try: layer.geometryChanged.disconnect(self.on_geometry_changed)
+        except TypeError: pass
+        layer.geometryChanged.connect(self.on_geometry_changed)
+        update_layer(self.iface, LAYER_NUMBERING)
+
+    def update_panel(self) -> None:
+        """Enable geometry editing for the panels layer."""
+        layers = QgsProject.instance().mapLayersByName(LAYER_PANELS)
+        if not layers: return
+        layer = layers[0]
+        try: layer.geometryChanged.disconnect(self.on_geometry_changed)
+        except TypeError: pass
+        layer.geometryChanged.connect(self.on_geometry_changed)
+        update_layer(self.iface, LAYER_PANELS)
+
+    def update_zone(self) -> None:
+        """Enable geometry editing for the zones layer."""
+        layers = QgsProject.instance().mapLayersByName(LAYER_ZONES)
+        if not layers: return
+        layer = layers[0]
+        try: layer.geometryChanged.disconnect(self.on_geometry_changed)
+        except TypeError: pass
+        layer.geometryChanged.connect(self.on_geometry_changed)
+        update_layer(self.iface, LAYER_ZONES)
+
+    def add_panel(self) -> None:
+        """Add a new panel sign linked to a selected road, org, or
+        subdivision."""
+        obj = self.identify_tool2.get_pkuid()
+        if self.is_pan.isChecked():
+            if not self.update_object:
+                geometry_wkt = getattr(self, '_last_feature_wkt', None)
+                pkuid = getattr(self, '_last_feature_pkuid', None)
+                if not geometry_wkt or not pkuid:
+                    logger.warning("No geometry or pkuid available for panel")
+                    return
+                try:
+                    if obj.get('layer_name') == LAYER_FACILITIES:
+                        add_panel_sign(
+                            geometry_wkt=geometry_wkt, pkuid=pkuid,
+                            etat_mont=self.etat_mont.currentData(),
+                            idLine=None, idPoly=None, idOrg=obj.get('pkuid'),
+                        )
+                    if obj.get('layer_name') == LAYER_ROADS:
+                        add_panel_sign(
+                            geometry_wkt=geometry_wkt, pkuid=pkuid,
+                            etat_mont=self.etat_mont.currentData(),
+                            idLine=obj.get('pkuid'), idPoly=None, idOrg=None,
+                        )
+                    if obj.get('layer_name') == LAYER_SUBDIVISIONS:
+                        add_panel_sign(
+                            geometry_wkt=geometry_wkt, pkuid=pkuid,
+                            etat_mont=self.etat_mont.currentData(),
+                            idLine=None, idPoly=obj.get('pkuid'), idOrg=None,
+                        )
+
+                    if self.measure_tool2:
+                        self.show_confirm_dialog(
+                            title="title",
+                            message=(
+                                "تمت إضافة هذه اللوحة بنجاح\n"
+                                " هل تريد مسح خط القياس ؟"
+                            ),
+                            yes_callback=self.measure_tool2.clear,
+                        )
+                    else:
+                        QMessageBox.information(
+                            self, "Success", "تمت إضافة هذا المدخل بنجاح",
+                        )
+                except Exception as e:
+                    logger.exception("Failed to add panel: %s", e)
+                    QMessageBox.critical(self, "Error", f'{e}')
+        self.identify_tool2.unset_map_tool()
+        self.draw_pan_handler()
+
+    def add_organization(self) -> None:
+        """Add a new organization through the form."""
+        if self.is_org.isChecked():
+            geometry_wkt = getattr(self, '_last_feature_wkt', None)
+            pkuid = getattr(self, '_last_feature_pkuid', None)
+            if not geometry_wkt or not pkuid:
+                logger.warning("No geometry or pkuid available for organization")
+                return
+            try:
+                add_organization(
+                    geometry_wkt=geometry_wkt, pkuid=pkuid,
+                    cat_org=self.cat_org.currentData(),
+                    nom_org=validate_text(self.nom_org.text()),
+                    type_org=self.type_org.currentData(),
+                )
+                QMessageBox.information(
+                    self, "Success", "تمت إضافة هذا المرفق بنجاح",
+                )
+            except Exception as e:
+                logger.exception("Failed to add organization: %s", e)
+                QMessageBox.critical(
+                    self, "Error",
+                    'لا يمكن إضافة المرفق ، المرفق موجود بالفعل',
+                )
+
+    def add_road(self) -> None:
+        """Add a new road through the form."""
+        if self.is_road.isChecked():
+            geometry_wkt = getattr(self, '_last_feature_wkt', None)
+            pkuid = getattr(self, '_last_feature_pkuid', None)
+            if not geometry_wkt or not pkuid:
+                logger.warning("No geometry or pkuid available for road")
+                return
+            try:
+                add_road(
+                    geometry_wkt=geometry_wkt, pkuid=pkuid,
+                    dec_voie=validate_text(self.dec_voie.text()),
+                    nom_voie=validate_text(self.nom_voie.text()),
+                    type_voie=self.type_voie.currentData(),
+                )
+                QMessageBox.information(
+                    self, "Success", "تمت إضافة هذا الطريق بنجاح",
+                )
+            except Exception as e:
+                logger.exception("Failed to add road: %s", e)
+                QMessageBox.critical(
+                    self, "Error",
+                    'لا يمكن إضافة الطريق , الطريق موجود بالفعل',
+                )
+
+    def key_press_event(self, event) -> None:
+        """Handle Enter key press to trigger add_numbering."""
+        if event.key() == Qt.Key_Return:
+            self.add_numbering()
+
+    def key_press_event2(self, event) -> None:
+        """Handle Enter key press to trigger add_panel."""
+        if event.key() == Qt.Key_Return:
+            self.add_panel()
+
+    def show_confirm_dialog(
+        self, title: str, message: str,
+        yes_callback=None, no_callback=None,
+    ) -> bool:
+        """Display a confirmation dialog with yes/no callbacks."""
+        msg_box = QMessageBox(self)
+        msg_box.setIcon(QMessageBox.Question)
+        msg_box.setWindowTitle(title)
+        msg_box.setText(message)
+        msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+
+        yes_button = msg_box.button(QMessageBox.Yes)
+        no_button = msg_box.button(QMessageBox.No)
+        yes_button.setText("نعم")
+        no_button.setText("لا")
+
+        result = msg_box.exec_()
+
+        if result == QMessageBox.Yes:
+            if yes_callback:
+                yes_callback()
+            return True
+        if no_callback:
+            no_callback()
+        return False
+
+    def add_numbering(self) -> None:
+        """Add a new numbering linked to a selected road or subdivision."""
+        if self.is_num.isChecked():
+            geometry_wkt = getattr(self, '_last_feature_wkt', None)
+            pkuid = getattr(self, '_last_feature_pkuid', None)
+            if not geometry_wkt or not pkuid:
+                logger.warning("No geometry or pkuid available for numbering")
+                return
+            try:
+                obj = self.identify_tool2.get_pkuid()
+            except Exception as e:
+                logger.warning("Failed to get pkuid from identify tool: %s", e)
+                obj = None
+            try:
+                if obj and obj.get('layer_name') == LAYER_ROADS:
+                    add_numbering(
+                        geometry_wkt=geometry_wkt, pkuid=pkuid,
+                        repetition=validate_text(self.repetition.text()),
+                        valeur=validate_text(self.num_val.text()),
+                        etat=self.num_etat.currentData(),
+                        cat_act=self.cat_act.currentData(),
+                        type_act=self.type_act.currentData(),
+                        idLine=obj.get('pkuid'), idPoly=None,
+                    )
+                elif obj and obj.get('layer_name') == LAYER_SUBDIVISIONS:
+                    add_numbering(
+                        geometry_wkt=geometry_wkt, pkuid=pkuid,
+                        repetition=validate_text(self.repetition.text()),
+                        valeur=validate_text(self.num_val.text()),
+                        etat=self.num_etat.currentData(),
+                        cat_act=self.cat_act.currentData(),
+                        type_act=self.type_act.currentData(),
+                        idLine=None, idPoly=obj.get('pkuid'),
+                    )
+
+                if self.measure_tool:
+                    self.show_confirm_dialog(
+                        title="title",
+                        message=(
+                            "تمت إضافة هذا المدخل بنجاح\n هل تمسح خط القياس ؟"
+                        ),
+                        yes_callback=self.measure_tool.clear,
+                    )
+                else:
+                    QMessageBox.information(
+                        self, "Success", "تمت إضافة هذا المدخل بنجاح",
+                    )
+            except Exception as e:
+                logger.exception("Failed to add numbering: %s", e)
+                QMessageBox.critical(self, "Error", str(e))
+
+        self.num_val.setFocus()
+        self.num_val.clear()
+        self.draw_num_handler()
+
+    def add_city(self) -> None:
+        """Add a new subdivision through the form."""
+        if self.is_city.isChecked():
+            geometry_wkt = getattr(self, '_last_feature_wkt', None)
+            pkuid = getattr(self, '_last_feature_pkuid', None)
+            if not geometry_wkt or not pkuid:
+                logger.warning("No geometry or pkuid available for subdivision")
+                return
+            try:
+                add_subdivision(
+                    geometry_wkt=geometry_wkt, pkuid=pkuid,
+                    name=validate_text(self.nom_city.text()),
+                    subdivision_type=self.type_city.currentData(),
+                )
+                QMessageBox.information(
+                    self, "Success", "تمت إضافة هذا الحي بنجاح",
+                )
+            except Exception as e:
+                logger.exception("Failed to add city: %s", e)
+                QMessageBox.critical(self, "Error", str(e))
+
+    def add_zone(self) -> None:
+        """Add a new zone through the form."""
+        if self.is_zone.isChecked():
+            if not self.update_object:
+                geometry_wkt = getattr(self, '_last_feature_wkt', None)
+                pkuid = getattr(self, '_last_feature_pkuid', None)
+                if not geometry_wkt or not pkuid:
+                    logger.warning("No geometry or pkuid available for zone")
+                    return
+                try:
+                    add_zone(
+                        geometry_wkt=geometry_wkt, pkuid=pkuid,
+                        name=validate_text(self.nom_zone.text()),
+                        zone_type=self.type_zone.currentData(),
+                    )
+                    QMessageBox.information(
+                        self, "Success", "تمت إضافة هذه المنطقة بنجاح",
+                    )
+                except Exception as e:
+                    logger.exception("Failed to add zone: %s", e)
+                    QMessageBox.critical(
+                        self, "Error",
+                        'لا يمكن إضافة المنطقة , المنطقة موجودة بالفعل',
+                    )

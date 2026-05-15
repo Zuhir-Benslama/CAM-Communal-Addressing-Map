@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# QGIS plugin
+resources_rc.py
+*.qgs
+*.qgz
+
+# Database
+*.sqlite
+*.sqlite3
+data/*.sqlite
+data/*.toml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+venv/
+.venv/
+
+# Reports / output
+*.pdf
+*.odt
+*.png

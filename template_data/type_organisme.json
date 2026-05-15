@@ -1,0 +1,282 @@
+[
+  {
+    "TypeFr": "Etablissement Hospitalier et Universitaire",
+    "TypeAr": "المؤسسة الإستشفائية الجامعية",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Etablissement Hospitalier",
+    "TypeAr": "المؤسسة الإستشفائية",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Etablissement Public Hospitalier",
+    "TypeAr": "المؤسسة العمومية الإستشفائية",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Etablissement Public de Santé de Proximité",
+    "TypeAr": "المؤسسة العمومية للصحة الجوارية",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Etablissement Hospitalier Spécialisés",
+    "TypeAr": "المؤسسة الإستشفائية المتخصصة",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Centre Hospitalo-Universitaire",
+    "TypeAr": "المركز الإستشفائي الجامعي",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Centre médical social",
+    "TypeAr": "المركز الطبي الإجتماعي",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Centre de santé",
+    "TypeAr": "المركز الصحي",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Clinique",
+    "TypeAr": "عيادة",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Dispensaire",
+    "TypeAr": "مستوصف",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Hopital",
+    "TypeAr": "مستشفى",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Polyclinique",
+    "TypeAr": "عيادة متعددة الخدمات",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Salle de soin",
+    "TypeAr": "غرفة علاج",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Unité dépistage Scolaire",
+    "TypeAr": "وحدة الكشف المدرسي",
+    "categorie": "الهيئات و المرافق الصحية"
+  },
+  {
+    "TypeFr": "Gare",
+    "TypeAr": "محطة",
+    "categorie": "مرافق النقل و المواصلات"
+  },
+  {
+    "TypeFr": "Port",
+    "TypeAr": "ميناء",
+    "categorie": "مرافق النقل و المواصلات"
+  },
+  {
+    "TypeFr": "Aéroport",
+    "TypeAr": "مطار",
+    "categorie": "مرافق النقل و المواصلات"
+  },
+  {
+    "TypeFr": "Bureau de poste",
+    "TypeAr": "مكتب البريد",
+    "categorie": "الهيئات و المرافق المالية و السياحية"
+  },
+  {
+    "TypeFr": "Centre commercial",
+    "TypeAr": "مركز تجاري",
+    "categorie": "الهيئات و المرافق المالية و السياحية"
+  },
+  {
+    "TypeFr": "Agence bancaire",
+    "TypeAr": "وكالة بنكية",
+    "categorie": "الهيئات و المرافق المالية و السياحية"
+  },
+  {
+    "TypeFr": "Centre des chèques postaux",
+    "TypeAr": "مركز الصكوك البريدية",
+    "categorie": "الهيئات و المرافق المالية و السياحية"
+  },
+  {
+    "TypeFr": "Centre postal",
+    "TypeAr": "مركز بريدي",
+    "categorie": "الهيئات و المرافق المالية و السياحية"
+  },
+  {
+    "TypeFr": "Hotel",
+    "TypeAr": "فندق",
+    "categorie": "الهيئات و المرافق المالية و السياحية"
+  },
+  {
+    "TypeFr": "Salle des fetes",
+    "TypeAr": "قاعة حفلات",
+    "categorie": "الهيئات و المرافق المالية و السياحية"
+  },
+  {
+    "TypeFr": "Mosquée",
+    "TypeAr": "مسجد",
+    "categorie": "الهيئات و المرافق الدينية"
+  },
+  {
+    "TypeFr": "Cimetière",
+    "TypeAr": "مقبرة",
+    "categorie": "الهيئات و المرافق الدينية"
+  },
+  {
+    "TypeFr": "Ecole Primaire",
+    "TypeAr": "مدرسة إبتدائية",
+    "categorie": "الهيئات و المرافق التربوية والجامعية و التكوينية"
+  },
+  {
+    "TypeFr": "Collège d\"Enseignement Moyen",
+    "TypeAr": "إكمالية التعليم المتوسط",
+    "categorie": "الهيئات و المرافق التربوية والجامعية و التكوينية"
+  },
+  {
+    "TypeFr": "Lycée",
+    "TypeAr": "ثانوية",
+    "categorie": "الهيئات و المرافق التربوية والجامعية و التكوينية"
+  },
+  {
+    "TypeFr": "Crèche",
+    "TypeAr": "حضانة",
+    "categorie": "الهيئات و المرافق التربوية والجامعية و التكوينية"
+  },
+  {
+    "TypeFr": "Faculté",
+    "TypeAr": "كلية",
+    "categorie": "الهيئات و المرافق التربوية والجامعية و التكوينية"
+  },
+  {
+    "TypeFr": "Université",
+    "TypeAr": "جامعة",
+    "categorie": "الهيئات و المرافق التربوية والجامعية و التكوينية"
+  },
+  {
+    "TypeFr": "Institut",
+    "TypeAr": "معهد",
+    "categorie": "الهيئات و المرافق التربوية والجامعية و التكوينية"
+  },
+  {
+    "TypeFr": "Résidance universitaire",
+    "TypeAr": "إقامة جامعية",
+    "categorie": "الهيئات و المرافق التربوية والجامعية و التكوينية"
+  },
+  {
+    "TypeFr": "Laboratoire de recherche",
+    "TypeAr": "مخبر أبحاث",
+    "categorie": "الهيئات و المرافق التربوية والجامعية و التكوينية"
+  },
+  {
+    "TypeFr": "Maison d'enfance",
+    "TypeAr": "دار الطفولة",
+    "categorie": "الهيئات و المرافق التربوية والجامعية و التكوينية"
+  },
+  {
+    "TypeFr": "Centre de formation",
+    "TypeAr": "مركز التكوين",
+    "categorie": "الهيئات و المرافق التربوية والجامعية و التكوينية"
+  },
+  {
+    "TypeFr": "Complexe",
+    "TypeAr": "مركب",
+    "categorie": "المرافق الإقامية"
+  },
+  {
+    "TypeFr": "Résidence",
+    "TypeAr": "إقامة",
+    "categorie": "المرافق الإقامية"
+  },
+  {
+    "TypeFr": "Coopérative",
+    "TypeAr": "تعاونية",
+    "categorie": "المرافق الإقامية"
+  },
+  {
+    "TypeFr": "Complexe sportif",
+    "TypeAr": "مركب رياضي",
+    "categorie": "الهيئات و المرافق الرياضية و الثقافية"
+  },
+  {
+    "TypeFr": "Complexe sportif de proximité",
+    "TypeAr": "مركب رياضي جواري",
+    "categorie": "الهيئات و المرافق الرياضية و الثقافية"
+  },
+  {
+    "TypeFr": "Maison de jeunes",
+    "TypeAr": "دار الشباب",
+    "categorie": "الهيئات و المرافق الرياضية و الثقافية"
+  },
+  {
+    "TypeFr": "Piscine",
+    "TypeAr": "مسبح",
+    "categorie": "الهيئات و المرافق الرياضية و الثقافية"
+  },
+  {
+    "TypeFr": "Salle omnisports",
+    "TypeAr": "قاعة متعددة الرياضات",
+    "categorie": "الهيئات و المرافق الرياضية و الثقافية"
+  },
+  {
+    "TypeFr": "Stade",
+    "TypeAr": "ملعب",
+    "categorie": "الهيئات و المرافق الرياضية و الثقافية"
+  },
+  {
+    "TypeFr": "Stade de proximité",
+    "TypeAr": "ملعب جواري",
+    "categorie": "الهيئات و المرافق الرياضية و الثقافية"
+  },
+  {
+    "TypeFr": "Centre culturel",
+    "TypeAr": "مركز ثقافي",
+    "categorie": "الهيئات و المرافق الرياضية و الثقافية"
+  },
+  {
+    "TypeFr": "Bibliothèque municipale",
+    "TypeAr": "مكتبة بلدية",
+    "categorie": "الهيئات و المرافق الرياضية و الثقافية"
+  },
+  {
+    "TypeFr": "Musée",
+    "TypeAr": "متحف",
+    "categorie": "الهيئات و المرافق الرياضية و الثقافية"
+  },
+  {
+    "TypeFr": "Théatre",
+    "TypeAr": "مسرح",
+    "categorie": "الهيئات و المرافق الرياضية و الثقافية"
+  },
+  {
+    "TypeFr": "Annexe municipale",
+    "TypeAr": "ملحق بلدي",
+    "categorie": "الهيئات و المرافق القطاعية"
+  },
+  {
+    "TypeFr": "Direction des impots",
+    "TypeAr": "مديرية الضرائب",
+    "categorie": "الهيئات و المرافق القطاعية"
+  },
+  {
+    "TypeFr": "Commissariat",
+    "TypeAr": "مقر الشرطة",
+    "categorie": "الهيئات و المرافق الأمنية"
+  },
+  {
+    "TypeFr": "Brigade de la gendermerie nationale",
+    "TypeAr": "فرقة الدرك الوطني",
+    "categorie": "الهيئات و المرافق الأمنية"
+  },
+  {
+    "TypeFr": "Protection civile",
+    "TypeAr": "الحماية المدنية",
+    "categorie": "الهيئات و المرافق الأمنية"
+  }
+]

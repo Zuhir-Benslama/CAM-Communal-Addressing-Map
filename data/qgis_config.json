@@ -1,0 +1,112 @@
+{
+    "map_layers": [
+        {
+            "url": "type=xyz&url=https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            "label": "Satellite View 0"
+        },
+		
+		{
+            "url": "Raster",
+            "label": "Raster"
+        }
+		
+    ],
+    "other_layers": [
+
+        {
+            "label": "الطرق",
+            "url": "LineString?crs=EPSG:4326",
+             "show_with":[],
+          "style": "road.qml"
+        },
+
+        {
+            "label": "المرافق",
+            "url": "Polygon?crs=EPSG:4326",
+            "show_with":[],
+          "style": "org.qml"
+        },
+        {
+            "label": "المناطق",
+            "url": "Polygon?crs=EPSG:4326",
+            "show_with":[],
+          "style": "zone.qml"
+
+        },
+       {
+            "label": "التجزئات",
+            "url": "Polygon?crs=EPSG:4326",
+            "show_with":[],
+          "style": "city.qml"
+        },
+        {
+            "label": "اللوحات",
+            "url": "Point?crs=EPSG:4326",
+            "show_with": ["التجزئات","المرافق","الطرق"],
+          "style": "pan.qml"
+
+        },
+        {
+            "label": "الترقيم",
+            "url": "Point?crs=EPSG:4326",
+             "show_with": ["التجزئات","المرافق","الطرق"],
+          "style": "num.qml"
+
+        }
+    ],
+
+    "mapper": [
+         {
+            "layer": "اللوحات",
+            "model": "PanelSign"
+        },
+        {
+            "layer": "الترقيم",
+            "model": "Numbering"
+        },
+        {
+            "layer": "الطرق",
+            "model": "Road"
+        },
+         {
+            "layer": "المناطق",
+            "model": "Zone"
+        },
+        {
+            "layer": "التجزئات",
+            "model": "Subdivision"
+        },
+        {
+            "layer": "المرافق",
+            "model": "Organization"
+        }
+    ],
+   "refs": [
+
+        {
+            "label": "الطرق"
+
+        },
+        {
+            "label": "التجزئات"
+
+        }
+
+    ],
+   "refs2": [
+
+        {
+            "label": "الطرق"
+
+        },
+        {
+            "label": "التجزئات"
+
+        },
+        {
+            "label": "المرافق"
+
+        }
+
+    ]
+}
