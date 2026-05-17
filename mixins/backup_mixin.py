@@ -32,14 +32,15 @@ class BackupMixin:
         if file_dialog_open.exec_():
             source_path = file_dialog_open.selectedFiles()[0]
         else:
-            QMessageBox.warning(self, "Warning", "لا يوجد ملف محدد")
+            QMessageBox.warning(self, "Warning", self._tr("لا يوجد ملف محدد"))
             return
 
         with open(source_path, 'rb') as f:
             header = f.read(16)
         if header[:16] != b'SQLite format 3\x00':
             QMessageBox.critical(
-                self, "Error", "الملف المحدد ليس قاعدة بيانات SQLite صالحة",
+                self, "Error",
+                self._tr("الملف المحدد ليس قاعدة بيانات SQLite صالحة"),
             )
             return
 
@@ -52,12 +53,14 @@ class BackupMixin:
         auth_path = AUTH_DATABASE_FILE
         if os.path.exists(auth_path):
             QMessageBox.information(
-                self, "Info", "قاعدة بيانات المصادقة موجودة مسبقاً",
+                self, "Info",
+                self._tr("قاعدة بيانات المصادقة موجودة مسبقاً"),
             )
         else:
             get_auth_engine()
             QMessageBox.information(
-                self, "Success", "تم إنشاء قاعدة بيانات المصادقة",
+                self, "Success",
+                self._tr("تم إنشاء قاعدة بيانات المصادقة"),
             )
 
     def backup(self) -> None:
@@ -78,7 +81,7 @@ class BackupMixin:
         if file_dialog_save.exec_():
             destination_path = file_dialog_save.selectedFiles()[0]
         else:
-            QMessageBox.warning(self, "Warning", "لا يوجد ملف محدد")
+            QMessageBox.warning(self, "Warning", self._tr("لا يوجد ملف محدد"))
             return
 
         try:
@@ -87,7 +90,9 @@ class BackupMixin:
                 base, ext = os.path.splitext(destination_path)
                 auth_dest = f"{base}_auth{ext}"
                 shutil.copy(auth_source, auth_dest)
-            QMessageBox.information(self, "Success", "تم نسخ الملف بنجاح ")
+            QMessageBox.information(
+                self, "Success", self._tr("تم نسخ الملف بنجاح"),
+            )
         except Exception as e:
             logger.exception("Failed to restore database: %s", e)
-            QMessageBox.critical(self, "Error", "فشل في نسخ الملف")
+            QMessageBox.critical(self, "Error", self._tr("فشل في نسخ الملف"))

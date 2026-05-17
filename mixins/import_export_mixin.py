@@ -12,6 +12,8 @@ from ..constants import MAP_PNG, TMP_JSON, REPORTING_SCRIPT, validate_text
 
 logger = logging.getLogger(__name__)
 
+EXPORT_MAP_SIZE = QSize(2200, 2200)
+
 
 class ImportExportMixin:
     """Mixin for exporting map canvases and invoking external
@@ -36,7 +38,7 @@ class ImportExportMixin:
                 map_settings = QgsMapSettings()
                 map_settings.setLayers(canvas.layers())
                 map_settings.setExtent(extent)
-                map_settings.setOutputSize(QSize(2200, 2200))
+                map_settings.setOutputSize(EXPORT_MAP_SIZE)
                 map_settings.setFlag(
                     QgsMapSettings.Flag.UseAdvancedEffects, True,
                 )
@@ -84,15 +86,16 @@ class ImportExportMixin:
                                 check=True, **_SUBPROCESS_FLAGS,
                             )
                             QMessageBox.information(
-                                self, "Success", "تم حفظ ملفك في مستنداتي",
+                                self, "Success",
+                                self._tr("تم حفظ ملفك في مستنداتي"),
                             )
                         except Exception as e:
                             logger.exception("Failed to export map: %s", e)
             else:
                 QMessageBox.critical(
                     self, "Error",
-                    "خريطة ترقيم المداخل أو خريطة اللواحات  \n"
-                    "  يجب عليك تحديد نوع الخريطة التي تريد طباعتها",
+                    self._tr("خريطة ترقيم المداخل أو خريطة اللواحات  \n"
+                             "  يجب عليك تحديد نوع الخريطة التي تريد طباعتها"),
                 )
 
         if selected_value == 'A3':
@@ -107,7 +110,7 @@ class ImportExportMixin:
                 map_settings = QgsMapSettings()
                 map_settings.setLayers(canvas.layers())
                 map_settings.setExtent(extent)
-                map_settings.setOutputSize(QSize(2200, 2200))
+                map_settings.setOutputSize(EXPORT_MAP_SIZE)
                 map_settings.setFlag(
                     QgsMapSettings.Flag.UseAdvancedEffects, True,
                 )
@@ -155,13 +158,14 @@ class ImportExportMixin:
                                 check=True, **_SUBPROCESS_FLAGS,
                             )
                             QMessageBox.information(
-                                self, "Success", "تم حفظ ملفك في مستنداتي",
+                                self, "Success",
+                                self._tr("تم حفظ ملفك في مستنداتي"),
                             )
-                        except Exception:
-                            pass
+                        except Exception as e:
+                            logger.exception("Failed to export A3 map: %s", e)
             else:
                 QMessageBox.critical(
                     self, "Error",
-                    "خريطة ترقيم المداخل أو خريطة اللواحات  \n"
-                    "  يجب عليك تحديد نوع الخريطة التي تريد طباعتها",
+                    self._tr("خريطة ترقيم المداخل أو خريطة اللواحات  \n"
+                             "  يجب عليك تحديد نوع الخريطة التي تريد طباعتها"),
                 )

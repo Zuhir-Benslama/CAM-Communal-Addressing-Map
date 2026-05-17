@@ -2,15 +2,28 @@
 import logging
 
 from qgis.PyQt.QtWidgets import QCompleter, QComboBox
+from qgis.PyQt.QtCore import QSettings
 
 from ..models import (
     Localite, SubdivisionType, ZoneType, RoadType, OrganizationType,
     ActivityType, MountingStatus, NumberingState, get_session
 )
 from ..db.operations import qgis_config
-from ..constants import NO_ACTIVITY
+from ..constants import (
+    NO_ACTIVITY, SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
+)
+from ..i18n import tr as _i18n_tr
 
 logger = logging.getLogger(__name__)
+
+
+def _locale() -> str:
+    s = QSettings(SETTINGS_ORG, SETTINGS_APP)
+    locale = s.value(SETTINGS_KEY_LOCALE, '')
+    if not locale:
+        locale_val = QSettings().value('locale/userLocale')
+        locale = locale_val[0:2] if locale_val else 'en'
+    return locale
 
 
 def fill_wilayas_list(combobox: QComboBox) -> None:
@@ -31,18 +44,20 @@ def fill_wilayas_list(combobox: QComboBox) -> None:
 
 def fill_paper(combobox: QComboBox) -> None:
     """Populate a combobox with paper size options (A3, A0)."""
+    loc = _locale()
     combobox.clear()
-    combobox.addItem("\u202Bورقة A3 للعمل الميداني\u202C", 'A3')
-    combobox.addItem("\u202Bورقة A0 للإدارة\u202C", 'A0')
+    combobox.addItem(_i18n_tr("\u202Bورقة A3 للعمل الميداني\u202C", loc), 'A3')
+    combobox.addItem(_i18n_tr("\u202Bورقة A0 للإدارة\u202C", loc), 'A0')
 
 
 def fill_subdivision_type(combobox: QComboBox) -> None:
     """Populate a combobox with subdivision types from the database."""
+    loc = _locale()
     combobox.clear()
     session = get_session()
     results = session.query(SubdivisionType).all()
     for result in results:
-        combobox.addItem(result.pk, result.pk)
+        combobox.addItem(_i18n_tr(result.pk, loc), result.pk)
     session.close()
     combobox.setCurrentIndex(0)
     combobox.completer().setCompletionMode(QCompleter.PopupCompletion)
@@ -51,11 +66,12 @@ def fill_subdivision_type(combobox: QComboBox) -> None:
 
 def fill_type_zone(combobox: QComboBox) -> None:
     """Populate a combobox with zone types from the database."""
+    loc = _locale()
     combobox.clear()
     session = get_session()
     results = session.query(ZoneType).all()
     for result in results:
-        combobox.addItem(result.pk, result.pk)
+        combobox.addItem(_i18n_tr(result.pk, loc), result.pk)
     session.close()
     combobox.setCurrentIndex(0)
     combobox.completer().setCompletionMode(QCompleter.PopupCompletion)
@@ -115,9 +131,10 @@ def fill_org_category(combobox, cat=None) -> None:
 
 def fill_activity_category(combobox) -> None:
     """Populate a combobox with distinct activity categories."""
+    loc = _locale()
     combobox.clear()
     session = get_session()
-    combobox.addItem(NO_ACTIVITY, NO_ACTIVITY)
+    combobox.addItem(_i18n_tr(NO_ACTIVITY, loc), NO_ACTIVITY)
     results = (
         session.query(ActivityType.cat)
         .distinct().order_by(ActivityType.cat).all()
@@ -135,6 +152,7 @@ def fill_activity_category(combobox) -> None:
 
 def fill_type_act(combobox, cat) -> None:
     """Populate a combobox with activity types for a given category."""
+    loc = _locale()
     combobox.clear()
     if cat != NO_ACTIVITY:
         session = get_session()
@@ -146,7 +164,7 @@ def fill_type_act(combobox, cat) -> None:
             combobox.addItem(result.type, result.type)
         session.close()
     else:
-        combobox.addItem(NO_ACTIVITY, NO_ACTIVITY)
+        combobox.addItem(_i18n_tr(NO_ACTIVITY, loc), NO_ACTIVITY)
 
 
 def fill_type_org(combobox, cat) -> None:
@@ -170,12 +188,13 @@ def fill_type_org(combobox, cat) -> None:
 
 def fill_road_type(combobox) -> None:
     """Populate a combobox with road types from the database."""
+    loc = _locale()
     combobox.clear()
     session = get_session()
     results = session.query(RoadType).all()
 
     for result in results:
-        combobox.addItem(result.pk, result.pk)
+        combobox.addItem(_i18n_tr(result.pk, loc), result.pk)
 
     session.close()
     combobox.setCurrentIndex(0)
@@ -186,12 +205,13 @@ def fill_road_type(combobox) -> None:
 
 def fill_mounting_status(combobox) -> None:
     """Populate a combobox with mounting statuses from the database."""
+    loc = _locale()
     combobox.clear()
     session = get_session()
     results = session.query(MountingStatus).all()
 
     for result in results:
-        combobox.addItem(result.pk, result.pk)
+        combobox.addItem(_i18n_tr(result.pk, loc), result.pk)
 
     session.close()
     combobox.setCurrentIndex(0)
@@ -202,12 +222,13 @@ def fill_mounting_status(combobox) -> None:
 
 def fill_numbering_state(combobox) -> None:
     """Populate a combobox with numbering states from the database."""
+    loc = _locale()
     combobox.clear()
     session = get_session()
     results = session.query(NumberingState).all()
 
     for result in results:
-        combobox.addItem(result.pk, result.pk)
+        combobox.addItem(_i18n_tr(result.pk, loc), result.pk)
 
     session.close()
     combobox.setCurrentIndex(0)

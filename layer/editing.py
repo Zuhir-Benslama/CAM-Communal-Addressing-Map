@@ -8,41 +8,39 @@ from ..constants import NOTIFY_DURATION
 logger = logging.getLogger(__name__)
 
 
+def _activate_add_feature(iface, layer) -> None:
+    """Enable editing and activate the add-feature tool for a vector layer."""
+    layer.startEditing()
+    geometry_type = layer.geometryType()
+
+    messages = {
+        QgsWkbTypes.PointGeometry: (
+            "Capture Point activé pour la couche vectorielle sélectionnée."),
+        QgsWkbTypes.LineGeometry: (
+            "Capture Line activé pour la couche vectorielle sélectionnée."),
+        QgsWkbTypes.PolygonGeometry: (
+            "Capture Polygon activé pour la couche vectorielle sélectionnée."),
+    }
+
+    msg = messages.get(geometry_type)
+    if msg:
+        iface.actionAddFeature().trigger()
+        iface.messageBar().pushMessage(
+            "Info", msg, level=Qgis.Info, duration=NOTIFY_DURATION
+        )
+    else:
+        iface.messageBar().pushMessage(
+            "Erreur", "Type de géométrie non pris en charge.",
+            level=Qgis.Critical, duration=NOTIFY_DURATION
+        )
+
+
 def edit_line_layer(iface) -> None:
     """Enable editing and add feature tool on the active layer."""
     active_layer = iface.activeLayer()
 
     if active_layer and active_layer.type() == QgsMapLayer.VectorLayer:
-        active_layer.startEditing()
-        geometry_type = active_layer.geometryType()
-
-        if geometry_type == QgsWkbTypes.PointGeometry:
-            iface.actionAddFeature().trigger()
-            iface.messageBar().pushMessage(
-                "Info",
-                "Capture Point activé pour la couche vectorielle sélectionnée.",
-                level=Qgis.Info, duration=NOTIFY_DURATION
-            )
-        elif geometry_type == QgsWkbTypes.LineGeometry:
-            iface.actionAddFeature().trigger()
-            iface.messageBar().pushMessage(
-                "Info",
-                "Capture Line activé pour la couche vectorielle sélectionnée.",
-                level=Qgis.Info, duration=NOTIFY_DURATION
-            )
-        elif geometry_type == QgsWkbTypes.PolygonGeometry:
-            iface.actionAddFeature().trigger()
-            iface.messageBar().pushMessage(
-                "Info",
-                "Capture Polygon activé "
-                "pour la couche vectorielle sélectionnée.",
-                level=Qgis.Info, duration=NOTIFY_DURATION
-            )
-        else:
-            iface.messageBar().pushMessage(
-                "Erreur", "Type de géométrie non pris en charge.",
-                level=Qgis.Critical, duration=NOTIFY_DURATION
-            )
+        _activate_add_feature(iface, active_layer)
     else:
         iface.messageBar().pushMessage(
             "Erreur", "Aucune couche vectorielle active.",
@@ -83,47 +81,18 @@ def save_changes(iface) -> None:
 
 def start_editing_layer(iface, layer_name) -> None:
     """Start editing mode on a named layer and activate add feature tool."""
-    layer = QgsProject.instance().mapLayersByName(layer_name)[0]
-
-    if not layer:
+    layers = QgsProject.instance().mapLayersByName(layer_name)
+    if not layers:
         iface.messageBar().pushMessage(
             "Erreur", f"Aucune couche trouvée avec le nom '{layer_name}'.",
             level=Qgis.Critical, duration=NOTIFY_DURATION
         )
         return
 
+    layer = layers[0]
     if layer.type() == QgsMapLayer.VectorLayer:
-        layer.startEditing()
         iface.setActiveLayer(layer)
-        geometry_type = layer.geometryType()
-
-        if geometry_type == QgsWkbTypes.PointGeometry:
-            iface.actionAddFeature().trigger()
-            iface.messageBar().pushMessage(
-                "Info",
-                "Capture Point activé pour la couche vectorielle sélectionnée.",
-                level=Qgis.Info, duration=NOTIFY_DURATION
-            )
-        elif geometry_type == QgsWkbTypes.LineGeometry:
-            iface.actionAddFeature().trigger()
-            iface.messageBar().pushMessage(
-                "Info",
-                "Capture Line activé pour la couche vectorielle sélectionnée.",
-                level=Qgis.Info, duration=NOTIFY_DURATION
-            )
-        elif geometry_type == QgsWkbTypes.PolygonGeometry:
-            iface.actionAddFeature().trigger()
-            iface.messageBar().pushMessage(
-                "Info",
-                "Capture Polygon activé "
-                "pour la couche vectorielle sélectionnée.",
-                level=Qgis.Info, duration=NOTIFY_DURATION
-            )
-        else:
-            iface.messageBar().pushMessage(
-                "Erreur", "Type de géométrie non pris en charge.",
-                level=Qgis.Critical, duration=NOTIFY_DURATION
-            )
+        _activate_add_feature(iface, layer)
     else:
         iface.messageBar().pushMessage(
             "Erreur", "La couche spécifiée n'est pas une couche vectorielle.",
@@ -133,15 +102,15 @@ def start_editing_layer(iface, layer_name) -> None:
 
 def stop_editing_layer(iface, layer_name) -> None:
     """Stop editing and commit changes on a named layer."""
-    layer = QgsProject.instance().mapLayersByName(layer_name)[0]
-
-    if not layer:
+    layers = QgsProject.instance().mapLayersByName(layer_name)
+    if not layers:
         iface.messageBar().pushMessage(
             "Erreur", f"Aucune couche trouvée avec le nom '{layer_name}'.",
             level=Qgis.Critical, duration=NOTIFY_DURATION
         )
         return
 
+    layer = layers[0]
     if layer.type() == QgsMapLayer.VectorLayer:
         if layer.isEditable():
             iface.setActiveLayer(layer)

@@ -72,7 +72,7 @@ class ReportMixin:
             msg.setIcon(QMessageBox.Information)
             msg.setWindowTitle("Success")
             msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setInformativeText("تم حفظ تقريرك في مستنداتك")
+            msg.setInformativeText(self._tr("تم حفظ تقريرك في مستنداتك"))
             msg.exec_()
             return True
         except subprocess.CalledProcessError as e:
@@ -81,7 +81,7 @@ class ReportMixin:
             msg.setIcon(QMessageBox.Critical)
             msg.setWindowTitle("Error")
             msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setText("فشل في إنشاء التقرير")
+            msg.setText(self._tr("فشل في إنشاء التقرير"))
             msg.setInformativeText(str(e))
             msg.exec_()
             return False
@@ -91,7 +91,7 @@ class ReportMixin:
             msg.setIcon(QMessageBox.Critical)
             msg.setWindowTitle("Error")
             msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setText("فشل في إنشاء التقرير")
+            msg.setText(self._tr("فشل في إنشاء التقرير"))
             msg.setInformativeText(str(e))
             msg.exec_()
             return False

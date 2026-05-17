@@ -71,18 +71,21 @@ class LayerOpsMixin:
                 for dl in data_list:
                     if dl.get("label") == tab_name and dl.get("show_with"):
                         for sw in dl.get("show_with"):
-                            l = QgsProject.instance().mapLayersByName(sw)
-                            if l:
-                                _node = root.findLayer(l[0].id())
+                            sl = QgsProject.instance().mapLayersByName(sw)
+                            if sl:
+                                _node = root.findLayer(sl[0].id())
                                 if _node:
                                     _node.setItemVisibilityChecked(True)
 
-                data_list = qgis_config().get('other_layers')
+            last_tab = getattr(self, '_last_loaded_tab', None)
+            if tab_name != last_tab:
                 for dl in data_list:
                     lbl = dl.get('label')
-                    l = QgsProject.instance().mapLayersByName(lbl)[0]
-                    filename = os.path.join(DEFAULT_STYLE_DIR, dl.get('style'))
-                    l.loadNamedStyle(filename)
+                    layers = QgsProject.instance().mapLayersByName(lbl)
+                    if layers:
+                        filename = os.path.join(DEFAULT_STYLE_DIR, dl.get('style'))
+                        layers[0].loadNamedStyle(filename)
+                self._last_loaded_tab = tab_name
 
         elif tab_name == "اعدادات":
             pass
@@ -90,7 +93,10 @@ class LayerOpsMixin:
         elif tab_name == "تقرير":
             data_list = qgis_config().get('other_layers')
             for dl in data_list:
-                tmpl = QgsProject.instance().mapLayersByName(dl.get('label'))[0]
+                tmpl_list = QgsProject.instance().mapLayersByName(dl.get('label'))
+                if not tmpl_list:
+                    continue
+                tmpl = tmpl_list[0]
                 filename = os.path.join(CUSTOM_STYLE_DIR, dl.get('style'))
                 tmpl.loadNamedStyle(filename)
                 for i in [LAYER_SUBDIVISIONS, LAYER_FACILITIES, LAYER_ROADS]:
@@ -153,11 +159,11 @@ class LayerOpsMixin:
         dlg = EntityListDialog(model_name="PanelSign", list_of='اللواحات')
         dlg.exec_()
 
-    def on_feature_added(self, feature) -> None:
+    def on_feature_added(self, fid) -> None:
         """Validate added feature geometry against the user's allowed zone."""
         layer = self.iface.activeLayer()
         if layer and layer.isEditable():
-            obj = layer.getFeature(feature)
+            obj = layer.getFeature(fid)
             obj['pkuid'] = str(uuid.uuid4())
             layer.updateFeature(obj)
 
@@ -182,9 +188,9 @@ class LayerOpsMixin:
                     case = 0
 
                 if case == 0:
-                    del_obj = layer.getFeature(feature)
+                    del_obj = layer.getFeature(fid)
                     if del_obj.isValid():
-                        layer.deleteFeature(feature)
+                        layer.deleteFeature(fid)
                     self._reconnect_context_menu()
                 else:
                     self._last_feature_pkuid = obj['pkuid']
@@ -235,12 +241,12 @@ class LayerOpsMixin:
             case = 0
             if isinstance(current_obj, Point) and current_obj.within(uloc):
                 case = 1
-            if (
+            elif (
                 isinstance(current_obj, Polygon)
                 and current_obj.intersects(uloc)
             ):
                 case = 2
-            if (
+            elif (
                 isinstance(current_obj, LineString)
                 and current_obj.intersects(uloc)
             ):

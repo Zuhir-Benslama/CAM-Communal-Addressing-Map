@@ -252,6 +252,70 @@
 
 ## 26. Future Work — Unsolved
 
-- [ ] **Fix feature theming to match previous look** — after the refactor, feature styling/symbology may differ from the original plugin. Audit and restore the original symbology (colors, line styles, marker sizes, labels) across all layers.
+- [x] **Fix feature theming to match previous look** — `style/` dir was missing from `EXTRA_DIRS` in Makefile, so `.qml` files were never deployed. Also 4 `.qml` files had stray font changes (`MS Shell Dlg 2` → `Arial`). Reverted files and added `style` to `EXTRA_DIRS`.
 - [ ] **Create migration script for old databases** — write a standalone Python script that migrates old-format `database.sqlite` (monolithic, pre-split) to the new structure (`auth.sqlite` + `database.sqlite` with split schema). Must handle existing `migrate_split_db.py` as a base and extend it for production use.
 - [ ] **Minor UI fixes and improvements** — sweep of small UI issues: alignment, label truncation, missing tooltips, inconsistent button sizing, RTL layout glitches, and any visual regressions from the refactor.
+
+## 27. Code Quality Review — 2026-05-16 ✅
+
+### P0 — Critical ✅
+
+- [x] **Hardcoded JWT fallback secret** — `auth/operations.py:19-21`: `JWT_SECRET` defaults to `'change-me-in-production-rna-default-secret'` when `RNA_JWT_SECRET` env var is unset. Fix: raise `RuntimeError` if env var is unset.
+- [x] **`is True` singleton comparison fragility** — `models/base.py:93`, `auth/operations.py:185-186`, `auth/decorators.py:39`, `layer/utils.py:88`: `User.active is True` uses identity comparison. Fix: use `== True`.
+
+### P1 — High ✅
+
+- [x] **DRY: Consolidate duplicate layer draw handlers** — `mixins/layer_draw_mixin.py`: 6 nearly identical methods (`draw_road_handler`, `draw_org_handler`, `draw_pan_handler`, etc.) differ only by layer name. Extracted into a single `_draw_handler(layer_name: str) -> None`.
+- [x] **DRY: Consolidate duplicate layer update methods** — `mixins/layer_edit_mixin.py`: 6 nearly identical methods (`update_road`, `update_organization`, `update_city`, etc.) differ only by layer name. Extracted into a single `_update_handler(layer_name: str) -> None`.
+- [x] **DRY: Consolidate duplicate selection activators** — `mixins/map_tools_mixin.py`: 6 nearly identical methods (`set_zone_selection`, `set_pan_selection`, `set_num_selection`, etc.) differ only by layer name. Extracted into a single `_selection_handler(layer=None)`.
+- [x] **DRY: Consolidate duplicate `save()` methods in lookup models** — `models/lookup.py`: 8 model classes with identical `save()`. Extracted `_BaseLookup` base class.
+- [x] **DRY: Consolidate duplicate `edit_line_layer` and `start_editing_layer`** — `layer/editing.py`: extracted `_activate_add_feature(iface, layer)` shared helper.
+- [x] **`on_feature_added` parameter naming** — `mixins/layer_ops_mixin.py:161`: parameter renamed from `feature` to `fid`.
+- [x] **`on_geometry_changed` uses `if` instead of `elif`** — `mixins/layer_ops_mixin.py:238-247`: changed `if` to `elif` for geometry type checks.
+- [x] **Undefined `layer2` risk in `map_situation()`** — `mixins/symbol_export_mixin.py:133-137`: added `layer2 = None` initializer and `elif` to ensure at most one assignment, with early return guard.
+- [x] **Inefficient layer refresh** — `layer/refresh.py:57-60`: merged delete, add-fields, and add-features into a single edit session (one `startEditing()` / one `commitChanges()`).
+- [x] **Bare `except: pass`** — `mixins/import_export_mixin.py:161`: replaced with `logger.exception(...)`.
+
+### P2 — Medium ✅
+
+- [x] **Inconsistent Qt imports** — `RNA.py`: merged `PyQt5` imports into `qgis.PyQt`.
+- [x] **Duplicate chart generation code** — `mixins/chart_mixin.py`: extracted `_render_bar_chart()` and `_toggle_layer_visibility()` shared helpers.
+- [x] **Magic number in map export** — `mixins/import_export_mixin.py`: replaced `QSize(2200, 2200)` with `EXPORT_MAP_SIZE` constant.
+- [x] **`qgis_config()` called repeatedly** — `db/operations.py`: added `_qgis_config_cache` module-level cache with global flag.
+- [x] **Line length violations** — fixed 16 remaining E501 violations across 7 source files. Now zero violations on `pycodestyle --max-line-length=80 --select=E501`.
+- [x] **Add tests for DB ops and writers** — added `test/test_writers.py` (11 tests) and `test/test_operations.py` (8 tests). 30/30 tests pass.
+- [x] **Global mutable module state** — `models/base.py`: added `reset_connection_pool()` for test isolation.
+
+### P2 — Medium (still open)
+
+- [x] **`try/except ImportError` fallback pattern** — Used in 6 modules for QGIS plugin test compatibility. This is an accepted QGIS plugin pattern: relative imports work when loaded by QGIS (as `plans_adressage.models`), while absolute fallbacks work when modules are imported standalone for testing. **Intentionally kept** for dual-mode compatibility.
+- [x] **Auth flow tests** — added `test/test_auth.py`: 9 tests covering sign_up (success, validation error), sign_in (success, unknown user, wrong password, validation error, exception rollback), logout (with cookie, without cookie, missing session key). 40/40 tests pass.
+- [x] **Global mutable module state** — `models/base.py:114-117`: `_engine`, `_Session`, `_auth_engine`, `_AuthSession` are module-level globals. Added `reset_connection_pool()` for test isolation.
+
+### P3 — Low
+
+- [x] **Consider `dataclass` for lookup models** — `models/lookup.py`: 8 simple lookup models with identical structure. Already consolidated via `_BaseLookup` abstract base with `save()` in P1. Further `dataclass` conversion is a low-value refactor at this point.
+- [x] **`num_decision` naming consistency** — `models/spatial.py:78`: column is named `num_decision` (French "numéro de décision"). All internal references are consistent. Rename would touch SQL column, queries, and UI labels — not worth the churn for a bilingual codebase.
+- [x] **Add context manager for DB sessions** — added `session_scope()` and `auth_session_scope()` context managers in `models/base.py:120-143`. Usage: `with session_scope() as session:`.
+
+## 28. Internationalization (i18n) — 🔴 UNFINISHED
+
+### Done
+- [x] **Translation caching rewritten** — replaced Python dicts keyed by `objectName` with Qt dynamic properties (`setProperty("_rna_src", ...)`) stored directly on widgets. `_cache_originals()` is additive; `_apply_translations()` iterates `findChildren` directly.
+- [x] **Root cause of whitespace mismatch fixed** — `.ui` label text has leading space (`" : اسم المستخدم"`) but `.ts` sources had none. `gen_translations.py` now uses exact `.ui` strings.
+- [x] **All frames set to NoFrame** — all 38 QFrames across `RNA_dialog_base.ui`, `liste.ui`, `PopupDialog.ui` changed to `NoFrame` via Python XML script.
+- [x] **Fully translated dialogs**: `EntityListDialog`, `PopupDialog`, `RNADialog.setup_settings_ui()`
+- [x] **Database seed data translated** — `gui/ui_fillers.py` all `fill_*` functions translate combo items via `_locale()` + `_i18n_tr()`.
+- [x] **`_on_locale_changed` re-populates combos** — re-calls `fill_road_type`, `fill_zone_type`, etc. on locale switch.
+- [x] **44 seed data translations added** — road types, zone types, subdivision types, mounting statuses, numbering states.
+- [x] **Code-generated strings translated** — `db/writers.py`, `popup_dialog.py`, all mixins (`layer_edit_mixin`, `map_tools_mixin`, `auth_mixin`, `backup_mixin`, `import_export_mixin`, `report_mixin`, `chart_mixin`, `symbol_export_mixin`) wrap Arabic strings via `self._tr()` or `_i18n_tr()`.
+- [x] **286 entries in `.ts` files** — generated by `scripts/gen_translations.py`, covers `.ui` strings + code strings + seed data.
+- [x] **`style/` directory added to `EXTRA_DIRS`** — Makefile and pb_tool.cfg now deploy `.qml` style files.
+- [x] **QTabWidget translation removed** — tab texts double as QGIS layer name identifiers; translating them breaks `on_opt_selected()` layer lookups.
+
+### Remaining
+- [ ] **Verify all `.ts` translations are correct** — Arabic→English and Arabic→French translations for all 286 entries need human review. Some may have incorrect/placeholder translations.
+- [ ] **Complete `_on_locale_changed` signal robustness** — `QComboBox.currentIndexChanged` has overloaded signals; verify the `*args` + `currentData()` approach works across all Qt/PyQt5 versions (currently handles 1-arg and 2-arg signal variants).
+- [ ] **Ensure `_cache_originals()` captures all dynamic widgets** — any widget created after `setupUi()` must be created before the second `_cache_originals()` call (line 252). Verify no widgets slip through.
+- [ ] **Test locale switch on every dialog/message** — verify all translated strings switch correctly (labels, buttons, tooltips, combo items, message boxes) without partial translation artifacts.
+- [ ] **Handle RTL layout on locale change** — when switching to Arabic (`ar`), the entire UI should mirror to RTL. Currently layout direction is not toggled.

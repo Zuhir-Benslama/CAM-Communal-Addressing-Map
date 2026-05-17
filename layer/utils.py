@@ -85,7 +85,7 @@ def init_allowed_zone(iface) -> None:
             user = (
                 session.query(User)
                 .filter(
-                    User.id == uid, User.api_key == cookie, User.active is True
+                    User.id == uid, User.api_key == cookie, User.active == True
                 )
                 .first()
             )

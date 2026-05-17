@@ -9,16 +9,32 @@ from marshmallow import ValidationError
 from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import QgsProject, QgsMessageLog
 
-from ..db.operations import create_cookie, hash_password, verify_password
-from ..models import User, get_session, get_auth_session
-from ..db.schema import AuthSchema, SignupSchema
-from ..constants import COOKIE_FILE, current_theme, get_theme_qss
+try:
+    from ..db.operations import create_cookie, hash_password, verify_password
+    from ..models import User, get_session, get_auth_session
+    from ..db.schema import AuthSchema, SignupSchema
+    from ..constants import COOKIE_FILE, current_theme, get_theme_qss
+except ImportError:
+    from db.operations import (  # type: ignore
+        create_cookie, hash_password, verify_password,
+    )
+    from models import (  # type: ignore
+        User, get_session, get_auth_session,
+    )
+    from db.schema import AuthSchema, SignupSchema  # type: ignore
+    from constants import (  # type: ignore
+        COOKIE_FILE, current_theme, get_theme_qss,
+    )
 
 logger = logging.getLogger(__name__)
 
-JWT_SECRET = os.getenv(
-    'RNA_JWT_SECRET', 'change-me-in-production-rna-default-secret'
-)
+JWT_SECRET = os.getenv('RNA_JWT_SECRET')
+if not JWT_SECRET:
+    raise RuntimeError(
+        "RNA_JWT_SECRET environment variable must be set. "
+        "Generate a secret with: "
+        "python3 -c \"import secrets; print(secrets.token_hex(32))\""
+    )
 
 
 def sign_up(
@@ -183,7 +199,7 @@ def logout(iface, dlg) -> None:
                     sess.query(User)
                     .filter(
                         User.id == uid, User.api_key == cookie,
-                        User.active is True
+                        User.active == True
                     )
                     .first()
                 )

@@ -7,7 +7,10 @@ from unittest.mock import patch, MagicMock
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from models.base import find_mod_spatialite_dll
-from db.operations import hash_password, verify_password, create_cookie, qgis_config, _get_authenticated_user
+from db.operations import (
+    hash_password, verify_password, create_cookie,
+    qgis_config, _get_authenticated_user,
+)
 
 
 TMPDIR = os.path.join(os.path.dirname(__file__), '__testtmp__')
@@ -138,10 +141,14 @@ class TestGetAuthenticatedUser(unittest.TestCase):
              patch('models.base.get_session') as mock_session:
             mock_session_instance = MagicMock()
             mock_session.return_value = mock_session_instance
-            mock_session_instance.query.return_value.filter.return_value.first.side_effect = [
-                MagicMock(id='u1', api_key='ck', active=True, affectation_id='loc1'),
-                None
-            ]
+            mock_session_instance.query.return_value \
+                .filter.return_value.first.side_effect = [
+                    MagicMock(
+                        id='u1', api_key='ck',
+                        active=True, affectation_id='loc1',
+                    ),
+                    None,
+                ]
             result = _get_authenticated_user()
             self.assertIsNone(result)
 

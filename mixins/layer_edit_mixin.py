@@ -22,65 +22,42 @@ logger = logging.getLogger(__name__)
 class LayerEditMixin:
     """Mixin for updating layer geometries and adding features via forms."""
 
+    def _update_handler(self, layer_name: str) -> None:
+        """Enable geometry editing for a named layer."""
+        layers = QgsProject.instance().mapLayersByName(layer_name)
+        if not layers:
+            return
+        layer = layers[0]
+        try:
+            layer.geometryChanged.disconnect(self.on_geometry_changed)
+        except TypeError:
+            pass
+        layer.geometryChanged.connect(self.on_geometry_changed)
+        update_layer(self.iface, layer_name)
+
     def update_road(self) -> None:
         """Enable geometry editing for the roads layer."""
-        layers = QgsProject.instance().mapLayersByName(LAYER_ROADS)
-        if not layers: return
-        layer = layers[0]
-        try: layer.geometryChanged.disconnect(self.on_geometry_changed)
-        except TypeError: pass
-        layer.geometryChanged.connect(self.on_geometry_changed)
-        update_layer(self.iface, LAYER_ROADS)
+        self._update_handler(LAYER_ROADS)
 
     def update_organization(self) -> None:
         """Enable geometry editing for the organizations layer."""
-        layers = QgsProject.instance().mapLayersByName(LAYER_FACILITIES)
-        if not layers: return
-        layer = layers[0]
-        try: layer.geometryChanged.disconnect(self.on_geometry_changed)
-        except TypeError: pass
-        layer.geometryChanged.connect(self.on_geometry_changed)
-        update_layer(self.iface, LAYER_FACILITIES)
+        self._update_handler(LAYER_FACILITIES)
 
     def update_city(self) -> None:
         """Enable geometry editing for the subdivisions layer."""
-        layers = QgsProject.instance().mapLayersByName(LAYER_SUBDIVISIONS)
-        if not layers: return
-        layer = layers[0]
-        try: layer.geometryChanged.disconnect(self.on_geometry_changed)
-        except TypeError: pass
-        layer.geometryChanged.connect(self.on_geometry_changed)
-        update_layer(self.iface, LAYER_SUBDIVISIONS)
+        self._update_handler(LAYER_SUBDIVISIONS)
 
     def update_numbering(self) -> None:
         """Enable geometry editing for the numbering layer."""
-        layers = QgsProject.instance().mapLayersByName(LAYER_NUMBERING)
-        if not layers: return
-        layer = layers[0]
-        try: layer.geometryChanged.disconnect(self.on_geometry_changed)
-        except TypeError: pass
-        layer.geometryChanged.connect(self.on_geometry_changed)
-        update_layer(self.iface, LAYER_NUMBERING)
+        self._update_handler(LAYER_NUMBERING)
 
     def update_panel(self) -> None:
         """Enable geometry editing for the panels layer."""
-        layers = QgsProject.instance().mapLayersByName(LAYER_PANELS)
-        if not layers: return
-        layer = layers[0]
-        try: layer.geometryChanged.disconnect(self.on_geometry_changed)
-        except TypeError: pass
-        layer.geometryChanged.connect(self.on_geometry_changed)
-        update_layer(self.iface, LAYER_PANELS)
+        self._update_handler(LAYER_PANELS)
 
     def update_zone(self) -> None:
         """Enable geometry editing for the zones layer."""
-        layers = QgsProject.instance().mapLayersByName(LAYER_ZONES)
-        if not layers: return
-        layer = layers[0]
-        try: layer.geometryChanged.disconnect(self.on_geometry_changed)
-        except TypeError: pass
-        layer.geometryChanged.connect(self.on_geometry_changed)
-        update_layer(self.iface, LAYER_ZONES)
+        self._update_handler(LAYER_ZONES)
 
     def add_panel(self) -> None:
         """Add a new panel sign linked to a selected road, org, or
@@ -116,7 +93,7 @@ class LayerEditMixin:
                     if self.measure_tool2:
                         self.show_confirm_dialog(
                             title="title",
-                            message=(
+                            message=self._tr(
                                 "تمت إضافة هذه اللوحة بنجاح\n"
                                 " هل تريد مسح خط القياس ؟"
                             ),
@@ -124,7 +101,8 @@ class LayerEditMixin:
                         )
                     else:
                         QMessageBox.information(
-                            self, "Success", "تمت إضافة هذا المدخل بنجاح",
+                            self, "Success",
+                            self._tr("تمت إضافة هذا المدخل بنجاح"),
                         )
                 except Exception as e:
                     logger.exception("Failed to add panel: %s", e)
@@ -138,7 +116,8 @@ class LayerEditMixin:
             geometry_wkt = getattr(self, '_last_feature_wkt', None)
             pkuid = getattr(self, '_last_feature_pkuid', None)
             if not geometry_wkt or not pkuid:
-                logger.warning("No geometry or pkuid available for organization")
+                logger.warning(
+                    "No geometry or pkuid available for organization")
                 return
             try:
                 add_organization(
@@ -148,13 +127,13 @@ class LayerEditMixin:
                     type_org=self.type_org.currentData(),
                 )
                 QMessageBox.information(
-                    self, "Success", "تمت إضافة هذا المرفق بنجاح",
+                    self, "Success", self._tr("تمت إضافة هذا المرفق بنجاح"),
                 )
             except Exception as e:
                 logger.exception("Failed to add organization: %s", e)
                 QMessageBox.critical(
                     self, "Error",
-                    'لا يمكن إضافة المرفق ، المرفق موجود بالفعل',
+                    self._tr('لا يمكن إضافة المرفق ، المرفق موجود بالفعل'),
                 )
 
     def add_road(self) -> None:
@@ -173,13 +152,13 @@ class LayerEditMixin:
                     type_voie=self.type_voie.currentData(),
                 )
                 QMessageBox.information(
-                    self, "Success", "تمت إضافة هذا الطريق بنجاح",
+                    self, "Success", self._tr("تمت إضافة هذا الطريق بنجاح"),
                 )
             except Exception as e:
                 logger.exception("Failed to add road: %s", e)
                 QMessageBox.critical(
                     self, "Error",
-                    'لا يمكن إضافة الطريق , الطريق موجود بالفعل',
+                    self._tr('لا يمكن إضافة الطريق , الطريق موجود بالفعل'),
                 )
 
     def key_press_event(self, event) -> None:
@@ -205,8 +184,8 @@ class LayerEditMixin:
 
         yes_button = msg_box.button(QMessageBox.Yes)
         no_button = msg_box.button(QMessageBox.No)
-        yes_button.setText("نعم")
-        no_button.setText("لا")
+        yes_button.setText(self._tr("نعم"))
+        no_button.setText(self._tr("لا"))
 
         result = msg_box.exec_()
 
@@ -256,14 +235,15 @@ class LayerEditMixin:
                 if self.measure_tool:
                     self.show_confirm_dialog(
                         title="title",
-                        message=(
+                        message=self._tr(
                             "تمت إضافة هذا المدخل بنجاح\n هل تمسح خط القياس ؟"
                         ),
                         yes_callback=self.measure_tool.clear,
                     )
                 else:
                     QMessageBox.information(
-                        self, "Success", "تمت إضافة هذا المدخل بنجاح",
+                        self, "Success",
+                        self._tr("تمت إضافة هذا المدخل بنجاح"),
                     )
             except Exception as e:
                 logger.exception("Failed to add numbering: %s", e)
@@ -288,7 +268,7 @@ class LayerEditMixin:
                     subdivision_type=self.type_city.currentData(),
                 )
                 QMessageBox.information(
-                    self, "Success", "تمت إضافة هذا الحي بنجاح",
+                    self, "Success", self._tr("تمت إضافة هذا الحي بنجاح"),
                 )
             except Exception as e:
                 logger.exception("Failed to add city: %s", e)
@@ -310,7 +290,8 @@ class LayerEditMixin:
                         zone_type=self.type_zone.currentData(),
                     )
                     QMessageBox.information(
-                        self, "Success", "تمت إضافة هذه المنطقة بنجاح",
+                        self, "Success",
+                        self._tr("تمت إضافة هذه المنطقة بنجاح"),
                     )
                 except Exception as e:
                     logger.exception("Failed to add zone: %s", e)

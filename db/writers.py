@@ -1,20 +1,51 @@
 """Functions for writing/inserting data into the database."""
 import logging
 
-from qgis.PyQt.QtWidgets import QMessageBox
 from geoalchemy2.elements import WKTElement
 
-from ..models import (
-    RoadType, ZoneType, SubdivisionType, OrganizationType, ActivityType,
-    Road, Organization, Subdivision, Zone, PanelSign,
-    Numbering, get_session,
-)
-from ..constants import (
-    SRID, DEFAULT_PANEL_DIM, NO_ACTIVITY,
-    current_theme, get_theme_qss,
-)
+try:
+    from qgis.PyQt.QtWidgets import QMessageBox
+except ImportError:
+    from unittest.mock import MagicMock
+    QMessageBox = MagicMock()
+
+try:
+    from ..models import (
+        RoadType, ZoneType, SubdivisionType, OrganizationType, ActivityType,
+        Road, Organization, Subdivision, Zone, PanelSign,
+        Numbering, get_session,
+    )
+    from ..constants import (
+        SRID, DEFAULT_PANEL_DIM, NO_ACTIVITY,
+        current_theme, get_theme_qss,
+        SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
+    )
+    from ..i18n import tr as _i18n_tr
+except ImportError:
+    from models import (
+        RoadType, ZoneType, SubdivisionType, OrganizationType, ActivityType,
+        Road, Organization, Subdivision, Zone, PanelSign,
+        Numbering, get_session,
+    )
+    from constants import (
+        SRID, DEFAULT_PANEL_DIM, NO_ACTIVITY,
+        current_theme, get_theme_qss,
+    )
 
 logger = logging.getLogger(__name__)
+
+
+def _msg_locale() -> str:
+    try:
+        from qgis.PyQt.QtCore import QSettings
+        s = QSettings(SETTINGS_ORG, SETTINGS_APP)
+        locale = s.value(SETTINGS_KEY_LOCALE, '')
+        if not locale:
+            locale_val = QSettings().value('locale/userLocale')
+            locale = locale_val[0:2] if locale_val else 'en'
+        return locale
+    except Exception:
+        return 'en'
 
 
 def add_panel_sign(
@@ -126,14 +157,14 @@ def add_road_type(text) -> None:
             session.close()
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
-        msg.setInformativeText('تمة إظافة   نوع الطريق')
+        msg.setInformativeText(_i18n_tr('تمة إظافة   نوع الطريق', _msg_locale()))
         msg.setStyleSheet(get_theme_qss(current_theme()))
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
     else:
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Critical)
-        msg.setInformativeText('لم يتم إظافة  نوع الطريق')
+        msg.setInformativeText(_i18n_tr('لم يتم إظافة  نوع الطريق', _msg_locale()))
         msg.setStyleSheet(get_theme_qss(current_theme()))
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
@@ -149,14 +180,14 @@ def add_type_zone(text) -> None:
             session.close()
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
-        msg.setInformativeText('تمة إظافة   نوع المنطقة')
+        msg.setInformativeText(_i18n_tr('تمة إظافة   نوع المنطقة', _msg_locale()))
         msg.setStyleSheet(get_theme_qss(current_theme()))
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
     else:
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Critical)
-        msg.setInformativeText('لم يتم إظافة  نوع المنطقة')
+        msg.setInformativeText(_i18n_tr('لم يتم إظافة  نوع المنطقة', _msg_locale()))
         msg.setStyleSheet(get_theme_qss(current_theme()))
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
@@ -172,14 +203,14 @@ def add_subdivision_type(text) -> None:
             session.close()
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
-        msg.setInformativeText('تمة إظافة  نوع التجزئة')
+        msg.setInformativeText(_i18n_tr('تمة إظافة  نوع التجزئة', _msg_locale()))
         msg.setStyleSheet(get_theme_qss(current_theme()))
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
     else:
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Critical)
-        msg.setInformativeText('لم يتم إظافة  نوع التجزئة')
+        msg.setInformativeText(_i18n_tr('لم يتم إظافة  نوع التجزئة', _msg_locale()))
         msg.setStyleSheet(get_theme_qss(current_theme()))
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
@@ -195,14 +226,14 @@ def add_organization_type(text1, text2) -> None:
             session.close()
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
-        msg.setInformativeText('تمة إظافة  نوع المرفق')
+        msg.setInformativeText(_i18n_tr('تمة إظافة  نوع المرفق', _msg_locale()))
         msg.setStyleSheet(get_theme_qss(current_theme()))
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
     else:
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Critical)
-        msg.setInformativeText('لم يتم إظافة  نوع المرفق')
+        msg.setInformativeText(_i18n_tr('لم يتم إظافة  نوع المرفق', _msg_locale()))
         msg.setStyleSheet(get_theme_qss(current_theme()))
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
@@ -220,14 +251,14 @@ def add_activity_type(text1, text2) -> None:
             session.close()
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
-        msg.setInformativeText('تمة إظافة  نوع النشاط')
+        msg.setInformativeText(_i18n_tr('تمة إظافة  نوع النشاط', _msg_locale()))
         msg.setStyleSheet(get_theme_qss(current_theme()))
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
     else:
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Critical)
-        msg.setInformativeText('لم يتم إظافة  نوع النشاط')
+        msg.setInformativeText(_i18n_tr('لم يتم إظافة  نوع النشاط', _msg_locale()))
         msg.setStyleSheet(get_theme_qss(current_theme()))
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()

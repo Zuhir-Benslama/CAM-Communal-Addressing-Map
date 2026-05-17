@@ -13,6 +13,17 @@ class MapToolsMixin:
     """Mixin providing map tool activation for measurement and feature
     selection."""
 
+    def _selection_handler(self, layer=None) -> None:
+        """Activate identify tool for feature selection on the active layer."""
+        if self.identify_tool2:
+            self.identify_tool2.unset_map_tool()
+        canvas = self.iface.mapCanvas()
+        self.identify_tool = IdentifyTool(canvas)
+        self.identify_tool.set_iface(self.iface)
+        target = layer or self.iface.activeLayer()
+        self.identify_tool.set_active_layer(target)
+        canvas.setMapTool(self.identify_tool)
+
     def measure_distance(self) -> None:
         """Activate the distance measurement tool on the map canvas."""
         self.measure_tool = MeasureTool(self.iface.mapCanvas(), self.iface)
@@ -25,63 +36,27 @@ class MapToolsMixin:
 
     def set_zone_selection(self) -> None:
         """Activate the identify tool for zone feature selection."""
-        if self.identify_tool2:
-            self.identify_tool2.unset_map_tool()
-        canvas = self.iface.mapCanvas()
-        self.identify_tool = IdentifyTool(canvas)
-        self.identify_tool.set_iface(self.iface)
-        self.identify_tool.set_active_layer(self.iface.activeLayer())
-        canvas.setMapTool(self.identify_tool)
+        self._selection_handler()
 
     def set_pan_selection(self) -> None:
         """Activate the identify tool for panel feature selection."""
-        if self.identify_tool2:
-            self.identify_tool2.unset_map_tool()
-        canvas = self.iface.mapCanvas()
-        self.identify_tool = IdentifyTool(canvas)
-        self.identify_tool.set_iface(self.iface)
-        self.identify_tool.set_active_layer(self.iface.activeLayer())
-        canvas.setMapTool(self.identify_tool)
+        self._selection_handler()
 
     def set_num_selection(self) -> None:
         """Activate the identify tool for numbering feature selection."""
-        if self.identify_tool2:
-            self.identify_tool2.unset_map_tool()
-        canvas = self.iface.mapCanvas()
-        self.identify_tool = IdentifyTool(canvas)
-        self.identify_tool.set_iface(self.iface)
-        self.identify_tool.set_active_layer(self.iface.activeLayer())
-        canvas.setMapTool(self.identify_tool)
+        self._selection_handler()
 
     def set_city_selection(self) -> None:
         """Activate the identify tool for subdivision feature selection."""
-        if self.identify_tool2:
-            self.identify_tool2.unset_map_tool()
-        canvas = self.iface.mapCanvas()
-        self.identify_tool = IdentifyTool(canvas)
-        self.identify_tool.set_iface(self.iface)
-        self.identify_tool.set_active_layer(self.iface.activeLayer())
-        canvas.setMapTool(self.identify_tool)
+        self._selection_handler()
 
     def set_road_selection(self) -> None:
         """Activate the identify tool for road feature selection."""
-        if self.identify_tool2:
-            self.identify_tool2.unset_map_tool()
-        canvas = self.iface.mapCanvas()
-        self.identify_tool = IdentifyTool(canvas)
-        self.identify_tool.set_iface(self.iface)
-        self.identify_tool.set_active_layer(self.iface.activeLayer())
-        canvas.setMapTool(self.identify_tool)
+        self._selection_handler()
 
     def set_org_selection(self) -> None:
         """Activate the identify tool for organization feature selection."""
-        if self.identify_tool2:
-            self.identify_tool2.unset_map_tool()
-        canvas = self.iface.mapCanvas()
-        self.identify_tool = IdentifyTool(canvas)
-        self.identify_tool.set_iface(self.iface)
-        self.identify_tool.set_active_layer(self.iface.activeLayer())
-        canvas.setMapTool(self.identify_tool)
+        self._selection_handler()
 
     def stop(self) -> None:
         """Deactivate all active map tools and clear measurements."""
@@ -102,15 +77,22 @@ class MapToolsMixin:
         self.stop()
 
     def _reconnect_context_menu(self) -> None:
+        canvas = self.iface.mapCanvas()
         try:
-            self.iface.mapCanvas().customContextMenuRequested.connect(
-                self.on_edition_release,
-            )
+            canvas.customContextMenuRequested.disconnect(self.on_edition_release)
         except TypeError:
             pass
-        self.iface.mapCanvas().setContextMenuPolicy(Qt.CustomContextMenu)
+        try:
+            canvas.customContextMenuRequested.connect(self.on_edition_release)
+        except TypeError:
+            pass
+        canvas.setContextMenuPolicy(Qt.CustomContextMenu)
 
     def _on_map_tool_changed(self, new_tool) -> None:
+        try:
+            self.iface.mapCanvas()
+        except RuntimeError:
+            return
         self._reconnect_context_menu()
 
     def select_ref_handler(self) -> None:
@@ -132,16 +114,13 @@ class MapToolsMixin:
                 self.identify_tool2.set_active_layer(layer[0])
                 canvas.setMapTool(self.identify_tool2)
         else:
-            QMessageBox.critical(self, "Error", "نوع المرجع غير محدد")
+            QMessageBox.critical(self, "Error", self._tr("نوع المرجع غير محدد"))
 
-        layer = project.mapLayersByName(LAYER_NUMBERING)
-        if layer:
-            self.iface.setActiveLayer(layer[0])
+        self.set_default_cursor()
+        layer = QgsProject.instance().mapLayersByName(self.layer_name_key)
 
     def select_ref_handler2(self) -> None:
-        """Activate secondary identify tool in reference mode for panel
-        reference selection."""
-        self.ref_name2.clear()
+        self.ref_name.clear()
         project = QgsProject.instance()
         if self.dyn_ref2.currentText():
             layer_name = self.dyn_ref2.currentText()
@@ -153,11 +132,21 @@ class MapToolsMixin:
                     canvas, mode=IdentifyTool.MODE_REF,
                 )
                 self.identify_tool2.set_iface(self.iface)
-                self.identify_tool2.set_ref_name(self.ref_name2)
+                self.identify_tool2.set_ref_name(self.ref_name)
                 self.identify_tool2.set_active_layer(layer[0])
                 canvas.setMapTool(self.identify_tool2)
         else:
-            QMessageBox.critical(self, "Error", "نوع المرجع غير محدد")
+            QMessageBox.critical(self, "Error", self._tr("نوع المرجع غير محدد"))
+        self.set_default_cursor()
+        layer = QgsProject.instance().mapLayersByName(self.layer_name_key)
+
+    def ref_pan_selected(self) -> None:
+        """Handle panel reference selection event."""
+        if not self.identify_tool2:
+            return
+        obj = self.identify_tool2.get_pkuid()
+        if not obj:
+            QMessageBox.critical(self, "Error", self._tr("نوع المرجع غير محدد"))
 
         layer = project.mapLayersByName(LAYER_PANELS)
         if layer:

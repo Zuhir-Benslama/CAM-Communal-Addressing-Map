@@ -54,12 +54,6 @@ def refresh_layer_from_db(iface, layer_name, model_name) -> None:
         layer = layers[0]
         provider = layer.dataProvider()
 
-        layer.startEditing()
-        ids = [feature.id() for feature in layer.getFeatures()]
-        provider.deleteFeatures(ids)
-        layer.commitChanges()
-        layer.triggerRepaint()
-
         db_fields = [
             col.name for col in model_class.__table__.columns
             if not isinstance(col.type, Geometry)
@@ -77,13 +71,16 @@ def refresh_layer_from_db(iface, layer_name, model_name) -> None:
             if name not in existing_fields:
                 new_fields.append(QgsField(name, QVariant.String))
 
-        if new_fields:
-            provider.addAttributes(new_fields)
-            layer.updateFields()
-
         field_names = [field.name() for field in layer.fields()]
 
         layer.startEditing()
+
+        ids = [feature.id() for feature in layer.getFeatures()]
+        provider.deleteFeatures(ids)
+
+        if new_fields:
+            provider.addAttributes(new_fields)
+            layer.updateFields()
 
         for result, geom_wkt in results:
             if geom_wkt:

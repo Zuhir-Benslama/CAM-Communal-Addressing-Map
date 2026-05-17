@@ -1,13 +1,15 @@
+#!/usr/bin/env python3
 """
 Migration script: upgrades an old-format database.sqlite to the current schema
 with split auth database.
 
 Usage:
-    python migrate_old_db.py [database_path]
+    python migrate_old_db.py --source path/to/database.sqlite [--auth path/to/auth.sqlite]
 
-If database_path is omitted, defaults to 'database.sqlite' in the script
-directory.  Safe to run multiple times (idempotent).
+If --source is omitted, defaults to 'data/database.sqlite' relative to the
+project root.  Safe to run multiple times (idempotent).
 """
+import argparse
 import os
 import sys
 import sqlite3
@@ -61,6 +63,25 @@ create view if not exists Pan2 as
     select *, COALESCE(city, org, road) as label from Pan;
 """
 
+REQUIRED_TABLES = [
+    "refpoly", "Numerotation", "user", "RefLine", "Pannautage", "refpolychild", "reforg"
+]
+
+
+def resolve_project_root() -> str:
+    """Return the project root directory containing both data/ and scripts/."""
+    return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def resolve_auth_path(source_path: str, auth_arg: str | None) -> str:
+    if auth_arg:
+        return os.path.abspath(auth_arg)
+    source_dir = os.path.dirname(os.path.abspath(source_path))
+    candidate = os.path.join(source_dir, "auth.sqlite")
+    if os.path.exists(candidate):
+        return candidate
+    return os.path.join(resolve_project_root(), "data", "auth.sqlite")
+
 
 def get_column_names(cursor: sqlite3.Cursor, table: str) -> set:
     cursor.execute(f'PRAGMA table_info("{table}")')
@@ -86,6 +107,13 @@ def create_views(cursor: sqlite3.Cursor) -> None:
         if stmt:
             cursor.execute(stmt)
     logger.info("Views created/verified")
+
+
+def validate_tables(cursor: sqlite3.Cursor) -> list[str]:
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+    existing = {row[0] for row in cursor.fetchall()}
+    missing = [t for t in REQUIRED_TABLES if t not in existing]
+    return missing
 
 
 def migrate_users(source_path: str, auth_path: str) -> int:
@@ -166,24 +194,49 @@ def migrate_users(source_path: str, auth_path: str) -> int:
         raise
 
 
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Upgrade old-format database.sqlite to current schema with split auth DB."
+    )
+    parser.add_argument(
+        "--source", "-s",
+        default=None,
+        help="Path to source database.sqlite (default: data/database.sqlite in project root)",
+    )
+    parser.add_argument(
+        "--auth", "-a",
+        default=None,
+        help="Path to target auth.sqlite (default: auto-detected next to source or in data/)",
+    )
+    return parser.parse_args(argv)
+
+
 def main() -> None:
-    if len(sys.argv) > 1 and sys.argv[1]:
-        db_path = sys.argv[1]
+    args = parse_args()
+
+    if args.source:
+        db_path = os.path.abspath(args.source)
     else:
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        db_path = os.path.join(script_dir, "..", "data", "database.sqlite")
+        db_path = os.path.join(resolve_project_root(), "data", "database.sqlite")
 
     if not os.path.exists(db_path):
         logger.error("Database not found: %s", db_path)
         sys.exit(1)
 
-    auth_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(db_path))), "data", "auth.sqlite")
-
+    auth_path = resolve_auth_path(db_path, args.auth)
     logger.info("Upgrading schema in: %s", db_path)
+    logger.info("Auth database: %s", auth_path)
 
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     try:
+        missing = validate_tables(cursor)
+        if missing:
+            logger.error(
+                "Source DB missing required tables: %s. Aborting.", ", ".join(missing)
+            )
+            sys.exit(1)
+
         add_missing_columns(cursor)
         create_views(cursor)
         conn.commit()

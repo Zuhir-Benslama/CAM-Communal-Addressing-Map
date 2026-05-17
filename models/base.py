@@ -3,7 +3,8 @@ for SQLAlchemy models."""
 
 import os
 import logging
-from typing import Any, Optional, List, Tuple
+from contextlib import contextmanager
+from typing import Any, Iterator, Optional, List, Tuple
 
 from sqlalchemy import create_engine, event, inspect
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
@@ -13,6 +14,7 @@ try:
         COOKIE_FILE, DATABASE_FILE, AUTH_DATABASE_FILE,
     )
 except ImportError:
+    # Fallback for standalone/test mode when not loaded as a package
     from constants import (
         COOKIE_FILE, DATABASE_FILE, AUTH_DATABASE_FILE,
     )
@@ -90,7 +92,7 @@ def get_current_user() -> Optional[dict]:
     session = get_session()
     try:
         user = session.query(User).filter(
-            User.id == uid, User.api_key == cookie, User.active is True
+            User.id == uid, User.api_key == cookie, User.active == True
         ).first()
         if not user:
             return None
@@ -117,6 +119,45 @@ _auth_engine = None
 _AuthSession = None
 
 
+@contextmanager
+def session_scope() -> Iterator[Session]:
+    """Context manager providing a session that auto-closes on exit.
+
+    Usage:
+        with session_scope() as session:
+            session.query(User).all()
+    """
+    session = get_session()
+    try:
+        yield session
+    finally:
+        session.close()
+
+
+@contextmanager
+def auth_session_scope() -> Iterator[Session]:
+    """Context manager providing an auth session that auto-closes on exit.
+
+    Usage:
+        with auth_session_scope() as session:
+            session.query(User).all()
+    """
+    session = get_auth_session()
+    try:
+        yield session
+    finally:
+        session.close()
+
+
+def reset_connection_pool() -> None:
+    """Reset all cached engine/session globals (useful for testing)."""
+    global _engine, _Session, _auth_engine, _AuthSession
+    _engine = None
+    _Session = None
+    _auth_engine = None
+    _AuthSession = None
+
+
 def get_engine() -> Any:
     """Creates and returns SQLAlchemy engine for spatial database."""
     global _engine
@@ -139,7 +180,15 @@ def get_engine() -> Any:
                     exc_info=True,
                 )
                 dbapi_conn.execute(f"SELECT load_extension('{dll}')")
-            dbapi_conn.execute("SELECT InitSpatialMetadata(1)")
+            try:
+                cursor = dbapi_conn.execute(
+                    "SELECT count(*) FROM sqlite_master "
+                    "WHERE type='table' AND name='spatial_ref_sys'"
+                )
+                if cursor.fetchone()[0] == 0:
+                    dbapi_conn.execute("SELECT InitSpatialMetadata(1)")
+            except Exception:
+                pass
 
         Base.metadata.create_all(_engine)
     return _engine

@@ -1,11 +1,23 @@
 """Map measure tool for distance measurement on canvas."""
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSettings
 from PyQt5.QtGui import QColor, QCursor, QFont
 from PyQt5.QtWidgets import (
     QToolTip, QGraphicsSimpleTextItem, QGraphicsTextItem, QGraphicsItemGroup
 )
 from qgis.gui import QgsMapToolEmitPoint, QgsRubberBand, QgsVertexMarker
 from qgis.core import QgsPointXY, QgsDistanceArea, QgsWkbTypes
+
+from ..constants import SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE
+from ..i18n import tr as _i18n_tr
+
+
+def _locale() -> str:
+    s = QSettings(SETTINGS_ORG, SETTINGS_APP)
+    lc = s.value(SETTINGS_KEY_LOCALE, '')
+    if not lc:
+        lc_val = QSettings().value('locale/userLocale')
+        lc = lc_val[0:2] if lc_val else 'en'
+    return lc
 
 class MeasureTool(QgsMapToolEmitPoint):
     """Map tool for measuring distances on the canvas."""
@@ -61,9 +73,9 @@ class MeasureTool(QgsMapToolEmitPoint):
                 self.da.measureLine(self.points[i - 1], self.points[i])
                 for i in range(1, len(self.points))
             )
-            msg = f"{total_dist:.2f} متر"
+            msg = f"{total_dist:.2f} {_i18n_tr('متر', _locale())}"
             self.iface.messageBar().pushMessage(
-                "المسافة الإجمالية", msg, level=0, duration=10)
+                _i18n_tr("المسافة الإجمالية", _locale()), msg, level=0, duration=10)
 
     def canvasMoveEvent(self, event) -> None:
         """Show temporary distance on mouse move."""
@@ -79,7 +91,7 @@ class MeasureTool(QgsMapToolEmitPoint):
             self.da.measureLine(self.points[i - 1], self.points[i])
             for i in range(1, len(self.points))
         )
-        dist_msg = f"{temp_distance + total_dist:.2f} متر"
+        dist_msg = f"{temp_distance + total_dist:.2f} {_i18n_tr('متر', _locale())}"
         QToolTip.showText(QCursor.pos(), dist_msg)
 
     def keyPressEvent(self, event) -> None:
@@ -87,22 +99,24 @@ class MeasureTool(QgsMapToolEmitPoint):
         if event.key() == Qt.Key_R:
             self.clear()
             self.iface.messageBar().pushMessage(
-                "تحديث", "إعادة تحديث القياس", level=1, duration=10
+                _i18n_tr("تحديث", _locale()), _i18n_tr("إعادة تحديث القياس", _locale()), level=1, duration=10
             )
 
         elif event.key() == Qt.Key_E:
             self.clear()
             self.canvas.unsetMapTool(self)
             self.iface.messageBar().pushMessage(
-                "إنهاء", "تم إنهاء أداة القياس", level=0, duration=10
+                _i18n_tr("إنهاء", _locale()), _i18n_tr("تم إنهاء أداة القياس", _locale()), level=0, duration=10
             )
 
         elif event.key() == Qt.Key_P:
             self.paused = not self.paused
-            state = "متوقفة مؤقتاً" if self.paused else "تمت المتابعة"
+            state = (_i18n_tr("متوقفة مؤقتاً", _locale())
+                     if self.paused
+                     else _i18n_tr("تمت المتابعة", _locale()))
             level = 1 if self.paused else 0
             self.iface.messageBar().pushMessage(
-                "الحالة", state, level=level, duration=10)
+                _i18n_tr("الحالة", _locale()), state, level=level, duration=10)
 
     def addDistanceLabel(self, p1, p2) -> None:
         """Add a distance label between two points on canvas."""
@@ -120,8 +134,8 @@ class MeasureTool(QgsMapToolEmitPoint):
         pdf = "\u202C"
 
         label_text = (
-            f" {rle}{segment_distance:.2f} م\n"
-            f" {total_distance:.2f} م{pdf} "
+            f" {rle}{segment_distance:.2f} {_i18n_tr('متر', _locale())}\n"
+            f" {total_distance:.2f} {_i18n_tr('متر', _locale())}{pdf} "
         )
 
         # Create a group to hold outline and main text

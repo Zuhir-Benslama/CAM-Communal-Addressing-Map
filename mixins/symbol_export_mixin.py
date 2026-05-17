@@ -131,10 +131,18 @@ class SymbolExportMixin:
         project = QgsProject.instance()
 
         layer1 = QgsProject.instance().mapLayersByName(LAYER_MUNICIPALITY)[0]
+
+        layer2 = None
         if self.sat_view:
             layer2 = QgsProject.instance().mapLayersByName(self.sat_view)[0]
-        if self.rast:
+        elif self.rast:
             layer2 = QgsProject.instance().mapLayersByName(self.rast)[0]
+
+        if layer2 is None:
+            logger.warning(
+                "No base map layer (satellite or raster) "
+                "available for situation map")
+            return
 
         red_symbol = QgsFillSymbol.createSimple({
             'color': '255,0,0,100',
@@ -244,11 +252,11 @@ class SymbolExportMixin:
         if total_length_m >= 1000:
             scale_bar.setUnits(QgsUnitTypes.DistanceKilometers)
             scale_bar.setUnitsPerSegment(0.1)
-            scale_bar.setUnitLabel("كم")
+            scale_bar.setUnitLabel(self._tr("كم"))
         else:
             scale_bar.setUnits(QgsUnitTypes.DistanceMeters)
             scale_bar.setUnitsPerSegment(100)
-            scale_bar.setUnitLabel("م")
+            scale_bar.setUnitLabel(self._tr("م"))
 
         scale_bar.setNumberOfSegments(2)
         scale_bar.setNumberOfSegmentsLeft(0)

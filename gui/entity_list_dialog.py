@@ -4,9 +4,14 @@ import logging
 
 from .. import models as _models
 from ..models import get_session, get_all_fields_and_labels
-from ..constants import current_theme, get_theme_qss
+from ..constants import (
+    current_theme, get_theme_qss,
+    SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
+)
+from ..i18n import tr as _i18n_tr
 
 from PyQt5 import uic
+from PyQt5.QtCore import QSettings
 from PyQt5.QtWidgets import (
     QDialog, QTableWidgetItem, QPushButton, QLabel,
     QHBoxLayout, QVBoxLayout, QWidget
@@ -34,10 +39,17 @@ class EntityListDialog(QDialog, FORM_CLASS):
         self.setupUi(self)
         self.setStyleSheet(get_theme_qss(current_theme()))
 
-        self.list_title.setText("\u200f  قائمة " + "\u200f " + list_of)
+        s = QSettings(SETTINGS_ORG, SETTINGS_APP)
+        locale = s.value(SETTINGS_KEY_LOCALE, '')
+        if not locale:
+            locale_val = QSettings().value('locale/userLocale')
+            locale = locale_val[0:2] if locale_val else 'en'
+        self._tr_locale = locale
 
-        self._prev_btn = QPushButton("السابق")
-        self._next_btn = QPushButton("التالي")
+        self.list_title.setText("\u200f " + self._tr("  قائمة ") + "\u200f " + self._tr(list_of))
+
+        self._prev_btn = QPushButton(self._tr("السابق"))
+        self._next_btn = QPushButton(self._tr("التالي"))
         self._page_label = QLabel()
 
         self._prev_btn.clicked.connect(self._prev_page)
@@ -80,7 +92,8 @@ class EntityListDialog(QDialog, FORM_CLASS):
             self._total_records = session.query(model_class).count()
             total_pages = max(
                 1, (self._total_records + self.PAGE_SIZE - 1) // self.PAGE_SIZE)
-            self._page_label.setText(f"الصفحة {self._page + 1} / {total_pages}")
+            self._page_label.setText(
+                self._tr("الصفحة") + f" {self._page + 1} / {total_pages}")
 
             offset = self._page * self.PAGE_SIZE
             results = (
@@ -95,6 +108,9 @@ class EntityListDialog(QDialog, FORM_CLASS):
 
             fields, labels = get_all_fields_and_labels(
                 model_class, PROPERTY_LABELS)
+
+            labels = [self._tr(l) if any('\u0600' <= c <= '\u06FF' for c in l) else l
+                      for l in labels]
 
             self.table.setRowCount(len(results))
             self.table.setColumnCount(len(fields))
@@ -119,3 +135,6 @@ class EntityListDialog(QDialog, FORM_CLASS):
                 (self._page + 1) * self.PAGE_SIZE < self._total_records)
         finally:
             session.close()
+
+    def _tr(self, source: str) -> str:
+        return _i18n_tr(source, self._tr_locale)

@@ -32,12 +32,18 @@ def create_cookie(cookie: str, uid: str) -> None:
         raise
 
 
+_qgis_config_cache = None
+
 def qgis_config() -> dict:
-    """Load QGIS configuration from JSON file."""
+    """Load QGIS configuration from JSON file (cached)."""
+    global _qgis_config_cache
+    if _qgis_config_cache is not None:
+        return _qgis_config_cache
     filename = QGIS_CONFIG_FILE
     try:
         with open(filename, 'r', encoding='utf-8') as file:
-            return json.load(file)
+            _qgis_config_cache = json.load(file)
+            return _qgis_config_cache
     except FileNotFoundError:
         logger.error("QGIS config file not found: %s", filename)
         raise

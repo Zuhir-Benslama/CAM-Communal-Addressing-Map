@@ -22,7 +22,10 @@
 """
 import os
 from PyQt5.QtCore import Qt, QDate, QSettings
-from PyQt5.QtWidgets import QDialog, QGroupBox, QVBoxLayout, QHBoxLayout, QLabel, QComboBox, QMessageBox
+from PyQt5.QtWidgets import (
+    QCheckBox, QDialog, QGroupBox, QLabel, QPushButton,
+    QVBoxLayout, QHBoxLayout, QComboBox, QWidget,
+)
 from qgis.PyQt import uic
 from .gui.ui_fillers import (
     fill_wilayas_list, fill_paper, fill_road_type, fill_numbering_state,
@@ -40,8 +43,18 @@ from .constants import (
     SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, SETTINGS_KEY_LOCALE,
     AVAILABLE_LOCALES,
 )
+from .i18n import tr as _i18n_tr
 import logging
 logger = logging.getLogger(__name__)
+
+
+def _load_locale() -> str:
+    s = QSettings(SETTINGS_ORG, SETTINGS_APP)
+    locale = s.value(SETTINGS_KEY_LOCALE, '')
+    if not locale:
+        locale_val = QSettings().value('locale/userLocale')
+        locale = locale_val[0:2] if locale_val else 'en'
+    return locale
 
 # This loads your .ui file so that PyQt can populate your plugin
 # with the elements from Qt Designer
@@ -70,15 +83,14 @@ class RNADialog(
         """Constructor."""
         super(RNADialog, self).__init__(parent)
         self.iface = iface
-        # Set up the user interface from Designer through FORM_CLASS.
-        # After self.setupUi() you can access any designer object by doing
-        # self.<objectname>, and you can use autoconnect slots - see
-        # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
-        # #widgets-and-dialogs-with-auto-connect
-        self.setupUi(self)
-
-
-        # Create a QSettings instance
+        self._tr_locale = _load_locale()
+        try:
+            self.setupUi(self)
+        except Exception as e:
+            logger.exception("setupUi failed: %s", e)
+            raise
+        self._cache_originals()
+        self._apply_translations()
 
         self.sat_view = None
         self.rast = None
@@ -154,9 +166,6 @@ class RNADialog(
         self.print.clicked.connect(self.export_to_image1)
         self.mesure_dist.clicked.connect(self.measure_distance)
 
-
-
-
         self.submit_city.clicked.connect(self.add_city)
         self.submit_zone.clicked.connect(self.add_zone)
         self.logout_btn.clicked.connect(lambda: self.close())
@@ -171,10 +180,6 @@ class RNADialog(
 
         self.report.clicked.connect(self.gen_report)
 
-        # geoupe box  to add types
-
-        # show or hide groupebox for others
-
         self.restore_db.clicked.connect(self.restore_database)
 
         self.update_object = {}
@@ -182,20 +187,16 @@ class RNADialog(
         self.current_user=None
         self.iface.mapCanvas().setContextMenuPolicy(Qt.CustomContextMenu)
 
-        # Connect the custom right-click action
         self.iface.mapCanvas().customContextMenuRequested.connect(
             self.on_edition_release
         )
-        # Reset drawing flag when tool changes (e.g. Escape to cancel)
         self.iface.mapCanvas().mapToolSet.connect(self._on_map_tool_changed)
-
 
         self.pan.clicked.connect(self.carte_pano1)
         self.num_carte.clicked.connect(self.carte_num1)
 
         self.update_object = {}
         self.update_only_form = {}
-
 
         self.widget_2.keyPressEvent = lambda event: self.key_press_event(event)
         self.widget_4.keyPressEvent = lambda event: self.key_press_event2(event)
@@ -206,25 +207,21 @@ class RNADialog(
         fill_activity_category(self.new_cat_act)
         self.new_cat_act.currentIndexChanged.connect(self.on_select_newCatAct)
 
-
         fill_activity_category(self.cat_act)
 
         fill_activity_category(self.new_cat_act)
 
         self.mesure_dist_2.clicked.connect(self.measure_distance2)
-        self.add_new_type_org.clicked.connect( lambda: (add_organization_type(
-        text1=self.new_type_org.currentText(),
-        text2=self.new_cat_org.currentText()
-    ),    fill_org_category(self.cat_org),
-        fill_type_org(self.type_org, self.cat_org.itemData(0)),
-        fill_org_category(self.new_cat_org),
-        fill_type_org(self.new_type_org, self.new_cat_org.itemData(0)))
+        self.add_new_type_org.clicked.connect(lambda: (add_organization_type(
+            text1=self.new_type_org.currentText(),
+            text2=self.new_cat_org.currentText()
+        ), fill_org_category(self.cat_org),
+            fill_type_org(self.type_org, self.cat_org.itemData(0)),
+            fill_org_category(self.new_cat_org),
+            fill_type_org(self.new_type_org, self.new_cat_org.itemData(0)))
+        )
 
-                                               )
-
-
-
-        self.add_new_type_road.clicked.connect(lambda : (
+        self.add_new_type_road.clicked.connect(lambda: (
             add_road_type(validate_text(self.new_type_road.text())),
             self.new_type_road.clear(),
             fill_road_type(self.type_voie)
@@ -247,7 +244,7 @@ class RNADialog(
 
         self.add_new_activ.clicked.connect(lambda: (
             add_activity_type(text1=self.new_cat_act.currentText(),
-                        text2=self.new_type_act.currentText()),
+                              text2=self.new_type_act.currentText()),
             fill_activity_category(self.cat_act),
             fill_type_act(self.type_act, self.cat_act.itemData(0)),
             fill_activity_category(self.new_cat_act),
@@ -256,45 +253,94 @@ class RNADialog(
 
         self._current_theme = DEFAULT_THEME
         self.setup_settings_ui()
+        self._cache_originals()
+        self._apply_translations()
         self.apply_theme()
+
+    def _tr(self, source: str) -> str:
+        return _i18n_tr(source, self._tr_locale)
 
     def setup_settings_ui(self) -> None:
         s = QSettings(SETTINGS_ORG, SETTINGS_APP)
 
-        group = QGroupBox("الإعدادات")
-        layout = QVBoxLayout()
+        self._settings_group = QGroupBox(self._tr("الإعدادات"))
+        self._settings_group.setObjectName("_settings_group")
+        self._settings_group.setLayout(QVBoxLayout())
 
         # --- Theme ---
         theme_row = QHBoxLayout()
-        theme_row.addWidget(QLabel("المظهر:"))
+        self._theme_label = QLabel(self._tr("المظهر:"))
+        self._theme_label.setObjectName("_theme_label")
+        theme_row.addWidget(self._theme_label)
         self._theme_combo = QComboBox()
         self._theme_combo.addItem(THEME_DARK)
         self._theme_combo.addItem(THEME_LIGHT)
+        self._theme_combo.currentTextChanged.connect(self._on_theme_changed)
         saved_theme = s.value(SETTINGS_KEY_THEME, DEFAULT_THEME)
         idx = self._theme_combo.findText(saved_theme)
         if idx >= 0:
             self._theme_combo.setCurrentIndex(idx)
-        self._theme_combo.currentTextChanged.connect(self._on_theme_changed)
+        self._current_theme = self._theme_combo.currentText()
         theme_row.addWidget(self._theme_combo)
-        layout.addLayout(theme_row)
+        self._settings_group.layout().addLayout(theme_row)
 
         # --- Locale ---
         locale_row = QHBoxLayout()
-        locale_row.addWidget(QLabel("اللغة:"))
+        self._locale_label = QLabel(self._tr("اللغة:"))
+        self._locale_label.setObjectName("_locale_label")
+        locale_row.addWidget(self._locale_label)
         self._locale_combo = QComboBox()
         for code, label in AVAILABLE_LOCALES:
             self._locale_combo.addItem(label, code)
+        self._locale_combo.currentIndexChanged.connect(self._on_locale_changed)
+        self._locale_combo.blockSignals(True)
         saved_locale = s.value(SETTINGS_KEY_LOCALE, "")
         if saved_locale:
             li = self._locale_combo.findData(saved_locale)
             if li >= 0:
                 self._locale_combo.setCurrentIndex(li)
-        self._locale_combo.currentIndexChanged.connect(self._on_locale_changed)
+        self._locale_combo.blockSignals(False)
         locale_row.addWidget(self._locale_combo)
-        layout.addLayout(locale_row)
+        self._settings_group.layout().addLayout(locale_row)
 
-        group.setLayout(layout)
-        self.scrollAreaWidgetContents_2.layout().addWidget(group)
+        self.scrollAreaWidgetContents_2.layout().addWidget(self._settings_group)
+
+    def _cache_originals(self) -> None:
+        for w in self.findChildren((QLabel, QPushButton, QCheckBox)):
+            t = w.text()
+            if t and any('\u0600' <= c <= '\u06FF' for c in t) and not w.property("_rna_src"):
+                w.setProperty("_rna_src", t)
+        for w in self.findChildren(QGroupBox):
+            t = w.title()
+            if t and any('\u0600' <= c <= '\u06FF' for c in t) and not w.property("_rna_src"):
+                w.setProperty("_rna_src", t)
+        for w in self.findChildren(QWidget):
+            t = w.toolTip()
+            if t and any('\u0600' <= c <= '\u06FF' for c in t) and not w.property("_rna_tip"):
+                w.setProperty("_rna_tip", t)
+
+    def _apply_translations(self) -> None:
+        for w in self.findChildren((QLabel, QPushButton, QCheckBox)):
+            try:
+                s = w.property("_rna_src")
+                if s:
+                    w.setText(self._tr(s))
+            except Exception as e:
+                logger.warning("_tr %s: %s", w.objectName(), e)
+        for w in self.findChildren(QGroupBox):
+            try:
+                s = w.property("_rna_src")
+                if s:
+                    w.setTitle(self._tr(s))
+            except Exception as e:
+                logger.warning("_tr %s: %s", w.objectName(), e)
+        for w in self.findChildren(QWidget):
+            try:
+                s = w.property("_rna_tip")
+                if s:
+                    w.setToolTip(self._tr(s))
+            except Exception as e:
+                logger.warning("_tr %s: %s", w.objectName(), e)
 
     def _on_theme_changed(self, theme_name: str) -> None:
         self._current_theme = theme_name
@@ -302,16 +348,22 @@ class RNADialog(
         s.setValue(SETTINGS_KEY_THEME, theme_name)
         self.apply_theme()
 
-    def _on_locale_changed(self, index: int) -> None:
-        code = self._locale_combo.itemData(index)
+    def _on_locale_changed(self, *args) -> None:
+        code = self._locale_combo.currentData()
         if not code:
             return
         s = QSettings(SETTINGS_ORG, SETTINGS_APP)
         s.setValue(SETTINGS_KEY_LOCALE, code)
-        QMessageBox.information(
-            self, "RNA",
-            "يرجى إعادة تشغيل QGIS لتطبيق تغيير اللغة",
-        )
+        self._tr_locale = code
+        from .i18n import _cache
+        _cache.clear()
+        self._apply_translations()
+        fill_road_type(self.type_voie)
+        fill_type_zone(self.type_zone)
+        fill_subdivision_type(self.type_city)
+        fill_mounting_status(self.etat_mont)
+        fill_numbering_state(self.num_etat)
+        fill_paper(self.paper)
 
     def apply_theme(self) -> None:
         theme = self._current_theme

@@ -8,6 +8,49 @@ from ..models import get_session, PanelSign, Numbering
 from ..constants import LAYER_PANELS, LAYER_NUMBERING, CHART_SVG
 
 
+def _render_bar_chart(results, xlabel: str, ylabel: str, title: str) -> None:
+    """Render a bar chart from query results and save to CHART_SVG."""
+    import matplotlib.pyplot as plt
+    import arabic_reshaper
+    from bidi.algorithm import get_display
+    from matplotlib.ticker import MaxNLocator
+
+    reshaper = arabic_reshaper.ArabicReshaper(
+        configuration={
+            'delete_harakat': False,
+            'support_ligatures': True,
+            'RIAL_SIGN': True,
+        },
+    )
+
+    labels = [get_display(reshaper.reshape(str(row[0]))) for row in results]
+    counts = [row[1] for row in results]
+
+    plt.figure(figsize=(10, 6))
+    plt.bar(labels, counts, color='yellow')
+
+    plt.xlabel(get_display(reshaper.reshape(xlabel)))
+    plt.ylabel(get_display(reshaper.reshape(ylabel)))
+    plt.title(get_display(reshaper.reshape(title)))
+
+    ax = plt.gca()
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+
+    plt.tight_layout()
+    plt.savefig(CHART_SVG, format='svg')
+
+
+def _toggle_layer_visibility(layer_name: str, visible: bool) -> None:
+    """Show or hide a named layer in the layer tree."""
+    layer = QgsProject.instance().mapLayersByName(layer_name)
+    if layer:
+        layer = layer[0]
+        root = QgsProject.instance().layerTreeRoot()
+        node = root.findLayer(layer.id())
+        if node:
+            node.setItemVisibilityChecked(visible)
+
+
 class ChartMixin:
     """Mixin providing chart generation for panel and numbering data."""
 
@@ -24,53 +67,15 @@ class ChartMixin:
         finally:
             session.close()
 
-        import matplotlib.pyplot as plt
-        import arabic_reshaper
-        from bidi.algorithm import get_display
-        from matplotlib.ticker import MaxNLocator
-        reshaping_config = {
-            'delete_harakat': False,
-            'support_ligatures': True,
-            'RIAL_SIGN': True,
-        }
-
-        reshaper = arabic_reshaper.ArabicReshaper(
-            configuration=reshaping_config,
+        _render_bar_chart(
+            results,
+            xlabel=self._tr('الوضعية'),
+            ylabel=self._tr('العدد'),
+            title=self._tr('التوزيع حسب الوضعية'),
         )
 
-        labels = [get_display(reshaper.reshape(str(row[0]))) for row in results]
-        counts = [row[1] for row in results]
-
-        plt.figure(figsize=(10, 6))
-        plt.bar(labels, counts, color='yellow')
-
-        plt.xlabel(get_display(reshaper.reshape('الوضعية')))
-        plt.ylabel(get_display(reshaper.reshape('العدد')))
-        plt.title(
-            get_display(reshaper.reshape('التوزيع حسب الوضعية')),
-        )
-
-        ax = plt.gca()
-        ax.yaxis.set_major_locator(MaxNLocator(integer=True))
-
-        plt.tight_layout()
-        plt.savefig(CHART_SVG, format='svg')
-
-        layer = QgsProject.instance().mapLayersByName(LAYER_PANELS)
-        if layer:
-            layer = layer[0]
-            root = QgsProject.instance().layerTreeRoot()
-            node = root.findLayer(layer.id())
-            if node:
-                node.setItemVisibilityChecked(False)
-
-        layer = QgsProject.instance().mapLayersByName(LAYER_NUMBERING)
-        if layer:
-            layer = layer[0]
-            root = QgsProject.instance().layerTreeRoot()
-            node = root.findLayer(layer.id())
-            if node:
-                node.setItemVisibilityChecked(True)
+        _toggle_layer_visibility(LAYER_PANELS, False)
+        _toggle_layer_visibility(LAYER_NUMBERING, True)
 
     def carte_num1(self) -> None:
         """Generate a bar chart showing numbering distribution by state."""
@@ -85,63 +90,21 @@ class ChartMixin:
         finally:
             session.close()
 
-        import matplotlib.pyplot as plt
-        import arabic_reshaper
-        from bidi.algorithm import get_display
-        from matplotlib.ticker import MaxNLocator
-        reshaping_config = {
-            'delete_harakat': False,
-            'support_ligatures': True,
-            'RIAL_SIGN': True,
-        }
-
-        reshaper = arabic_reshaper.ArabicReshaper(
-            configuration=reshaping_config,
+        _render_bar_chart(
+            results,
+            xlabel=self._tr('الحالة'),
+            ylabel=self._tr('العدد'),
+            title=self._tr('التوزيع حسب حالة الترقيم'),
         )
 
-        labels = [get_display(reshaper.reshape(str(row[0]))) for row in results]
-        counts = [row[1] for row in results]
-
-        plt.figure(figsize=(10, 6))
-        plt.bar(labels, counts, color='yellow')
-
-        plt.xlabel(get_display(reshaper.reshape('الحالة')))
-        plt.ylabel(get_display(reshaper.reshape('العدد')))
-        plt.title(
-            get_display(reshaper.reshape('التوزيع حسب حالة الترقيم')),
-        )
-
-        ax = plt.gca()
-        ax.yaxis.set_major_locator(MaxNLocator(integer=True))
-
-        plt.tight_layout()
-        plt.savefig(CHART_SVG, format='svg')
-
-        layer = QgsProject.instance().mapLayersByName(LAYER_NUMBERING)
-        if layer:
-            layer = layer[0]
-            root = QgsProject.instance().layerTreeRoot()
-            node = root.findLayer(layer.id())
-            if node:
-                node.setItemVisibilityChecked(False)
-
-        layer = QgsProject.instance().mapLayersByName(LAYER_PANELS)
-        if layer:
-            layer = layer[0]
-            root = QgsProject.instance().layerTreeRoot()
-            node = root.findLayer(layer.id())
-            if node:
-                node.setItemVisibilityChecked(True)
+        _toggle_layer_visibility(LAYER_NUMBERING, False)
+        _toggle_layer_visibility(LAYER_PANELS, True)
 
     def get_zone_chart(self, wilaya_number: int) -> None:
         """Generate a chart for zone type distribution in a wilaya."""
         from ..db.operations import get_zone_distribution
         import logging
         logger = logging.getLogger(__name__)
-        import matplotlib.pyplot as plt
-        import arabic_reshaper
-        from bidi.algorithm import get_display
-        from matplotlib.ticker import MaxNLocator
 
         results = get_zone_distribution(wilaya_number)
         if not results:
@@ -150,46 +113,12 @@ class ChartMixin:
             )
             return
 
-        reshaping_config = {
-            'use_unshaped_instead_of_isolated': True,
-            'support_ligatures': True,
-            'RIAL_SIGN': True,
-        }
-
-        reshaper = arabic_reshaper.ArabicReshaper(
-            configuration=reshaping_config,
+        _render_bar_chart(
+            results,
+            xlabel=self._tr('الوضعية'),
+            ylabel=self._tr('العدد'),
+            title=self._tr('التوزيع حسب الوضعية'),
         )
 
-        labels = [get_display(reshaper.reshape(str(row[0]))) for row in results]
-        counts = [row[1] for row in results]
-
-        plt.figure(figsize=(10, 6))
-        plt.bar(labels, counts, color='yellow')
-
-        plt.xlabel(get_display(reshaper.reshape('الوضعية')))
-        plt.ylabel(get_display(reshaper.reshape('العدد')))
-        plt.title(
-            get_display(reshaper.reshape('التوزيع حسب الوضعية')),
-        )
-
-        ax = plt.gca()
-        ax.yaxis.set_major_locator(MaxNLocator(integer=True))
-
-        plt.tight_layout()
-        plt.savefig(CHART_SVG, format='svg')
-
-        layer = QgsProject.instance().mapLayersByName(LAYER_PANELS)
-        if layer:
-            layer = layer[0]
-            root = QgsProject.instance().layerTreeRoot()
-            node = root.findLayer(layer.id())
-            if node:
-                node.setItemVisibilityChecked(False)
-
-        layer = QgsProject.instance().mapLayersByName(LAYER_NUMBERING)
-        if layer:
-            layer = layer[0]
-            root = QgsProject.instance().layerTreeRoot()
-            node = root.findLayer(layer.id())
-            if node:
-                node.setItemVisibilityChecked(True)
+        _toggle_layer_visibility(LAYER_PANELS, False)
+        _toggle_layer_visibility(LAYER_NUMBERING, True)

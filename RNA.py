@@ -21,19 +21,19 @@
  ***************************************************************************/
 """
 from typing import Any
-from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
-from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDockWidget
-# Initialize Qt resources from file resources.py
+import logging
 
-# Import the code for the dialog
+from qgis.PyQt.QtCore import QSettings, QCoreApplication, Qt
+from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtWidgets import QAction, QDockWidget, QMessageBox
+
+logger = logging.getLogger(__name__)
 
 import os
 
 from .constants import ICON_PNG
 from .RNA_dialog import RNADialog
+from .i18n import tr as _i18n_tr
 from qgis.core import QgsApplication
 
 
@@ -65,26 +65,18 @@ class RNA:
         self.iface = iface
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
-        # initialize locale
-        locale_val = QSettings().value('locale/userLocale')
-        locale = locale_val[0:2] if locale_val else 'en'
         settings = QSettings()
-
-
         settings.beginGroup('digitizing')
         settings.setValue('disable-enter-attribute-values-dialog', True)
         settings.endGroup()
 
-
-        locale_path = os.path.join(
-            self.plugin_dir,
-            'i18n',
-            f'RNA_{locale}.qm')
-
-        if os.path.exists(locale_path):
-            self.translator = QTranslator()
-            self.translator.load(locale_path)
-            QCoreApplication.installTranslator(self.translator)
+        from .constants import SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE
+        self._locale_code = QSettings(SETTINGS_ORG, SETTINGS_APP).value(
+            SETTINGS_KEY_LOCALE, '')
+        if not self._locale_code:
+            locale_val = QSettings().value('locale/userLocale')
+            self._locale_code = locale_val[0:2] if locale_val else 'en'
+        self._i18n_tr = lambda s: _i18n_tr(s, self._locale_code)
 
         # Declare instance attributes
         self.actions = []
@@ -210,12 +202,23 @@ class RNA:
     def run(self) -> None:
         """Run method that performs all the real work"""
 
+        logger.info("run() called, first_start=%s", self.first_start)
+
         # Create the dialog with elements (after translation) and keep reference
         # Only create GUI ONCE in callback, so that it will only
         # load when the plugin is started
         if self.first_start is True:
             self.first_start = False
-            self.dlg = RNADialog(self.iface)
+            try:
+                self.dlg = RNADialog(self.iface)
+                logger.info("RNADialog created successfully")
+            except Exception as e:
+                logger.exception("Failed to create RNADialog: %s", e)
+                QMessageBox.critical(
+                    None, "RNA Plugin Error",
+                    f"Failed to create dialog: {e}\n\nCheck the QGIS log for details.",
+                )
+                return
 
             self.dock_widget = QDockWidget(
                 "RNA Plugin", self.iface.mainWindow()
@@ -228,9 +231,9 @@ class RNA:
             self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dock_widget)
 
             # Show the dock widget
-        self.dock_widget.show()
+            self.dock_widget.show()
+
         # show the dialog
-
-
-
-
+        if hasattr(self, 'dock_widget'):
+            self.dock_widget.raise_()
+            self.dock_widget.show()

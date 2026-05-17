@@ -54,9 +54,9 @@ class AuthMixin:
                 self.current_user = get_current_user()
             else:
                 QMessageBox.critical(
-                    self, "Error",
-                    "غير قادر على تسجيل الدخول إلى الخادم أو الصورة غير موجودة",
-                )
+                self, "Error",
+                self._tr("غير قادر على تسجيل الدخول إلى الخادم أو الصورة غير موجودة"),
+            )
 
     def fill_map_options(self) -> None:
         """Populate the map options combo box from QGIS config."""

@@ -36,7 +36,7 @@ def login_required(func) -> Callable:
         session = get_session()
         try:
             user = session.query(User).filter(
-                User.id == uid, User.api_key == cookie, User.active is True
+                User.id == uid, User.api_key == cookie, User.active == True
             ).first()
         finally:
             session.close()
