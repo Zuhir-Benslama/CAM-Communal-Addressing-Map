@@ -201,55 +201,17 @@ class RNADialog(
         self.widget_2.keyPressEvent = lambda event: self.key_press_event(event)
         self.widget_4.keyPressEvent = lambda event: self.key_press_event2(event)
 
-        fill_org_category(self.cat_org)
-        fill_org_category(self.new_cat_org)
-        self.new_cat_org.currentIndexChanged.connect(self.on_select_newCatOrg)
-        fill_activity_category(self.new_cat_act)
-        self.new_cat_act.currentIndexChanged.connect(self.on_select_newCatAct)
-
-        fill_activity_category(self.cat_act)
-
-        fill_activity_category(self.new_cat_act)
-
         self.mesure_dist_2.clicked.connect(self.measure_distance2)
-        self.add_new_type_org.clicked.connect(lambda: (add_organization_type(
-            text1=self.new_type_org.currentText(),
-            text2=self.new_cat_org.currentText()
-        ), fill_org_category(self.cat_org),
-            fill_type_org(self.type_org, self.cat_org.itemData(0)),
-            fill_org_category(self.new_cat_org),
-            fill_type_org(self.new_type_org, self.new_cat_org.itemData(0)))
-        )
 
-        self.add_new_type_road.clicked.connect(lambda: (
-            add_road_type(validate_text(self.new_type_road.text())),
-            self.new_type_road.clear(),
-            fill_road_type(self.type_voie)
-        ))
-
-        self.add_new_type_zone.clicked.connect(lambda: (
-            add_type_zone(validate_text(self.new_type_zone.text())),
-            self.new_type_zone.clear(),
-            fill_type_zone(self.type_zone)
-        ))
-
-        self.add_new_type_city.clicked.connect(lambda: (
-            add_subdivision_type(validate_text(self.new_type_city.text())),
-            self.new_type_city.clear(),
-            fill_subdivision_type(self.type_city)
-        ))
-
-        fill_type_org(self.new_type_org, self.new_cat_org.itemData(0))
-        fill_type_act(self.new_type_act, self.new_cat_act.itemData(0))
-
-        self.add_new_activ.clicked.connect(lambda: (
-            add_activity_type(text1=self.new_cat_act.currentText(),
-                              text2=self.new_type_act.currentText()),
-            fill_activity_category(self.cat_act),
-            fill_type_act(self.type_act, self.cat_act.itemData(0)),
-            fill_activity_category(self.new_cat_act),
-            fill_type_act(self.new_type_act, self.new_cat_act.itemData(0)),
-        ))
+        # --- Unified "Add New Type" in settings tab ---
+        self.feature_combo.addItem("طريق", "road")
+        self.feature_combo.addItem("منطقة", "zone")
+        self.feature_combo.addItem("تجزئة", "subdivision")
+        self.feature_combo.addItem("مرفق", "facility")
+        self.feature_combo.addItem("نشاط", "activity")
+        self.feature_combo.currentIndexChanged.connect(self._on_feature_changed)
+        self.add_type_btn.clicked.connect(self._add_new_type)
+        self._on_feature_changed(0)
 
         self._current_theme = DEFAULT_THEME
         self.setup_settings_ui()
@@ -369,3 +331,55 @@ class RNADialog(
         theme = self._current_theme
         qss = get_theme_qss(theme)
         self.setStyleSheet(qss)
+
+    def _on_feature_changed(self, index: int) -> None:
+        feature = self.feature_combo.itemData(index)
+        has_subtype = feature in ("facility", "activity")
+        self.label_subtype.setVisible(has_subtype)
+        self.subtype_combo.setVisible(has_subtype)
+        self.label_subsubtype.setVisible(has_subtype)
+        self.subsubtype_combo.setVisible(has_subtype)
+        if has_subtype:
+            self.subtype_combo.clear()
+            self.subsubtype_combo.clear()
+            if feature == "facility":
+                fill_org_category(self.subtype_combo)
+            else:
+                fill_activity_category(self.subtype_combo)
+
+    def _add_new_type(self) -> None:
+        feature = self.feature_combo.currentData()
+        type_name = validate_text(self.new_type.text())
+        has_subtype = feature in ("facility", "activity")
+        subtype = self.subtype_combo.currentText() if has_subtype else ""
+        subsubtype = self.subsubtype_combo.text() if has_subtype else ""
+
+        if feature == "road":
+            if type_name:
+                add_road_type(type_name)
+                self.new_type.clear()
+                fill_road_type(self.type_voie)
+        elif feature == "zone":
+            if type_name:
+                add_type_zone(type_name)
+                self.new_type.clear()
+                fill_type_zone(self.type_zone)
+        elif feature == "subdivision":
+            if type_name:
+                add_subdivision_type(type_name)
+                self.new_type.clear()
+                fill_subdivision_type(self.type_city)
+        elif feature == "facility":
+            if type_name and subtype:
+                add_organization_type(type_name, subtype, subsubtype)
+                self.new_type.clear()
+                fill_org_category(self.cat_org)
+                fill_type_org(self.type_org, self.cat_org.itemData(0))
+                fill_org_category(self.subtype_combo)
+        elif feature == "activity":
+            if type_name and subtype:
+                add_activity_type(subtype, type_name, subsubtype)
+                self.new_type.clear()
+                fill_activity_category(self.cat_act)
+                fill_type_act(self.type_act, self.cat_act.itemData(0))
+                fill_activity_category(self.subtype_combo)

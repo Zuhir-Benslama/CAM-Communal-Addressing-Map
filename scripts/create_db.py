@@ -111,7 +111,7 @@ def load_organization_types() -> None:
                     pk = element.get('TypeAr')
                     cat = element.get('categorie')
                     if pk:
-                        OrganizationType(pk=pk,cat=cat).save(session)
+                        OrganizationType(pk=pk, cat=cat, subcat='').save(session)
     finally:
         session.close()
 
@@ -216,7 +216,7 @@ def load_point_types() -> None:
             cat = row['القطاع']
             type = row['النوع']
             if(type and cat):
-                ActivityType(cat=cat, type=type).save(session)
+                ActivityType(cat=cat, type=type, subcat='').save(session)
     finally:
         session.close()
 

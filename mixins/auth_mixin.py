@@ -156,23 +156,6 @@ class AuthMixin:
         selected_value = self.cat_org.itemData(self.cat_org.currentIndex())
         fill_type_org(self.type_org, selected_value)
 
-    def on_select_newCatOrg(self, index) -> None:
-        """Populate the new org type combo when the new category changes."""
-        from ..gui.ui_fillers import fill_type_org
-        selected_value = self.new_cat_org.itemData(
-            self.new_cat_org.currentIndex(),
-        )
-        fill_type_org(self.new_type_org, selected_value)
-
-    def on_select_newCatAct(self, index) -> None:
-        """Populate the new activity type combo when the new category
-        changes."""
-        from ..gui.ui_fillers import fill_type_act
-        selected_value = self.new_cat_act.itemData(
-            self.new_cat_act.currentIndex(),
-        )
-        fill_type_act(self.new_type_act, selected_value)
-
     def on_select_catAct(self, index) -> None:
         """Populate the activity type combo when the category changes."""
         from ..gui.ui_fillers import fill_type_act

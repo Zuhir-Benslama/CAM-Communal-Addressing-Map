@@ -60,6 +60,7 @@ class ActivityType(Base):
     __tablename__ = 'activity'
     cat = Column(String, primary_key=True)
     type = Column(String, primary_key=True)
+    subcat = Column(String, primary_key=True, default='')
 
     def save(self, session: Session) -> None:
         """Persists the activity type to the database."""
@@ -72,6 +73,7 @@ class OrganizationType(Base):
     __tablename__ = 'type_organisme'
     pk = Column(String, primary_key=True)
     cat = Column(String, primary_key=True)
+    subcat = Column(String, primary_key=True, default='')
 
     def save(self, session: Session) -> None:
         """Persists the organization type to the database."""

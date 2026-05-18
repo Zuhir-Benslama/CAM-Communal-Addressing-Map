@@ -216,12 +216,12 @@ def add_subdivision_type(text) -> None:
         msg.exec_()
 
 
-def add_organization_type(text1, text2) -> None:
+def add_organization_type(text1, text2, text3='') -> None:
     """Add a new organization type to the database and notify the user."""
     if text1 and text2:
         session = get_session()
         try:
-            OrganizationType(pk=text1, cat=text2).save(session)
+            OrganizationType(pk=text1, cat=text2, subcat=text3).save(session)
         finally:
             session.close()
         msg = QMessageBox()
@@ -239,14 +239,14 @@ def add_organization_type(text1, text2) -> None:
         msg.exec_()
 
 
-def add_activity_type(text1, text2) -> None:
+def add_activity_type(text1, text2, text3='') -> None:
     """Add a new activity type to the database and notify the user."""
     if text1 and text2:
         if NO_ACTIVITY in (text1, text2):
             return
         session = get_session()
         try:
-            ActivityType(cat=text1, type=text2).save(session)
+            ActivityType(cat=text1, type=text2, subcat=text3).save(session)
         finally:
             session.close()
         msg = QMessageBox()

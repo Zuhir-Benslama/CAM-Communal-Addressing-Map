@@ -246,14 +246,17 @@ DARK_QSS = f"""
     }}
     QTabWidget::pane {{
         background-color: {DARK_BG};
-        border: none;
+        border: 1px solid {DARK_BORDER};
+        border-top: none;
+        border-radius: 0 0 6px 6px;
     }}
     QTabBar::tab {{
-        background-color: {DARK_SURFACE};
+        background-color: {DARK_OVERLAY};
         color: {DARK_TEXT_SEC};
-        border: none;
+        border: 1px solid {DARK_BORDER};
+        border-bottom: none;
         border-radius: 6px 6px 0 0;
-        padding: 8px 14px;
+        padding: 9px 16px;
         margin-right: 2px;
         font-weight: 500;
     }}
@@ -261,9 +264,11 @@ DARK_QSS = f"""
         background-color: {DARK_BG};
         color: {DARK_TEXT};
         border-bottom: 2px solid {DARK_ACCENT};
+        margin-bottom: -1px;
     }}
     QTabBar::tab:hover:!selected {{
-        background-color: {DARK_OVERLAY};
+        background-color: {DARK_SURFACE};
+        color: {DARK_TEXT};
     }}
     QScrollArea {{
         border: none;
@@ -475,14 +480,17 @@ LIGHT_QSS = f"""
     }}
     QTabWidget::pane {{
         background-color: {LIGHT_BG};
-        border: none;
+        border: 1px solid {LIGHT_BORDER};
+        border-top: none;
+        border-radius: 0 0 6px 6px;
     }}
     QTabBar::tab {{
-        background-color: {LIGHT_SURFACE};
+        background-color: {LIGHT_OVERLAY};
         color: {LIGHT_TEXT_SEC};
-        border: none;
+        border: 1px solid {LIGHT_BORDER};
+        border-bottom: none;
         border-radius: 6px 6px 0 0;
-        padding: 8px 14px;
+        padding: 9px 16px;
         margin-right: 2px;
         font-weight: 500;
     }}
@@ -490,9 +498,11 @@ LIGHT_QSS = f"""
         background-color: {LIGHT_BG};
         color: {LIGHT_TEXT};
         border-bottom: 2px solid {LIGHT_ACCENT};
+        margin-bottom: -1px;
     }}
     QTabBar::tab:hover:!selected {{
-        background-color: {LIGHT_OVERLAY};
+        background-color: {LIGHT_SURFACE};
+        color: {LIGHT_TEXT};
     }}
     QScrollArea {{
         border: none;

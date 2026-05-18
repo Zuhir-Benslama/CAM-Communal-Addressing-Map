@@ -464,9 +464,9 @@ add(
     '<html><head/><body><p align="right">Disponibilité géométrie équipement</p></body></html>',
 )
 add(
-    '<html><head/><body><p>اللقب <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>Surname <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>Prénom <span style=" color:#ff0000;">*</span> :</p></body></html>',
+    '<html><head/><body><p>اللقب <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>Surname <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>Prénom <span style=" color:red;">*</span> :</p></body></html>',
 )
 add(
     '<html><head/><body><p align="right">مؤشر توافر الشكل الهندسي للمنطقة</p></body></html>',
@@ -474,39 +474,39 @@ add(
     '<html><head/><body><p align="right">Disponibilité géométrie zone</p></body></html>',
 )
 add(
-    '<html><head/><body><p>الاسم <span style=" color:#ff0000;">*</span> :</p></body></html>',
-    '<html><head/><body><p>First name <span style=" color:#ff0000;">*</span> :</p></body></html>',
-    '<html><head/><body><p>Nom <span style=" color:#ff0000;">*</span> :</p></body></html>',
+    '<html><head/><body><p>الاسم <span style=" color:red;">*</span> :</p></body></html>',
+    '<html><head/><body><p>First name <span style=" color:red;">*</span> :</p></body></html>',
+    '<html><head/><body><p>Nom <span style=" color:red;">*</span> :</p></body></html>',
 )
 add(
-    '<html><head/><body><p>البلدية <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>Municipality <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>Municipalité <span style=" color:#ff0000;">*</span> :</p></body></html>',
+    '<html><head/><body><p>البلدية <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>Municipality <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>Municipalité <span style=" color:red;">*</span> :</p></body></html>',
 )
 add(
-    '<html><head/><body><p>الولاية <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>Wilaya <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>Wilaya <span style=" color:#ff0000;">*</span> :</p></body></html>',
+    '<html><head/><body><p>الولاية <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>Wilaya <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>Wilaya <span style=" color:red;">*</span> :</p></body></html>',
 )
 add(
-    '<html><head/><body><p>كلمة السر <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>Password <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>Mot de passe <span style=" color:#ff0000;">*</span> :</p></body></html>',
+    '<html><head/><body><p>كلمة السر <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>Password <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>Mot de passe <span style=" color:red;">*</span> :</p></body></html>',
 )
 add(
-    '<html><head/><body><p>رقم الهاتف <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>Phone number <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>Téléphone <span style=" color:#ff0000;">*</span> :</p></body></html>',
+    '<html><head/><body><p>رقم الهاتف <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>Phone number <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>Téléphone <span style=" color:red;">*</span> :</p></body></html>',
 )
 add(
-    '<html><head/><body><p>اسم المستخدم <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>Username <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>Nom d\'utilisateur <span style=" color:#ff0000;">*</span> :</p></body></html>',
+    '<html><head/><body><p>اسم المستخدم <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>Username <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>Nom d\'utilisateur <span style=" color:red;">*</span> :</p></body></html>',
 )
 add(
-    '<html><head/><body><p>البريد الإلكتروني <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>Email <span style=" color:#ff0000;">*</span>:</p></body></html>',
-    '<html><head/><body><p>E-mail <span style=" color:#ff0000;">*</span> :</p></body></html>',
+    '<html><head/><body><p>البريد الإلكتروني <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>Email <span style=" color:red;">*</span>:</p></body></html>',
+    '<html><head/><body><p>E-mail <span style=" color:red;">*</span> :</p></body></html>',
 )
 add(
     '<html><head/><body><p>تحديد الحي على الخريطة لحذفه أو تحديث المعلومات المتعلقة به</p></body></html>',

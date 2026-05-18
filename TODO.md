@@ -253,8 +253,16 @@
 ## 26. Future Work — Unsolved
 
 - [x] **Fix feature theming to match previous look** — `style/` dir was missing from `EXTRA_DIRS` in Makefile, so `.qml` files were never deployed. Also 4 `.qml` files had stray font changes (`MS Shell Dlg 2` → `Arial`). Reverted files and added `style` to `EXTRA_DIRS`.
-- [ ] **Create migration script for old databases** — write a standalone Python script that migrates old-format `database.sqlite` (monolithic, pre-split) to the new structure (`auth.sqlite` + `database.sqlite` with split schema). Must handle existing `migrate_split_db.py` as a base and extend it for production use.
-- [ ] **Minor UI fixes and improvements** — sweep of small UI issues: alignment, label truncation, missing tooltips, inconsistent button sizing, RTL layout glitches, and any visual regressions from the refactor.
+- [x] **Create migration script for old databases** — wrote `scripts/migrate_production.py` as a comprehensive standalone CLI tool that supersedes both `migrate_old_db.py` and `migrate_split_db.py`. Features: backup creation, schema upgrade (missing columns), view creation, user migration to auth.sqlite, dry-run mode, post-migration verification, idempotent operations, and proper logging.
+- [x] **Minor UI fixes and improvements** — fixed min-width > max-width contradiction in RNA_dialog_base.ui (lines 15-23) that caused unpredictable dialog sizing; removed fixed max-size constraint on liste.ui to allow proper resizing; increased cramped header frames from 25px to 36px in both liste.ui and RNA_dialog_base.ui for better readability; replaced hardcoded `#ff0000` asterisk color with theme-compatible `color:red` across RNA_dialog_base.ui, gen_translations.py, and .ts files; added missing tooltips to `add_new_type_road`, `add_new_type_zone`, `add_new_type_org`, and `add_new_type_city` buttons.
+- [x] **UI polish round 2** — tab shape Triangular→Rounded with visible borders; removed cramping in settings tab (QScrollArea fixed geometry, groupBox max-height); fixed max-width contradiction (641→640); header frames 25→36px; save icons replaced with "+" on add-type buttons; unified 5 add-type sections into one three-field groupbox; all text fields constrained to maxWidth=400.
+- [x] **Fix TypeError on plugin load** — missing `vsizetype` attribute on `<sizepolicy>` elements for `feature_combo` and `subtype_combo` caused `uic.loadUiType` to crash with `TypeError: attribute name must be string, not 'NoneType'`. Added `vsizetype="Fixed"` to both.
+- [x] **Add sub-subtype field** — added third level (sub-subtype `النوع الفرعي الفرعي`) for facility/activity features in the add-type section. Changes: `subcat` column added to `type_organisme` and `activity` tables (model + migration); QLineEdit field in UI; writers pass value through to DB.
+
+### Remaining
+- [ ] **Continue with i18n** — complete remaining translation entries, verify Arabic/French/English coverage, fix any untranslated strings.
+- [ ] **Fix UI issues** — address remaining layout/rendering problems across tabs, ensure consistent spacing and alignment.
+- [ ] **Refactor RNA and RNA_dialog files** — rename and repurpose `RNA.py` and `RNA_dialog.py` for better structure and clarity.
 
 ## 27. Code Quality Review — 2026-05-16 ✅
 

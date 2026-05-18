@@ -150,6 +150,40 @@ def fill_activity_category(combobox) -> None:
     combobox.setInsertPolicy(QComboBox.NoInsert)
 
 
+def fill_org_subcategory(combobox, cat) -> None:
+    """Populate a combobox with distinct organization subcategories for a given category."""
+    combobox.clear()
+    session = get_session()
+    results = (
+        session.query(OrganizationType.subcat)
+        .filter(OrganizationType.cat == cat)
+        .distinct().order_by(OrganizationType.subcat).all()
+    )
+    for result in results:
+        combobox.addItem(result.subcat, result.subcat)
+    session.close()
+    combobox.setCurrentIndex(0)
+    combobox.completer().setCompletionMode(QCompleter.PopupCompletion)
+    combobox.setInsertPolicy(QComboBox.NoInsert)
+
+
+def fill_activity_subcategory(combobox, cat) -> None:
+    """Populate a combobox with distinct activity subcategories for a given category."""
+    combobox.clear()
+    session = get_session()
+    results = (
+        session.query(ActivityType.subcat)
+        .filter(ActivityType.cat == cat)
+        .distinct().order_by(ActivityType.subcat).all()
+    )
+    for result in results:
+        combobox.addItem(result.subcat, result.subcat)
+    session.close()
+    combobox.setCurrentIndex(0)
+    combobox.completer().setCompletionMode(QCompleter.PopupCompletion)
+    combobox.setInsertPolicy(QComboBox.NoInsert)
+
+
 def fill_type_act(combobox, cat) -> None:
     """Populate a combobox with activity types for a given category."""
     loc = _locale()

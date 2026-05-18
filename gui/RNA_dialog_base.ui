@@ -10,18 +10,18 @@
     <height>638</height>
    </rect>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>641</width>
-    <height>607</height>
-   </size>
-  </property>
-   <property name="maximumSize">
+   <property name="minimumSize">
     <size>
      <width>640</width>
-     <height>800</height>
+     <height>607</height>
     </size>
    </property>
+    <property name="maximumSize">
+     <size>
+      <width>640</width>
+      <height>800</height>
+     </size>
+    </property>
   <property name="windowTitle">
    <string>RNA</string>
   </property>
@@ -35,30 +35,27 @@
   <layout class="QGridLayout" name="gridLayout_19">
    <item row="1" column="0">
     <widget class="QFrame" name="frame_9">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true" />
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
-     <property name="lineWidth">
-      <number>2</number>
-     </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>36</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>36</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="lineWidth">
+       <number>2</number>
+      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_10">
       <property name="leftMargin">
        <number>2</number>
@@ -764,7 +761,7 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;الاسم &lt;span style=" color:#ff0000;"&gt;*&lt;/span&gt; :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;الاسم &lt;span style=" color:red;"&gt;*&lt;/span&gt; :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -793,7 +790,7 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;اللقب &lt;span style=" color:#ff0000;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;اللقب &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -822,7 +819,7 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;البريد الإلكتروني &lt;span style=" color:#ff0000;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;البريد الإلكتروني &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -851,7 +848,7 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;رقم الهاتف &lt;span style=" color:#ff0000;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;رقم الهاتف &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -880,7 +877,7 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;اسم المستخدم &lt;span style=" color:#ff0000;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;اسم المستخدم &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -903,7 +900,7 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;كلمة السر &lt;span style=" color:#ff0000;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;كلمة السر &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -929,7 +926,7 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;الولاية &lt;span style=" color:#ff0000;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;الولاية &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -955,7 +952,7 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;البلدية &lt;span style=" color:#ff0000;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;البلدية &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -1156,9 +1153,9 @@
               <property name="tabPosition">
               <enum>QTabWidget::North</enum>
              </property>
-             <property name="tabShape">
-              <enum>QTabWidget::Triangular</enum>
-             </property>
+              <property name="tabShape">
+               <enum>QTabWidget::Rounded</enum>
+              </property>
              <property name="currentIndex">
               <number>6</number>
              </property>
@@ -1358,11 +1355,17 @@
                        </widget>
                       </item>
                       <item row="2" column="1">
-                       <widget class="QLineEdit" name="nom_zone">
-                        <property name="toolTip">
-                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;يجب ألا يكون اسم المنطقة متسلسلا مع نوع المنطقة مثل&lt;span style=" font-weight:600;"&gt; منطقة الصناعية دار البيضاء&lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;نوع منطقة :&lt;/span&gt; منطقة صناعية&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;اسم منطقة :&lt;/span&gt; دار البيضاء&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                        </property>
-                       </widget>
+                        <widget class="QLineEdit" name="nom_zone">
+                         <property name="maximumSize">
+                          <size>
+                           <width>400</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="toolTip">
+                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;يجب ألا يكون اسم المنطقة متسلسلا مع نوع المنطقة مثل&lt;span style=" font-weight:600;"&gt; منطقة الصناعية دار البيضاء&lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;نوع منطقة :&lt;/span&gt; منطقة صناعية&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;اسم منطقة :&lt;/span&gt; دار البيضاء&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                         </property>
+                        </widget>
                       </item>
                       <item row="3" column="1">
                        <layout class="QHBoxLayout" name="horizontalLayout_19">
@@ -1650,11 +1653,17 @@
                         </widget>
                        </item>
                        <item row="2" column="1">
-                        <widget class="QLineEdit" name="nom_voie">
-                         <property name="toolTip">
-                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;يجب ألا يكون اسم الطريق متسلسلا مع نوع الطريق مثل&lt;span style=" font-weight:600;"&gt; شارع ديدوش مراد &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;نوع الطريق :&lt;/span&gt; شارع&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;اسم الطريق :&lt;/span&gt; ديدوش مراد&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                         </property>
-                        </widget>
+                         <widget class="QLineEdit" name="nom_voie">
+                          <property name="maximumSize">
+                           <size>
+                            <width>400</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="toolTip">
+                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;يجب ألا يكون اسم الطريق متسلسلا مع نوع الطريق مثل&lt;span style=" font-weight:600;"&gt; شارع ديدوش مراد &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;نوع الطريق :&lt;/span&gt; شارع&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;اسم الطريق :&lt;/span&gt; ديدوش مراد&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                          </property>
+                         </widget>
                        </item>
                        <item row="3" column="0">
                         <widget class="QLabel" name="label_29">
@@ -1670,11 +1679,17 @@
                         </widget>
                        </item>
                        <item row="3" column="1">
-                        <widget class="QLineEdit" name="dec_voie">
-                         <property name="toolTip">
-                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt; رقم القرار الخاص بالتكريس&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                         </property>
-                        </widget>
+                         <widget class="QLineEdit" name="dec_voie">
+                          <property name="maximumSize">
+                           <size>
+                            <width>400</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="toolTip">
+                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt; رقم القرار الخاص بالتكريس&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                          </property>
+                         </widget>
                        </item>
                        <item row="4" column="1">
                         <layout class="QHBoxLayout" name="horizontalLayout_12">
@@ -1966,14 +1981,20 @@
                         </widget>
                        </item>
                        <item row="3" column="1">
-                        <widget class="QLineEdit" name="nom_org">
-                         <property name="toolTip">
-                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;يجب ألا يكون اسم المرفق متسلسلا مع نوع المرفق مثل&lt;span style=" font-weight:600;"&gt; مستشفى بشير منتوري &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;نوع المرفق :&lt;/span&gt;مستشفى&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;اسم المرفق :&lt;/span&gt; شير منتوري&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                         </property>
-                         <property name="placeholderText">
-                          <string />
-                         </property>
-                        </widget>
+                         <widget class="QLineEdit" name="nom_org">
+                          <property name="maximumSize">
+                           <size>
+                            <width>400</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="toolTip">
+                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;يجب ألا يكون اسم المرفق متسلسلا مع نوع المرفق مثل&lt;span style=" font-weight:600;"&gt; مستشفى بشير منتوري &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;نوع المرفق :&lt;/span&gt;مستشفى&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;اسم المرفق :&lt;/span&gt; شير منتوري&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                          </property>
+                          <property name="placeholderText">
+                           <string />
+                          </property>
+                         </widget>
                        </item>
                        <item row="1" column="0">
                         <widget class="QLabel" name="label_48">
@@ -2285,11 +2306,17 @@
                         </widget>
                        </item>
                        <item row="2" column="1">
-                        <widget class="QLineEdit" name="nom_city">
-                         <property name="toolTip">
-                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;يجب ألا يكون اسم الحي متسلسلا مع نوع الحي مثل&lt;span style=" font-weight:600;"&gt; تعاونية البرتقال &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;نوع الحي : &lt;/span&gt;تعاونية&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;اسم الحي :&lt;/span&gt;&lt;span style=" font-weight:600;"/&gt;البرتقال&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                         </property>
-                        </widget>
+                         <widget class="QLineEdit" name="nom_city">
+                          <property name="maximumSize">
+                           <size>
+                            <width>400</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="toolTip">
+                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;يجب ألا يكون اسم الحي متسلسلا مع نوع الحي مثل&lt;span style=" font-weight:600;"&gt; تعاونية البرتقال &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;نوع الحي : &lt;/span&gt;تعاونية&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;اسم الحي :&lt;/span&gt;&lt;span style=" font-weight:600;"/&gt;البرتقال&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                          </property>
+                         </widget>
                        </item>
                        <item row="3" column="1">
                         <layout class="QHBoxLayout" name="horizontalLayout_14">
@@ -2701,11 +2728,17 @@
                        </widget>
                       </item>
                       <item row="2" column="1">
-                       <widget class="QLineEdit" name="num_val">
-                        <property name="clearButtonEnabled">
-                         <bool>false</bool>
-                        </property>
-                       </widget>
+                        <widget class="QLineEdit" name="num_val">
+                         <property name="maximumSize">
+                          <size>
+                           <width>400</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="clearButtonEnabled">
+                          <bool>false</bool>
+                         </property>
+                        </widget>
                       </item>
                       <item row="3" column="0">
                        <widget class="QLabel" name="label_38">
@@ -2721,11 +2754,17 @@
                        </widget>
                       </item>
                       <item row="3" column="1">
-                       <widget class="QLineEdit" name="repetition">
-                        <property name="placeholderText">
-                         <string />
-                        </property>
-                       </widget>
+                        <widget class="QLineEdit" name="repetition">
+                         <property name="maximumSize">
+                          <size>
+                           <width>400</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="placeholderText">
+                          <string />
+                         </property>
+                        </widget>
                       </item>
                       <item row="4" column="0">
                        <widget class="QLabel" name="label_16">
@@ -3364,7 +3403,14 @@
                          </widget>
                         </item>
                         <item row="0" column="1">
-                         <widget class="QLineEdit" name="lineEdit_type" />
+                          <widget class="QLineEdit" name="lineEdit_type">
+                           <property name="maximumSize">
+                            <size>
+                             <width>400</width>
+                             <height>16777215</height>
+                            </size>
+                           </property>
+                          </widget>
                         </item>
                         <item row="1" column="0">
                          <widget class="QLabel" name="by_">
@@ -3380,7 +3426,14 @@
                          </widget>
                         </item>
                         <item row="1" column="1">
-                         <widget class="QLineEdit" name="lineEdit_by" />
+                          <widget class="QLineEdit" name="lineEdit_by">
+                           <property name="maximumSize">
+                            <size>
+                             <width>400</width>
+                             <height>16777215</height>
+                            </size>
+                           </property>
+                          </widget>
                         </item>
                         <item row="2" column="0">
                          <widget class="QLabel" name="num_mokh">
@@ -3396,7 +3449,14 @@
                          </widget>
                         </item>
                         <item row="2" column="1">
-                         <widget class="QLineEdit" name="lineEdit_nummokh" />
+                          <widget class="QLineEdit" name="lineEdit_nummokh">
+                           <property name="maximumSize">
+                            <size>
+                             <width>400</width>
+                             <height>16777215</height>
+                            </size>
+                           </property>
+                          </widget>
                         </item>
                         <item row="3" column="0">
                          <widget class="QLabel" name="label_49">
@@ -3497,30 +3557,10 @@
                  <property name="widgetResizable">
                   <bool>true</bool>
                  </property>
-                 <widget class="QWidget" name="scrollAreaWidgetContents_2">
-                  <property name="geometry">
-                   <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>534</width>
-                    <height>404</height>
-                   </rect>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_13">
+                  <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                   <layout class="QVBoxLayout" name="verticalLayout_13">
                    <item>
-                    <widget class="QGroupBox" name="groupBox_3">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>70</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>70</height>
-                      </size>
-                     </property>
+                     <widget class="QGroupBox" name="groupBox_3">
                      <property name="title">
                       <string>النسخ الاحتياطي لقاعدة البيانات</string>
                      </property>
@@ -3542,340 +3582,118 @@
                      </layout>
                     </widget>
                    </item>
-                   <item>
-                    <layout class="QGridLayout" name="gridLayout_14">
-                     <property name="leftMargin">
-                      <number>2</number>
-                     </property>
-                     <property name="topMargin">
-                      <number>2</number>
-                     </property>
-                     <property name="rightMargin">
-                      <number>2</number>
-                     </property>
-                     <property name="bottomMargin">
-                      <number>2</number>
-                     </property>
-                     <property name="spacing">
-                      <number>2</number>
-                     </property>
-                     <item row="0" column="1">
-                      <widget class="QPushButton" name="add_new_type_road">
-                       <property name="toolTip">
-                        <string />
-                       </property>
-                       <property name="text">
-                        <string />
-                       </property>
-                       <property name="icon">
-                        <iconset>
-                         <normaloff>../icons/icons8-save-50.png</normaloff>../icons/icons8-save-50.png</iconset>
-                       </property>
-                       <property name="iconSize">
-                        <size>
-                         <width>16</width>
-                         <height>16</height>
-                        </size>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="0">
-                      <layout class="QFormLayout" name="formLayout_new_type_road">
-                       <property name="horizontalSpacing">
-                        <number>2</number>
-                       </property>
-                       <property name="verticalSpacing">
-                        <number>2</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>2</number>
-                       </property>
-                       <item row="0" column="0">
-                        <widget class="QLabel" name="label_41">
-                         <property name="text">
-                          <string> : نوع الطريق</string>
-                         </property>
-                        </widget>
+                    <item>
+                     <widget class="QGroupBox" name="groupBox_add_types">
+                      <property name="title">
+                       <string>إضافة أنواع جديدة</string>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_add_types">
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_feature">
+                         <item>
+                          <widget class="QLabel" name="label_feature">
+                           <property name="text">
+                            <string>النوع الرئيسي :</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                           <widget class="QComboBox" name="feature_combo">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                           </widget>
+                         </item>
+                        </layout>
                        </item>
-                       <item row="0" column="1">
-                        <widget class="QLineEdit" name="new_type_road" />
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <layout class="QGridLayout" name="gridLayout_17">
-                     <item row="0" column="1">
-                      <widget class="QPushButton" name="add_new_type_zone">
-                       <property name="text">
-                        <string />
-                       </property>
-                       <property name="icon">
-                        <iconset>
-                         <normaloff>../icons/icons8-save-50.png</normaloff>../icons/icons8-save-50.png</iconset>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="0">
-                      <layout class="QFormLayout" name="formLayout_new_type_zone">
-                       <property name="horizontalSpacing">
-                        <number>2</number>
-                       </property>
-                       <property name="verticalSpacing">
-                        <number>2</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>2</number>
-                       </property>
-                       <item row="0" column="0">
-                        <widget class="QLabel" name="label_45">
-                         <property name="text">
-                          <string>: نوع المنطقة</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="0" column="1">
-                        <widget class="QLineEdit" name="new_type_zone" />
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <widget class="QGroupBox" name="groupBox_7">
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>81</height>
-                      </size>
-                     </property>
-                     <property name="title">
-                      <string>المرفق</string>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_22">
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_21">
-                        <item>
-                         <widget class="QLabel" name="label_50">
-                          <property name="maximumSize">
-                           <size>
-                            <width>30</width>
-                            <height>16777215</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string> :  فئة</string>
-                          </property>
-                         </widget>
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_type">
+                         <item>
+                          <widget class="QLabel" name="label_type">
+                           <property name="text">
+                            <string>النوع :</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLineEdit" name="new_type">
+                           <property name="maximumSize">
+                            <size>
+                             <width>400</width>
+                             <height>16777215</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                           <widget class="QPushButton" name="add_type_btn">
+                            <property name="toolTip">
+                             <string>إضافة نوع جديد</string>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>32</width>
+                              <height>16777215</height>
+                             </size>
+                            </property>
+                            <property name="text">
+                             <string>+</string>
+                            </property>
+                           </widget>
+                         </item>
+                        </layout>
                         </item>
                         <item>
-                         <widget class="QComboBox" name="new_cat_org">
-                          <property name="editable">
-                           <bool>true</bool>
-                          </property>
-                         </widget>
+                         <layout class="QHBoxLayout" name="horizontalLayout_subtype">
+                          <item>
+                           <widget class="QLabel" name="label_subtype">
+                            <property name="text">
+                             <string>النوع الفرعي :</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                            <widget class="QComboBox" name="subtype_combo">
+                             <property name="editable">
+                              <bool>true</bool>
+                             </property>
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                            </widget>
+                          </item>
+                         </layout>
+                        </item>
+                        <item>
+                         <layout class="QHBoxLayout" name="horizontalLayout_subsubtype">
+                          <item>
+                           <widget class="QLabel" name="label_subsubtype">
+                            <property name="text">
+                             <string>النوع الفرعي الفرعي :</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                             <widget class="QLineEdit" name="subsubtype_combo">
+                              <property name="maximumSize">
+                               <size>
+                                <width>400</width>
+                                <height>16777215</height>
+                               </size>
+                              </property>
+                             </widget>
+                           </item>
+                         </layout>
                         </item>
                        </layout>
-                      </item>
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_18">
-                        <item>
-                         <widget class="QLabel" name="label_46">
-                          <property name="maximumSize">
-                           <size>
-                            <width>30</width>
-                            <height>16777215</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string> : نوع </string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QComboBox" name="new_type_org">
-                          <property name="editable">
-                           <bool>true</bool>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QPushButton" name="add_new_type_org">
-                          <property name="maximumSize">
-                           <size>
-                            <width>40</width>
-                            <height>16777215</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string />
-                          </property>
-                          <property name="icon">
-                           <iconset>
-                            <normaloff>../icons/icons8-save-50.png</normaloff>../icons/icons8-save-50.png</iconset>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item>
-                    <layout class="QGridLayout" name="gridLayout_20">
-                     <property name="leftMargin">
-                      <number>2</number>
-                     </property>
-                     <property name="topMargin">
-                      <number>2</number>
-                     </property>
-                     <property name="rightMargin">
-                      <number>2</number>
-                     </property>
-                     <property name="bottomMargin">
-                      <number>2</number>
-                     </property>
-                     <property name="spacing">
-                      <number>2</number>
-                     </property>
-                     <item row="0" column="1">
-                      <widget class="QPushButton" name="add_new_type_city">
-                       <property name="text">
-                        <string />
-                       </property>
-                       <property name="icon">
-                        <iconset>
-                         <normaloff>../icons/icons8-save-50.png</normaloff>../icons/icons8-save-50.png</iconset>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="0">
-                      <layout class="QFormLayout" name="formLayout_new_type_city">
-                       <property name="horizontalSpacing">
-                        <number>2</number>
-                       </property>
-                       <property name="verticalSpacing">
-                        <number>2</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>2</number>
-                       </property>
-                       <item row="0" column="0">
-                        <widget class="QLabel" name="label_47">
-                         <property name="text">
-                          <string>: نوع التجزئة</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="0" column="1">
-                        <widget class="QLineEdit" name="new_type_city" />
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <widget class="QGroupBox" name="groupBox_9">
-                     <property name="title">
-                      <string>النشاط المرافق بالمدخل</string>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_30">
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_22">
-                        <item>
-                         <widget class="QLabel" name="label_51">
-                          <property name="maximumSize">
-                           <size>
-                            <width>30</width>
-                            <height>16777215</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string> :  فئة</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QComboBox" name="new_cat_act">
-                          <property name="editable">
-                           <bool>true</bool>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_23">
-                        <item>
-                         <widget class="QLabel" name="label_52">
-                          <property name="maximumSize">
-                           <size>
-                            <width>30</width>
-                            <height>16777215</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string> : نوع </string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QComboBox" name="new_type_act">
-                          <property name="editable">
-                           <bool>true</bool>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QPushButton" name="add_new_activ">
-                          <property name="maximumSize">
-                           <size>
-                            <width>40</width>
-                            <height>16777215</height>
-                           </size>
-                          </property>
-                          <property name="text">
-                           <string />
-                          </property>
-                          <property name="icon">
-                           <iconset>
-                            <normaloff>../icons/icons8-save-50.png</normaloff>../icons/icons8-save-50.png</iconset>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
+                     </widget>
+                    </item>
                   </layout>
                  </widget>
                 </widget>
