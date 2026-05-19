@@ -14,8 +14,9 @@ from ..models import (
 from ..constants import (
     validate_text, current_theme, get_theme_qss,
     SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
+    current_locale, locale_value,
 )
-from ..i18n import tr as _i18n_tr
+from ..scripts.lookup_data import get_string, apply_widget_texts
 from ..gui.ui_fillers import (
     fill_org_category, fill_road_type, fill_road_reference,
     fill_panel_reference, fill_activity_category,
@@ -55,6 +56,7 @@ class PopupDialog(QDialog,FORM_CLASS):
         self.attribute = str(attribute)
         self.iface = iface
         self.setupUi(self)
+        apply_widget_texts(self, self._tr_locale)
         self.setStyleSheet(get_theme_qss(current_theme()))
 
         fill_org_category(self.cat_org)
@@ -117,16 +119,19 @@ class PopupDialog(QDialog,FORM_CLASS):
                     query = session.query(model).filter(
                         getattr(model, 'pkuid') == self.attribute
                     ).first()
+                    loc = self._tr_locale
                     if query:
                         if self.layer_name_key == LAYER_ROADS:
-                            self.nom_voie.setText(query.Nom)
+                            self.nom_voie.setText(
+                                locale_value(query, 'Nom', loc))
                             self.dec_voie.setText(query.num_decision)
                             index = self.type_voie.findData(query.Type)
                             if index != -1:
                                 self.type_voie.setCurrentIndex(index)
 
                         if self.layer_name_key == LAYER_FACILITIES:
-                            self.nom_org.setText(query.Nom)
+                            self.nom_org.setText(
+                                locale_value(query, 'Nom', loc))
                             index = self.cat_org.findData(query.cat)
                             if index != -1:
                                 fill_type_org(self.type_org, query.cat)
@@ -136,13 +141,15 @@ class PopupDialog(QDialog,FORM_CLASS):
                                 self.type_org.setCurrentIndex(index)
 
                         if self.layer_name_key == LAYER_SUBDIVISIONS:
-                            self.nom_city.setText(query.Nom)
+                            self.nom_city.setText(
+                                locale_value(query, 'Nom', loc))
                             index = self.type_city.findData(query.Type)
                             if index != -1:
                                 self.type_city.setCurrentIndex(index)
 
                         if self.layer_name_key == LAYER_ZONES:
-                            self.nom_zone.setText(query.Nom)
+                            self.nom_zone.setText(
+                                locale_value(query, 'Nom', loc))
                             index = self.type_zone.findData(query.Type)
                             if index != -1:
                                 self.type_zone.setCurrentIndex(index)
@@ -153,10 +160,12 @@ class PopupDialog(QDialog,FORM_CLASS):
                             if query.idLine:
                                 self.dyn_ref3.setCurrentText(LAYER_ROADS)
                                 self.ref_name3.setText(
-                                    f"{query.road.Type} {query.road.Nom}")
+                                    locale_value(query.road, 'Type', loc)
+                                    + ' ' + locale_value(query.road, 'Nom', loc))
                             elif query.idPoly:
                                 self.dyn_ref3.setCurrentText(LAYER_SUBDIVISIONS)
-                                self.ref_name3.setText(query.subdivision.Nom)
+                                self.ref_name3.setText(
+                                    locale_value(query.subdivision, 'Nom', loc))
                             index = self.num_etat.findData(query.etat)
                             if index != -1:
                                 self.num_etat.setCurrentIndex(index)
@@ -174,15 +183,19 @@ class PopupDialog(QDialog,FORM_CLASS):
                             if query.idLine:
                                 self.dyn_ref4.setCurrentText(LAYER_ROADS)
                                 self.ref_name4.setText(
-                                    f"{query.road.Type} {query.road.Nom}")
+                                    locale_value(query.road, 'Type', loc)
+                                    + ' ' + locale_value(query.road, 'Nom', loc))
                             elif query.idOrg:
                                 self.dyn_ref4.setCurrentText(LAYER_FACILITIES)
                                 self.ref_name4.setText(
-                                    f"{query.organization.Type} "
-                                    f"{query.organization.Nom}")
+                                    locale_value(query.organization, 'Type', loc)
+                                    + ' '
+                                    + locale_value(query.organization, 'Nom', loc))
                             elif query.idPoly:
                                 self.dyn_ref4.setCurrentText(LAYER_SUBDIVISIONS)
-                                self.ref_name4.setText(query.subdivision.Nom)
+                                self.ref_name4.setText(
+                                    locale_value(
+                                        query.subdivision, 'Nom', loc))
                             index = self.etat_mont.findData(query.Stituation)
                             if index != -1:
                                 self.etat_mont.setCurrentIndex(index)
@@ -202,10 +215,10 @@ class PopupDialog(QDialog,FORM_CLASS):
                 Type=self.type_voie.currentData(),
             )
             QMessageBox.information(
-                self, "Success", self._tr("تم تحديث هذا الطريق بنجاح"))
+                self, get_string("Success", self._tr_locale), get_string("تم تحديث هذا الطريق بنجاح", self._tr_locale))
         except Exception as e:
             logger.exception("Failed to update road: %s", e)
-            QMessageBox.critical(self, "Error", self._tr('لا يمكن تحديث  الطريق'))
+            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string('لا يمكن تحديث  الطريق', self._tr_locale))
         finally:
             session.close()
         refresh_all_layers(self.iface)
@@ -220,10 +233,10 @@ class PopupDialog(QDialog,FORM_CLASS):
                 Type=self.type_org.currentData()
             )
             QMessageBox.information(
-                self, "Success", self._tr("تم تحديث هذا المرفق بنجاح"))
+                self, get_string("Success", self._tr_locale), get_string("تم تحديث هذا المرفق بنجاح", self._tr_locale))
         except Exception as e:
             logger.exception("Failed to update organization: %s", e)
-            QMessageBox.critical(self, "Error", self._tr('لا يمكن تحديث  المرفق'))
+            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string('لا يمكن تحديث  المرفق', self._tr_locale))
         finally:
             session.close()
         refresh_all_layers(self.iface)
@@ -238,10 +251,10 @@ class PopupDialog(QDialog,FORM_CLASS):
                 Nom=validate_text(self.nom_city.text()),
                 Type=self.type_city.currentData()
             )
-            QMessageBox.information(self, "Success", self._tr("تم تحديث هذا الحي بنجاح"))
+            QMessageBox.information(self, get_string("Success", self._tr_locale), get_string("تم تحديث هذا الحي بنجاح", self._tr_locale))
         except Exception as e:
             logger.exception("Failed to update subdivision: %s", e)
-            QMessageBox.critical(self, "Error", self._tr('لا يمكن تحديث  الحي'))
+            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string('لا يمكن تحديث  الحي', self._tr_locale))
         finally:
             session.close()
         refresh_all_layers(self.iface)
@@ -257,10 +270,10 @@ class PopupDialog(QDialog,FORM_CLASS):
                 Type=self.type_zone.currentData()
             )
             QMessageBox.information(
-                self, "Success", self._tr("تم تحديث هذه المنطقة بنجاح"))
+                self, get_string("Success", self._tr_locale), get_string("تم تحديث هذه المنطقة بنجاح", self._tr_locale))
         except Exception as e:
             logger.exception("Failed to update zone: %s", e)
-            QMessageBox.critical(self, "Error", self._tr('لا يمكن تحديث   المنطقة'))
+            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string('لا يمكن تحديث   المنطقة', self._tr_locale))
         finally:
             session.close()
         refresh_all_layers(self.iface)
@@ -285,7 +298,7 @@ class PopupDialog(QDialog,FORM_CLASS):
                 canvas.setMapTool(self.identify_tool2)
 
         else:
-            QMessageBox.critical(self, "Error", self._tr("نوع المرجع غير محدد"))
+            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string("نوع المرجع غير محدد", self._tr_locale))
 
 
         layer = project.mapLayersByName(self.layer_name_key)
@@ -313,7 +326,7 @@ class PopupDialog(QDialog,FORM_CLASS):
                 canvas.setMapTool(self.identify_tool2)
 
         else:
-            QMessageBox.critical(self, "Error", self._tr("نوع المرجع غير محدد"))
+            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string("نوع المرجع غير محدد", self._tr_locale))
 
         layer = project.mapLayersByName(self.layer_name_key)
         if layer:
@@ -356,10 +369,10 @@ class PopupDialog(QDialog,FORM_CLASS):
                                   Stituation=self.etat_mont.currentData())
 
             QMessageBox.information(
-                self, "Success", self._tr("تم تحديث هذه اللوحة بنجاح"))
+                self, get_string("Success", self._tr_locale), get_string("تم تحديث هذه اللوحة بنجاح", self._tr_locale))
         except Exception as e:
             logger.exception("Failed to update panel: %s", e)
-            QMessageBox.critical(self, "Error", self._tr('لا يمكن تحديث  اللوحة'))
+            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string('لا يمكن تحديث  اللوحة', self._tr_locale))
         finally:
             session.close()
         refresh_all_layers(self.iface)
@@ -425,10 +438,10 @@ class PopupDialog(QDialog,FORM_CLASS):
                 )
 
             QMessageBox.information(
-                self, "Success", self._tr("تم تحديث هذا المدخل بنجاح"))
+                self, get_string("Success", self._tr_locale), get_string("تم تحديث هذا المدخل بنجاح", self._tr_locale))
         except Exception as e:
             logger.exception("Failed to update numbering: %s", e)
-            QMessageBox.critical(self, "Error", f'{e}')
+            QMessageBox.critical(self, get_string("Error", self._tr_locale), f'{e}')
         finally:
             session.close()
         refresh_all_layers(self.iface)
@@ -439,5 +452,4 @@ class PopupDialog(QDialog,FORM_CLASS):
         if page:
             self.router.setCurrentWidget(page)
 
-    def _tr(self, source: str) -> str:
-        return _i18n_tr(source, self._tr_locale)
+

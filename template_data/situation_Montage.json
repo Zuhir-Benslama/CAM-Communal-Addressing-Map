@@ -1,14 +1,22 @@
 [
-   {
-    "pk": "مبرمجة"
+  {
+    "pk": "مبرمجة",
+    "label_fr": "Programmé",
+    "label_en": "Programmed"
   },
   {
-    "pk": "مركبة"
+    "pk": "مركبة",
+    "label_fr": "Installé",
+    "label_en": "Installed"
   },
   {
-    "pk": "لتصحيحها"
+    "pk": "لتصحيحها",
+    "label_fr": "À corriger",
+    "label_en": "To Be Corrected"
   },
   {
-    "pk": "لنقلها"
+    "pk": "لنقلها",
+    "label_fr": "À déplacer",
+    "label_en": "To Be Moved"
   }
 ]

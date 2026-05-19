@@ -31,18 +31,26 @@ class LayerOpsMixin:
     def on_opt_selected(self, index) -> None:
         """Handle tab selection: toggle layer visibility and load styles."""
         import os
+        from qgis.core import QgsLayerTreeLayer
         from ..constants import (
             LAYER_MUNICIPALITY, LAYER_PANELS, LAYER_NUMBERING,
             DEFAULT_STYLE_DIR, CUSTOM_STYLE_DIR,
         )
 
         self.type_plan = ""
-        tab_name = self.menu.tabText(index)
+        # Use cached Arabic tab text for internal routing (locale-independent)
+        if hasattr(self.menu, '_rna_tab_src'):
+            tab_name = self.menu._rna_tab_src[index]
+        else:
+            tab_name = self.menu.tabText(index)
         root = QgsProject.instance().layerTreeRoot()
         for layer_node in root.children():
-            if layer_node.layer().isEditable():
-                layer_node.layer().rollBack()
-                layer_node.layer().commitChanges()
+            if not isinstance(layer_node, QgsLayerTreeLayer):
+                continue
+            lyr = layer_node.layer()
+            if lyr.isEditable():
+                lyr.rollBack()
+                lyr.commitChanges()
             if self.identify_tool:
                 self.identify_tool.unset_map_tool()
             if self.identify_tool2:
@@ -108,6 +116,8 @@ class LayerOpsMixin:
 
         else:
             for layer_node in root.children():
+                if not isinstance(layer_node, QgsLayerTreeLayer):
+                    continue
                 if layer_node.layer().name() in [LAYER_PANELS, LAYER_NUMBERING]:
                     layer_node.setItemVisibilityChecked(False)
                 else:
@@ -201,7 +211,10 @@ class LayerOpsMixin:
                     canvas = self.iface.mapCanvas()
                     canvas.unsetMapTool(canvas.mapTool())
                     current_index = self.menu.currentIndex()
-                    current_tab_text = self.menu.tabText(current_index)
+                    if hasattr(self.menu, '_rna_tab_src'):
+                        current_tab_text = self.menu._rna_tab_src[current_index]
+                    else:
+                        current_tab_text = self.menu.tabText(current_index)
                     self.is_org.setChecked(False)
                     self.is_road.setChecked(False)
                     self.is_city.setChecked(False)
@@ -223,7 +236,10 @@ class LayerOpsMixin:
                             self.is_zone.setChecked(True)
 
             current_index = self.menu.currentIndex()
-            tab_text = self.menu.tabText(current_index)
+            if hasattr(self.menu, '_rna_tab_src'):
+                tab_text = self.menu._rna_tab_src[current_index]
+            else:
+                tab_text = self.menu.tabText(current_index)
             if tab_text == LAYER_NUMBERING:
                 self.num_val.setFocus()
 
@@ -255,8 +271,8 @@ class LayerOpsMixin:
             if case == 0:
                 layer.rollBack()
                 QMessageBox.warning(
-                    self, "Modification annulée",
-                    "Géométrie en dehors de votre zone autorisée.",
+                    self, self._tr("Modification cancelled"),
+                    self._tr("Geometry outside your allowed area."),
                 )
                 return
 
@@ -278,6 +294,7 @@ class LayerOpsMixin:
                             )
                         except Exception as e:
                             logger.exception("Failed to save feature: %s", e)
-                            QMessageBox.critical(self, "Erreur", str(e))
+                            QMessageBox.critical(
+                                self, self._tr("Erreur"), str(e))
                         finally:
                             session.close()

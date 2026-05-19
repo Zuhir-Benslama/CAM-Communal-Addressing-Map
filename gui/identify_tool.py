@@ -5,7 +5,7 @@ from qgis.gui import QgsMapToolIdentify
 from qgis.core import QgsExpression, QgsFeatureRequest
 from qgis.PyQt.QtWidgets import QMenu
 from .. import models as _models
-from ..constants import LAYER_KEY
+from ..constants import LAYER_KEY, current_locale
 from ..db.operations import qgis_config
 from ..models import get_session
 import logging
@@ -93,6 +93,8 @@ class IdentifyTool(QgsMapToolIdentify):
                             lambda: self.delete_feature(feature['pkuid'])
                         )
                     else:
+                        nom_locale = self._locale_feature_attr(feature, 'Nom')
+                        type_locale = self._locale_feature_attr(feature, 'Type')
                         action1 = menu.addAction(
                             "\u062a\u0639\u064a\u064a\u0646"
                             " \u0627\u0644\u0639\u0646\u0635\u0631"
@@ -101,8 +103,8 @@ class IdentifyTool(QgsMapToolIdentify):
                         action1.triggered.connect(
                             lambda: self.feature_as_ref(
                                 feature['pkuid'],
-                                feature['Type'],
-                                feature['Nom'],
+                                type_locale,
+                                nom_locale,
                             )
                         )
 
@@ -170,6 +172,17 @@ class IdentifyTool(QgsMapToolIdentify):
                 layer.triggerRepaint()
 
         self.canvas.refresh()
+
+    def _locale_feature_attr(self, feature, base_name: str) -> str:
+        """Read locale-appropriate attribute from a QGIS feature."""
+        loc = current_locale()
+        if loc != 'ar':
+            locale_field = f'{base_name}_{loc}'
+            if locale_field in feature.fields().names():
+                val = feature[locale_field]
+                if val:
+                    return str(val)
+        return str(feature[base_name]) if feature[base_name] else ''
 
     def feature_as_ref(self, feature_pkuid, feature_type, feature_nom) -> None:
         """Store the selected feature as a reference for another entity."""

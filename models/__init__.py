@@ -4,7 +4,7 @@ models package — SQLAlchemy models, engine, and session management.
 Split into submodules for maintainability:
   base.py    — Base, engine/session functions, utilities
   user.py    — User model
-  lookup.py  — Lookup/reference tables
+  lookup.py  — (placeholder — static lookups moved to scripts.lookup_data)
   spatial.py — Spatial data models
 """
 
@@ -17,10 +17,7 @@ from .base import (
 
 from .user import User
 
-from .lookup import (
-    MountingStatus, SubdivisionType, ActivityType, PanelDimension,
-    OrganizationType, RoadType, ZoneType, NumberingState,
-)
+
 
 from .spatial import (
     Localite, Zone, Subdivision, Road, Organization,

@@ -1,67 +1,102 @@
 [
   {
-    "pk": "شارع"
+    "pk": "شارع",
+    "label_fr": "Rue",
+    "label_en": "Street"
   },
   {
-    "pk": "نهج"
+    "pk": "نهج",
+    "label_fr": "Ruelle",
+    "label_en": "Alley"
   },
   {
-    "pk": "زقاق"
-  },
-   {
-    "pk": "مجاز"
-  },
-  {
-    "pk": "طريق ترابي"
+    "pk": "زقاق",
+    "label_fr": "Impasse",
+    "label_en": "Lane"
   },
   {
-    "pk": "طريق مسدود"
+    "pk": "مجاز",
+    "label_fr": "Passage",
+    "label_en": "Passage"
   },
   {
-    "pk": "منقطع ممر"
-  },
-
-  {
-    "pk": "درب"
+    "pk": "طريق ترابي",
+    "label_fr": "Chemin de terre",
+    "label_en": "Dirt Road"
   },
   {
-    "pk": "طريق منحدر"
+    "pk": "طريق مسدود",
+    "label_fr": "Impasse",
+    "label_en": "Dead End"
   },
   {
-    "pk": "منحدر"
+    "pk": "منقطع ممر",
+    "label_fr": "Passage coupé",
+    "label_en": "Cut-through"
   },
   {
-    "pk": "مدرج"
+    "pk": "درب",
+    "label_fr": "Sentier",
+    "label_en": "Path"
   },
   {
-    "pk": "جسر مشاة"
+    "pk": "طريق منحدر",
+    "label_fr": "Route en pente",
+    "label_en": "Sloped Road"
   },
   {
-    "pk": "جسر خاص بالراجلين"
-  },
-
-  {
-    "pk": "جادة"
+    "pk": "منحدر",
+    "label_fr": "Pente",
+    "label_en": "Slope"
   },
   {
-    "pk": "طريق خاص"
+    "pk": "مدرج",
+    "label_fr": "Escalier",
+    "label_en": "Steps"
   },
   {
-    "pk": "ممر"
+    "pk": "جسر مشاة",
+    "label_fr": "Passerelle",
+    "label_en": "Footbridge"
   },
   {
-    "pk": "مسار بلدي"
+    "pk": "جسر خاص بالراجلين",
+    "label_fr": "Pont piéton",
+    "label_en": "Pedestrian Bridge"
   },
   {
-    "pk": "مسار"
+    "pk": "جادة",
+    "label_fr": "Boulevard",
+    "label_en": "Boulevard"
   },
   {
-    "pk": "مسار ولائي"
+    "pk": "طريق خاص",
+    "label_fr": "Voie privée",
+    "label_en": "Private Road"
   },
   {
-    "pk": "طريق وطني"
+    "pk": "ممر",
+    "label_fr": "Passage",
+    "label_en": "Passageway"
+  },
+  {
+    "pk": "مسار بلدي",
+    "label_fr": "Chemin communal",
+    "label_en": "Municipal Path"
+  },
+  {
+    "pk": "مسار",
+    "label_fr": "Piste",
+    "label_en": "Path"
+  },
+  {
+    "pk": "مسار ولائي",
+    "label_fr": "Chemin de wilaya",
+    "label_en": "Provincial Path"
+  },
+  {
+    "pk": "طريق وطني",
+    "label_fr": "Route nationale",
+    "label_en": "National Road"
   }
-
 ]
-
-

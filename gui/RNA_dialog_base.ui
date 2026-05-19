@@ -74,18 +74,18 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>15</height>
+          <height>20</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>15</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">
          <font>
-          <pointsize>7</pointsize>
+          <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -136,19 +136,19 @@
        <property name="lineWidth">
         <number>1</number>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_11">
-        <property name="leftMargin">
-         <number>10</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>13</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_11">
+         <property name="leftMargin">
+          <number>10</number>
+         </property>
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>13</number>
+         </property>
+         <property name="bottomMargin">
+          <number>5</number>
+         </property>
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
@@ -206,22 +206,22 @@
            </property>
            <layout class="QGridLayout" name="gridLayout">
             <item row="0" column="1">
-             <widget class="QGroupBox" name="groupBox">
-              <property name="minimumSize">
-               <size>
-                <width>450</width>
-                <height>550</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>450</width>
-                <height>550</height>
-               </size>
-              </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
+              <widget class="QGroupBox" name="groupBox">
+               <property name="minimumSize">
+                <size>
+                 <width>450</width>
+                 <height>380</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>450</width>
+                 <height>380</height>
+                </size>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
               <property name="styleSheet">
                <string notr="true" />
               </property>
@@ -272,26 +272,26 @@
                   <number>5</number>
                  </property>
                  <item row="0" column="0">
-                  <widget class="QLabel" name="label_4">
-                   <property name="font">
-                    <font>
-                     <pointsize>16</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                     <underline>false</underline>
-                    </font>
-                   </property>
-                   <property name="frameShape">
-                    <enum>QFrame::NoFrame</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Sunken</enum>
-                   </property>
-                   <property name="lineWidth">
-                    <number>2</number>
-                   </property>
-                   <property name="text">
-                    <string>تسجيل الدخول</string>
+                   <widget class="QLabel" name="label_4_login">
+                    <property name="font">
+                     <font>
+                      <pointsize>16</pointsize>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                      <underline>false</underline>
+                     </font>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::NoFrame</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Sunken</enum>
+                    </property>
+                    <property name="lineWidth">
+                     <number>2</number>
+                    </property>
+                    <property name="text">
+                     <string>تسجيل الدخول</string>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignCenter</set>
@@ -505,13 +505,13 @@
                   <number>7</number>
                  </property>
                  <property name="topMargin">
-                  <number>20</number>
+                  <number>5</number>
                  </property>
                  <property name="rightMargin">
                   <number>7</number>
                  </property>
                  <property name="bottomMargin">
-                  <number>20</number>
+                  <number>5</number>
                  </property>
                  <item>
                   <widget class="QPushButton" name="add_u">
@@ -730,16 +730,19 @@
                   </widget>
                  </item>
                  <item>
-                  <layout class="QFormLayout" name="formLayout_10">
-                   <property name="formAlignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                   <property name="horizontalSpacing">
-                    <number>10</number>
-                   </property>
-                   <property name="verticalSpacing">
-                    <number>10</number>
-                   </property>
+                   <layout class="QFormLayout" name="formLayout_10">
+                    <property name="formAlignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="horizontalSpacing">
+                     <number>10</number>
+                    </property>
+                    <property name="verticalSpacing">
+                     <number>10</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>10</number>
+                    </property>
                    <property name="leftMargin">
                     <number>10</number>
                    </property>
@@ -869,15 +872,15 @@
                     </widget>
                    </item>
                    <item row="4" column="0">
-                    <widget class="QLabel" name="label_2">
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;اسم المستخدم &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     <widget class="QLabel" name="label_2_username">
+                      <property name="font">
+                       <font>
+                        <weight>75</weight>
+                        <bold>true</bold>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;اسم المستخدم &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -1006,22 +1009,22 @@
            <property name="lineWidth">
             <number>2</number>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout_11">
-            <property name="spacing">
-             <number>1</number>
-            </property>
-            <property name="leftMargin">
-             <number>1</number>
-            </property>
-            <property name="topMargin">
-             <number>1</number>
-            </property>
-            <property name="rightMargin">
-             <number>1</number>
-            </property>
-            <property name="bottomMargin">
-             <number>1</number>
-            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_11">
+             <property name="spacing">
+              <number>3</number>
+             </property>
+             <property name="leftMargin">
+              <number>5</number>
+             </property>
+             <property name="topMargin">
+              <number>3</number>
+             </property>
+             <property name="rightMargin">
+              <number>5</number>
+             </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_2">
               <property name="spacing">
@@ -1133,14 +1136,14 @@
          <item row="2" column="0">
           <layout class="QGridLayout" name="gridLayout_7">
            <item row="0" column="0">
-            <widget class="QTabWidget" name="menu">
-             <property name="font">
-              <font>
-               <pointsize>7</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
+             <widget class="QTabWidget" name="menu">
+              <property name="font">
+               <font>
+                <pointsize>9</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
@@ -1183,19 +1186,19 @@
                 <widget class="QWidget" name="widget_9" native="true">
                  <layout class="QVBoxLayout" name="verticalLayout_26">
                   <item>
-                   <widget class="QFrame" name="frame_4">
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>16777215</width>
-                      <height>60</height>
-                     </size>
-                    </property>
+                    <widget class="QFrame" name="frame_4">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>60</height>
+                      </size>
+                     </property>
                     <property name="autoFillBackground">
                      <bool>false</bool>
                     </property>
@@ -1213,13 +1216,13 @@
                       <widget class="QPushButton" name="draw_zone">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -1245,13 +1248,13 @@
                       <widget class="QPushButton" name="select_zone">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -1283,13 +1286,13 @@
                       <widget class="QPushButton" name="edit_zone">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -1367,10 +1370,10 @@
                          </property>
                         </widget>
                       </item>
-                      <item row="3" column="1">
-                       <layout class="QHBoxLayout" name="horizontalLayout_19">
-                        <item>
-                         <widget class="QPushButton" name="submit_zone">
+                       <item row="3" column="0" colspan="2">
+                        <layout class="QHBoxLayout" name="horizontalLayout_19">
+                         <item>
+                          <widget class="QPushButton" name="submit_zone">
                           <property name="maximumSize">
                            <size>
                             <width>150</width>
@@ -1457,19 +1460,19 @@
                 <widget class="QWidget" name="widget_6" native="true">
                  <layout class="QVBoxLayout" name="verticalLayout_20">
                   <item>
-                   <widget class="QFrame" name="frame_2">
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>16777215</width>
-                      <height>60</height>
-                     </size>
-                    </property>
+                    <widget class="QFrame" name="frame_2">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>60</height>
+                      </size>
+                     </property>
                     <property name="autoFillBackground">
                      <bool>false</bool>
                     </property>
@@ -1487,13 +1490,13 @@
                       <widget class="QPushButton" name="draw_road">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -1519,13 +1522,13 @@
                       <widget class="QPushButton" name="select_road">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -1551,13 +1554,13 @@
                       <widget class="QPushButton" name="edit_road">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -1691,10 +1694,10 @@
                           </property>
                          </widget>
                        </item>
-                       <item row="4" column="1">
-                        <layout class="QHBoxLayout" name="horizontalLayout_12">
-                         <item>
-                          <widget class="QPushButton" name="submit_voie">
+                        <item row="4" column="0" colspan="2">
+                         <layout class="QHBoxLayout" name="horizontalLayout_12">
+                          <item>
+                           <widget class="QPushButton" name="submit_voie">
                            <property name="maximumSize">
                             <size>
                              <width>150</width>
@@ -1786,7 +1789,7 @@
                     <property name="minimumSize">
                      <size>
                       <width>0</width>
-                      <height>0</height>
+                      <height>40</height>
                      </size>
                     </property>
                     <property name="maximumSize">
@@ -1812,13 +1815,13 @@
                       <widget class="QPushButton" name="draw_org">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -1844,13 +1847,13 @@
                       <widget class="QPushButton" name="select_org">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -1876,13 +1879,13 @@
                       <widget class="QPushButton" name="edit_org">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -2016,10 +2019,10 @@
                          </property>
                         </widget>
                        </item>
-                       <item row="4" column="1">
-                        <layout class="QHBoxLayout" name="horizontalLayout_13">
-                         <item>
-                          <widget class="QPushButton" name="submit_org">
+                        <item row="4" column="0" colspan="2">
+                         <layout class="QHBoxLayout" name="horizontalLayout_13">
+                          <item>
+                           <widget class="QPushButton" name="submit_org">
                            <property name="maximumSize">
                             <size>
                              <width>150</width>
@@ -2111,7 +2114,7 @@
                     <property name="minimumSize">
                      <size>
                       <width>0</width>
-                      <height>0</height>
+                      <height>40</height>
                      </size>
                     </property>
                     <property name="maximumSize">
@@ -2137,13 +2140,13 @@
                       <widget class="QPushButton" name="draw_city">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -2169,13 +2172,13 @@
                       <widget class="QPushButton" name="select_city">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -2201,13 +2204,13 @@
                       <widget class="QPushButton" name="edit_city">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -2236,23 +2239,23 @@
                    <widget class="QWidget" name="widget_11" native="true">
                     <layout class="QGridLayout" name="gridLayout_9">
                      <item row="0" column="0">
-                      <layout class="QFormLayout" name="formLayout_city">
-                       <property name="horizontalSpacing">
-                        <number>0</number>
-                       </property>
+                       <layout class="QFormLayout" name="formLayout_city">
+                        <property name="horizontalSpacing">
+                         <number>10</number>
+                        </property>
                        <property name="verticalSpacing">
                         <number>15</number>
                        </property>
                        <item row="0" column="0">
-                        <widget class="QLabel" name="label_26">
-                         <property name="font">
-                          <font>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string> : توافر الشكل الهندسي</string>
+                         <widget class="QLabel" name="label_26_geo_avail">
+                          <property name="font">
+                           <font>
+                            <weight>75</weight>
+                            <bold>true</bold>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string> : توافر الشكل الهندسي</string>
                          </property>
                         </widget>
                        </item>
@@ -2318,10 +2321,10 @@
                           </property>
                          </widget>
                        </item>
-                       <item row="3" column="1">
-                        <layout class="QHBoxLayout" name="horizontalLayout_14">
-                         <item>
-                          <widget class="QPushButton" name="submit_city">
+                        <item row="3" column="0" colspan="2">
+                         <layout class="QHBoxLayout" name="horizontalLayout_14">
+                          <item>
+                           <widget class="QPushButton" name="submit_city">
                            <property name="maximumSize">
                             <size>
                              <width>150</width>
@@ -2413,7 +2416,7 @@
                     <property name="minimumSize">
                      <size>
                       <width>0</width>
-                      <height>0</height>
+                      <height>40</height>
                      </size>
                     </property>
                     <property name="maximumSize">
@@ -2439,13 +2442,13 @@
                       <widget class="QPushButton" name="draw_num">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -2471,13 +2474,13 @@
                       <widget class="QPushButton" name="select_num">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -2503,13 +2506,13 @@
                       <widget class="QPushButton" name="edit_num">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -2535,13 +2538,13 @@
                       <widget class="QPushButton" name="mesure_dist">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -2575,14 +2578,6 @@
                      <bool>true</bool>
                     </property>
                     <widget class="QWidget" name="scrollAreaWidgetContents_3">
-                     <property name="geometry">
-                      <rect>
-                       <x>0</x>
-                       <y>0</y>
-                       <width>514</width>
-                       <height>360</height>
-                      </rect>
-                     </property>
                      <layout class="QFormLayout" name="formLayout_3">
                       <item row="0" column="0">
                        <widget class="QLabel" name="label_33">
@@ -2624,12 +2619,12 @@
                        </widget>
                       </item>
                       <item row="1" column="1">
-                       <widget class="QFrame" name="frame_10">
-                        <property name="minimumSize">
-                         <size>
-                          <width>290</width>
-                          <height>101</height>
-                         </size>
+                         <widget class="QFrame" name="frame_10_ref_sel">
+                          <property name="minimumSize">
+                           <size>
+                            <width>290</width>
+                            <height>80</height>
+                           </size>
                         </property>
                         <property name="frameShape">
                          <enum>QFrame::NoFrame</enum>
@@ -2790,21 +2785,21 @@
                        </widget>
                       </item>
                       <item row="5" column="0" colspan="2">
-                       <widget class="QGroupBox" name="groupBox_8">
-                        <property name="minimumSize">
-                         <size>
-                          <width>0</width>
-                          <height>80</height>
-                         </size>
-                        </property>
-                        <property name="font">
-                         <font>
-                          <weight>75</weight>
-                          <bold>true</bold>
-                         </font>
-                        </property>
-                        <property name="title">
-                         <string>النشاط المرافق بالمدخل</string>
+                        <widget class="QGroupBox" name="groupBox_8_entrance">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>80</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="title">
+                          <string>النشاط المرافق بالمدخل</string>
                         </property>
                         <property name="alignment">
                          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -2833,15 +2828,15 @@
                             </widget>
                            </item>
                            <item row="1" column="0">
-                            <widget class="QLabel" name="label_36">
-                             <property name="font">
-                              <font>
-                               <weight>75</weight>
-                               <bold>true</bold>
-                              </font>
-                             </property>
-                             <property name="text">
-                              <string> : نوع</string>
+                             <widget class="QLabel" name="label_36_act_type">
+                              <property name="font">
+                               <font>
+                                <weight>75</weight>
+                                <bold>true</bold>
+                               </font>
+                              </property>
+                              <property name="text">
+                               <string> : نوع</string>
                              </property>
                             </widget>
                            </item>
@@ -2857,10 +2852,10 @@
                         </layout>
                        </widget>
                       </item>
-                      <item row="6" column="1">
-                       <layout class="QHBoxLayout" name="horizontalLayout_15">
-                        <item>
-                         <widget class="QPushButton" name="submit_num">
+                       <item row="6" column="0" colspan="2">
+                        <layout class="QHBoxLayout" name="horizontalLayout_15">
+                         <item>
+                          <widget class="QPushButton" name="submit_num">
                           <property name="maximumSize">
                            <size>
                             <width>150</width>
@@ -2938,7 +2933,7 @@
                     <property name="minimumSize">
                      <size>
                       <width>0</width>
-                      <height>0</height>
+                      <height>40</height>
                      </size>
                     </property>
                     <property name="maximumSize">
@@ -2964,13 +2959,13 @@
                       <widget class="QPushButton" name="draw_pan">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -2993,13 +2988,13 @@
                       <widget class="QPushButton" name="select_pan">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -3022,13 +3017,13 @@
                       <widget class="QPushButton" name="edit_pan">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -3051,13 +3046,13 @@
                       <widget class="QPushButton" name="mesure_dist_2">
                        <property name="minimumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>0</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>120</width>
+                         <width>100</width>
                          <height>16777215</height>
                         </size>
                        </property>
@@ -3129,12 +3124,12 @@
                       </widget>
                      </item>
                      <item row="2" column="1">
-                      <widget class="QFrame" name="frame_14">
-                       <property name="minimumSize">
-                        <size>
-                         <width>290</width>
-                         <height>101</height>
-                        </size>
+                       <widget class="QFrame" name="frame_14">
+                        <property name="minimumSize">
+                         <size>
+                          <width>290</width>
+                          <height>80</height>
+                         </size>
                        </property>
                        <property name="frameShape">
                         <enum>QFrame::NoFrame</enum>
@@ -3219,14 +3214,14 @@
                        </layout>
                       </widget>
                      </item>
-                     <item row="3" column="1">
-                      <layout class="QHBoxLayout" name="horizontalLayout_17">
-                       <property name="spacing">
-                        <number>0</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>60</number>
-                       </property>
+                     <item row="3" column="0" colspan="2">
+                       <layout class="QHBoxLayout" name="horizontalLayout_17">
+                        <property name="spacing">
+                         <number>5</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>5</number>
+                        </property>
                        <item>
                         <widget class="QPushButton" name="submit_pan">
                          <property name="maximumSize">
@@ -3297,45 +3292,44 @@
                     </layout>
                    </widget>
                   </item>
-                 </layout>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-             <widget class="QWidget" name="tab_4">
-              <attribute name="title">
-               <string>تقرير</string>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_pan">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_4">
+               <attribute name="title">
+                <string>تقرير</string>
               </attribute>
               <attribute name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;تقرير&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </attribute>
               <layout class="QGridLayout" name="gridLayout_3">
                <item row="0" column="0">
-                <widget class="QScrollArea" name="scrollArea">
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>370</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>370</height>
-                  </size>
-                 </property>
+                 <widget class="QScrollArea" name="scrollArea">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>200</height>
+                   </size>
+                  </property>
                  <property name="widgetResizable">
                   <bool>true</bool>
                  </property>
                  <widget class="QWidget" name="scrollAreaWidgetContents">
-                  <property name="geometry">
-                   <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>534</width>
-                    <height>375</height>
-                   </rect>
-                  </property>
                   <layout class="QVBoxLayout" name="verticalLayout_15">
                    <item>
                     <widget class="QGroupBox" name="groupBox_4">

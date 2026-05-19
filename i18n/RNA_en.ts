@@ -312,6 +312,134 @@
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Password &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
+        <source>Cannot stop editing for layer</source>
+        <translation>Cannot stop editing for layer</translation>
+    </message>
+    <message>
+        <source>Capture Line activated for selected vector layer.</source>
+        <translation>Capture Line activated for selected vector layer.</translation>
+    </message>
+    <message>
+        <source>Capture Point activated for selected vector layer.</source>
+        <translation>Capture Point activated for selected vector layer.</translation>
+    </message>
+    <message>
+        <source>Capture Polygon activated for selected vector layer.</source>
+        <translation>Capture Polygon activated for selected vector layer.</translation>
+    </message>
+    <message>
+        <source>Changes saved successfully.</source>
+        <translation>Changes saved successfully.</translation>
+    </message>
+    <message>
+        <source>Check the QGIS log for details.</source>
+        <translation>Check the QGIS log for details.</translation>
+    </message>
+    <message>
+        <source>Dialog</source>
+        <translation>Dialog</translation>
+    </message>
+    <message>
+        <source>Edit stopped for layer</source>
+        <translation>Edit stopped for layer</translation>
+    </message>
+    <message>
+        <source>Erreur</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Failed to Map layer.</source>
+        <translation>Failed to Map layer.</translation>
+    </message>
+    <message>
+        <source>Failed to create dialog</source>
+        <translation>Failed to create dialog</translation>
+    </message>
+    <message>
+        <source>Failed to save changes.</source>
+        <translation>Failed to save changes.</translation>
+    </message>
+    <message>
+        <source>Geometry outside your allowed area.</source>
+        <translation>Geometry outside your allowed area.</translation>
+    </message>
+    <message>
+        <source>Info</source>
+        <translation>Info</translation>
+    </message>
+    <message>
+        <source>Layer is not in edit mode.</source>
+        <translation>Layer is not in edit mode.</translation>
+    </message>
+    <message>
+        <source>Modification cancelled</source>
+        <translation>Modification cancelled</translation>
+    </message>
+    <message>
+        <source>No Selection</source>
+        <translation>No Selection</translation>
+    </message>
+    <message>
+        <source>No active vector layer to save changes.</source>
+        <translation>No active vector layer to save changes.</translation>
+    </message>
+    <message>
+        <source>No active vector layer.</source>
+        <translation>No active vector layer.</translation>
+    </message>
+    <message>
+        <source>No layer found with the name</source>
+        <translation>No layer found with the name</translation>
+    </message>
+    <message>
+        <source>Please select a map layer option.</source>
+        <translation>Please select a map layer option.</translation>
+    </message>
+    <message>
+        <source>RNA Plugin</source>
+        <translation>RNA Plugin</translation>
+    </message>
+    <message>
+        <source>RNA Plugin Error</source>
+        <translation>RNA Plugin Error</translation>
+    </message>
+    <message>
+        <source>Save Copy As</source>
+        <translation>Save Copy As</translation>
+    </message>
+    <message>
+        <source>Select SQLite/SpatiaLite File</source>
+        <translation>Select SQLite/SpatiaLite File</translation>
+    </message>
+    <message>
+        <source>Select a file</source>
+        <translation>Select a file</translation>
+    </message>
+    <message>
+        <source>Success</source>
+        <translation>Success</translation>
+    </message>
+    <message>
+        <source>Unsupported geometry type.</source>
+        <translation>Unsupported geometry type.</translation>
+    </message>
+    <message>
+        <source>Username doesn't exist</source>
+        <translation>Username doesn't exist</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Warning</translation>
+    </message>
+    <message>
+        <source>Wrong password try again !</source>
+        <translation>Wrong password try again !</translation>
+    </message>
+    <message>
         <source>إضافة مستخدم</source>
         <translation>Add User</translation>
     </message>

@@ -6,7 +6,6 @@ from typing import Any, Optional
 
 from sqlalchemy import (
     Column, Integer, String, Text, Boolean, ForeignKey,
-    ForeignKeyConstraint,
 )
 from sqlalchemy.orm import relationship, Session
 from geoalchemy2 import Geometry
@@ -20,10 +19,12 @@ except ImportError:
 try:
     from ..constants import (
         SRID, LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
+        current_locale, locale_value,
     )
 except ImportError:
     from constants import (
         SRID, LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
+        current_locale, locale_value,
     )
 
 logger = logging.getLogger(__name__)
@@ -36,6 +37,8 @@ class Localite(Base):
     wilaya = Column(Text, nullable=False)
     codeWilaya = Column(Integer, nullable=False)
     communeAr = Column(Text, nullable=False)
+    commune_fr = Column(Text, nullable=True)
+    commune_en = Column(Text, nullable=True)
     codeCommun = Column(Text, nullable=False)
     geometry = Column(Geometry(geometry_type='GEOMETRY', srid=SRID))
 
@@ -55,9 +58,11 @@ class Zone(Base):
     )
     idLoc = Column(String, ForeignKey('localite.pk_uid'),
                    info={'label': 'الموقع'})
-    Type = Column(String, ForeignKey('type_zone.pk'), nullable=False,
-                  info={'label': 'نوع'})
-    Nom = Column(String, info={'label': 'اسم'})
+    Type = Column(String, nullable=False,
+                  info={'label': 'نوع', 'label_fr': 'Type', 'label_en': 'Type'})
+    Nom = Column(String, info={'label': 'اسم', 'label_fr': 'Nom', 'label_en': 'Name'})
+    Nom_fr = Column(String, nullable=True)
+    Nom_en = Column(String, nullable=True)
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=False,
                       info={'label': 'شكل هندسي'})
     has_child = Column(Boolean)
@@ -150,9 +155,11 @@ class Subdivision(Base):
         info={'label': 'المفتاح'},
     )
     idLoc = Column(String, ForeignKey('localite.pk_uid'))
-    Type = Column(String, ForeignKey('type_cite.pk'), nullable=False,
-                  info={'label': 'نوع'})
-    Nom = Column(String, info={'label': 'اسم'})
+    Type = Column(String, nullable=False,
+                  info={'label': 'نوع', 'label_fr': 'Type', 'label_en': 'Type'})
+    Nom = Column(String, info={'label': 'اسم', 'label_fr': 'Nom', 'label_en': 'Name'})
+    Nom_fr = Column(String, nullable=True)
+    Nom_en = Column(String, nullable=True)
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=True)
     parent = Column(Text, ForeignKey('refpoly.pkuid'), nullable=True)
     uid = Column(Text, ForeignKey('user.id'), nullable=True,
@@ -231,10 +238,12 @@ class Road(Base):
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'المفتاح'},
     )
-    num_decision = Column(Text, nullable=True, info={'label': 'رقم القرار'})
-    Type = Column(String, ForeignKey('type_voie.pk'), nullable=False,
-                  info={'label': 'نوع'})
-    Nom = Column(String, info={'label': 'اسم'})
+    num_decision = Column(Text, nullable=True, info={'label': 'رقم القرار', 'label_fr': 'N° décision', 'label_en': 'Decision No.'})
+    Type = Column(String, nullable=False,
+                  info={'label': 'نوع', 'label_fr': 'Type', 'label_en': 'Type'})
+    Nom = Column(String, info={'label': 'اسم', 'label_fr': 'Nom', 'label_en': 'Name'})
+    Nom_fr = Column(String, nullable=True)
+    Nom_en = Column(String, nullable=True)
     idLoc = Column(String, ForeignKey('localite.pk_uid'), nullable=False)
     geometry = Column(Geometry('LINESTRING', srid=SRID), nullable=True)
     pkuid_poly = Column(Text, ForeignKey('refpoly.pkuid'), nullable=True)
@@ -310,9 +319,11 @@ class Organization(Base):
 
     pkuid = Column(Text, primary_key=True, default=lambda: str(uuid.uuid4()))
     idLoc = Column(String, ForeignKey('localite.pk_uid'))
-    Type = Column(String, ForeignKey('type_organisme.pk'), nullable=True)
-    Cat = Column(String, ForeignKey('type_organisme.cat'), nullable=True)
+    Type = Column(String, nullable=True)
+    Cat = Column(String, nullable=True)
     Nom = Column(String)
+    Nom_fr = Column(String, nullable=True)
+    Nom_en = Column(String, nullable=True)
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=True)
     uid = Column(Text, ForeignKey('user.id'), nullable=True)
     pkuid_poly = Column(Text, ForeignKey('refpoly.pkuid'), nullable=True)
@@ -403,7 +414,7 @@ class Numbering(Base):
         info={'label': 'التجزئة'},
     )
     repetition = Column(String, info={'label': 'تكرار'})
-    etat = Column(String, ForeignKey('Etat_Numerotation.pk'), nullable=True,
+    etat = Column(String, nullable=True,
                   info={'label': 'حالة'})
     geometry = Column(Geometry('POINT', srid=SRID), nullable=True,
                       info={'label': 'شكل هندسي'})
@@ -418,13 +429,6 @@ class Numbering(Base):
 
     activity_cat = Column(String, nullable=True)
     activity_type = Column(String, nullable=True)
-
-    __table_args__ = (
-        ForeignKeyConstraint(
-            ['activity_cat', 'activity_type'],
-            ['activity.cat', 'activity.type']
-        ),
-    )
 
     @property
     def username(self) -> Optional[str]:
@@ -479,11 +483,11 @@ class PanelSign(Base):
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'المفتاح'},
     )
-    dim = Column(String, ForeignKey('DimPan.pk'), nullable=False,
+    dim = Column(String, nullable=False,
                  info={'label': 'الأبعاد'})
     Type = Column(Text, nullable=True, info={'label': 'نوع المرجع'})
     Stituation = Column(
-        String, ForeignKey('situation_Montage.pk'), nullable=True,
+        String, nullable=True,
         info={'label': 'الحالة'},
     )
     idLine = Column(Text, ForeignKey('RefLine.pkuid'), nullable=True,
@@ -518,16 +522,19 @@ class PanelSign(Base):
     @property
     def label(self) -> Optional[str]:
         """Returns a human-readable label based on the referenced feature."""
+        loc = current_locale()
         if self.idLine is not None and self.idPoly is None \
                 and self.idOrg is None:
-            return '\u200F' + self.road.Type + ' ' + self.road.Nom
+            return ('\u200F' + locale_value(self.road, 'Type', loc)
+                    + ' ' + locale_value(self.road, 'Nom', loc))
         if self.idLine is None and self.idPoly is not None \
                 and self.idOrg is None:
-            return '\u200F' + self.subdivision.Type + ' ' + self.subdivision.Nom
+            return ('\u200F' + locale_value(self.subdivision, 'Type', loc)
+                    + ' ' + locale_value(self.subdivision, 'Nom', loc))
         if self.idLine is None and self.idPoly is None \
                 and self.idOrg is not None:
-            return '\u200F' + self.organization.Type \
-                + ' ' + self.organization.Nom
+            return ('\u200F' + locale_value(self.organization, 'Type', loc)
+                    + ' ' + locale_value(self.organization, 'Nom', loc))
         return None
 
     def delete(self, session: Session) -> None:

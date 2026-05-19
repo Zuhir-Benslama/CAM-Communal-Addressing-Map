@@ -14,6 +14,7 @@ from ..db.writers import (
 from ..constants import (
     LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
     LAYER_ZONES, LAYER_NUMBERING, LAYER_PANELS, validate_text,
+    current_locale,
 )
 
 logger = logging.getLogger(__name__)
@@ -92,7 +93,7 @@ class LayerEditMixin:
 
                     if self.measure_tool2:
                         self.show_confirm_dialog(
-                            title="title",
+                            title=self._tr("Success"),
                             message=self._tr(
                                 "تمت إضافة هذه اللوحة بنجاح\n"
                                 " هل تريد مسح خط القياس ؟"
@@ -101,12 +102,12 @@ class LayerEditMixin:
                         )
                     else:
                         QMessageBox.information(
-                            self, "Success",
+                            self, self._tr("Success"),
                             self._tr("تمت إضافة هذا المدخل بنجاح"),
                         )
                 except Exception as e:
                     logger.exception("Failed to add panel: %s", e)
-                    QMessageBox.critical(self, "Error", f'{e}')
+                    QMessageBox.critical(self, self._tr("Error"), str(e))
         self.identify_tool2.unset_map_tool()
         self.draw_pan_handler()
 
@@ -120,19 +121,24 @@ class LayerEditMixin:
                     "No geometry or pkuid available for organization")
                 return
             try:
-                add_organization(
+                loc = current_locale()
+                nom = validate_text(self.nom_org.text())
+                kwargs = dict(
                     geometry_wkt=geometry_wkt, pkuid=pkuid,
                     cat_org=self.cat_org.currentData(),
-                    nom_org=validate_text(self.nom_org.text()),
+                    nom_org=nom,
                     type_org=self.type_org.currentData(),
                 )
+                if loc != 'ar':
+                    kwargs[f'nom_org_{loc}'] = nom
+                add_organization(**kwargs)
                 QMessageBox.information(
-                    self, "Success", self._tr("تمت إضافة هذا المرفق بنجاح"),
+                    self, self._tr("Success"), self._tr("تمت إضافة هذا المرفق بنجاح"),
                 )
             except Exception as e:
                 logger.exception("Failed to add organization: %s", e)
                 QMessageBox.critical(
-                    self, "Error",
+                    self, self._tr("Error"),
                     self._tr('لا يمكن إضافة المرفق ، المرفق موجود بالفعل'),
                 )
 
@@ -145,19 +151,24 @@ class LayerEditMixin:
                 logger.warning("No geometry or pkuid available for road")
                 return
             try:
-                add_road(
+                loc = current_locale()
+                nom = validate_text(self.nom_voie.text())
+                kwargs = dict(
                     geometry_wkt=geometry_wkt, pkuid=pkuid,
                     dec_voie=validate_text(self.dec_voie.text()),
-                    nom_voie=validate_text(self.nom_voie.text()),
+                    nom_voie=nom,
                     type_voie=self.type_voie.currentData(),
                 )
+                if loc != 'ar':
+                    kwargs[f'nom_voie_{loc}'] = nom
+                add_road(**kwargs)
                 QMessageBox.information(
-                    self, "Success", self._tr("تمت إضافة هذا الطريق بنجاح"),
+                    self, self._tr("Success"), self._tr("تمت إضافة هذا الطريق بنجاح"),
                 )
             except Exception as e:
                 logger.exception("Failed to add road: %s", e)
                 QMessageBox.critical(
-                    self, "Error",
+                    self, self._tr("Error"),
                     self._tr('لا يمكن إضافة الطريق , الطريق موجود بالفعل'),
                 )
 
@@ -234,7 +245,7 @@ class LayerEditMixin:
 
                 if self.measure_tool:
                     self.show_confirm_dialog(
-                        title="title",
+                        title=self._tr("Success"),
                         message=self._tr(
                             "تمت إضافة هذا المدخل بنجاح\n هل تمسح خط القياس ؟"
                         ),
@@ -242,12 +253,12 @@ class LayerEditMixin:
                     )
                 else:
                     QMessageBox.information(
-                        self, "Success",
+                        self, self._tr("Success"),
                         self._tr("تمت إضافة هذا المدخل بنجاح"),
                     )
             except Exception as e:
                 logger.exception("Failed to add numbering: %s", e)
-                QMessageBox.critical(self, "Error", str(e))
+                QMessageBox.critical(self, self._tr("Error"), str(e))
 
         self.num_val.setFocus()
         self.num_val.clear()
@@ -262,17 +273,22 @@ class LayerEditMixin:
                 logger.warning("No geometry or pkuid available for subdivision")
                 return
             try:
-                add_subdivision(
+                loc = current_locale()
+                name = validate_text(self.nom_city.text())
+                kwargs = dict(
                     geometry_wkt=geometry_wkt, pkuid=pkuid,
-                    name=validate_text(self.nom_city.text()),
+                    name=name,
                     subdivision_type=self.type_city.currentData(),
                 )
+                if loc != 'ar':
+                    kwargs[f'name_{loc}'] = name
+                add_subdivision(**kwargs)
                 QMessageBox.information(
-                    self, "Success", self._tr("تمت إضافة هذا الحي بنجاح"),
+                    self, self._tr("Success"), self._tr("تمت إضافة هذا الحي بنجاح"),
                 )
             except Exception as e:
                 logger.exception("Failed to add city: %s", e)
-                QMessageBox.critical(self, "Error", str(e))
+                QMessageBox.critical(self, self._tr("Error"), str(e))
 
     def add_zone(self) -> None:
         """Add a new zone through the form."""
@@ -284,18 +300,23 @@ class LayerEditMixin:
                     logger.warning("No geometry or pkuid available for zone")
                     return
                 try:
-                    add_zone(
+                    loc = current_locale()
+                    name = validate_text(self.nom_zone.text())
+                    kwargs = dict(
                         geometry_wkt=geometry_wkt, pkuid=pkuid,
-                        name=validate_text(self.nom_zone.text()),
+                        name=name,
                         zone_type=self.type_zone.currentData(),
                     )
+                    if loc != 'ar':
+                        kwargs[f'name_{loc}'] = name
+                    add_zone(**kwargs)
                     QMessageBox.information(
-                        self, "Success",
+                        self, self._tr("Success"),
                         self._tr("تمت إضافة هذه المنطقة بنجاح"),
                     )
                 except Exception as e:
                     logger.exception("Failed to add zone: %s", e)
                     QMessageBox.critical(
-                        self, "Error",
-                        'لا يمكن إضافة المنطقة , المنطقة موجودة بالفعل',
+                        self, self._tr("Error"),
+                        self._tr('لا يمكن إضافة المنطقة , المنطقة موجودة بالفعل'),
                     )

@@ -23,7 +23,7 @@ class BackupMixin:
         file_dialog_open = QFileDialog(self)
         file_dialog_open.setDirectory(PLUGIN_DIR)
         file_dialog_open.setOption(QFileDialog.DontUseNativeDialog)
-        file_dialog_open.setWindowTitle("Select SQLite/SpatiaLite File")
+        file_dialog_open.setWindowTitle(self._tr("Select SQLite/SpatiaLite File"))
         file_dialog_open.setNameFilter(
             "SQLite/SpatiaLite Files (*.sqlite *.db *.sqlite3);;All Files (*)")
 
@@ -32,34 +32,34 @@ class BackupMixin:
         if file_dialog_open.exec_():
             source_path = file_dialog_open.selectedFiles()[0]
         else:
-            QMessageBox.warning(self, "Warning", self._tr("لا يوجد ملف محدد"))
+            QMessageBox.warning(self, self._tr("Warning"), self._tr("لا يوجد ملف محدد"))
             return
 
         with open(source_path, 'rb') as f:
             header = f.read(16)
         if header[:16] != b'SQLite format 3\x00':
             QMessageBox.critical(
-                self, "Error",
+                self, self._tr("Error"),
                 self._tr("الملف المحدد ليس قاعدة بيانات SQLite صالحة"),
             )
             return
 
         destination_path = DATABASE_FILE
         shutil.copy(source_path, destination_path)
-        QMessageBox.warning(self, "Warning", f"{os.path.basename(source_path)}")
+        QMessageBox.warning(self, self._tr("Warning"), f"{os.path.basename(source_path)}")
 
     def restore_auth_database(self) -> None:
         """Ensure the auth database file exists, creating it if needed."""
         auth_path = AUTH_DATABASE_FILE
         if os.path.exists(auth_path):
             QMessageBox.information(
-                self, "Info",
+                self, self._tr("Info"),
                 self._tr("قاعدة بيانات المصادقة موجودة مسبقاً"),
             )
         else:
             get_auth_engine()
             QMessageBox.information(
-                self, "Success",
+                self, self._tr("Success"),
                 self._tr("تم إنشاء قاعدة بيانات المصادقة"),
             )
 
@@ -70,7 +70,7 @@ class BackupMixin:
 
         file_dialog_save = QFileDialog(self)
         file_dialog_save.setOption(QFileDialog.DontUseNativeDialog)
-        file_dialog_save.setWindowTitle("Save Copy As")
+        file_dialog_save.setWindowTitle(self._tr("Save Copy As"))
         file_dialog_save.setNameFilter(
             "SQLite/SpatiaLite Files (*.sqlite *.db *.sqlite3);;",
         )
@@ -81,7 +81,7 @@ class BackupMixin:
         if file_dialog_save.exec_():
             destination_path = file_dialog_save.selectedFiles()[0]
         else:
-            QMessageBox.warning(self, "Warning", self._tr("لا يوجد ملف محدد"))
+            QMessageBox.warning(self, self._tr("Warning"), self._tr("لا يوجد ملف محدد"))
             return
 
         try:
@@ -91,8 +91,8 @@ class BackupMixin:
                 auth_dest = f"{base}_auth{ext}"
                 shutil.copy(auth_source, auth_dest)
             QMessageBox.information(
-                self, "Success", self._tr("تم نسخ الملف بنجاح"),
+                self, self._tr("Success"), self._tr("تم نسخ الملف بنجاح"),
             )
         except Exception as e:
             logger.exception("Failed to restore database: %s", e)
-            QMessageBox.critical(self, "Error", self._tr("فشل في نسخ الملف"))
+            QMessageBox.critical(self, self._tr("Error"), self._tr("فشل في نسخ الملف"))

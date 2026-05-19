@@ -86,14 +86,14 @@ class ImportExportMixin:
                                 check=True, **_SUBPROCESS_FLAGS,
                             )
                             QMessageBox.information(
-                                self, "Success",
+                                self, self._tr("Success"),
                                 self._tr("تم حفظ ملفك في مستنداتي"),
                             )
                         except Exception as e:
                             logger.exception("Failed to export map: %s", e)
             else:
                 QMessageBox.critical(
-                    self, "Error",
+                    self, self._tr("Error"),
                     self._tr("خريطة ترقيم المداخل أو خريطة اللواحات  \n"
                              "  يجب عليك تحديد نوع الخريطة التي تريد طباعتها"),
                 )
@@ -158,14 +158,14 @@ class ImportExportMixin:
                                 check=True, **_SUBPROCESS_FLAGS,
                             )
                             QMessageBox.information(
-                                self, "Success",
+                                self, self._tr("Success"),
                                 self._tr("تم حفظ ملفك في مستنداتي"),
                             )
                         except Exception as e:
                             logger.exception("Failed to export A3 map: %s", e)
             else:
                 QMessageBox.critical(
-                    self, "Error",
+                    self, self._tr("Error"),
                     self._tr("خريطة ترقيم المداخل أو خريطة اللواحات  \n"
                              "  يجب عليك تحديد نوع الخريطة التي تريد طباعتها"),
                 )

@@ -12,11 +12,13 @@ from sqlalchemy.orm import declarative_base, sessionmaker, Session
 try:
     from ..constants import (
         COOKIE_FILE, DATABASE_FILE, AUTH_DATABASE_FILE,
+        current_locale,
     )
 except ImportError:
     # Fallback for standalone/test mode when not loaded as a package
     from constants import (
         COOKIE_FILE, DATABASE_FILE, AUTH_DATABASE_FILE,
+        current_locale,
     )
 
 logger = logging.getLogger(__name__)
@@ -262,10 +264,16 @@ def get_auth_session() -> Session:
 
 
 def get_all_fields_and_labels(
-    model_class, property_labels=None
+    model_class, property_labels=None, locale=''
 ) -> Tuple[List[str], List[str]]:
     """Return (fields, labels) including both SQLAlchemy columns
-    and @property fields."""
+    and @property fields.
+
+    Labels are locale-aware: uses 'label_fr'/'label_en' from column.info
+    if available, falling back to 'label' (Arabic).
+    """
+    if not locale:
+        locale = current_locale()
     fields = []
     labels = []
 
@@ -277,7 +285,14 @@ def get_all_fields_and_labels(
                 'geometry', 'uid', 'idLoc', 'has_child', 'parent', 'pkuid_poly'
             ]):
                 fields.append(column.name)
-                labels.append(column.info.get('label', column.name))
+                if locale != 'ar':
+                    label_key = f'label_{locale}'
+                    label = column.info.get(label_key)
+                else:
+                    label = None
+                if not label:
+                    label = column.info.get('label', column.name)
+                labels.append(label)
 
     if property_labels:
         for prop_name, prop_label in property_labels.items():

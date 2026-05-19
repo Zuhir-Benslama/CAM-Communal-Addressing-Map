@@ -114,7 +114,7 @@ class MapToolsMixin:
                 self.identify_tool2.set_active_layer(layer[0])
                 canvas.setMapTool(self.identify_tool2)
         else:
-            QMessageBox.critical(self, "Error", self._tr("نوع المرجع غير محدد"))
+            QMessageBox.critical(self, self._tr("Error"), self._tr("نوع المرجع غير محدد"))
 
         self.set_default_cursor()
         layer = QgsProject.instance().mapLayersByName(self.layer_name_key)
@@ -136,7 +136,7 @@ class MapToolsMixin:
                 self.identify_tool2.set_active_layer(layer[0])
                 canvas.setMapTool(self.identify_tool2)
         else:
-            QMessageBox.critical(self, "Error", self._tr("نوع المرجع غير محدد"))
+            QMessageBox.critical(self, self._tr("Error"), self._tr("نوع المرجع غير محدد"))
         self.set_default_cursor()
         layer = QgsProject.instance().mapLayersByName(self.layer_name_key)
 
@@ -146,7 +146,7 @@ class MapToolsMixin:
             return
         obj = self.identify_tool2.get_pkuid()
         if not obj:
-            QMessageBox.critical(self, "Error", self._tr("نوع المرجع غير محدد"))
+            QMessageBox.critical(self, self._tr("Error"), self._tr("نوع المرجع غير محدد"))
 
         layer = project.mapLayersByName(LAYER_PANELS)
         if layer:

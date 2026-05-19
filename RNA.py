@@ -31,9 +31,9 @@ logger = logging.getLogger(__name__)
 
 import os
 
-from .constants import ICON_PNG
+from .constants import ICON_PNG, current_locale
+from .scripts.lookup_data import get_string
 from .RNA_dialog import RNADialog
-from .i18n import tr as _i18n_tr
 from qgis.core import QgsApplication
 
 
@@ -76,7 +76,6 @@ class RNA:
         if not self._locale_code:
             locale_val = QSettings().value('locale/userLocale')
             self._locale_code = locale_val[0:2] if locale_val else 'en'
-        self._i18n_tr = lambda s: _i18n_tr(s, self._locale_code)
 
         # Declare instance attributes
         self.actions = []
@@ -214,14 +213,15 @@ class RNA:
                 logger.info("RNADialog created successfully")
             except Exception as e:
                 logger.exception("Failed to create RNADialog: %s", e)
+                loc = current_locale()
                 QMessageBox.critical(
-                    None, "RNA Plugin Error",
-                    f"Failed to create dialog: {e}\n\nCheck the QGIS log for details.",
+                    None, get_string("RNA Plugin Error", loc),
+                    get_string("Failed to create dialog", loc) + f"\n\n{get_string('Check the QGIS log for details.', loc)}",
                 )
                 return
 
             self.dock_widget = QDockWidget(
-                "RNA Plugin", self.iface.mainWindow()
+                get_string("RNA Plugin", current_locale()), self.iface.mainWindow()
             )  # Give a title to the docked widget
             self.dock_widget.setWidget(
                 self.dlg

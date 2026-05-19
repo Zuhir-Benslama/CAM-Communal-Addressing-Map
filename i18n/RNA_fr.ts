@@ -312,6 +312,134 @@
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mot de passe &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt; :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
+        <source>Cannot stop editing for layer</source>
+        <translation>Impossible d'arrêter l'édition pour la couche</translation>
+    </message>
+    <message>
+        <source>Capture Line activated for selected vector layer.</source>
+        <translation>Capture Line activé pour la couche vectorielle sélectionnée</translation>
+    </message>
+    <message>
+        <source>Capture Point activated for selected vector layer.</source>
+        <translation>Capture Point activé pour la couche vectorielle sélectionnée</translation>
+    </message>
+    <message>
+        <source>Capture Polygon activated for selected vector layer.</source>
+        <translation>Capture Polygon activé pour la couche vectorielle sélectionnée</translation>
+    </message>
+    <message>
+        <source>Changes saved successfully.</source>
+        <translation>Modifications enregistrées avec succès</translation>
+    </message>
+    <message>
+        <source>Check the QGIS log for details.</source>
+        <translation>Consultez le journal QGIS pour plus de détails</translation>
+    </message>
+    <message>
+        <source>Dialog</source>
+        <translation>Dialogue</translation>
+    </message>
+    <message>
+        <source>Edit stopped for layer</source>
+        <translation>Édition arrêtée pour la couche</translation>
+    </message>
+    <message>
+        <source>Erreur</source>
+        <translation>Erreur</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Erreur</translation>
+    </message>
+    <message>
+        <source>Failed to Map layer.</source>
+        <translation>Échec de la cartographie de la couche</translation>
+    </message>
+    <message>
+        <source>Failed to create dialog</source>
+        <translation>Échec de la création du dialogue</translation>
+    </message>
+    <message>
+        <source>Failed to save changes.</source>
+        <translation>Échec de l'enregistrement des modifications</translation>
+    </message>
+    <message>
+        <source>Geometry outside your allowed area.</source>
+        <translation>Géométrie en dehors de votre zone autorisée</translation>
+    </message>
+    <message>
+        <source>Info</source>
+        <translation>Info</translation>
+    </message>
+    <message>
+        <source>Layer is not in edit mode.</source>
+        <translation>La couche n'est pas en mode édition</translation>
+    </message>
+    <message>
+        <source>Modification cancelled</source>
+        <translation>Modification annulée</translation>
+    </message>
+    <message>
+        <source>No Selection</source>
+        <translation>Aucune sélection</translation>
+    </message>
+    <message>
+        <source>No active vector layer to save changes.</source>
+        <translation>Aucune couche vectorielle active pour enregistrer les modifications</translation>
+    </message>
+    <message>
+        <source>No active vector layer.</source>
+        <translation>Aucune couche vectorielle active</translation>
+    </message>
+    <message>
+        <source>No layer found with the name</source>
+        <translation>Aucune couche trouvée avec le nom</translation>
+    </message>
+    <message>
+        <source>Please select a map layer option.</source>
+        <translation>Veuillez sélectionner une option de couche cartographique</translation>
+    </message>
+    <message>
+        <source>RNA Plugin</source>
+        <translation>Plugin RNA</translation>
+    </message>
+    <message>
+        <source>RNA Plugin Error</source>
+        <translation>Erreur du plugin RNA</translation>
+    </message>
+    <message>
+        <source>Save Copy As</source>
+        <translation>Enregistrer la copie sous</translation>
+    </message>
+    <message>
+        <source>Select SQLite/SpatiaLite File</source>
+        <translation>Sélectionnez un fichier SQLite/SpatiaLite</translation>
+    </message>
+    <message>
+        <source>Select a file</source>
+        <translation>Sélectionnez un fichier</translation>
+    </message>
+    <message>
+        <source>Success</source>
+        <translation>Succès</translation>
+    </message>
+    <message>
+        <source>Unsupported geometry type.</source>
+        <translation>Type de géométrie non pris en charge</translation>
+    </message>
+    <message>
+        <source>Username doesn't exist</source>
+        <translation>Nom d'utilisateur n'existe pas</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Avertissement</translation>
+    </message>
+    <message>
+        <source>Wrong password try again !</source>
+        <translation>Mot de passe incorrect, réessayez</translation>
+    </message>
+    <message>
         <source>إضافة مستخدم</source>
         <translation>Ajouter un utilisateur</translation>
     </message>

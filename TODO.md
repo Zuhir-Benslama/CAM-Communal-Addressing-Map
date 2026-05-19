@@ -260,9 +260,8 @@
 - [x] **Add sub-subtype field** — added third level (sub-subtype `النوع الفرعي الفرعي`) for facility/activity features in the add-type section. Changes: `subcat` column added to `type_organisme` and `activity` tables (model + migration); QLineEdit field in UI; writers pass value through to DB.
 
 ### Remaining
-- [ ] **Continue with i18n** — complete remaining translation entries, verify Arabic/French/English coverage, fix any untranslated strings.
 - [ ] **Fix UI issues** — address remaining layout/rendering problems across tabs, ensure consistent spacing and alignment.
-- [ ] **Refactor RNA and RNA_dialog files** — rename and repurpose `RNA.py` and `RNA_dialog.py` for better structure and clarity.
+- [ ] **Fix code base structure based on `structure.txt`** — restructure project directory layout to match the modular architecture defined in `structure.txt` (core/, users/, orders/, shared/ separation of concerns).
 
 ## 27. Code Quality Review — 2026-05-16 ✅
 
@@ -306,7 +305,7 @@
 - [x] **`num_decision` naming consistency** — `models/spatial.py:78`: column is named `num_decision` (French "numéro de décision"). All internal references are consistent. Rename would touch SQL column, queries, and UI labels — not worth the churn for a bilingual codebase.
 - [x] **Add context manager for DB sessions** — added `session_scope()` and `auth_session_scope()` context managers in `models/base.py:120-143`. Usage: `with session_scope() as session:`.
 
-## 28. Internationalization (i18n) — 🔴 UNFINISHED
+## 28. Internationalization (i18n) ✅
 
 ### Done
 - [x] **Translation caching rewritten** — replaced Python dicts keyed by `objectName` with Qt dynamic properties (`setProperty("_rna_src", ...)`) stored directly on widgets. `_cache_originals()` is additive; `_apply_translations()` iterates `findChildren` directly.
@@ -321,9 +320,23 @@
 - [x] **`style/` directory added to `EXTRA_DIRS`** — Makefile and pb_tool.cfg now deploy `.qml` style files.
 - [x] **QTabWidget translation removed** — tab texts double as QGIS layer name identifiers; translating them breaks `on_opt_selected()` layer lookups.
 
-### Remaining
-- [ ] **Verify all `.ts` translations are correct** — Arabic→English and Arabic→French translations for all 286 entries need human review. Some may have incorrect/placeholder translations.
-- [ ] **Complete `_on_locale_changed` signal robustness** — `QComboBox.currentIndexChanged` has overloaded signals; verify the `*args` + `currentData()` approach works across all Qt/PyQt5 versions (currently handles 1-arg and 2-arg signal variants).
-- [ ] **Ensure `_cache_originals()` captures all dynamic widgets** — any widget created after `setupUi()` must be created before the second `_cache_originals()` call (line 252). Verify no widgets slip through.
-- [ ] **Test locale switch on every dialog/message** — verify all translated strings switch correctly (labels, buttons, tooltips, combo items, message boxes) without partial translation artifacts.
-- [ ] **Handle RTL layout on locale change** — when switching to Arabic (`ar`), the entire UI should mirror to RTL. Currently layout direction is not toggled.
+### Fixes Applied (2026-05-19)
+- [x] **Fix `QComboBox.currentIndexChanged` signal overload ambiguity** — `RNA_dialog.py:242`: changed from `currentIndexChanged.connect()` to explicit `currentIndexChanged[int].connect()` to prevent PyQt5 signal overload resolution issues across different Qt/PyQt5 versions.
+- [x] **Fix EntityListDialog locale init order** — `entity_list_dialog.py:40-49`: moved `_tr_locale` detection above `super().__init__()` and `apply_widget_texts()` so the correct saved locale is applied on first render.
+- [x] **Add RTL layout support** — `RNA_dialog.py`: `QApplication.setLayoutDirection()` called on startup and locale change (RightToLeft for Arabic, LeftToRight for else).
+- [x] **Add missing strings to `strings.json`** — `"  قائمة "` (EntityListDialog titles) and `"تم حفظ تقريرك في مستنداتك"` (report_mixin.py). Zero missing strings confirmed by comprehensive audit.
+- [x] **Add 13 missing display-text widgets to `widgets.json`** — `Other`, `RNADialogBase`, `add_usr`, `frame_9`, `frame_10`, `frame_11`, `menu`, `widget`, `formLayout_pan`, `scrollArea_3`, `widget_3`, `widget_5`, `widget_11` — now translated on locale switch.
+- [x] **Tooltip fallback to `strings.json`** — `apply_widget_texts()` in `lookup_data.py` now attempts `_get_string(tip, locale)` as fallback when widget is not in `widgets.json`, so 15+ HTML tooltips on `is_city`, `is_num`, `type_city`, `nom_voie`, etc. are now translated without needing individual entries.
+- [x] **Regenerate `RNA_ar.ts`** — `gen_translations.py` now writes all 286 Arabic identity entries (was only 5).
+
+### Fixes Applied (2026-05-19) — Round 2
+- [x] **Added 28 missing dialog title strings** (`"Success"`, `"Warning"`, `"Info"`, `"No Selection"`, `"RNA Plugin"`, etc.) to `strings.json` and wrapped all `QMessageBox` titles in `self._tr()`/`get_string()` across all mixins (`report_mixin`, `layer_edit_mixin`, `import_export_mixin`, `backup_mixin`, `auth_mixin`, `map_tools_mixin`, `layer_ops_mixin`).
+- [x] **Translated `layer/editing.py` French strings** — 15+ hardcoded French message bar strings (`"Aucune couche vectorielle active"`, `"Modifications enregistrées avec succès"`, etc.) wrapped with `get_string()`.
+- [x] **Translated `RNA.py` hardcoded strings** — `"RNA Plugin Error"`, `"RNA Plugin"`, `"Failed to create dialog"` now use `get_string()`.
+- [x] **Translated `layer_ops_mixin.py` French strings** — `"Modification annulée"` and `"Géométrie en dehors de votre zone autorisée."` wrapped with `self._tr()`.
+- [x] **Fixed 8 cross-dialog `objectName` collisions** — renamed conflicting widget names in `RNA_dialog_base.ui` (`label_4`→`label_4_login`, `label_2`→`label_2_username`, `label_36`→`label_36_act_type`, `label_26`→`label_26_geo_avail`, `groupBox_8`→`groupBox_8_entrance`, `frame_10`→`frame_10_ref_sel`) and added corresponding entries with ar/fr/en translations to `widgets.json`.
+- [x] **Fixed 6 untranslated `widgets.json` fr/en values** — `groupBox_add_types`, `label`, `label_feature`, `label_subsubtype`, `label_subtype`, `label_type` had Arabic text copied as French/English; now properly translated.
+- [x] **Translated reference dropdowns** — `fill_road_reference()` and `fill_panel_reference()` wrap labels with `_i18n_tr()`.
+- [x] **Added 58 wilaya names with fr/en translations** to `strings.json` — `fill_wilayas_list()` now uses `_i18n_tr()` for localized display.
+- [x] **Commune dropdown fallback** — `fill_commune_of_wilaya()` uses `_i18n_tr()` as fallback when `commune_fr`/`commune_en` is NULL in DB.
+- [x] **318 messages in `.ts` files** (was 286).

@@ -575,6 +575,42 @@ add(
     '<html><head/><body><p align="right">Le nom du lotissement ne doit pas être concaténé avec le type de lotissement comme<span style=" font-weight:600;"> Cooperatie El Bortokal </span></p><p align="right"><span style=" font-weight:600;">Type de lotissement : </span>Cooperatie</p><p align="right"><span style=" font-weight:600;">Nom de lotissement :</span><span style=" font-weight:600;"/>El Bortokal</p></body></html>',
 )
 
+# --- Auth/messages ---
+add("Error", "Error", "Erreur")
+add("Erreur", "Error", "Erreur")
+add("Username doesn't exist", "Username doesn't exist", "Nom d'utilisateur n'existe pas")
+add("Wrong password try again !", "Wrong password try again !", "Mot de passe incorrect, réessayez")
+
+# --- Dialog title strings ---
+add("Success", "Success", "Succès")
+add("Warning", "Warning", "Avertissement")
+add("Info", "Info", "Info")
+add("No Selection", "No Selection", "Aucune sélection")
+add("RNA Plugin", "RNA Plugin", "Plugin RNA")
+add("RNA Plugin Error", "RNA Plugin Error", "Erreur du plugin RNA")
+add("Select a file", "Select a file", "Sélectionnez un fichier")
+add("Failed to Map layer.", "Failed to Map layer.", "Échec de la cartographie de la couche")
+add("Please select a map layer option.", "Please select a map layer option.", "Veuillez sélectionner une option de couche cartographique")
+add("No layer found with the name", "No layer found with the name", "Aucune couche trouvée avec le nom")
+add("Edit stopped for layer", "Edit stopped for layer", "Édition arrêtée pour la couche")
+add("Cannot stop editing for layer", "Cannot stop editing for layer", "Impossible d'arrêter l'édition pour la couche")
+add("No active vector layer to save changes.", "No active vector layer to save changes.", "Aucune couche vectorielle active pour enregistrer les modifications")
+add("Modification cancelled", "Modification cancelled", "Modification annulée")
+add("Geometry outside your allowed area.", "Geometry outside your allowed area.", "Géométrie en dehors de votre zone autorisée")
+add("Layer is not in edit mode.", "Layer is not in edit mode.", "La couche n'est pas en mode édition")
+add("Changes saved successfully.", "Changes saved successfully.", "Modifications enregistrées avec succès")
+add("Failed to save changes.", "Failed to save changes.", "Échec de l'enregistrement des modifications")
+add("No active vector layer.", "No active vector layer.", "Aucune couche vectorielle active")
+add("Unsupported geometry type.", "Unsupported geometry type.", "Type de géométrie non pris en charge")
+add("Capture Point activated for selected vector layer.", "Capture Point activated for selected vector layer.", "Capture Point activé pour la couche vectorielle sélectionnée")
+add("Capture Line activated for selected vector layer.", "Capture Line activated for selected vector layer.", "Capture Line activé pour la couche vectorielle sélectionnée")
+add("Capture Polygon activated for selected vector layer.", "Capture Polygon activated for selected vector layer.", "Capture Polygon activé pour la couche vectorielle sélectionnée")
+add("Select SQLite/SpatiaLite File", "Select SQLite/SpatiaLite File", "Sélectionnez un fichier SQLite/SpatiaLite")
+add("Save Copy As", "Save Copy As", "Enregistrer la copie sous")
+add("Dialog", "Dialog", "Dialogue")
+add("Failed to create dialog", "Failed to create dialog", "Échec de la création du dialogue")
+add("Check the QGIS log for details.", "Check the QGIS log for details.", "Consultez le journal QGIS pour plus de détails")
+
 def write_ts(lang_code, translations, path):
     lines = [TS_HEADER.format(lang=lang_code)]
     for ar_text in sorted(translations.keys()):
@@ -591,6 +627,10 @@ def write_ts(lang_code, translations, path):
 def _escape(s: str) -> str:
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
 
+def _build_ar(translations: dict[str, str]) -> dict[str, str]:
+    return {k: k for k in translations}
+
 write_ts("en", EN, "i18n/RNA_en.ts")
 write_ts("fr", FR, "i18n/RNA_fr.ts")
+write_ts("ar", _build_ar(EN), "i18n/RNA_ar.ts")
 print("Done!")

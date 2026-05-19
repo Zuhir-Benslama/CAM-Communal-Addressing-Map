@@ -1,29 +1,42 @@
 [
-
   {
-    "pk": "منطقة نشاطات"
+    "pk": "منطقة نشاطات",
+    "label_fr": "Zone d'activités",
+    "label_en": "Activity Zone"
   },
   {
-    "pk": "منطقة صناعية"
+    "pk": "منطقة صناعية",
+    "label_fr": "Zone industrielle",
+    "label_en": "Industrial Zone"
   },
   {
-    "pk": "قطب عمراني"
+    "pk": "قطب عمراني",
+    "label_fr": "Pôle urbain",
+    "label_en": "Urban Pole"
   },
   {
-    "pk": "منطقة"
+    "pk": "منطقة",
+    "label_fr": "Zone",
+    "label_en": "Zone"
   },
   {
-    "pk": "دوار"
+    "pk": "دوار",
+    "label_fr": "Rond-point",
+    "label_en": "Roundabout"
   },
   {
-    "pk": "قرية"
+    "pk": "قرية",
+    "label_fr": "Village",
+    "label_en": "Village"
   },
   {
-    "pk": "مشتة"
+    "pk": "مشتة",
+    "label_fr": "Hameau",
+    "label_en": "Hamlet"
   },
-
   {
-    "pk": "حي"
+    "pk": "حي",
+    "label_fr": "Quartier",
+    "label_en": "Neighborhood"
   }
-
 ]

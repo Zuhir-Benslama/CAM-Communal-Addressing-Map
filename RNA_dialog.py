@@ -23,8 +23,8 @@
 import os
 from PyQt5.QtCore import Qt, QDate, QSettings
 from PyQt5.QtWidgets import (
-    QCheckBox, QDialog, QGroupBox, QLabel, QPushButton,
-    QVBoxLayout, QHBoxLayout, QComboBox, QWidget,
+    QApplication, QCheckBox, QDialog, QGroupBox, QLabel,
+    QPushButton, QVBoxLayout, QHBoxLayout, QComboBox, QWidget,
 )
 from qgis.PyQt import uic
 from .gui.ui_fillers import (
@@ -33,17 +33,14 @@ from .gui.ui_fillers import (
     fill_road_reference, fill_panel_reference, fill_org_category,
     fill_type_org, fill_activity_category, fill_type_act,
 )
-from .db.writers import (
-    add_road_type, add_type_zone, add_subdivision_type,
-    add_organization_type, add_activity_type,
-)
+
 from .constants import (
-    validate_text, THEME_DARK, THEME_LIGHT, THEMES, DEFAULT_THEME,
+    THEME_DARK, THEME_LIGHT, THEMES, DEFAULT_THEME,
     get_theme_qss, get_dialog_qss,
     SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, SETTINGS_KEY_LOCALE,
     AVAILABLE_LOCALES,
 )
-from .i18n import tr as _i18n_tr
+from .scripts.lookup_data import get_string, apply_widget_texts, clear_i18n_cache
 import logging
 logger = logging.getLogger(__name__)
 
@@ -84,14 +81,15 @@ class RNADialog(
         super(RNADialog, self).__init__(parent)
         self.iface = iface
         self._tr_locale = _load_locale()
+        if self._tr_locale == 'ar':
+            QApplication.setLayoutDirection(Qt.RightToLeft)
+        else:
+            QApplication.setLayoutDirection(Qt.LeftToRight)
         try:
             self.setupUi(self)
         except Exception as e:
             logger.exception("setupUi failed: %s", e)
             raise
-        self._cache_originals()
-        self._apply_translations()
-
         self.sat_view = None
         self.rast = None
 
@@ -203,35 +201,23 @@ class RNADialog(
 
         self.mesure_dist_2.clicked.connect(self.measure_distance2)
 
-        # --- Unified "Add New Type" in settings tab ---
-        self.feature_combo.addItem("طريق", "road")
-        self.feature_combo.addItem("منطقة", "zone")
-        self.feature_combo.addItem("تجزئة", "subdivision")
-        self.feature_combo.addItem("مرفق", "facility")
-        self.feature_combo.addItem("نشاط", "activity")
-        self.feature_combo.currentIndexChanged.connect(self._on_feature_changed)
-        self.add_type_btn.clicked.connect(self._add_new_type)
-        self._on_feature_changed(0)
-
         self._current_theme = DEFAULT_THEME
         self.setup_settings_ui()
-        self._cache_originals()
-        self._apply_translations()
+        apply_widget_texts(self, self._tr_locale)
         self.apply_theme()
 
     def _tr(self, source: str) -> str:
-        return _i18n_tr(source, self._tr_locale)
+        return get_string(source, self._tr_locale)
 
     def setup_settings_ui(self) -> None:
         s = QSettings(SETTINGS_ORG, SETTINGS_APP)
 
-        self._settings_group = QGroupBox(self._tr("الإعدادات"))
+        self._settings_group = QGroupBox(get_string("الإعدادات", self._tr_locale))
         self._settings_group.setObjectName("_settings_group")
         self._settings_group.setLayout(QVBoxLayout())
 
-        # --- Theme ---
         theme_row = QHBoxLayout()
-        self._theme_label = QLabel(self._tr("المظهر:"))
+        self._theme_label = QLabel(get_string("المظهر:", self._tr_locale))
         self._theme_label.setObjectName("_theme_label")
         theme_row.addWidget(self._theme_label)
         self._theme_combo = QComboBox()
@@ -246,15 +232,14 @@ class RNADialog(
         theme_row.addWidget(self._theme_combo)
         self._settings_group.layout().addLayout(theme_row)
 
-        # --- Locale ---
         locale_row = QHBoxLayout()
-        self._locale_label = QLabel(self._tr("اللغة:"))
+        self._locale_label = QLabel(get_string("اللغة:", self._tr_locale))
         self._locale_label.setObjectName("_locale_label")
         locale_row.addWidget(self._locale_label)
         self._locale_combo = QComboBox()
         for code, label in AVAILABLE_LOCALES:
             self._locale_combo.addItem(label, code)
-        self._locale_combo.currentIndexChanged.connect(self._on_locale_changed)
+        self._locale_combo.currentIndexChanged[int].connect(self._on_locale_changed)
         self._locale_combo.blockSignals(True)
         saved_locale = s.value(SETTINGS_KEY_LOCALE, "")
         if saved_locale:
@@ -267,119 +252,38 @@ class RNADialog(
 
         self.scrollAreaWidgetContents_2.layout().addWidget(self._settings_group)
 
-    def _cache_originals(self) -> None:
-        for w in self.findChildren((QLabel, QPushButton, QCheckBox)):
-            t = w.text()
-            if t and any('\u0600' <= c <= '\u06FF' for c in t) and not w.property("_rna_src"):
-                w.setProperty("_rna_src", t)
-        for w in self.findChildren(QGroupBox):
-            t = w.title()
-            if t and any('\u0600' <= c <= '\u06FF' for c in t) and not w.property("_rna_src"):
-                w.setProperty("_rna_src", t)
-        for w in self.findChildren(QWidget):
-            t = w.toolTip()
-            if t and any('\u0600' <= c <= '\u06FF' for c in t) and not w.property("_rna_tip"):
-                w.setProperty("_rna_tip", t)
-
-    def _apply_translations(self) -> None:
-        for w in self.findChildren((QLabel, QPushButton, QCheckBox)):
-            try:
-                s = w.property("_rna_src")
-                if s:
-                    w.setText(self._tr(s))
-            except Exception as e:
-                logger.warning("_tr %s: %s", w.objectName(), e)
-        for w in self.findChildren(QGroupBox):
-            try:
-                s = w.property("_rna_src")
-                if s:
-                    w.setTitle(self._tr(s))
-            except Exception as e:
-                logger.warning("_tr %s: %s", w.objectName(), e)
-        for w in self.findChildren(QWidget):
-            try:
-                s = w.property("_rna_tip")
-                if s:
-                    w.setToolTip(self._tr(s))
-            except Exception as e:
-                logger.warning("_tr %s: %s", w.objectName(), e)
-
     def _on_theme_changed(self, theme_name: str) -> None:
         self._current_theme = theme_name
         s = QSettings(SETTINGS_ORG, SETTINGS_APP)
         s.setValue(SETTINGS_KEY_THEME, theme_name)
         self.apply_theme()
 
-    def _on_locale_changed(self, *args) -> None:
+    def _on_locale_changed(self, idx: int) -> None:
         code = self._locale_combo.currentData()
         if not code:
             return
         s = QSettings(SETTINGS_ORG, SETTINGS_APP)
         s.setValue(SETTINGS_KEY_LOCALE, code)
         self._tr_locale = code
-        from .i18n import _cache
-        _cache.clear()
-        self._apply_translations()
+        clear_i18n_cache()
+        apply_widget_texts(self, code)
+        fill_wilayas_list(self.wilaya_list)
         fill_road_type(self.type_voie)
         fill_type_zone(self.type_zone)
         fill_subdivision_type(self.type_city)
         fill_mounting_status(self.etat_mont)
         fill_numbering_state(self.num_etat)
         fill_paper(self.paper)
+        fill_org_category(self.cat_org)
+        fill_activity_category(self.cat_act)
+        if code == 'ar':
+            QApplication.setLayoutDirection(Qt.RightToLeft)
+        else:
+            QApplication.setLayoutDirection(Qt.LeftToRight)
 
     def apply_theme(self) -> None:
         theme = self._current_theme
         qss = get_theme_qss(theme)
         self.setStyleSheet(qss)
 
-    def _on_feature_changed(self, index: int) -> None:
-        feature = self.feature_combo.itemData(index)
-        has_subtype = feature in ("facility", "activity")
-        self.label_subtype.setVisible(has_subtype)
-        self.subtype_combo.setVisible(has_subtype)
-        self.label_subsubtype.setVisible(has_subtype)
-        self.subsubtype_combo.setVisible(has_subtype)
-        if has_subtype:
-            self.subtype_combo.clear()
-            self.subsubtype_combo.clear()
-            if feature == "facility":
-                fill_org_category(self.subtype_combo)
-            else:
-                fill_activity_category(self.subtype_combo)
 
-    def _add_new_type(self) -> None:
-        feature = self.feature_combo.currentData()
-        type_name = validate_text(self.new_type.text())
-        has_subtype = feature in ("facility", "activity")
-        subtype = self.subtype_combo.currentText() if has_subtype else ""
-        subsubtype = self.subsubtype_combo.text() if has_subtype else ""
-
-        if feature == "road":
-            if type_name:
-                add_road_type(type_name)
-                self.new_type.clear()
-                fill_road_type(self.type_voie)
-        elif feature == "zone":
-            if type_name:
-                add_type_zone(type_name)
-                self.new_type.clear()
-                fill_type_zone(self.type_zone)
-        elif feature == "subdivision":
-            if type_name:
-                add_subdivision_type(type_name)
-                self.new_type.clear()
-                fill_subdivision_type(self.type_city)
-        elif feature == "facility":
-            if type_name and subtype:
-                add_organization_type(type_name, subtype, subsubtype)
-                self.new_type.clear()
-                fill_org_category(self.cat_org)
-                fill_type_org(self.type_org, self.cat_org.itemData(0))
-                fill_org_category(self.subtype_combo)
-        elif feature == "activity":
-            if type_name and subtype:
-                add_activity_type(subtype, type_name, subsubtype)
-                self.new_type.clear()
-                fill_activity_category(self.cat_act)
-                fill_type_act(self.type_act, self.cat_act.itemData(0))
-                fill_activity_category(self.subtype_combo)

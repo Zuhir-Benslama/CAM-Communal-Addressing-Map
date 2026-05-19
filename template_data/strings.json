@@ -1,0 +1,1887 @@
+{
+  ":  فئة": {
+    "ar": ":  فئة",
+    "fr": "Catégorie :",
+    "en": "Category:"
+  },
+  ": اسم": {
+    "ar": ": اسم",
+    "fr": "Nom :",
+    "en": "Name:"
+  },
+  ": اسم المستخدم": {
+    "ar": ": اسم المستخدم",
+    "fr": "Nom d'utilisateur :",
+    "en": "Username:"
+  },
+  ": توافر الشكل الهندسي": {
+    "ar": ": توافر الشكل الهندسي",
+    "fr": "Disponibilité géométrie :",
+    "en": "Geometry Status:"
+  },
+  ": حالة التركيب": {
+    "ar": ": حالة التركيب",
+    "fr": "État de montage :",
+    "en": "Mounting Status:"
+  },
+  ": حدد الخريطة": {
+    "ar": ": حدد الخريطة",
+    "fr": "Sélectionner la carte :",
+    "en": "Select Map:"
+  },
+  ": رقم": {
+    "ar": ": رقم",
+    "fr": "Numéro :",
+    "en": "Number:"
+  },
+  ": رقم القرار": {
+    "ar": ": رقم القرار",
+    "fr": "N° de décision :",
+    "en": "Decision No.:"
+  },
+  ": فئة": {
+    "ar": ": فئة",
+    "fr": "Catégorie :",
+    "en": "Category:"
+  },
+  ": كلمة السر": {
+    "ar": ": كلمة السر",
+    "fr": "Mot de passe :",
+    "en": "Password:"
+  },
+  ": مكرر": {
+    "ar": ": مكرر",
+    "fr": "Doublon :",
+    "en": "Duplicate:"
+  },
+  ": نوع": {
+    "ar": ": نوع",
+    "fr": "Type :",
+    "en": "Type:"
+  },
+  ": نوع التجزئة": {
+    "ar": ": نوع التجزئة",
+    "fr": "Type de lotissement :",
+    "en": "Subdivision Type:"
+  },
+  ": نوع الطريق": {
+    "ar": ": نوع الطريق",
+    "fr": "Type de voie :",
+    "en": "Road Type:"
+  },
+  ": نوع المرجع": {
+    "ar": ": نوع المرجع",
+    "fr": "Type de référence :",
+    "en": "Reference Type:"
+  },
+  ": نوع المنطقة": {
+    "ar": ": نوع المنطقة",
+    "fr": "Type de zone :",
+    "en": "Zone Type:"
+  },
+  ":حالة": {
+    "ar": ":حالة",
+    "fr": "État :",
+    "en": "Status:"
+  },
+  "<html><head/><body><p align=\"justify\">حفظ المعلومات والشكل الهندسي في قاعدة البيانات</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"justify\">حفظ المعلومات والشكل الهندسي في قاعدة البيانات</p></body></html>",
+    "fr": "<html><head/><body><p align=\"justify\">Enregistrer les informations et la géométrie dans la base de données</p></body></html>",
+    "en": "<html><head/><body><p align=\"justify\">Save information and geometry to the database</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\"> رقم القرار الخاص بالتكريس</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\"> رقم القرار الخاص بالتكريس</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">N° de décision de consécration</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Decision number for dedication</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">إنشاء نسخة من قاعدة البيانات</p><p align=\"right\"> لاسترادها في حالة حدوث خطأ</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">إنشاء نسخة من قاعدة البيانات</p><p align=\"right\"> لاسترادها في حالة حدوث خطأ</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Créer une copie de sauvegarde de la base de données</p><p align=\"right\"> pour la restaurer en cas d'erreur</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Create a backup of the database</p><p align=\"right\"> to restore it in case of error</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">ارسم الشكل الهندسي للطريق</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">ارسم الشكل الهندسي للطريق</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Dessiner la géométrie de la voie</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Draw the road geometry</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">ارسم الشكل الهندسي للمنطقة</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">ارسم الشكل الهندسي للمنطقة</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Dessiner la géométrie de la zone</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Draw the zone geometry</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">الأحياء</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">الأحياء</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Lotissements</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Subdivisions</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">المرافق</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">المرافق</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Équipements</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Facilities</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">المناطق</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">المناطق</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Zones</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Zones</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">تحديث الشكل الهندسي للطريق</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">تحديث الشكل الهندسي للطريق</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Mettre à jour la géométrie de la voie</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Update the road geometry</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">تحديث الشكل الهندسي للمنطقة</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">تحديث الشكل الهندسي للمنطقة</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Mettre à jour la géométrie de la zone</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Update the zone geometry</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">تحديد الطريق على الخريطة لحذفه أو تحديث المعلومات المتعلقة به</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">تحديد الطريق على الخريطة لحذفه أو تحديث المعلومات المتعلقة به</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Sélectionner la voie sur la carte pour la supprimer ou mettre à jour ses informations</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Select the road on the map to delete or update its information</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">تحديد المنطقة على الخريطة لحذفها أو تحديث المعلومات المتعلقة بها</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">تحديد المنطقة على الخريطة لحذفها أو تحديث المعلومات المتعلقة بها</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Sélectionner la zone sur la carte pour la supprimer ou mettre à jour ses informations</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Select the zone on the map to delete or update its information</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">حدد نوع الطريق</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">حدد نوع الطريق</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Sélectionner le type de voie</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Select road type</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">حدد نوع المنطقة</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">حدد نوع المنطقة</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Sélectionner le type de zone</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Select zone type</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">حفظ المعلومات والشكل الهندسي في قاعدة البيانات</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">حفظ المعلومات والشكل الهندسي في قاعدة البيانات</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Enregistrer les informations et la géométrie dans la base de données</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Save information and geometry to the database</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">عرض قائمة التجزئات</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">عرض قائمة التجزئات</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Afficher la liste des lotissements</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">View subdivisions list</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">عرض قائمة الطرق</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">عرض قائمة الطرق</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Afficher la liste des voies</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">View road list</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">عرض قائمة اللوحات</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">عرض قائمة اللوحات</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Afficher la liste des panneaux</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">View panels list</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">عرض قائمة المداخل</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">عرض قائمة المداخل</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Afficher la liste des entrées</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">View entrances list</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">عرض قائمة المرافق</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">عرض قائمة المرافق</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Afficher la liste des équipements</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">View facilities list</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">في حالة حدوث خطأ يمكنك استعادة الإصدار السابق من قاعدة البيانات</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">في حالة حدوث خطأ يمكنك استعادة الإصدار السابق من قاعدة البيانات</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">En cas d'erreur, vous pouvez restaurer la version précédente de la base de données</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">In case of error, you can restore the previous version of the database</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">مؤشر توافر الشكل الهندسي للحي</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">مؤشر توافر الشكل الهندسي للحي</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Disponibilité géométrie lotissement</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Subdivision geometry availability</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">مؤشر توافر الشكل الهندسي للطريق</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">مؤشر توافر الشكل الهندسي للطريق</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Disponibilité géométrie voie</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Road geometry availability</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">مؤشر توافر الشكل الهندسي للمدخل</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">مؤشر توافر الشكل الهندسي للمدخل</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Disponibilité géométrie entrée</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Entrance geometry availability</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">مؤشر توافر الشكل الهندسي للمرفق</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">مؤشر توافر الشكل الهندسي للمرفق</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Disponibilité géométrie équipement</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Facility geometry availability</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">مؤشر توافر الشكل الهندسي للمنطقة</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">مؤشر توافر الشكل الهندسي للمنطقة</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Disponibilité géométrie zone</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">Zone geometry availability</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">يجب ألا يكون اسم الحي متسلسلا مع نوع الحي مثل<span style=\" font-weight:600;\"> تعاونية البرتقال </span></p><p align=\"right\"><span style=\" font-weight:600;\">نوع الحي : </span>تعاونية</p><p align=\"right\"><span style=\" font-weight:600;\">اسم الحي :</span><span style=\" font-weight:600;\"/>البرتقال</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">يجب ألا يكون اسم الحي متسلسلا مع نوع الحي مثل<span style=\" font-weight:600;\"> تعاونية البرتقال </span></p><p align=\"right\"><span style=\" font-weight:600;\">نوع الحي : </span>تعاونية</p><p align=\"right\"><span style=\" font-weight:600;\">اسم الحي :</span><span style=\" font-weight:600;\"/>البرتقال</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Le nom du lotissement ne doit pas être concaténé avec le type de lotissement comme<span style=\" font-weight:600;\"> Cooperatie El Bortokal </span></p><p align=\"right\"><span style=\" font-weight:600;\">Type de lotissement : </span>Cooperatie</p><p align=\"right\"><span style=\" font-weight:600;\">Nom de lotissement :</span><span style=\" font-weight:600;\"/>El Bortokal</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">The subdivision name should not be concatenated with the subdivision type e.g.<span style=\" font-weight:600;\"> Cooperatie El Bortokal </span></p><p align=\"right\"><span style=\" font-weight:600;\">Subdivision Type :</span> Cooperatie</p><p align=\"right\"><span style=\" font-weight:600;\">Subdivision Name :</span> El Bortokal</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">يجب ألا يكون اسم الطريق متسلسلا مع نوع الطريق مثل<span style=\" font-weight:600;\"> شارع ديدوش مراد </span></p><p align=\"right\"><span style=\" font-weight:600;\">نوع الطريق :</span> شارع</p><p align=\"right\"><span style=\" font-weight:600;\">اسم الطريق :</span> ديدوش مراد</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">يجب ألا يكون اسم الطريق متسلسلا مع نوع الطريق مثل<span style=\" font-weight:600;\"> شارع ديدوش مراد </span></p><p align=\"right\"><span style=\" font-weight:600;\">نوع الطريق :</span> شارع</p><p align=\"right\"><span style=\" font-weight:600;\">اسم الطريق :</span> ديدوش مراد</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Le nom de la voie ne doit pas être concaténé avec le type de voie comme<span style=\" font-weight:600;\"> Rue Didouche Mourad </span></p><p align=\"right\"><span style=\" font-weight:600;\">Type de voie :</span> Rue</p><p align=\"right\"><span style=\" font-weight:600;\">Nom de voie :</span> Didouche Mourad</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">The road name should not be concatenated with the road type e.g.<span style=\" font-weight:600;\"> Rue Didouche Mourad </span></p><p align=\"right\"><span style=\" font-weight:600;\">Road Type :</span> Rue</p><p align=\"right\"><span style=\" font-weight:600;\">Road Name :</span> Didouche Mourad</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">يجب ألا يكون اسم المرفق متسلسلا مع نوع المرفق مثل<span style=\" font-weight:600;\"> مستشفى بشير منتوري </span></p><p align=\"right\"><span style=\" font-weight:600;\">نوع المرفق :</span>مستشفى</p><p align=\"right\"><span style=\" font-weight:600;\">اسم المرفق :</span> شير منتوري</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">يجب ألا يكون اسم المرفق متسلسلا مع نوع المرفق مثل<span style=\" font-weight:600;\"> مستشفى بشير منتوري </span></p><p align=\"right\"><span style=\" font-weight:600;\">نوع المرفق :</span>مستشفى</p><p align=\"right\"><span style=\" font-weight:600;\">اسم المرفق :</span> شير منتوري</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Le nom de l'équipement ne doit pas être concaténé avec le type d'équipement comme<span style=\" font-weight:600;\"> Hôpital Bachir Mentouri </span></p><p align=\"right\"><span style=\" font-weight:600;\">Type d'équipement :</span> Hôpital</p><p align=\"right\"><span style=\" font-weight:600;\">Nom d'équipement :</span> Bachir Mentouri</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">The facility name should not be concatenated with the facility type e.g.<span style=\" font-weight:600;\"> Bachir Mentouri Hospital </span></p><p align=\"right\"><span style=\" font-weight:600;\">Facility Type :</span> Hospital</p><p align=\"right\"><span style=\" font-weight:600;\">Facility Name :</span> Bachir Mentouri</p></body></html>"
+  },
+  "<html><head/><body><p align=\"right\">يجب ألا يكون اسم المنطقة متسلسلا مع نوع المنطقة مثل<span style=\" font-weight:600;\"> منطقة الصناعية دار البيضاء</span></p><p align=\"right\"><span style=\" font-weight:600;\">نوع منطقة :</span> منطقة صناعية</p><p align=\"right\"><span style=\" font-weight:600;\">اسم منطقة :</span> دار البيضاء</p></body></html>": {
+    "ar": "<html><head/><body><p align=\"right\">يجب ألا يكون اسم المنطقة متسلسلا مع نوع المنطقة مثل<span style=\" font-weight:600;\"> منطقة الصناعية دار البيضاء</span></p><p align=\"right\"><span style=\" font-weight:600;\">نوع منطقة :</span> منطقة صناعية</p><p align=\"right\"><span style=\" font-weight:600;\">اسم منطقة :</span> دار البيضاء</p></body></html>",
+    "fr": "<html><head/><body><p align=\"right\">Le nom de la zone ne doit pas être concaténé avec le type de zone comme<span style=\" font-weight:600;\"> Zone Industrielle Dar El Beida</span></p><p align=\"right\"><span style=\" font-weight:600;\">Type de zone :</span> Zone Industrielle</p><p align=\"right\"><span style=\" font-weight:600;\">Nom de zone :</span> Dar El Beida</p></body></html>",
+    "en": "<html><head/><body><p align=\"right\">The zone name should not be concatenated with the zone type e.g.<span style=\" font-weight:600;\"> Industrial Zone Dar El Beida</span></p><p align=\"right\"><span style=\" font-weight:600;\">Zone Type :</span> Industrial Zone</p><p align=\"right\"><span style=\" font-weight:600;\">Zone Name :</span> Dar El Beida</p></body></html>"
+  },
+  "<html><head/><body><p>ارسم الشكل الهندسي للحي</p></body></html>": {
+    "ar": "<html><head/><body><p>ارسم الشكل الهندسي للحي</p></body></html>",
+    "fr": "<html><head/><body><p>Dessiner la géométrie du lotissement</p></body></html>",
+    "en": "<html><head/><body><p>Draw the subdivision geometry</p></body></html>"
+  },
+  "<html><head/><body><p>ارسم الشكل الهندسي للمدخل</p><p><br/></p></body></html>": {
+    "ar": "<html><head/><body><p>ارسم الشكل الهندسي للمدخل</p><p><br/></p></body></html>",
+    "fr": "<html><head/><body><p>Dessiner la géométrie de l'entrée</p><p><br/></p></body></html>",
+    "en": "<html><head/><body><p>Draw the entrance geometry</p><p><br/></p></body></html>"
+  },
+  "<html><head/><body><p>ارسم الشكل الهندسي للمرفق</p></body></html>": {
+    "ar": "<html><head/><body><p>ارسم الشكل الهندسي للمرفق</p></body></html>",
+    "fr": "<html><head/><body><p>Dessiner la géométrie de l'équipement</p></body></html>",
+    "en": "<html><head/><body><p>Draw the facility geometry</p></body></html>"
+  },
+  "<html><head/><body><p>اسم المستخدم <span style=\" color:red;\">*</span>:</p></body></html>": {
+    "ar": "<html><head/><body><p>اسم المستخدم <span style=\" color:red;\">*</span>:</p></body></html>",
+    "fr": "<html><head/><body><p>Nom d'utilisateur <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>Username <span style=\" color:red;\">*</span>:</p></body></html>"
+  },
+  "<html><head/><body><p>اعدادات</p></body></html>": {
+    "ar": "<html><head/><body><p>اعدادات</p></body></html>",
+    "fr": "<html><head/><body><p>Paramètres</p></body></html>",
+    "en": "<html><head/><body><p>Settings</p></body></html>"
+  },
+  "<html><head/><body><p>الاسم <span style=\" color:red;\">*</span> :</p></body></html>": {
+    "ar": "<html><head/><body><p>الاسم <span style=\" color:red;\">*</span> :</p></body></html>",
+    "fr": "<html><head/><body><p>Nom <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>First name <span style=\" color:red;\">*</span> :</p></body></html>"
+  },
+  "<html><head/><body><p>البريد الإلكتروني <span style=\" color:red;\">*</span>:</p></body></html>": {
+    "ar": "<html><head/><body><p>البريد الإلكتروني <span style=\" color:red;\">*</span>:</p></body></html>",
+    "fr": "<html><head/><body><p>E-mail <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>Email <span style=\" color:red;\">*</span>:</p></body></html>"
+  },
+  "<html><head/><body><p>البلدية <span style=\" color:red;\">*</span>:</p></body></html>": {
+    "ar": "<html><head/><body><p>البلدية <span style=\" color:red;\">*</span>:</p></body></html>",
+    "fr": "<html><head/><body><p>Municipalité <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>Municipality <span style=\" color:red;\">*</span>:</p></body></html>"
+  },
+  "<html><head/><body><p>الترقيم</p></body></html>": {
+    "ar": "<html><head/><body><p>الترقيم</p></body></html>",
+    "fr": "<html><head/><body><p>Numérotation</p></body></html>",
+    "en": "<html><head/><body><p>Numbering</p></body></html>"
+  },
+  "<html><head/><body><p>الطرق</p></body></html>": {
+    "ar": "<html><head/><body><p>الطرق</p></body></html>",
+    "fr": "<html><head/><body><p>Voies</p></body></html>",
+    "en": "<html><head/><body><p>Roads</p></body></html>"
+  },
+  "<html><head/><body><p>اللقب <span style=\" color:red;\">*</span>:</p></body></html>": {
+    "ar": "<html><head/><body><p>اللقب <span style=\" color:red;\">*</span>:</p></body></html>",
+    "fr": "<html><head/><body><p>Prénom <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>Surname <span style=\" color:red;\">*</span>:</p></body></html>"
+  },
+  "<html><head/><body><p>اللوحات</p></body></html>": {
+    "ar": "<html><head/><body><p>اللوحات</p></body></html>",
+    "fr": "<html><head/><body><p>Panneaux</p></body></html>",
+    "en": "<html><head/><body><p>Panels</p></body></html>"
+  },
+  "<html><head/><body><p>الولاية <span style=\" color:red;\">*</span>:</p></body></html>": {
+    "ar": "<html><head/><body><p>الولاية <span style=\" color:red;\">*</span>:</p></body></html>",
+    "fr": "<html><head/><body><p>Wilaya <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>Wilaya <span style=\" color:red;\">*</span>:</p></body></html>"
+  },
+  "<html><head/><body><p>تحديث الشكل الهندسي للحي</p></body></html>": {
+    "ar": "<html><head/><body><p>تحديث الشكل الهندسي للحي</p></body></html>",
+    "fr": "<html><head/><body><p>Mettre à jour la géométrie du lotissement</p></body></html>",
+    "en": "<html><head/><body><p>Update the subdivision geometry</p></body></html>"
+  },
+  "<html><head/><body><p>تحديث الشكل الهندسي للمدخل</p></body></html>": {
+    "ar": "<html><head/><body><p>تحديث الشكل الهندسي للمدخل</p></body></html>",
+    "fr": "<html><head/><body><p>Mettre à jour la géométrie de l'entrée</p></body></html>",
+    "en": "<html><head/><body><p>Update the entrance geometry</p></body></html>"
+  },
+  "<html><head/><body><p>تحديث الشكل الهندسي للمرفق</p></body></html>": {
+    "ar": "<html><head/><body><p>تحديث الشكل الهندسي للمرفق</p></body></html>",
+    "fr": "<html><head/><body><p>Mettre à jour la géométrie de l'équipement</p></body></html>",
+    "en": "<html><head/><body><p>Update the facility geometry</p></body></html>"
+  },
+  "<html><head/><body><p>تحديد الحي على الخريطة لحذفه أو تحديث المعلومات المتعلقة به</p></body></html>": {
+    "ar": "<html><head/><body><p>تحديد الحي على الخريطة لحذفه أو تحديث المعلومات المتعلقة به</p></body></html>",
+    "fr": "<html><head/><body><p>Sélectionner le lotissement sur la carte pour le supprimer ou mettre à jour ses informations</p></body></html>",
+    "en": "<html><head/><body><p>Select the subdivision on the map to delete or update its information</p></body></html>"
+  },
+  "<html><head/><body><p>تحديد المدخل على الخريطة لحذفه أو تحديث المعلومات المتعلقة به</p></body></html>": {
+    "ar": "<html><head/><body><p>تحديد المدخل على الخريطة لحذفه أو تحديث المعلومات المتعلقة به</p></body></html>",
+    "fr": "<html><head/><body><p>Sélectionner l'entrée sur la carte pour la supprimer ou mettre à jour ses informations</p></body></html>",
+    "en": "<html><head/><body><p>Select the entrance on the map to delete or update its information</p></body></html>"
+  },
+  "<html><head/><body><p>تحديد المرفق على الخريطة لحذفه أو تحديث المعلومات المتعلقة به</p><p><br/></p></body></html>": {
+    "ar": "<html><head/><body><p>تحديد المرفق على الخريطة لحذفه أو تحديث المعلومات المتعلقة به</p><p><br/></p></body></html>",
+    "fr": "<html><head/><body><p>Sélectionner l'équipement sur la carte pour le supprimer ou mettre à jour ses informations</p><p><br/></p></body></html>",
+    "en": "<html><head/><body><p>Select the facility on the map to delete or update its information</p><p><br/></p></body></html>"
+  },
+  "<html><head/><body><p>تقرير</p></body></html>": {
+    "ar": "<html><head/><body><p>تقرير</p></body></html>",
+    "fr": "<html><head/><body><p>Rapport</p></body></html>",
+    "en": "<html><head/><body><p>Report</p></body></html>"
+  },
+  "<html><head/><body><p>حدد نوع الحي</p></body></html>": {
+    "ar": "<html><head/><body><p>حدد نوع الحي</p></body></html>",
+    "fr": "<html><head/><body><p>Sélectionner le type de lotissement</p></body></html>",
+    "en": "<html><head/><body><p>Select subdivision type</p></body></html>"
+  },
+  "<html><head/><body><p>حدد نوع المرفق</p></body></html>": {
+    "ar": "<html><head/><body><p>حدد نوع المرفق</p></body></html>",
+    "fr": "<html><head/><body><p>Sélectionner le type d'équipement</p></body></html>",
+    "en": "<html><head/><body><p>Select facility type</p></body></html>"
+  },
+  "<html><head/><body><p>رقم الهاتف <span style=\" color:red;\">*</span>:</p></body></html>": {
+    "ar": "<html><head/><body><p>رقم الهاتف <span style=\" color:red;\">*</span>:</p></body></html>",
+    "fr": "<html><head/><body><p>Téléphone <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>Phone number <span style=\" color:red;\">*</span>:</p></body></html>"
+  },
+  "<html><head/><body><p>قياس المسافة</p></body></html>": {
+    "ar": "<html><head/><body><p>قياس المسافة</p></body></html>",
+    "fr": "<html><head/><body><p>Mesurer la distance</p></body></html>",
+    "en": "<html><head/><body><p>Measure distance</p></body></html>"
+  },
+  "<html><head/><body><p>كلمة السر <span style=\" color:red;\">*</span>:</p></body></html>": {
+    "ar": "<html><head/><body><p>كلمة السر <span style=\" color:red;\">*</span>:</p></body></html>",
+    "fr": "<html><head/><body><p>Mot de passe <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>Password <span style=\" color:red;\">*</span>:</p></body></html>"
+  },
+  "إضافة مستخدم": {
+    "ar": "إضافة مستخدم",
+    "fr": "Ajouter un utilisateur",
+    "en": "Add User"
+  },
+  "إعادة تحديث القياس": {
+    "ar": "إعادة تحديث القياس",
+    "fr": "Réinitialiser la mesure",
+    "en": "Reset measurement"
+  },
+  "إقامة": {
+    "ar": "إقامة",
+    "fr": "Résidence",
+    "en": "Residence"
+  },
+  "إلغاء": {
+    "ar": "إلغاء",
+    "fr": "Annuler",
+    "en": "Cancel"
+  },
+  "إنشاء التقرير": {
+    "ar": "إنشاء التقرير",
+    "fr": "Générer le rapport",
+    "en": "Generate Report"
+  },
+  "إنشاء الخريطة": {
+    "ar": "إنشاء الخريطة",
+    "fr": "Générer la carte",
+    "en": "Generate Map"
+  },
+  "إنشاء خريطة الترقيم": {
+    "ar": "إنشاء خريطة الترقيم",
+    "fr": "Carte de numérotation",
+    "en": "Generate Numbering Map"
+  },
+  "إنشاء خريطة اللوحات": {
+    "ar": "إنشاء خريطة اللوحات",
+    "fr": "Carte des panneaux",
+    "en": "Generate Panels Map"
+  },
+  "إنشاء قاعدة بيانات المصادقة": {
+    "ar": "إنشاء قاعدة بيانات المصادقة",
+    "fr": "Créer la base de données d'authentification",
+    "en": "Create auth database"
+  },
+  "إنشاء نسخة احتياطية لقاعدة البيانات": {
+    "ar": "إنشاء نسخة احتياطية لقاعدة البيانات",
+    "fr": "Créer une sauvegarde BD",
+    "en": "Create Database Backup"
+  },
+  "إنهاء": {
+    "ar": "إنهاء",
+    "fr": "Terminer",
+    "en": "Finish"
+  },
+  "ابدأ الرسم": {
+    "ar": "ابدأ الرسم",
+    "fr": "Commencer le dessin",
+    "en": "Start Drawing"
+  },
+  "ارسم التجزئة": {
+    "ar": "ارسم التجزئة",
+    "fr": "Dessiner le lotissement",
+    "en": "Draw Subdivision"
+  },
+  "ارسم الطريق": {
+    "ar": "ارسم الطريق",
+    "fr": "Dessiner la voie",
+    "en": "Draw Road"
+  },
+  "ارسم المدخل": {
+    "ar": "ارسم المدخل",
+    "fr": "Dessiner l'entrée",
+    "en": "Draw Entrance"
+  },
+  "ارسم المرفق": {
+    "ar": "ارسم المرفق",
+    "fr": "Dessiner l'équipement",
+    "en": "Draw Facility"
+  },
+  "ارسم المنطقة": {
+    "ar": "ارسم المنطقة",
+    "fr": "Dessiner la zone",
+    "en": "Draw Zone"
+  },
+  "استعادة قاعدة البيانات": {
+    "ar": "استعادة قاعدة البيانات",
+    "fr": "Restaurer la base de données",
+    "en": "Restore Database"
+  },
+  "اسم": {
+    "ar": "اسم",
+    "fr": "Nom",
+    "en": "Name"
+  },
+  "اعدادات": {
+    "ar": "اعدادات",
+    "fr": "Paramètres",
+    "en": "Settings"
+  },
+  "الأبعاد": {
+    "ar": "الأبعاد",
+    "fr": "Dimensions",
+    "en": "Dimensions"
+  },
+  "الإعدادات": {
+    "ar": "الإعدادات",
+    "fr": "Paramètres",
+    "en": "Settings"
+  },
+  "التاريخ": {
+    "ar": "التاريخ",
+    "fr": "Date",
+    "en": "Date"
+  },
+  "التالي": {
+    "ar": "التالي",
+    "fr": "Suivant",
+    "en": "Next"
+  },
+  "التجزئات": {
+    "ar": "التجزئات",
+    "fr": "Lotissements",
+    "en": "Subdivisions"
+  },
+  "التجزئة": {
+    "ar": "التجزئة",
+    "fr": "Lotissement",
+    "en": "Subdivision"
+  },
+  "الترقيم": {
+    "ar": "الترقيم",
+    "fr": "Numérotation",
+    "en": "Numbering"
+  },
+  "التوزيع حسب الوضعية": {
+    "ar": "التوزيع حسب الوضعية",
+    "fr": "Répartition par statut",
+    "en": "Distribution by Status"
+  },
+  "التوزيع حسب حالة الترقيم": {
+    "ar": "التوزيع حسب حالة الترقيم",
+    "fr": "Répartition par état de numérotation",
+    "en": "Distribution by Numbering State"
+  },
+  "الحالة": {
+    "ar": "الحالة",
+    "fr": "Statut",
+    "en": "Status"
+  },
+  "الخروج": {
+    "ar": "الخروج",
+    "fr": "Quitter",
+    "en": "Logout"
+  },
+  "الدخول": {
+    "ar": "الدخول",
+    "fr": "Connexion",
+    "en": "Login"
+  },
+  "السابق": {
+    "ar": "السابق",
+    "fr": "Précédent",
+    "en": "Previous"
+  },
+  "الصفحة": {
+    "ar": "الصفحة",
+    "fr": "Page",
+    "en": "Page"
+  },
+  "الطرق": {
+    "ar": "الطرق",
+    "fr": "Voies",
+    "en": "Roads"
+  },
+  "الطريق": {
+    "ar": "الطريق",
+    "fr": "Voie",
+    "en": "Road"
+  },
+  "الطريق موجود بالفعل": {
+    "ar": "الطريق موجود بالفعل",
+    "fr": "La voie existe déjà",
+    "en": "Road already exists"
+  },
+  "العدد": {
+    "ar": "العدد",
+    "fr": "Nombre",
+    "en": "Count"
+  },
+  "القطاع": {
+    "ar": "القطاع",
+    "fr": "Secteur",
+    "en": "Sector"
+  },
+  "اللغة:": {
+    "ar": "اللغة:",
+    "fr": "Langue :",
+    "en": "Language:"
+  },
+  "اللواحات": {
+    "ar": "اللواحات",
+    "fr": "Panneaux",
+    "en": "Panels"
+  },
+  "اللوحات": {
+    "ar": "اللوحات",
+    "fr": "Panneaux",
+    "en": "Panels"
+  },
+  "المداخل": {
+    "ar": "المداخل",
+    "fr": "Entrées",
+    "en": "Entrances"
+  },
+  "المرافق": {
+    "ar": "المرافق",
+    "fr": "Équipements",
+    "en": "Facilities"
+  },
+  "المرفق": {
+    "ar": "المرفق",
+    "fr": "Équipement",
+    "en": "Facility"
+  },
+  "المسافة الإجمالية": {
+    "ar": "المسافة الإجمالية",
+    "fr": "Distance totale",
+    "en": "Total Distance"
+  },
+  "المظهر:": {
+    "ar": "المظهر:",
+    "fr": "Thème :",
+    "en": "Theme:"
+  },
+  "المفتاح": {
+    "ar": "المفتاح",
+    "fr": "ID",
+    "en": "ID"
+  },
+  "الملف المحدد ليس قاعدة بيانات": {
+    "ar": "الملف المحدد ليس قاعدة بيانات",
+    "fr": "Le fichier sélectionné n'est pas une base de données",
+    "en": "Selected file is not a database"
+  },
+  "الملف المحدد ليس قاعدة بيانات SQLite صالحة": {
+    "ar": "الملف المحدد ليس قاعدة بيانات SQLite صالحة",
+    "fr": "Le fichier sélectionné n'est pas une base SQLite valide",
+    "en": "Selected file is not a valid SQLite database"
+  },
+  "المناطق": {
+    "ar": "المناطق",
+    "fr": "Zones",
+    "en": "Zones"
+  },
+  "المنطقة موجودة بالفعل": {
+    "ar": "المنطقة موجودة بالفعل",
+    "fr": "La zone existe déjà",
+    "en": "Zone already exists"
+  },
+  "الموقع": {
+    "ar": "الموقع",
+    "fr": "Emplacement",
+    "en": "Location"
+  },
+  "النسخ الاحتياطي لقاعدة البيانات": {
+    "ar": "النسخ الاحتياطي لقاعدة البيانات",
+    "fr": "Sauvegarde BD",
+    "en": "Database Backup"
+  },
+  "النشاط المرافق بالمدخل": {
+    "ar": "النشاط المرافق بالمدخل",
+    "fr": "Activité liée à l'entrée",
+    "en": "Entrance-related Activity"
+  },
+  "النوع": {
+    "ar": "النوع",
+    "fr": "Type",
+    "en": "Type"
+  },
+  "الوضعية": {
+    "ar": "الوضعية",
+    "fr": "Statut",
+    "en": "Status"
+  },
+  "بدون نشاط": {
+    "ar": "بدون نشاط",
+    "fr": "Aucune activité",
+    "en": "No Activity"
+  },
+  "بلديتي": {
+    "ar": "بلديتي",
+    "fr": "Ma Municipalité",
+    "en": "My Municipality"
+  },
+  "تجزئة": {
+    "ar": "تجزئة",
+    "fr": "Lotissement",
+    "en": "Subdivision"
+  },
+  "تحديث": {
+    "ar": "تحديث",
+    "fr": "Mettre à jour",
+    "en": "Update"
+  },
+  "تحديث التجزئة": {
+    "ar": "تحديث التجزئة",
+    "fr": "Mettre à jour le lotissement",
+    "en": "Update Subdivision"
+  },
+  "تحديث الطريق": {
+    "ar": "تحديث الطريق",
+    "fr": "Mettre à jour la voie",
+    "en": "Update Road"
+  },
+  "تحديث المدخل": {
+    "ar": "تحديث المدخل",
+    "fr": "Mettre à jour l'entrée",
+    "en": "Update Entrance"
+  },
+  "تحديث المرفق": {
+    "ar": "تحديث المرفق",
+    "fr": "Mettre à jour l'équipement",
+    "en": "Update Facility"
+  },
+  "تحديث المنطقة": {
+    "ar": "تحديث المنطقة",
+    "fr": "Mettre à jour la zone",
+    "en": "Update Zone"
+  },
+  "تريد مسح خط القياس ؟": {
+    "ar": "تريد مسح خط القياس ؟",
+    "fr": "Effacer la ligne de mesure ?",
+    "en": "Clear measurement line?"
+  },
+  "تسجيل الدخول": {
+    "ar": "تسجيل الدخول",
+    "fr": "Se connecter",
+    "en": "Sign In"
+  },
+  "تسمية": {
+    "ar": "تسمية",
+    "fr": "Étiquette",
+    "en": "Label"
+  },
+  "تعاونية": {
+    "ar": "تعاونية",
+    "fr": "Coopérative",
+    "en": "Cooperative"
+  },
+  "تقرير": {
+    "ar": "تقرير",
+    "fr": "Rapport",
+    "en": "Report"
+  },
+  "تقسيم": {
+    "ar": "تقسيم",
+    "fr": "Division",
+    "en": "Division"
+  },
+  "تكرار": {
+    "ar": "تكرار",
+    "fr": "Doublon",
+    "en": "Duplicate"
+  },
+  "تم إنشاء قاعدة بيانات المصادقة": {
+    "ar": "تم إنشاء قاعدة بيانات المصادقة",
+    "fr": "Base de données d'authentification créée",
+    "en": "Auth database created"
+  },
+  "تم إنهاء أداة القياس": {
+    "ar": "تم إنهاء أداة القياس",
+    "fr": "Outil de mesure terminé",
+    "en": "Measurement tool ended"
+  },
+  "تم تحديث هذا الحي بنجاح": {
+    "ar": "تم تحديث هذا الحي بنجاح",
+    "fr": "Lotissement mis à jour avec succès",
+    "en": "Subdivision updated successfully"
+  },
+  "تم تحديث هذا الطريق بنجاح": {
+    "ar": "تم تحديث هذا الطريق بنجاح",
+    "fr": "Voie mise à jour avec succès",
+    "en": "Road updated successfully"
+  },
+  "تم تحديث هذا المدخل بنجاح": {
+    "ar": "تم تحديث هذا المدخل بنجاح",
+    "fr": "Entrée mise à jour avec succès",
+    "en": "Entrance updated successfully"
+  },
+  "تم تحديث هذا المرفق بنجاح": {
+    "ar": "تم تحديث هذا المرفق بنجاح",
+    "fr": "Équipement mis à jour avec succès",
+    "en": "Facility updated successfully"
+  },
+  "تم تحديث هذه اللوحة بنجاح": {
+    "ar": "تم تحديث هذه اللوحة بنجاح",
+    "fr": "Panneau mis à jour avec succès",
+    "en": "Panel updated successfully"
+  },
+  "تم تحديث هذه المنطقة بنجاح": {
+    "ar": "تم تحديث هذه المنطقة بنجاح",
+    "fr": "Zone mise à jour avec succès",
+    "en": "Zone updated successfully"
+  },
+  "تم حفظ تقريرك في مستنداتك": {
+    "ar": "تم حفظ تقريرك في مستنداتك",
+    "fr": "Enregistrer le rapport dans Mes Documents",
+    "en": "Save report in My Documents"
+  },
+  "تم حفظ ملفك في مستنداتي": {
+    "ar": "تم حفظ ملفك في مستنداتي",
+    "fr": "Fichier enregistré dans Mes Documents",
+    "en": "File saved in My Documents"
+  },
+  "تم نسخ الملف بنجاح": {
+    "ar": "تم نسخ الملف بنجاح",
+    "fr": "Fichier copié avec succès",
+    "en": "File copied successfully"
+  },
+  "تمة إظافة   نوع الطريق": {
+    "ar": "تمة إظافة   نوع الطريق",
+    "fr": "Type de voie ajouté",
+    "en": "Road type added"
+  },
+  "تمة إظافة   نوع المنطقة": {
+    "ar": "تمة إظافة   نوع المنطقة",
+    "fr": "Type de zone ajouté",
+    "en": "Zone type added"
+  },
+  "تمة إظافة  نوع التجزئة": {
+    "ar": "تمة إظافة  نوع التجزئة",
+    "fr": "Type de lotissement ajouté",
+    "en": "Subdivision type added"
+  },
+  "تمة إظافة  نوع المرفق": {
+    "ar": "تمة إظافة  نوع المرفق",
+    "fr": "Type d'équipement ajouté",
+    "en": "Facility type added"
+  },
+  "تمة إظافة  نوع النشاط": {
+    "ar": "تمة إظافة  نوع النشاط",
+    "fr": "Type d'activité ajouté",
+    "en": "Activity type added"
+  },
+  "تمت إضافة هذا الحي بنجاح": {
+    "ar": "تمت إضافة هذا الحي بنجاح",
+    "fr": "Lotissement ajouté avec succès",
+    "en": "Subdivision added successfully"
+  },
+  "تمت إضافة هذا الطريق بنجاح": {
+    "ar": "تمت إضافة هذا الطريق بنجاح",
+    "fr": "Voie ajoutée avec succès",
+    "en": "Road added successfully"
+  },
+  "تمت إضافة هذا المدخل بنجاح": {
+    "ar": "تمت إضافة هذا المدخل بنجاح",
+    "fr": "Entrée ajoutée avec succès",
+    "en": "Entrance added successfully"
+  },
+  "تمت إضافة هذا المدخل بنجاح\n هل تمسح خط القياس ؟": {
+    "ar": "تمت إضافة هذا المدخل بنجاح\n هل تمسح خط القياس ؟",
+    "fr": "Entrée ajoutée.\nEffacer la ligne de mesure ?",
+    "en": "Entrance added.\nClear measurement line?"
+  },
+  "تمت إضافة هذا المرفق بنجاح": {
+    "ar": "تمت إضافة هذا المرفق بنجاح",
+    "fr": "Équipement ajouté avec succès",
+    "en": "Facility added successfully"
+  },
+  "تمت إضافة هذه اللوحة بنجاح": {
+    "ar": "تمت إضافة هذه اللوحة بنجاح",
+    "fr": "Panneau ajouté avec succès",
+    "en": "Panel added successfully"
+  },
+  "تمت إضافة هذه اللوحة بنجاح\n هل تريد مسح خط القياس ؟": {
+    "ar": "تمت إضافة هذه اللوحة بنجاح\n هل تريد مسح خط القياس ؟",
+    "fr": "Panneau ajouté.\nEffacer la ligne de mesure ?",
+    "en": "Panel added.\nClear measurement line?"
+  },
+  "تمت إضافة هذه المنطقة بنجاح": {
+    "ar": "تمت إضافة هذه المنطقة بنجاح",
+    "fr": "Zone ajoutée avec succès",
+    "en": "Zone added successfully"
+  },
+  "تمت المتابعة": {
+    "ar": "تمت المتابعة",
+    "fr": "Reprise",
+    "en": "Resumed"
+  },
+  "تمسح خط القياس ؟": {
+    "ar": "تمسح خط القياس ؟",
+    "fr": "Supprimer la ligne de mesure ?",
+    "en": "Delete measurement line?"
+  },
+  "جادة": {
+    "ar": "جادة",
+    "fr": "Boulevard",
+    "en": "Boulevard"
+  },
+  "جسر خاص بالراجلين": {
+    "ar": "جسر خاص بالراجلين",
+    "fr": "Pont piéton",
+    "en": "Pedestrian Bridge"
+  },
+  "جسر مشاة": {
+    "ar": "جسر مشاة",
+    "fr": "Passerelle",
+    "en": "Footbridge"
+  },
+  "حالة": {
+    "ar": "حالة",
+    "fr": "Statut",
+    "en": "Status"
+  },
+  "حدد التجزئة": {
+    "ar": "حدد التجزئة",
+    "fr": "Sélectionner le lotissement",
+    "en": "Select Subdivision"
+  },
+  "حدد الطريق": {
+    "ar": "حدد الطريق",
+    "fr": "Sélectionner la voie",
+    "en": "Select Road"
+  },
+  "حدد المدخل": {
+    "ar": "حدد المدخل",
+    "fr": "Sélectionner l'entrée",
+    "en": "Select Entrance"
+  },
+  "حدد المرجع": {
+    "ar": "حدد المرجع",
+    "fr": "Sélectionner la référence",
+    "en": "Select Reference"
+  },
+  "حدد المرفق": {
+    "ar": "حدد المرفق",
+    "fr": "Sélectionner l'équipement",
+    "en": "Select Facility"
+  },
+  "حدد المنطقة": {
+    "ar": "حدد المنطقة",
+    "fr": "Sélectionner la zone",
+    "en": "Select Zone"
+  },
+  "حدد الهندسة": {
+    "ar": "حدد الهندسة",
+    "fr": "Sélectionner la géométrie",
+    "en": "Select Geometry"
+  },
+  "حفظ": {
+    "ar": "حفظ",
+    "fr": "Enregistrer",
+    "en": "Save"
+  },
+  "حفظ تقريرك في مستنداتك": {
+    "ar": "حفظ تقريرك في مستنداتك",
+    "fr": "Enregistrer le rapport dans Mes Documents",
+    "en": "Save report in My Documents"
+  },
+  "حفظ ملفك في مستنداتي": {
+    "ar": "حفظ ملفك في مستنداتي",
+    "fr": "Enregistrer dans Mes Documents",
+    "en": "Save file in My Documents"
+  },
+  "حي": {
+    "ar": "حي",
+    "fr": "Quartier",
+    "en": "Neighborhood"
+  },
+  "حي سكني": {
+    "ar": "حي سكني",
+    "fr": "Quartier résidentiel",
+    "en": "Residential Neighborhood"
+  },
+  "خريطة ترقيم المداخل أو خريطة اللواحات": {
+    "ar": "خريطة ترقيم المداخل أو خريطة اللواحات",
+    "fr": "Carte de numérotation ou carte des panneaux",
+    "en": "Numbering map or panels map"
+  },
+  "خريطة ترقيم المداخل أو خريطة اللواحات  \n  يجب عليك تحديد نوع الخريطة التي تريد طباعتها": {
+    "ar": "خريطة ترقيم المداخل أو خريطة اللواحات  \n  يجب عليك تحديد نوع الخريطة التي تريد طباعتها",
+    "fr": "Carte de numérotation ou carte des panneaux\nVous devez sélectionner le type de carte à imprimer",
+    "en": "Numbering map or panels map\nYou must select the map type to print"
+  },
+  "داكن": {
+    "ar": "داكن",
+    "fr": "Sombre",
+    "en": "Dark"
+  },
+  "درب": {
+    "ar": "درب",
+    "fr": "Sentier",
+    "en": "Path"
+  },
+  "دوار": {
+    "ar": "دوار",
+    "fr": "Rond-point",
+    "en": "Roundabout"
+  },
+  "رقم": {
+    "ar": "رقم",
+    "fr": "Numéro",
+    "en": "Number"
+  },
+  "رقم القرار": {
+    "ar": "رقم القرار",
+    "fr": "N° décision",
+    "en": "Decision No."
+  },
+  "رقم المخطط": {
+    "ar": "رقم المخطط",
+    "fr": "Numéro du plan",
+    "en": "Plan Number"
+  },
+  "زقاق": {
+    "ar": "زقاق",
+    "fr": "Impasse",
+    "en": "Lane"
+  },
+  "شارع": {
+    "ar": "شارع",
+    "fr": "Rue",
+    "en": "Street"
+  },
+  "شكل هندسي": {
+    "ar": "شكل هندسي",
+    "fr": "Géométrie",
+    "en": "Geometry"
+  },
+  "صالحة": {
+    "ar": "صالحة",
+    "fr": "Valide",
+    "en": "Valid"
+  },
+  "طريق ترابي": {
+    "ar": "طريق ترابي",
+    "fr": "Chemin de terre",
+    "en": "Dirt Road"
+  },
+  "طريق خاص": {
+    "ar": "طريق خاص",
+    "fr": "Voie privée",
+    "en": "Private Road"
+  },
+  "طريق مسدود": {
+    "ar": "طريق مسدود",
+    "fr": "Impasse",
+    "en": "Dead End"
+  },
+  "طريق منحدر": {
+    "ar": "طريق منحدر",
+    "fr": "Route en pente",
+    "en": "Sloped Road"
+  },
+  "طريق وطني": {
+    "ar": "طريق وطني",
+    "fr": "Route nationale",
+    "en": "National Road"
+  },
+  "غير قادر على تسجيل الدخول إلى الخادم أو الصورة غير موجودة": {
+    "ar": "غير قادر على تسجيل الدخول إلى الخادم أو الصورة غير موجودة",
+    "fr": "Impossible de se connecter au serveur ou image introuvable",
+    "en": "Unable to log in to server or image not found"
+  },
+  "فاتح": {
+    "ar": "فاتح",
+    "fr": "Clair",
+    "en": "Light"
+  },
+  "فشل في إنشاء التقرير": {
+    "ar": "فشل في إنشاء التقرير",
+    "fr": "Échec de la création du rapport",
+    "en": "Failed to create report"
+  },
+  "فشل في نسخ الملف": {
+    "ar": "فشل في نسخ الملف",
+    "fr": "Échec de la copie du fichier",
+    "en": "Failed to copy file"
+  },
+  "  قائمة ": {
+    "ar": "  قائمة ",
+    "fr": "Liste des ",
+    "en": "List of "
+  },
+  "قائمة": {
+    "ar": "قائمة",
+    "fr": "Liste des",
+    "en": "List of"
+  },
+  "قائمة التجزئات": {
+    "ar": "قائمة التجزئات",
+    "fr": "Liste des lotissements",
+    "en": "Subdivisions List"
+  },
+  "قائمة الطرق": {
+    "ar": "قائمة الطرق",
+    "fr": "Liste des voies",
+    "en": "Road List"
+  },
+  "قائمة اللواحات": {
+    "ar": "قائمة اللواحات",
+    "fr": "Liste des panneaux",
+    "en": "Panels List"
+  },
+  "قائمة المداخل": {
+    "ar": "قائمة المداخل",
+    "fr": "Liste des entrées",
+    "en": "Entrance List"
+  },
+  "قائمة المرافق": {
+    "ar": "قائمة المرافق",
+    "fr": "Liste des équipements",
+    "en": "Facility List"
+  },
+  "قاعدة بيانات المصادقة موجودة مسبقاً": {
+    "ar": "قاعدة بيانات المصادقة موجودة مسبقاً",
+    "fr": "La base de données d'authentification existe déjà",
+    "en": "Auth database already exists"
+  },
+  "قرية": {
+    "ar": "قرية",
+    "fr": "Village",
+    "en": "Village"
+  },
+  "قطب عمراني": {
+    "ar": "قطب عمراني",
+    "fr": "Pôle urbain",
+    "en": "Urban Pole"
+  },
+  "قياس المسافة": {
+    "ar": "قياس المسافة",
+    "fr": "Mesurer la distance",
+    "en": "Measure Distance"
+  },
+  "كم": {
+    "ar": "كم",
+    "fr": "km",
+    "en": "km"
+  },
+  "لا": {
+    "ar": "لا",
+    "fr": "Non",
+    "en": "No"
+  },
+  "لا يمكن إضافة الطريق , الطريق موجود بالفعل": {
+    "ar": "لا يمكن إضافة الطريق , الطريق موجود بالفعل",
+    "fr": "Impossible d'ajouter la voie, elle existe déjà",
+    "en": "Cannot add road, road already exists"
+  },
+  "لا يمكن إضافة المرفق ، المرفق موجود بالفعل": {
+    "ar": "لا يمكن إضافة المرفق ، المرفق موجود بالفعل",
+    "fr": "Impossible d'ajouter l'équipement, il existe déjà",
+    "en": "Cannot add facility, facility already exists"
+  },
+  "لا يمكن إضافة المنطقة , المنطقة موجودة بالفعل": {
+    "ar": "لا يمكن إضافة المنطقة , المنطقة موجودة بالفعل",
+    "fr": "Impossible d'ajouter la zone, elle existe déjà",
+    "en": "Cannot add zone, zone already exists"
+  },
+  "لا يمكن تحديث   المنطقة": {
+    "ar": "لا يمكن تحديث   المنطقة",
+    "fr": "Impossible de mettre à jour la zone",
+    "en": "Cannot update zone"
+  },
+  "لا يمكن تحديث  الحي": {
+    "ar": "لا يمكن تحديث  الحي",
+    "fr": "Impossible de mettre à jour le lotissement",
+    "en": "Cannot update subdivision"
+  },
+  "لا يمكن تحديث  الطريق": {
+    "ar": "لا يمكن تحديث  الطريق",
+    "fr": "Impossible de mettre à jour la voie",
+    "en": "Cannot update road"
+  },
+  "لا يمكن تحديث  اللوحة": {
+    "ar": "لا يمكن تحديث  اللوحة",
+    "fr": "Impossible de mettre à jour le panneau",
+    "en": "Cannot update panel"
+  },
+  "لا يمكن تحديث  المرفق": {
+    "ar": "لا يمكن تحديث  المرفق",
+    "fr": "Impossible de mettre à jour l'équipement",
+    "en": "Cannot update facility"
+  },
+  "لا يوجد ملف محدد": {
+    "ar": "لا يوجد ملف محدد",
+    "fr": "Aucun fichier sélectionné",
+    "en": "No file selected"
+  },
+  "لتصحيحها": {
+    "ar": "لتصحيحها",
+    "fr": "À corriger",
+    "en": "To Be Corrected"
+  },
+  "لم يتم إظافة  نوع التجزئة": {
+    "ar": "لم يتم إظافة  نوع التجزئة",
+    "fr": "Type de lotissement non ajouté",
+    "en": "Subdivision type not added"
+  },
+  "لم يتم إظافة  نوع الطريق": {
+    "ar": "لم يتم إظافة  نوع الطريق",
+    "fr": "Type de voie non ajouté",
+    "en": "Road type not added"
+  },
+  "لم يتم إظافة  نوع المرفق": {
+    "ar": "لم يتم إظافة  نوع المرفق",
+    "fr": "Type d'équipement non ajouté",
+    "en": "Facility type not added"
+  },
+  "لم يتم إظافة  نوع المنطقة": {
+    "ar": "لم يتم إظافة  نوع المنطقة",
+    "fr": "Type de zone non ajouté",
+    "en": "Zone type not added"
+  },
+  "لم يتم إظافة  نوع النشاط": {
+    "ar": "لم يتم إظافة  نوع النشاط",
+    "fr": "Type d'activité non ajouté",
+    "en": "Activity type not added"
+  },
+  "لنقلها": {
+    "ar": "لنقلها",
+    "fr": "À déplacer",
+    "en": "To Be Moved"
+  },
+  "م": {
+    "ar": "م",
+    "fr": "m",
+    "en": "m"
+  },
+  "مبرمجة": {
+    "ar": "مبرمجة",
+    "fr": "Programmé",
+    "en": "Programmed"
+  },
+  "متر": {
+    "ar": "متر",
+    "fr": "m",
+    "en": "m"
+  },
+  "متوقفة مؤقتاً": {
+    "ar": "متوقفة مؤقتاً",
+    "fr": "En pause",
+    "en": "Paused"
+  },
+  "مجاز": {
+    "ar": "مجاز",
+    "fr": "Passage",
+    "en": "Passage"
+  },
+  "مجمع سكني": {
+    "ar": "مجمع سكني",
+    "fr": "Complexe résidentiel",
+    "en": "Housing Complex"
+  },
+  "مجمع عقاري": {
+    "ar": "مجمع عقاري",
+    "fr": "Promotion immobilière",
+    "en": "Real Estate Complex"
+  },
+  "مجموعة": {
+    "ar": "مجموعة",
+    "fr": "Groupe",
+    "en": "Group"
+  },
+  "محجوز(ة)": {
+    "ar": "محجوز(ة)",
+    "fr": "Réservé",
+    "en": "Reserved"
+  },
+  "مدرج": {
+    "ar": "مدرج",
+    "fr": "Escalier",
+    "en": "Steps"
+  },
+  "مرقمة وغير مطابقة": {
+    "ar": "مرقمة وغير مطابقة",
+    "fr": "Numéroté et non conforme",
+    "en": "Numbered and Mismatched"
+  },
+  "مرقمة ومطابقة": {
+    "ar": "مرقمة ومطابقة",
+    "fr": "Numéroté et conforme",
+    "en": "Numbered and Matching"
+  },
+  "مركب": {
+    "ar": "مركب",
+    "fr": "Complexe",
+    "en": "Compound"
+  },
+  "مركبة": {
+    "ar": "مركبة",
+    "fr": "Installé",
+    "en": "Installed"
+  },
+  "مركز التطبيقات الفضائية  2025 ©": {
+    "ar": "مركز التطبيقات الفضائية  2025 ©",
+    "fr": "Centre des Applications Spatiales 2025 ©",
+    "en": "Space Applications Center 2025 ©"
+  },
+  "مسار": {
+    "ar": "مسار",
+    "fr": "Piste",
+    "en": "Path"
+  },
+  "مسار بلدي": {
+    "ar": "مسار بلدي",
+    "fr": "Chemin communal",
+    "en": "Municipal Path"
+  },
+  "مسار ولائي": {
+    "ar": "مسار ولائي",
+    "fr": "Chemin de wilaya",
+    "en": "Provincial Path"
+  },
+  "مستخدم": {
+    "ar": "مستخدم",
+    "fr": "Utilisateur",
+    "en": "User"
+  },
+  "مشتة": {
+    "ar": "مشتة",
+    "fr": "Hameau",
+    "en": "Hamlet"
+  },
+  "ممر": {
+    "ar": "ممر",
+    "fr": "Passage",
+    "en": "Passageway"
+  },
+  "منجز من طرف": {
+    "ar": "منجز من طرف",
+    "fr": "Réalisé par",
+    "en": "Done by"
+  },
+  "منحدر": {
+    "ar": "منحدر",
+    "fr": "Pente",
+    "en": "Slope"
+  },
+  "منطقة": {
+    "ar": "منطقة",
+    "fr": "Zone",
+    "en": "Zone"
+  },
+  "منطقة الدراسة": {
+    "ar": "منطقة الدراسة",
+    "fr": "Zone d'étude",
+    "en": "Study Area"
+  },
+  "منطقة صناعية": {
+    "ar": "منطقة صناعية",
+    "fr": "Zone industrielle",
+    "en": "Industrial Zone"
+  },
+  "منطقة نشاطات": {
+    "ar": "منطقة نشاطات",
+    "fr": "Zone d'activités",
+    "en": "Activity Zone"
+  },
+  "منقطع ممر": {
+    "ar": "منقطع ممر",
+    "fr": "Passage coupé",
+    "en": "Cut-through"
+  },
+  "نسخ الملف بنجاح": {
+    "ar": "نسخ الملف بنجاح",
+    "fr": "Fichier copié avec succès",
+    "en": "File copied successfully"
+  },
+  "نعم": {
+    "ar": "نعم",
+    "fr": "Oui",
+    "en": "Yes"
+  },
+  "نموذج طلبية": {
+    "ar": "نموذج طلبية",
+    "fr": "Bon de commande",
+    "en": "Order Form"
+  },
+  "نهج": {
+    "ar": "نهج",
+    "fr": "Ruelle",
+    "en": "Alley"
+  },
+  "نوع": {
+    "ar": "نوع",
+    "fr": "Type",
+    "en": "Type"
+  },
+  "نوع المرجع": {
+    "ar": "نوع المرجع",
+    "fr": "Type référence",
+    "en": "Reference Type"
+  },
+  "نوع المرجع غير محدد": {
+    "ar": "نوع المرجع غير محدد",
+    "fr": "Type de référence non sélectionné",
+    "en": "Reference type not selected"
+  },
+  "هل تريد مسح خط القياس ؟": {
+    "ar": "هل تريد مسح خط القياس ؟",
+    "fr": "Voulez-vous effacer la ligne de mesure ?",
+    "en": "Do you want to clear the measurement line?"
+  },
+  "هل تمسح خط القياس ؟": {
+    "ar": "هل تمسح خط القياس ؟",
+    "fr": "Effacer la ligne de mesure ?",
+    "en": "Clear the measurement line?"
+  },
+  "يتم إظافة  نوع التجزئة": {
+    "ar": "يتم إظافة  نوع التجزئة",
+    "fr": "Ajout du type de lotissement",
+    "en": "Adding subdivision type"
+  },
+  "يتم إظافة  نوع الطريق": {
+    "ar": "يتم إظافة  نوع الطريق",
+    "fr": "Ajout du type de voie",
+    "en": "Adding road type"
+  },
+  "يتم إظافة  نوع المرفق": {
+    "ar": "يتم إظافة  نوع المرفق",
+    "fr": "Ajout du type d'équipement",
+    "en": "Adding facility type"
+  },
+  "يتم إظافة  نوع المنطقة": {
+    "ar": "يتم إظافة  نوع المنطقة",
+    "fr": "Ajout du type de zone",
+    "en": "Adding zone type"
+  },
+  "يتم إظافة  نوع النشاط": {
+    "ar": "يتم إظافة  نوع النشاط",
+    "fr": "Ajout du type d'activité",
+    "en": "Adding activity type"
+  },
+  "يجب عليك تحديد نوع الخريطة التي تريد طباعتها": {
+    "ar": "يجب عليك تحديد نوع الخريطة التي تريد طباعتها",
+    "fr": "Vous devez sélectionner le type de carte à imprimer",
+    "en": "You must select the map type to print"
+  },
+  "يرجى إعادة تشغيل QGIS لتطبيق تغيير اللغة": {
+    "ar": "يرجى إعادة تشغيل QGIS لتطبيق تغيير اللغة",
+    "fr": "Veuillez redémarrer QGIS pour appliquer le changement de langue",
+    "en": "Please restart QGIS to apply the language change"
+  },
+  "يمكن إضافة الطريق": {
+    "ar": "يمكن إضافة الطريق",
+    "fr": "Peut ajouter la voie",
+    "en": "Can add road"
+  },
+  "يمكن إضافة المرفق ، المرفق موجود بالفعل": {
+    "ar": "يمكن إضافة المرفق ، المرفق موجود بالفعل",
+    "fr": "L'équipement existe déjà, peut ajouter",
+    "en": "Facility already exists, can add"
+  },
+  "يمكن إضافة المنطقة": {
+    "ar": "يمكن إضافة المنطقة",
+    "fr": "Peut ajouter la zone",
+    "en": "Can add zone"
+  },
+  "يوجد ملف محدد": {
+    "ar": "يوجد ملف محدد",
+    "fr": "Fichier sélectionné",
+    "en": "File selected"
+  },
+  "‫ورقة A0 للإدارة‬": {
+    "ar": "‫ورقة A0 للإدارة‬",
+    "fr": "Papier A0 pour administration",
+    "en": "A0 Paper for Administration"
+  },
+  "‫ورقة A3 للعمل الميداني‬": {
+    "ar": "‫ورقة A3 للعمل الميداني‬",
+    "fr": "Papier A3 pour travail terrain",
+    "en": "A3 Paper for Fieldwork"
+  },
+  "Error": {
+    "ar": "خطأ",
+    "fr": "Erreur",
+    "en": "Error"
+  },
+  "Erreur": {
+    "ar": "خطأ",
+    "fr": "Erreur",
+    "en": "Error"
+  },
+  "Username doesn't exist": {
+    "ar": "اسم المستخدم غير موجود",
+    "fr": "Nom d'utilisateur n'existe pas",
+    "en": "Username doesn't exist"
+  },
+  "Wrong password try again !": {
+    "ar": "كلمة السر خاطئة حاول مرة أخرى",
+    "fr": "Mot de passe incorrect, réessayez",
+    "en": "Wrong password try again !"
+  },
+  "Success": {
+    "ar": "نجاح",
+    "fr": "Succès",
+    "en": "Success"
+  },
+  "Warning": {
+    "ar": "تحذير",
+    "fr": "Avertissement",
+    "en": "Warning"
+  },
+  "Info": {
+    "ar": "معلومات",
+    "fr": "Info",
+    "en": "Info"
+  },
+  "No Selection": {
+    "ar": "لا تحديد",
+    "fr": "Aucune sélection",
+    "en": "No Selection"
+  },
+  "RNA Plugin": {
+    "ar": "إضافة RNA",
+    "fr": "Plugin RNA",
+    "en": "RNA Plugin"
+  },
+  "RNA Plugin Error": {
+    "ar": "خطأ في إضافة RNA",
+    "fr": "Erreur du plugin RNA",
+    "en": "RNA Plugin Error"
+  },
+  "Select a file": {
+    "ar": "اختر ملفًا",
+    "fr": "Sélectionnez un fichier",
+    "en": "Select a file"
+  },
+  "Failed to Map layer.": {
+    "ar": "فشل في تعيين الطبقة",
+    "fr": "Échec de la cartographie de la couche",
+    "en": "Failed to Map layer."
+  },
+  "No layer found with the name": {
+    "ar": "لم يتم العثور على طبقة بالاسم",
+    "fr": "Aucune couche trouvée avec le nom",
+    "en": "No layer found with the name"
+  },
+  "Edit stopped for layer": {
+    "ar": "تم إيقاف التحرير للطبقة",
+    "fr": "Édition arrêtée pour la couche",
+    "en": "Edit stopped for layer"
+  },
+  "Cannot stop editing for layer": {
+    "ar": "لا يمكن إيقاف التحرير للطبقة",
+    "fr": "Impossible d'arrêter l'édition pour la couche",
+    "en": "Cannot stop editing for layer"
+  },
+  "No active vector layer to save changes.": {
+    "ar": "لا توجد طبقة متجهة نشطة لحفظ التغييرات",
+    "fr": "Aucune couche vectorielle active pour enregistrer les modifications",
+    "en": "No active vector layer to save changes."
+  },
+  "Modification cancelled": {
+    "ar": "تم إلغاء التعديل",
+    "fr": "Modification annulée",
+    "en": "Modification cancelled"
+  },
+  "Geometry outside your allowed area.": {
+    "ar": "الهندسة خارج منطقتك المسموح بها",
+    "fr": "Géométrie en dehors de votre zone autorisée",
+    "en": "Geometry outside your allowed area."
+  },
+  "Layer is not in edit mode.": {
+    "ar": "الطبقة ليست في وضع التحرير",
+    "fr": "La couche n'est pas en mode édition",
+    "en": "Layer is not in edit mode."
+  },
+  "Changes saved successfully.": {
+    "ar": "تم حفظ التغييرات بنجاح",
+    "fr": "Modifications enregistrées avec succès",
+    "en": "Changes saved successfully."
+  },
+  "Failed to save changes.": {
+    "ar": "فشل في حفظ التغييرات",
+    "fr": "Échec de l'enregistrement des modifications",
+    "en": "Failed to save changes."
+  },
+  "No active vector layer.": {
+    "ar": "لا توجد طبقة متجهة نشطة",
+    "fr": "Aucune couche vectorielle active",
+    "en": "No active vector layer."
+  },
+  "Unsupported geometry type.": {
+    "ar": "نوع الهندسة غير مدعوم",
+    "fr": "Type de géométrie non pris en charge",
+    "en": "Unsupported geometry type."
+  },
+  "Capture Point activated for selected vector layer.": {
+    "ar": "تم تنشيط نقطة الالتقاط للطبقة المتجهة المحددة",
+    "fr": "Capture Point activé pour la couche vectorielle sélectionnée",
+    "en": "Capture Point activated for selected vector layer."
+  },
+  "Capture Line activated for selected vector layer.": {
+    "ar": "تم تنشيط خط الالتقاط للطبقة المتجهة المحددة",
+    "fr": "Capture Line activé pour la couche vectorielle sélectionnée",
+    "en": "Capture Line activated for selected vector layer."
+  },
+  "Capture Polygon activated for selected vector layer.": {
+    "ar": "تم تنشيط مضلع الالتقاط للطبقة المتجهة المحددة",
+    "fr": "Capture Polygon activé pour la couche vectorielle sélectionnée",
+    "en": "Capture Polygon activated for selected vector layer."
+  },
+  "Select SQLite/SpatiaLite File": {
+    "ar": "اختر ملف SQLite/SpatiaLite",
+    "fr": "Sélectionnez un fichier SQLite/SpatiaLite",
+    "en": "Select SQLite/SpatiaLite File"
+  },
+  "Save Copy As": {
+    "ar": "حفظ نسخة باسم",
+    "fr": "Enregistrer la copie sous",
+    "en": "Save Copy As"
+  },
+  "Dialog": {
+    "ar": "حوار",
+    "fr": "Dialogue",
+    "en": "Dialog"
+  },
+  "Failed to create dialog": {
+    "ar": "فشل في إنشاء مربع الحوار",
+    "fr": "Échec de la création du dialogue",
+    "en": "Failed to create dialog"
+  },
+  "Check the QGIS log for details.": {
+    "ar": "تحقق من سجل QGIS للحصول على التفاصيل",
+    "fr": "Consultez le journal QGIS pour plus de détails",
+    "en": "Check the QGIS log for details."
+  },
+  "Please select a map layer option.": {
+    "ar": "يرجى تحديد خيار طبقة الخريطة",
+    "fr": "Veuillez sélectionner une option de couche cartographique",
+    "en": "Please select a map layer option."
+  },
+  "أدرار": {
+    "ar": "أدرار",
+    "fr": "Adrar",
+    "en": "Adrar"
+  },
+  "الشلف": {
+    "ar": "الشلف",
+    "fr": "Chlef",
+    "en": "Chlef"
+  },
+  "الأغواط": {
+    "ar": "الأغواط",
+    "fr": "Laghouat",
+    "en": "Laghouat"
+  },
+  "أم البواقي": {
+    "ar": "أم البواقي",
+    "fr": "Oum El Bouaghi",
+    "en": "Oum El Bouaghi"
+  },
+  "باتنة": {
+    "ar": "باتنة",
+    "fr": "Batna",
+    "en": "Batna"
+  },
+  "بجاية": {
+    "ar": "بجاية",
+    "fr": "Béjaïa",
+    "en": "Bejaia"
+  },
+  "بسكرة": {
+    "ar": "بسكرة",
+    "fr": "Biskra",
+    "en": "Biskra"
+  },
+  "بشار": {
+    "ar": "بشار",
+    "fr": "Béchar",
+    "en": "Bechar"
+  },
+  "البليدة": {
+    "ar": "البليدة",
+    "fr": "Blida",
+    "en": "Blida"
+  },
+  "البويرة": {
+    "ar": "البويرة",
+    "fr": "Bouira",
+    "en": "Bouira"
+  },
+  "تمنراست": {
+    "ar": "تمنراست",
+    "fr": "Tamanrasset",
+    "en": "Tamanrasset"
+  },
+  "تبسة": {
+    "ar": "تبسة",
+    "fr": "Tébessa",
+    "en": "Tebessa"
+  },
+  "تلمسان": {
+    "ar": "تلمسان",
+    "fr": "Tlemcen",
+    "en": "Tlemcen"
+  },
+  "تيارت": {
+    "ar": "تيارت",
+    "fr": "Tiaret",
+    "en": "Tiaret"
+  },
+  "تيزي وزو": {
+    "ar": "تيزي وزو",
+    "fr": "Tizi Ouzou",
+    "en": "Tizi Ouzou"
+  },
+  "الجزائر": {
+    "ar": "الجزائر",
+    "fr": "Alger",
+    "en": "Algiers"
+  },
+  "الجلفة": {
+    "ar": "الجلفة",
+    "fr": "Djelfa",
+    "en": "Djelfa"
+  },
+  "جيجل": {
+    "ar": "جيجل",
+    "fr": "Jijel",
+    "en": "Jijel"
+  },
+  "سطيف": {
+    "ar": "سطيف",
+    "fr": "Sétif",
+    "en": "Setif"
+  },
+  "سعيدة": {
+    "ar": "سعيدة",
+    "fr": "Saïda",
+    "en": "Saida"
+  },
+  "سكيكدة": {
+    "ar": "سكيكدة",
+    "fr": "Skikda",
+    "en": "Skikda"
+  },
+  "سيدي بلعباس": {
+    "ar": "سيدي بلعباس",
+    "fr": "Sidi Bel Abbès",
+    "en": "Sidi Bel Abbes"
+  },
+  "عنابة": {
+    "ar": "عنابة",
+    "fr": "Annaba",
+    "en": "Annaba"
+  },
+  "قالمة": {
+    "ar": "قالمة",
+    "fr": "Guelma",
+    "en": "Guelma"
+  },
+  "قسنطينة": {
+    "ar": "قسنطينة",
+    "fr": "Constantine",
+    "en": "Constantine"
+  },
+  "المدية": {
+    "ar": "المدية",
+    "fr": "Médéa",
+    "en": "Medea"
+  },
+  "مستغانم": {
+    "ar": "مستغانم",
+    "fr": "Mostaganem",
+    "en": "Mostaganem"
+  },
+  "المسيلة": {
+    "ar": "المسيلة",
+    "fr": "M'Sila",
+    "en": "M'Sila"
+  },
+  "معسكر": {
+    "ar": "معسكر",
+    "fr": "Mascara",
+    "en": "Mascara"
+  },
+  "ورقلة": {
+    "ar": "ورقلة",
+    "fr": "Ouargla",
+    "en": "Ouargla"
+  },
+  "وهران": {
+    "ar": "وهران",
+    "fr": "Oran",
+    "en": "Oran"
+  },
+  "البيض": {
+    "ar": "البيض",
+    "fr": "El Bayadh",
+    "en": "El Bayadh"
+  },
+  "إليزي": {
+    "ar": "إليزي",
+    "fr": "Illizi",
+    "en": "Illizi"
+  },
+  "برج بوعريريج": {
+    "ar": "برج بوعريريج",
+    "fr": "Bordj Bou Arreridj",
+    "en": "Bordj Bou Arreridj"
+  },
+  "بومرداس": {
+    "ar": "بومرداس",
+    "fr": "Boumerdès",
+    "en": "Boumerdes"
+  },
+  "الطارف": {
+    "ar": "الطارف",
+    "fr": "El Tarf",
+    "en": "El Tarf"
+  },
+  "تندوف": {
+    "ar": "تندوف",
+    "fr": "Tindouf",
+    "en": "Tindouf"
+  },
+  "تيسمسيلت": {
+    "ar": "تيسمسيلت",
+    "fr": "Tissemsilt",
+    "en": "Tissemsilt"
+  },
+  "الوادي": {
+    "ar": "الوادي",
+    "fr": "El Oued",
+    "en": "El Oued"
+  },
+  "خنشلة": {
+    "ar": "خنشلة",
+    "fr": "Khenchela",
+    "en": "Khenchela"
+  },
+  "سوق أهراس": {
+    "ar": "سوق أهراس",
+    "fr": "Souk Ahras",
+    "en": "Souk Ahras"
+  },
+  "تيبازة": {
+    "ar": "تيبازة",
+    "fr": "Tipaza",
+    "en": "Tipaza"
+  },
+  "ميلة": {
+    "ar": "ميلة",
+    "fr": "Mila",
+    "en": "Mila"
+  },
+  "عين الدفلة": {
+    "ar": "عين الدفلة",
+    "fr": "Aïn Defla",
+    "en": "Ain Defla"
+  },
+  "النعامة": {
+    "ar": "النعامة",
+    "fr": "Naâma",
+    "en": "Naama"
+  },
+  "عين تيموشنت": {
+    "ar": "عين تيموشنت",
+    "fr": "Aïn Témouchent",
+    "en": "Ain Temouchent"
+  },
+  "غرداية": {
+    "ar": "غرداية",
+    "fr": "Ghardaïa",
+    "en": "Ghardaia"
+  },
+  "غليزان": {
+    "ar": "غليزان",
+    "fr": "Relizane",
+    "en": "Relizane"
+  },
+  "تيميمون": {
+    "ar": "تيميمون",
+    "fr": "Timimoun",
+    "en": "Timimoun"
+  },
+  "برج باجي مختار": {
+    "ar": "برج باجي مختار",
+    "fr": "Bordj Badji Mokhtar",
+    "en": "Bordj Badji Mokhtar"
+  },
+  "أولاد جلال": {
+    "ar": "أولاد جلال",
+    "fr": "Ouled Djellal",
+    "en": "Ouled Djellal"
+  },
+  "بني عباس": {
+    "ar": "بني عباس",
+    "fr": "Béni Abbès",
+    "en": "Beni Abbes"
+  },
+  "عين صالح": {
+    "ar": "عين صالح",
+    "fr": "In Salah",
+    "en": "In Salah"
+  },
+  "عين قزام": {
+    "ar": "عين قزام",
+    "fr": "In Guezzam",
+    "en": "In Guezzam"
+  },
+  "تقرت": {
+    "ar": "تقرت",
+    "fr": "Touggourt",
+    "en": "Touggourt"
+  },
+  "جانت": {
+    "ar": "جانت",
+    "fr": "Djanet",
+    "en": "Djanet"
+  },
+  "المغير": {
+    "ar": "المغير",
+    "fr": "El M'Ghair",
+    "en": "El M'Ghair"
+  },
+  "المنيعة": {
+    "ar": "المنيعة",
+    "fr": "El Meniaa",
+    "en": "El Meniaa"
+  }
+}

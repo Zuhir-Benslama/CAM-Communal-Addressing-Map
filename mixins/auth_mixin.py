@@ -54,7 +54,7 @@ class AuthMixin:
                 self.current_user = get_current_user()
             else:
                 QMessageBox.critical(
-                self, "Error",
+                self, self._tr("Error"),
                 self._tr("غير قادر على تسجيل الدخول إلى الخادم أو الصورة غير موجودة"),
             )
 
@@ -86,7 +86,7 @@ class AuthMixin:
                         return True
 
             if selected_label == 'Raster':
-                dialog = QFileDialog(self, "Select a file")
+                dialog = QFileDialog(self, self._tr("Select a file"))
                 dialog.setOption(QFileDialog.DontUseNativeDialog, True)
                 dialog.setNameFilter("TIFF Files (*.tif *.tiff)")
                 dialog.setFileMode(QFileDialog.ExistingFile)
@@ -107,10 +107,10 @@ class AuthMixin:
                         return False
                     return False
                 return False
-            QMessageBox.critical(self, "Error", "Failed to Map layer.")
+            QMessageBox.critical(self, self._tr("Error"), self._tr("Failed to Map layer."))
         else:
             QMessageBox.warning(
-                self, "No Selection", "Please select a map layer option.",
+                self, self._tr("No Selection"), self._tr("Please select a map layer option."),
             )
         return False
 

@@ -13,7 +13,7 @@ try:
     from ..db.operations import create_cookie, hash_password, verify_password
     from ..models import User, get_session, get_auth_session
     from ..db.schema import AuthSchema, SignupSchema
-    from ..constants import COOKIE_FILE, current_theme, get_theme_qss
+    from ..constants import COOKIE_FILE, current_theme, get_theme_qss, current_locale
 except ImportError:
     from db.operations import (  # type: ignore
         create_cookie, hash_password, verify_password,
@@ -23,8 +23,10 @@ except ImportError:
     )
     from db.schema import AuthSchema, SignupSchema  # type: ignore
     from constants import (  # type: ignore
-        COOKIE_FILE, current_theme, get_theme_qss,
+        COOKIE_FILE, current_theme, get_theme_qss, current_locale,
     )
+
+from ..scripts.lookup_data import get_string
 
 logger = logging.getLogger(__name__)
 
@@ -104,11 +106,12 @@ def sign_in(username: str, password: str, label) -> bool:
                 auth_session.query(User).filter_by(username=username).first()
             )
             if not existing_user:
+                loc = current_locale()
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Information)
-                msg.setWindowTitle("Error")
+                msg.setWindowTitle(get_string("Error", loc))
                 msg.setStyleSheet(get_theme_qss(current_theme()))
-                msg.setInformativeText("Username doesn't exist")
+                msg.setInformativeText(get_string("Username doesn't exist", loc))
                 msg.setStandardButtons(QMessageBox.Ok)
                 msg.exec_()
             else:
@@ -139,9 +142,9 @@ def sign_in(username: str, password: str, label) -> bool:
                     return True
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Information)
-                msg.setWindowTitle("Error")
+                msg.setWindowTitle(get_string("Error", current_locale()))
                 msg.setStyleSheet(get_theme_qss(current_theme()))
-                msg.setInformativeText("Wrong password try again !")
+                msg.setInformativeText(get_string("Wrong password try again !", current_locale()))
                 msg.setStandardButtons(QMessageBox.Ok)
                 msg.exec_()
         except Exception as e:
@@ -151,7 +154,7 @@ def sign_in(username: str, password: str, label) -> bool:
             logger.error("An error occurred: %s", e)
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Information)
-            msg.setWindowTitle("Error")
+            msg.setWindowTitle(get_string("Error", current_locale()))
             msg.setStyleSheet(get_theme_qss(current_theme()))
             msg.setInformativeText(str(e))
             msg.setStandardButtons(QMessageBox.Ok)

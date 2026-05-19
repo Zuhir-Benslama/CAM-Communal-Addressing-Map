@@ -1,16 +1,22 @@
 [
   {
-    "pk": "مبرمجة"
+    "pk": "مبرمجة",
+    "label_fr": "Programmé",
+    "label_en": "Programmed"
   },
   {
-    "pk": "مرقمة ومطابقة"
-  }
-  ,{
-    "pk": "مرقمة وغير مطابقة"
-  }
-  ,
+    "pk": "مرقمة ومطابقة",
+    "label_fr": "Numéroté et conforme",
+    "label_en": "Numbered and Matching"
+  },
   {
-    "pk": "محجوز(ة)"
+    "pk": "مرقمة وغير مطابقة",
+    "label_fr": "Numéroté et non conforme",
+    "label_en": "Numbered and Mismatched"
+  },
+  {
+    "pk": "محجوز(ة)",
+    "label_fr": "Réservé",
+    "label_en": "Reserved"
   }
-
 ]

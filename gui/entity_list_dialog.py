@@ -7,8 +7,9 @@ from ..models import get_session, get_all_fields_and_labels
 from ..constants import (
     current_theme, get_theme_qss,
     SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
+    current_locale, locale_value,
 )
-from ..i18n import tr as _i18n_tr
+from ..scripts.lookup_data import get_string, apply_widget_texts
 
 from PyQt5 import uic
 from PyQt5.QtCore import QSettings
@@ -35,9 +36,6 @@ class EntityListDialog(QDialog, FORM_CLASS):
         self.model_name = model_name
         self._page = 0
         self._total_records = 0
-        super(EntityListDialog, self).__init__(parent)
-        self.setupUi(self)
-        self.setStyleSheet(get_theme_qss(current_theme()))
 
         s = QSettings(SETTINGS_ORG, SETTINGS_APP)
         locale = s.value(SETTINGS_KEY_LOCALE, '')
@@ -46,10 +44,15 @@ class EntityListDialog(QDialog, FORM_CLASS):
             locale = locale_val[0:2] if locale_val else 'en'
         self._tr_locale = locale
 
-        self.list_title.setText("\u200f " + self._tr("  قائمة ") + "\u200f " + self._tr(list_of))
+        super(EntityListDialog, self).__init__(parent)
+        self.setupUi(self)
+        apply_widget_texts(self, self._tr_locale)
+        self.setStyleSheet(get_theme_qss(current_theme()))
 
-        self._prev_btn = QPushButton(self._tr("السابق"))
-        self._next_btn = QPushButton(self._tr("التالي"))
+        self.list_title.setText("\u200f " + get_string("  قائمة ", self._tr_locale) + "\u200f " + get_string(list_of, self._tr_locale))
+
+        self._prev_btn = QPushButton(get_string("السابق", self._tr_locale))
+        self._next_btn = QPushButton(get_string("التالي", self._tr_locale))
         self._page_label = QLabel()
 
         self._prev_btn.clicked.connect(self._prev_page)
@@ -93,7 +96,7 @@ class EntityListDialog(QDialog, FORM_CLASS):
             total_pages = max(
                 1, (self._total_records + self.PAGE_SIZE - 1) // self.PAGE_SIZE)
             self._page_label.setText(
-                self._tr("الصفحة") + f" {self._page + 1} / {total_pages}")
+                get_string("الصفحة", self._tr_locale) + f" {self._page + 1} / {total_pages}")
 
             offset = self._page * self.PAGE_SIZE
             results = (
@@ -107,9 +110,9 @@ class EntityListDialog(QDialog, FORM_CLASS):
             }
 
             fields, labels = get_all_fields_and_labels(
-                model_class, PROPERTY_LABELS)
+                model_class, PROPERTY_LABELS, locale=self._tr_locale)
 
-            labels = [self._tr(l) if any('\u0600' <= c <= '\u06FF' for c in l) else l
+            labels = [get_string(l, self._tr_locale) if any('\u0600' <= c <= '\u06FF' for c in l) else l
                       for l in labels]
 
             self.table.setRowCount(len(results))
@@ -119,13 +122,16 @@ class EntityListDialog(QDialog, FORM_CLASS):
             for row_index, record in enumerate(results):
                 for col_index, field in enumerate(fields):
                     try:
-                        value = getattr(record, field)
+                        value = locale_value(record, field, self._tr_locale)
                     except Exception:
-                        logger.debug(
-                            "Field %s not found on record %s",
-                            field, record, exc_info=True
-                        )
-                        value = 'N/A'
+                        try:
+                            value = getattr(record, field)
+                        except Exception:
+                            logger.debug(
+                                "Field %s not found on record %s",
+                                field, record, exc_info=True
+                            )
+                            value = 'N/A'
                     value = value if value not in [None, ""] else "N/A"
                     item = QTableWidgetItem(str(value))
                     self.table.setItem(row_index, col_index, item)
@@ -136,5 +142,4 @@ class EntityListDialog(QDialog, FORM_CLASS):
         finally:
             session.close()
 
-    def _tr(self, source: str) -> str:
-        return _i18n_tr(source, self._tr_locale)
+

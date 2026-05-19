@@ -642,6 +642,32 @@ THEMES = {
 DEFAULT_THEME = THEME_DARK
 
 
+def current_locale() -> str:
+    """Detect the current UI locale from QSettings."""
+    from qgis.PyQt.QtCore import QSettings
+    s = QSettings(SETTINGS_ORG, SETTINGS_APP)
+    locale = s.value(SETTINGS_KEY_LOCALE, '')
+    if not locale:
+        locale_val = QSettings().value('locale/userLocale')
+        locale = locale_val[0:2] if locale_val else 'en'
+    return locale
+
+
+def locale_value(instance, field_base: str, locale: str = '') -> str:
+    """Return locale-appropriate value from a model instance.
+
+    For locale 'ar', returns the base field (e.g. `Nom`).
+    For 'fr'/'en', returns `Nom_fr`/`Nom_en`, falling back to base.
+    """
+    if not locale:
+        locale = current_locale()
+    if locale == 'ar':
+        return getattr(instance, field_base, '') or ''
+    locale_field = f'{field_base}_{locale}'
+    value = getattr(instance, locale_field, None)
+    return value if value else (getattr(instance, field_base, '') or '')
+
+
 def get_theme_qss(theme_name: str) -> str:
     return THEMES.get(theme_name, THEMES[DEFAULT_THEME])[0]
 

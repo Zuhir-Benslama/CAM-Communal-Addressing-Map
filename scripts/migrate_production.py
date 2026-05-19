@@ -42,10 +42,10 @@ REQUIRED_TABLES = [
 ]
 
 ADD_COLUMNS = {
-    "refpoly": [("has_child", "INTEGER DEFAULT 0")],
+    "refpoly": [
+        ("has_child", "INTEGER DEFAULT 0"),
+    ],
     "Numerotation": [("activity_cat", "TEXT"), ("activity_type", "TEXT")],
-    "type_organisme": [("subcat", "TEXT DEFAULT ''")],
-    "activity": [("subcat", "TEXT DEFAULT ''")],
     "user": [
         ("first_name", "TEXT"),
         ("last_name", "TEXT"),

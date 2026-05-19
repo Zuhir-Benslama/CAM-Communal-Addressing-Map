@@ -1,0 +1,627 @@
+{
+  "abort_uc": {
+    "ar": "إلغاء",
+    "fr": "Annuler",
+    "en": "Cancel"
+  },
+  "add_type_btn": {
+    "ar": "+",
+    "fr": "+",
+    "en": "+"
+  },
+  "add_u": {
+    "ar": "إضافة مستخدم",
+    "fr": "Ajouter un utilisateur",
+    "en": "Add User"
+  },
+  "backup_db": {
+    "ar": "إنشاء نسخة احتياطية لقاعدة البيانات",
+    "fr": "Créer une sauvegarde BD",
+    "en": "Create Database Backup"
+  },
+  "bc": {
+    "ar": "نموذج طلبية",
+    "fr": "Bon de commande",
+    "en": "Order Form"
+  },
+  "by_": {
+    "ar": "منجز من طرف",
+    "fr": "Réalisé par",
+    "en": "Done by"
+  },
+  "draw_city": {
+    "ar": "ارسم التجزئة",
+    "fr": "Dessiner le lotissement",
+    "en": "Draw Subdivision"
+  },
+  "draw_num": {
+    "ar": "ارسم المدخل",
+    "fr": "Dessiner l'entrée",
+    "en": "Draw Entrance"
+  },
+  "draw_org": {
+    "ar": "ارسم المرفق",
+    "fr": "Dessiner l'équipement",
+    "en": "Draw Facility"
+  },
+  "draw_pan": {
+    "ar": "ابدأ الرسم",
+    "fr": "Commencer le dessin",
+    "en": "Start Drawing"
+  },
+  "draw_road": {
+    "ar": "ارسم الطريق",
+    "fr": "Dessiner la voie",
+    "en": "Draw Road"
+  },
+  "draw_zone": {
+    "ar": "ارسم المنطقة",
+    "fr": "Dessiner la zone",
+    "en": "Draw Zone"
+  },
+  "edit_city": {
+    "ar": "تحديث التجزئة",
+    "fr": "Mettre à jour le lotissement",
+    "en": "Update Subdivision"
+  },
+  "edit_num": {
+    "ar": "تحديث المدخل",
+    "fr": "Mettre à jour l'entrée",
+    "en": "Update Entrance"
+  },
+  "edit_org": {
+    "ar": "تحديث المرفق",
+    "fr": "Mettre à jour l'équipement",
+    "en": "Update Facility"
+  },
+  "edit_pan": {
+    "ar": "تحديث",
+    "fr": "Mettre à jour",
+    "en": "Update"
+  },
+  "edit_road": {
+    "ar": "تحديث الطريق",
+    "fr": "Mettre à jour la voie",
+    "en": "Update Road"
+  },
+  "edit_zone": {
+    "ar": "تحديث المنطقة",
+    "fr": "Mettre à jour la zone",
+    "en": "Update Zone"
+  },
+  "groupBox_3": {
+    "ar": "النسخ الاحتياطي لقاعدة البيانات",
+    "fr": "Sauvegarde BD",
+    "en": "Database Backup"
+  },
+  "groupBox_4": {
+    "ar": "إنشاء التقرير",
+    "fr": "Générer le rapport",
+    "en": "Generate Report"
+  },
+  "groupBox_5": {
+    "ar": "إنشاء الخريطة",
+    "fr": "Générer la carte",
+    "en": "Generate Map"
+  },
+  "groupBox_8": {
+    "ar": "النشاط الممارس",
+    "fr": "Activité pratiquée",
+    "en": "Activity practiced"
+  },
+  "groupBox_8_entrance": {
+    "ar": "النشاط المرافق بالمدخل",
+    "fr": "Activité accompagnant l'entrée",
+    "en": "Activity accompanying entrance"
+  },
+  "groupBox_add_types": {
+    "ar": "إضافة أنواع جديدة",
+    "fr": "Ajouter de nouveaux types",
+    "en": "Add new types"
+  },
+  "label": {
+    "ar": ": رقم المقرر",
+    "fr": ": Numéro de décision",
+    "en": ": Decision number"
+  },
+  "label_10": {
+    "ar": ": اسم المستخدم",
+    "fr": "Nom d'utilisateur :",
+    "en": "Username:"
+  },
+  "label_11": {
+    "ar": ": كلمة السر",
+    "fr": "Mot de passe :",
+    "en": "Password:"
+  },
+  "label_12": {
+    "ar": "<html><head/><body><p>الولاية <span style=\" color:red;\">*</span>:</p></body></html>",
+    "fr": "<html><head/><body><p>Wilaya <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>Wilaya <span style=\" color:red;\">*</span>:</p></body></html>"
+  },
+  "label_13": {
+    "ar": "<html><head/><body><p>البلدية <span style=\" color:red;\">*</span>:</p></body></html>",
+    "fr": "<html><head/><body><p>Municipalité <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>Municipality <span style=\" color:red;\">*</span>:</p></body></html>"
+  },
+  "label_14": {
+    "ar": ": حدد الخريطة",
+    "fr": "Sélectionner la carte :",
+    "en": "Select Map:"
+  },
+  "label_16": {
+    "ar": ":حالة",
+    "fr": "État :",
+    "en": "Status:"
+  },
+  "label_17": {
+    "ar": ": توافر الشكل الهندسي",
+    "fr": "Disponibilité géométrie :",
+    "en": "Geometry Status:"
+  },
+  "label_18": {
+    "ar": ": نوع",
+    "fr": "Type :",
+    "en": "Type:"
+  },
+  "label_19": {
+    "ar": ": اسم",
+    "fr": "Nom :",
+    "en": "Name:"
+  },
+  "label_2": {
+    "ar": ":حالة",
+    "fr": "État :",
+    "en": "Status:"
+  },
+  "label_2_username": {
+    "ar": "اسم المستخدم *:",
+    "fr": "Nom d'utilisateur *:",
+    "en": "Username *:"
+  },
+  "label_20": {
+    "ar": ": توافر الشكل الهندسي",
+    "fr": "Disponibilité géométrie :",
+    "en": "Geometry Status:"
+  },
+  "label_21": {
+    "ar": ": توافر الشكل الهندسي",
+    "fr": "Disponibilité géométrie :",
+    "en": "Geometry Status:"
+  },
+  "label_22": {
+    "ar": ": نوع",
+    "fr": "Type :",
+    "en": "Type:"
+  },
+  "label_23": {
+    "ar": ": اسم",
+    "fr": "Nom :",
+    "en": "Name:"
+  },
+  "label_24": {
+    "ar": "مركز التطبيقات الفضائية  2025 ©",
+    "fr": "Centre des Applications Spatiales 2025 ©",
+    "en": "Space Applications Center 2025 ©"
+  },
+  "label_25": {
+    "ar": ": نوع",
+    "fr": "Type :",
+    "en": "Type:"
+  },
+  "label_26": {
+    "ar": "مركز التطبيقات الفضائية  2025 ©",
+    "fr": "Centre des Applications Spatiales 2025 ©",
+    "en": "Space Applications Center 2025 ©"
+  },
+  "label_26_geo_avail": {
+    "ar": ": توافر الشكل الهندسي",
+    "fr": "Disponibilité géométrie :",
+    "en": "Geometry availability:"
+  },
+  "label_27": {
+    "ar": ": نوع",
+    "fr": "Type :",
+    "en": "Type:"
+  },
+  "label_28": {
+    "ar": ": اسم",
+    "fr": "Nom :",
+    "en": "Name:"
+  },
+  "label_29": {
+    "ar": ": رقم القرار",
+    "fr": "N° de décision :",
+    "en": "Decision No.:"
+  },
+  "label_3": {
+    "ar": "<html><head/><body><p>الاسم <span style=\" color:red;\">*</span> :</p></body></html>",
+    "fr": "<html><head/><body><p>Nom <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>First name <span style=\" color:red;\">*</span> :</p></body></html>"
+  },
+  "label_30": {
+    "ar": ": حالة التركيب",
+    "fr": "État de montage :",
+    "en": "Mounting Status:"
+  },
+  "label_31": {
+    "ar": ": نوع المرجع",
+    "fr": "Type de référence :",
+    "en": "Reference Type:"
+  },
+  "label_32": {
+    "ar": ": اسم",
+    "fr": "Nom :",
+    "en": "Name:"
+  },
+  "label_33": {
+    "ar": ": توافر الشكل الهندسي",
+    "fr": "Disponibilité géométrie :",
+    "en": "Geometry Status:"
+  },
+  "label_34": {
+    "ar": ": رقم",
+    "fr": "Numéro :",
+    "en": "Number:"
+  },
+  "label_35": {
+    "ar": ":  فئة",
+    "fr": "Catégorie :",
+    "en": "Category:"
+  },
+  "label_36": {
+    "ar": ": نوع المرجع",
+    "fr": "Type de référence :",
+    "en": "Reference Type:"
+  },
+  "label_36_act_type": {
+    "ar": ": نوع",
+    "fr": "Type :",
+    "en": "Type:"
+  },
+  "label_38": {
+    "ar": ": مكرر",
+    "fr": "Doublon :",
+    "en": "Duplicate:"
+  },
+  "label_39": {
+    "ar": ": توافر الشكل الهندسي",
+    "fr": "Disponibilité géométrie :",
+    "en": "Geometry Status:"
+  },
+  "label_4": {
+    "ar": ": فئة",
+    "fr": "Catégorie :",
+    "en": "Category:"
+  },
+  "label_4_login": {
+    "ar": "تسجيل الدخول",
+    "fr": "Connexion",
+    "en": "Sign in"
+  },
+  "label_40": {
+    "ar": ": نوع المرجع",
+    "fr": "Type de référence :",
+    "en": "Reference Type:"
+  },
+  "label_41": {
+    "ar": ":  فئة",
+    "fr": "Catégorie :",
+    "en": "Category:"
+  },
+  "label_42": {
+    "ar": ": نوع المرجع",
+    "fr": "Type de référence :",
+    "en": "Reference Type:"
+  },
+  "label_43": {
+    "ar": ": نوع",
+    "fr": "Type :",
+    "en": "Type:"
+  },
+  "label_48": {
+    "ar": ": فئة",
+    "fr": "Catégorie :",
+    "en": "Category:"
+  },
+  "label_49": {
+    "ar": "التاريخ",
+    "fr": "Date",
+    "en": "Date"
+  },
+  "label_5": {
+    "ar": "<html><head/><body><p>كلمة السر <span style=\" color:red;\">*</span>:</p></body></html>",
+    "fr": "<html><head/><body><p>Mot de passe <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>Password <span style=\" color:red;\">*</span>:</p></body></html>"
+  },
+  "label_6": {
+    "ar": "إضافة مستخدم",
+    "fr": "Ajouter un utilisateur",
+    "en": "Add User"
+  },
+  "label_7": {
+    "ar": "<html><head/><body><p>اللقب <span style=\" color:red;\">*</span>:</p></body></html>",
+    "fr": "<html><head/><body><p>Prénom <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>Surname <span style=\" color:red;\">*</span>:</p></body></html>"
+  },
+  "label_8": {
+    "ar": "<html><head/><body><p>البريد الإلكتروني <span style=\" color:red;\">*</span>:</p></body></html>",
+    "fr": "<html><head/><body><p>E-mail <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>Email <span style=\" color:red;\">*</span>:</p></body></html>"
+  },
+  "label_9": {
+    "ar": "<html><head/><body><p>رقم الهاتف <span style=\" color:red;\">*</span>:</p></body></html>",
+    "fr": "<html><head/><body><p>Téléphone <span style=\" color:red;\">*</span> :</p></body></html>",
+    "en": "<html><head/><body><p>Phone number <span style=\" color:red;\">*</span>:</p></body></html>"
+  },
+  "label_feature": {
+    "ar": "النوع الرئيسي :",
+    "fr": "Type principal :",
+    "en": "Main type:"
+  },
+  "label_subsubtype": {
+    "ar": "النوع الفرعي الفرعي :",
+    "fr": "Sous-sous-type :",
+    "en": "Sub-subtype:"
+  },
+  "label_subtype": {
+    "ar": "النوع الفرعي :",
+    "fr": "Sous-type :",
+    "en": "Subtype:"
+  },
+  "label_type": {
+    "ar": "النوع :",
+    "fr": "Type :",
+    "en": "Type:"
+  },
+  "list_cities": {
+    "ar": "قائمة التجزئات",
+    "fr": "Liste des lotissements",
+    "en": "Subdivisions List"
+  },
+  "list_num": {
+    "ar": "قائمة المداخل",
+    "fr": "Liste des entrées",
+    "en": "Entrance List"
+  },
+  "list_org": {
+    "ar": "قائمة المرافق",
+    "fr": "Liste des équipements",
+    "en": "Facility List"
+  },
+  "list_pan": {
+    "ar": "قائمة اللواحات",
+    "fr": "Liste des panneaux",
+    "en": "Panels List"
+  },
+  "list_voie": {
+    "ar": "قائمة الطرق",
+    "fr": "Liste des voies",
+    "en": "Road List"
+  },
+  "logout_btn": {
+    "ar": "الخروج",
+    "fr": "Quitter",
+    "en": "Logout"
+  },
+  "mesure_dist": {
+    "ar": "قياس المسافة",
+    "fr": "Mesurer la distance",
+    "en": "Measure Distance"
+  },
+  "mesure_dist_2": {
+    "ar": "قياس المسافة",
+    "fr": "Mesurer la distance",
+    "en": "Measure Distance"
+  },
+  "num_carte": {
+    "ar": "إنشاء خريطة الترقيم",
+    "fr": "Carte de numérotation",
+    "en": "Generate Numbering Map"
+  },
+  "num_mokh": {
+    "ar": "رقم المخطط",
+    "fr": "Numéro du plan",
+    "en": "Plan Number"
+  },
+  "pan": {
+    "ar": "إنشاء خريطة اللوحات",
+    "fr": "Carte des panneaux",
+    "en": "Generate Panels Map"
+  },
+  "print": {
+    "ar": "حفظ",
+    "fr": "Enregistrer",
+    "en": "Save"
+  },
+  "report": {
+    "ar": "إنشاء التقرير",
+    "fr": "Générer le rapport",
+    "en": "Generate Report"
+  },
+  "restore_db": {
+    "ar": "استعادة قاعدة البيانات",
+    "fr": "Restaurer la base de données",
+    "en": "Restore Database"
+  },
+  "select_city": {
+    "ar": "حدد التجزئة",
+    "fr": "Sélectionner le lotissement",
+    "en": "Select Subdivision"
+  },
+  "select_num": {
+    "ar": "حدد المدخل",
+    "fr": "Sélectionner l'entrée",
+    "en": "Select Entrance"
+  },
+  "select_org": {
+    "ar": "حدد المرفق",
+    "fr": "Sélectionner l'équipement",
+    "en": "Select Facility"
+  },
+  "select_pan": {
+    "ar": "حدد الهندسة",
+    "fr": "Sélectionner la géométrie",
+    "en": "Select Geometry"
+  },
+  "select_ref": {
+    "ar": "حدد المرجع",
+    "fr": "Sélectionner la référence",
+    "en": "Select Reference"
+  },
+  "select_ref2": {
+    "ar": "حدد المرجع",
+    "fr": "Sélectionner la référence",
+    "en": "Select Reference"
+  },
+  "select_ref3": {
+    "ar": "حدد المرجع",
+    "fr": "Sélectionner la référence",
+    "en": "Select Reference"
+  },
+  "select_ref4": {
+    "ar": "حدد المرجع",
+    "fr": "Sélectionner la référence",
+    "en": "Select Reference"
+  },
+  "select_road": {
+    "ar": "حدد الطريق",
+    "fr": "Sélectionner la voie",
+    "en": "Select Road"
+  },
+  "select_zone": {
+    "ar": "حدد المنطقة",
+    "fr": "Sélectionner la zone",
+    "en": "Select Zone"
+  },
+  "sign_in_user": {
+    "ar": "الدخول",
+    "fr": "Connexion",
+    "en": "Login"
+  },
+  "submit_city": {
+    "ar": "حفظ",
+    "fr": "Enregistrer",
+    "en": "Save"
+  },
+  "submit_num": {
+    "ar": "حفظ",
+    "fr": "Enregistrer",
+    "en": "Save"
+  },
+  "submit_org": {
+    "ar": "حفظ",
+    "fr": "Enregistrer",
+    "en": "Save"
+  },
+  "submit_pan": {
+    "ar": "حفظ",
+    "fr": "Enregistrer",
+    "en": "Save"
+  },
+  "submit_usr": {
+    "ar": "حفظ",
+    "fr": "Enregistrer",
+    "en": "Save"
+  },
+  "submit_voie": {
+    "ar": "حفظ",
+    "fr": "Enregistrer",
+    "en": "Save"
+  },
+  "submit_zone": {
+    "ar": "حفظ",
+    "fr": "Enregistrer",
+    "en": "Save"
+  },
+  "type_moj": {
+    "ar": "منطقة الدراسة",
+    "fr": "Zone d'étude",
+    "en": "Study Area"
+  },
+  "_settings_group": {
+    "ar": "الإعدادات",
+    "fr": "Paramètres",
+    "en": "Settings"
+  },
+  "_theme_label": {
+    "ar": "المظهر:",
+    "fr": "Thème :",
+    "en": "Theme:"
+  },
+  "_locale_label": {
+    "ar": "اللغة:",
+    "fr": "Langue :",
+    "en": "Language:"
+  },
+  "Other": {
+    "ar": "ارسم التجزئة",
+    "fr": "Dessiner le lotissement",
+    "en": "Draw Subdivision"
+  },
+  "RNADialogBase": {
+    "ar": "مركز التطبيقات الفضائية  2025 ©",
+    "fr": "Centre des Applications Spatiales 2025 ©",
+    "en": "Space Applications Center 2025 ©"
+  },
+  "add_usr": {
+    "ar": "إلغاء",
+    "fr": "Annuler",
+    "en": "Cancel"
+  },
+  "frame_11": {
+    "ar": "إنشاء خريطة اللوحات",
+    "fr": "Carte des panneaux",
+    "en": "Generate Panels Map"
+  },
+  "frame_9": {
+    "ar": "مركز التطبيقات الفضائية  2025 ©",
+    "fr": "Centre des Applications Spatiales 2025 ©",
+    "en": "Space Applications Center 2025 ©"
+  },
+  "menu": {
+    "ar": "ارسم المنطقة",
+    "fr": "Dessiner la zone",
+    "en": "Draw Zone"
+  },
+  "widget": {
+    "ar": "ابدأ الرسم",
+    "fr": "Commencer le dessin",
+    "en": "Start Drawing"
+  },
+  "formLayout_pan": {
+    "ar": ": توافر الشكل الهندسي",
+    "fr": "Disponibilité géométrie :",
+    "en": "Geometry Status:"
+  },
+  "scrollArea_3": {
+    "ar": ": توافر الشكل الهندسي",
+    "fr": "Disponibilité géométrie :",
+    "en": "Geometry Status:"
+  },
+  "widget_11": {
+    "ar": ": توافر الشكل الهندسي",
+    "fr": "Disponibilité géométrie :",
+    "en": "Geometry Status:"
+  },
+  "widget_3": {
+    "ar": ": توافر الشكل الهندسي",
+    "fr": "Disponibilité géométrie :",
+    "en": "Geometry Status:"
+  },
+  "widget_5": {
+    "ar": ": توافر الشكل الهندسي",
+    "fr": "Disponibilité géométrie :",
+    "en": "Geometry Status:"
+  },
+  "frame_10": {
+    "ar": "مركز التطبيقات الفضائية  2025 ©",
+    "fr": "Centre des Applications Spatiales 2025 ©",
+    "en": "Space Applications Center 2025 ©"
+  },
+  "frame_10_ref_sel": {
+    "ar": "حدد المرجع",
+    "fr": "Sélectionner la référence",
+    "en": "Select reference"
+  }
+}

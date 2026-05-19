@@ -1,29 +1,47 @@
 [
   {
-    "pk": "مجمع سكني"
+    "pk": "مجمع سكني",
+    "label_fr": "Complexe résidentiel",
+    "label_en": "Housing Complex"
   },
   {
-    "pk": "تعاونية"
+    "pk": "تعاونية",
+    "label_fr": "Coopérative",
+    "label_en": "Cooperative"
   },
   {
-    "pk": "مركب"
+    "pk": "مركب",
+    "label_fr": "Complexe",
+    "label_en": "Compound"
   },
   {
-    "pk": "تقسيم"
+    "pk": "تقسيم",
+    "label_fr": "Division",
+    "label_en": "Division"
   },
   {
-    "pk": "إقامة"
+    "pk": "إقامة",
+    "label_fr": "Résidence",
+    "label_en": "Residence"
   },
   {
-    "pk": "مجموعة"
+    "pk": "مجموعة",
+    "label_fr": "Groupe",
+    "label_en": "Group"
   },
   {
-    "pk" : "حي سكني"
+    "pk": "حي سكني",
+    "label_fr": "Quartier résidentiel",
+    "label_en": "Residential Neighborhood"
   },
   {
-    "pk" : "مجمع عقاري"
+    "pk": "مجمع عقاري",
+    "label_fr": "Promotion immobilière",
+    "label_en": "Real Estate Complex"
   },
   {
-    "pk" : "تجزئة"
+    "pk": "تجزئة",
+    "label_fr": "Lotissement",
+    "label_en": "Subdivision"
   }
 ]
