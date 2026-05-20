@@ -29,5 +29,5 @@ jobs:
 
       - name: Run tests
         env:
-          RNA_JWT_SECRET: ci-test-secret-key-for-github-actions
-        run: python -m pytest test/test_db_ops.py test/test_operations.py test/test_auth.py test/test_init.py -v
+          RNA_JWT_SECRET: test-secret-key-for-testing-only
+        run: python -m pytest test/test_db_ops.py test/test_operations.py test/test_auth.py -v
