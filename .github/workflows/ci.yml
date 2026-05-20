@@ -28,4 +28,6 @@ jobs:
           pip install pytest
 
       - name: Run tests
-        run: python -m pytest test/test_db_ops.py -v
+        env:
+          RNA_JWT_SECRET: ci-test-secret-key-for-github-actions
+        run: python -m pytest test/test_db_ops.py test/test_operations.py test/test_auth.py test/test_init.py -v
