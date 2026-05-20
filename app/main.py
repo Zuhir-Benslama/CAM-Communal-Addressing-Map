@@ -104,8 +104,8 @@ class RNA:
                 loc = current_locale()
                 QMessageBox.critical(
                     None, get_string("RNA Plugin Error", loc),
-                    get_string("Failed to create dialog", loc)
-                    + f"\n\n{get_string('Check the QGIS log for details.', loc)}",
+                    get_string("Failed to create dialog", loc) + "\n\n"
+                    + get_string("Check the QGIS log for details.", loc),
                 )
                 return
 
