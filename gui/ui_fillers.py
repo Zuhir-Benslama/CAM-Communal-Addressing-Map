@@ -100,8 +100,10 @@ def fill_road_reference(combobox) -> None:
     """Populate a combobox with road reference types from config."""
     loc = _locale()
     data_list = qgis_config().get('refs')
+    combobox.clear()
     for dl in data_list:
-        combobox.addItem(_i18n_tr(dl.get('label'), loc))
+        source = dl.get('label')
+        combobox.addItem(_i18n_tr(source, loc), source)
     combobox.setCurrentIndex(0)
 
 
@@ -109,8 +111,10 @@ def fill_panel_reference(combobox) -> None:
     """Populate a combobox with panel reference types from config."""
     loc = _locale()
     data_list = qgis_config().get('refs2')
+    combobox.clear()
     for dl in data_list:
-        combobox.addItem(_i18n_tr(dl.get('label'), loc))
+        source = dl.get('label')
+        combobox.addItem(_i18n_tr(source, loc), source)
     combobox.setCurrentIndex(0)
 
 

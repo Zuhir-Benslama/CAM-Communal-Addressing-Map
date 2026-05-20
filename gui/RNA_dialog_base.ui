@@ -1255,25 +1255,6 @@
 <property name="text">
 <string>قياس المسافة</string>
 </property>
-</widget></item><item><widget class="QPushButton" name="mesure_dist_2">
-<property name="minimumSize">
-<size>
-<width>100</width>
-<height>0</height>
-</size>
-</property>
-<property name="maximumSize">
-<size>
-<width>100</width>
-<height>16777215</height>
-</size>
-</property>
-<property name="toolTip">
-<string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;قياس المسافة&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-</property>
-<property name="text">
-<string>قياس المسافة</string>
-</property>
 </widget></item></layout>
                                 </widget>
                               </item>

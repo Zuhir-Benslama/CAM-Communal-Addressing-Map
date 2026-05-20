@@ -30,6 +30,63 @@ class LayerOpsMixin:
     """Mixin for layer tab management, feature validation, and
     entity listing."""
 
+    def _reset_tools(self) -> None:
+        if self.identify_tool:
+            self.identify_tool.unset_map_tool()
+        if self.identify_tool2:
+            self.identify_tool2.unset_map_tool()
+        if self.measure_tool:
+            self.measure_tool.clear()
+
+    def _show_layers_for_label(self, root, layer_label: str) -> None:
+        """Show the selected operation layer plus configured dependencies."""
+        visible_names = {LAYER_MUNICIPALITY}
+        if self.sat_view:
+            visible_names.add(self.sat_view)
+        if self.rast:
+            visible_names.add(self.rast)
+        if layer_label:
+            visible_names.add(layer_label)
+
+        data_list = qgis_config().get('other_layers')
+        for dl in data_list:
+            if dl.get('label') == layer_label and dl.get('show_with'):
+                visible_names.update(dl.get('show_with'))
+                break
+
+        target_layer = None
+        for layer_node in root.children():
+            if not isinstance(layer_node, QgsLayerTreeLayer):
+                continue
+            lyr = layer_node.layer()
+            if not lyr:
+                continue
+            if lyr.isEditable():
+                lyr.rollBack()
+                lyr.commitChanges()
+            layer_node.setItemVisibilityChecked(lyr.name() in visible_names)
+            if lyr.name() == layer_label:
+                target_layer = lyr
+
+        if target_layer:
+            self.iface.setActiveLayer(target_layer)
+
+    def _show_base_layers(self, root) -> None:
+        """Ensure base/context layers stay visible."""
+        for name in [self.sat_view, self.rast, LAYER_MUNICIPALITY]:
+            if not name:
+                continue
+            layers = QgsProject.instance().mapLayersByName(name)
+            if layers:
+                node = root.findLayer(layers[0].id())
+                if node:
+                    node.setItemVisibilityChecked(True)
+
+    def _current_ops_layer(self) -> str:
+        if hasattr(self, "_current_layer_name"):
+            return self._current_layer_name()
+        return ""
+
     def on_opt_selected(self, index) -> None:
         """Handle tab selection: toggle layer visibility and load styles."""
         self.type_plan = ""
@@ -39,61 +96,56 @@ class LayerOpsMixin:
         else:
             tab_name = self.menu.tabText(index)
         root = QgsProject.instance().layerTreeRoot()
-        for layer_node in root.children():
-            if not isinstance(layer_node, QgsLayerTreeLayer):
-                continue
-            lyr = layer_node.layer()
-            if lyr.isEditable():
-                lyr.rollBack()
-                lyr.commitChanges()
-            if self.identify_tool:
-                self.identify_tool.unset_map_tool()
-            if self.identify_tool2:
-                self.identify_tool2.unset_map_tool()
-            if self.measure_tool:
-                self.measure_tool.clear()
-            if self.measure_tool2:
-                self.measure_tool2.clear()
+        self._reset_tools()
 
-            layer_node.setItemVisibilityChecked(False)
+        selected_layer = ""
+        if tab_name == 'العمليات':
+            selected_layer = self._current_ops_layer()
+        elif tab_name not in ['تقرير', 'اعدادات']:
+            selected_layer = tab_name
 
-        for i in [self.sat_view, self.rast, LAYER_MUNICIPALITY]:
-            always_shown = QgsProject.instance().mapLayersByName(i)
-            if always_shown:
-                layer_to_show = root.findLayer(always_shown[0].id())
-                if layer_to_show:
-                    layer_to_show.setItemVisibilityChecked(True)
-
-        if tab_name not in ['تقرير', 'اعدادات', 'العمليات']:
+        if selected_layer:
+            self._show_layers_for_label(root, selected_layer)
             data_list = qgis_config().get('other_layers')
-            l = QgsProject.instance().mapLayersByName(tab_name)
-            if l:
-                root.findLayer(l[0].id()).setItemVisibilityChecked(True)
-                self.iface.setActiveLayer(l[0])
-
-                for dl in data_list:
-                    if dl.get("label") == tab_name and dl.get("show_with"):
-                        for sw in dl.get("show_with"):
-                            sl = QgsProject.instance().mapLayersByName(sw)
-                            if sl:
-                                _node = root.findLayer(sl[0].id())
-                                if _node:
-                                    _node.setItemVisibilityChecked(True)
-
             last_tab = getattr(self, '_last_loaded_tab', None)
-            if tab_name != last_tab:
+            selected_key = (
+                f"ops:{selected_layer}" if tab_name == 'العمليات'
+                else selected_layer
+            )
+            if selected_key != last_tab:
                 for dl in data_list:
                     lbl = dl.get('label')
                     layers = QgsProject.instance().mapLayersByName(lbl)
                     if layers:
                         filename = os.path.join(DEFAULT_STYLE_DIR, dl.get('style'))
                         layers[0].loadNamedStyle(filename)
-                self._last_loaded_tab = tab_name
+                self._last_loaded_tab = selected_key
 
         elif tab_name == "اعدادات":
-            pass
+            for layer_node in root.children():
+                if not isinstance(layer_node, QgsLayerTreeLayer):
+                    continue
+                lyr = layer_node.layer()
+                if not lyr:
+                    continue
+                if lyr.isEditable():
+                    lyr.rollBack()
+                    lyr.commitChanges()
+                layer_node.setItemVisibilityChecked(False)
+            self._show_base_layers(root)
 
         elif tab_name == "تقرير":
+            for layer_node in root.children():
+                if not isinstance(layer_node, QgsLayerTreeLayer):
+                    continue
+                lyr = layer_node.layer()
+                if not lyr:
+                    continue
+                if lyr.isEditable():
+                    lyr.rollBack()
+                    lyr.commitChanges()
+                layer_node.setItemVisibilityChecked(False)
+            self._show_base_layers(root)
             data_list = qgis_config().get('other_layers')
             for dl in data_list:
                 tmpl_list = QgsProject.instance().mapLayersByName(dl.get('label'))
@@ -113,7 +165,13 @@ class LayerOpsMixin:
             for layer_node in root.children():
                 if not isinstance(layer_node, QgsLayerTreeLayer):
                     continue
-                if layer_node.layer().name() in [LAYER_PANELS, LAYER_NUMBERING]:
+                lyr = layer_node.layer()
+                if not lyr:
+                    continue
+                if lyr.isEditable():
+                    lyr.rollBack()
+                    lyr.commitChanges()
+                if lyr.name() in [LAYER_PANELS, LAYER_NUMBERING]:
                     layer_node.setItemVisibilityChecked(False)
                 else:
                     layer_node.setItemVisibilityChecked(True)
@@ -205,37 +263,31 @@ class LayerOpsMixin:
                     self._reconnect_context_menu()
                     canvas = self.iface.mapCanvas()
                     canvas.unsetMapTool(canvas.mapTool())
-                    current_index = self.menu.currentIndex()
-                    if hasattr(self.menu, '_rna_tab_src'):
-                        current_tab_text = self.menu._rna_tab_src[current_index]
-                    else:
-                        current_tab_text = self.menu.tabText(current_index)
                     self.is_org.setChecked(False)
                     self.is_road.setChecked(False)
                     self.is_city.setChecked(False)
                     self.is_num.setChecked(False)
                     self.is_pan.setChecked(False)
                     self.is_zone.setChecked(False)
-                    if layer.name() == current_tab_text:
-                        if layer.name() == LAYER_ROADS:
-                            self.is_road.setChecked(True)
-                        elif layer.name() == LAYER_FACILITIES:
-                            self.is_org.setChecked(True)
-                        elif layer.name() == LAYER_SUBDIVISIONS:
-                            self.is_city.setChecked(True)
-                        elif layer.name() == LAYER_NUMBERING:
-                            self.is_num.setChecked(True)
-                        elif layer.name() == LAYER_PANELS:
-                            self.is_pan.setChecked(True)
-                        elif layer.name() == LAYER_ZONES:
-                            self.is_zone.setChecked(True)
+                    layer_check_map = {
+                        LAYER_ROADS: self.is_road,
+                        LAYER_FACILITIES: self.is_org,
+                        LAYER_SUBDIVISIONS: self.is_city,
+                        LAYER_NUMBERING: self.is_num,
+                        LAYER_PANELS: self.is_pan,
+                        LAYER_ZONES: self.is_zone,
+                    }
+                    target_checkbox = layer_check_map.get(layer.name())
+                    if target_checkbox:
+                        target_checkbox.setChecked(True)
 
             current_index = self.menu.currentIndex()
             if hasattr(self.menu, '_rna_tab_src'):
                 tab_text = self.menu._rna_tab_src[current_index]
             else:
                 tab_text = self.menu.tabText(current_index)
-            if tab_text == LAYER_NUMBERING:
+            selected_ops = self._current_ops_layer()
+            if tab_text == LAYER_NUMBERING or selected_ops == LAYER_NUMBERING:
                 self.num_val.setFocus()
 
     def on_geometry_changed(self, fid) -> None:

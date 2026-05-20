@@ -529,6 +529,31 @@
     "fr": "Page",
     "en": "Page"
   },
+  "المجموع": {
+    "ar": "المجموع",
+    "fr": "Total",
+    "en": "Total"
+  },
+  "العمليات": {
+    "ar": "العمليات",
+    "fr": "Opérations",
+    "en": "Operations"
+  },
+  "ارسم": {
+    "ar": "ارسم",
+    "fr": "Dessiner",
+    "en": "Draw"
+  },
+  "حدد": {
+    "ar": "حدد",
+    "fr": "Sélectionner",
+    "en": "Select"
+  },
+  "عدل": {
+    "ar": "عدل",
+    "fr": "Modifier",
+    "en": "Edit"
+  },
   "الطرق": {
     "ar": "الطرق",
     "fr": "Voies",

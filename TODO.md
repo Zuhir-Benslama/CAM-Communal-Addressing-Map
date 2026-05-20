@@ -439,25 +439,48 @@ No hand-written Python file exceeds 500 lines. Auto-generated files (`resources.
 - `mixins/layer_edit_mixin.py` (313 lines)
 - `mixins/layer_ops_mixin.py` (295 lines)
 
-## 32. Unification of Redundant Functions/Code (P1)
+## 32. Unification of Redundant Functions/Code (P1) ✅
 
-- [ ] Consolidate duplicated form validation logic across add methods in `layer_edit_mixin.py`
-- [ ] Unify `add_panel` / `add_numbering` geometry check patterns (WKT + pkuid guard identical)
-- [ ] Merge `key_press_event` / `key_press_event2` into a single parameterized handler
-- [ ] Unify success/error message dialog patterns across all `add_*` methods
-- [ ] Merge `measure_distance` / `measure_distance2` into single `activate_measure(tool_index)` method
-- [ ] Check for duplicate SQL query functions in `db/` directory
+- [x] Consolidate duplicated form validation logic across add methods in `layer_edit_mixin.py` — extracted `_get_geometry_and_pkuid()`, `_show_success()`, `_show_error()`, `_make_locale_kwargs()` helpers
+- [x] Unify `add_panel` / `add_numbering` geometry check patterns — both use `_get_geometry_and_pkuid()`, common kwargs dict pattern
+- [x] Merge `key_press_event` / `key_press_event2` into single parameterized `key_press_event(event, action)`
+- [x] Unify success/error message dialog patterns — `_show_success()` and `_show_error()` wrappers used in all 6 add methods
+- [x] Merge `measure_distance` / `measure_distance2` into single `activate_measure(tool_index)` in `map_tools_mixin.py`
+- [x] Check for duplicate SQL query functions in `db/` directory — no duplicates found (all files are thin re-export stubs)
 
-## 33. Fix Phase Switcher (P1)
+## 33. Fix Phase Switcher (P1) ✅
 
-- [ ] The `widget_2` / `widget_4` → `page_num` / `page_pan` rename broke the Enter-key shortcut for numbering/panel submission; verify fix works
-- [ ] `on_opt_selected` no longer toggles individual layer visibility for `tab_ops` — confirm this doesn't break user workflow
-- [ ] Ensure `layer_selector` dropdown changes also update the active map layer
-- [ ] Test that switching between layers doesn't leave stale map tools active
+- [x] The `widget_2` / `widget_4` → `page_num` / `page_pan` rename broke the Enter-key shortcut for numbering/panel submission; verify fix works
+- [x] `on_opt_selected` no longer toggles individual layer visibility for `tab_ops` — confirm this doesn't break user workflow
+- [x] Ensure `layer_selector` dropdown changes also update the active map layer
+- [x] Test that switching between layers doesn't leave stale map tools active
 
-## 34. Fix i18n Messing for Some Elements (P2)
+## 34. Fix i18n Messing for Some Elements (P2) ✅
 
-- [ ] Audit form labels inside `form_stack` pages for untranslated Arabic text (some may have been hardcoded in `.ui` instead of using `get_string()`)
-- [ ] `layer_selector` combo items use raw Arabic strings; confirm `apply_widget_texts` still reaches them
-- [ ] Verify `_tr_locale` is consistently applied to dynamically generated QSS tooltips
-- [ ] Check `mesure_dist`/`mesure_dist_2` tooltip i18n (currently hardcoded HTML in `.ui`)
+- [x] Audit form labels inside `form_stack` pages for untranslated Arabic text (some may have been hardcoded in `.ui` instead of using `get_string()`)
+- [x] `layer_selector` combo items use raw Arabic strings; confirm `apply_widget_texts` still reaches them
+- [x] Verify `_tr_locale` is consistently applied to dynamically generated QSS tooltips
+- [x] Check `mesure_dist`/`mesure_dist_2` tooltip i18n (currently hardcoded HTML in `.ui`)
+
+## 35. i18n & Theming Bug Fixes — 2026-05-20 ✅
+
+### Theming only worked with Arabic locale
+- [x] **Root cause**: `apply_widget_texts()` translated ALL `QComboBox` items, including `_theme_combo`. In non-Arabic locales, `"داكن"` became `"Dark"/"Sombre"`, which broke `THEMES` dict lookup (Arabic keys only) and persisted the translated value to QSettings.
+- [x] **Fix**: Removed QComboBox translation from `apply_widget_texts()` — fill functions (`fill_road_type`, etc.) already handle combo i18n. The catch-all conflicted with dynamic fill functions and corrupted the theme combo.
+- [x] **Fix**: Changed theme combo to use `addItem(display, userData)` / `findData()` / `currentData()` instead of relying on display text, making it fully locale-independent.
+- [x] **Fix**: Changed `_on_theme_changed` from `currentTextChanged` (sends display text) to `currentIndexChanged[int]` (sends index), using `currentData()` for the stable enum value.
+- [x] **Fix**: Set `objectName` on `_theme_combo` and `_locale_combo` for future-proof identification.
+
+### i18n gaps for some UI elements
+- [x] **Root cause**: `apply_widget_texts()` only handled `QLabel`, `QPushButton`, `QCheckBox`, `QGroupBox`, `QTabWidget`, and tooltips — but missed `QLineEdit.placeholderText`.
+- [x] **Fix**: Added `QLineEdit` placeholder text translation loop to `apply_widget_texts()`.
+- [x] **Cleanup**: Removed unused `QComboBox` import from `apply_widget_texts` (no longer iterates combos).
+
+### Buttons/labels stuck after first locale switch
+- [x] **Root cause**: `apply_widget_texts()` re-reads `w.text()` on every call. After the first translation, `w.text()` returns French/English — but `strings.json` keys are Arabic only, so `_get_string("Sauvegarder", 'en')` returns "Sauvegarder" unchanged.
+- [x] **Fix**: Added `_src_text(w, attr)` helper that caches the original Arabic text on each widget using attr-specific cache attributes (`_rna_src` for text/title/placeholder, `_rna_src_tip` for tooltips, `_rna_src_win` for windowTitle). Subsequent calls use the cached Arabic key for translation lookup.
+- [x] **Fix**: `_translate_internal_combos()` added to `RNA_dialog.py` — translates `layer_selector` (phases) and `_theme_combo` (theme) items using `LAYER_INDEX_MAP` and `itemData` respectively. Called from both `__init__` and `_on_locale_changed`.
+
+### Duplicate measure distance buttons merged
+- [x] **Root cause**: Two identical "قياس المسافة" buttons (`mesure_dist` / `mesure_dist_2`) with same label and tooltip, each storing the tool in a separate attribute (`measure_tool` vs `measure_tool2`).
+- [x] **Fix**: Removed `mesure_dist_2` from UI, `widgets.json`, `RNA_dialog.py`, `map_tools_mixin.py`, `layer_ops_mixin.py`. Single `activate_measure()` stores in `self.measure_tool`; both `add_numbering` and `add_panel` use `self.measure_tool` for the confirm dialog.

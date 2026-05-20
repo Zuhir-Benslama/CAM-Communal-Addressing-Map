@@ -144,6 +144,16 @@ class PopupDialog(QDialog,FORM_CLASS):
         selected_value = self.cat_org.itemData(current_index)
         fill_type_org(self.type_org, selected_value)
 
+    def _set_combo_value(self, combo, value: str) -> None:
+        """Set combo by stable itemData first, then by visible text."""
+        idx = combo.findData(value)
+        if idx != -1:
+            combo.setCurrentIndex(idx)
+            return
+        idx = combo.findText(value)
+        if idx != -1:
+            combo.setCurrentIndex(idx)
+
     def _populate_road(self, query, loc):
         self.nom_voie.setText(locale_value(query, 'Nom', loc))
         self.dec_voie.setText(query.num_decision)
@@ -177,12 +187,12 @@ class PopupDialog(QDialog,FORM_CLASS):
         self.num_val.setText(query.valeur)
         self.repetition.setText(query.repetition)
         if query.idLine:
-            self.dyn_ref3.setCurrentText(LAYER_ROADS)
+            self._set_combo_value(self.dyn_ref3, LAYER_ROADS)
             self.ref_name3.setText(
                 locale_value(query.road, 'Type', loc)
                 + ' ' + locale_value(query.road, 'Nom', loc))
         elif query.idPoly:
-            self.dyn_ref3.setCurrentText(LAYER_SUBDIVISIONS)
+            self._set_combo_value(self.dyn_ref3, LAYER_SUBDIVISIONS)
             self.ref_name3.setText(
                 locale_value(query.subdivision, 'Nom', loc))
         index = self.num_etat.findData(query.etat)
@@ -198,18 +208,18 @@ class PopupDialog(QDialog,FORM_CLASS):
 
     def _populate_panel(self, query, loc):
         if query.idLine:
-            self.dyn_ref4.setCurrentText(LAYER_ROADS)
+            self._set_combo_value(self.dyn_ref4, LAYER_ROADS)
             self.ref_name4.setText(
                 locale_value(query.road, 'Type', loc)
                 + ' ' + locale_value(query.road, 'Nom', loc))
         elif query.idOrg:
-            self.dyn_ref4.setCurrentText(LAYER_FACILITIES)
+            self._set_combo_value(self.dyn_ref4, LAYER_FACILITIES)
             self.ref_name4.setText(
                 locale_value(query.organization, 'Type', loc)
                 + ' '
                 + locale_value(query.organization, 'Nom', loc))
         elif query.idPoly:
-            self.dyn_ref4.setCurrentText(LAYER_SUBDIVISIONS)
+            self._set_combo_value(self.dyn_ref4, LAYER_SUBDIVISIONS)
             self.ref_name4.setText(locale_value(query.subdivision, 'Nom', loc))
         index = self.etat_mont.findData(query.Stituation)
         if index != -1:
@@ -330,8 +340,8 @@ class PopupDialog(QDialog,FORM_CLASS):
         from .identify_tool import IdentifyTool
         self.ref_name3.clear()
         project = QgsProject.instance()
-        if self.dyn_ref3.currentText():
-            layer_name = self.dyn_ref3.currentText()
+        layer_name = self.dyn_ref3.currentData() or self.dyn_ref3.currentText()
+        if layer_name:
             layer = project.mapLayersByName(layer_name)
             if layer:
                 self.iface.setActiveLayer(layer[0])
@@ -358,8 +368,8 @@ class PopupDialog(QDialog,FORM_CLASS):
         from .identify_tool import IdentifyTool
         self.ref_name4.clear()
         project = QgsProject.instance()
-        if (self.dyn_ref4.currentText()):
-            layer_name = self.dyn_ref4.currentText()
+        layer_name = self.dyn_ref4.currentData() or self.dyn_ref4.currentText()
+        if layer_name:
             layer = project.mapLayersByName(layer_name)
             if layer:
                 self.iface.setActiveLayer(layer[0])
@@ -497,4 +507,3 @@ class PopupDialog(QDialog,FORM_CLASS):
         page = self.router.findChild(QWidget, page_index)
         if page:
             self.router.setCurrentWidget(page)
-

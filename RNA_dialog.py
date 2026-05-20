@@ -98,6 +98,7 @@ class RNADialog(
         self.setup_settings_ui()
         self._apply_ui_polish()
         apply_widget_texts(self, self._tr_locale)
+        self._translate_internal_combos()
         self.apply_theme()
 
     def _init_state(self) -> None:
@@ -107,7 +108,7 @@ class RNADialog(
         self.type_plan = ""
         self.type_to_hide = ""
         self.measure_tool = None
-        self.measure_tool2 = None
+
         self.identify_tool = None
         self.identify_tool2 = None
         self.popup_dialog = None
@@ -148,12 +149,11 @@ class RNADialog(
         # Reference selection (numbering + panels)
         self.select_ref.clicked.connect(self.select_ref_handler)
         self.select_ref2.clicked.connect(self.select_ref_handler2)
-        self.page_num.keyPressEvent = lambda e: self.key_press_event(e)
-        self.page_pan.keyPressEvent = lambda e: self.key_press_event2(e)
+        self.page_num.keyPressEvent = lambda e: self.key_press_event(e, 'add_numbering')
+        self.page_pan.keyPressEvent = lambda e: self.key_press_event(e, 'add_panel')
 
-        # Measure tools
-        self.mesure_dist.clicked.connect(self.measure_distance)
-        self.mesure_dist_2.clicked.connect(self.measure_distance2)
+        # Measure tool
+        self.mesure_dist.clicked.connect(self.activate_measure)
 
         # Map management
         self.bc.clicked.connect(self.bon_commande)
@@ -171,6 +171,9 @@ class RNADialog(
     def _on_layer_changed(self, index: int) -> None:
         """Switch the form stack page when the layer selector changes."""
         self.form_stack.setCurrentIndex(index)
+        # Keep active layer and visible features in sync with the selector.
+        if self.menu.currentWidget() and self.menu.currentWidget().objectName() == 'tab_ops':
+            self.on_opt_selected(self.menu.currentIndex())
 
     def _populate_combos(self) -> None:
         fill_paper(self.paper)
@@ -194,6 +197,16 @@ class RNADialog(
             return self.LAYER_INDEX_MAP[idx]
         return self.LAYER_INDEX_MAP[0]
 
+    def _translate_internal_combos(self) -> None:
+        """Translate layer_selector and _theme_combo items (not handled by
+        fill functions)."""
+        loc = self._tr_locale
+        for i, name in enumerate(self.LAYER_INDEX_MAP):
+            self.layer_selector.setItemText(i, get_string(name, loc))
+        for i in range(self._theme_combo.count()):
+            data = self._theme_combo.itemData(i)
+            self._theme_combo.setItemText(i, get_string(data, loc))
+
     def _tr(self, source: str) -> str:
         return get_string(source, self._tr_locale)
 
@@ -209,14 +222,15 @@ class RNADialog(
         self._theme_label.setObjectName("_theme_label")
         theme_row.addWidget(self._theme_label)
         self._theme_combo = QComboBox()
-        self._theme_combo.addItem(THEME_DARK)
-        self._theme_combo.addItem(THEME_LIGHT)
-        self._theme_combo.currentTextChanged.connect(self._on_theme_changed)
+        self._theme_combo.setObjectName("_theme_combo")
+        self._theme_combo.addItem(THEME_DARK, THEME_DARK)
+        self._theme_combo.addItem(THEME_LIGHT, THEME_LIGHT)
+        self._theme_combo.currentIndexChanged[int].connect(self._on_theme_changed)
         saved_theme = s.value(SETTINGS_KEY_THEME, DEFAULT_THEME)
-        idx = self._theme_combo.findText(saved_theme)
+        idx = self._theme_combo.findData(saved_theme)
         if idx >= 0:
             self._theme_combo.setCurrentIndex(idx)
-        self._current_theme = self._theme_combo.currentText()
+        self._current_theme = self._theme_combo.currentData()
         theme_row.addWidget(self._theme_combo)
         self._settings_group.layout().addLayout(theme_row)
 
@@ -225,6 +239,7 @@ class RNADialog(
         self._locale_label.setObjectName("_locale_label")
         locale_row.addWidget(self._locale_label)
         self._locale_combo = QComboBox()
+        self._locale_combo.setObjectName("_locale_combo")
         for code, label in AVAILABLE_LOCALES:
             self._locale_combo.addItem(label, code)
         self._locale_combo.currentIndexChanged[int].connect(self._on_locale_changed)
@@ -240,10 +255,10 @@ class RNADialog(
 
         self.scrollAreaWidgetContents_2.layout().addWidget(self._settings_group)
 
-    def _on_theme_changed(self, theme_name: str) -> None:
-        self._current_theme = theme_name
+    def _on_theme_changed(self, index: int) -> None:
+        self._current_theme = self._theme_combo.currentData()
         s = QSettings(SETTINGS_ORG, SETTINGS_APP)
-        s.setValue(SETTINGS_KEY_THEME, theme_name)
+        s.setValue(SETTINGS_KEY_THEME, self._current_theme)
         self.apply_theme()
 
     def _on_locale_changed(self, idx: int) -> None:
@@ -255,12 +270,15 @@ class RNADialog(
         self._tr_locale = code
         clear_i18n_cache()
         apply_widget_texts(self, code)
+        self._translate_internal_combos()
         fill_wilayas_list(self.wilaya_list)
         fill_road_type(self.type_voie)
         fill_type_zone(self.type_zone)
         fill_subdivision_type(self.type_city)
         fill_mounting_status(self.etat_mont)
         fill_numbering_state(self.num_etat)
+        fill_road_reference(self.dyn_ref)
+        fill_panel_reference(self.dyn_ref2)
         fill_paper(self.paper)
         fill_org_category(self.cat_org)
         fill_activity_category(self.cat_act)

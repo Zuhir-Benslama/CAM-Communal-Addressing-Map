@@ -80,8 +80,8 @@ class ChartMixin:
             title=self._tr('التوزيع حسب الوضعية'),
         )
 
-        _toggle_layer_visibility(LAYER_PANELS, False)
-        _toggle_layer_visibility(LAYER_NUMBERING, True)
+        _toggle_layer_visibility(LAYER_PANELS, True)
+        _toggle_layer_visibility(LAYER_NUMBERING, False)
 
     def carte_num1(self) -> None:
         """Generate a bar chart showing numbering distribution by state."""
@@ -103,8 +103,8 @@ class ChartMixin:
             title=self._tr('التوزيع حسب حالة الترقيم'),
         )
 
-        _toggle_layer_visibility(LAYER_NUMBERING, False)
-        _toggle_layer_visibility(LAYER_PANELS, True)
+        _toggle_layer_visibility(LAYER_NUMBERING, True)
+        _toggle_layer_visibility(LAYER_PANELS, False)
 
     def get_zone_chart(self, wilaya_number: int) -> None:
         """Generate a chart for zone type distribution in a wilaya."""

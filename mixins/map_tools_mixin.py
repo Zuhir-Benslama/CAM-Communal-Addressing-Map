@@ -24,18 +24,22 @@ class MapToolsMixin:
         self.identify_tool.set_active_layer(target)
         canvas.setMapTool(self.identify_tool)
 
-    def measure_distance(self) -> None:
+    def activate_measure(self) -> None:
         """Activate the distance measurement tool on the map canvas."""
         self.measure_tool = MeasureTool(self.iface.mapCanvas(), self.iface)
         self.iface.mapCanvas().setMapTool(self.measure_tool)
 
-    def measure_distance2(self) -> None:
-        """Activate a secondary distance measurement tool."""
-        self.measure_tool2 = MeasureTool(self.iface.mapCanvas(), self.iface)
-        self.iface.mapCanvas().setMapTool(self.measure_tool2)
-
     def start_selecting(self) -> None:
-        self._selection_handler()
+        layer_name = self._current_layer_name()
+        layers = QgsProject.instance().mapLayersByName(layer_name)
+        if not layers:
+            QMessageBox.critical(
+                self, self._tr("Error"),
+                self._tr("No active vector layer."),
+            )
+            return
+        self.iface.setActiveLayer(layers[0])
+        self._selection_handler(layer=layers[0])
 
     def stop(self) -> None:
         """Deactivate all active map tools and clear measurements."""
@@ -48,8 +52,6 @@ class MapToolsMixin:
                 self.identify_tool2.unset_map_tool()
             if self.measure_tool:
                 self.measure_tool.clear()
-            if self.measure_tool2:
-                self.measure_tool2.clear()
 
     def on_edition_release(self, event) -> None:
         """Stop active tools when the edition context menu is triggered."""
@@ -83,8 +85,8 @@ class MapToolsMixin:
         reference feature."""
         self.ref_name.clear()
         project = QgsProject.instance()
-        if combo.currentText():
-            layer_name = combo.currentText()
+        layer_name = combo.currentData() or combo.currentText()
+        if layer_name:
             layer = project.mapLayersByName(layer_name)
             if layer:
                 self.iface.setActiveLayer(layer[0])

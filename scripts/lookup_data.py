@@ -202,19 +202,64 @@ def clear_i18n_cache() -> None:
     _str_cache.pop('strings', None)
 
 
+def _src_text(w, attr='text'):
+    """Get or cache the original Arabic source text on a widget.
+    Uses attr-specific cache attribute (_rna_src, _rna_src_tip, _rna_src_win)
+    to avoid clashes when a widget appears in multiple findChildren passes."""
+    cache_attr = {
+        'text': '_rna_src', 'title': '_rna_src',
+        'placeholder': '_rna_src', 'tooltip': '_rna_src_tip',
+        'windowtitle': '_rna_src_win',
+    }.get(attr, '_rna_src')
+    cached = getattr(w, cache_attr, None)
+    if cached is not None:
+        return cached
+    getters = {
+        'text': lambda: w.text(),
+        'title': lambda: w.title(),
+        'placeholder': lambda: w.placeholderText(),
+        'tooltip': lambda: w.toolTip(),
+        'windowtitle': lambda: w.windowTitle() if hasattr(w, 'windowTitle') else '',
+    }
+    src = getters.get(attr, lambda: '')()
+    if src:
+        setattr(w, cache_attr, src)
+    return src
+
+
 def apply_widget_texts(dialog, locale: str) -> None:
     """Set text on all children of dialog using widgets.json data."""
-    from qgis.PyQt.QtWidgets import QLabel, QPushButton, QCheckBox, QGroupBox, QTabWidget
+    from qgis.PyQt.QtWidgets import (
+        QLabel, QPushButton, QCheckBox, QGroupBox, QTabWidget, QLineEdit,
+    )
     from qgis.PyQt.QtWidgets import QWidget
     widgets_data = _load_widgets()
     for w in dialog.findChildren((QLabel, QPushButton, QCheckBox)):
         name = w.objectName()
         if name in widgets_data:
             w.setText(widgets_data[name].get(locale, widgets_data[name].get('ar', '')))
+        else:
+            src = _src_text(w, 'text')
+            if src:
+                translated = _get_string(src, locale)
+                if translated != src:
+                    w.setText(translated)
     for w in dialog.findChildren(QGroupBox):
         name = w.objectName()
         if name in widgets_data:
             w.setTitle(widgets_data[name].get(locale, widgets_data[name].get('ar', '')))
+        else:
+            src = _src_text(w, 'title')
+            if src:
+                translated = _get_string(src, locale)
+                if translated != src:
+                    w.setTitle(translated)
+    for w in dialog.findChildren(QLineEdit):
+        src = _src_text(w, 'placeholder')
+        if src:
+            translated = _get_string(src, locale)
+            if translated != src:
+                w.setPlaceholderText(translated)
     for w in dialog.findChildren(QTabWidget):
         if not hasattr(w, '_rna_tab_src'):
             w._rna_tab_src = [w.tabText(i) for i in range(w.count())]
@@ -222,9 +267,15 @@ def apply_widget_texts(dialog, locale: str) -> None:
             src = w._rna_tab_src[i]
             if src:
                 w.setTabText(i, _get_string(src, locale))
+    if hasattr(dialog, "windowTitle"):
+        src = _src_text(dialog, 'windowtitle')
+        if src:
+            translated = _get_string(src, locale)
+            if translated != src:
+                dialog.setWindowTitle(translated)
     for w in dialog.findChildren(QWidget):
         name = w.objectName()
-        tip = w.toolTip()
+        tip = _src_text(w, 'tooltip')
         if not tip:
             continue
         if name in widgets_data:
