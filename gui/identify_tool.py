@@ -8,6 +8,7 @@ from .. import models as _models
 from ..constants import LAYER_KEY, current_locale
 from ..db.operations import qgis_config
 from ..models import get_session
+from ..scripts.lookup_data import get_string
 import logging
 logger = logging.getLogger(__name__)
 
@@ -76,9 +77,7 @@ class IdentifyTool(QgsMapToolIdentify):
                     menu = QMenu()
                     if self.mode == self.MODE_FORM:
                         action1 = menu.addAction(
-                            "\u0639\u0631\u0636"
-                            " \u0627\u0644\u0646\u0645\u0648\u0630\u062c"
-                            " \u0623\u0648 \u062a\u062d\u062f\u064a\u062b\u0647"
+                            get_string("عرض النموذج أو تحديثه", current_locale())
                         )
                         action1.triggered.connect(
                             lambda: self.display_or_update_form_feature(
@@ -86,8 +85,7 @@ class IdentifyTool(QgsMapToolIdentify):
                         )
 
                         action2 = menu.addAction(
-                            "\u0625\u0632\u0627\u0644\u0629"
-                            " \u0627\u0644\u0639\u0646\u0635\u0631"
+                            get_string("إزالة العنصر", current_locale())
                         )
                         action2.triggered.connect(
                             lambda: self.delete_feature(feature['pkuid'])
@@ -96,9 +94,7 @@ class IdentifyTool(QgsMapToolIdentify):
                         nom_locale = self._locale_feature_attr(feature, 'Nom')
                         type_locale = self._locale_feature_attr(feature, 'Type')
                         action1 = menu.addAction(
-                            "\u062a\u0639\u064a\u064a\u0646"
-                            " \u0627\u0644\u0639\u0646\u0635\u0631"
-                            " \u0643\u0645\u0631\u062c\u0639"
+                            get_string("تعيين العنصر كمرجع", current_locale())
                         )
                         action1.triggered.connect(
                             lambda: self.feature_as_ref(
@@ -190,5 +186,5 @@ class IdentifyTool(QgsMapToolIdentify):
         self.type = feature_type
         self.nom = feature_nom
         if self.pkuid:
-            self.ref_name.setText(f"\u200F{self.type} \u200F{self.nom}")
+            self.ref_name.setText(f"\u200F{self.type} \u200F{self.nom}")  # \u200F = RTL mark
             self.canvas.unsetMapTool(self)

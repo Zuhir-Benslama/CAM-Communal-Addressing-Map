@@ -45,7 +45,14 @@ class BackupMixin:
             return
 
         destination_path = DATABASE_FILE
-        shutil.copy(source_path, destination_path)
+        temp_path = destination_path + '.tmp'
+        try:
+            shutil.copy2(source_path, temp_path)
+            os.replace(temp_path, destination_path)
+        except Exception:
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
+            raise
         QMessageBox.warning(self, self._tr("Warning"), f"{os.path.basename(source_path)}")
 
     def restore_auth_database(self) -> None:

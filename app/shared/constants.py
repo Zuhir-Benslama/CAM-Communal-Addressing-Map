@@ -1,3 +1,4 @@
+from enum import Enum
 import os
 
 PLUGIN_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -32,6 +33,10 @@ CHART_SVG = os.path.join(PLUGIN_DIR, "resources", "chart.svg")
 MEMORY_PROVIDER = "memory"
 NOTIFY_DURATION = 3
 
+# Layer names used as QGIS display names AND internal identifiers.
+# These are intentionally Arabic since they appear in the QGIS layer tree.
+# The NEUTRAL_LAYER_* constants provide locale-independent aliases
+# for programmatic lookups.
 LAYER_MUNICIPALITY = "بلديتي"
 LAYER_ROADS = "الطرق"
 LAYER_FACILITIES = "المرافق"
@@ -39,6 +44,14 @@ LAYER_SUBDIVISIONS = "التجزئات"
 LAYER_ZONES = "المناطق"
 LAYER_NUMBERING = "الترقيم"
 LAYER_PANELS = "اللوحات"
+
+NEUTRAL_LAYER_MUNICIPALITY = "municipality"
+NEUTRAL_LAYER_ROADS = "roads"
+NEUTRAL_LAYER_FACILITIES = "facilities"
+NEUTRAL_LAYER_SUBDIVISIONS = "subdivisions"
+NEUTRAL_LAYER_ZONES = "zones"
+NEUTRAL_LAYER_NUMBERING = "numbering"
+NEUTRAL_LAYER_PANELS = "panels"
 
 LAYER_NAMES = [
     LAYER_MUNICIPALITY, LAYER_SUBDIVISIONS, LAYER_ZONES,
@@ -56,14 +69,30 @@ LAYER_MODEL = {
     LAYER_SUBDIVISIONS: "Subdivision",
 }
 
-PAN_MOUNTED = "مركبة"
-PAN_PLANNED = "مبرمجة"
-PAN_TO_MOVE = "لنقلها"
-PAN_TO_FIX = "لتصحيحها"
+class PanelStatus(str, Enum):
+    MOUNTED = "مركبة"
+    PLANNED = "مبرمجة"
+    TO_MOVE = "لنقلها"
+    TO_FIX = "لتصحيحها"
+
+
+class ActivityStatus(str, Enum):
+    NONE = "بدون نشاط"
+
+
+class Theme(str, Enum):
+    DARK = "داكن"
+    LIGHT = "فاتح"
+
+
+PAN_MOUNTED = PanelStatus.MOUNTED
+PAN_PLANNED = PanelStatus.PLANNED
+PAN_TO_MOVE = PanelStatus.TO_MOVE
+PAN_TO_FIX = PanelStatus.TO_FIX
 
 NUM_PLANNED = "مبرمجة"
 
-NO_ACTIVITY = "بدون نشاط"
+NO_ACTIVITY = ActivityStatus.NONE
 DEFAULT_PANEL_DIM = "30X40"
 
 SETTINGS_ORG = "RNA"
@@ -71,8 +100,8 @@ SETTINGS_APP = "RNA"
 SETTINGS_KEY_THEME = "theme"
 SETTINGS_KEY_LOCALE = "locale"
 
-THEME_DARK = "داكن"
-THEME_LIGHT = "فاتح"
+THEME_DARK = Theme.DARK
+THEME_LIGHT = Theme.LIGHT
 
 AVAILABLE_LOCALES = [
     ("ar", "العربية"), ("fr", "Français"), ("en", "English"),

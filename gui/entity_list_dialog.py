@@ -6,13 +6,11 @@ from .. import models as _models
 from ..models import get_session, get_all_fields_and_labels
 from ..constants import (
     current_theme, get_theme_qss,
-    SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
     current_locale, locale_value,
 )
 from ..scripts.lookup_data import get_string, apply_widget_texts
 
 from PyQt5 import uic
-from PyQt5.QtCore import QSettings
 from PyQt5.QtWidgets import (
     QAbstractItemView, QDialog, QHBoxLayout, QLabel, QPushButton,
     QSizePolicy, QTableWidgetItem, QVBoxLayout, QWidget,
@@ -37,12 +35,7 @@ class EntityListDialog(QDialog, FORM_CLASS):
         self._page = 0
         self._total_records = 0
 
-        s = QSettings(SETTINGS_ORG, SETTINGS_APP)
-        locale = s.value(SETTINGS_KEY_LOCALE, '')
-        if not locale:
-            locale_val = QSettings().value('locale/userLocale')
-            locale = locale_val[0:2] if locale_val else 'en'
-        self._tr_locale = locale
+        self._tr_locale = current_locale()
 
         super(EntityListDialog, self).__init__(parent)
         self.setupUi(self)

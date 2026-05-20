@@ -1,8 +1,9 @@
 """Layer creation and initialization utilities."""
 import logging
+import toml
 
+from sqlalchemy import Integer, SmallInteger, Float, String, Text, Boolean, func
 from geoalchemy2 import Geometry
-from sqlalchemy import Integer, SmallInteger, Float, String, Text, Boolean
 
 from qgis.PyQt.QtCore import QVariant
 from qgis.core import (
@@ -70,9 +71,6 @@ def create_other_layers(iface) -> None:
 
 def init_allowed_zone(iface) -> None:
     """Create the municipality boundary layer from the authenticated user."""
-    import toml
-    from sqlalchemy import func
-
     filename = COOKIE_FILE
 
     with open(filename, 'r', encoding='utf-8') as f:

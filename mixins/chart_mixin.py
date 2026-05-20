@@ -1,5 +1,11 @@
 """Chart generation mixins for panel and numbering distribution plots."""
 
+import logging
+
+import matplotlib.pyplot as plt
+import arabic_reshaper
+from bidi.algorithm import get_display
+from matplotlib.ticker import MaxNLocator
 from sqlalchemy import func
 
 from qgis.core import QgsProject
@@ -7,14 +13,14 @@ from qgis.core import QgsProject
 from ..models import get_session, PanelSign, Numbering
 from ..constants import LAYER_PANELS, LAYER_NUMBERING, CHART_SVG
 
+logger = logging.getLogger(__name__)
+
+
+CHART_COLOR = 'yellow'
+
 
 def _render_bar_chart(results, xlabel: str, ylabel: str, title: str) -> None:
     """Render a bar chart from query results and save to CHART_SVG."""
-    import matplotlib.pyplot as plt
-    import arabic_reshaper
-    from bidi.algorithm import get_display
-    from matplotlib.ticker import MaxNLocator
-
     reshaper = arabic_reshaper.ArabicReshaper(
         configuration={
             'delete_harakat': False,
@@ -27,7 +33,7 @@ def _render_bar_chart(results, xlabel: str, ylabel: str, title: str) -> None:
     counts = [row[1] for row in results]
 
     plt.figure(figsize=(10, 6))
-    plt.bar(labels, counts, color='yellow')
+    plt.bar(labels, counts, color=CHART_COLOR)
 
     plt.xlabel(get_display(reshaper.reshape(xlabel)))
     plt.ylabel(get_display(reshaper.reshape(ylabel)))
@@ -103,9 +109,6 @@ class ChartMixin:
     def get_zone_chart(self, wilaya_number: int) -> None:
         """Generate a chart for zone type distribution in a wilaya."""
         from ..db.operations import get_zone_distribution
-        import logging
-        logger = logging.getLogger(__name__)
-
         results = get_zone_distribution(wilaya_number)
         if not results:
             logger.warning(

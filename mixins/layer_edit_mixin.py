@@ -21,7 +21,19 @@ logger = logging.getLogger(__name__)
 
 
 class LayerEditMixin:
-    """Mixin for updating layer geometries and adding features via forms."""
+    """Mixin for updating layer geometries and adding features via forms.
+
+    Cross-mixin protocol (attributes set by map_tools_mixin or owning dialog):
+        _last_feature_wkt (str | None) — WKT geometry of the last created feature
+        _last_feature_pkuid (str | None) — PK of the last created feature
+        identify_tool2 (IdentifyTool | None) — reference selection tool (get_pkuid)
+        measure_tool / measure_tool2 (MeasureTool | None) — measurement line tool
+        update_object (bool) — flag for edit-vs-insert mode
+        is_pan / is_org / is_road / is_num / is_city / is_zone (QCheckBox)
+        num_val / repetition / nom_voie / dec_voie / nom_org / nom_city / nom_zone
+        cat_org / type_org / type_voie / type_city / type_zone / num_etat / etat_mont
+        cat_act / type_act (QComboBox)
+    """
 
     def _update_handler(self, layer_name: str) -> None:
         """Enable geometry editing for a named layer."""
@@ -36,29 +48,8 @@ class LayerEditMixin:
         layer.geometryChanged.connect(self.on_geometry_changed)
         update_layer(self.iface, layer_name)
 
-    def update_road(self) -> None:
-        """Enable geometry editing for the roads layer."""
-        self._update_handler(LAYER_ROADS)
-
-    def update_organization(self) -> None:
-        """Enable geometry editing for the organizations layer."""
-        self._update_handler(LAYER_FACILITIES)
-
-    def update_city(self) -> None:
-        """Enable geometry editing for the subdivisions layer."""
-        self._update_handler(LAYER_SUBDIVISIONS)
-
-    def update_numbering(self) -> None:
-        """Enable geometry editing for the numbering layer."""
-        self._update_handler(LAYER_NUMBERING)
-
-    def update_panel(self) -> None:
-        """Enable geometry editing for the panels layer."""
-        self._update_handler(LAYER_PANELS)
-
-    def update_zone(self) -> None:
-        """Enable geometry editing for the zones layer."""
-        self._update_handler(LAYER_ZONES)
+    def start_editing(self) -> None:
+        self._update_handler(self._current_layer_name())
 
     def add_panel(self) -> None:
         """Add a new panel sign linked to a selected road, org, or
@@ -109,7 +100,7 @@ class LayerEditMixin:
                     logger.exception("Failed to add panel: %s", e)
                     QMessageBox.critical(self, self._tr("Error"), str(e))
         self.identify_tool2.unset_map_tool()
-        self.draw_pan_handler()
+        self._draw_handler(LAYER_PANELS)
 
     def add_organization(self) -> None:
         """Add a new organization through the form."""
@@ -262,7 +253,7 @@ class LayerEditMixin:
 
         self.num_val.setFocus()
         self.num_val.clear()
-        self.draw_num_handler()
+        self._draw_handler(LAYER_NUMBERING)
 
     def add_city(self) -> None:
         """Add a new subdivision through the form."""

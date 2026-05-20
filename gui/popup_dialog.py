@@ -3,11 +3,11 @@ import logging
 import os
 
 from qgis.PyQt import uic
+from qgis.PyQt.QtCore import QSize
 from qgis.PyQt.QtWidgets import (
     QComboBox, QDateEdit, QDialog, QFormLayout, QLayout, QLineEdit,
     QMessageBox, QPushButton, QSizePolicy, QWidget,
 )
-from qgis.PyQt.QtCore import QSettings, QSize
 logger = logging.getLogger(__name__)
 from .. import models as _models
 from ..models import (
@@ -16,7 +16,6 @@ from ..models import (
 )
 from ..constants import (
     validate_text, current_theme, get_theme_qss,
-    SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
     current_locale, locale_value,
 )
 from ..scripts.lookup_data import get_string, apply_widget_texts
@@ -44,13 +43,7 @@ class PopupDialog(QDialog,FORM_CLASS):
                  parent=None) -> None:
         """Initialize the popup dialog with layer and attribute."""
         super(PopupDialog, self).__init__(parent)
-
-        s = QSettings(SETTINGS_ORG, SETTINGS_APP)
-        locale = s.value(SETTINGS_KEY_LOCALE, '')
-        if not locale:
-            locale_val = QSettings().value('locale/userLocale')
-            locale = locale_val[0:2] if locale_val else 'en'
-        self._tr_locale = locale
+        self._tr_locale = current_locale()
 
 
 
@@ -151,6 +144,86 @@ class PopupDialog(QDialog,FORM_CLASS):
         selected_value = self.cat_org.itemData(current_index)
         fill_type_org(self.type_org, selected_value)
 
+    def _populate_road(self, query, loc):
+        self.nom_voie.setText(locale_value(query, 'Nom', loc))
+        self.dec_voie.setText(query.num_decision)
+        index = self.type_voie.findData(query.Type)
+        if index != -1:
+            self.type_voie.setCurrentIndex(index)
+
+    def _populate_facility(self, query, loc):
+        self.nom_org.setText(locale_value(query, 'Nom', loc))
+        index = self.cat_org.findData(query.cat)
+        if index != -1:
+            fill_type_org(self.type_org, query.cat)
+            self.cat_org.setCurrentIndex(index)
+        index = self.type_org.findData(query.Type)
+        if index != -1:
+            self.type_org.setCurrentIndex(index)
+
+    def _populate_subdivision(self, query, loc):
+        self.nom_city.setText(locale_value(query, 'Nom', loc))
+        index = self.type_city.findData(query.Type)
+        if index != -1:
+            self.type_city.setCurrentIndex(index)
+
+    def _populate_zone(self, query, loc):
+        self.nom_zone.setText(locale_value(query, 'Nom', loc))
+        index = self.type_zone.findData(query.Type)
+        if index != -1:
+            self.type_zone.setCurrentIndex(index)
+
+    def _populate_numbering(self, query, loc):
+        self.num_val.setText(query.valeur)
+        self.repetition.setText(query.repetition)
+        if query.idLine:
+            self.dyn_ref3.setCurrentText(LAYER_ROADS)
+            self.ref_name3.setText(
+                locale_value(query.road, 'Type', loc)
+                + ' ' + locale_value(query.road, 'Nom', loc))
+        elif query.idPoly:
+            self.dyn_ref3.setCurrentText(LAYER_SUBDIVISIONS)
+            self.ref_name3.setText(
+                locale_value(query.subdivision, 'Nom', loc))
+        index = self.num_etat.findData(query.etat)
+        if index != -1:
+            self.num_etat.setCurrentIndex(index)
+        index = self.cat_act_3.findData(query.activity_cat)
+        if index != -1:
+            fill_type_act(self.type_act_3, query.activity_cat)
+            self.cat_act_3.setCurrentIndex(index)
+        index = self.type_act_3.findData(query.activity_type)
+        if index != -1:
+            self.type_act_3.setCurrentIndex(index)
+
+    def _populate_panel(self, query, loc):
+        if query.idLine:
+            self.dyn_ref4.setCurrentText(LAYER_ROADS)
+            self.ref_name4.setText(
+                locale_value(query.road, 'Type', loc)
+                + ' ' + locale_value(query.road, 'Nom', loc))
+        elif query.idOrg:
+            self.dyn_ref4.setCurrentText(LAYER_FACILITIES)
+            self.ref_name4.setText(
+                locale_value(query.organization, 'Type', loc)
+                + ' '
+                + locale_value(query.organization, 'Nom', loc))
+        elif query.idPoly:
+            self.dyn_ref4.setCurrentText(LAYER_SUBDIVISIONS)
+            self.ref_name4.setText(locale_value(query.subdivision, 'Nom', loc))
+        index = self.etat_mont.findData(query.Stituation)
+        if index != -1:
+            self.etat_mont.setCurrentIndex(index)
+
+    _POPULATE_DISPATCH = {
+        LAYER_ROADS: _populate_road,
+        LAYER_FACILITIES: _populate_facility,
+        LAYER_SUBDIVISIONS: _populate_subdivision,
+        LAYER_ZONES: _populate_zone,
+        LAYER_NUMBERING: _populate_numbering,
+        LAYER_PANELS: _populate_panel,
+    }
+
     def set_form(self) -> None:
         """Populate form fields from the selected feature."""
         data_list = qgis_config().get('mapper')
@@ -167,86 +240,11 @@ class PopupDialog(QDialog,FORM_CLASS):
                     query = session.query(model).filter(
                         getattr(model, 'pkuid') == self.attribute
                     ).first()
-                    loc = self._tr_locale
                     if query:
-                        if self.layer_name_key == LAYER_ROADS:
-                            self.nom_voie.setText(
-                                locale_value(query, 'Nom', loc))
-                            self.dec_voie.setText(query.num_decision)
-                            index = self.type_voie.findData(query.Type)
-                            if index != -1:
-                                self.type_voie.setCurrentIndex(index)
-
-                        if self.layer_name_key == LAYER_FACILITIES:
-                            self.nom_org.setText(
-                                locale_value(query, 'Nom', loc))
-                            index = self.cat_org.findData(query.cat)
-                            if index != -1:
-                                fill_type_org(self.type_org, query.cat)
-                                self.cat_org.setCurrentIndex(index)
-                            index = self.type_org.findData(query.Type)
-                            if index != -1:
-                                self.type_org.setCurrentIndex(index)
-
-                        if self.layer_name_key == LAYER_SUBDIVISIONS:
-                            self.nom_city.setText(
-                                locale_value(query, 'Nom', loc))
-                            index = self.type_city.findData(query.Type)
-                            if index != -1:
-                                self.type_city.setCurrentIndex(index)
-
-                        if self.layer_name_key == LAYER_ZONES:
-                            self.nom_zone.setText(
-                                locale_value(query, 'Nom', loc))
-                            index = self.type_zone.findData(query.Type)
-                            if index != -1:
-                                self.type_zone.setCurrentIndex(index)
-
-                        if self.layer_name_key == LAYER_NUMBERING:
-                            self.num_val.setText(query.valeur)
-                            self.repetition.setText(query.repetition)
-                            if query.idLine:
-                                self.dyn_ref3.setCurrentText(LAYER_ROADS)
-                                self.ref_name3.setText(
-                                    locale_value(query.road, 'Type', loc)
-                                    + ' ' + locale_value(query.road, 'Nom', loc))
-                            elif query.idPoly:
-                                self.dyn_ref3.setCurrentText(LAYER_SUBDIVISIONS)
-                                self.ref_name3.setText(
-                                    locale_value(query.subdivision, 'Nom', loc))
-                            index = self.num_etat.findData(query.etat)
-                            if index != -1:
-                                self.num_etat.setCurrentIndex(index)
-                            index = self.cat_act_3.findData(query.activity_cat)
-                            if index != -1:
-                                fill_type_act(
-                                    self.type_act_3, query.activity_cat)
-                                self.cat_act_3.setCurrentIndex(index)
-                            index = self.type_act_3.findData(
-                                query.activity_type)
-                            if index != -1:
-                                self.type_act_3.setCurrentIndex(index)
-
-                        if self.layer_name_key == LAYER_PANELS:
-                            if query.idLine:
-                                self.dyn_ref4.setCurrentText(LAYER_ROADS)
-                                self.ref_name4.setText(
-                                    locale_value(query.road, 'Type', loc)
-                                    + ' ' + locale_value(query.road, 'Nom', loc))
-                            elif query.idOrg:
-                                self.dyn_ref4.setCurrentText(LAYER_FACILITIES)
-                                self.ref_name4.setText(
-                                    locale_value(query.organization, 'Type', loc)
-                                    + ' '
-                                    + locale_value(query.organization, 'Nom', loc))
-                            elif query.idPoly:
-                                self.dyn_ref4.setCurrentText(LAYER_SUBDIVISIONS)
-                                self.ref_name4.setText(
-                                    locale_value(
-                                        query.subdivision, 'Nom', loc))
-                            index = self.etat_mont.findData(query.Stituation)
-                            if index != -1:
-                                self.etat_mont.setCurrentIndex(index)
+                        handler = self._POPULATE_DISPATCH.get(
+                            self.layer_name_key)
+                        if handler:
+                            handler(self, query, self._tr_locale)
                 finally:
                     session.close()
 

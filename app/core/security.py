@@ -4,13 +4,21 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-JWT_SECRET = os.getenv('RNA_JWT_SECRET')
-if not JWT_SECRET:
-    raise RuntimeError(
-        "RNA_JWT_SECRET environment variable must be set. "
-        "Generate a secret with: "
-        "python3 -c \"import secrets; print(secrets.token_hex(32))\""
-    )
+_SECRET: str | None = None
+
+
+def get_jwt_secret() -> str:
+    global _SECRET
+    if _SECRET is None:
+        secret = os.getenv('RNA_JWT_SECRET')
+        if not secret:
+            raise RuntimeError(
+                "RNA_JWT_SECRET environment variable must be set. "
+                "Generate a secret with: "
+                "python3 -c \"import secrets; print(secrets.token_hex(32))\""
+            )
+        _SECRET = secret
+    return _SECRET
 
 
 def hash_password(password: str) -> str:

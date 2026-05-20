@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 import os
 
-from .constants import ICON_PNG, current_locale
+from .constants import ICON_PNG, current_locale, SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE
 from .scripts.lookup_data import get_string
 from .RNA_dialog import RNADialog
 from qgis.core import QgsApplication
@@ -70,7 +70,6 @@ class RNA:
         settings.setValue('disable-enter-attribute-values-dialog', True)
         settings.endGroup()
 
-        from .constants import SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE
         self._locale_code = QSettings(SETTINGS_ORG, SETTINGS_APP).value(
             SETTINGS_KEY_LOCALE, '')
         if not self._locale_code:

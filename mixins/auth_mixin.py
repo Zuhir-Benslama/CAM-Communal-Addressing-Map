@@ -20,11 +20,17 @@ class AuthMixin:
     """Mixin handling user authentication, registration, and session
     management."""
 
+    def _show_error(self, text: str) -> None:
+        QMessageBox.critical(self, self._tr("Error"), text)
+
+    def _show_info(self, text: str) -> None:
+        QMessageBox.information(self, self._tr("Success"), text)
+
     def submit_add_usr(self) -> None:
         """Register a new user via the sign-up API."""
         current_index = self.commune_of_wilaya.currentIndex()
         selected_value = self.commune_of_wilaya.itemData(current_index)
-        ok = sign_up(
+        ok, errors = sign_up(
             username=validate_text(self.uname.text()),
             password=validate_text(self.pwd.text()),
             email=validate_text(self.email.text()),
@@ -35,15 +41,17 @@ class AuthMixin:
         )
         if ok:
             self.public_route('login')
+        elif errors:
+            self._show_error("\n".join(errors))
 
     def login_user(self) -> None:
         """Authenticate the user and initialize the map session on success."""
-        flag = sign_in(
+        ok, username, error = sign_in(
             username=validate_text(self.username.text()),
             password=validate_text(self.password.text()),
-            label=self.label_username,
         )
-        if flag:
+        if ok and username:
+            self.label_username.setText(username)
             indicator = self.add_map_layer()
             if indicator:
                 init_allowed_zone(self.iface)
@@ -53,10 +61,11 @@ class AuthMixin:
                 self.on_opt_selected(0)
                 self.current_user = get_current_user()
             else:
-                QMessageBox.critical(
-                self, self._tr("Error"),
-                self._tr("غير قادر على تسجيل الدخول إلى الخادم أو الصورة غير موجودة"),
-            )
+                self._show_error(
+                    self._tr("غير قادر على تسجيل الدخول إلى الخادم أو الصورة غير موجودة"),
+                )
+        elif error:
+            self._show_error(error)
 
     def fill_map_options(self) -> None:
         """Populate the map options combo box from QGIS config."""

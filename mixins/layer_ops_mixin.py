@@ -1,12 +1,13 @@
 """Layer operations mixin for feature CRUD and tab-based layer management."""
 
 import logging
+import os
 import uuid
 
 from qgis.PyQt.QtWidgets import (
     QMessageBox, QFormLayout, QLineEdit, QComboBox, QSpinBox, QCheckBox,
 )
-from qgis.core import QgsProject
+from qgis.core import QgsLayerTreeLayer, QgsProject
 from shapely import wkt
 from shapely.geometry import Point, Polygon, LineString
 from geoalchemy2.elements import WKTElement
@@ -18,6 +19,7 @@ from ..models import get_session
 from ..constants import (
     LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
     LAYER_ZONES, LAYER_NUMBERING, LAYER_PANELS, SRID,
+    LAYER_MUNICIPALITY, DEFAULT_STYLE_DIR, CUSTOM_STYLE_DIR,
 )
 from ..gui.entity_list_dialog import EntityListDialog
 
@@ -30,13 +32,6 @@ class LayerOpsMixin:
 
     def on_opt_selected(self, index) -> None:
         """Handle tab selection: toggle layer visibility and load styles."""
-        import os
-        from qgis.core import QgsLayerTreeLayer
-        from ..constants import (
-            LAYER_MUNICIPALITY, LAYER_PANELS, LAYER_NUMBERING,
-            DEFAULT_STYLE_DIR, CUSTOM_STYLE_DIR,
-        )
-
         self.type_plan = ""
         # Use cached Arabic tab text for internal routing (locale-independent)
         if hasattr(self.menu, '_rna_tab_src'):
@@ -69,7 +64,7 @@ class LayerOpsMixin:
                 if layer_to_show:
                     layer_to_show.setItemVisibilityChecked(True)
 
-        if tab_name not in ['تقرير', 'اعدادات']:
+        if tab_name not in ['تقرير', 'اعدادات', 'العمليات']:
             data_list = qgis_config().get('other_layers')
             l = QgsProject.instance().mapLayersByName(tab_name)
             if l:

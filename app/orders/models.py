@@ -1,6 +1,6 @@
 import uuid
 import logging
-from typing import Any, Optional
+from typing import Any, ClassVar, List, Optional
 
 from sqlalchemy import (
     Column, Integer, String, Text, Boolean, ForeignKey,
@@ -19,6 +19,33 @@ from ..users.repository import get_current_user
 logger = logging.getLogger(__name__)
 
 
+class _BaseSpatialModel(Base):
+    """Base class for spatial models providing shared CRUD operations.
+
+    Subclasses override :attr:`_list_columns` to control which columns
+    appear in :meth:`list_all`.
+    """
+    __abstract__ = True
+
+    _list_columns: ClassVar[List[str]] = []
+
+    @property
+    def username(self) -> Optional[str]:
+        if self.uid:
+            return self.user.username
+        return None
+
+    @classmethod
+    def list_all(cls, session: Session) -> dict:
+        columns = [column for column in cls.__table__.columns
+                   if column.name in cls._list_columns]
+        return {'data': session.query(*columns).all(), "cols": columns}
+
+    def delete(self, session: Session) -> None:
+        session.delete(self)
+        session.commit()
+
+
 class Localite(Base):
     __tablename__ = 'localite'
     pk_uid = Column(Integer, primary_key=True, autoincrement=True)
@@ -35,8 +62,9 @@ class Localite(Base):
         session.commit()
 
 
-class Zone(Base):
+class Zone(_BaseSpatialModel):
     __tablename__ = 'refpoly'
+    _list_columns = ['Type', 'Nom']
 
     pkuid = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
@@ -55,16 +83,6 @@ class Zone(Base):
     uid = Column(Text, ForeignKey('user.id'), nullable=True,
                  info={'label': 'مستخدم'})
     user = relationship("User", backref="user_poly", foreign_keys=[uid])
-
-    @property
-    def username(self) -> Optional[str]:
-        if self.uid:
-            return self.user.username
-        return None
-
-    def delete(self, session: Session) -> None:
-        session.delete(self)
-        session.commit()
 
     @classmethod
     def update(cls, session: Session, pkuid: str,
@@ -128,8 +146,9 @@ class Zone(Base):
             raise ValueError("No user found")
 
 
-class Subdivision(Base):
+class Subdivision(_BaseSpatialModel):
     __tablename__ = 'refpolychild'
+    _list_columns = ['Type', 'Nom']
 
     pkuid = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
@@ -146,23 +165,6 @@ class Subdivision(Base):
     uid = Column(Text, ForeignKey('user.id'), nullable=True,
                  info={'label': 'مستخدم'})
     user = relationship("User", backref="user_poly_child", foreign_keys=[uid])
-
-    @property
-    def username(self) -> Optional[str]:
-        if self.uid:
-            return self.user.username
-        return None
-
-    @classmethod
-    def list_all(cls, session: Session) -> dict:
-        allowed_columns = ['Type', 'Nom']
-        columns = [column for column in cls.__table__.columns
-                   if column.name in allowed_columns]
-        return {'data': session.query(*columns).all(), "cols": columns}
-
-    def delete(self, session: Session) -> None:
-        session.delete(self)
-        session.commit()
 
     @classmethod
     def update(cls, session: Session, pkuid: str,
@@ -205,8 +207,10 @@ class Subdivision(Base):
             raise ValueError("No user found")
 
 
-class Road(Base):
+class Road(_BaseSpatialModel):
     __tablename__ = 'RefLine'
+    _list_columns = ['Type', 'Nom', 'num_decision']
+
     pkuid = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'المفتاح'},
@@ -222,23 +226,6 @@ class Road(Base):
     pkuid_poly = Column(Text, ForeignKey('refpoly.pkuid'), nullable=True)
     uid = Column(Text, ForeignKey('user.id'), nullable=True)
     user = relationship("User", backref="user_line", foreign_keys=[uid])
-
-    @property
-    def username(self) -> Optional[str]:
-        if self.uid:
-            return self.user.username
-        return None
-
-    @classmethod
-    def list_all(cls, session: Session) -> dict:
-        allowed_columns = ['Type', 'Nom', 'num_decision']
-        columns = [column for column in cls.__table__.columns
-                   if column.name in allowed_columns]
-        return {'data': session.query(*columns).all(), "cols": columns}
-
-    def delete(self, session: Session) -> None:
-        session.delete(self)
-        session.commit()
 
     @classmethod
     def update(cls, session: Session, pkuid: str,
@@ -281,8 +268,9 @@ class Road(Base):
             raise ValueError("No user found")
 
 
-class Organization(Base):
+class Organization(_BaseSpatialModel):
     __tablename__ = 'reforg'
+    _list_columns = ['Cat', 'Type', 'Nom']
 
     pkuid = Column(Text, primary_key=True, default=lambda: str(uuid.uuid4()))
     idLoc = Column(String, ForeignKey('localite.pk_uid'))
@@ -297,25 +285,8 @@ class Organization(Base):
     user = relationship("User", backref="user_org", foreign_keys=[uid])
 
     @property
-    def username(self) -> Optional[str]:
-        if self.uid:
-            return self.user.username
-        return None
-
-    @classmethod
-    def list_all(cls, session: Session) -> dict:
-        allowed_columns = ['Cat', 'Type', 'Nom']
-        columns = [column for column in cls.__table__.columns
-                   if column.name in allowed_columns]
-        return {'data': session.query(*columns).all(), "cols": columns}
-
-    @property
     def cat(self) -> Optional[str]:
         return self.Cat
-
-    def delete(self, session: Session) -> None:
-        session.delete(self)
-        session.commit()
 
     @classmethod
     def update(cls, session: Session, pkuid: str,
@@ -358,8 +329,9 @@ class Organization(Base):
             raise ValueError("No user found")
 
 
-class Numbering(Base):
+class Numbering(_BaseSpatialModel):
     __tablename__ = 'Numerotation'
+    _list_columns = ['valeur', 'repetition', 'etat']
     pkuid = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'المفتاح'},
@@ -388,23 +360,6 @@ class Numbering(Base):
     activity_cat = Column(String, nullable=True)
     activity_type = Column(String, nullable=True)
 
-    @property
-    def username(self) -> Optional[str]:
-        if self.uid:
-            return self.user.username
-        return None
-
-    @classmethod
-    def list_all(cls, session: Session) -> dict:
-        allowed_columns = ['Type', 'Nom']
-        columns = [column for column in cls.__table__.columns
-                   if column.name in allowed_columns]
-        return {'data': session.query(*columns).all(), "cols": columns}
-
-    def delete(self, session: Session) -> None:
-        session.delete(self)
-        session.commit()
-
     @classmethod
     def update(cls, session: Session, pkuid: str,
                **kwargs: Any) -> Optional['Numbering']:
@@ -428,7 +383,7 @@ class Numbering(Base):
             raise ValueError("No user found")
 
 
-class PanelSign(Base):
+class PanelSign(_BaseSpatialModel):
     __tablename__ = 'Pannautage'
 
     pkuid = Column(
@@ -465,12 +420,6 @@ class PanelSign(Base):
     user = relationship("User", backref="user_pan", foreign_keys=[uid])
 
     @property
-    def username(self) -> Optional[str]:
-        if self.uid:
-            return self.user.username
-        return None
-
-    @property
     def label(self) -> Optional[str]:
         loc = current_locale()
         if self.idLine is not None and self.idPoly is None \
@@ -486,10 +435,6 @@ class PanelSign(Base):
             return ('\u200F' + locale_value(self.organization, 'Type', loc)
                     + ' ' + locale_value(self.organization, 'Nom', loc))
         return None
-
-    def delete(self, session: Session) -> None:
-        session.delete(self)
-        session.commit()
 
     @classmethod
     def update(cls, session: Session, pkuid: str,

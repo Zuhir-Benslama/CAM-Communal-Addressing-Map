@@ -2,22 +2,14 @@
 from PyQt5.QtCore import Qt, QSettings
 from PyQt5.QtGui import QColor, QCursor, QFont
 from PyQt5.QtWidgets import (
-    QToolTip, QGraphicsSimpleTextItem, QGraphicsTextItem, QGraphicsItemGroup
+    QToolTip, QGraphicsSimpleTextItem, QGraphicsTextItem, QGraphicsItemGroup,
 )
+from PyQt5.QtWidgets import QGraphicsDropShadowEffect
 from qgis.gui import QgsMapToolEmitPoint, QgsRubberBand, QgsVertexMarker
 from qgis.core import QgsPointXY, QgsDistanceArea, QgsWkbTypes
 
-from ..constants import SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE
+from ..constants import current_locale
 from ..i18n import tr as _i18n_tr
-
-
-def _locale() -> str:
-    s = QSettings(SETTINGS_ORG, SETTINGS_APP)
-    lc = s.value(SETTINGS_KEY_LOCALE, '')
-    if not lc:
-        lc_val = QSettings().value('locale/userLocale')
-        lc = lc_val[0:2] if lc_val else 'en'
-    return lc
 
 class MeasureTool(QgsMapToolEmitPoint):
     """Map tool for measuring distances on the canvas."""
@@ -73,9 +65,9 @@ class MeasureTool(QgsMapToolEmitPoint):
                 self.da.measureLine(self.points[i - 1], self.points[i])
                 for i in range(1, len(self.points))
             )
-            msg = f"{total_dist:.2f} {_i18n_tr('متر', _locale())}"
+            msg = f"{total_dist:.2f} {_i18n_tr('متر', current_locale())}"
             self.iface.messageBar().pushMessage(
-                _i18n_tr("المسافة الإجمالية", _locale()), msg, level=0, duration=10)
+                _i18n_tr("المسافة الإجمالية", current_locale()), msg, level=0, duration=10)
 
     def canvasMoveEvent(self, event) -> None:
         """Show temporary distance on mouse move."""
@@ -91,7 +83,7 @@ class MeasureTool(QgsMapToolEmitPoint):
             self.da.measureLine(self.points[i - 1], self.points[i])
             for i in range(1, len(self.points))
         )
-        dist_msg = f"{temp_distance + total_dist:.2f} {_i18n_tr('متر', _locale())}"
+        dist_msg = f"{temp_distance + total_dist:.2f} {_i18n_tr('متر', current_locale())}"
         QToolTip.showText(QCursor.pos(), dist_msg)
 
     def keyPressEvent(self, event) -> None:
@@ -99,24 +91,24 @@ class MeasureTool(QgsMapToolEmitPoint):
         if event.key() == Qt.Key_R:
             self.clear()
             self.iface.messageBar().pushMessage(
-                _i18n_tr("تحديث", _locale()), _i18n_tr("إعادة تحديث القياس", _locale()), level=1, duration=10
+                _i18n_tr("تحديث", current_locale()), _i18n_tr("إعادة تحديث القياس", current_locale()), level=1, duration=10
             )
 
         elif event.key() == Qt.Key_E:
             self.clear()
             self.canvas.unsetMapTool(self)
             self.iface.messageBar().pushMessage(
-                _i18n_tr("إنهاء", _locale()), _i18n_tr("تم إنهاء أداة القياس", _locale()), level=0, duration=10
+                _i18n_tr("إنهاء", current_locale()), _i18n_tr("تم إنهاء أداة القياس", current_locale()), level=0, duration=10
             )
 
         elif event.key() == Qt.Key_P:
             self.paused = not self.paused
-            state = (_i18n_tr("متوقفة مؤقتاً", _locale())
+            state = (_i18n_tr("متوقفة مؤقتاً", current_locale())
                      if self.paused
-                     else _i18n_tr("تمت المتابعة", _locale()))
+                     else _i18n_tr("تمت المتابعة", current_locale()))
             level = 1 if self.paused else 0
             self.iface.messageBar().pushMessage(
-                _i18n_tr("الحالة", _locale()), state, level=level, duration=10)
+                _i18n_tr("الحالة", current_locale()), state, level=level, duration=10)
 
     def addDistanceLabel(self, p1, p2) -> None:
         """Add a distance label between two points on canvas."""
@@ -134,11 +126,11 @@ class MeasureTool(QgsMapToolEmitPoint):
         pdf = "\u202C"
 
         label_text = (
-            f" {rle}{segment_distance:.2f} {_i18n_tr('متر', _locale())}\n"
-            f" {total_distance:.2f} {_i18n_tr('متر', _locale())}{pdf} "
+            f" {rle}{segment_distance:.2f} {_i18n_tr('متر', current_locale())}\n"
+            f" {total_distance:.2f} {_i18n_tr('متر', current_locale())}{pdf} "
         )
 
-        # Create a group to hold outline and main text
+        # Create a group to hold the text with outline effect
         group = QGraphicsItemGroup()
         group.mid_point = mid_point  # Store the map coordinates
 
@@ -147,16 +139,11 @@ class MeasureTool(QgsMapToolEmitPoint):
         text_item.setFont(font)
         text_rect = text_item.boundingRect()
 
-        # Create outline effect by adding offset text items
-        offsets = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
-        for dx, dy in offsets:
-            outline_item = QGraphicsSimpleTextItem(label_text)
-            outline_item.setFont(font)
-            outline_item.setBrush(QColor(255, 255, 255))
-            outline_item.setPos(dx, dy)
-            group.addToGroup(outline_item)
-
-        # Add main text item
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(5)
+        shadow.setOffset(0)
+        shadow.setColor(QColor(255, 255, 255))
+        text_item.setGraphicsEffect(shadow)
         text_item.setBrush(QColor(255, 0, 0))
         group.addToGroup(text_item)
 

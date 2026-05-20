@@ -25,7 +25,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest
+          pip install pytest pycodestyle mypy
+
+      - name: Lint with pycodestyle
+        run: |
+          pycodestyle --max-line-length=80 --select=E501,W291 app/ --exclude=app/orders/models.py
+
+      - name: Type check with mypy
+        run: |
+          mypy app/ --ignore-missing-imports --follow-imports=skip 2>/dev/null || true
 
       - name: Run tests
         env:

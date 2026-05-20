@@ -5,7 +5,15 @@ import toml
 from ..core.database import get_session
 from ..users.models import User
 from ..shared.constants import COOKIE_FILE
-from qgis.PyQt.QtWidgets import QWidget
+
+
+def _navigate_to_login(self) -> None:
+    """Navigate to the login page if the router widget is available."""
+    router = getattr(self, 'router', None)
+    if router is not None:
+        login_page = router.findChild(lambda w: w.objectName() == 'login')
+        if login_page:
+            router.setCurrentWidget(login_page)
 
 
 def login_required(func) -> Callable:
@@ -22,9 +30,7 @@ def login_required(func) -> Callable:
         uid = data.get('Session', {}).get('uid', None)
 
         if not cookie or not uid:
-            login_page = self.router.findChild(QWidget, 'login')
-            if login_page:
-                self.router.setCurrentWidget(login_page)
+            _navigate_to_login(self)
             return
 
         session = get_session()
@@ -36,9 +42,7 @@ def login_required(func) -> Callable:
             session.close()
 
         if not user:
-            login_page = self.router.findChild(QWidget, 'login')
-            if login_page:
-                self.router.setCurrentWidget(login_page)
+            _navigate_to_login(self)
             return
 
         return func(self, *args, **kwargs)

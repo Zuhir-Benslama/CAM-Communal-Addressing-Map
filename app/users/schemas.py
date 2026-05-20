@@ -4,7 +4,18 @@ from ..core.database import get_auth_session
 from ..users.models import User
 
 
-class AuthSchema(Schema):
+class _EmptyStringMixin:
+    """Convert empty strings to None during deserialization."""
+
+    @pre_load
+    def convert_empty_strings(self, data, **kwargs) -> dict:
+        return {
+            key: (None if value == "" else value)
+            for key, value in data.items()
+        }
+
+
+class AuthSchema(_EmptyStringMixin, Schema):
     USERNAME = fields.Str(
         required=True,
         error_messages={"required": "Username is required"},
@@ -16,15 +27,8 @@ class AuthSchema(Schema):
         allow_none=False
     )
 
-    @pre_load
-    def convert_empty_strings(self, data, **kwargs) -> dict:
-        return {
-            key: (None if value == "" else value)
-            for key, value in data.items()
-        }
 
-
-class SignupSchema(Schema):
+class SignupSchema(_EmptyStringMixin, Schema):
     username = fields.Str(
         required=True,
         error_messages={"required": "Username is required"},
@@ -60,13 +64,6 @@ class SignupSchema(Schema):
         error_messages={"required": "Phone number is required"},
         allow_none=False
     )
-
-    @pre_load
-    def convert_empty_strings(self, data, **kwargs) -> dict:
-        return {
-            key: (None if value == "" else value)
-            for key, value in data.items()
-        }
 
     @validates('username')
     def validate_username(self, value, **kwargs) -> None:

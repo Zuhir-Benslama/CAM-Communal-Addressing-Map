@@ -4,6 +4,8 @@ import json
 import logging
 from typing import Any, Optional
 
+from sqlalchemy import func
+
 from ..shared.constants import COOKIE_FILE, QGIS_CONFIG_FILE
 from ..core.database import get_session
 from ..users.models import User
@@ -63,7 +65,6 @@ def _get_authenticated_user() -> Any:
 
 
 def get_user_location() -> Any:
-    from sqlalchemy import func
     result = _get_authenticated_user()
     if result:
         session = get_session()

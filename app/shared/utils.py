@@ -2,7 +2,8 @@ import logging
 import os
 import shutil
 import subprocess
-from typing import List, Optional, Tuple
+from types import MappingProxyType
+from typing import List, Mapping, Optional, Tuple
 
 from sqlalchemy import inspect
 
@@ -60,9 +61,8 @@ def get_qgis_python() -> Optional[str]:
 def get_all_fields_and_labels(
     model_class, property_labels=None, locale=''
 ) -> Tuple[List[str], List[str]]:
-    from ..shared.utils import current_locale as _cl
     if not locale:
-        locale = _cl()
+        locale = current_locale()
     fields = []
     labels = []
 
@@ -91,6 +91,6 @@ def get_all_fields_and_labels(
     return fields, labels
 
 
-_SUBPROCESS_FLAGS: dict = {}
-if os.name == 'nt':
-    _SUBPROCESS_FLAGS['creationflags'] = subprocess.CREATE_NO_WINDOW
+_SUBPROCESS_FLAGS: Mapping[str, int] = MappingProxyType(
+    {'creationflags': subprocess.CREATE_NO_WINDOW} if os.name == 'nt' else {}
+)

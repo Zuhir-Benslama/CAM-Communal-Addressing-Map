@@ -34,28 +34,7 @@ class MapToolsMixin:
         self.measure_tool2 = MeasureTool(self.iface.mapCanvas(), self.iface)
         self.iface.mapCanvas().setMapTool(self.measure_tool2)
 
-    def set_zone_selection(self) -> None:
-        """Activate the identify tool for zone feature selection."""
-        self._selection_handler()
-
-    def set_pan_selection(self) -> None:
-        """Activate the identify tool for panel feature selection."""
-        self._selection_handler()
-
-    def set_num_selection(self) -> None:
-        """Activate the identify tool for numbering feature selection."""
-        self._selection_handler()
-
-    def set_city_selection(self) -> None:
-        """Activate the identify tool for subdivision feature selection."""
-        self._selection_handler()
-
-    def set_road_selection(self) -> None:
-        """Activate the identify tool for road feature selection."""
-        self._selection_handler()
-
-    def set_org_selection(self) -> None:
-        """Activate the identify tool for organization feature selection."""
+    def start_selecting(self) -> None:
         self._selection_handler()
 
     def stop(self) -> None:
@@ -95,13 +74,17 @@ class MapToolsMixin:
             return
         self._reconnect_context_menu()
 
-    def select_ref_handler(self) -> None:
+    def set_default_cursor(self) -> None:
+        """Reset the cursor to the default arrow cursor on the map canvas."""
+        self.iface.mapCanvas().setCursor(Qt.ArrowCursor)
+
+    def _select_ref(self, combo) -> None:
         """Activate identify tool in reference mode for selecting a
         reference feature."""
         self.ref_name.clear()
         project = QgsProject.instance()
-        if self.dyn_ref.currentText():
-            layer_name = self.dyn_ref.currentText()
+        if combo.currentText():
+            layer_name = combo.currentText()
             layer = project.mapLayersByName(layer_name)
             if layer:
                 self.iface.setActiveLayer(layer[0])
@@ -115,30 +98,13 @@ class MapToolsMixin:
                 canvas.setMapTool(self.identify_tool2)
         else:
             QMessageBox.critical(self, self._tr("Error"), self._tr("نوع المرجع غير محدد"))
-
         self.set_default_cursor()
-        layer = QgsProject.instance().mapLayersByName(self.layer_name_key)
+
+    def select_ref_handler(self) -> None:
+        self._select_ref(self.dyn_ref)
 
     def select_ref_handler2(self) -> None:
-        self.ref_name.clear()
-        project = QgsProject.instance()
-        if self.dyn_ref2.currentText():
-            layer_name = self.dyn_ref2.currentText()
-            layer = project.mapLayersByName(layer_name)
-            if layer:
-                self.iface.setActiveLayer(layer[0])
-                canvas = self.iface.mapCanvas()
-                self.identify_tool2 = IdentifyTool(
-                    canvas, mode=IdentifyTool.MODE_REF,
-                )
-                self.identify_tool2.set_iface(self.iface)
-                self.identify_tool2.set_ref_name(self.ref_name)
-                self.identify_tool2.set_active_layer(layer[0])
-                canvas.setMapTool(self.identify_tool2)
-        else:
-            QMessageBox.critical(self, self._tr("Error"), self._tr("نوع المرجع غير محدد"))
-        self.set_default_cursor()
-        layer = QgsProject.instance().mapLayersByName(self.layer_name_key)
+        self._select_ref(self.dyn_ref2)
 
     def ref_pan_selected(self) -> None:
         """Handle panel reference selection event."""
@@ -147,7 +113,8 @@ class MapToolsMixin:
         obj = self.identify_tool2.get_pkuid()
         if not obj:
             QMessageBox.critical(self, self._tr("Error"), self._tr("نوع المرجع غير محدد"))
+            return
 
-        layer = project.mapLayersByName(LAYER_PANELS)
+        layer = QgsProject.instance().mapLayersByName(LAYER_PANELS)
         if layer:
             self.iface.setActiveLayer(layer[0])

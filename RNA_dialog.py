@@ -39,20 +39,11 @@ from .constants import (
     THEME_DARK, THEME_LIGHT, THEMES, DEFAULT_THEME,
     get_theme_qss, get_dialog_qss,
     SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, SETTINGS_KEY_LOCALE,
-    AVAILABLE_LOCALES,
+    AVAILABLE_LOCALES, current_locale,
 )
 from .scripts.lookup_data import get_string, apply_widget_texts, clear_i18n_cache
 import logging
 logger = logging.getLogger(__name__)
-
-
-def _load_locale() -> str:
-    s = QSettings(SETTINGS_ORG, SETTINGS_APP)
-    locale = s.value(SETTINGS_KEY_LOCALE, '')
-    if not locale:
-        locale_val = QSettings().value('locale/userLocale')
-        locale = locale_val[0:2] if locale_val else 'en'
-    return locale
 
 # This loads your .ui file so that PyQt can populate your plugin
 # with the elements from Qt Designer
@@ -81,7 +72,7 @@ class RNADialog(
         """Constructor."""
         super(RNADialog, self).__init__(parent)
         self.iface = iface
-        self._tr_locale = _load_locale()
+        self._tr_locale = current_locale()
         if self._tr_locale == 'ar':
             QApplication.setLayoutDirection(Qt.RightToLeft)
         else:
@@ -91,122 +82,117 @@ class RNADialog(
         except Exception as e:
             logger.exception("setupUi failed: %s", e)
             raise
-        self.sat_view = None
-        self.rast = None
 
-        self.add_u.clicked.connect(lambda: self.public_route('add_usr'))
-        self.submit_usr.clicked.connect(self.submit_add_usr)
-        self.sign_in_user.clicked.connect(self.login_user)
-        self.wilaya_list.currentIndexChanged.connect(self.on_select_wilaya)
+        self._init_state()
+        self._connect_signals()
+        self._populate_combos()
         self.fill_map_options()
-        fill_paper(self.paper)
-        self.ln = None
 
-        fill_wilayas_list(self.wilaya_list)
-
-        self.cat_org.currentIndexChanged.connect(self.on_select_catOrg)
-
-        self.cat_act.currentIndexChanged.connect(self.on_select_catAct)
-
-        fill_road_type(self.type_voie)
-        fill_numbering_state(self.num_etat)
-
-        fill_mounting_status(self.etat_mont)
-
-        self.abort_uc.clicked.connect(lambda: self.public_route('login'))
-        fill_subdivision_type(self.type_city)
-        fill_type_zone(self.type_zone)
-        self.type_plan=""
-        self.type_to_hide=""
-
-        fill_road_reference(self.dyn_ref)
-        fill_panel_reference(self.dyn_ref2)
-        self.measure_tool=None
-        self.measure_tool2=None
-
-        self.dateEdit.setDate(QDate.currentDate())
-
-        self.identify_tool = None
-        self.identify_tool2 = None
-        self.draw_road.clicked.connect(self.draw_road_handler)
-        self.bc.clicked.connect(self.bon_commande)
-        self.select_zone.clicked.connect(self.set_zone_selection)
-        self.select_road.clicked.connect(self.set_road_selection)
-        self.select_city.clicked.connect(self.set_city_selection)
-        self.select_pan.clicked.connect(self.set_pan_selection)
-        self.select_num.clicked.connect(self.set_num_selection)
-        self.select_org.clicked.connect(self.set_org_selection)
-
-        self.draw_org.clicked.connect(self.draw_org_handler)
-
-        self.draw_pan.clicked.connect(self.draw_pan_handler)
-
-        self.draw_city.clicked.connect(self.draw_city_handler)
-
-        self.edit_road.clicked.connect(self.update_road)
-        self.edit_org.clicked.connect(self.update_organization)
-        self.edit_city.clicked.connect(self.update_city)
-        self.edit_zone.clicked.connect(self.update_zone)
-        self.edit_num.clicked.connect(self.update_numbering)
-        self.edit_pan.clicked.connect(self.update_panel)
-
-        self.popup_dialog = None
-        self.menu.currentChanged.connect(self.on_opt_selected)
-
-        self.submit_pan.clicked.connect(self.add_panel)
-        self.submit_org.clicked.connect(self.add_organization)
-        self.submit_num.clicked.connect(self.add_numbering)
-        self.draw_num.clicked.connect(self.draw_num_handler)
-
-        self.draw_zone.clicked.connect(self.draw_zone_handler)
-
-        self.submit_voie.clicked.connect(self.add_road)
-
-        self.print.clicked.connect(self.export_to_image1)
-        self.mesure_dist.clicked.connect(self.measure_distance)
-
-        self.submit_city.clicked.connect(self.add_city)
-        self.submit_zone.clicked.connect(self.add_zone)
-        self.logout_btn.clicked.connect(lambda: self.close())
-        self.backup_db.clicked.connect(self.backup)
-        self.list_voie.clicked.connect(self.list_roads)
-        self.list_org.clicked.connect(self.list_organizations)
-        self.list_cities.clicked.connect(self.list_subdivisions)
-        self.list_num.clicked.connect(self.list_numberings)
-        self.list_pan.clicked.connect(self.list_panels)
-        self.select_ref.clicked.connect(self.select_ref_handler)
-        self.select_ref2.clicked.connect(self.select_ref_handler2)
-
-        self.report.clicked.connect(self.gen_report)
-
-        self.restore_db.clicked.connect(self.restore_database)
-
-        self.update_object = {}
-        self.update_only_form = {}
-        self.current_user=None
         self.iface.mapCanvas().setContextMenuPolicy(Qt.CustomContextMenu)
-
         self.iface.mapCanvas().customContextMenuRequested.connect(
             self.on_edition_release
         )
         self.iface.mapCanvas().mapToolSet.connect(self._on_map_tool_changed)
-
-        self.pan.clicked.connect(self.carte_pano1)
-        self.num_carte.clicked.connect(self.carte_num1)
-
-        self.update_object = {}
-        self.update_only_form = {}
-
-        self.widget_2.keyPressEvent = lambda event: self.key_press_event(event)
-        self.widget_4.keyPressEvent = lambda event: self.key_press_event2(event)
-
-        self.mesure_dist_2.clicked.connect(self.measure_distance2)
 
         self._current_theme = DEFAULT_THEME
         self.setup_settings_ui()
         self._apply_ui_polish()
         apply_widget_texts(self, self._tr_locale)
         self.apply_theme()
+
+    def _init_state(self) -> None:
+        self.sat_view = None
+        self.rast = None
+        self.ln = None
+        self.type_plan = ""
+        self.type_to_hide = ""
+        self.measure_tool = None
+        self.measure_tool2 = None
+        self.identify_tool = None
+        self.identify_tool2 = None
+        self.popup_dialog = None
+        self.current_user = None
+        self.update_object = {}
+        self.update_only_form = {}
+        self.dateEdit.setDate(QDate.currentDate())
+
+    def _connect_signals(self) -> None:
+        self.add_u.clicked.connect(lambda: self.public_route('add_usr'))
+        self.submit_usr.clicked.connect(self.submit_add_usr)
+        self.sign_in_user.clicked.connect(self.login_user)
+        self.wilaya_list.currentIndexChanged.connect(self.on_select_wilaya)
+        self.cat_org.currentIndexChanged.connect(self.on_select_catOrg)
+        self.cat_act.currentIndexChanged.connect(self.on_select_catAct)
+        self.abort_uc.clicked.connect(lambda: self.public_route('login'))
+
+        # Consolidated toolbar
+        self.draw_btn.clicked.connect(lambda: self.start_drawing())
+        self.select_btn.clicked.connect(lambda: self.start_selecting())
+        self.edit_btn.clicked.connect(lambda: self.start_editing())
+        self.layer_selector.currentIndexChanged.connect(
+            self._on_layer_changed)
+
+        # Per-entity submit and list
+        self.submit_zone.clicked.connect(self.add_zone)
+        self.submit_voie.clicked.connect(lambda: self.add_road())
+        self.submit_org.clicked.connect(lambda: self.add_organization())
+        self.submit_city.clicked.connect(self.add_city)
+        self.submit_num.clicked.connect(self.add_numbering)
+        self.submit_pan.clicked.connect(self.add_panel)
+        self.list_voie.clicked.connect(self.list_roads)
+        self.list_org.clicked.connect(self.list_organizations)
+        self.list_cities.clicked.connect(self.list_subdivisions)
+        self.list_num.clicked.connect(self.list_numberings)
+        self.list_pan.clicked.connect(self.list_panels)
+
+        # Reference selection (numbering + panels)
+        self.select_ref.clicked.connect(self.select_ref_handler)
+        self.select_ref2.clicked.connect(self.select_ref_handler2)
+        self.page_num.keyPressEvent = lambda e: self.key_press_event(e)
+        self.page_pan.keyPressEvent = lambda e: self.key_press_event2(e)
+
+        # Measure tools
+        self.mesure_dist.clicked.connect(self.measure_distance)
+        self.mesure_dist_2.clicked.connect(self.measure_distance2)
+
+        # Map management
+        self.bc.clicked.connect(self.bon_commande)
+        self.print.clicked.connect(self.export_to_image1)
+        self.pan.clicked.connect(self.carte_pano1)
+        self.num_carte.clicked.connect(self.carte_num1)
+
+        # Utilities
+        self.logout_btn.clicked.connect(lambda: self.close())
+        self.backup_db.clicked.connect(self.backup)
+        self.restore_db.clicked.connect(self.restore_database)
+        self.report.clicked.connect(self.gen_report)
+        self.menu.currentChanged.connect(self.on_opt_selected)
+
+    def _on_layer_changed(self, index: int) -> None:
+        """Switch the form stack page when the layer selector changes."""
+        self.form_stack.setCurrentIndex(index)
+
+    def _populate_combos(self) -> None:
+        fill_paper(self.paper)
+        fill_wilayas_list(self.wilaya_list)
+        fill_road_type(self.type_voie)
+        fill_numbering_state(self.num_etat)
+        fill_mounting_status(self.etat_mont)
+        fill_subdivision_type(self.type_city)
+        fill_type_zone(self.type_zone)
+        fill_road_reference(self.dyn_ref)
+        fill_panel_reference(self.dyn_ref2)
+
+    LAYER_INDEX_MAP = [
+        "المناطق", "الطرق", "المرافق",
+        "التجزئات", "الترقيم", "اللوحات",
+    ]
+
+    def _current_layer_name(self) -> str:
+        idx = self.layer_selector.currentIndex()
+        if 0 <= idx < len(self.LAYER_INDEX_MAP):
+            return self.LAYER_INDEX_MAP[idx]
+        return self.LAYER_INDEX_MAP[0]
 
     def _tr(self, source: str) -> str:
         return get_string(source, self._tr_locale)

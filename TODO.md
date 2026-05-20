@@ -340,3 +340,124 @@
 - [x] **Added 58 wilaya names with fr/en translations** to `strings.json` — `fill_wilayas_list()` now uses `_i18n_tr()` for localized display.
 - [x] **Commune dropdown fallback** — `fill_commune_of_wilaya()` uses `_i18n_tr()` as fallback when `commune_fr`/`commune_en` is NULL in DB.
 - [x] **318 messages in `.ts` files** (was 286).
+
+## 29. Code Quality Review — 2026-05-20 (Fixed ✅)
+
+### P0 — Critical ✅
+
+- [x] **`NameError` in `ref_pan_selected()`** — `mixins/map_tools_mixin.py`: changed `project` → `QgsProject.instance()`.
+- [x] **`set_default_cursor()` called but never defined** — `mixins/map_tools_mixin.py`: added `set_default_cursor()` method.
+
+### P1 — High ✅
+
+- [x] **Massive CRUD duplication in `app/orders/models.py`** — extracted `_BaseSpatialModel` base class with shared `delete()`, `username` property, and `list_all()` (via `_list_columns` class var). 5 model classes now inherit from it.
+- [x] **Massive `add_*` duplication in `app/orders/repository.py`** — extracted `_add_entity()` helper. Moved `WKTElement` import to module level. Each `add_*` function now delegates to `_add_entity()`.
+- [x] **`app/core/logging.py` is redundant** — deleted the file (root `__init__.py` already has `basicConfig`).
+- [x] **`app/orders/models.py` references nonexistent `Type` column** — `Numbering.list_all()` changed to `['valeur', 'repetition', 'etat']` (actual columns).
+
+### P1 — High (still open)
+
+- [x] **`app/orders/service.py` is a placeholder** — dead code; nothing imports it. Removed the file.
+- [x] **`RNA_dialog.py` ~210-line constructor** — extracted `_init_state()`, `_connect_signals()`, `_populate_combos()`. Constructor now ~20 lines (high-level orchestration). 12-mixin inheritance chain preserved but hidden behind focused helper methods.
+- [x] **`app/users/service.py` mixes UI and business logic** — `sign_up()` now returns `(bool, list[str] | None)`, `sign_in()` returns `(bool, str | None, str | None)`. All `QMessageBox` calls removed from business logic; moved to `mixins/auth_mixin.py` callers. `sign_in()` no longer takes a `label` parameter. Tests updated for new signatures.
+- [x] **`mixins/layer_edit_mixin.py` implicit coupling** — added class-level docstring documenting the cross-mixin protocol (`_last_feature_wkt`, `_last_feature_pkuid`, `identify_tool2`, `measure_tool`, widget names).
+
+### P2 — Medium ✅
+
+- [x] **Clean up shim files** — removed `sys.path.insert` and `try/except ImportError` from all shim files (`db/`, `models/`, `auth/`). Now clean re-export modules using only relative imports.
+- [x] **Duplicate locale resolution in 5+ files** — replaced inline `QSettings` locale lookup with `current_locale()` call in `RNA_dialog.py`, `gui/entity_list_dialog.py`, `gui/measure_tool.py`, `gui/popup_dialog.py`. Removed `_load_locale()` and `_locale()` functions.
+- [x] **`mixins/map_tools_mixin.py` `select_ref_handler` / `select_ref_handler2` are identical** — consolidated into `_select_ref(combo)` with two thin wrappers.
+- [x] **`app/shared/utils.py` `_SUBPROCESS_FLAGS` is a mutable dict constant** — changed to `MappingProxyType` (immutable).
+- [x] **CI has no linting or type checking** — added `pycodestyle` and `mypy` steps to `.github/workflows/ci.yml`.
+
+### P2 — Medium ✅
+
+- [x] **Lazy imports (~20 moved to module level)** — moved `subprocess`, `os`, `QgsLayerTreeLayer`, `LAYER_MUNICIPALITY`, `DEFAULT_STYLE_DIR`, `CUSTOM_STYLE_DIR`, `SETTINGS_ORG`, `SETTINGS_APP`, `SETTINGS_KEY_LOCALE`, `toml`, `sqlalchemy.func`, `matplotlib.pyplot`, `arabic_reshaper`, `bidi`, `MaxNLocator`, `logging` to module level across 8 files. Removed self-import from `get_all_fields_and_labels()`. Kept circular-dep workarounds in `identify_tool.py`↔`popup_dialog.py`, `database.py`, `repository.py`, `lookup_data.py`, `utils.py`.
+- [x] **`app/shared/constants.py` — added `NEUTRAL_LAYER_*` constants** as locale-independent aliases alongside Arabic layer names, with explanatory comment about design intent.
+- [x] **`app/users/dependencies.py` widget coupling** — extracted `_navigate_to_login()` helper with `getattr(self, 'router', None)` guard and lambda-based `findChild` lookup.
+- [x] **`mixins/backup_mixin.py` `restore_database` atomic copy** — now copies to temp file first, then `os.replace()` for atomic write. Cleans up temp file on failure.
+- [x] **JWT secret deferred** — `get_jwt_secret()` lazy init with caching, updated all 3 consumers.
+- [x] **A0/A3 export consolidated** — `_render_and_export(method, include_situation)`.
+- [x] **`gui/identify_tool.py` Unicode → i18n** — replaced `\u0627\u0644...` escapes with `get_string()`.
+- [x] **`app/users/schemas.py` `convert_empty_strings`** — extracted `_EmptyStringMixin`.
+
+### P2 — Medium ✅
+
+- [x] **`app/users/schemas.py` `validate_username` session leak** — false positive; `finally` block always executes in Python even when `session.query()` raises. Session is only created inside `if value:` guard, so there is no leak.
+- [x] **`app/users/models.py` `save()` commits internally** — reviewed as design choice; all model `save()` methods across the codebase (`_BaseSpatialModel`, `User`) follow same `session.commit()` pattern. Callers expect this behavior.
+- [x] **`app/orders/repository.py` raw SQL references undocumented DB views** — added docstrings to `count_numberings`, `count_panels`, `query_missing_pan`, `query_missing_num`, `query_missing_rep` referencing view definitions in `scripts/migrate_production.py` (which defines `CREATE VIEW IF NOT EXISTS Num/Pan/Pan2`).
+- [x] **`mixins/symbol_export_mixin.py` hard-coded dimensions** — false positive; all values are in LayoutMillimeters (DPI-independent in QGIS layouts).
+
+### P3 — Low ✅
+
+- [x] **`mixins/chart_mixin.py` chart color** — extracted `CHART_COLOR = 'yellow'` module-level constant.
+- [x] **`app/shared/constants.py` `convert_empty_strings` mixin** — extracted into `_EmptyStringMixin`.
+
+### P3 — Low (still open)
+
+- [x] **`app/core/config.py` (669 lines) — extract QSS to `.qss` resource files** — extracted 4 inline f-strings to `resources/{dark,dark_dialog,light,light_dialog}_qss.template` with `{{VAR}}` placeholders. Added `_load_qss_template()` that reads template, replaces placeholders from `_COLORS` dict, and unescapes f-string `{{` → `{`. Config.py reduced from 669 to 128 lines.
+- [x] **`gui/measure_tool.py` label outline** — replaced 4 offset text items with `QGraphicsDropShadowEffect`.
+- [x] **`gui/popup_dialog.py` `set_form` dispatch** — replaced 95-line `if` chain with `_POPULATE_DISPATCH` dict mapping layer keys to handler methods.
+- [x] **`app/shared/constants.py` enum values** — added `PanelStatus(str, Enum)`, `ActivityStatus(str, Enum)`, `Theme(str, Enum)`. Old module-level names kept as convenience aliases (e.g. `PAN_MOUNTED = PanelStatus.MOUNTED`). Backward compatible since `str, Enum` members are strings.
+
+## 30. Tab Consolidation — Reduce 6 Operational Tabs to 1
+
+### Problem
+6 operational tabs (Zones, Roads, Facilities, Subdivisions, Numbering, Panels) each have an identical 3-button toolbar (Draw | Select | Edit), 18 nearly-identical handler methods, and 18 signal connections — all differing only by layer name.
+
+### Plan
+
+**UI (`gui/RNA_dialog_base.ui`):**
+- Replace 6 operational tab pages with 1 unified tab containing:
+  - Layer selector dropdown (`layer_selector`)
+  - Shared toolbar: `draw_btn`, `select_btn`, `edit_btn` (appears once)
+  - `QStackedWidget` (`form_stack`) with 6 pages — one per entity type
+  - Shared submit/list buttons
+- Keep Report tab (tab_4) and Settings tab (tab) unchanged.
+
+**Python code changes:**
+
+| File | Change |
+|---|---|
+| `RNA_dialog.py` | Replace 18 draw/select/edit signal connections with 3. Add `_current_layer_name()` helper and `layer_selector` → `form_stack` page switch. |
+| `mixins/layer_draw_mixin.py` | Remove 5 `draw_*_handler` one-liners. Add `start_drawing()` calling `_draw_handler(self._current_layer_name())`. |
+| `mixins/layer_edit_mixin.py` | Remove 5 `update_*` one-liners. Add `start_editing()`. Keep 6 `add_*()` methods behind a dispatch dict. |
+| `mixins/map_tools_mixin.py` | Remove 5 `set_*_selection` one-liners. Add `start_selecting()` calling `_selection_handler()`. |
+| `mixins/layer_ops_mixin.py` | Replace checkbox if-chain in `on_feature_added()` with `_LAYER_CHECKBOX` dict lookup. |
+
+**Net impact:** 18 handler methods → 3, 18 signal connections → 3, 6 toolbar copies → 1.
+
+---
+
+## 31. Refactor Large Files (P2)
+
+No hand-written Python file exceeds 500 lines. Auto-generated files (`resources.py` at 5647, `gui/PopupDialog.py` at 532) are excluded from refactoring. The largest hand-written files are:
+
+- `gui/popup_dialog.py` (500 lines) — consider extracting form population dispatch to shared module
+- `app/orders/models.py` (472 lines)
+- `RNA_dialog.py` (360 lines)
+- `mixins/layer_edit_mixin.py` (313 lines)
+- `mixins/layer_ops_mixin.py` (295 lines)
+
+## 32. Unification of Redundant Functions/Code (P1)
+
+- [ ] Consolidate duplicated form validation logic across add methods in `layer_edit_mixin.py`
+- [ ] Unify `add_panel` / `add_numbering` geometry check patterns (WKT + pkuid guard identical)
+- [ ] Merge `key_press_event` / `key_press_event2` into a single parameterized handler
+- [ ] Unify success/error message dialog patterns across all `add_*` methods
+- [ ] Merge `measure_distance` / `measure_distance2` into single `activate_measure(tool_index)` method
+- [ ] Check for duplicate SQL query functions in `db/` directory
+
+## 33. Fix Phase Switcher (P1)
+
+- [ ] The `widget_2` / `widget_4` → `page_num` / `page_pan` rename broke the Enter-key shortcut for numbering/panel submission; verify fix works
+- [ ] `on_opt_selected` no longer toggles individual layer visibility for `tab_ops` — confirm this doesn't break user workflow
+- [ ] Ensure `layer_selector` dropdown changes also update the active map layer
+- [ ] Test that switching between layers doesn't leave stale map tools active
+
+## 34. Fix i18n Messing for Some Elements (P2)
+
+- [ ] Audit form labels inside `form_stack` pages for untranslated Arabic text (some may have been hardcoded in `.ui` instead of using `get_string()`)
+- [ ] `layer_selector` combo items use raw Arabic strings; confirm `apply_widget_texts` still reaches them
+- [ ] Verify `_tr_locale` is consistently applied to dynamically generated QSS tooltips
+- [ ] Check `mesure_dist`/`mesure_dist_2` tooltip i18n (currently hardcoded HTML in `.ui`)

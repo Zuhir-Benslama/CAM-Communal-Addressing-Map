@@ -1,0 +1,35 @@
+
+    QFileDialog {{
+        background-color: {{DARK_BG}};
+        color: {{DARK_TEXT}};
+    }}
+    QFileDialog QLabel {{ color: {{DARK_TEXT}}; }}
+    QFileDialog QTreeView, QFileDialog QListView {{
+        background-color: {{DARK_SURFACE}};
+        color: {{DARK_TEXT}};
+        border: 1px solid {{DARK_BORDER}};
+        border-radius: 4px;
+        selection-background-color: {{DARK_SELECTION}};
+        selection-color: {{DARK_TEXT}};
+    }}
+    QFileDialog QPushButton {{
+        background-color: {{DARK_OVERLAY}};
+        color: {{DARK_TEXT}};
+        border: 1px solid {{DARK_BORDER}};
+        border-radius: 6px;
+        padding: 6px 14px;
+    }}
+    QFileDialog QPushButton:hover {{
+        background-color: {{DARK_BORDER}};
+        border-color: {{DARK_ACCENT}};
+    }}
+    QFileDialog QPushButton:pressed {{
+        background-color: #1e1f35;
+    }}
+    QFileDialog QComboBox, QFileDialog QLineEdit {{
+        background-color: {{DARK_OVERLAY}};
+        color: {{DARK_TEXT}};
+        border: 1px solid {{DARK_BORDER}};
+        border-radius: 6px;
+        padding: 6px 10px;
+    }}

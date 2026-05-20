@@ -3,21 +3,14 @@ import toml
 import logging
 from marshmallow import ValidationError
 
-from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import QgsProject, QgsMessageLog
 
-from ..core.security import JWT_SECRET, hash_password, verify_password
+from ..core.security import get_jwt_secret, hash_password, verify_password
 from ..core.database import get_session, get_auth_session
 from ..users.models import User
 from ..users.schemas import AuthSchema, SignupSchema
 from ..users.repository import create_cookie
 from ..shared.constants import COOKIE_FILE
-from ..shared.utils import current_locale, current_theme
-from ..core.config import get_theme_qss
-try:
-    from ...scripts.lookup_data import get_string
-except ImportError:
-    from scripts.lookup_data import get_string
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +18,7 @@ logger = logging.getLogger(__name__)
 def sign_up(
     username: str, password: str, affectation_id: int, phone: str,
     email: str, first_name: str, lastname: str
-) -> bool:
+) -> tuple[bool, list[str] | None]:
     data = {
         "username": username,
         "first_name": first_name,
@@ -59,22 +52,18 @@ def sign_up(
         finally:
             spatial_session.close()
             auth_session.close()
-        return True
+        return True, None
     except ValidationError as err:
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-        msg.setStyleSheet(get_theme_qss(current_theme()))
-        error_details = "".join(
-            f"{field}: {'; '.join(messages)}\n"
+        error_details = [
+            f"{field}: {'; '.join(messages)}"
             for field, messages in err.messages.items()
-        )
-        msg.setInformativeText(error_details)
-        msg.setStandardButtons(QMessageBox.Ok)
-        msg.exec_()
-        return False
+        ]
+        return False, error_details
 
 
-def sign_in(username: str, password: str, label) -> bool:
+def sign_in(
+    username: str, password: str,
+) -> tuple[bool, str | None, str | None]:
     data = {'USERNAME': username, 'PASSWORD': password}
     schema = AuthSchema()
     try:
@@ -85,76 +74,47 @@ def sign_in(username: str, password: str, label) -> bool:
                 auth_session.query(User).filter_by(username=username).first()
             )
             if not existing_user:
-                loc = current_locale()
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Information)
-                msg.setWindowTitle(get_string("Error", loc))
-                msg.setStyleSheet(get_theme_qss(current_theme()))
-                msg.setInformativeText(get_string("Username doesn't exist", loc))
-                msg.setStandardButtons(QMessageBox.Ok)
-                msg.exec_()
-            else:
-                if verify_password(password, existing_user.password):
-                    spatial_session = get_session()
-                    try:
-                        spatial_user = (
-                            spatial_session.query(User)
-                            .filter_by(username=username).first()
-                        )
-                        auth_user = (
-                            auth_session.query(User)
-                            .filter_by(username=username).first()
-                        )
-                        token = jwt.encode(
-                            auth_user.to_dict(), JWT_SECRET,
-                            algorithm='HS256'
-                        )
-                        if spatial_user:
-                            spatial_user.api_key = str(token)
-                            spatial_session.commit()
-                        auth_user.api_key = str(token)
-                        auth_session.commit()
-                        label.setText(auth_user.username)
-                        create_cookie(token, auth_user.id)
-                    finally:
-                        spatial_session.close()
-                    return True
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Information)
-                msg.setWindowTitle(get_string("Error", current_locale()))
-                msg.setStyleSheet(get_theme_qss(current_theme()))
-                msg.setInformativeText(
-                    get_string("Wrong password try again !", current_locale())
-                )
-                msg.setStandardButtons(QMessageBox.Ok)
-                msg.exec_()
+                return False, None, "Username doesn't exist"
+            if verify_password(password, existing_user.password):
+                spatial_session = get_session()
+                try:
+                    spatial_user = (
+                        spatial_session.query(User)
+                        .filter_by(username=username).first()
+                    )
+                    auth_user = (
+                        auth_session.query(User)
+                        .filter_by(username=username).first()
+                    )
+                    token = jwt.encode(
+                        auth_user.to_dict(), get_jwt_secret(),
+                        algorithm='HS256'
+                    )
+                    if spatial_user:
+                        spatial_user.api_key = str(token)
+                        spatial_session.commit()
+                    auth_user.api_key = str(token)
+                    auth_session.commit()
+                    create_cookie(token, auth_user.id)
+                finally:
+                    spatial_session.close()
+                return True, auth_user.username, None
+            return False, None, "Wrong password try again !"
         except Exception as e:
             QgsMessageLog.logMessage(
                 f"sign_in error: {e}", 'RNA', level=2
             )
             logger.error("An error occurred: %s", e)
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Information)
-            msg.setWindowTitle(get_string("Error", current_locale()))
-            msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setInformativeText(str(e))
-            msg.setStandardButtons(QMessageBox.Ok)
-            msg.exec_()
             auth_session.rollback()
+            return False, None, str(e)
         finally:
             auth_session.close()
     except ValidationError as err:
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-        error_details = "".join(
-            f"{field}: {'; '.join(messages)}\n"
+        error_details = "; ".join(
+            f"{field}: {'; '.join(messages)}"
             for field, messages in err.messages.items()
         )
-        msg.setInformativeText(error_details)
-        msg.setStyleSheet(get_theme_qss(current_theme()))
-        msg.setStandardButtons(QMessageBox.Ok)
-        msg.exec_()
-    return False
+        return False, None, error_details
 
 
 def remove_all_layers(iface) -> None:

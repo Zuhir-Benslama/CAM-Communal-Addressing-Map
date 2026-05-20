@@ -1,8 +1,10 @@
 import logging
+from typing import Any
 
 import geopandas as gpd
 from sqlalchemy import text
 from geoalchemy2 import Geometry
+from geoalchemy2.elements import WKTElement
 from geoalchemy2.shape import to_shape
 
 from ..core.database import get_session
@@ -21,6 +23,19 @@ _WRITER_MODELS = {
     'PanelSign': PanelSign,
     'Numbering': Numbering,
 }
+
+
+def _add_entity(instance, session=None) -> Any:
+    """Save a model instance with automatic session management."""
+    own_session = session is None
+    if own_session:
+        session = get_session()
+    try:
+        instance.save(session)
+        return instance
+    finally:
+        if own_session:
+            session.close()
 
 
 def export_model(model_name: str) -> None:
@@ -56,60 +71,41 @@ def add_panel_sign(
     geometry_wkt, etat_mont, idLine, idPoly, idOrg, dim=DEFAULT_PANEL_DIM,
     pkuid=None,
 ):
-    from geoalchemy2.elements import WKTElement
     instance = PanelSign(
         pkuid=pkuid,
         Stituation=etat_mont,
         idLine=idLine, idPoly=idPoly, idOrg=idOrg, dim=dim,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
-    session = get_session()
-    try:
-        instance.save(session)
-        return instance
-    finally:
-        session.close()
+    return _add_entity(instance)
 
 
 def add_organization(geometry_wkt, nom_org, type_org, cat_org, pkuid=None,
                      nom_org_fr=None, nom_org_en=None):
-    from geoalchemy2.elements import WKTElement
     instance = Organization(
         pkuid=pkuid,
         Type=type_org, Cat=cat_org, Nom=nom_org,
         Nom_fr=nom_org_fr, Nom_en=nom_org_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
-    session = get_session()
-    try:
-        instance.save(session)
-        return instance
-    finally:
-        session.close()
+    return _add_entity(instance)
 
 
 def add_road(geometry_wkt, nom_voie, type_voie, dec_voie, pkuid=None,
              nom_voie_fr=None, nom_voie_en=None):
-    from geoalchemy2.elements import WKTElement
     instance = Road(
         pkuid=pkuid,
         Type=type_voie, Nom=nom_voie, num_decision=dec_voie,
         Nom_fr=nom_voie_fr, Nom_en=nom_voie_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
-    session = get_session()
-    try:
-        instance.save(session)
-        return instance
-    finally:
-        session.close()
+    return _add_entity(instance)
 
 
 def add_numbering(
     geometry_wkt, valeur, idLine, idPoly, repetition, etat,
     cat_act=None, type_act=None, pkuid=None,
 ):
-    from geoalchemy2.elements import WKTElement
     instance = Numbering(
         pkuid=pkuid,
         valeur=valeur, idLine=idLine, idPoly=idPoly,
@@ -117,49 +113,38 @@ def add_numbering(
         activity_cat=cat_act, activity_type=type_act,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
-    session = get_session()
-    try:
-        instance.save(session)
-        return instance
-    finally:
-        session.close()
+    return _add_entity(instance)
 
 
 def add_subdivision(geometry_wkt, subdivision_type, name, pkuid=None,
                     name_fr=None, name_en=None):
-    from geoalchemy2.elements import WKTElement
     instance = Subdivision(
         pkuid=pkuid,
         Nom=name, Type=subdivision_type,
         Nom_fr=name_fr, Nom_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
-    session = get_session()
-    try:
-        instance.save(session)
-        return instance
-    finally:
-        session.close()
+    return _add_entity(instance)
 
 
 def add_zone(geometry_wkt, zone_type, name, pkuid=None,
              name_fr=None, name_en=None):
-    from geoalchemy2.elements import WKTElement
     instance = Zone(
         pkuid=pkuid,
         Nom=name, Type=zone_type,
         Nom_fr=name_fr, Nom_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
-    session = get_session()
-    try:
-        instance.save(session)
-        return instance
-    finally:
-        session.close()
+    return _add_entity(instance)
 
 
 def count_numberings(etat: str) -> int:
+    """Count numberings by state, querying the Num view.
+
+    The Num view is defined in scripts/migrate_production.py:
+        CREATE VIEW IF NOT EXISTS Num AS
+            SELECT n.*, r.Nom AS road_name, ... FROM Numerotation n ...
+    """
     session = get_session()
     try:
         result = session.execute(
@@ -173,6 +158,12 @@ def count_numberings(etat: str) -> int:
 
 
 def count_panels(type: str, etat: str) -> int:
+    """Count panels by type and state, querying the Pan view.
+
+    The Pan view is defined in scripts/migrate_production.py:
+        CREATE VIEW IF NOT EXISTS Pan AS
+            SELECT p.*, r.Nom AS road, ... FROM Pannautage p ...
+    """
     session = get_session()
     try:
         result = session.execute(
@@ -189,6 +180,12 @@ def count_panels(type: str, etat: str) -> int:
 
 
 def query_missing_pan(etat: str) -> list:
+    """Query missing panels grouped by label/type from the Pan2 view.
+
+    Pan2 is defined in scripts/migrate_production.py:
+        CREATE VIEW IF NOT EXISTS Pan2 AS
+            SELECT *, COALESCE(city, org, road) AS label FROM Pan;
+    """
     session = get_session()
     try:
         result = session.execute(
@@ -208,6 +205,7 @@ def query_missing_pan(etat: str) -> list:
 
 
 def query_missing_num(etat: str) -> list:
+    """Query numberings without repetition grouped by valeur from Num view."""
     session = get_session()
     try:
         result = session.execute(
@@ -225,6 +223,7 @@ def query_missing_num(etat: str) -> list:
 
 
 def query_missing_rep(etat: str) -> list:
+    """Query numberings WITH repetition grouped by value from Num view."""
     session = get_session()
     try:
         result = session.execute(
