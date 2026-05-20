@@ -34,7 +34,7 @@ _COLORS = {
 
 
 def _load_qss_template(filename: str) -> str:
-    """Load a QSS template and replace {{VAR}} placeholders with color values."""
+    """Load a QSS template and replace {{VAR}} with color values."""
     path = os.path.join(_TEMPLATE_DIR, filename)
     try:
         with open(path, 'r', encoding='utf-8') as f:
@@ -103,6 +103,8 @@ def find_mod_spatialite_dll() -> str:
                     if os.path.exists(path):
                         return path
     except Exception:
-        logger.debug("mod_spatialite not found at candidate path", exc_info=True)
+        logger.debug(
+            "mod_spatialite not found at candidate path", exc_info=True,
+        )
 
     return 'mod_spatialite.so'

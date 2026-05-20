@@ -19,7 +19,9 @@ def validate_text(value: str, max_length: int = 255) -> str:
 
 def current_locale() -> str:
     from qgis.PyQt.QtCore import QSettings
-    from ..shared.constants import SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE
+    from ..shared.constants import (
+        SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
+    )
     s = QSettings(SETTINGS_ORG, SETTINGS_APP)
     locale = s.value(SETTINGS_KEY_LOCALE, '')
     if not locale:
@@ -40,15 +42,21 @@ def locale_value(instance, field_base: str, locale: str = '') -> str:
 
 def current_theme() -> str:
     from qgis.PyQt.QtCore import QSettings
-    from ..shared.constants import SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, THEME_DARK
-    return QSettings(SETTINGS_ORG, SETTINGS_APP).value(SETTINGS_KEY_THEME, THEME_DARK)
+    from ..shared.constants import (
+        SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, THEME_DARK,
+    )
+    s = QSettings(SETTINGS_ORG, SETTINGS_APP)
+    return s.value(SETTINGS_KEY_THEME, THEME_DARK)
 
 
 def get_qgis_python() -> Optional[str]:
     python = os.getenv('PYTHON_QGIS_BAT')
     if python:
         if not os.path.isfile(python) or not os.access(python, os.X_OK):
-            logger.warning("PYTHON_QGIS_BAT path is not executable: %s, falling back", python)
+            logger.warning(
+                "PYTHON_QGIS_BAT path is not executable: %s, falling back",
+                python,
+            )
         else:
             return python
     if os.name == 'nt':

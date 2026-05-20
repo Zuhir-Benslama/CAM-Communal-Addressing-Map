@@ -8,7 +8,9 @@ from qgis.PyQt.QtWidgets import QAction, QDockWidget, QMessageBox
 from qgis.core import QgsApplication
 
 from ..RNA_dialog import RNADialog
-from ..shared.constants import ICON_PNG, SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE
+from ..shared.constants import (
+    ICON_PNG, SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
+)
 from ..shared.utils import current_locale
 from ..scripts.lookup_data import get_string
 
@@ -102,12 +104,14 @@ class RNA:
                 loc = current_locale()
                 QMessageBox.critical(
                     None, get_string("RNA Plugin Error", loc),
-                    get_string("Failed to create dialog", loc) + f"\n\n{get_string('Check the QGIS log for details.', loc)}",
+                    get_string("Failed to create dialog", loc)
+                    + f"\n\n{get_string('Check the QGIS log for details.', loc)}",
                 )
                 return
 
+            loc = current_locale()
             self.dock_widget = QDockWidget(
-                get_string("RNA Plugin", current_locale()), self.iface.mainWindow()
+                get_string("RNA Plugin", loc), self.iface.mainWindow()
             )
             self.dock_widget.setWidget(self.dlg)
             self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dock_widget)
@@ -130,5 +134,6 @@ class RNA:
 
         self.dock_widget.setMinimumWidth(min_width)
         self.dock_widget.setMaximumWidth(max_width)
-        if self.dock_widget.width() > 760 or self.dock_widget.width() < min_width:
+        if (self.dock_widget.width() > 760
+                or self.dock_widget.width() < min_width):
             self.dock_widget.resize(default_width, self.dock_widget.height())

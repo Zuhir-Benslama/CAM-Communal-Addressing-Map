@@ -1,7 +1,9 @@
 from enum import Enum
 import os
 
-PLUGIN_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+PLUGIN_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+)
 
 SRID = 4326
 CRS = f"EPSG:{SRID}"
