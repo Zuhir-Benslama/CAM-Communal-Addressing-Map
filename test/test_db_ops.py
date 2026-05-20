@@ -6,11 +6,9 @@ from unittest.mock import patch, MagicMock
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from models.base import find_mod_spatialite_dll
-from db.operations import (
-    hash_password, verify_password, create_cookie,
-    qgis_config, _get_authenticated_user,
-)
+from app.core.config import find_mod_spatialite_dll
+from app.core.security import hash_password, verify_password
+from app.users.repository import create_cookie, qgis_config, _get_authenticated_user
 
 
 TMPDIR = os.path.join(os.path.dirname(__file__), '__testtmp__')
@@ -33,26 +31,26 @@ def _clean_tmpdir():
 
 
 class TestFindModSpatialiteDLL(unittest.TestCase):
-    @patch('models.base.os.name', 'nt')
+    @patch('app.core.config.os.name', 'nt')
     def test_windows_default(self):
         self.assertEqual(find_mod_spatialite_dll(), 'mod_spatialite.dll')
 
-    @patch('models.base.os.name', 'posix')
-    @patch('models.base.os.uname')
+    @patch('app.core.config.os.name', 'posix')
+    @patch('app.core.config.os.uname')
     def test_macos_default(self, mock_uname):
         mock_uname.return_value.sysname = 'Darwin'
         result = find_mod_spatialite_dll()
         self.assertEqual(result, 'mod_spatialite.dylib')
 
-    @patch('models.base.os.path.exists', return_value=False)
-    @patch('models.base.os.name', 'posix')
-    @patch('models.base.os.uname')
+    @patch('app.core.config.os.path.exists', return_value=False)
+    @patch('app.core.config.os.name', 'posix')
+    @patch('app.core.config.os.uname')
     def test_linux_default(self, mock_uname, mock_exists):
         mock_uname.return_value.sysname = 'Linux'
         result = find_mod_spatialite_dll()
         self.assertEqual(result, 'mod_spatialite.so')
 
-    @patch('models.base.os.getenv')
+    @patch('app.core.config.os.getenv')
     def test_env_var_override(self, mock_getenv):
         mock_getenv.return_value = '/custom/path/mod_spatialite.so'
         result = find_mod_spatialite_dll()
@@ -84,7 +82,7 @@ class TestCreateCookie(unittest.TestCase):
 
     def test_create_cookie_writes_file(self):
         cookie_path = os.path.join(TMPDIR, "cookie.toml")
-        with patch('db.operations.COOKIE_FILE', cookie_path):
+        with patch('app.users.repository.COOKIE_FILE', cookie_path):
             create_cookie('test_cookie', 'test_uid')
         self.assertTrue(os.path.exists(cookie_path))
         with open(cookie_path, 'r') as f:
@@ -102,7 +100,7 @@ class TestQgisConfig(unittest.TestCase):
         config_path = os.path.join(TMPDIR, 'qgis_config.json')
         with open(config_path, 'w') as f:
             json.dump(expected, f)
-        with patch('db.operations.QGIS_CONFIG_FILE', config_path):
+        with patch('app.users.repository.QGIS_CONFIG_FILE', config_path):
             result = qgis_config()
             self.assertEqual(result, expected)
 
@@ -113,8 +111,8 @@ class TestGetAuthenticatedUser(unittest.TestCase):
 
     def test_no_cookie_file_returns_none(self):
         cookie_path = os.path.join(TMPDIR, 'cookie.toml')
-        with patch('models.base.COOKIE_FILE', cookie_path), \
-             patch('models.base.get_session') as mock_session:
+        with patch('app.users.repository.COOKIE_FILE', cookie_path), \
+             patch('app.users.repository.get_session') as mock_session:
             result = _get_authenticated_user()
             self.assertIsNone(result)
             mock_session.assert_not_called()
@@ -123,8 +121,8 @@ class TestGetAuthenticatedUser(unittest.TestCase):
         cookie_path = os.path.join(TMPDIR, 'cookie.toml')
         with open(cookie_path, 'w') as f:
             f.write('[Session]\ncookie = "ck"\nuid = "ui"\n')
-        with patch('models.base.COOKIE_FILE', cookie_path), \
-             patch('models.base.get_session') as mock_session:
+        with patch('app.users.repository.COOKIE_FILE', cookie_path), \
+             patch('app.users.repository.get_session') as mock_session:
             mock_session_instance = MagicMock()
             mock_session.return_value = mock_session_instance
             mock_query = mock_session_instance.query.return_value
@@ -137,8 +135,8 @@ class TestGetAuthenticatedUser(unittest.TestCase):
         cookie_path = os.path.join(TMPDIR, 'cookie.toml')
         with open(cookie_path, 'w') as f:
             f.write('[Session]\ncookie = "ck"\nuid = "ui"\n')
-        with patch('models.base.COOKIE_FILE', cookie_path), \
-             patch('models.base.get_session') as mock_session:
+        with patch('app.users.repository.COOKIE_FILE', cookie_path), \
+             patch('app.users.repository.get_session') as mock_session:
             mock_session_instance = MagicMock()
             mock_session.return_value = mock_session_instance
             mock_session_instance.query.return_value \

@@ -1,4 +1,3 @@
-"""Tests for db/operations.py — query functions."""
 import os
 import sys
 import unittest
@@ -6,7 +5,7 @@ from unittest.mock import patch, MagicMock
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from db.operations import (
+from app.orders.repository import (
     count_numberings, count_panels,
     query_missing_pan, query_missing_num, query_missing_rep,
 )
@@ -16,7 +15,7 @@ class TestCountQueries(unittest.TestCase):
     def setUp(self):
         self.mock_session = MagicMock()
         self.mock_get_session = patch(
-            'db.operations.get_session', return_value=self.mock_session
+            'app.orders.repository.get_session', return_value=self.mock_session
         ).start()
 
     def tearDown(self):

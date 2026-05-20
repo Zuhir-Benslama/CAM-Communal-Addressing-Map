@@ -23,7 +23,7 @@
 from typing import Any
 import logging
 
-from qgis.PyQt.QtCore import QSettings, QCoreApplication, Qt
+from qgis.PyQt.QtCore import QSettings, QCoreApplication, Qt, QTimer
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QDockWidget, QMessageBox
 
@@ -232,8 +232,25 @@ class RNA:
 
             # Show the dock widget
             self.dock_widget.show()
+            QTimer.singleShot(0, self._normalize_dock_width)
 
         # show the dialog
         if hasattr(self, 'dock_widget'):
+            self._normalize_dock_width()
             self.dock_widget.raise_()
             self.dock_widget.show()
+            QTimer.singleShot(0, self._normalize_dock_width)
+
+    def _normalize_dock_width(self) -> None:
+        """Keep the plugin dock at a practical sidebar width."""
+        if not hasattr(self, 'dock_widget'):
+            return
+
+        default_width = 680
+        min_width = 580
+        max_width = 920
+
+        self.dock_widget.setMinimumWidth(min_width)
+        self.dock_widget.setMaximumWidth(max_width)
+        if self.dock_widget.width() > 760 or self.dock_widget.width() < min_width:
+            self.dock_widget.resize(default_width, self.dock_widget.height())

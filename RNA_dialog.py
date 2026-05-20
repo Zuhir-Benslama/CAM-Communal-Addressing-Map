@@ -21,10 +21,11 @@
  ***************************************************************************/
 """
 import os
-from PyQt5.QtCore import Qt, QDate, QSettings
+from PyQt5.QtCore import Qt, QDate, QSettings, QSize
 from PyQt5.QtWidgets import (
     QApplication, QCheckBox, QDialog, QGroupBox, QLabel,
     QPushButton, QVBoxLayout, QHBoxLayout, QComboBox, QWidget,
+    QDateEdit, QFormLayout, QLayout, QLineEdit, QSizePolicy,
 )
 from qgis.PyQt import uic
 from .gui.ui_fillers import (
@@ -203,6 +204,7 @@ class RNADialog(
 
         self._current_theme = DEFAULT_THEME
         self.setup_settings_ui()
+        self._apply_ui_polish()
         apply_widget_texts(self, self._tr_locale)
         self.apply_theme()
 
@@ -281,9 +283,92 @@ class RNADialog(
         else:
             QApplication.setLayoutDirection(Qt.LeftToRight)
 
+    def _set_button_roles(self) -> None:
+        primary_buttons = {
+            'sign_in_user',
+            'submit_usr',
+            'submit_zone',
+            'submit_voie',
+            'submit_org',
+            'submit_city',
+            'submit_num',
+            'submit_pan',
+            'report',
+        }
+        danger_buttons = {'logout_btn', 'abort_uc'}
+        tool_prefixes = ('draw_', 'select_', 'edit_')
+
+        for button in self.findChildren(QPushButton):
+            name = button.objectName()
+            if name in primary_buttons:
+                button.setProperty('role', 'primary')
+            elif name in danger_buttons:
+                button.setProperty('role', 'danger')
+            elif any(name.startswith(prefix) for prefix in tool_prefixes):
+                button.setProperty('role', 'tool')
+                button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+            else:
+                button.setProperty('role', 'ghost')
+
+            button.setMinimumHeight(max(button.minimumHeight(), 34))
+            button.setMaximumWidth(16777215)
+            button.setIconSize(QSize(16, 16))
+
+    def _apply_ui_polish(self) -> None:
+        self.setObjectName('rnaMainDialog')
+        self.setSizeGripEnabled(True)
+        self.setMinimumSize(640, 680)
+        self.setMaximumSize(16777215, 16777215)
+        if self.width() < 680:
+            self.resize(680, 720)
+
+        self.router.setMaximumHeight(16777215)
+        self.groupBox.setMaximumSize(16777215, 16777215)
+        self.groupBox.setMinimumSize(500, 390)
+        self.groupBox.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+
+        self.menu.setDocumentMode(True)
+        self.menu.setUsesScrollButtons(True)
+        tab_bar = self.menu.tabBar()
+        tab_bar.setExpanding(False)
+        tab_bar.setElideMode(Qt.ElideRight)
+
+        for frame_name, role in {
+            'frame_12': 'header',
+            'frame_8': 'toolbar',
+            'frame_9': 'footer',
+        }.items():
+            frame = getattr(self, frame_name, None)
+            if frame is not None:
+                frame.setProperty('surfaceRole', role)
+
+        for layout in self.findChildren(QLayout):
+            if isinstance(layout, QFormLayout):
+                if layout.horizontalSpacing() < 12:
+                    layout.setHorizontalSpacing(12)
+                if layout.verticalSpacing() < 10:
+                    layout.setVerticalSpacing(10)
+            elif layout.spacing() < 8:
+                layout.setSpacing(8)
+
+        for widget in self.findChildren(QLineEdit):
+            widget.setMinimumHeight(max(widget.minimumHeight(), 34))
+            widget.setMaximumWidth(16777215)
+            widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+        for widget in self.findChildren(QComboBox):
+            widget.setMinimumHeight(max(widget.minimumHeight(), 34))
+            widget.setMaximumWidth(16777215)
+            widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+        for widget in self.findChildren(QDateEdit):
+            widget.setMinimumHeight(max(widget.minimumHeight(), 34))
+            widget.setMaximumWidth(16777215)
+            widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+        self._set_button_roles()
+
     def apply_theme(self) -> None:
         theme = self._current_theme
         qss = get_theme_qss(theme)
         self.setStyleSheet(qss)
-
-

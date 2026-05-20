@@ -48,7 +48,7 @@ UI_FILES =
 
 EXTRAS = metadata.txt
 
-EXTRA_DIRS = models mixins db gui layer auth scripts resources templates data icons i18n style template_data
+EXTRA_DIRS = models mixins db gui layer auth scripts resources templates data icons i18n style template_data app
 
 COMPILED_RESOURCE_FILES = resources.py
 

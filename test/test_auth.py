@@ -1,4 +1,3 @@
-"""Tests for auth/operations.py — sign up, sign in, logout."""
 import os
 import sys
 import unittest
@@ -8,20 +7,21 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 os.environ['RNA_JWT_SECRET'] = 'test-secret-key-for-testing-only'
 
-# Mock QGIS modules before importing auth.operations
 qgis = MagicMock()
 qgis.PyQt = MagicMock()
+qgis.PyQt.QtCore = MagicMock()
 qgis.PyQt.QtWidgets = MagicMock()
 qgis.core = MagicMock()
 qgis.core.QgsProject = MagicMock()
 qgis.core.QgsMessageLog = MagicMock()
 sys.modules['qgis'] = qgis
 sys.modules['qgis.PyQt'] = qgis.PyQt
+sys.modules['qgis.PyQt.QtCore'] = qgis.PyQt.QtCore
 sys.modules['qgis.PyQt.QtWidgets'] = qgis.PyQt.QtWidgets
 sys.modules['qgis.core'] = qgis.core
 
-# Now safe to import
-from auth.operations import sign_up, sign_in, logout, JWT_SECRET
+from app.users.service import sign_up, sign_in, logout
+from app.core.security import JWT_SECRET
 
 
 class TestJWTSecret(unittest.TestCase):
@@ -34,22 +34,22 @@ class TestSignUp(unittest.TestCase):
         self.mock_spatial_session = MagicMock()
         self.mock_auth_session = MagicMock()
         self.mock_get_session = patch(
-            'auth.operations.get_session',
+            'app.users.service.get_session',
             return_value=self.mock_spatial_session
         ).start()
         self.mock_get_auth_session = patch(
-            'auth.operations.get_auth_session',
+            'app.users.service.get_auth_session',
             return_value=self.mock_auth_session
         ).start()
         self.mock_msgbox_cls = patch(
-            'auth.operations.QMessageBox'
+            'app.users.service.QMessageBox'
         ).start()
 
     def tearDown(self):
         patch.stopall()
 
     def test_sign_up_creates_user_in_both_dbs(self):
-        with patch('auth.operations.hash_password', return_value='hashed_pw'):
+        with patch('app.users.service.hash_password', return_value='hashed_pw'):
             result = sign_up(
                 'newuser', 'secret123', 1, '0555000000',
                 'new@test.com', 'New', 'User'
@@ -65,13 +65,12 @@ class TestSignUp(unittest.TestCase):
     def test_sign_up_validation_error_returns_false(self):
         from marshmallow import ValidationError
         with patch(
-            'auth.operations.SignupSchema.load',
+            'app.users.service.SignupSchema.load',
             side_effect=ValidationError({'username': ['Required']})
         ):
             result = sign_up('', '', 0, '', '', '', '')
         self.assertFalse(result)
         self.mock_spatial_session.add.assert_not_called()
-        # Sessions never opened because validation fails before get_session()
         self.mock_spatial_session.close.assert_not_called()
         self.mock_auth_session.close.assert_not_called()
 
@@ -81,18 +80,18 @@ class TestSignIn(unittest.TestCase):
         self.mock_auth_session = MagicMock()
         self.mock_spatial_session = MagicMock()
         self.mock_get_auth_session = patch(
-            'auth.operations.get_auth_session',
+            'app.users.service.get_auth_session',
             return_value=self.mock_auth_session
         ).start()
         self.mock_get_session = patch(
-            'auth.operations.get_session',
+            'app.users.service.get_session',
             return_value=self.mock_spatial_session
         ).start()
         self.mock_msgbox_cls = patch(
-            'auth.operations.QMessageBox'
+            'app.users.service.QMessageBox'
         ).start()
         self.mock_jwt_encode = patch(
-            'auth.operations.jwt.encode', return_value='fake.jwt.token'
+            'app.users.service.jwt.encode', return_value='fake.jwt.token'
         ).start()
         self.label_mock = MagicMock()
 
@@ -118,7 +117,7 @@ class TestSignIn(unittest.TestCase):
         spatial_query = self.mock_spatial_session.query.return_value
         spatial_query.filter_by.return_value.first.return_value = mock_user
 
-        with patch('auth.operations.verify_password', return_value=True):
+        with patch('app.users.service.verify_password', return_value=True):
             result = sign_in('test', 'password', self.label_mock)
 
         self.assertTrue(result)
@@ -137,14 +136,14 @@ class TestSignIn(unittest.TestCase):
         auth_query = self.mock_auth_session.query.return_value
         auth_query.filter_by.return_value.first.return_value = mock_user
 
-        with patch('auth.operations.verify_password', return_value=False):
+        with patch('app.users.service.verify_password', return_value=False):
             result = sign_in('test', 'wrongpass', self.label_mock)
         self.assertFalse(result)
 
     def test_sign_in_validation_error(self):
         from marshmallow import ValidationError
         with patch(
-            'auth.operations.AuthSchema.load',
+            'app.users.service.AuthSchema.load',
             side_effect=ValidationError({'USERNAME': ['Required']})
         ):
             result = sign_in('', '', self.label_mock)
@@ -162,14 +161,14 @@ class TestLogout(unittest.TestCase):
         self.mock_spatial_session = MagicMock()
         self.mock_auth_session = MagicMock()
         self.mock_get_session = patch(
-            'auth.operations.get_session',
+            'app.users.service.get_session',
             return_value=self.mock_spatial_session
         ).start()
         self.mock_get_auth_session = patch(
-            'auth.operations.get_auth_session',
+            'app.users.service.get_auth_session',
             return_value=self.mock_auth_session
         ).start()
-        self.mock_toml = patch('auth.operations.toml').start()
+        self.mock_toml = patch('app.users.service.toml').start()
         self.mock_iface = MagicMock()
 
     def tearDown(self):

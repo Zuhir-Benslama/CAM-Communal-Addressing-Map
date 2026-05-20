@@ -3,8 +3,11 @@ import logging
 import os
 
 from qgis.PyQt import uic
-from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QWidget
-from qgis.PyQt.QtCore import QSettings
+from qgis.PyQt.QtWidgets import (
+    QComboBox, QDateEdit, QDialog, QFormLayout, QLayout, QLineEdit,
+    QMessageBox, QPushButton, QSizePolicy, QWidget,
+)
+from qgis.PyQt.QtCore import QSettings, QSize
 logger = logging.getLogger(__name__)
 from .. import models as _models
 from ..models import (
@@ -56,6 +59,7 @@ class PopupDialog(QDialog,FORM_CLASS):
         self.attribute = str(attribute)
         self.iface = iface
         self.setupUi(self)
+        self._apply_ui_polish()
         apply_widget_texts(self, self._tr_locale)
         self.setStyleSheet(get_theme_qss(current_theme()))
 
@@ -91,6 +95,50 @@ class PopupDialog(QDialog,FORM_CLASS):
         self.select_ref3.clicked.connect(self.select_numbering_reference)
         self.select_ref4.clicked.connect(self.select_panel_reference)
         self.cat_act_3.currentIndexChanged.connect(self.on_select_catAct)
+
+    def _apply_ui_polish(self) -> None:
+        self.setObjectName('rnaPopupDialog')
+        self.setSizeGripEnabled(True)
+        self.setMinimumSize(700, 500)
+        self.setMaximumSize(16777215, 16777215)
+        if self.width() < 760:
+            self.resize(760, 560)
+
+        self.router.setMaximumHeight(16777215)
+        self.frame_12.setProperty('surfaceRole', 'header')
+
+        for layout in self.findChildren(QLayout):
+            if isinstance(layout, QFormLayout):
+                if layout.horizontalSpacing() < 12:
+                    layout.setHorizontalSpacing(12)
+                if layout.verticalSpacing() < 10:
+                    layout.setVerticalSpacing(10)
+            elif layout.spacing() < 8:
+                layout.setSpacing(8)
+
+        for widget in self.findChildren(QLineEdit):
+            widget.setMinimumHeight(max(widget.minimumHeight(), 34))
+            widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+        for widget in self.findChildren(QComboBox):
+            widget.setMinimumHeight(max(widget.minimumHeight(), 34))
+            widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+        for widget in self.findChildren(QDateEdit):
+            widget.setMinimumHeight(max(widget.minimumHeight(), 34))
+            widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+        for button in self.findChildren(QPushButton):
+            name = button.objectName()
+            if name.startswith('submit_'):
+                button.setProperty('role', 'primary')
+            elif name.startswith('select_'):
+                button.setProperty('role', 'tool')
+            else:
+                button.setProperty('role', 'ghost')
+            button.setMinimumHeight(max(button.minimumHeight(), 34))
+            button.setMaximumWidth(16777215)
+            button.setIconSize(QSize(16, 16))
     def on_select_catAct(self, index) -> None:
         """Populate activity type based on category selection."""
         current_index = self.cat_act_3.currentIndex()
@@ -451,5 +499,4 @@ class PopupDialog(QDialog,FORM_CLASS):
         page = self.router.findChild(QWidget, page_index)
         if page:
             self.router.setCurrentWidget(page)
-
 

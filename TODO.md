@@ -260,8 +260,8 @@
 - [x] **Add sub-subtype field** — added third level (sub-subtype `النوع الفرعي الفرعي`) for facility/activity features in the add-type section. Changes: `subcat` column added to `type_organisme` and `activity` tables (model + migration); QLineEdit field in UI; writers pass value through to DB.
 
 ### Remaining
-- [ ] **Fix UI issues** — address remaining layout/rendering problems across tabs, ensure consistent spacing and alignment.
-- [ ] **Fix code base structure based on `structure.txt`** — restructure project directory layout to match the modular architecture defined in `structure.txt` (core/, users/, orders/, shared/ separation of concerns).
+- [x] **Fix UI issues** — address remaining layout/rendering problems across tabs, ensure consistent spacing and alignment.
+- [x] **Fix code base structure based on `structure.txt`** — restructure project directory layout to match the modular architecture defined in `structure.txt` (core/, users/, orders/, shared/ separation of concerns).
 
 ## 27. Code Quality Review — 2026-05-16 ✅
 
