@@ -21,9 +21,11 @@ class AuthMixin:
     management."""
 
     def _show_error(self, text: str) -> None:
+        """Show a critical error message dialog."""
         QMessageBox.critical(self, self._tr("Error"), text)
 
     def _show_info(self, text: str) -> None:
+        """Show an informational success message dialog."""
         QMessageBox.information(self, self._tr("Success"), text)
 
     def submit_add_usr(self) -> None:
@@ -136,6 +138,7 @@ class AuthMixin:
             self.router.setCurrentWidget(page)
 
     def closeEvent(self, event) -> None:
+        """Clean up tools and logout on dialog close."""
         self.stop()
         self.sat_view = None
         self.rast = None

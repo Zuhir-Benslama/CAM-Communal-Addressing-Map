@@ -1,6 +1,12 @@
-"""Spatial model re-exports for backwards compatibility."""
+"""models/spatial.py re-exports."""
 # pylint: disable=unused-import
-from ..app.orders.models import (
-    Localite, Zone, Subdivision, Road, Organization,
-    Numbering, PanelSign,
-)
+try:
+    from RNA.app.orders.models import (
+        Localite, Zone, Road, Organization,
+        Subdivision, Numbering, PanelSign,
+    )
+except ImportError:
+    from plans_adressage.app.orders.models import (
+        Localite, Zone, Road, Organization,
+        Subdivision, Numbering, PanelSign,
+    )

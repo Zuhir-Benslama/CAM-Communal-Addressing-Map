@@ -9,10 +9,10 @@ from qgis.PyQt.QtWidgets import QAction, QDockWidget, QMessageBox
 from qgis.core import QgsApplication
 
 from ..gui.main_dialog import RNADialog
-from ..shared.constants import (
+from .shared.constants import (
     ICON_PNG, SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
 )
-from ..shared.utils import current_locale
+from .shared.utils import current_locale
 from ..scripts.lookup_data import get_string
 
 logger = logging.getLogger(__name__)

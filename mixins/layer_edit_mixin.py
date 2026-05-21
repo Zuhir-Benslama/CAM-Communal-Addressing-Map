@@ -49,9 +49,11 @@ class LayerEditMixin:
         update_layer(self.iface, layer_name)
 
     def start_editing(self) -> None:
+        """Enable geometry editing on the currently selected layer."""
         self._update_handler(self._current_layer_name())
 
     def _get_geometry_and_pkuid(self, entity_name: str):
+        """Retrieve the captured geometry WKT and feature PK."""
         geometry_wkt = getattr(self, '_last_feature_wkt', None)
         pkuid = getattr(self, '_last_feature_pkuid', None)
         if not geometry_wkt or not pkuid:
@@ -60,14 +62,17 @@ class LayerEditMixin:
         return geometry_wkt, pkuid
 
     def _show_success(self, message: str) -> None:
+        """Show a success information dialog."""
         QMessageBox.information(
             self, self._tr("Success"), self._tr(message),
         )
 
     def _show_error(self, message: str) -> None:
+        """Show a critical error dialog."""
         QMessageBox.critical(self, self._tr("Error"), self._tr(message))
 
     def _make_locale_kwargs(self, field_base: str, value: str) -> dict:
+        """Build locale-specific field kwargs for non-Arabic locales."""
         loc = current_locale()
         if loc != 'ar':
             return {f'{field_base}_{loc}': value}

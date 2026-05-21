@@ -31,6 +31,7 @@ class LayerOpsMixin:
     entity listing."""
 
     def _reset_tools(self) -> None:
+        """Deactivate all active map tools and clear measurements."""
         if self.identify_tool:
             self.identify_tool.unset_map_tool()
         if self.identify_tool2:
@@ -83,6 +84,7 @@ class LayerOpsMixin:
                     node.setItemVisibilityChecked(True)
 
     def _current_ops_layer(self) -> str:
+        """Return the currently selected layer name via the mixin protocol."""
         if hasattr(self, "_current_layer_name"):
             return self._current_layer_name()
         return ""

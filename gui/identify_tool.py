@@ -65,6 +65,7 @@ class IdentifyTool(QgsMapToolIdentify):
         }
 
     def canvasReleaseEvent(self, event) -> None:
+        """Handle map canvas click: identify feature under the cursor."""
         if event.button() == Qt.LeftButton:
             _ = self.toMapCoordinates(event.pos())
 

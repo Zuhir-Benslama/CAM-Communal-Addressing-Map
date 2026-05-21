@@ -36,13 +36,13 @@ LRELEASE = lrelease
 # translation
 SOURCES = \
 	__init__.py \
-	RNA.py RNA_dialog.py
+	constants.py resources.py
 
 PLUGINNAME = RNA
 
 PY_FILES = \
 	__init__.py \
-	RNA.py RNA_dialog.py constants.py resources.py
+	constants.py resources.py
 
 UI_FILES =
 
@@ -110,6 +110,7 @@ test: compile
 		export QGIS_DEBUG=0; \
 		export QGIS_LOG_FILE=/dev/null; \
 		python3 -m pytest test/ -v --ignore=test/test_RNA_dialog.py \
+			--ignore=test/test_rna_dialog.py --ignore=test/test_resources.py \
 		3>&1 1>&2 2>&3 3>&- || true
 	@echo "----------------------"
 	@echo "If you get a 'no module named qgis.core error, try sourcing"

@@ -30,6 +30,7 @@ class MapToolsMixin:
         self.iface.mapCanvas().setMapTool(self.measure_tool)
 
     def start_selecting(self) -> None:
+        """Activate the identify tool on the currently selected layer."""
         layer_name = self._current_layer_name()
         layers = QgsProject.instance().mapLayersByName(layer_name)
         if not layers:
@@ -58,6 +59,7 @@ class MapToolsMixin:
         self.stop()
 
     def _reconnect_context_menu(self) -> None:
+        """Reconnect the custom context menu to ensure it stays active."""
         canvas = self.iface.mapCanvas()
         try:
             canvas.customContextMenuRequested.disconnect(self.on_edition_release)
@@ -70,6 +72,7 @@ class MapToolsMixin:
         canvas.setContextMenuPolicy(Qt.CustomContextMenu)
 
     def _on_map_tool_changed(self, new_tool) -> None:
+        """Reconnect context menu when the map tool changes."""
         try:
             self.iface.mapCanvas()
         except RuntimeError:
@@ -103,9 +106,11 @@ class MapToolsMixin:
         self.set_default_cursor()
 
     def select_ref_handler(self) -> None:
+        """Activate reference selection for the first reference combo."""
         self._select_ref(self.dyn_ref)
 
     def select_ref_handler2(self) -> None:
+        """Activate reference selection for the second reference combo."""
         self._select_ref(self.dyn_ref2)
 
     def ref_pan_selected(self) -> None:

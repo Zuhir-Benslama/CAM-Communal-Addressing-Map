@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 def _locale() -> str:
+    """Return the current UI locale code."""
     return current_locale()
 
 

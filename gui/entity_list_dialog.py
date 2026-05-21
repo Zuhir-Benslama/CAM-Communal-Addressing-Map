@@ -90,6 +90,7 @@ class EntityListDialog(QDialog, FORM_CLASS):
         self.populate_table()
 
     def _apply_ui_polish(self) -> None:
+        """Apply consistent sizing, spacing, and styling to the dialog."""
         self.setObjectName('rnaEntityListDialog')
         self.setWindowTitle(get_string("قائمة", self._tr_locale))
         self.setSizeGripEnabled(True)

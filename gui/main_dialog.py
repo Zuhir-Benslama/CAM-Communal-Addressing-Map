@@ -100,6 +100,7 @@ class RNADialog(
         self.apply_theme()
 
     def _init_state(self) -> None:
+        """Initialize instance state variables for tools and UI state."""
         self.sat_view = None
         self.rast = None
         self.ln = None
@@ -116,6 +117,7 @@ class RNADialog(
         self.dateEdit.setDate(QDate.currentDate())
 
     def _connect_signals(self) -> None:
+        """Connect all UI signals to their handlers."""  
         self.add_u.clicked.connect(lambda: self.public_route('add_usr'))
         self.submit_usr.clicked.connect(self.submit_add_usr)
         self.sign_in_user.clicked.connect(self.login_user)
@@ -161,11 +163,13 @@ class RNADialog(
         self.menu.currentChanged.connect(self.on_opt_selected)
 
     def _on_layer_changed(self, index: int) -> None:
+        """Switch the form stack page and refresh layer visibility."""
         self.form_stack.setCurrentIndex(index)
         if self.menu.currentWidget() and self.menu.currentWidget().objectName() == 'tab_ops':
             self.on_opt_selected(self.menu.currentIndex())
 
     def _populate_combos(self) -> None:
+        """Fill all combo boxes with their initial data."""
         fill_paper(self.paper)
         fill_wilayas_list(self.wilaya_list)
         fill_road_type(self.type_voie)
@@ -182,12 +186,14 @@ class RNADialog(
     ]
 
     def _current_layer_name(self) -> str:
+        """Return the Arabic name of the currently selected layer."""
         idx = self.layer_selector.currentIndex()
         if 0 <= idx < len(self.LAYER_INDEX_MAP):
             return self.LAYER_INDEX_MAP[idx]
         return self.LAYER_INDEX_MAP[0]
 
     def _translate_internal_combos(self) -> None:
+        """Translate layer selector and theme combo items."""
         loc = self._tr_locale
         for i, name in enumerate(self.LAYER_INDEX_MAP):
             self.layer_selector.setItemText(i, get_string(name, loc))
@@ -196,9 +202,11 @@ class RNADialog(
             self._theme_combo.setItemText(i, get_string(data, loc))
 
     def _tr(self, source: str) -> str:
+        """Translate a source string using the current locale."""
         return get_string(source, self._tr_locale)
 
     def setup_settings_ui(self) -> None:
+        """Build the theme and locale selector widgets in the settings area."""
         s = QSettings(SETTINGS_ORG, SETTINGS_APP)
 
         self._settings_group = QGroupBox(get_string("الإعدادات", self._tr_locale))
@@ -244,12 +252,14 @@ class RNADialog(
         self.scrollAreaWidgetContents_2.layout().addWidget(self._settings_group)
 
     def _on_theme_changed(self, index: int) -> None:
+        """Persist and apply the newly selected theme."""
         self._current_theme = self._theme_combo.currentData()
         s = QSettings(SETTINGS_ORG, SETTINGS_APP)
         s.setValue(SETTINGS_KEY_THEME, self._current_theme)
         self.apply_theme()
 
     def _on_locale_changed(self, idx: int) -> None:
+        """Persist the selected locale and re-translate all UI text."""
         code = self._locale_combo.currentData()
         if not code:
             return
@@ -276,6 +286,7 @@ class RNADialog(
             QApplication.setLayoutDirection(Qt.LeftToRight)
 
     def _set_button_roles(self) -> None:
+        """Assign semantic role properties to all push buttons."""
         primary_buttons = {
             'sign_in_user',
             'submit_usr',
@@ -307,6 +318,7 @@ class RNADialog(
             button.setIconSize(QSize(16, 16))
 
     def _apply_ui_polish(self) -> None:
+        """Apply consistent sizing, spacing, and styling across all widgets."""
         self.setObjectName('rnaMainDialog')
         self.setSizeGripEnabled(True)
         self.setMinimumSize(640, 680)
@@ -361,6 +373,7 @@ class RNADialog(
         self._set_button_roles()
 
     def apply_theme(self) -> None:
+        """Apply the current theme stylesheet to the dialog."""
         theme = self._current_theme
         qss = get_theme_qss(theme)
         self.setStyleSheet(qss)

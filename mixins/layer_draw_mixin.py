@@ -31,4 +31,5 @@ class LayerDrawMixin:
         start_editing_layer(self.iface, layer_name)
 
     def start_drawing(self) -> None:
+        """Start drawing on the currently selected layer."""
         self._draw_handler(self._current_layer_name())

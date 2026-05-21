@@ -215,11 +215,11 @@ def _src_text(w, attr='text'):
     if cached is not None:
         return cached
     getters = {
-        'text': w.text,
-        'title': w.title,
-        'placeholder': w.placeholderText,
-        'tooltip': w.toolTip,
-        'windowtitle': lambda: w.windowTitle() if hasattr(w, 'windowTitle') else '',
+        'text': getattr(w, 'text', lambda: ''),
+        'title': getattr(w, 'title', lambda: ''),
+        'placeholder': getattr(w, 'placeholderText', lambda: ''),
+        'tooltip': getattr(w, 'toolTip', lambda: ''),
+        'windowtitle': getattr(w, 'windowTitle', lambda: ''),
     }
     src = getters.get(attr, lambda: '')()
     if src:

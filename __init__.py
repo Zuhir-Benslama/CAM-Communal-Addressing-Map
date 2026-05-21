@@ -23,6 +23,9 @@
  This script initializes the plugin, making it known to QGIS.
 """
 import logging
+import os
+import sys
+import traceback
 from typing import Any
 
 logging.basicConfig(
@@ -30,6 +33,8 @@ logging.basicConfig(
     format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
     datefmt='%H:%M:%S',
 )
+
+logger = logging.getLogger(__name__)
 
 
 # noinspection PyPep8Naming
@@ -39,6 +44,15 @@ def classFactory(iface: Any) -> Any:  # pylint: disable=invalid-name
     :param iface: A QGIS interface instance.
     :type iface: QgsInterface
     """
-    #
-    from .app.main import RNA
-    return RNA(iface)
+    # Ensure RNA plugin dir is on sys.path so 'app' subpackage
+    # resolves even under QGIS's import hook on Python 3.14
+    _dir = os.path.dirname(__file__)
+    if _dir not in sys.path:
+        sys.path.insert(0, _dir)
+
+    try:
+        from .app.main import RNA
+        return RNA(iface)
+    except ImportError:
+        logger.error("ImportError in classFactory:\n%s", traceback.format_exc())
+        raise

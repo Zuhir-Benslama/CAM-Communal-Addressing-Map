@@ -88,6 +88,7 @@ class PopupDialog(QDialog,FORM_CLASS):
         self.cat_act_3.currentIndexChanged.connect(self.on_select_catAct)
 
     def _apply_ui_polish(self) -> None:
+        """Apply consistent sizing, spacing, and styling to the dialog."""
         self.setObjectName('rnaPopupDialog')
         self.setSizeGripEnabled(True)
         self.setMinimumSize(700, 500)
@@ -153,6 +154,7 @@ class PopupDialog(QDialog,FORM_CLASS):
             combo.setCurrentIndex(idx)
 
     def _populate_road(self, query, loc):
+        """Populate road form fields from a DB query result."""
         self.nom_voie.setText(locale_value(query, 'Nom', loc))
         self.dec_voie.setText(query.num_decision)
         index = self.type_voie.findData(query.Type)
@@ -160,6 +162,7 @@ class PopupDialog(QDialog,FORM_CLASS):
             self.type_voie.setCurrentIndex(index)
 
     def _populate_facility(self, query, loc):
+        """Populate facility form fields from a DB query result."""
         self.nom_org.setText(locale_value(query, 'Nom', loc))
         index = self.cat_org.findData(query.cat)
         if index != -1:
@@ -170,18 +173,21 @@ class PopupDialog(QDialog,FORM_CLASS):
             self.type_org.setCurrentIndex(index)
 
     def _populate_subdivision(self, query, loc):
+        """Populate subdivision form fields from a DB query result."""
         self.nom_city.setText(locale_value(query, 'Nom', loc))
         index = self.type_city.findData(query.Type)
         if index != -1:
             self.type_city.setCurrentIndex(index)
 
     def _populate_zone(self, query, loc):
+        """Populate zone form fields from a DB query result."""
         self.nom_zone.setText(locale_value(query, 'Nom', loc))
         index = self.type_zone.findData(query.Type)
         if index != -1:
             self.type_zone.setCurrentIndex(index)
 
     def _populate_numbering(self, query, loc):
+        """Populate numbering form fields from a DB query result."""
         self.num_val.setText(query.valeur)
         self.repetition.setText(query.repetition)
         if query.idLine:
@@ -205,6 +211,7 @@ class PopupDialog(QDialog,FORM_CLASS):
             self.type_act_3.setCurrentIndex(index)
 
     def _populate_panel(self, query, loc):
+        """Populate panel form fields from a DB query result."""
         if query.idLine:
             self._set_combo_value(self.dyn_ref4, LAYER_ROADS)
             self.ref_name4.setText(

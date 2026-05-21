@@ -1,3 +1,6 @@
-"""Schema re-exports for backwards compatibility."""
+"""db/schema.py re-exports."""
 # pylint: disable=unused-import
-from ..app.users.schemas import AuthSchema, SignupSchema
+try:
+    from RNA.app.users.schemas import AuthSchema, SignupSchema
+except ImportError:
+    from plans_adressage.app.users.schemas import AuthSchema, SignupSchema

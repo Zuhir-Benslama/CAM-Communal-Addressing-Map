@@ -1,3 +1,6 @@
-"""Auth decorators re-exported from app users dependencies."""
+"""auth/decorators.py re-exports."""
 # pylint: disable=unused-import
-from ..app.users.dependencies import login_required
+try:
+    from RNA.app.users.dependencies import login_required
+except ImportError:
+    from plans_adressage.app.users.dependencies import login_required

@@ -2,7 +2,7 @@
 # pylint: disable=unused-import
 
 try:
-    from ..app.shared.constants import (
+    from RNA.app.shared.constants import (
         PLUGIN_DIR, SRID, CRS,
         COOKIE_FILE, DATABASE_FILE, AUTH_DATABASE_FILE, QGIS_CONFIG_FILE,
         STYLE_QML, DEFAULT_STYLE_DIR, CUSTOM_STYLE_DIR,
@@ -19,18 +19,18 @@ try:
         SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, SETTINGS_KEY_LOCALE,
         THEME_DARK, THEME_LIGHT, AVAILABLE_LOCALES,
     )
-    from ..app.core.config import (
+    from RNA.app.core.config import (
         DARK_QSS, DARK_QSS_DIALOG, LIGHT_QSS, LIGHT_QSS_DIALOG,
         THEMES, DEFAULT_THEME,
         get_theme_qss, get_dialog_qss, find_mod_spatialite_dll,
     )
-    from ..app.shared.utils import (
+    from RNA.app.shared.utils import (
         validate_text, current_locale, locale_value,
         current_theme, get_qgis_python,
         _SUBPROCESS_FLAGS,
     )
 except ImportError:
-    from app.shared.constants import (
+    from plans_adressage.app.shared.constants import (
         PLUGIN_DIR, SRID, CRS,
         COOKIE_FILE, DATABASE_FILE, AUTH_DATABASE_FILE, QGIS_CONFIG_FILE,
         STYLE_QML, DEFAULT_STYLE_DIR, CUSTOM_STYLE_DIR,
@@ -47,12 +47,12 @@ except ImportError:
         SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, SETTINGS_KEY_LOCALE,
         THEME_DARK, THEME_LIGHT, AVAILABLE_LOCALES,
     )
-    from app.core.config import (
+    from plans_adressage.app.core.config import (
         DARK_QSS, DARK_QSS_DIALOG, LIGHT_QSS, LIGHT_QSS_DIALOG,
         THEMES, DEFAULT_THEME,
         get_theme_qss, get_dialog_qss, find_mod_spatialite_dll,
     )
-    from app.shared.utils import (
+    from plans_adressage.app.shared.utils import (
         validate_text, current_locale, locale_value,
         current_theme, get_qgis_python,
         _SUBPROCESS_FLAGS,

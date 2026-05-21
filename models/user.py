@@ -1,3 +1,6 @@
-"""User model re-export for backwards compatibility."""
+"""models/user.py re-exports."""
 # pylint: disable=unused-import
-from ..app.users.models import User
+try:
+    from RNA.app.users.models import User
+except ImportError:
+    from plans_adressage.app.users.models import User
