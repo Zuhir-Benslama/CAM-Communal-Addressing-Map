@@ -40,5 +40,5 @@ def classFactory(iface: Any) -> Any:  # pylint: disable=invalid-name
     :type iface: QgsInterface
     """
     #
-    from .RNA import RNA
+    from .app.main import RNA
     return RNA(iface)

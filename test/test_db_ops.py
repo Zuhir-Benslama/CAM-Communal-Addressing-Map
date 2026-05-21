@@ -85,7 +85,7 @@ class TestCreateCookie(unittest.TestCase):
         with patch('app.users.repository.COOKIE_FILE', cookie_path):
             create_cookie('test_cookie', 'test_uid')
         self.assertTrue(os.path.exists(cookie_path))
-        with open(cookie_path, 'r') as f:
+        with open(cookie_path, 'r', encoding='utf-8') as f:
             data = f.read()
         self.assertIn('test_cookie', data)
         self.assertIn('test_uid', data)
@@ -98,7 +98,7 @@ class TestQgisConfig(unittest.TestCase):
     def test_qgis_config_reads_json(self):
         expected = {"other_layers": [], "mapper": {}}
         config_path = os.path.join(TMPDIR, 'qgis_config.json')
-        with open(config_path, 'w') as f:
+        with open(config_path, 'w', encoding='utf-8') as f:
             json.dump(expected, f)
         with patch('app.users.repository.QGIS_CONFIG_FILE', config_path):
             result = qgis_config()
@@ -119,7 +119,7 @@ class TestGetAuthenticatedUser(unittest.TestCase):
 
     def test_user_not_found_returns_none(self):
         cookie_path = os.path.join(TMPDIR, 'cookie.toml')
-        with open(cookie_path, 'w') as f:
+        with open(cookie_path, 'w', encoding='utf-8') as f:
             f.write('[Session]\ncookie = "ck"\nuid = "ui"\n')
         with patch('app.users.repository.COOKIE_FILE', cookie_path), \
              patch('app.users.repository.get_session') as mock_session:
@@ -133,7 +133,7 @@ class TestGetAuthenticatedUser(unittest.TestCase):
 
     def test_localite_not_found_returns_none(self):
         cookie_path = os.path.join(TMPDIR, 'cookie.toml')
-        with open(cookie_path, 'w') as f:
+        with open(cookie_path, 'w', encoding='utf-8') as f:
             f.write('[Session]\ncookie = "ck"\nuid = "ui"\n')
         with patch('app.users.repository.COOKIE_FILE', cookie_path), \
              patch('app.users.repository.get_session') as mock_session:

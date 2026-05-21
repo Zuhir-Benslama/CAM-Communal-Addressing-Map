@@ -1,3 +1,4 @@
+"""SQLAlchemy models for spatial entities (zones, roads, etc.)."""
 import uuid
 import logging
 from typing import Any, ClassVar, List, Optional

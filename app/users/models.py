@@ -1,3 +1,4 @@
+"""User model for authentication and session management."""
 import uuid
 from sqlalchemy import Column, String, Boolean, Text, ForeignKey
 from sqlalchemy.orm import Session

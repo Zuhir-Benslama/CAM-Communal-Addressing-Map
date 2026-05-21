@@ -16,9 +16,9 @@ import unittest
 
 from qgis.PyQt.QtWidgets import QDialogButtonBox, QDialog
 
-from RNA_dialog import RNADialog
-
 from utilities import get_qgis_app
+
+from gui.main_dialog import RNADialog
 QGIS_APP = get_qgis_app()
 
 
@@ -52,4 +52,3 @@ if __name__ == "__main__":
     suite = unittest.makeSuite(RNADialogTest)
     runner = unittest.TextTestRunner(verbosity=2)
     runner.run(suite)
-

@@ -7,16 +7,17 @@
      (at your option) any later version.
 
 """
+import os
+import unittest
+
+from qgis.PyQt.QtCore import QCoreApplication, QTranslator
+
 from .utilities import get_qgis_app
 
 __author__ = 'ismailsunni@yahoo.co.id'
 __date__ = '12/10/2011'
 __copyright__ = ('Copyright 2012, Australia Indonesia Facility for '
                  'Disaster Reduction')
-import unittest
-import os
-
-from qgis.PyQt.QtCore import QCoreApplication, QTranslator
 
 QGIS_APP = get_qgis_app()
 
@@ -26,12 +27,12 @@ class SafeTranslationsTest(unittest.TestCase):
 
     def setUp(self):
         """Runs before each test."""
-        if 'LANG' in iter(os.environ.keys()):
+        if 'LANG' in os.environ:
             os.environ.__delitem__('LANG')
 
     def tearDown(self):
         """Runs after each test."""
-        if 'LANG' in iter(os.environ.keys()):
+        if 'LANG' in os.environ:
             os.environ.__delitem__('LANG')
 
     def test_qgis_translations(self):

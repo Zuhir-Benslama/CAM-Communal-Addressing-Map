@@ -26,32 +26,32 @@ class ReportMixin:
 
     def gen_report(self) -> bool:
         """Generate a statistical report via the external reporting script."""
-        d = dict(
-            prog=count_numberings(NUM_PLANNED),
-            wrong=count_numberings('مرقمة وغير مطابقة'),
-            right=count_numberings('مرقمة ومطابقة'),
-            booked=count_numberings('محجوز(ة)'),
-            date=datetime.now().date().strftime('%Y/%m/%d'),
+        d = {
+            'prog': count_numberings(NUM_PLANNED),
+            'wrong': count_numberings('مرقمة وغير مطابقة'),
+            'right': count_numberings('مرقمة ومطابقة'),
+            'booked': count_numberings('محجوز(ة)'),
+            'date': datetime.now().date().strftime('%Y/%m/%d'),
 
-            pan_city0=count_panels(LAYER_SUBDIVISIONS, PAN_MOUNTED),
-            pan_org0=count_panels(LAYER_FACILITIES, PAN_MOUNTED),
-            pan_road0=count_panels(LAYER_ROADS, PAN_MOUNTED),
+            'pan_city0': count_panels(LAYER_SUBDIVISIONS, PAN_MOUNTED),
+            'pan_org0': count_panels(LAYER_FACILITIES, PAN_MOUNTED),
+            'pan_road0': count_panels(LAYER_ROADS, PAN_MOUNTED),
 
-            pan_city1=count_panels(LAYER_SUBDIVISIONS, PAN_PLANNED),
-            pan_org1=count_panels(LAYER_FACILITIES, PAN_PLANNED),
-            pan_road1=count_panels(LAYER_ROADS, PAN_PLANNED),
+            'pan_city1': count_panels(LAYER_SUBDIVISIONS, PAN_PLANNED),
+            'pan_org1': count_panels(LAYER_FACILITIES, PAN_PLANNED),
+            'pan_road1': count_panels(LAYER_ROADS, PAN_PLANNED),
 
-            pan_city2=count_panels(LAYER_SUBDIVISIONS, PAN_TO_MOVE),
-            pan_org2=count_panels(LAYER_FACILITIES, PAN_TO_MOVE),
-            pan_road2=count_panels(LAYER_ROADS, PAN_TO_MOVE),
+            'pan_city2': count_panels(LAYER_SUBDIVISIONS, PAN_TO_MOVE),
+            'pan_org2': count_panels(LAYER_FACILITIES, PAN_TO_MOVE),
+            'pan_road2': count_panels(LAYER_ROADS, PAN_TO_MOVE),
 
-            pan_city3=count_panels(LAYER_SUBDIVISIONS, PAN_TO_FIX),
-            pan_org3=count_panels(LAYER_FACILITIES, PAN_TO_FIX),
-            pan_road3=count_panels(LAYER_ROADS, PAN_TO_FIX),
+            'pan_city3': count_panels(LAYER_SUBDIVISIONS, PAN_TO_FIX),
+            'pan_org3': count_panels(LAYER_FACILITIES, PAN_TO_FIX),
+            'pan_road3': count_panels(LAYER_ROADS, PAN_TO_FIX),
 
-            wilaya=self.current_user.get('wilaya'),
-            commune=self.current_user.get('commune')
-        )
+            'wilaya': self.current_user.get('wilaya'),
+            'commune': self.current_user.get('commune'),
+        }
 
         try:
             with open(TMP_JSON, 'w', encoding='utf-8') as f:
@@ -98,15 +98,15 @@ class ReportMixin:
 
     def bon_commande(self) -> bool:
         """Generate a purchase order via the external reporting script."""
-        d = dict(
-            date=datetime.now().date().strftime('%Y/%m/%d'),
-            wilaya=self.current_user.get('wilaya'),
-            commune=self.current_user.get('commune'),
-            items=query_missing_pan(PAN_PLANNED),
-            items2=query_missing_pan(PAN_TO_FIX),
-            items3=query_missing_num(NUM_PLANNED),
-            items4=query_missing_rep(NUM_PLANNED),
-        )
+        d = {
+            'date': datetime.now().date().strftime('%Y/%m/%d'),
+            'wilaya': self.current_user.get('wilaya'),
+            'commune': self.current_user.get('commune'),
+            'items': query_missing_pan(PAN_PLANNED),
+            'items2': query_missing_pan(PAN_TO_FIX),
+            'items3': query_missing_num(NUM_PLANNED),
+            'items4': query_missing_rep(NUM_PLANNED),
+        }
 
         try:
             with open(TMP_JSON, 'w', encoding='utf-8') as f:

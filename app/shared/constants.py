@@ -1,3 +1,4 @@
+"""Shared constants: paths, layer names, enums, and settings keys."""
 from enum import Enum
 import os
 

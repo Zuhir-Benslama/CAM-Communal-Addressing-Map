@@ -1,3 +1,4 @@
+"""Routing decorators: login_required for authenticated access."""
 from typing import Any, Callable
 from functools import wraps
 import toml
@@ -31,19 +32,19 @@ def login_required(func) -> Callable:
 
         if not cookie or not uid:
             _navigate_to_login(self)
-            return
+            return None
 
         session = get_session()
         try:
             user = session.query(User).filter(
-                User.id == uid, User.api_key == cookie, User.active == True
+                User.id == uid, User.api_key == cookie, User.active.is_(True)
             ).first()
         finally:
             session.close()
 
         if not user:
             _navigate_to_login(self)
-            return
+            return None
 
         return func(self, *args, **kwargs)
 

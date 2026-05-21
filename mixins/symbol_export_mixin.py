@@ -125,6 +125,7 @@ class SymbolExportMixin:
                 return output_path
             logger.error("Export failed!")
             return None
+        return None
 
     def map_situation(self) -> None:
         """Export a situation map highlighting the municipality to PNG."""

@@ -1,8 +1,9 @@
 """Report and map generation using ODT templates."""
 import json
+import logging
 import os
-from datetime import datetime
 import subprocess
+from datetime import datetime
 
 from py3o.template import Template
 
@@ -12,7 +13,6 @@ from .constants import (
     SCALE_BAR_SVG, CHART_SVG, SITUATION_PNG
 )
 
-import logging
 logger = logging.getLogger(__name__)
 
 

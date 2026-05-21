@@ -2,7 +2,6 @@
 import logging
 
 from qgis.PyQt.QtWidgets import QCompleter, QComboBox
-from qgis.PyQt.QtCore import QSettings
 
 from ..models import (
     Localite, get_session
@@ -15,7 +14,7 @@ from ..scripts.lookup_data import (
 )
 from ..db.operations import qgis_config
 from ..constants import (
-    NO_ACTIVITY, SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
+    NO_ACTIVITY,
     current_locale,
 )
 from ..i18n import tr as _i18n_tr

@@ -1,3 +1,5 @@
+"""DB operations re-exported from app users and orders repositories."""
+# pylint: disable=unused-import
 from ..app.users.repository import (
     create_cookie, qgis_config, get_current_user,
     _get_authenticated_user, get_user_location,

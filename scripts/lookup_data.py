@@ -2,7 +2,7 @@
 
 import json
 import os
-from typing import Any, Optional
+from typing import Any
 
 _DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'template_data')
 
@@ -215,10 +215,10 @@ def _src_text(w, attr='text'):
     if cached is not None:
         return cached
     getters = {
-        'text': lambda: w.text(),
-        'title': lambda: w.title(),
-        'placeholder': lambda: w.placeholderText(),
-        'tooltip': lambda: w.toolTip(),
+        'text': w.text,
+        'title': w.title,
+        'placeholder': w.placeholderText,
+        'tooltip': w.toolTip,
         'windowtitle': lambda: w.windowTitle() if hasattr(w, 'windowTitle') else '',
     }
     src = getters.get(attr, lambda: '')()

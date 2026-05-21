@@ -9,7 +9,6 @@ and removes the other 5 operational tabs.
 
 import xml.etree.ElementTree as ET
 import copy
-import re
 
 UI_PATH = "gui/RNA_dialog_base.ui"
 
@@ -53,6 +52,7 @@ def _make_sub(parent, tag, attrib=None, text=None):
 def _indent(elem, level=0):
     """Add whitespace indentation to the XML tree."""
     indent = "\n" + level * "  "
+    child = None
     if len(elem):
         if not elem.text or not elem.text.strip():
             elem.text = indent + "  "
@@ -89,7 +89,7 @@ def _process_menu(menu):
         return
 
     op_pages = pages[:6]  # tabs 0-5: operational
-    util_pages = pages[6:]  # tabs 6-7: Report, Settings
+    pages[6:]  # tabs 6-7: Report, Settings
 
     # Layer names in order matching the tabs
     layer_keys = ["zone", "road", "org", "city", "num", "pan"]

@@ -1,3 +1,4 @@
+"""Repository layer for CRUD operations on spatial entities."""
 import logging
 from typing import Any
 
@@ -157,7 +158,7 @@ def count_numberings(etat: str) -> int:
         session.close()
 
 
-def count_panels(type: str, etat: str) -> int:
+def count_panels(panel_type: str, etat: str) -> int:
     """Count panels by type and state, querying the Pan view.
 
     The Pan view is defined in scripts/migrate_production.py:
@@ -171,7 +172,7 @@ def count_panels(type: str, etat: str) -> int:
                 "select count(*) as cpt from Pan "
                 "where Type = :type and Stituation = :etat"
             ),
-            {"type": type, "etat": etat}
+            {"type": panel_type, "etat": etat}
         )
         row = result.fetchone()
         return row[0] if row else 0

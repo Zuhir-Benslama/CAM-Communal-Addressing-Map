@@ -484,3 +484,61 @@ No hand-written Python file exceeds 500 lines. Auto-generated files (`resources.
 ### Duplicate measure distance buttons merged
 - [x] **Root cause**: Two identical "قياس المسافة" buttons (`mesure_dist` / `mesure_dist_2`) with same label and tooltip, each storing the tool in a separate attribute (`measure_tool` vs `measure_tool2`).
 - [x] **Fix**: Removed `mesure_dist_2` from UI, `widgets.json`, `RNA_dialog.py`, `map_tools_mixin.py`, `layer_ops_mixin.py`. Single `activate_measure()` stores in `self.measure_tool`; both `add_numbering` and `add_panel` use `self.measure_tool` for the confirm dialog.
+
+---
+
+## 36. Remaining Work (Pylint 7.06 → target 7.5+)
+
+### Completed (Round 1 — Easy & Moderate)
+
+- [x] **`singleton-comparison` (4)** — `User.active == True` → `User.active.is_(True)` in SQLAlchemy queries
+  - `layer/utils.py`, `app/users/dependencies.py`, `app/users/repository.py`, `app/users/service.py`
+- [x] **`unspecified-encoding` (4)** — added `encoding='utf-8'` to `open()` calls
+  - `test/test_db_ops.py` (4 occurrences)
+- [x] **`consider-using-f-string` (2)** — replaced `%` formatting with f-strings
+  - `test/test_init.py`
+- [x] **`consider-iterating-dictionary` (2)** — replaced `.keys()` with direct dict iteration
+  - `test/test_translations.py`
+- [x] **`useless-object-inheritance` (2)** — `class Foo(object):` → `class Foo:`
+  - `gui/liste.py`, `gui/PopupDialog.py`
+- [x] **`trailing-newlines` (2)** — removed trailing blank lines
+  - `test/test_resources.py`, `test/test_rna_dialog.py`
+- [x] **`inconsistent-return-statements` (2)** — added missing `return None`
+  - `mixins/symbol_export_mixin.py`, `app/users/dependencies.py`
+- [x] **`undefined-loop-variable` (3)** — initialized `child = None` before loop
+  - `scripts/consolidate_tabs.py`
+- [x] **`unused-variable` (1)** — removed `util_pages` binding
+  - `scripts/consolidate_tabs.py`
+- [x] **`redefined-outer-name` (1)** — renamed `count` → `migrated`
+  - `scripts/migrate_split_db.py`
+- [x] **`unnecessary-lambda` (10)** — suppressed false positives for PyQt clicked signals; simplified `lookup_data.py` bound methods
+  - `gui/main_dialog.py` (6 suppressed), `scripts/lookup_data.py` (4 simplified)
+- [x] **`wrong-import-order` (10)** — reordered stdlib/third-party/local imports
+  - `gui/main_dialog.py`, `test/test_rna_dialog.py`, `test/test_translations.py`, `app/core/security.py`, `app/users/repository.py`, `app/users/service.py`
+
+### Remaining (Round 2 — effort varies)
+
+- [ ] **`missing-function-docstring` (~180)** — one-liner docstrings for all undocumented functions
+- [ ] **`missing-class-docstring` (~26)** — one-liner docstrings for all undocumented classes
+
+### Structural (design refactor)
+
+- [ ] **`attribute-defined-outside-init` (~108)** — mixin attrs set in methods, not `__init__`; by design but noisy
+- [ ] **`import-outside-toplevel` (~26)** — try/except fallbacks in scripts + lazy imports for circular deps
+- [ ] **`global-statement` (8)** — engine/session caching pattern in `database.py`, `security.py`, `config.py`
+- [ ] **`too-many-arguments` / `too-many-positional-arguments` (9)** — `add_action` takes 10 params; writer functions take 7–9
+- [ ] **`too-many-instance-attributes` (7)**, **`too-many-ancestors` (1)** — RNADialog inheritance complexity
+
+### False Positives (ignore)
+
+- `no-name-in-module` (166), `c-extension-no-member` (271) — PyQt5 C extensions
+- `line-too-long` (336) — mostly auto-generated files (`resources.py`, `PopupDialog.py`, `gen_translations.py`)
+- `import-error` (11) — QGIS/PyQt5 not in current Python env
+- `unnecessary-pass` (14) — stub methods in `test/qgis_interface.py`
+
+### Testing
+
+- [ ] Add tests for `layer/` module (editing, refresh, utils)
+- [ ] Add tests for `gui/` dialogs (popup, entity list, identify tool, measure tool)
+- [ ] Add tests for `mixins/` (auth, chart, backup, report, symbol export)
+- [ ] Add integration test: full login → load layers → add feature flow

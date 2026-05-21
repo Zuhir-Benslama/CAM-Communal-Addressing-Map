@@ -1,6 +1,12 @@
 """Paginated dialog for browsing entity records."""
-import os
 import logging
+import os
+
+from PyQt5 import uic
+from PyQt5.QtWidgets import (
+    QAbstractItemView, QDialog, QHBoxLayout, QLabel, QPushButton,
+    QSizePolicy, QTableWidgetItem, QVBoxLayout, QWidget,
+)
 
 from .. import models as _models
 from ..models import get_session, get_all_fields_and_labels
@@ -9,12 +15,6 @@ from ..constants import (
     current_locale, locale_value,
 )
 from ..scripts.lookup_data import get_string, apply_widget_texts
-
-from PyQt5 import uic
-from PyQt5.QtWidgets import (
-    QAbstractItemView, QDialog, QHBoxLayout, QLabel, QPushButton,
-    QSizePolicy, QTableWidgetItem, QVBoxLayout, QWidget,
-)
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ class EntityListDialog(QDialog, FORM_CLASS):
 
         self._tr_locale = current_locale()
 
-        super(EntityListDialog, self).__init__(parent)
+        super().__init__(parent)
         self.setupUi(self)
         self._apply_ui_polish()
         apply_widget_texts(self, self._tr_locale)

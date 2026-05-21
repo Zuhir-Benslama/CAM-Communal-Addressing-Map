@@ -1,3 +1,4 @@
+"""Database engine and session management for SQLite/SpatiaLite."""
 import logging
 from contextlib import contextmanager
 from typing import Any, Iterator
@@ -59,7 +60,7 @@ def get_engine() -> Any:
         )
 
         @event.listens_for(_engine, "connect")
-        def connect_spatialite(dbapi_conn, connection_record) -> None:
+        def connect_spatialite(dbapi_conn, _connection_record) -> None:
             dll = find_mod_spatialite_dll()
             dbapi_conn.enable_load_extension(True)
             try:

@@ -1,15 +1,18 @@
 """Database creation and reference data loading."""
+import logging
 import os
+
+import geopandas as gpd
+from geoalchemy2.elements import WKTElement
+from sqlalchemy import text
+
 try:
     from .models import Localite, get_session, get_auth_engine
     from .constants import SRID, TEMPLATE_DATA_DIR, VIEWS_SQL
 except ImportError:
     from models import Localite, get_session, get_auth_engine
     from constants import SRID, TEMPLATE_DATA_DIR, VIEWS_SQL
-import geopandas as gpd
-from geoalchemy2.elements import WKTElement
-from sqlalchemy import text
-import logging
+
 logger = logging.getLogger(__name__)
 
 def create_db() -> None:

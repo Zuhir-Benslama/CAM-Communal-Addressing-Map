@@ -22,7 +22,7 @@ def migrate_users() -> int:
     get_auth_engine()
     spatial_session = get_session()
     auth_session = get_auth_session()
-    count = 0
+    migrated = 0
 
     try:
         existing_ids = {
@@ -34,6 +34,7 @@ def migrate_users() -> int:
         for user in spatial_users:
             if user.id in existing_ids:
                 continue
+            migrated += 1
             auth_session.add(User(
                 id=user.id,
                 username=user.username,
@@ -58,7 +59,7 @@ def migrate_users() -> int:
         spatial_session.close()
         auth_session.close()
 
-    return count
+    return migrated
 
 
 if __name__ == '__main__':

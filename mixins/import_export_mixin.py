@@ -60,16 +60,16 @@ class ImportExportMixin:
             current_scale = canvas.scale()
             symb = self.symbols()
             if symb:
-                d = dict(
-                    type_plan=self.type_plan,
-                    date=self.dateEdit.date().toString("yyyy/MM/dd"),
-                    by=validate_text(self.lineEdit_by.text()),
-                    wilaya=self.current_user.get('wilaya'),
-                    commune=self.current_user.get('commune'),
-                    zone=validate_text(self.lineEdit_type.text()),
-                    num_plan=validate_text(self.lineEdit_nummokh.text()),
-                    scale=f"1:{round(current_scale)}"
-                )
+                d = {
+                    'type_plan': self.type_plan,
+                    'date': self.dateEdit.date().toString("yyyy/MM/dd"),
+                    'by': validate_text(self.lineEdit_by.text()),
+                    'wilaya': self.current_user.get('wilaya'),
+                    'commune': self.current_user.get('commune'),
+                    'zone': validate_text(self.lineEdit_type.text()),
+                    'num_plan': validate_text(self.lineEdit_nummokh.text()),
+                    'scale': f"1:{round(current_scale)}",
+                }
                 try:
                     with open(TMP_JSON, 'w', encoding='utf-8') as f:
                         json.dump(d, f, ensure_ascii=False, indent=4)

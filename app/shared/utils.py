@@ -1,3 +1,4 @@
+"""Utility functions: locale, validation, theme, and subprocess helpers."""
 import logging
 import os
 import shutil

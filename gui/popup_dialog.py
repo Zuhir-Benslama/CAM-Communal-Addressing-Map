@@ -8,7 +8,8 @@ from qgis.PyQt.QtWidgets import (
     QComboBox, QDateEdit, QDialog, QFormLayout, QLayout, QLineEdit,
     QMessageBox, QPushButton, QSizePolicy, QWidget,
 )
-logger = logging.getLogger(__name__)
+from qgis.core import QgsProject
+
 from .. import models as _models
 from ..models import (
     get_session, Road, Organization, Subdivision,
@@ -17,9 +18,11 @@ from ..models import (
 from ..constants import (
     validate_text, current_theme, get_theme_qss,
     current_locale, locale_value,
+    LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
+    LAYER_ZONES, LAYER_NUMBERING, LAYER_PANELS,
 )
 from ..scripts.lookup_data import get_string, apply_widget_texts
-from ..gui.ui_fillers import (
+from .ui_fillers import (
     fill_org_category, fill_road_type, fill_road_reference,
     fill_panel_reference, fill_activity_category,
     fill_numbering_state, fill_mounting_status, fill_subdivision_type,
@@ -27,13 +30,8 @@ from ..gui.ui_fillers import (
 )
 from ..db.operations import qgis_config
 from ..layer.refresh import refresh_all_layers
-from ..constants import (
-    LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
-    LAYER_ZONES, LAYER_NUMBERING, LAYER_PANELS
-)
-from qgis.core import QgsProject
 
-
+logger = logging.getLogger(__name__)
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'PopupDialog.ui'))
@@ -42,7 +40,7 @@ class PopupDialog(QDialog,FORM_CLASS):
     def __init__(self, layer_name_value, layer_name_key, attribute, iface,
                  parent=None) -> None:
         """Initialize the popup dialog with layer and attribute."""
-        super(PopupDialog, self).__init__(parent)
+        super().__init__(parent)
         self._tr_locale = current_locale()
 
 
@@ -396,25 +394,25 @@ class PopupDialog(QDialog,FORM_CLASS):
         session = get_session()
         try:
             obj = None
-            if (self.identify_tool2):
+            if self.identify_tool2:
                 obj = self.identify_tool2.get_pkuid()
 
-            if (obj):
-                if (obj.get('layer_name') == LAYER_FACILITIES):
+            if obj:
+                if obj.get('layer_name') == LAYER_FACILITIES:
                     PanelSign.update(session, pkuid=self.attribute,
                                       idLine=None,
                                       idPoly=None,
                                       idOrg=obj.get('pkuid'),
                                       Stituation=self.etat_mont.currentData())
 
-                if (obj.get('layer_name') == LAYER_ROADS):
+                if obj.get('layer_name') == LAYER_ROADS:
                     PanelSign.update(session, pkuid=self.attribute,
                                       idLine=obj.get('pkuid'),
                                       idPoly=None,
                                       idOrg=None,
                                       Stituation=self.etat_mont.currentData())
 
-                if (obj.get('layer_name') == LAYER_SUBDIVISIONS):
+                if obj.get('layer_name') == LAYER_SUBDIVISIONS:
                     PanelSign.update(session, pkuid=self.attribute,
                                       idLine=None,
                                       idPoly=obj.get('pkuid'),
@@ -440,12 +438,12 @@ class PopupDialog(QDialog,FORM_CLASS):
         """Update numbering feature in the database."""
         session = get_session()
         try:
-            obj=None
-            if(self.identify_tool2):
+            obj = None
+            if self.identify_tool2:
                 obj = self.identify_tool2.get_pkuid()
 
-            if(obj):
-                if (obj.get('layer_name') == LAYER_FACILITIES):
+            if obj:
+                if obj.get('layer_name') == LAYER_FACILITIES:
                     Numbering.update(
                         session, pkuid=self.attribute,
                         repetition=validate_text(self.repetition.text()),
@@ -458,7 +456,7 @@ class PopupDialog(QDialog,FORM_CLASS):
                         idOrg=obj.get('pkuid')
                     )
 
-                if (obj.get('layer_name') == LAYER_ROADS):
+                if obj.get('layer_name') == LAYER_ROADS:
                     Numbering.update(
                         session, pkuid=self.attribute,
                         repetition=validate_text(self.repetition.text()),
@@ -471,7 +469,7 @@ class PopupDialog(QDialog,FORM_CLASS):
                         idOrg=None
                     )
 
-                if (obj.get('layer_name') == LAYER_SUBDIVISIONS):
+                if obj.get('layer_name') == LAYER_SUBDIVISIONS:
                     Numbering.update(
                         session, pkuid=self.attribute,
                         repetition=validate_text(self.repetition.text()),

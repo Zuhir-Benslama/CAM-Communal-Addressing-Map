@@ -1,8 +1,10 @@
-import os
-import toml
+"""Data access layer for user and session persistence."""
 import json
 import logging
+import os
 from typing import Any, Optional
+
+import toml
 
 from sqlalchemy import func
 
@@ -29,7 +31,7 @@ def get_current_user() -> Optional[dict]:
     session = get_session()
     try:
         user = session.query(User).filter(
-            User.id == uid, User.api_key == cookie, User.active == True
+            User.id == uid, User.api_key == cookie, User.active.is_(True)
         ).first()
         if not user:
             return None

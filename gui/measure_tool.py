@@ -1,10 +1,11 @@
 """Map measure tool for distance measurement on canvas."""
-from PyQt5.QtCore import Qt, QSettings
+
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QCursor, QFont
 from PyQt5.QtWidgets import (
     QToolTip, QGraphicsSimpleTextItem, QGraphicsTextItem, QGraphicsItemGroup,
+    QGraphicsDropShadowEffect,
 )
-from PyQt5.QtWidgets import QGraphicsDropShadowEffect
 from qgis.gui import QgsMapToolEmitPoint, QgsRubberBand, QgsVertexMarker
 from qgis.core import QgsPointXY, QgsDistanceArea, QgsWkbTypes
 

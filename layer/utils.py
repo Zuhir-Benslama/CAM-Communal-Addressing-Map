@@ -1,7 +1,7 @@
 """Layer creation and initialization utilities."""
 import logging
-import toml
 
+import toml
 from sqlalchemy import Integer, SmallInteger, Float, String, Text, Boolean, func
 from geoalchemy2 import Geometry
 
@@ -83,7 +83,7 @@ def init_allowed_zone(iface) -> None:
             user = (
                 session.query(User)
                 .filter(
-                    User.id == uid, User.api_key == cookie, User.active == True
+                    User.id == uid, User.api_key == cookie, User.active.is_(True)
                 )
                 .first()
             )

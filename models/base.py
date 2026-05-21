@@ -1,3 +1,5 @@
+"""Base model and database utility re-exports."""
+# pylint: disable=unused-import
 from ..app.core.database import (
     Base, _allowlist_columns,
     get_engine, get_session, get_auth_engine, get_auth_session,

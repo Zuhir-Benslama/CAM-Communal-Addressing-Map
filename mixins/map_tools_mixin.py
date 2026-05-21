@@ -6,7 +6,7 @@ from qgis.core import QgsProject
 
 from ..gui.measure_tool import MeasureTool
 from ..gui.identify_tool import IdentifyTool
-from ..constants import LAYER_NUMBERING, LAYER_PANELS
+from ..constants import LAYER_PANELS
 
 
 class MapToolsMixin:

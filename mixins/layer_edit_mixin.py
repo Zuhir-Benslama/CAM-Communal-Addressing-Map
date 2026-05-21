@@ -87,10 +87,10 @@ class LayerEditMixin:
         try:
             layer = obj.get('layer_name')
             ref = obj.get('pkuid')
-            kwargs = dict(
-                geometry_wkt=geometry_wkt, pkuid=pkuid,
-                etat_mont=self.etat_mont.currentData(),
-            )
+            kwargs = {
+                'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
+                'etat_mont': self.etat_mont.currentData(),
+            }
             if layer == LAYER_FACILITIES:
                 add_panel_sign(**kwargs, idLine=None, idPoly=None, idOrg=ref)
             elif layer == LAYER_ROADS:
@@ -124,12 +124,12 @@ class LayerEditMixin:
             return
         try:
             nom = validate_text(self.nom_org.text())
-            kwargs = dict(
-                geometry_wkt=geometry_wkt, pkuid=pkuid,
-                cat_org=self.cat_org.currentData(),
-                nom_org=nom,
-                type_org=self.type_org.currentData(),
-            )
+            kwargs = {
+                'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
+                'cat_org': self.cat_org.currentData(),
+                'nom_org': nom,
+                'type_org': self.type_org.currentData(),
+            }
             kwargs.update(self._make_locale_kwargs('nom_org', nom))
             add_organization(**kwargs)
             self._show_success("تمت إضافة هذا المرفق بنجاح")
@@ -146,12 +146,12 @@ class LayerEditMixin:
             return
         try:
             nom = validate_text(self.nom_voie.text())
-            kwargs = dict(
-                geometry_wkt=geometry_wkt, pkuid=pkuid,
-                dec_voie=validate_text(self.dec_voie.text()),
-                nom_voie=nom,
-                type_voie=self.type_voie.currentData(),
-            )
+            kwargs = {
+                'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
+                'dec_voie': validate_text(self.dec_voie.text()),
+                'nom_voie': nom,
+                'type_voie': self.type_voie.currentData(),
+            }
             kwargs.update(self._make_locale_kwargs('nom_voie', nom))
             add_road(**kwargs)
             self._show_success("تمت إضافة هذا الطريق بنجاح")
@@ -203,14 +203,14 @@ class LayerEditMixin:
             logger.warning("Failed to get pkuid from identify tool: %s", e)
             obj = None
         try:
-            common = dict(
-                geometry_wkt=geometry_wkt, pkuid=pkuid,
-                repetition=validate_text(self.repetition.text()),
-                valeur=validate_text(self.num_val.text()),
-                etat=self.num_etat.currentData(),
-                cat_act=self.cat_act.currentData(),
-                type_act=self.type_act.currentData(),
-            )
+            common = {
+                'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
+                'repetition': validate_text(self.repetition.text()),
+                'valeur': validate_text(self.num_val.text()),
+                'etat': self.num_etat.currentData(),
+                'cat_act': self.cat_act.currentData(),
+                'type_act': self.type_act.currentData(),
+            }
             if obj and obj.get('layer_name') == LAYER_ROADS:
                 add_numbering(**common, idLine=obj.get('pkuid'), idPoly=None)
             elif obj and obj.get('layer_name') == LAYER_SUBDIVISIONS:
@@ -243,11 +243,11 @@ class LayerEditMixin:
             return
         try:
             name = validate_text(self.nom_city.text())
-            kwargs = dict(
-                geometry_wkt=geometry_wkt, pkuid=pkuid,
-                name=name,
-                subdivision_type=self.type_city.currentData(),
-            )
+            kwargs = {
+                'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
+                'name': name,
+                'subdivision_type': self.type_city.currentData(),
+            }
             kwargs.update(self._make_locale_kwargs('name', name))
             add_subdivision(**kwargs)
             self._show_success("تمت إضافة هذا الحي بنجاح")
@@ -266,11 +266,11 @@ class LayerEditMixin:
             return
         try:
             name = validate_text(self.nom_zone.text())
-            kwargs = dict(
-                geometry_wkt=geometry_wkt, pkuid=pkuid,
-                name=name,
-                zone_type=self.type_zone.currentData(),
-            )
+            kwargs = {
+                'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
+                'name': name,
+                'zone_type': self.type_zone.currentData(),
+            }
             kwargs.update(self._make_locale_kwargs('name', name))
             add_zone(**kwargs)
             self._show_success("تمت إضافة هذه المنطقة بنجاح")

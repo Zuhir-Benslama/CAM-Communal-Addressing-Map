@@ -1,3 +1,4 @@
+"""QSS theme configuration and mod_spatialite library discovery."""
 import os
 import logging
 

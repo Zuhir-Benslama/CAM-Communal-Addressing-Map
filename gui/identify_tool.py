@@ -1,15 +1,18 @@
 """Map identify tool for feature selection and editing."""
+import logging
 from typing import Any
+
 from qgis.PyQt.QtCore import Qt
 from qgis.gui import QgsMapToolIdentify
 from qgis.core import QgsExpression, QgsFeatureRequest
 from qgis.PyQt.QtWidgets import QMenu
+
 from .. import models as _models
 from ..constants import LAYER_KEY, current_locale
 from ..db.operations import qgis_config
 from ..models import get_session
 from ..scripts.lookup_data import get_string
-import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -80,15 +83,15 @@ class IdentifyTool(QgsMapToolIdentify):
                             get_string("عرض النموذج أو تحديثه", current_locale())
                         )
                         action1.triggered.connect(
-                            lambda: self.display_or_update_form_feature(
-                                feature['pkuid'])
+                            lambda f=feature: self.display_or_update_form_feature(
+                                f['pkuid'])
                         )
 
                         action2 = menu.addAction(
                             get_string("إزالة العنصر", current_locale())
                         )
                         action2.triggered.connect(
-                            lambda: self.delete_feature(feature['pkuid'])
+                            lambda f=feature: self.delete_feature(f['pkuid'])
                         )
                     else:
                         nom_locale = self._locale_feature_attr(feature, 'Nom')
@@ -97,10 +100,10 @@ class IdentifyTool(QgsMapToolIdentify):
                             get_string("تعيين العنصر كمرجع", current_locale())
                         )
                         action1.triggered.connect(
-                            lambda: self.feature_as_ref(
-                                feature['pkuid'],
-                                type_locale,
-                                nom_locale,
+                            lambda f=feature, t=type_locale, n=nom_locale: self.feature_as_ref(
+                                f['pkuid'],
+                                t,
+                                n,
                             )
                         )
 
@@ -120,13 +123,13 @@ class IdentifyTool(QgsMapToolIdentify):
         """Open the popup dialog for the identified feature."""
         from .popup_dialog import PopupDialog
         layer_name = self.get_active_layer().name()
-        map = LAYER_KEY
+        layer_map = LAYER_KEY
         if self.dlg:
             self.dlg.close()
             self.dlg = None
 
         self.dlg = PopupDialog(
-            layer_name_value=map.get(layer_name), iface=self.get_iface(),
+            layer_name_value=layer_map.get(layer_name), iface=self.get_iface(),
             layer_name_key=layer_name, attribute=feature_id
         )
         self.dlg.show()

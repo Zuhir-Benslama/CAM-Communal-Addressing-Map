@@ -1,3 +1,4 @@
+"""Main plugin entry point for the RNA QGIS plugin."""
 import os
 import logging
 from typing import Any
@@ -7,7 +8,7 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QDockWidget, QMessageBox
 from qgis.core import QgsApplication
 
-from ..RNA_dialog import RNADialog
+from ..gui.main_dialog import RNADialog
 from ..shared.constants import (
     ICON_PNG, SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
 )

@@ -1,6 +1,5 @@
-import sys as _sys
-import os as _os
-_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+"""Plugin-level re-exports bridging the app package and legacy imports."""
+# pylint: disable=unused-import
 
 try:
     from ..app.shared.constants import (

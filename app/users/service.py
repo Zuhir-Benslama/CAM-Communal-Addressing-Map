@@ -1,6 +1,7 @@
+"""Authentication service: sign-up, sign-in, logout, and session management."""
+import logging
 import jwt
 import toml
-import logging
 from marshmallow import ValidationError
 
 from qgis.core import QgsProject, QgsMessageLog
@@ -141,7 +142,7 @@ def logout(iface, dlg) -> None:
                     sess.query(User)
                     .filter(
                         User.id == uid, User.api_key == cookie,
-                        User.active == True
+                        User.active.is_(True)
                     )
                     .first()
                 )
