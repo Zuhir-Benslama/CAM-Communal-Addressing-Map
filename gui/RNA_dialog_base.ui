@@ -1016,7 +1016,10 @@
                                   </property>
                                 </spacer>
                               </item>
-                                <item alignment="Qt::AlignVCenter">
+                                <item>
+                                  <property name="alignment">
+                                    <set>Qt::AlignVCenter</set>
+                                  </property>
                                   <widget class="QPushButton" name="gear_btn">
                                    <property name="minimumSize">
                                      <size>
