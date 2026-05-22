@@ -37,16 +37,15 @@ MEMORY_PROVIDER = "memory"
 NOTIFY_DURATION = 3
 
 # Layer names used as QGIS display names AND internal identifiers.
-# These are intentionally Arabic since they appear in the QGIS layer tree.
 # The NEUTRAL_LAYER_* constants provide locale-independent aliases
 # for programmatic lookups.
-LAYER_MUNICIPALITY = "بلديتي"
-LAYER_ROADS = "الطرق"
-LAYER_FACILITIES = "المرافق"
-LAYER_SUBDIVISIONS = "التجزئات"
-LAYER_ZONES = "المناطق"
-LAYER_NUMBERING = "الترقيم"
-LAYER_PANELS = "اللوحات"
+LAYER_MUNICIPALITY = "My Municipality"
+LAYER_ROADS = "Roads"
+LAYER_FACILITIES = "Facilities"
+LAYER_SUBDIVISIONS = "Subdivisions"
+LAYER_ZONES = "Zones"
+LAYER_NUMBERING = "Numbering"
+LAYER_PANELS = "Panels"
 
 NEUTRAL_LAYER_MUNICIPALITY = "municipality"
 NEUTRAL_LAYER_ROADS = "roads"
@@ -73,19 +72,24 @@ LAYER_MODEL = {
 }
 
 class PanelStatus(str, Enum):
-    MOUNTED = "مركبة"
-    PLANNED = "مبرمجة"
-    TO_MOVE = "لنقلها"
-    TO_FIX = "لتصحيحها"
+    MOUNTED = "Mounted"
+    PLANNED = "Planned"
+    TO_MOVE = "To Move"
+    TO_FIX = "To Fix"
 
 
 class ActivityStatus(str, Enum):
-    NONE = "بدون نشاط"
+    NONE = "No Activity"
 
 
 class Theme(str, Enum):
-    DARK = "داكن"
-    LIGHT = "فاتح"
+    DARK = "Dark"
+    LIGHT = "Light"
+
+    @classmethod
+    def _missing_(cls, value):
+        """Handle backward-compat lookup of old Arabic theme values."""
+        return cls.LIGHT if value in ('فاتح', 'Light') else cls.DARK
 
 
 PAN_MOUNTED = PanelStatus.MOUNTED
@@ -93,7 +97,7 @@ PAN_PLANNED = PanelStatus.PLANNED
 PAN_TO_MOVE = PanelStatus.TO_MOVE
 PAN_TO_FIX = PanelStatus.TO_FIX
 
-NUM_PLANNED = "مبرمجة"
+NUM_PLANNED = "Planned"
 
 NO_ACTIVITY = ActivityStatus.NONE
 DEFAULT_PANEL_DIM = "30X40"
@@ -107,5 +111,5 @@ THEME_DARK = Theme.DARK
 THEME_LIGHT = Theme.LIGHT
 
 AVAILABLE_LOCALES = [
-    ("ar", "العربية"), ("fr", "Français"), ("en", "English"),
+    ("ar", "Arabic"), ("fr", "Français"), ("en", "English"),
 ]

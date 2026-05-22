@@ -6,14 +6,14 @@
 name=RNA
 qgisMinimumVersion=3.0
 description=RNA - Plans d'Adressage (Addressing Plans Management)
-version=0.2
+version=0.3
 author=C.A.S
 email=rna@qgis.org
 
 about=QGIS plugin for managing Algerian municipal addressing plans. Handles streets, subdivisions, organizations, zones, numbering, and signage.
 
-tracker=http://bugs
-repository=http://repo
+tracker=https://github.com/Zuhir-Benslama/CAM-Communal-Addressing-Map/issues
+repository=https://github.com/Zuhir-Benslama/CAM-Communal-Addressing-Map
 # End of mandatory metadata
 
 # Recommended items:
@@ -25,7 +25,7 @@ hasProcessingProvider=no
 # Tags are comma separated with spaces allowed
 tags=python
 
-homepage=http://homepage
+homepage=https://github.com/Zuhir-Benslama/CAM-Communal-Addressing-Map
 category=Plugins
 icon=resources/icon.png
 # experimental flag

@@ -12,9 +12,9 @@ from qgis.core import (
     QgsCategorizedSymbolRenderer, QgsSingleSymbolRenderer, QgsRendererCategory,
 )
 
-from ..db.operations import qgis_config
-from .. import models as _models
-from ..models import get_session
+from ..app.users.repository import qgis_config
+from ..app.orders import models as _models
+from ..app.core.database import get_session
 from ..constants import DEFAULT_STYLE_DIR, STYLE_QML
 
 logger = logging.getLogger(__name__)

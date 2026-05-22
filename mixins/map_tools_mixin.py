@@ -102,7 +102,7 @@ class MapToolsMixin:
                 self.identify_tool2.set_active_layer(layer[0])
                 canvas.setMapTool(self.identify_tool2)
         else:
-            QMessageBox.critical(self, self._tr("Error"), self._tr("نوع المرجع غير محدد"))
+            QMessageBox.critical(self, self._tr("Error"), self._tr("Reference type not specified"))
         self.set_default_cursor()
 
     def select_ref_handler(self) -> None:
@@ -119,7 +119,7 @@ class MapToolsMixin:
             return
         obj = self.identify_tool2.get_pkuid()
         if not obj:
-            QMessageBox.critical(self, self._tr("Error"), self._tr("نوع المرجع غير محدد"))
+            QMessageBox.critical(self, self._tr("Error"), self._tr("Reference type not specified"))
             return
 
         layer = QgsProject.instance().mapLayersByName(LAYER_PANELS)

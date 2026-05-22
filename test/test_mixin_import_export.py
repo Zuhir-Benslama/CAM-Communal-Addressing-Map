@@ -30,8 +30,8 @@ class TestImportExportMixin(unittest.TestCase):
         self.mixin.map_situation = MagicMock()
         self.mixin.symbols = MagicMock(return_value={'legend': 'data'})
         self.mixin.iface = MagicMock()
-        self.mixin.type_plan = 'ترقيم'
-        self.mixin.type_to_hide = 'لوحات'
+        self.mixin.type_plan = 'Numbering'
+        self.mixin.type_to_hide = 'Panels'
         self.mixin.current_user = {'wilaya': '16', 'commune': 'Alger Centre'}
         self.mixin.dateEdit = MagicMock()
         self.mixin.dateEdit.date().toString = MagicMock(return_value='2026/05/21')

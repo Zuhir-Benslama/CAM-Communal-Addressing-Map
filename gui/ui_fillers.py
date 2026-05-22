@@ -3,16 +3,15 @@ import logging
 
 from qgis.PyQt.QtWidgets import QCompleter, QComboBox
 
-from ..models import (
-    Localite, get_session
-)
+from ..app.orders.models import Localite
+from ..app.core.database import get_session
 from ..scripts.lookup_data import (
     road_types, zone_types, subdivision_types, mounting_statuses,
     numbering_states, org_categories, org_types_for_category,
     org_subcategories, activity_categories, activity_types_for_category,
     activity_subcategories, locale_label,
 )
-from ..db.operations import qgis_config
+from ..app.users.repository import qgis_config
 from ..constants import (
     NO_ACTIVITY,
     current_locale,
@@ -48,8 +47,8 @@ def fill_paper(combobox: QComboBox) -> None:
     """Populate a combobox with paper size options (A3, A0)."""
     loc = _locale()
     combobox.clear()
-    combobox.addItem(_i18n_tr("\u202Bورقة A3 للعمل الميداني\u202C", loc), 'A3')
-    combobox.addItem(_i18n_tr("\u202Bورقة A0 للإدارة\u202C", loc), 'A0')
+    combobox.addItem(_i18n_tr("A3 Sheet for Field Work", loc), 'A3')
+    combobox.addItem(_i18n_tr("A0 Sheet for Administration", loc), 'A0')
 
 
 def _fill_from_json(combobox, data, loc):

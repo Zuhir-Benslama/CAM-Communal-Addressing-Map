@@ -1,32 +1,42 @@
-Plugin Builder Results
+RNA - Plans d'Adressage (Addressing Plans Management)
+=====================================================
 
-Your plugin RNA was created in:
-    C:\OSGeo4W\apps\qgis\python\plugins\rna
+QGIS plugin for managing Algerian municipal addressing plans.
+Handles streets, subdivisions, organizations, zones, numbering, and signage.
 
-Your QGIS plugin directory is located at:
-    C:/Users/R-DJENNAOUI/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins
 
-What's Next:
+Installation
+------------
 
-  * Copy the entire directory containing your new plugin to the QGIS plugin
-    directory
+Install via the QGIS Plugin Manager (ZIP deployable with `make zip`).
 
-  * Compile the resources file using pyrcc5
 
-  * Run the tests (``make test``)
+Development
+-----------
 
-  * Test the plugin by enabling it in the QGIS plugin manager
+- Run tests:  ``make test``
+- Pylint:     ``make pylint``
+- Build:      ``make build``
+- Install:   ``make install``
 
-  * Customize it by editing the implementation file: ``RNA.py``
 
-  * Create your own custom icon, replacing the default icon.png
+Project Structure
+-----------------
 
-  * Modify your user interface by opening RNA_dialog_base.ui in Qt Designer
+- ``app/``       — Core application logic (models, services, repository)
+- ``gui/``       — UI dialogs and map tools
+- ``mixins/``    — Mixin classes for the main dialog
+- ``layer/``     — QGIS layer management
+- ``models/``    — Shim re-exports for QGIS compatibility
+- ``db/``        — Database operations (shim)
+- ``auth/``      — Authentication (shim)
+- ``scripts/``   — Utility scripts (migration, reporting, etc.)
+- ``test/``      — Test suite (155+ tests)
+- ``i18n/``      — Internationalization (ar, fr, en)
+- ``resources/`` — Icons and static assets
 
-  * You can use the Makefile to compile your Ui and resource files when
-    you make changes. This requires GNU make (gmake)
 
-For more information, see the PyQGIS Developer Cookbook at:
-http://www.qgis.org/pyqgis-cookbook/index.html
+License
+-------
 
-(C) 2011-2018 GeoApt LLC - geoapt.com
+GNU General Public License v2 or later.

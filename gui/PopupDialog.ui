@@ -30,58 +30,7 @@
     <normaloff>../resources/icon.png</normaloff>../resources/icon.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
-   <item>
-    <widget class="QFrame" name="frame_12">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>75</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>75</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_11">
-      <property name="leftMargin">
-       <number>10</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>13</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string />
-        </property>
-        <property name="pixmap">
-         <pixmap>../icons/Logo_MICLAT.jpg</pixmap>
-        </property>
-        <property name="scaledContents">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
+
    <item>
     <widget class="QStackedWidget" name="router">
      <property name="styleSheet">
@@ -142,7 +91,7 @@
                </font>
               </property>
               <property name="text">
-               <string> : نوع</string>
+               <string>Type:</string>
               </property>
              </widget>
             </item>
@@ -162,7 +111,7 @@
                </font>
               </property>
               <property name="text">
-               <string> : اسم</string>
+               <string>Name:</string>
               </property>
              </widget>
             </item>
@@ -186,7 +135,7 @@
              </font>
             </property>
             <property name="text">
-             <string>حفظ</string>
+             <string>Save</string>
             </property>
             <property name="icon">
              <iconset>
@@ -239,7 +188,7 @@
                </font>
               </property>
               <property name="text">
-               <string> : نوع</string>
+               <string>Type:</string>
               </property>
              </widget>
             </item>
@@ -250,38 +199,23 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_23">
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string> : اسم</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLineEdit" name="nom_voie" />
-            </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="dec_voie" />
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label">
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string> : رقم المقرر</string>
-              </property>
-             </widget>
-            </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_23">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Name:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="nom_voie" />
+             </item>
+
            </layout>
           </item>
           <item>
@@ -299,7 +233,7 @@
              </font>
             </property>
             <property name="text">
-             <string>حفظ</string>
+             <string>Save</string>
             </property>
             <property name="icon">
              <iconset>
@@ -352,7 +286,7 @@
                </font>
               </property>
               <property name="text">
-               <string> : نوع</string>
+               <string>Type:</string>
               </property>
              </widget>
             </item>
@@ -372,7 +306,7 @@
                </font>
               </property>
               <property name="text">
-               <string> : اسم</string>
+               <string>Name:</string>
               </property>
              </widget>
             </item>
@@ -388,7 +322,7 @@
                </font>
               </property>
               <property name="text">
-               <string>: فئة</string>
+               <string>Category:</string>
               </property>
              </widget>
             </item>
@@ -416,7 +350,7 @@
              </font>
             </property>
             <property name="text">
-             <string>حفظ</string>
+             <string>Save</string>
             </property>
             <property name="icon">
              <iconset>
@@ -469,7 +403,7 @@
                </font>
               </property>
               <property name="text">
-               <string> : نوع</string>
+               <string>Type:</string>
               </property>
              </widget>
             </item>
@@ -489,7 +423,7 @@
                </font>
               </property>
               <property name="text">
-               <string> : اسم</string>
+               <string>Name:</string>
               </property>
              </widget>
             </item>
@@ -513,7 +447,7 @@
              </font>
             </property>
             <property name="text">
-             <string>حفظ</string>
+             <string>Save</string>
             </property>
             <property name="icon">
              <iconset>
@@ -554,7 +488,7 @@
                 </font>
                </property>
                <property name="text">
-                <string> : رقم</string>
+                <string>Number:</string>
                </property>
               </widget>
              </item>
@@ -570,7 +504,7 @@
                 </font>
                </property>
                <property name="text">
-                <string> : نوع المرجع</string>
+                <string>Reference Type:</string>
                </property>
               </widget>
              </item>
@@ -605,7 +539,7 @@
                    </font>
                   </property>
                   <property name="text">
-                   <string>حدد المرجع</string>
+                   <string>Select Reference</string>
                   </property>
                   <property name="icon">
                    <iconset>
@@ -674,7 +608,7 @@
                 </font>
                </property>
                <property name="text">
-                <string> : مكرر</string>
+                <string>Duplicated:</string>
                </property>
               </widget>
              </item>
@@ -690,7 +624,7 @@
                 </font>
                </property>
                <property name="text">
-                <string> :حالة</string>
+                <string>State:</string>
                </property>
               </widget>
              </item>
@@ -718,7 +652,7 @@
               </font>
              </property>
              <property name="title">
-              <string>النشاط الممارس</string>
+              <string>Performed Activity</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -735,7 +669,7 @@
                    </font>
                   </property>
                   <property name="text">
-                   <string> :  فئة</string>
+                   <string>Category:</string>
                   </property>
                  </widget>
                 </item>
@@ -755,7 +689,7 @@
                    </font>
                   </property>
                   <property name="text">
-                   <string> : نوع</string>
+                   <string>Type:</string>
                   </property>
                  </widget>
                 </item>
@@ -786,7 +720,7 @@
               </font>
              </property>
              <property name="text">
-              <string>حفظ</string>
+              <string>Save</string>
              </property>
              <property name="icon">
               <iconset>
@@ -811,7 +745,7 @@
           </font>
          </property>
          <property name="text">
-          <string> : حالة التركيب</string>
+          <string>Mounting State:</string>
          </property>
         </widget>
        </item>
@@ -831,7 +765,7 @@
           </font>
          </property>
          <property name="text">
-          <string> : نوع المرجع</string>
+          <string>Reference Type:</string>
          </property>
         </widget>
        </item>
@@ -872,7 +806,7 @@
              </font>
             </property>
             <property name="text">
-             <string>حدد المرجع</string>
+             <string>Select Reference</string>
             </property>
             <property name="icon">
              <iconset>
@@ -947,7 +881,7 @@
           </font>
          </property>
          <property name="text">
-          <string>حفظ</string>
+          <string>Save</string>
          </property>
          <property name="icon">
           <iconset>
@@ -1023,7 +957,7 @@
          </font>
         </property>
         <property name="text">
-         <string>مركز التطبيقات الفضائية  2025 ©</string>
+         <string>Space Applications Center 2025 ©</string>
         </property>
        </widget>
       </item>

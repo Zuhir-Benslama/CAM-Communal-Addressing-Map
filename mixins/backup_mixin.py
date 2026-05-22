@@ -6,7 +6,7 @@ import shutil
 
 from qgis.PyQt.QtWidgets import QMessageBox, QFileDialog
 
-from ..models import get_auth_engine
+from ..app.core.database import get_auth_engine
 from ..constants import (
     PLUGIN_DIR, DATABASE_FILE, AUTH_DATABASE_FILE,
     current_theme, get_dialog_qss,
@@ -32,7 +32,7 @@ class BackupMixin:
         if file_dialog_open.exec_():
             source_path = file_dialog_open.selectedFiles()[0]
         else:
-            QMessageBox.warning(self, self._tr("Warning"), self._tr("لا يوجد ملف محدد"))
+            QMessageBox.warning(self, self._tr("Warning"), self._tr("No file selected"))
             return
 
         with open(source_path, 'rb') as f:
@@ -40,7 +40,7 @@ class BackupMixin:
         if header[:16] != b'SQLite format 3\x00':
             QMessageBox.critical(
                 self, self._tr("Error"),
-                self._tr("الملف المحدد ليس قاعدة بيانات SQLite صالحة"),
+                self._tr("Selected file is not a valid SQLite database"),
             )
             return
 
@@ -61,13 +61,13 @@ class BackupMixin:
         if os.path.exists(auth_path):
             QMessageBox.information(
                 self, self._tr("Info"),
-                self._tr("قاعدة بيانات المصادقة موجودة مسبقاً"),
+                self._tr("Auth database already exists"),
             )
         else:
             get_auth_engine()
             QMessageBox.information(
                 self, self._tr("Success"),
-                self._tr("تم إنشاء قاعدة بيانات المصادقة"),
+                self._tr("Auth database created"),
             )
 
     def backup(self) -> None:
@@ -88,7 +88,7 @@ class BackupMixin:
         if file_dialog_save.exec_():
             destination_path = file_dialog_save.selectedFiles()[0]
         else:
-            QMessageBox.warning(self, self._tr("Warning"), self._tr("لا يوجد ملف محدد"))
+            QMessageBox.warning(self, self._tr("Warning"), self._tr("No file selected"))
             return
 
         try:
@@ -98,8 +98,8 @@ class BackupMixin:
                 auth_dest = f"{base}_auth{ext}"
                 shutil.copy(auth_source, auth_dest)
             QMessageBox.information(
-                self, self._tr("Success"), self._tr("تم نسخ الملف بنجاح"),
+                self, self._tr("Success"), self._tr("File copied successfully"),
             )
         except Exception as e:
             logger.exception("Failed to restore database: %s", e)
-            QMessageBox.critical(self, self._tr("Error"), self._tr("فشل في نسخ الملف"))
+            QMessageBox.critical(self, self._tr("Error"), self._tr("Failed to copy file"))

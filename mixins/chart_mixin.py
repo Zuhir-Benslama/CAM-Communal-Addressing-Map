@@ -10,7 +10,8 @@ from sqlalchemy import func
 
 from qgis.core import QgsProject
 
-from ..models import get_session, PanelSign, Numbering
+from ..app.core.database import get_session
+from ..app.orders.models import PanelSign, Numbering
 from ..constants import LAYER_PANELS, LAYER_NUMBERING, CHART_SVG
 
 logger = logging.getLogger(__name__)
@@ -75,9 +76,9 @@ class ChartMixin:
 
         _render_bar_chart(
             results,
-            xlabel=self._tr('الوضعية'),
-            ylabel=self._tr('العدد'),
-            title=self._tr('التوزيع حسب الوضعية'),
+            xlabel=self._tr('Status'),
+            ylabel=self._tr('Count'),
+            title=self._tr('Distribution by Status'),
         )
 
         _toggle_layer_visibility(LAYER_PANELS, True)
@@ -98,9 +99,9 @@ class ChartMixin:
 
         _render_bar_chart(
             results,
-            xlabel=self._tr('الحالة'),
-            ylabel=self._tr('العدد'),
-            title=self._tr('التوزيع حسب حالة الترقيم'),
+            xlabel=self._tr('Status'),
+            ylabel=self._tr('Count'),
+            title=self._tr('Distribution by Numbering State'),
         )
 
         _toggle_layer_visibility(LAYER_NUMBERING, True)
@@ -108,7 +109,7 @@ class ChartMixin:
 
     def get_zone_chart(self, wilaya_number: int) -> None:
         """Generate a chart for zone type distribution in a wilaya."""
-        from ..db.operations import get_zone_distribution
+        from ..app.orders.repository import get_zone_distribution
         results = get_zone_distribution(wilaya_number)
         if not results:
             logger.warning(
@@ -118,9 +119,9 @@ class ChartMixin:
 
         _render_bar_chart(
             results,
-            xlabel=self._tr('الوضعية'),
-            ylabel=self._tr('العدد'),
-            title=self._tr('التوزيع حسب الوضعية'),
+            xlabel=self._tr('Status'),
+            ylabel=self._tr('Count'),
+            title=self._tr('Distribution by Status'),
         )
 
         _toggle_layer_visibility(LAYER_PANELS, False)

@@ -36,23 +36,23 @@ LRELEASE = lrelease
 # translation
 SOURCES = \
 	__init__.py \
-	constants.py resources.py
+	constants.py
 
 PLUGINNAME = RNA
 
 PY_FILES = \
 	__init__.py \
-	constants.py resources.py
+	constants.py
 
 UI_FILES =
 
 EXTRAS = metadata.txt
 
-EXTRA_DIRS = models mixins db gui layer auth scripts resources templates data icons i18n style template_data app
+EXTRA_DIRS = mixins gui layer scripts resources templates data icons i18n style template_data app
 
 COMPILED_RESOURCE_FILES = resources.py
 
-PEP8EXCLUDE=pydev,resources.py,conf.py,third_party,ui
+PEP8EXCLUDE=pydev,conf.py,third_party,ui
 
 # QGISDIR points to the location where your plugin should be installed.
 # This varies by platform, relative to your HOME directory:
@@ -110,7 +110,6 @@ test: compile
 		export QGIS_DEBUG=0; \
 		export QGIS_LOG_FILE=/dev/null; \
 		python3 -m pytest test/ -v --ignore=test/test_RNA_dialog.py \
-			--ignore=test/test_rna_dialog.py --ignore=test/test_resources.py \
 		3>&1 1>&2 2>&3 3>&- || true
 	@echo "----------------------"
 	@echo "If you get a 'no module named qgis.core error, try sourcing"

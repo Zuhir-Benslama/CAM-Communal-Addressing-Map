@@ -12,10 +12,9 @@ from shapely import wkt
 from shapely.geometry import Point, Polygon, LineString
 from geoalchemy2.elements import WKTElement
 
-from ..db.operations import qgis_config
-from ..db.operations import get_user_location
-from .. import models as _models
-from ..models import get_session
+from ..app.users.repository import qgis_config, get_user_location
+from ..app.orders import models as _models
+from ..app.core.database import get_session
 from ..constants import (
     LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
     LAYER_ZONES, LAYER_NUMBERING, LAYER_PANELS, SRID,
@@ -101,9 +100,9 @@ class LayerOpsMixin:
         self._reset_tools()
 
         selected_layer = ""
-        if tab_name == 'العمليات':
+        if tab_name == 'Operations':
             selected_layer = self._current_ops_layer()
-        elif tab_name not in ['تقرير', 'اعدادات']:
+        elif tab_name not in ['Report', 'Settings']:
             selected_layer = tab_name
 
         if selected_layer:
@@ -111,7 +110,7 @@ class LayerOpsMixin:
             data_list = qgis_config().get('other_layers')
             last_tab = getattr(self, '_last_loaded_tab', None)
             selected_key = (
-                f"ops:{selected_layer}" if tab_name == 'العمليات'
+                f"ops:{selected_layer}" if tab_name == 'Operations'
                 else selected_layer
             )
             if selected_key != last_tab:
@@ -123,7 +122,7 @@ class LayerOpsMixin:
                         layers[0].loadNamedStyle(filename)
                 self._last_loaded_tab = selected_key
 
-        elif tab_name == "اعدادات":
+        elif tab_name == "Settings":
             for layer_node in root.children():
                 if not isinstance(layer_node, QgsLayerTreeLayer):
                     continue
@@ -136,7 +135,7 @@ class LayerOpsMixin:
                 layer_node.setItemVisibilityChecked(False)
             self._show_base_layers(root)
 
-        elif tab_name == "تقرير":
+        elif tab_name == "Report":
             for layer_node in root.children():
                 if not isinstance(layer_node, QgsLayerTreeLayer):
                     continue
@@ -216,12 +215,12 @@ class LayerOpsMixin:
 
     def list_numberings(self) -> None:
         """Open an entity list dialog for numberings."""
-        dlg = EntityListDialog(model_name="Numbering", list_of='المداخل')
+        dlg = EntityListDialog(model_name="Numbering", list_of='Numberings')
         dlg.exec_()
 
     def list_panels(self) -> None:
         """Open an entity list dialog for panel signs."""
-        dlg = EntityListDialog(model_name="PanelSign", list_of='اللواحات')
+        dlg = EntityListDialog(model_name="PanelSign", list_of='Panels')
         dlg.exec_()
 
     def on_feature_added(self, fid) -> None:

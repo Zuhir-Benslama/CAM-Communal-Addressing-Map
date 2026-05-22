@@ -4,17 +4,16 @@ import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
-from PyQt5.QtWidgets import QApplication
-
-from .helpers import setup_gui_mocks
+from .helpers import setup_mocks, setup_gui_mocks, make_mock_iface, get_qapp
 
 
-class TestLoginAndAddFeature(unittest.TestCase):
-    """Integration test exercising the auth→layer→edit mixin chain."""
+@unittest.skipIf(get_qapp() is None, 'PyQt5 not available')
+class IntegrationFlowTest(unittest.TestCase):
+    """Integration tests for login -> layer -> add feature flow."""
 
     @classmethod
     def setUpClass(cls):
-        cls.app = QApplication(sys.argv)
+        cls.app = get_qapp()
         setup_gui_mocks()
         # Load all required mixin modules
         cls.modules = {}
@@ -100,7 +99,7 @@ class TestLoginAndAddFeature(unittest.TestCase):
 
         # Protocol methods
         host._reconnect_context_menu = MagicMock()
-        host._current_layer_name = MagicMock(return_value='الطرق')
+        host._current_layer_name = MagicMock(return_value='Roads')
 
     # --- Integration scenarios ---
 

@@ -253,11 +253,11 @@ class SymbolExportMixin:
         if total_length_m >= 1000:
             scale_bar.setUnits(QgsUnitTypes.DistanceKilometers)
             scale_bar.setUnitsPerSegment(0.1)
-            scale_bar.setUnitLabel(self._tr("كم"))
+            scale_bar.setUnitLabel(self._tr("km"))
         else:
             scale_bar.setUnits(QgsUnitTypes.DistanceMeters)
             scale_bar.setUnitsPerSegment(100)
-            scale_bar.setUnitLabel(self._tr("م"))
+            scale_bar.setUnitLabel(self._tr("m"))
 
         scale_bar.setNumberOfSegments(2)
         scale_bar.setNumberOfSegmentsLeft(0)

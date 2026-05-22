@@ -181,8 +181,8 @@ class RNADialog(
         fill_panel_reference(self.dyn_ref2)
 
     LAYER_INDEX_MAP = [
-        "المناطق", "الطرق", "المرافق",
-        "التجزئات", "الترقيم", "اللوحات",
+        "Zones", "Roads", "Facilities",
+        "Subdivisions", "Numbering", "Panels",
     ]
 
     def _current_layer_name(self) -> str:
@@ -209,12 +209,12 @@ class RNADialog(
         """Build the theme and locale selector widgets in the settings area."""
         s = QSettings(SETTINGS_ORG, SETTINGS_APP)
 
-        self._settings_group = QGroupBox(get_string("الإعدادات", self._tr_locale))
+        self._settings_group = QGroupBox(get_string("Settings", self._tr_locale))
         self._settings_group.setObjectName("_settings_group")
         self._settings_group.setLayout(QVBoxLayout())
 
         theme_row = QHBoxLayout()
-        self._theme_label = QLabel(get_string("المظهر:", self._tr_locale))
+        self._theme_label = QLabel(get_string("Theme:", self._tr_locale))
         self._theme_label.setObjectName("_theme_label")
         theme_row.addWidget(self._theme_label)
         self._theme_combo = QComboBox()
@@ -223,15 +223,21 @@ class RNADialog(
         self._theme_combo.addItem(THEME_LIGHT, THEME_LIGHT)
         self._theme_combo.currentIndexChanged[int].connect(self._on_theme_changed)
         saved_theme = s.value(SETTINGS_KEY_THEME, DEFAULT_THEME)
-        idx = self._theme_combo.findData(saved_theme)
+        theme_map = {'فاتح': THEME_LIGHT, 'داكن': THEME_DARK}
+        saved_theme = theme_map.get(saved_theme, saved_theme)
+        try:
+            idx = self._theme_combo.findData(saved_theme)
+        except (ValueError, TypeError):
+            idx = -1
         if idx >= 0:
             self._theme_combo.setCurrentIndex(idx)
+            s.setValue(SETTINGS_KEY_THEME, saved_theme)
         self._current_theme = self._theme_combo.currentData()
         theme_row.addWidget(self._theme_combo)
         self._settings_group.layout().addLayout(theme_row)
 
         locale_row = QHBoxLayout()
-        self._locale_label = QLabel(get_string("اللغة:", self._tr_locale))
+        self._locale_label = QLabel(get_string("Language:", self._tr_locale))
         self._locale_label.setObjectName("_locale_label")
         locale_row.addWidget(self._locale_label)
         self._locale_combo = QComboBox()
@@ -338,7 +344,6 @@ class RNADialog(
         tab_bar.setElideMode(Qt.ElideRight)
 
         for frame_name, role in {
-            'frame_12': 'header',
             'frame_8': 'toolbar',
             'frame_9': 'footer',
         }.items():

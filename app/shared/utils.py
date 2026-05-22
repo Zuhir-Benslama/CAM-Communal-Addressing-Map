@@ -45,9 +45,17 @@ def current_theme() -> str:
     from qgis.PyQt.QtCore import QSettings
     from ..shared.constants import (
         SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, THEME_DARK,
+        THEME_LIGHT,
     )
     s = QSettings(SETTINGS_ORG, SETTINGS_APP)
-    return s.value(SETTINGS_KEY_THEME, THEME_DARK)
+    value = s.value(SETTINGS_KEY_THEME, THEME_DARK)
+    # Backward compat: old Arabic values were changed to English
+    theme_map = {'فاتح': THEME_LIGHT, 'داكن': THEME_DARK}
+    migrated = theme_map.get(value)
+    if migrated is not None:
+        s.setValue(SETTINGS_KEY_THEME, migrated)
+        return migrated
+    return value
 
 
 def get_qgis_python() -> Optional[str]:

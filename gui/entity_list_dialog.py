@@ -8,8 +8,9 @@ from PyQt5.QtWidgets import (
     QSizePolicy, QTableWidgetItem, QVBoxLayout, QWidget,
 )
 
-from .. import models as _models
-from ..models import get_session, get_all_fields_and_labels
+from ..app.orders import models as _models
+from ..app.core.database import get_session
+from ..app.shared.utils import get_all_fields_and_labels
 from ..constants import (
     current_theme, get_theme_qss,
     current_locale, locale_value,
@@ -43,10 +44,10 @@ class EntityListDialog(QDialog, FORM_CLASS):
         apply_widget_texts(self, self._tr_locale)
         self.setStyleSheet(get_theme_qss(current_theme()))
 
-        self.list_title.setText("\u200f " + get_string("  قائمة ", self._tr_locale) + "\u200f " + get_string(list_of, self._tr_locale))
+        self.list_title.setText("\u200f " + get_string("List", self._tr_locale) + "\u200f " + get_string(list_of, self._tr_locale))
 
-        self._prev_btn = QPushButton(get_string("السابق", self._tr_locale))
-        self._next_btn = QPushButton(get_string("التالي", self._tr_locale))
+        self._prev_btn = QPushButton(get_string("Previous", self._tr_locale))
+        self._next_btn = QPushButton(get_string("Next", self._tr_locale))
         self._page_label = QLabel()
         self._total_label = QLabel()
 
@@ -92,7 +93,7 @@ class EntityListDialog(QDialog, FORM_CLASS):
     def _apply_ui_polish(self) -> None:
         """Apply consistent sizing, spacing, and styling to the dialog."""
         self.setObjectName('rnaEntityListDialog')
-        self.setWindowTitle(get_string("قائمة", self._tr_locale))
+        self.setWindowTitle(get_string("List", self._tr_locale))
         self.setSizeGripEnabled(True)
         self.setMinimumSize(700, 520)
         self.setMaximumSize(16777215, 16777215)
@@ -135,9 +136,9 @@ class EntityListDialog(QDialog, FORM_CLASS):
                 total_pages = max(
                     1, (self._total_records + self.PAGE_SIZE - 1) // self.PAGE_SIZE)
                 self._page_label.setText(
-                    get_string("الصفحة", self._tr_locale) + f" {self._page + 1} / {total_pages}")
+                    get_string("Page", self._tr_locale) + f" {self._page + 1} / {total_pages}")
                 self._total_label.setText(
-                    get_string("المجموع", self._tr_locale)
+                    get_string("Total", self._tr_locale)
                     + f": {self._total_records}"
                 )
 
@@ -148,8 +149,8 @@ class EntityListDialog(QDialog, FORM_CLASS):
                 )
 
                 PROPERTY_LABELS = {
-                    'pan_label': 'تسمية',
-                    'username': 'مستخدم',
+                    'pan_label': 'Label',
+                    'username': 'User',
                 }
 
                 fields, labels = get_all_fields_and_labels(

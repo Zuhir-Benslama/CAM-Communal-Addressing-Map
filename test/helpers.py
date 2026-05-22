@@ -27,22 +27,18 @@ def setup_mocks():
     _app_pkg.__package__ = 'plans_adressage.app'
     sys.modules['plans_adressage.app'] = _app_pkg
 
-    _db_pkg = types.ModuleType('plans_adressage.db')
-    _db_pkg.__path__ = ['db']
-    _db_pkg.__package__ = 'plans_adressage.db'
-    sys.modules['plans_adressage.db'] = _db_pkg
-
-    _models_pkg = types.ModuleType('plans_adressage.models')
-    _models_pkg.__path__ = ['models']
-    _models_pkg.__package__ = 'plans_adressage.models'
-    sys.modules['plans_adressage.models'] = _models_pkg
+    for subpkg in ('app.core', 'app.orders', 'app.users', 'app.shared'):
+        _sp = types.ModuleType(f'plans_adressage.{subpkg}')
+        _sp.__path__ = [subpkg.replace('.', '/')]
+        _sp.__package__ = f'plans_adressage.{subpkg}'
+        sys.modules[f'plans_adressage.{subpkg}'] = _sp
 
     _constants = MagicMock()
     _constants.NOTIFY_DURATION = 5
     _constants.current_locale = lambda: 'en'
     _constants.CRS = 'EPSG:4326'
     _constants.COOKIE_FILE = '/tmp/test_cookie.toml'
-    _constants.LAYER_MUNICIPALITY = 'بلديتي'
+    _constants.LAYER_MUNICIPALITY = 'My Municipality'
     _constants.MEMORY_PROVIDER = 'memory'
     _constants.DEFAULT_STYLE_DIR = '/tmp/styles'
     _constants.STYLE_QML = '/tmp/style.qml'
@@ -57,9 +53,8 @@ def setup_mocks():
     _lookup.get_string = lambda s, loc=None: s
     sys.modules['plans_adressage.scripts.lookup_data'] = _lookup
 
-    _db_ops = MagicMock()
-    _db_ops.get_session = MagicMock()
-    _db_ops.qgis_config = MagicMock(return_value={
+    _users_repo = MagicMock()
+    _users_repo.qgis_config = MagicMock(return_value={
         'mapper': [
             {'layer': 'roads', 'model': 'Road'},
             {'layer': 'zones', 'model': 'Zone'},
@@ -71,16 +66,36 @@ def setup_mocks():
             {'layer': 'roads', 'by': ['type']},
         ],
     })
-    sys.modules['plans_adressage.db.operations'] = _db_ops
+    _users_repo.get_current_user = MagicMock()
+    sys.modules['plans_adressage.app.users.repository'] = _users_repo
 
-    _models = MagicMock()
-    for name in ('Road', 'Zone', 'User', 'Localite', 'Organization', 'Subdivision', 'PanelSign', 'Numbering'):
+    _orders_repo = MagicMock()
+    _orders_repo.export_model = MagicMock()
+    _orders_repo.count_numberings = MagicMock()
+    _orders_repo.count_panels = MagicMock()
+    _orders_repo.query_missing_pan = MagicMock()
+    _orders_repo.query_missing_num = MagicMock()
+    _orders_repo.query_missing_rep = MagicMock()
+    sys.modules['plans_adressage.app.orders.repository'] = _orders_repo
+
+    _database = MagicMock()
+    _database.get_session = MagicMock()
+    sys.modules['plans_adressage.app.core.database'] = _database
+
+    _orders_models = MagicMock()
+    for name in ('Road', 'Zone', 'Localite', 'Organization', 'Subdivision', 'PanelSign', 'Numbering'):
         m = MagicMock()
         object.__setattr__(m, '__table__', MagicMock())
         m.__table__.columns = {}
-        setattr(_models, name, m)
-    _models.get_session = MagicMock()
-    sys.modules['plans_adressage.models'] = _models
+        setattr(_orders_models, name, m)
+    sys.modules['plans_adressage.app.orders.models'] = _orders_models
+
+    _users_models = MagicMock()
+    _user = MagicMock()
+    object.__setattr__(_user, '__table__', MagicMock())
+    _user.__table__.columns = {}
+    _users_models.User = _user
+    sys.modules['plans_adressage.app.users.models'] = _users_models
 
     _qgis = MagicMock()
     _qgis.__path__ = ['/fake/qgis']
@@ -160,15 +175,16 @@ def setup_gui_mocks():
     _pkg._gui_mocks_ready = True
     sys.modules['plans_adressage'] = _pkg
 
-    for sub in ('gui', 'scripts', 'models', 'db', 'layer', 'i18n'):
+    for sub in ('gui', 'scripts', 'layer', 'i18n'):
         _sub = types.ModuleType(f'plans_adressage.{sub}')
         _sub.__path__ = [sub]
         _sub.__package__ = f'plans_adressage.{sub}'
         sys.modules[f'plans_adressage.{sub}'] = _sub
 
-    # Mock auth and app packages to prevent real SQLAlchemy-dependent imports
-    for pkg in ('auth', 'auth.operations', 'app', 'app.core', 'app.users',
-                'app.orders', 'app.shared'):
+    # Mock app packages to prevent real SQLAlchemy-dependent imports
+    for pkg in ('app', 'app.core', 'app.users', 'app.orders', 'app.shared',
+                'app.core.database', 'app.orders.models', 'app.orders.repository',
+                'app.users.models', 'app.users.repository', 'app.users.service'):
         _mock = MagicMock()
         _mock.__path__ = [pkg.replace('.', '/')]
         _mock.__package__ = f'plans_adressage.{pkg}'
@@ -202,24 +218,36 @@ def setup_gui_mocks():
     _i18n.tr = lambda s: s
     sys.modules['plans_adressage.i18n'] = _i18n
 
-    _models = MagicMock()
-    _models.get_session = MagicMock()
-    _models.get_all_fields_and_labels = MagicMock(return_value=(
+    _database = MagicMock()
+    _database.get_session = MagicMock()
+    _database.get_session.return_value.query.return_value.count.return_value = 0
+    sys.modules['plans_adressage.app.core.database'] = _database
+
+    _orders_models = MagicMock()
+    _orders_models.get_all_fields_and_labels = MagicMock(return_value=(
         ['id', 'name'], {'id': 'ID', 'name': 'Name'},
     ))
-    _models.get_session.return_value.query.return_value.count.return_value = 0
-    for name in ('Road', 'Zone', 'User', 'Localite', 'Organization', 'Subdivision', 'PanelSign', 'Numbering'):
+    for name in ('Road', 'Zone', 'Localite', 'Organization', 'Subdivision', 'PanelSign', 'Numbering'):
         m = MagicMock()
         object.__setattr__(m, '__table__', MagicMock())
         m.__table__.columns = {}
-        setattr(_models, name, m)
-    sys.modules['plans_adressage.models'] = _models
+        setattr(_orders_models, name, m)
+    sys.modules['plans_adressage.app.orders.models'] = _orders_models
 
-    _db_ops = MagicMock()
-    _db_ops.qgis_config = MagicMock(return_value={
+    _users_models = MagicMock()
+    _users_models.User = MagicMock()
+    object.__setattr__(_users_models.User, '__table__', MagicMock())
+    _users_models.User.__table__.columns = {}
+    sys.modules['plans_adressage.app.users.models'] = _users_models
+
+    _users_repo = MagicMock()
+    _users_repo.qgis_config = MagicMock(return_value={
         'mapper': [], 'other_layers': [], 'categorize': [],
     })
-    sys.modules['plans_adressage.db.operations'] = _db_ops
+    sys.modules['plans_adressage.app.users.repository'] = _users_repo
+
+    _orders_repo = MagicMock()
+    sys.modules['plans_adressage.app.orders.repository'] = _orders_repo
 
     _refresh = MagicMock()
     _refresh.refresh_all_layers = MagicMock()
@@ -369,6 +397,23 @@ def setup_gui_mocks():
     _qgis_qtwidgets.QWidget = MagicMock()
     _qgis_qtwidgets.QDialog = _FakeDialog
     sys.modules['qgis.PyQt.QtWidgets'] = _qgis_qtwidgets
+
+
+def get_qapp():
+    """Return a QApplication instance, creating one if needed.
+
+    Works in headless environments when ``QT_QPA_PLATFORM=offscreen`` is set.
+    Returns ``None`` if PyQt5 is not installed.
+    """
+    try:
+        from PyQt5.QtWidgets import QApplication
+        app = QApplication.instance()
+        if app is None:
+            import sys
+            app = QApplication(sys.argv)
+        return app
+    except ImportError:
+        return None
 
 
 def make_mock_iface():

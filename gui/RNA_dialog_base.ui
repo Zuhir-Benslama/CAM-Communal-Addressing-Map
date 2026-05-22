@@ -91,7 +91,7 @@
                   </font>
                 </property>
                 <property name="text">
-                  <string>مركز التطبيقات الفضائية  2025 ©</string>
+                  <string>Space Applications Center 2025 ©</string>
                 </property>
               </widget>
             </item>
@@ -113,58 +113,6 @@
       </item>
       <item row="0" column="0">
         <layout class="QVBoxLayout" name="verticalLayout_27">
-          <item>
-            <widget class="QFrame" name="frame_12">
-              <property name="minimumSize">
-                <size>
-                  <width>0</width>
-                  <height>75</height>
-                </size>
-              </property>
-              <property name="maximumSize">
-                <size>
-                  <width>16777215</width>
-                  <height>75</height>
-                </size>
-              </property>
-              <property name="frameShape">
-                <enum>QFrame::NoFrame</enum>
-              </property>
-              <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-              </property>
-              <property name="lineWidth">
-                <number>1</number>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_11">
-                <property name="leftMargin">
-                  <number>10</number>
-                </property>
-                <property name="topMargin">
-                  <number>5</number>
-                </property>
-                <property name="rightMargin">
-                  <number>13</number>
-                </property>
-                <property name="bottomMargin">
-                  <number>5</number>
-                </property>
-                <item>
-                  <widget class="QLabel" name="label">
-                    <property name="text">
-                      <string />
-                    </property>
-                    <property name="pixmap">
-                      <pixmap>../icons/Logo_MICLAT.jpg</pixmap>
-                    </property>
-                    <property name="scaledContents">
-                      <bool>true</bool>
-                    </property>
-                  </widget>
-                </item>
-              </layout>
-            </widget>
-          </item>
           <item>
             <widget class="QStackedWidget" name="router">
               <property name="maximumSize">
@@ -291,7 +239,7 @@
                                         <number>2</number>
                                       </property>
                                       <property name="text">
-                                        <string>تسجيل الدخول</string>
+                                        <string>Login</string>
                                       </property>
                                       <property name="alignment">
                                         <set>Qt::AlignCenter</set>
@@ -339,7 +287,7 @@
                                         </font>
                                       </property>
                                       <property name="text">
-                                        <string> : اسم المستخدم</string>
+                                        <string>Username:</string>
                                       </property>
                                     </widget>
                                   </item>
@@ -387,7 +335,7 @@
                                         </font>
                                       </property>
                                       <property name="text">
-                                        <string> : كلمة السر</string>
+                                        <string>Password:</string>
                                       </property>
                                     </widget>
                                   </item>
@@ -452,7 +400,7 @@
                                         </font>
                                       </property>
                                       <property name="text">
-                                        <string> : حدد الخريطة</string>
+                                        <string>Select Map:</string>
                                       </property>
                                     </widget>
                                   </item>
@@ -482,7 +430,7 @@
                                         </font>
                                       </property>
                                       <property name="text">
-                                        <string>الدخول</string>
+                                        <string>Sign In</string>
                                       </property>
                                       <property name="icon">
                                         <iconset>
@@ -533,17 +481,17 @@
                                           <bold>true</bold>
                                         </font>
                                       </property>
-                                      <property name="text">
-                                        <string>إضافة مستخدم</string>
-                                      </property>
-                                      <property name="icon">
-                                        <iconset>
-                                          <normaloff>../icons/icons8-add-user-50.png</normaloff>../icons/icons8-add-user-50.png</iconset>
-                                      </property>
-                                    </widget>
-                                  </item>
-                                  <item>
-                                    <widget class="QPushButton" name="restore_db">
+      <property name="text">
+        <string>Add User</string>
+      </property>
+      <property name="icon">
+        <iconset>
+          <normaloff>../icons/icons8-add-user-50.png</normaloff>../icons/icons8-add-user-50.png</iconset>
+      </property>
+    </widget>
+  </item>
+  <item>
+    <widget class="QPushButton" name="restore_db">
                                       <property name="minimumSize">
                                         <size>
                                           <width>0</width>
@@ -563,10 +511,10 @@
                                         </font>
                                       </property>
                                       <property name="toolTip">
-                                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;في حالة حدوث خطأ يمكنك استعادة الإصدار السابق من قاعدة البيانات&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;In case of an error, you can restore the previous version of the database&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                       </property>
                                       <property name="text">
-                                        <string>استعادة قاعدة البيانات</string>
+                                        <string>Restore Database</string>
                                       </property>
                                       <property name="icon">
                                         <iconset>
@@ -621,7 +569,7 @@
                                   <item>
                                     <widget class="QPushButton" name="abort_uc">
                                       <property name="text">
-                                        <string>إلغاء</string>
+                                        <string>Cancel</string>
                                       </property>
                                       <property name="icon">
                                         <iconset>
@@ -650,7 +598,7 @@
                                         </font>
                                       </property>
                                       <property name="text">
-                                        <string>حفظ</string>
+                                        <string>Save</string>
                                       </property>
                                       <property name="icon">
                                         <iconset>
@@ -714,16 +662,16 @@
                                           <bold>true</bold>
                                         </font>
                                       </property>
-                                      <property name="text">
-                                        <string>إضافة مستخدم</string>
-                                      </property>
-                                      <property name="alignment">
-                                        <set>Qt::AlignCenter</set>
-                                      </property>
-                                    </widget>
-                                  </item>
-                                  <item>
-                                    <widget class="Line" name="line_9">
+      <property name="text">
+        <string>Add User</string>
+      </property>
+      <property name="alignment">
+        <set>Qt::AlignCenter</set>
+      </property>
+    </widget>
+  </item>
+  <item>
+    <widget class="Line" name="line_9">
                                       <property name="orientation">
                                         <enum>Qt::Horizontal</enum>
                                       </property>
@@ -764,7 +712,7 @@
                                             </font>
                                           </property>
                                           <property name="text">
-                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;الاسم &lt;span style=" color:red;"&gt;*&lt;/span&gt; :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;First Name &lt;span style=" color:red;"&gt;*&lt;/span&gt; :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                           </property>
                                         </widget>
                                       </item>
@@ -793,7 +741,7 @@
                                             </font>
                                           </property>
                                           <property name="text">
-                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;اللقب &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Last Name &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                           </property>
                                         </widget>
                                       </item>
@@ -822,7 +770,7 @@
                                             </font>
                                           </property>
                                           <property name="text">
-                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;البريد الإلكتروني &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Email &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                           </property>
                                         </widget>
                                       </item>
@@ -851,7 +799,7 @@
                                             </font>
                                           </property>
                                           <property name="text">
-                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;رقم الهاتف &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Phone &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                           </property>
                                         </widget>
                                       </item>
@@ -880,7 +828,7 @@
                                             </font>
                                           </property>
                                           <property name="text">
-                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;اسم المستخدم &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Username &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                           </property>
                                         </widget>
                                       </item>
@@ -903,7 +851,7 @@
                                             </font>
                                           </property>
                                           <property name="text">
-                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;كلمة السر &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Password &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                           </property>
                                         </widget>
                                       </item>
@@ -929,7 +877,7 @@
                                             </font>
                                           </property>
                                           <property name="text">
-                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;الولاية &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;State &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                           </property>
                                         </widget>
                                       </item>
@@ -955,7 +903,7 @@
                                             </font>
                                           </property>
                                           <property name="text">
-                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;البلدية &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Municipality &lt;span style=" color:red;"&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                           </property>
                                         </widget>
                                       </item>
@@ -1124,7 +1072,7 @@
                                   </font>
                                 </property>
                                 <property name="text">
-                                  <string>الخروج</string>
+                                  <string>Logout</string>
                                 </property>
                               </widget>
                             </item>
@@ -1139,39 +1087,39 @@
                         <widget class="QTabWidget" name="menu">
                           <widget class="QWidget" name="tab_ops">
                             <attribute name="title">
-                              <string>العمليات</string>
+                              <string>Operations</string>
                             </attribute>
                             <layout class="QVBoxLayout" name="verticalLayout_ops">
                               <item>
                                 <widget class="QComboBox" name="layer_selector">
                                   <item>
                                     <property name="text">
-                                      <string>المناطق</string>
+                                      <string>Zones</string>
                                     </property>
                                   </item>
                                   <item>
                                     <property name="text">
-                                      <string>الطرق</string>
+                                      <string>Roads</string>
                                     </property>
                                   </item>
                                   <item>
                                     <property name="text">
-                                      <string>المرافق</string>
+                                      <string>Facilities</string>
                                     </property>
                                   </item>
                                   <item>
                                     <property name="text">
-                                      <string>التجزئات</string>
+                                      <string>Subdivisions</string>
                                     </property>
                                   </item>
                                   <item>
                                     <property name="text">
-                                      <string>الترقيم</string>
+                                      <string>Numbering</string>
                                     </property>
                                   </item>
                                   <item>
                                     <property name="text">
-                                      <string>اللوحات</string>
+                                      <string>Panels</string>
                                     </property>
                                   </item>
                                 </widget>
@@ -1194,7 +1142,7 @@
                                           </font>
                                         </property>
                                         <property name="text">
-                                          <string>ارسم</string>
+                                          <string>Draw</string>
                                         </property>
                                       </widget>
                                     </item>
@@ -1213,7 +1161,7 @@
                                           </font>
                                         </property>
                                         <property name="text">
-                                          <string>حدد</string>
+                                          <string>Select</string>
                                         </property>
                                       </widget>
                                     </item>
@@ -1232,7 +1180,7 @@
                                           </font>
                                         </property>
                                         <property name="text">
-                                          <string>عدل</string>
+                                          <string>Edit</string>
                                         </property>
                                       </widget>
                                     </item>
@@ -1250,10 +1198,10 @@
 </size>
 </property>
 <property name="toolTip">
-<string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;قياس المسافة&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+<string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measure Distance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
 </property>
 <property name="text">
-<string>قياس المسافة</string>
+<string>Measure Distance</string>
 </property>
 </widget></item></layout>
                                 </widget>
@@ -1275,14 +1223,14 @@
                                                     </font>
                                                   </property>
                                                   <property name="text">
-                                                    <string> : نوع</string>
+                                                    <string>Type:</string>
                                                   </property>
                                                 </widget>
                                               </item>
                                               <item row="1" column="1">
                                                 <widget class="QComboBox" name="type_zone">
                                                   <property name="toolTip">
-                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;حدد نوع المنطقة&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;Select zone type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                   </property>
                                                   <property name="editable">
                                                     <bool>true</bool>
@@ -1298,7 +1246,7 @@
                                                     </font>
                                                   </property>
                                                   <property name="text">
-                                                    <string> : اسم</string>
+                                                    <string>Name:</string>
                                                   </property>
                                                 </widget>
                                               </item>
@@ -1311,7 +1259,7 @@
                                                     </size>
                                                   </property>
                                                   <property name="toolTip">
-                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;يجب ألا يكون اسم المنطقة متسلسلا مع نوع المنطقة مثل&lt;span style=" font-weight:600;"&gt; منطقة الصناعية دار البيضاء&lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;نوع منطقة :&lt;/span&gt; منطقة صناعية&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;اسم منطقة :&lt;/span&gt; دار البيضاء&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;The zone name must not be concatenated with the zone type, e.g.&lt;span style=" font-weight:600;"&gt; Industrial Zone Dar El Beida&lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Zone Type:&lt;/span&gt; Industrial Zone&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Zone Name:&lt;/span&gt; Dar El Beida&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                   </property>
                                                 </widget>
                                               </item>
@@ -1332,10 +1280,10 @@
                                                         </font>
                                                       </property>
                                                       <property name="toolTip">
-                                                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;حفظ المعلومات والشكل الهندسي في قاعدة البيانات&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Save information and geometry in the database&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                       </property>
                                                       <property name="text">
-                                                        <string>حفظ</string>
+                                                        <string>Save</string>
                                                       </property>
                                                       <property name="icon">
                                                         <iconset>
@@ -1351,7 +1299,7 @@
                                                     <bool>false</bool>
                                                   </property>
                                                   <property name="toolTip">
-                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;مؤشر توافر الشكل الهندسي للمنطقة&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;Indicator of geometry availability for zone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                   </property>
                                                   <property name="text">
                                                     <string />
@@ -1367,7 +1315,7 @@
                                                     </font>
                                                   </property>
                                                   <property name="text">
-                                                    <string> : توافر الشكل الهندسي</string>
+                                                    <string>Geometry Available:</string>
                                                   </property>
                                                 </widget>
                                               </item>
@@ -1409,7 +1357,7 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string> : توافر الشكل الهندسي</string>
+                                                      <string>Geometry Available:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -1419,7 +1367,7 @@
                                                       <bool>false</bool>
                                                     </property>
                                                     <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;مؤشر توافر الشكل الهندسي للطريق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Indicator of geometry availability for road&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                     <property name="text">
                                                       <string />
@@ -1435,14 +1383,14 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string> : نوع</string>
+                                                      <string>Type:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
                                                 <item row="1" column="1">
                                                   <widget class="QComboBox" name="type_voie">
                                                     <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;حدد نوع الطريق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select road type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                     <property name="editable">
                                                       <bool>true</bool>
@@ -1458,7 +1406,7 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string> : اسم</string>
+                                                      <string>Name:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -1471,37 +1419,11 @@
                                                       </size>
                                                     </property>
                                                     <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;يجب ألا يكون اسم الطريق متسلسلا مع نوع الطريق مثل&lt;span style=" font-weight:600;"&gt; شارع ديدوش مراد &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;نوع الطريق :&lt;/span&gt; شارع&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;اسم الطريق :&lt;/span&gt; ديدوش مراد&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;The road name must not be concatenated with the road type, e.g.&lt;span style=" font-weight:600;"&gt; Didouche Mourad Street &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Road Type:&lt;/span&gt; Street&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Road Name:&lt;/span&gt; Didouche Mourad&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="3" column="0">
-                                                  <widget class="QLabel" name="label_29">
-                                                    <property name="font">
-                                                      <font>
-                                                        <weight>75</weight>
-                                                        <bold>true</bold>
-                                                      </font>
-                                                    </property>
-                                                    <property name="text">
-                                                      <string> : رقم القرار</string>
-                                                    </property>
-                                                  </widget>
-                                                </item>
-                                                <item row="3" column="1">
-                                                  <widget class="QLineEdit" name="dec_voie">
-                                                    <property name="maximumSize">
-                                                      <size>
-                                                        <width>400</width>
-                                                        <height>16777215</height>
-                                                      </size>
-                                                    </property>
-                                                    <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt; رقم القرار الخاص بالتكريس&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                                                    </property>
-                                                  </widget>
-                                                </item>
-                                                <item row="4" column="0" colspan="2">
+                                                <item row="3" column="0" colspan="2">
                                                   <layout class="QHBoxLayout" name="horizontalLayout_12">
                                                     <item>
                                                       <widget class="QPushButton" name="submit_voie">
@@ -1518,10 +1440,10 @@
                                                           </font>
                                                         </property>
                                                         <property name="toolTip">
-                                                          <string>حفظ المعلومات والشكل الهندسي في قاعدة البيانات</string>
+                                                          <string>Save information and geometry in the database</string>
                                                         </property>
                                                         <property name="text">
-                                                          <string>حفظ</string>
+                                                          <string>Save</string>
                                                         </property>
                                                         <property name="icon">
                                                           <iconset>
@@ -1544,10 +1466,10 @@
                                                           </font>
                                                         </property>
                                                         <property name="toolTip">
-                                                          <string>حفظ المعلومات والشكل الهندسي في قاعدة البيانات</string>
+                                                          <string>Save information and geometry in the database</string>
                                                         </property>
                                                         <property name="text">
-                                                          <string>قائمة الطرق</string>
+                                                          <string>Roads List</string>
                                                         </property>
                                                         <property name="icon">
                                                           <iconset>
@@ -1596,7 +1518,7 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string> : توافر الشكل الهندسي</string>
+                                                      <string>Geometry Available:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -1606,7 +1528,7 @@
                                                       <bool>false</bool>
                                                     </property>
                                                     <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;مؤشر توافر الشكل الهندسي للمرفق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Indicator of geometry availability for facility&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                     <property name="text">
                                                       <string />
@@ -1622,14 +1544,14 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string> : نوع</string>
+                                                      <string>Type:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
                                                 <item row="2" column="1">
                                                   <widget class="QComboBox" name="type_org">
                                                     <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;حدد نوع المرفق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select facility type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                     <property name="editable">
                                                       <bool>true</bool>
@@ -1648,7 +1570,7 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string> : اسم</string>
+                                                      <string>Name:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -1661,7 +1583,7 @@
                                                       </size>
                                                     </property>
                                                     <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;يجب ألا يكون اسم المرفق متسلسلا مع نوع المرفق مثل&lt;span style=" font-weight:600;"&gt; مستشفى بشير منتوري &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;نوع المرفق :&lt;/span&gt;مستشفى&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;اسم المرفق :&lt;/span&gt; شير منتوري&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;The facility name must not be concatenated with the facility type, e.g.&lt;span style=" font-weight:600;"&gt; Bachir Mentouri Hospital &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Facility Type:&lt;/span&gt; Hospital&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Facility Name:&lt;/span&gt; Bachir Mentouri&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                     <property name="placeholderText">
                                                       <string />
@@ -1677,7 +1599,7 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string>: فئة</string>
+                                                      <string>Category:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -1705,10 +1627,10 @@
                                                           </font>
                                                         </property>
                                                         <property name="toolTip">
-                                                          <string>حفظ المعلومات والشكل الهندسي في قاعدة البيانات</string>
+                                                          <string>Save information and geometry in the database</string>
                                                         </property>
                                                         <property name="text">
-                                                          <string>حفظ</string>
+                                                          <string>Save</string>
                                                         </property>
                                                         <property name="icon">
                                                           <iconset>
@@ -1731,10 +1653,10 @@
                                                           </font>
                                                         </property>
                                                         <property name="toolTip">
-                                                          <string>حفظ المعلومات والشكل الهندسي في قاعدة البيانات</string>
+                                                          <string>Save information and geometry in the database</string>
                                                         </property>
                                                         <property name="text">
-                                                          <string>قائمة المرافق</string>
+                                                          <string>Facilities List</string>
                                                         </property>
                                                         <property name="icon">
                                                           <iconset>
@@ -1786,7 +1708,7 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string> : توافر الشكل الهندسي</string>
+                                                      <string>Geometry Available:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -1796,7 +1718,7 @@
                                                       <bool>false</bool>
                                                     </property>
                                                     <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;مؤشر توافر الشكل الهندسي للحي&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Indicator of geometry availability for subdivision&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                     <property name="text">
                                                       <string />
@@ -1812,14 +1734,14 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string> : نوع</string>
+                                                      <string>Type:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
                                                 <item row="1" column="1">
                                                   <widget class="QComboBox" name="type_city">
                                                     <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;حدد نوع الحي&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select subdivision type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                     <property name="editable">
                                                       <bool>true</bool>
@@ -1835,7 +1757,7 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string> : اسم</string>
+                                                      <string>Name:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -1848,7 +1770,7 @@
                                                       </size>
                                                     </property>
                                                     <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;يجب ألا يكون اسم الحي متسلسلا مع نوع الحي مثل&lt;span style=" font-weight:600;"&gt; تعاونية البرتقال &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;نوع الحي : &lt;/span&gt;تعاونية&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;اسم الحي :&lt;/span&gt;&lt;span style=" font-weight:600;"/&gt;البرتقال&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;The subdivision name must not be concatenated with the subdivision type, e.g.&lt;span style=" font-weight:600;"&gt; El Bortegal Cooperative &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Subdivision Type: &lt;/span&gt;Cooperative&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Subdivision Name:&lt;/span&gt;&lt;span style=" font-weight:600;"/&gt;El Bortegal&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -1869,10 +1791,10 @@
                                                           </font>
                                                         </property>
                                                         <property name="toolTip">
-                                                          <string>حفظ المعلومات والشكل الهندسي في قاعدة البيانات</string>
+                                                          <string>Save information and geometry in the database</string>
                                                         </property>
                                                         <property name="text">
-                                                          <string>حفظ</string>
+                                                          <string>Save</string>
                                                         </property>
                                                         <property name="icon">
                                                           <iconset>
@@ -1895,10 +1817,10 @@
                                                           </font>
                                                         </property>
                                                         <property name="toolTip">
-                                                          <string>حفظ المعلومات والشكل الهندسي في قاعدة البيانات</string>
+                                                          <string>Save information and geometry in the database</string>
                                                         </property>
                                                         <property name="text">
-                                                          <string>قائمة التجزئات</string>
+                                                          <string>Subdivisions List</string>
                                                         </property>
                                                         <property name="icon">
                                                           <iconset>
@@ -1949,7 +1871,7 @@
                                                     </font>
                                                   </property>
                                                   <property name="text">
-                                                    <string> : توافر الشكل الهندسي</string>
+                                                    <string>Geometry Available:</string>
                                                   </property>
                                                 </widget>
                                               </item>
@@ -1959,7 +1881,7 @@
                                                     <bool>false</bool>
                                                   </property>
                                                   <property name="toolTip">
-                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;مؤشر توافر الشكل الهندسي للمدخل&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Indicator of geometry availability for entrance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                   </property>
                                                   <property name="text">
                                                     <string />
@@ -1975,7 +1897,7 @@
                                                     </font>
                                                   </property>
                                                   <property name="text">
-                                                    <string> : نوع المرجع</string>
+                                                    <string>Reference Type:</string>
                                                   </property>
                                                 </widget>
                                               </item>
@@ -2010,7 +1932,7 @@
                                                           </font>
                                                         </property>
                                                         <property name="text">
-                                                          <string>حدد المرجع</string>
+                                                          <string>Select Reference</string>
                                                         </property>
                                                         <property name="icon">
                                                           <iconset>
@@ -2079,7 +2001,7 @@
                                                     </font>
                                                   </property>
                                                   <property name="text">
-                                                    <string> : رقم</string>
+                                                    <string>Number:</string>
                                                   </property>
                                                 </widget>
                                               </item>
@@ -2105,7 +2027,7 @@
                                                     </font>
                                                   </property>
                                                   <property name="text">
-                                                    <string> : مكرر</string>
+                                                    <string>Duplicated:</string>
                                                   </property>
                                                 </widget>
                                               </item>
@@ -2131,7 +2053,7 @@
                                                     </font>
                                                   </property>
                                                   <property name="text">
-                                                    <string> :حالة</string>
+                                                    <string>State:</string>
                                                   </property>
                                                 </widget>
                                               </item>
@@ -2160,7 +2082,7 @@
                                                     </font>
                                                   </property>
                                                   <property name="title">
-                                                    <string>النشاط المرافق بالمدخل</string>
+                                                    <string>Entrance Activity</string>
                                                   </property>
                                                   <property name="alignment">
                                                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -2177,7 +2099,7 @@
                                                               </font>
                                                             </property>
                                                             <property name="text">
-                                                              <string> :  فئة</string>
+                                                              <string>Category:</string>
                                                             </property>
                                                           </widget>
                                                         </item>
@@ -2197,7 +2119,7 @@
                                                               </font>
                                                             </property>
                                                             <property name="text">
-                                                              <string> : نوع</string>
+                                                              <string>Type:</string>
                                                             </property>
                                                           </widget>
                                                         </item>
@@ -2230,10 +2152,10 @@
                                                         </font>
                                                       </property>
                                                       <property name="toolTip">
-                                                        <string>حفظ المعلومات والشكل الهندسي في قاعدة البيانات</string>
+                                                        <string>Save information and geometry in the database</string>
                                                       </property>
                                                       <property name="text">
-                                                        <string>حفظ</string>
+                                                        <string>Save</string>
                                                       </property>
                                                       <property name="icon">
                                                         <iconset>
@@ -2256,10 +2178,10 @@
                                                         </font>
                                                       </property>
                                                       <property name="toolTip">
-                                                        <string>حفظ المعلومات والشكل الهندسي في قاعدة البيانات</string>
+                                                        <string>Save information and geometry in the database</string>
                                                       </property>
                                                       <property name="text">
-                                                        <string>قائمة المداخل</string>
+                                                        <string>Entrances List</string>
                                                       </property>
                                                       <property name="icon">
                                                         <iconset>
@@ -2289,7 +2211,7 @@
                                                   </font>
                                                 </property>
                                                 <property name="text">
-                                                  <string> : توافر الشكل الهندسي</string>
+                                                  <string>Geometry Available:</string>
                                                 </property>
                                               </widget>
                                             </item>
@@ -2319,7 +2241,7 @@
                                                   </font>
                                                 </property>
                                                 <property name="text">
-                                                  <string> : نوع المرجع</string>
+                                                  <string>Reference Type:</string>
                                                 </property>
                                               </widget>
                                             </item>
@@ -2354,7 +2276,7 @@
                                                         </font>
                                                       </property>
                                                       <property name="text">
-                                                        <string>حدد المرجع</string>
+                                                        <string>Select Reference</string>
                                                       </property>
                                                       <property name="icon">
                                                         <iconset>
@@ -2437,10 +2359,10 @@
                                                       </font>
                                                     </property>
                                                     <property name="toolTip">
-                                                      <string>حفظ المعلومات والشكل الهندسي في قاعدة البيانات</string>
+                                                      <string>Save information and geometry in the database</string>
                                                     </property>
                                                     <property name="text">
-                                                      <string>حفظ</string>
+                                                      <string>Save</string>
                                                     </property>
                                                     <property name="icon">
                                                       <iconset>
@@ -2463,10 +2385,10 @@
                                                       </font>
                                                     </property>
                                                     <property name="toolTip">
-                                                      <string>حفظ المعلومات والشكل الهندسي في قاعدة البيانات</string>
+                                                      <string>Save information and geometry in the database</string>
                                                     </property>
                                                     <property name="text">
-                                                      <string>قائمة اللواحات</string>
+                                                      <string>Panels List</string>
                                                     </property>
                                                     <property name="icon">
                                                       <iconset>
@@ -2485,7 +2407,7 @@
                                                   </font>
                                                 </property>
                                                 <property name="text">
-                                                  <string> : حالة التركيب</string>
+                                                  <string>Mounting State:</string>
                                                 </property>
                                               </widget>
                                             </item>
@@ -2545,10 +2467,10 @@
                           </property>
                           <widget class="QWidget" name="tab_4">
                             <attribute name="title">
-                              <string>تقرير</string>
+                              <string>Report</string>
                             </attribute>
                             <attribute name="toolTip">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;تقرير&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Report&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                             </attribute>
                             <layout class="QGridLayout" name="gridLayout_3">
                               <item row="0" column="0">
@@ -2567,20 +2489,20 @@
                                       <item>
                                         <widget class="QGroupBox" name="groupBox_4">
                                           <property name="title">
-                                            <string>إنشاء التقرير</string>
+                                            <string>Generate Report</string>
                                           </property>
                                           <layout class="QHBoxLayout" name="horizontalLayout_8">
                                             <item>
                                               <widget class="QPushButton" name="report">
                                                 <property name="text">
-                                                  <string>إنشاء التقرير</string>
+                                                  <string>Generate Report</string>
                                                 </property>
                                               </widget>
                                             </item>
                                             <item>
                                               <widget class="QPushButton" name="bc">
                                                 <property name="text">
-                                                  <string>نموذج طلبية</string>
+                                                  <string>Purchase Order</string>
                                                 </property>
                                               </widget>
                                             </item>
@@ -2590,7 +2512,7 @@
                                       <item>
                                         <widget class="QGroupBox" name="groupBox_5">
                                           <property name="title">
-                                            <string>إنشاء الخريطة</string>
+                                            <string>Generate Map</string>
                                           </property>
                                           <layout class="QVBoxLayout" name="verticalLayout_24">
                                             <item>
@@ -2625,7 +2547,7 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string>منطقة الدراسة</string>
+                                                      <string>Study Area</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -2648,7 +2570,7 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string>   منجز من طرف </string>
+                                                      <string>   Produced by </string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -2671,7 +2593,7 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string>رقم المخطط</string>
+                                                      <string>Plan Number</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -2694,7 +2616,7 @@
                                                       </font>
                                                     </property>
                                                     <property name="text">
-                                                      <string>التاريخ</string>
+                                                      <string>Date</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -2738,14 +2660,14 @@
                                                   <item>
                                                     <widget class="QPushButton" name="pan">
                                                       <property name="text">
-                                                        <string>إنشاء خريطة اللوحات</string>
+                                                        <string>Generate Panels Map</string>
                                                       </property>
                                                     </widget>
                                                   </item>
                                                   <item>
                                                     <widget class="QPushButton" name="num_carte">
                                                       <property name="text">
-                                                        <string>إنشاء خريطة الترقيم</string>
+                                                        <string>Generate Numbering Map</string>
                                                       </property>
                                                     </widget>
                                                   </item>
@@ -2758,7 +2680,7 @@
                                             <item>
                                               <widget class="QPushButton" name="print">
                                                 <property name="text">
-                                                  <string>حفظ</string>
+                                                  <string>Save</string>
                                                 </property>
                                               </widget>
                                             </item>
@@ -2773,10 +2695,10 @@
                           </widget>
                           <widget class="QWidget" name="tab">
                             <attribute name="title">
-                              <string>اعدادات</string>
+                              <string>Settings</string>
                             </attribute>
                             <attribute name="toolTip">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;اعدادات&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                             </attribute>
                             <layout class="QGridLayout" name="gridLayout_2">
                               <item row="0" column="0">
@@ -2789,16 +2711,16 @@
                                       <item>
                                         <widget class="QGroupBox" name="groupBox_3">
                                           <property name="title">
-                                            <string>النسخ الاحتياطي لقاعدة البيانات</string>
+                                            <string>Database Backup</string>
                                           </property>
                                           <layout class="QVBoxLayout" name="verticalLayout_10">
                                             <item>
                                               <widget class="QPushButton" name="backup_db">
                                                 <property name="toolTip">
-                                                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;إنشاء نسخة من قاعدة البيانات&lt;/p&gt;&lt;p align="right"&gt; لاسترادها في حالة حدوث خطأ&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;Create a database backup&lt;/p&gt;&lt;p align="right"&gt; to import in case of an error&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                 </property>
                                                 <property name="text">
-                                                  <string>إنشاء نسخة احتياطية لقاعدة البيانات</string>
+                                                  <string>Create Database Backup</string>
                                                 </property>
                                                 <property name="icon">
                                                   <iconset>
@@ -2812,7 +2734,7 @@
                                       <item>
                                         <widget class="QGroupBox" name="groupBox_add_types">
                                           <property name="title">
-                                            <string>إضافة أنواع جديدة</string>
+                                            <string>Add New Types</string>
                                           </property>
                                           <layout class="QVBoxLayout" name="verticalLayout_add_types">
                                             <item>
@@ -2820,7 +2742,7 @@
                                                 <item>
                                                   <widget class="QLabel" name="label_feature">
                                                     <property name="text">
-                                                      <string>النوع الرئيسي :</string>
+                                                      <string>Main Type:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -2841,7 +2763,7 @@
                                                 <item>
                                                   <widget class="QLabel" name="label_type">
                                                     <property name="text">
-                                                      <string>النوع :</string>
+                                                      <string>Type:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -2858,7 +2780,7 @@
                                                 <item>
                                                   <widget class="QPushButton" name="add_type_btn">
                                                     <property name="toolTip">
-                                                      <string>إضافة نوع جديد</string>
+                                                      <string>Add new type</string>
                                                     </property>
                                                     <property name="maximumSize">
                                                       <size>
@@ -2878,7 +2800,7 @@
                                                 <item>
                                                   <widget class="QLabel" name="label_subtype">
                                                     <property name="text">
-                                                      <string>النوع الفرعي :</string>
+                                                      <string>Subtype:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
@@ -2902,7 +2824,7 @@
                                                 <item>
                                                   <widget class="QLabel" name="label_subsubtype">
                                                     <property name="text">
-                                                      <string>النوع الفرعي الفرعي :</string>
+                                                      <string>Sub-subtype:</string>
                                                     </property>
                                                   </widget>
                                                 </item>

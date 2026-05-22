@@ -6,11 +6,11 @@ import logging
 from qgis.PyQt.QtWidgets import QMessageBox, QFileDialog, QWidget
 from qgis.core import QgsProject, QgsRasterLayer
 
-from ..auth.operations import sign_up, sign_in, logout
-from ..models import get_current_user
+from ..app.users.service import sign_up, sign_in, logout
+from ..app.users.repository import get_current_user
 from ..layer.utils import init_allowed_zone
 from ..layer.refresh import refresh_all_layers
-from ..db.operations import qgis_config
+from ..app.users.repository import qgis_config
 from ..constants import validate_text, current_theme, get_dialog_qss
 
 logger = logging.getLogger(__name__)
@@ -64,7 +64,7 @@ class AuthMixin:
                 self.current_user = get_current_user()
             else:
                 self._show_error(
-                    self._tr("غير قادر على تسجيل الدخول إلى الخادم أو الصورة غير موجودة"),
+                    self._tr("Unable to log in to server or image not found"),
                 )
         elif error:
             self._show_error(error)

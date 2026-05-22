@@ -4,19 +4,13 @@ from contextlib import contextmanager
 from typing import Any, Iterator
 
 from sqlalchemy import create_engine, event, inspect
-from sqlalchemy.orm import declarative_base, sessionmaker, Session
+from sqlalchemy.orm import sessionmaker, Session
 
 from ..shared.constants import DATABASE_FILE, AUTH_DATABASE_FILE
 from ..core.config import find_mod_spatialite_dll
+from .base import Base
 
 logger = logging.getLogger(__name__)
-
-Base = declarative_base()
-
-
-def _allowlist_columns(model_class: type, **kwargs: Any) -> dict:
-    valid_columns = {col.name for col in model_class.__table__.columns}
-    return {k: v for k, v in kwargs.items() if k in valid_columns}
 
 
 _engine = None

@@ -7,7 +7,7 @@ from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import QgsProject
 
 from ..layer.editing import update_layer
-from ..db.writers import (
+from ..app.orders.repository import (
     add_panel_sign, add_organization, add_road,
     add_numbering, add_subdivision, add_zone,
 )
@@ -107,12 +107,12 @@ class LayerEditMixin:
                 self.show_confirm_dialog(
                     title=self._tr("Success"),
                     message=self._tr(
-                        "تمت إضافة هذه اللوحة بنجاح\n هل تريد مسح خط القياس ؟"
+                        "Panel added successfully\n Do you want to clear the measurement line?"
                     ),
                     yes_callback=self.measure_tool.clear,
                 )
             else:
-                self._show_success("تمت إضافة هذا المدخل بنجاح")
+                self._show_success("Panel added successfully")
         except Exception as e:
             logger.exception("Failed to add panel: %s", e)
             self._show_error(str(e))
@@ -137,10 +137,10 @@ class LayerEditMixin:
             }
             kwargs.update(self._make_locale_kwargs('nom_org', nom))
             add_organization(**kwargs)
-            self._show_success("تمت إضافة هذا المرفق بنجاح")
+            self._show_success("Facility added successfully")
         except Exception as e:
             logger.exception("Failed to add organization: %s", e)
-            self._show_error('لا يمكن إضافة المرفق ، المرفق موجود بالفعل')
+            self._show_error('Cannot add facility, it already exists')
 
     def add_road(self) -> None:
         """Add a new road through the form."""
@@ -153,16 +153,16 @@ class LayerEditMixin:
             nom = validate_text(self.nom_voie.text())
             kwargs = {
                 'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
-                'dec_voie': validate_text(self.dec_voie.text()),
+                'dec_voie': None,
                 'nom_voie': nom,
                 'type_voie': self.type_voie.currentData(),
             }
             kwargs.update(self._make_locale_kwargs('nom_voie', nom))
             add_road(**kwargs)
-            self._show_success("تمت إضافة هذا الطريق بنجاح")
+            self._show_success("Road added successfully")
         except Exception as e:
             logger.exception("Failed to add road: %s", e)
-            self._show_error('لا يمكن إضافة الطريق , الطريق موجود بالفعل')
+            self._show_error('Cannot add road, it already exists')
 
     def key_press_event(self, event, action: str = 'add_numbering') -> None:
         """Handle Enter key press to trigger the given action."""
@@ -182,8 +182,8 @@ class LayerEditMixin:
 
         yes_button = msg_box.button(QMessageBox.Yes)
         no_button = msg_box.button(QMessageBox.No)
-        yes_button.setText(self._tr("نعم"))
-        no_button.setText(self._tr("لا"))
+        yes_button.setText(self._tr("Yes"))
+        no_button.setText(self._tr("No"))
 
         result = msg_box.exec_()
 
@@ -225,12 +225,12 @@ class LayerEditMixin:
                 self.show_confirm_dialog(
                     title=self._tr("Success"),
                     message=self._tr(
-                        "تمت إضافة هذا المدخل بنجاح\n هل تمسح خط القياس ؟"
+                        "Numbering added successfully\n Do you want to clear the measurement line?"
                     ),
                     yes_callback=self.measure_tool.clear,
                 )
             else:
-                self._show_success("تمت إضافة هذا المدخل بنجاح")
+                self._show_success("Numbering added successfully")
         except Exception as e:
             logger.exception("Failed to add numbering: %s", e)
             self._show_error(str(e))
@@ -255,7 +255,7 @@ class LayerEditMixin:
             }
             kwargs.update(self._make_locale_kwargs('name', name))
             add_subdivision(**kwargs)
-            self._show_success("تمت إضافة هذا الحي بنجاح")
+            self._show_success("Subdivision added successfully")
         except Exception as e:
             logger.exception("Failed to add city: %s", e)
             self._show_error(str(e))
@@ -278,7 +278,7 @@ class LayerEditMixin:
             }
             kwargs.update(self._make_locale_kwargs('name', name))
             add_zone(**kwargs)
-            self._show_success("تمت إضافة هذه المنطقة بنجاح")
+            self._show_success("Zone added successfully")
         except Exception as e:
             logger.exception("Failed to add zone: %s", e)
-            self._show_error('لا يمكن إضافة المنطقة , المنطقة موجودة بالفعل')
+            self._show_error('Cannot add zone, zone already exists')

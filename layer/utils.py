@@ -11,9 +11,11 @@ from qgis.core import (
     QgsGeometry, QgsFillSymbol,
 )
 
-from .. import models as _models
-from ..db.operations import qgis_config
-from ..models import get_session, User, Localite
+from ..app.orders import models as _models
+from ..app.users.repository import qgis_config
+from ..app.core.database import get_session
+from ..app.users.models import User
+from ..app.orders.models import Localite
 from ..constants import CRS, COOKIE_FILE, LAYER_MUNICIPALITY, MEMORY_PROVIDER
 
 logger = logging.getLogger(__name__)

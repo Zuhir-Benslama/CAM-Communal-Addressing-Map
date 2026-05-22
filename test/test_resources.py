@@ -1,41 +1,17 @@
-# coding=utf-8
-"""Resources test.
-
-.. note:: This program is free software; you can redistribute it and/or modify
-     it under the terms of the GNU General Public License as published by
-     the Free Software Foundation; either version 2 of the License, or
-     (at your option) any later version.
-
-"""
-
-__author__ = 'rna@qgis.org'
-__date__ = '2025-01-02'
-__copyright__ = 'Copyright 2025, C.A.S'
-
+"""Test that plugin resources exist on disk."""
+import os
 import unittest
 
-from qgis.PyQt.QtGui import QIcon
 
+class ResourcesTest(unittest.TestCase):
+    """Verify plugin resources exist on disk."""
 
+    def test_icon_exists(self):
+        """The plugin icon should exist at the expected path."""
+        path = os.path.join(os.path.dirname(__file__), '..', 'resources', 'icon.png')
+        self.assertTrue(os.path.isfile(os.path.abspath(path)),
+                        'resources/icon.png should exist')
 
-class RNADialogTest(unittest.TestCase):
-    """Test rerources work."""
-
-    def setUp(self):
-        """Runs before each test."""
-        pass
-
-    def tearDown(self):
-        """Runs after each test."""
-        pass
-
-    def test_icon_png(self):
-        """Test we can click OK."""
-        path = ':/plugins/RNA/icon.png'
-        icon = QIcon(path)
-        self.assertFalse(icon.isNull())
 
 if __name__ == "__main__":
-    suite = unittest.makeSuite(RNADialogTest)
-    runner = unittest.TextTestRunner(verbosity=2)
-    runner.run(suite)
+    unittest.main()

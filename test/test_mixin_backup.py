@@ -6,17 +6,16 @@ import tempfile
 import unittest
 from unittest.mock import MagicMock, patch
 
-from PyQt5.QtWidgets import QApplication
-
-from .helpers import setup_gui_mocks
+from test.helpers import setup_mocks, setup_gui_mocks, make_mock_iface, get_qapp
 
 
+@unittest.skipIf(get_qapp() is None, 'PyQt5 not available')
 class TestBackupMixin(unittest.TestCase):
-    """Test BackupMixin backup and restore operations."""
+    """Test backup/restore operations."""
 
     @classmethod
     def setUpClass(cls):
-        cls.app = QApplication(sys.argv)
+        cls.app = get_qapp()
         setup_gui_mocks()
         spec = importlib.util.spec_from_file_location(
             'plans_adressage.mixins.backup_mixin',

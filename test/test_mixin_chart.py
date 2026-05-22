@@ -26,8 +26,8 @@ class TestChartMixin(unittest.TestCase):
     def setUp(self):
         self.tmpdir = tempfile.mkdtemp()
         self.mod.CHART_SVG = os.path.join(self.tmpdir, 'chart.svg')
-        self.mod.LAYER_PANELS = 'لوحات'
-        self.mod.LAYER_NUMBERING = 'ترقيم'
+        self.mod.LAYER_PANELS = 'Panels'
+        self.mod.LAYER_NUMBERING = 'Numbering'
 
         host = type('Host', (), {'_tr': lambda self, s: s})()
         self.mixin = self.mod.ChartMixin()
@@ -51,27 +51,27 @@ class TestChartMixin(unittest.TestCase):
 
     def test_carte_pano1_queries_and_renders(self):
         self.mixin.carte_pano1()
-        self.assertEqual(self.mixin.type_plan, 'لوحات')
-        self.assertEqual(self.mixin.type_to_hide, 'ترقيم')
+        self.assertEqual(self.mixin.type_plan, 'Panels')
+        self.assertEqual(self.mixin.type_to_hide, 'Numbering')
         self.session_mock.query.assert_called_once()
         self.session_mock.close.assert_called_once()
 
     def test_carte_num1_queries_and_renders(self):
         self.mixin.carte_num1()
-        self.assertEqual(self.mixin.type_plan, 'ترقيم')
-        self.assertEqual(self.mixin.type_to_hide, 'لوحات')
+        self.assertEqual(self.mixin.type_plan, 'Numbering')
+        self.assertEqual(self.mixin.type_to_hide, 'Panels')
         self.session_mock.query.assert_called_once()
         self.session_mock.close.assert_called_once()
 
     def test_get_zone_chart_with_data(self):
         dist_mock = MagicMock(return_value=[('type_a', 10), ('type_b', 5)])
-        with patch('plans_adressage.db.operations.get_zone_distribution', dist_mock):
+        with patch('plans_adressage.app.orders.repository.get_zone_distribution', dist_mock):
             self.mixin.get_zone_chart(16)
             dist_mock.assert_called_once_with(16)
 
     def test_get_zone_chart_no_data(self):
         dist_mock = MagicMock(return_value=[])
-        with patch('plans_adressage.db.operations.get_zone_distribution', dist_mock):
+        with patch('plans_adressage.app.orders.repository.get_zone_distribution', dist_mock):
             self.mixin.get_zone_chart(16)
             dist_mock.assert_called_once_with(16)
 

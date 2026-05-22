@@ -8,7 +8,7 @@ from datetime import datetime
 from qgis.PyQt.QtWidgets import QMessageBox
 
 from ..constants import get_qgis_python, _SUBPROCESS_FLAGS
-from ..db.operations import (
+from ..app.orders.repository import (
     count_numberings, count_panels,
     query_missing_pan, query_missing_num, query_missing_rep,
 )
@@ -28,9 +28,9 @@ class ReportMixin:
         """Generate a statistical report via the external reporting script."""
         d = {
             'prog': count_numberings(NUM_PLANNED),
-            'wrong': count_numberings('مرقمة وغير مطابقة'),
-            'right': count_numberings('مرقمة ومطابقة'),
-            'booked': count_numberings('محجوز(ة)'),
+            'wrong': count_numberings('Numbered and non-matching'),
+            'right': count_numberings('Numbered and matching'),
+            'booked': count_numberings('Reserved'),
             'date': datetime.now().date().strftime('%Y/%m/%d'),
 
             'pan_city0': count_panels(LAYER_SUBDIVISIONS, PAN_MOUNTED),
@@ -72,7 +72,7 @@ class ReportMixin:
             msg.setIcon(QMessageBox.Information)
             msg.setWindowTitle(self._tr("Success"))
             msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setInformativeText(self._tr("تم حفظ تقريرك في مستنداتك"))
+            msg.setInformativeText(self._tr("Report saved to your documents"))
             msg.exec_()
             return True
         except subprocess.CalledProcessError as e:
@@ -81,7 +81,7 @@ class ReportMixin:
             msg.setIcon(QMessageBox.Critical)
             msg.setWindowTitle(self._tr("Error"))
             msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setText(self._tr("فشل في إنشاء التقرير"))
+            msg.setText(self._tr("Failed to generate report"))
             msg.setInformativeText(str(e))
             msg.exec_()
             return False
@@ -91,7 +91,7 @@ class ReportMixin:
             msg.setIcon(QMessageBox.Critical)
             msg.setWindowTitle(self._tr("Error"))
             msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setText(self._tr("فشل في إنشاء التقرير"))
+            msg.setText(self._tr("Failed to generate report"))
             msg.setInformativeText(str(e))
             msg.exec_()
             return False
@@ -127,7 +127,7 @@ class ReportMixin:
             msg.setIcon(QMessageBox.Information)
             msg.setWindowTitle(self._tr("Success"))
             msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setInformativeText(self._tr("تم حفظ تقريرك في مستنداتك"))
+            msg.setInformativeText(self._tr("Report saved to your documents"))
             msg.exec_()
             return True
         except subprocess.CalledProcessError as e:
@@ -136,7 +136,7 @@ class ReportMixin:
             msg.setIcon(QMessageBox.Critical)
             msg.setWindowTitle(self._tr("Error"))
             msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setText(self._tr("فشل في إنشاء التقرير"))
+            msg.setText(self._tr("Failed to generate report"))
             msg.setInformativeText(str(e))
             msg.exec_()
             return False
@@ -146,7 +146,7 @@ class ReportMixin:
             msg.setIcon(QMessageBox.Critical)
             msg.setWindowTitle(self._tr("Error"))
             msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setText(self._tr("فشل في إنشاء التقرير"))
+            msg.setText(self._tr("Failed to generate report"))
             msg.setInformativeText(str(e))
             msg.exec_()
             return False

@@ -4,17 +4,16 @@ import sys
 import unittest
 from unittest.mock import MagicMock
 
-from PyQt5.QtWidgets import QApplication
-
-from .helpers import setup_gui_mocks
+from .helpers import setup_gui_mocks, get_qapp
 
 
+@unittest.skipIf(get_qapp() is None, 'PyQt5 not available')
 class TestPopupDialog(unittest.TestCase):
-    """Test PopupDialog creation and basic behaviour."""
+    """Test PopupDialog creation and form population."""
 
     @classmethod
     def setUpClass(cls):
-        cls.app = QApplication(sys.argv)
+        cls.app = get_qapp()
         setup_gui_mocks()
         spec = importlib.util.spec_from_file_location(
             'plans_adressage.gui.popup_dialog', 'gui/popup_dialog.py',

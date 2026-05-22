@@ -1,59 +1,30 @@
 """Plugin-level re-exports bridging the app package and legacy imports."""
 # pylint: disable=unused-import
 
-try:
-    from RNA.app.shared.constants import (
-        PLUGIN_DIR, SRID, CRS,
-        COOKIE_FILE, DATABASE_FILE, AUTH_DATABASE_FILE, QGIS_CONFIG_FILE,
-        STYLE_QML, DEFAULT_STYLE_DIR, CUSTOM_STYLE_DIR,
-        TEMPLATE_REP, TEMPLATE_CMD, TMP_JSON, REPORTING_SCRIPT,
-        MAP_PNG, ICON_PNG, VIEWS_SQL, TEMPLATE_DATA_DIR,
-        MAP_A3_TEMPLATE, MAP_A0_TEMPLATE, SITUATION_PNG,
-        NORTH_ARROW_SVG, SYMBOLS_SVG, SCALE_BAR_SVG, CHART_SVG,
-        MEMORY_PROVIDER, NOTIFY_DURATION,
-        LAYER_MUNICIPALITY, LAYER_ROADS, LAYER_FACILITIES,
-        LAYER_SUBDIVISIONS, LAYER_ZONES, LAYER_NUMBERING, LAYER_PANELS,
-        LAYER_NAMES, LAYER_KEY, LAYER_MODEL,
-        PAN_MOUNTED, PAN_PLANNED, PAN_TO_MOVE, PAN_TO_FIX,
-        NUM_PLANNED, NO_ACTIVITY, DEFAULT_PANEL_DIM,
-        SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, SETTINGS_KEY_LOCALE,
-        THEME_DARK, THEME_LIGHT, AVAILABLE_LOCALES,
-    )
-    from RNA.app.core.config import (
-        DARK_QSS, DARK_QSS_DIALOG, LIGHT_QSS, LIGHT_QSS_DIALOG,
-        THEMES, DEFAULT_THEME,
-        get_theme_qss, get_dialog_qss, find_mod_spatialite_dll,
-    )
-    from RNA.app.shared.utils import (
-        validate_text, current_locale, locale_value,
-        current_theme, get_qgis_python,
-        _SUBPROCESS_FLAGS,
-    )
-except ImportError:
-    from plans_adressage.app.shared.constants import (
-        PLUGIN_DIR, SRID, CRS,
-        COOKIE_FILE, DATABASE_FILE, AUTH_DATABASE_FILE, QGIS_CONFIG_FILE,
-        STYLE_QML, DEFAULT_STYLE_DIR, CUSTOM_STYLE_DIR,
-        TEMPLATE_REP, TEMPLATE_CMD, TMP_JSON, REPORTING_SCRIPT,
-        MAP_PNG, ICON_PNG, VIEWS_SQL, TEMPLATE_DATA_DIR,
-        MAP_A3_TEMPLATE, MAP_A0_TEMPLATE, SITUATION_PNG,
-        NORTH_ARROW_SVG, SYMBOLS_SVG, SCALE_BAR_SVG, CHART_SVG,
-        MEMORY_PROVIDER, NOTIFY_DURATION,
-        LAYER_MUNICIPALITY, LAYER_ROADS, LAYER_FACILITIES,
-        LAYER_SUBDIVISIONS, LAYER_ZONES, LAYER_NUMBERING, LAYER_PANELS,
-        LAYER_NAMES, LAYER_KEY, LAYER_MODEL,
-        PAN_MOUNTED, PAN_PLANNED, PAN_TO_MOVE, PAN_TO_FIX,
-        NUM_PLANNED, NO_ACTIVITY, DEFAULT_PANEL_DIM,
-        SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, SETTINGS_KEY_LOCALE,
-        THEME_DARK, THEME_LIGHT, AVAILABLE_LOCALES,
-    )
-    from plans_adressage.app.core.config import (
-        DARK_QSS, DARK_QSS_DIALOG, LIGHT_QSS, LIGHT_QSS_DIALOG,
-        THEMES, DEFAULT_THEME,
-        get_theme_qss, get_dialog_qss, find_mod_spatialite_dll,
-    )
-    from plans_adressage.app.shared.utils import (
-        validate_text, current_locale, locale_value,
-        current_theme, get_qgis_python,
-        _SUBPROCESS_FLAGS,
-    )
+from .app.shared.constants import (
+    PLUGIN_DIR, SRID, CRS,
+    COOKIE_FILE, DATABASE_FILE, AUTH_DATABASE_FILE, QGIS_CONFIG_FILE,
+    STYLE_QML, DEFAULT_STYLE_DIR, CUSTOM_STYLE_DIR,
+    TEMPLATE_REP, TEMPLATE_CMD, TMP_JSON, REPORTING_SCRIPT,
+    MAP_PNG, ICON_PNG, VIEWS_SQL, TEMPLATE_DATA_DIR,
+    MAP_A3_TEMPLATE, MAP_A0_TEMPLATE, SITUATION_PNG,
+    NORTH_ARROW_SVG, SYMBOLS_SVG, SCALE_BAR_SVG, CHART_SVG,
+    MEMORY_PROVIDER, NOTIFY_DURATION,
+    LAYER_MUNICIPALITY, LAYER_ROADS, LAYER_FACILITIES,
+    LAYER_SUBDIVISIONS, LAYER_ZONES, LAYER_NUMBERING, LAYER_PANELS,
+    LAYER_NAMES, LAYER_KEY, LAYER_MODEL,
+    PAN_MOUNTED, PAN_PLANNED, PAN_TO_MOVE, PAN_TO_FIX,
+    NUM_PLANNED, NO_ACTIVITY, DEFAULT_PANEL_DIM,
+    SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, SETTINGS_KEY_LOCALE,
+    THEME_DARK, THEME_LIGHT, AVAILABLE_LOCALES,
+)
+from .app.core.config import (
+    DARK_QSS, DARK_QSS_DIALOG, LIGHT_QSS, LIGHT_QSS_DIALOG,
+    THEMES, DEFAULT_THEME,
+    get_theme_qss, get_dialog_qss, find_mod_spatialite_dll,
+)
+from .app.shared.utils import (
+    validate_text, current_locale, locale_value,
+    current_theme, get_qgis_python,
+    _SUBPROCESS_FLAGS,
+)

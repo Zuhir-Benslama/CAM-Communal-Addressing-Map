@@ -1,17 +1,20 @@
 """Database creation and reference data loading."""
 import logging
 import os
+import sys
 
 import geopandas as gpd
 from geoalchemy2.elements import WKTElement
 from sqlalchemy import text
 
-try:
-    from .models import Localite, get_session, get_auth_engine
-    from .constants import SRID, TEMPLATE_DATA_DIR, VIEWS_SQL
-except ImportError:
-    from models import Localite, get_session, get_auth_engine
-    from constants import SRID, TEMPLATE_DATA_DIR, VIEWS_SQL
+# Ensure the plugin package root is importable
+_PKG_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _PKG_ROOT not in sys.path:
+    sys.path.insert(0, os.path.dirname(_PKG_ROOT))
+
+from plans_adressage.app.orders.models import Localite  # noqa: E402
+from plans_adressage.app.core.database import get_session, get_auth_engine  # noqa: E402
+from plans_adressage.constants import SRID, TEMPLATE_DATA_DIR, VIEWS_SQL  # noqa: E402
 
 logger = logging.getLogger(__name__)
 

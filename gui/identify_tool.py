@@ -7,10 +7,10 @@ from qgis.gui import QgsMapToolIdentify
 from qgis.core import QgsExpression, QgsFeatureRequest
 from qgis.PyQt.QtWidgets import QMenu
 
-from .. import models as _models
+from ..app.orders import models as _models
 from ..constants import LAYER_KEY, current_locale
-from ..db.operations import qgis_config
-from ..models import get_session
+from ..app.users.repository import qgis_config
+from ..app.core.database import get_session
 from ..scripts.lookup_data import get_string
 
 logger = logging.getLogger(__name__)
@@ -81,7 +81,7 @@ class IdentifyTool(QgsMapToolIdentify):
                     menu = QMenu()
                     if self.mode == self.MODE_FORM:
                         action1 = menu.addAction(
-                            get_string("عرض النموذج أو تحديثه", current_locale())
+                            get_string("View or Update Form", current_locale())
                         )
                         action1.triggered.connect(
                             lambda f=feature: self.display_or_update_form_feature(
@@ -89,7 +89,7 @@ class IdentifyTool(QgsMapToolIdentify):
                         )
 
                         action2 = menu.addAction(
-                            get_string("إزالة العنصر", current_locale())
+                            get_string("Remove Item", current_locale())
                         )
                         action2.triggered.connect(
                             lambda f=feature: self.delete_feature(f['pkuid'])
@@ -98,7 +98,7 @@ class IdentifyTool(QgsMapToolIdentify):
                         nom_locale = self._locale_feature_attr(feature, 'Nom')
                         type_locale = self._locale_feature_attr(feature, 'Type')
                         action1 = menu.addAction(
-                            get_string("تعيين العنصر كمرجع", current_locale())
+                            get_string("Set Item as Reference", current_locale())
                         )
                         action1.triggered.connect(
                             lambda f=feature, t=type_locale, n=nom_locale: self.feature_as_ref(

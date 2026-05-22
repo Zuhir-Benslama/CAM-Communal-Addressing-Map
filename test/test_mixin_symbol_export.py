@@ -24,8 +24,8 @@ class TestSymbolExportMixin(unittest.TestCase):
     def setUp(self):
         self.mixin = self.mod.SymbolExportMixin()
         self.mixin._tr = lambda s: s
-        self.mixin.type_plan = 'ترقيم'
-        self.mixin.type_to_hide = 'لوحات'
+        self.mixin.type_plan = 'Numbering'
+        self.mixin.type_to_hide = 'Panels'
         self.mixin.sat_view = 'Satellite View'
         self.mixin.rast = None
         self.mixin.iface = MagicMock()
@@ -35,7 +35,7 @@ class TestSymbolExportMixin(unittest.TestCase):
 
     def _make_project(self, layer_names=None):
         if layer_names is None:
-            layer_names = ['بلديتي', 'ترقيم', 'لوحات']
+            layer_names = ['My Municipality', 'Numbering', 'Panels']
         layers = {}
         for name in layer_names:
             l = MagicMock()
@@ -97,7 +97,7 @@ class TestSymbolExportMixin(unittest.TestCase):
             self.assertIsNone(result)
 
     def test_symbols_hides_layers_in_to_hide_list(self):
-        project = self._make_project(['بلديتي', 'ترقيم', 'لوحات', 'Satellite View'])
+        project = self._make_project(['My Municipality', 'Numbering', 'Panels', 'Satellite View'])
         scene_rect = self._make_scene_rect()
         with patch.object(self.mod, 'QgsProject') as mock_qp, \
              patch.object(self.mod, 'QgsPrintLayout'), \
@@ -114,9 +114,9 @@ class TestSymbolExportMixin(unittest.TestCase):
             self.assertIsNotNone(call_args)
             passed_layers = call_args[0][0]
             passed_names = [l.name() for l in passed_layers]
-            self.assertNotIn('لوحات', passed_names)
+            self.assertNotIn('Panels', passed_names)
             self.assertNotIn('Satellite View', passed_names)
-            self.assertIn('ترقيم', passed_names)
+            self.assertIn('Numbering', passed_names)
 
     # --- map_situation() ---
 
@@ -219,7 +219,7 @@ class TestSymbolExportMixin(unittest.TestCase):
             self.mixin.scale()
             mock_bar.return_value.setUnits.assert_called_once_with(
                 self.mod.QgsUnitTypes.DistanceKilometers)
-            mock_bar.return_value.setUnitLabel.assert_called_once_with('كم')
+            mock_bar.return_value.setUnitLabel.assert_called_once_with('km')
 
     def test_scale_uses_meters_when_scale_small(self):
         project = MagicMock()
@@ -234,7 +234,7 @@ class TestSymbolExportMixin(unittest.TestCase):
             self.mixin.scale()
             mock_bar.return_value.setUnits.assert_called_once_with(
                 self.mod.QgsUnitTypes.DistanceMeters)
-            mock_bar.return_value.setUnitLabel.assert_called_once_with('م')
+            mock_bar.return_value.setUnitLabel.assert_called_once_with('m')
 
     def test_scale_exports_svg(self):
         project = MagicMock()

@@ -4,17 +4,16 @@ import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
-from PyQt5.QtWidgets import QApplication
-
-from .helpers import setup_gui_mocks
+from .helpers import setup_gui_mocks, get_qapp
 
 
+@unittest.skipIf(get_qapp() is None, 'PyQt5 not available')
 class TestEntityListDialog(unittest.TestCase):
     """Test EntityListDialog creation and pagination."""
 
     @classmethod
     def setUpClass(cls):
-        cls.app = QApplication(sys.argv)
+        cls.app = get_qapp()
         setup_gui_mocks()
         spec = importlib.util.spec_from_file_location(
             'plans_adressage.gui.entity_list_dialog',

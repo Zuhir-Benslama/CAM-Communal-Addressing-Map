@@ -25,8 +25,8 @@ class ImportExportMixin:
         if not (self.type_plan and self.type_to_hide):
             QMessageBox.critical(
                 self, self._tr("Error"),
-                self._tr("خريطة ترقيم المداخل أو خريطة اللواحات  \n"
-                         "  يجب عليك تحديد نوع الخريطة التي تريد طباعتها"),
+                self._tr("Numbering map or Panel map\n"
+                         "You must select the map type to print"),
             )
             return
 
@@ -85,7 +85,7 @@ class ImportExportMixin:
                     )
                     QMessageBox.information(
                         self, self._tr("Success"),
-                        self._tr("تم حفظ ملفك في مستنداتي"),
+                        self._tr("Your file has been saved to your documents"),
                     )
                 except Exception as e:
                     logger.exception("Failed to export map: %s", e)

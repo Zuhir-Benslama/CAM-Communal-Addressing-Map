@@ -8,11 +8,13 @@ import logging
 import sys
 import os
 
-try:
-    from models import User, get_session, get_auth_engine, get_auth_session
-except ImportError:
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from models import User, get_session, get_auth_engine, get_auth_session
+# Ensure the plugin package root is importable
+_PKG_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _PKG_ROOT not in sys.path:
+    sys.path.insert(0, os.path.dirname(_PKG_ROOT))
+
+from plans_adressage.app.users.models import User  # noqa: E402
+from plans_adressage.app.core.database import get_session, get_auth_engine, get_auth_session  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -47,10 +49,10 @@ def migrate_users() -> int:
                 first_name=user.first_name,
                 last_name=user.last_name,
             ))
-            count += 1
+            migrated += 1
 
         auth_session.commit()
-        logger.info("Migrated %d users to auth.sqlite", count)
+        logger.info("Migrated %d users to auth.sqlite", migrated)
     except Exception:
         auth_session.rollback()
         logger.exception("Migration failed")
