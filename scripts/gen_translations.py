@@ -1,5 +1,4 @@
 """Generate RNA_en.ts and RNA_fr.ts with translations for all UI strings."""
-import xml.etree.ElementTree as ET
 
 TS_HEADER = """<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>

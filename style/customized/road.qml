@@ -9439,13 +9439,13 @@
   </geometryOptions>
   <legend type="default-vector" showLabelLegend="0"/>
   <referencedLayers>
-    <relation name="Numerotation_Voie" dataSource="Point?crs=EPSG:4326&amp;uid={74fccfb9-729c-47be-9db1-47aa9d63e0b1}" strength="Association" layerId="________56522e11_a93c_45ad_afb3_4dee2f556b03" id="______5355_pkuid_________3f_idLine" referencingLayer="______9bad8f1d_060e_404f_85dd_27f270205bc5" referencedLayer="________56522e11_a93c_45ad_afb3_4dee2f556b03" providerKey="memory" layerName="الترقيم">
+    <relation name="Numerotation_Voie" dataSource="Point?crs=EPSG:4326&amp;uid={74fccfb9-729c-47be-9db1-47aa9d63e0b1}" strength="Association" layerId="________56522e11_a93c_45ad_afb3_4dee2f556b03" id="______5355_pkuid_________3f_idLine" referencingLayer="______9bad8f1d_060e_404f_85dd_27f270205bc5" referencedLayer="________56522e11_a93c_45ad_afb3_4dee2f556b03" providerKey="memory" layerName="Numbering">
       <fieldRef referencedField="idLine" referencingField="pkuid"/>
     </relation>
-    <relation name="Pannautage_Voie" dataSource="Point?crs=EPSG:4326&amp;uid={bbc30c20-444a-4b3d-ad34-b6c8a07169e0}" strength="Association" layerId="________b5e30730_1e0f_4b9a_8b68_686b3dc9d74f" id="______5355_pkuid_________69_idLine" referencingLayer="______9bad8f1d_060e_404f_85dd_27f270205bc5" referencedLayer="________b5e30730_1e0f_4b9a_8b68_686b3dc9d74f" providerKey="memory" layerName="اللوحات">
+    <relation name="Pannautage_Voie" dataSource="Point?crs=EPSG:4326&amp;uid={bbc30c20-444a-4b3d-ad34-b6c8a07169e0}" strength="Association" layerId="________b5e30730_1e0f_4b9a_8b68_686b3dc9d74f" id="______5355_pkuid_________69_idLine" referencingLayer="______9bad8f1d_060e_404f_85dd_27f270205bc5" referencedLayer="________b5e30730_1e0f_4b9a_8b68_686b3dc9d74f" providerKey="memory" layerName="Panels">
       <fieldRef referencedField="idLine" referencingField="pkuid"/>
     </relation>
-    <relation name="Org_Voie" dataSource="Polygon?crs=EPSG:4326&amp;uid={38fac9d4-be9e-496e-8adf-d99db883cfa0}" strength="Association" layerId="________7a45dfc4_929e_44b5_bb7f_4afde86740b9" id="______5355_pkuid_________ab_pkuid_poly" referencingLayer="______9bad8f1d_060e_404f_85dd_27f270205bc5" referencedLayer="________7a45dfc4_929e_44b5_bb7f_4afde86740b9" providerKey="memory" layerName="المرافق">
+    <relation name="Org_Voie" dataSource="Polygon?crs=EPSG:4326&amp;uid={38fac9d4-be9e-496e-8adf-d99db883cfa0}" strength="Association" layerId="________7a45dfc4_929e_44b5_bb7f_4afde86740b9" id="______5355_pkuid_________ab_pkuid_poly" referencingLayer="______9bad8f1d_060e_404f_85dd_27f270205bc5" referencedLayer="________7a45dfc4_929e_44b5_bb7f_4afde86740b9" providerKey="memory" layerName="Facilities">
       <fieldRef referencedField="pkuid_poly" referencingField="pkuid"/>
     </relation>
   </referencedLayers>

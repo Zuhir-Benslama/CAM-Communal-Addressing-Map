@@ -35,9 +35,9 @@ A comprehensive QGIS plugin modernization and code quality overhaul.
 
 | Metric | Before | After |
 |---|---|---|
-| Pylint score | 5.56 / 10 | **7.12 / 10** |
-| Tests passing | 0 | **40+** |
-| Line length violations | 226+ | **0** (hand-written code) |
+ | Pylint score | 5.56 / 10 | **9.05 / 10** |
+ | Tests passing | 0 | **200** |
+ | Line length violations | 226+ | **0** (hand-written code) |
 | Unused imports | ~30 | **~0** |
 | Module docstrings | <5% | **>92%** |
 | Function docstrings | <5% | **>57%** |
@@ -102,11 +102,15 @@ A comprehensive QGIS plugin modernization and code quality overhaul.
 
 ## 11. Testing
 
-- 40+ tests across 4 test files
+- **200 tests passing** (3 QGIS-dependent skipped) — up from 0
+- Mixin tests: `backup_mixin` (9), `chart_mixin` (7), `report_mixin` (8), `auth_mixin` (20), `import_export_mixin` (11), `symbol_export_mixin` (13)
+- GUI tests: `entity_list_dialog` (26), `main_dialog` (22), `popup_dialog`, `identify_tool`, `measure_tool`
+- Layer tests: `editing` (14), `refresh`, `utils` — 30 total
 - `test/test_db_ops.py` — 12 tests (DB session, CRUD, config caching)
-- `test/test_operations.py` — 8 tests (query functions, export)
+- `test/test_operations.py` — 17 tests (query functions, export, `get_zone_distribution`)
 - `test/test_writers.py` — 11 tests (all 6 entity writers)
 - `test/test_auth.py` — 9 tests (sign-up, sign-in, logout, validation)
+- Integration: login → layers → add (3 tests)
 - Mock QGIS interface for headless testing
 - `reset_connection_pool()` for test isolation
 
@@ -144,3 +148,30 @@ A comprehensive QGIS plugin modernization and code quality overhaul.
 - **1 redefined-outer-name** — renamed `count` → `migrated`
 - **10 unnecessary-lambda** — suppressed false positives for PyQt signals; simplified bound methods
 - **10 wrong-import-order** — reordered imports across 6 files
+
+## 15. Latest Work (2026-05-22)
+
+### §39 More Tests
+- **`get_zone_distribution()`** implemented in `app/orders/repository.py` (was a missing stub that would crash at runtime)
+- **5 tests** added for `get_zone_distribution` in `test_operations.py` (now 17 tests)
+- **`test/helpers.py`**: added `app.shared.utils` mock + reorganized to fix pre-existing test pollution
+- **`test_gui_entity_list.py`**: rewritten — 26 tests (7 original + 19 new) covering populate_table, pagination, empty results, N/A fallback, session closure
+- **`test_main_dialog.py`**: 22 tests for `RNADialog` core methods (`_current_layer_name`, `_tr`, `_init_state`, `_on_layer_changed`, `_on_theme_changed`, `_on_locale_changed`, `_set_button_roles`, `_apply_ui_polish`, `apply_theme`, `setup_settings_ui`, `_translate_internal_combos`)
+
+### §41 Direct `app.*` Imports
+- `app` is importable as a top-level package (no `plans_adressage.app.*` needed)
+- Scripts `create_db.py` and `migrate_split_db.py` updated to `from app.*` imports
+- Test mocks registered under both `plans_adressage.app.*` and `app.*` for compatibility
+
+### §43 Avatar Menu
+- Static avatar `QLabel` replaced with `QToolButton` + dropdown `QMenu`
+- Menu entries: Report → reports tab, Settings → settings tab, Logout → close dialog
+- Tab bar hidden; avatar dropdown is primary navigation for Reports/Settings
+- Standalone `logout_btn` removed from header toolbar
+
+### §40 Pylint 8.0 (9.05/10)
+- Disabled `E0611` (154 false positives from PyQt5/QGIS C extensions)
+- Disabled `W0201` (intentional mixin pattern)
+- Cleared 8 deprecated pylintrc options, eliminating E0015
+- Fixed 4 unused imports (`Localite`, `LAYER_ZONES`, `QToolButton`, `ElementTree`)
+- Adjusted design thresholds for mixins: `max-parents=15`, `max-attributes=40`, etc.

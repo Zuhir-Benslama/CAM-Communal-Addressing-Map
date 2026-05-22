@@ -33,6 +33,12 @@ def setup_mocks():
         _sp.__package__ = f'plans_adressage.{subpkg}'
         sys.modules[f'plans_adressage.{subpkg}'] = _sp
 
+    _shared_utils = MagicMock()
+    _shared_utils.get_all_fields_and_labels = MagicMock(return_value=(
+        ['valeur', 'etat'], {'valeur': 'Value', 'etat': 'State'},
+    ))
+    sys.modules['plans_adressage.app.shared.utils'] = _shared_utils
+
     _constants = MagicMock()
     _constants.NOTIFY_DURATION = 5
     _constants.current_locale = lambda: 'en'
@@ -146,6 +152,14 @@ def setup_mocks():
     _QtCore.QVariant.Bool = 5
     sys.modules['qgis.PyQt.QtCore'] = _QtCore
 
+    # Mirror 'plans_adressage.app.*' under 'app.*' so that
+    # code using direct top-level 'app' imports works in tests.
+    for key in list(sys.modules.keys()):
+        if key.startswith('plans_adressage.app'):
+            app_key = key[len('plans_adressage.'):]
+            if app_key not in sys.modules:
+                sys.modules[app_key] = sys.modules[key]
+
     _gda2 = types.ModuleType('geoalchemy2')
     sys.modules['geoalchemy2'] = _gda2
     _geom = MagicMock()
@@ -184,7 +198,8 @@ def setup_gui_mocks():
     # Mock app packages to prevent real SQLAlchemy-dependent imports
     for pkg in ('app', 'app.core', 'app.users', 'app.orders', 'app.shared',
                 'app.core.database', 'app.orders.models', 'app.orders.repository',
-                'app.users.models', 'app.users.repository', 'app.users.service'):
+                'app.users.models', 'app.users.repository', 'app.users.service',
+                'app.shared.utils'):
         _mock = MagicMock()
         _mock.__path__ = [pkg.replace('.', '/')]
         _mock.__package__ = f'plans_adressage.{pkg}'
@@ -217,6 +232,12 @@ def setup_gui_mocks():
     _i18n = MagicMock()
     _i18n.tr = lambda s: s
     sys.modules['plans_adressage.i18n'] = _i18n
+
+    _shared_utils = MagicMock()
+    _shared_utils.get_all_fields_and_labels = MagicMock(return_value=(
+        ['valeur', 'etat'], {'valeur': 'Value', 'etat': 'State'},
+    ))
+    sys.modules['plans_adressage.app.shared.utils'] = _shared_utils
 
     _database = MagicMock()
     _database.get_session = MagicMock()

@@ -14,42 +14,42 @@
     "other_layers": [
 
         {
-            "label": "الطرق",
+            "label": "Roads",
             "url": "LineString?crs=EPSG:4326",
              "show_with":[],
           "style": "road.qml"
         },
 
         {
-            "label": "المرافق",
+            "label": "Facilities",
             "url": "Polygon?crs=EPSG:4326",
             "show_with":[],
           "style": "org.qml"
         },
         {
-            "label": "المناطق",
+            "label": "Zones",
             "url": "Polygon?crs=EPSG:4326",
             "show_with":[],
           "style": "zone.qml"
 
         },
        {
-            "label": "التجزئات",
+            "label": "Subdivisions",
             "url": "Polygon?crs=EPSG:4326",
             "show_with":[],
           "style": "city.qml"
         },
         {
-            "label": "اللوحات",
+            "label": "Panels",
             "url": "Point?crs=EPSG:4326",
-            "show_with": ["التجزئات","المرافق","الطرق"],
+            "show_with": ["Subdivisions","Facilities","Roads"],
           "style": "pan.qml"
 
         },
         {
-            "label": "الترقيم",
+            "label": "Numbering",
             "url": "Point?crs=EPSG:4326",
-             "show_with": ["التجزئات","المرافق","الطرق"],
+             "show_with": ["Subdivisions","Facilities","Roads"],
           "style": "num.qml"
 
         }
@@ -57,38 +57,38 @@
 
     "mapper": [
          {
-            "layer": "اللوحات",
+            "layer": "Panels",
             "model": "PanelSign"
         },
         {
-            "layer": "الترقيم",
+            "layer": "Numbering",
             "model": "Numbering"
         },
         {
-            "layer": "الطرق",
+            "layer": "Roads",
             "model": "Road"
         },
          {
-            "layer": "المناطق",
+            "layer": "Zones",
             "model": "Zone"
         },
         {
-            "layer": "التجزئات",
+            "layer": "Subdivisions",
             "model": "Subdivision"
         },
         {
-            "layer": "المرافق",
+            "layer": "Facilities",
             "model": "Organization"
         }
     ],
    "refs": [
 
         {
-            "label": "الطرق"
+            "label": "Roads"
 
         },
         {
-            "label": "التجزئات"
+            "label": "Subdivisions"
 
         }
 
@@ -96,15 +96,15 @@
    "refs2": [
 
         {
-            "label": "الطرق"
+            "label": "Roads"
 
         },
         {
-            "label": "التجزئات"
+            "label": "Subdivisions"
 
         },
         {
-            "label": "المرافق"
+            "label": "Facilities"
 
         }
 

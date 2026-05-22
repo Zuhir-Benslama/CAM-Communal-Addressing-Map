@@ -7,14 +7,15 @@ import geopandas as gpd
 from geoalchemy2.elements import WKTElement
 from sqlalchemy import text
 
-# Ensure the plugin package root is importable
+# Ensure both the project root and its parent are on sys.path so that
+# 'app' and 'plans_adressage' are both importable as top-level packages.
 _PKG_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _PKG_ROOT not in sys.path:
-    sys.path.insert(0, os.path.dirname(_PKG_ROOT))
+    sys.path.insert(0, _PKG_ROOT)
 
-from plans_adressage.app.orders.models import Localite  # noqa: E402
-from plans_adressage.app.core.database import get_session, get_auth_engine  # noqa: E402
-from plans_adressage.constants import SRID, TEMPLATE_DATA_DIR, VIEWS_SQL  # noqa: E402
+from app.orders.models import Localite  # noqa: E402
+from app.core.database import get_session, get_auth_engine  # noqa: E402
+from app.shared.constants import SRID, TEMPLATE_DATA_DIR, VIEWS_SQL  # noqa: E402
 
 logger = logging.getLogger(__name__)
 

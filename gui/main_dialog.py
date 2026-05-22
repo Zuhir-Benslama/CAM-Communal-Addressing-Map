@@ -25,8 +25,9 @@ import os
 from PyQt5.QtCore import Qt, QDate, QSettings, QSize
 from PyQt5.QtWidgets import (
     QApplication, QDialog, QGroupBox, QLabel,
-    QPushButton, QVBoxLayout, QHBoxLayout, QComboBox,
-    QDateEdit, QFormLayout, QLayout, QLineEdit, QSizePolicy,
+    QPushButton, QVBoxLayout, QHBoxLayout,
+    QComboBox, QDateEdit, QFormLayout, QLayout, QLineEdit,
+    QSizePolicy,
 )
 from qgis.PyQt import uic
 from .ui_fillers import (
@@ -156,11 +157,18 @@ class RNADialog(
         self.pan.clicked.connect(self.carte_pano1)
         self.num_carte.clicked.connect(self.carte_num1)
 
-        self.logout_btn.clicked.connect(lambda: self.close())  # pylint: disable=unnecessary-lambda
         self.backup_db.clicked.connect(self.backup)
         self.restore_db.clicked.connect(self.restore_database)
         self.report.clicked.connect(self.gen_report)
         self.menu.currentChanged.connect(self.on_opt_selected)
+        self.gear_btn.clicked.connect(self._toggle_settings)
+
+    def _toggle_settings(self) -> None:
+        """Toggle between Operations and Settings tabs."""
+        if self.menu.currentWidget() == self.tab:
+            self.menu.setCurrentWidget(self.tab_ops)
+        else:
+            self.menu.setCurrentWidget(self.tab)
 
     def _on_layer_changed(self, index: int) -> None:
         """Switch the form stack page and refresh layer visibility."""
@@ -304,7 +312,7 @@ class RNADialog(
             'submit_pan',
             'report',
         }
-        danger_buttons = {'logout_btn', 'abort_uc'}
+        danger_buttons = {'abort_uc'}
         tool_prefixes = ('draw_', 'select_', 'edit_')
 
         for button in self.findChildren(QPushButton):
@@ -339,9 +347,7 @@ class RNADialog(
 
         self.menu.setDocumentMode(True)
         self.menu.setUsesScrollButtons(True)
-        tab_bar = self.menu.tabBar()
-        tab_bar.setExpanding(False)
-        tab_bar.setElideMode(Qt.ElideRight)
+        self.menu.tabBar().hide()
 
         for frame_name, role in {
             'frame_8': 'toolbar',

@@ -240,3 +240,32 @@ def query_missing_rep(etat: str) -> list:
         return [{'valeur': row[0], 'total': row[1]} for row in rows]
     finally:
         session.close()
+
+
+def get_zone_distribution(wilaya_number: int) -> list:
+    """Query zone type distribution within a given wilaya.
+
+    Joins Zone (refpoly) with Localite on idLoc and filters by
+    codeWilaya. Returns list of (type_name, count) tuples for
+    chart rendering.
+
+    The Zone/Localite join is defined in scripts/migrate_production.py:
+        Zone.idLoc -> Localite.pk_uid, Localite.codeWilaya
+    """
+    session = get_session()
+    try:
+        result = session.execute(
+            text(
+                "SELECT z.Type, COUNT(*) AS total "
+                "FROM refpoly z "
+                "JOIN localite l ON l.pk_uid = z.idLoc "
+                "WHERE l.codeWilaya = :wilaya "
+                "GROUP BY z.Type "
+                "ORDER BY total DESC"
+            ),
+            {"wilaya": wilaya_number},
+        )
+        rows = result.fetchall()
+        return [(row[0], row[1]) for row in rows]
+    finally:
+        session.close()

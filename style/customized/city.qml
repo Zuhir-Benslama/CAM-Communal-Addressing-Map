@@ -447,7 +447,7 @@
   </geometryOptions>
   <legend type="default-vector" showLabelLegend="0"/>
   <referencedLayers>
-    <relation id="________ab_pkuid_________69_idOrg" referencingLayer="_________6946f769_5367_44af_bd42_946a9878481f" strength="Association" providerKey="memory" layerName="اللوحات" layerId="________b2409596_18a2_4e3b_bce0_06d5964878e0" dataSource="Point?crs=EPSG:4326&amp;uid={e5899076-3631-4752-be72-9960fcdbe345}" referencedLayer="________b2409596_18a2_4e3b_bce0_06d5964878e0" name="Pannautage_Org">
+    <relation id="________ab_pkuid_________69_idOrg" referencingLayer="_________6946f769_5367_44af_bd42_946a9878481f" strength="Association" providerKey="memory" layerName="Panels" layerId="________b2409596_18a2_4e3b_bce0_06d5964878e0" dataSource="Point?crs=EPSG:4326&amp;uid={e5899076-3631-4752-be72-9960fcdbe345}" referencedLayer="________b2409596_18a2_4e3b_bce0_06d5964878e0" name="Pannautage_Org">
       <fieldRef referencingField="pkuid" referencedField="idOrg"/>
     </relation>
   </referencedLayers>

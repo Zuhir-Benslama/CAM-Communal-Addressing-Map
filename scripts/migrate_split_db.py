@@ -8,13 +8,14 @@ import logging
 import sys
 import os
 
-# Ensure the plugin package root is importable
+# Ensure the project root is on sys.path so 'app' is importable
+# as a top-level package.
 _PKG_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _PKG_ROOT not in sys.path:
-    sys.path.insert(0, os.path.dirname(_PKG_ROOT))
+    sys.path.insert(0, _PKG_ROOT)
 
-from plans_adressage.app.users.models import User  # noqa: E402
-from plans_adressage.app.core.database import get_session, get_auth_engine, get_auth_session  # noqa: E402
+from app.users.models import User  # noqa: E402
+from app.core.database import get_session, get_auth_engine, get_auth_session  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
