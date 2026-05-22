@@ -40,3 +40,4 @@ venv/
 *.pdf
 *.odt
 *.png
+!resources/icon.png
