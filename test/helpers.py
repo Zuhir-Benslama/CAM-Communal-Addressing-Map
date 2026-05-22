@@ -171,16 +171,7 @@ def setup_mocks():
     _sa.func.ST_AsText = MagicMock()
     sys.modules['sqlalchemy'] = _sa
 
-    # Ensure all plans_adressage submodules are accessible as attributes
-    # of their parent modules (required by Python 3.10's unittest.mock._importer
-    # which uses getattr() to resolve dotted patch targets).
-    for key in list(sys.modules.keys()):
-        if key.startswith('plans_adressage.') and '.' in key:
-            parts = key.split('.')
-            parent_key = '.'.join(parts[:-1])
-            attr_name = parts[-1]
-            if parent_key in sys.modules:
-                setattr(sys.modules[parent_key], attr_name, sys.modules[key])
+    wire_module_attributes()
 
     return _core, _constants
 
@@ -430,7 +421,18 @@ def setup_gui_mocks():
     _qgis_qtwidgets.QDialog = _FakeDialog
     sys.modules['qgis.PyQt.QtWidgets'] = _qgis_qtwidgets
 
-    # Same submodule-attribute fix required by Python 3.10's mock
+    wire_module_attributes()
+
+
+def wire_module_attributes():
+    """Ensure all ``plans_adressage.*`` submodules are set as parent attributes.
+
+    Python 3.10's ``unittest.mock._importer`` resolves dotted ``@patch``
+    targets (e.g. ``'plans_adressage.layer.utils.open'``) by calling
+    ``getattr(parent, submodule)`` rather than checking ``sys.modules``.
+    This helper ensures every submodule in ``sys.modules`` is also an
+    attribute of its parent module.
+    """
     for key in list(sys.modules.keys()):
         if key.startswith('plans_adressage.') and '.' in key:
             parts = key.split('.')

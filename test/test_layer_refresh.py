@@ -4,7 +4,7 @@ import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
-from .helpers import setup_mocks, make_mock_iface, make_mock_layer
+from .helpers import setup_mocks, wire_module_attributes, make_mock_iface, make_mock_layer
 
 
 class TestLayerRefresh(unittest.TestCase):
@@ -19,6 +19,7 @@ class TestLayerRefresh(unittest.TestCase):
         cls.mod = importlib.util.module_from_spec(spec)
         sys.modules['plans_adressage.layer.refresh'] = cls.mod
         spec.loader.exec_module(cls.mod)
+        wire_module_attributes()
 
     def setUp(self):
         self.iface = make_mock_iface()
