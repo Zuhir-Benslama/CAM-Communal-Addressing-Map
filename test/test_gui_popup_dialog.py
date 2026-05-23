@@ -23,6 +23,9 @@ class TestPopupDialog(unittest.TestCase):
         cls.mod = importlib.util.module_from_spec(spec)
         sys.modules['plans_adressage.gui.popup_dialog'] = cls.mod
         spec.loader.exec_module(cls.mod)
+        parent = sys.modules.get('plans_adressage.gui')
+        if parent is not None:
+            setattr(parent, 'popup_dialog', cls.mod)
 
     def setUp(self):
         self.iface = MagicMock()

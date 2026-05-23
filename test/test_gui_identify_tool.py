@@ -21,6 +21,9 @@ class TestIdentifyTool(unittest.TestCase):
         cls.mod = importlib.util.module_from_spec(spec)
         sys.modules['plans_adressage.gui.identify_tool'] = cls.mod
         spec.loader.exec_module(cls.mod)
+        parent = sys.modules.get('plans_adressage.gui')
+        if parent is not None:
+            setattr(parent, 'identify_tool', cls.mod)
 
     def setUp(self):
         self.canvas = MagicMock()
