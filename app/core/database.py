@@ -50,6 +50,12 @@ def _add_column_if_not_exists(
     conn: Any, table: str, column: str, col_type: str
 ) -> None:
     """Add a column to a SQLite table if it does not already exist."""
+    result = conn.execute(
+        text("SELECT count(*) FROM sqlite_master WHERE type='table' AND name=:name"),
+        {"name": table},
+    )
+    if result.fetchone()[0] == 0:
+        return
     result = conn.execute(text(f"PRAGMA table_info('{table}')"))
     existing = {row[1] for row in result.fetchall()}
     if column not in existing:
@@ -117,8 +123,8 @@ def get_engine() -> Any:
                     exc_info=True,
                 )
 
-        _migrate_timestamp_columns(_engine)
         Base.metadata.create_all(_engine)
+        _migrate_timestamp_columns(_engine)
     return _engine
 
 
@@ -137,8 +143,8 @@ def get_auth_engine() -> Any:
         _auth_engine = create_engine(
             f'sqlite:///{filename}', echo=False, pool_pre_ping=True
         )
-        _migrate_timestamp_columns(_auth_engine)
         Base.metadata.create_all(_auth_engine, tables=[User.__table__])
+        _migrate_timestamp_columns(_auth_engine)
         _migrate_users_to_auth()
     return _auth_engine
 
