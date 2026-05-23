@@ -5,7 +5,6 @@ import sys
 
 import geopandas as gpd
 from geoalchemy2.elements import WKTElement
-from sqlalchemy import text
 
 # Ensure both the project root and its parent are on sys.path so that
 # 'app' and 'plans_adressage' are both importable as top-level packages.
@@ -34,14 +33,14 @@ def load_localities() -> None:
         for _, row in gdf.iterrows():
             pk_uid = row['pk_uid']
             wilaya = row['wilaya']
-            codeWilaya = row['codeWilaya']
-            communeAr = row['communeAr']
-            codeCommun = row['codeCommun']
+            wilaya_code = row['codeWilaya']
+            commune_ar = row['communeAr']
+            commune_code = row['codeCommun']
             geometry = WKTElement(f"SRID={SRID};{row['geometry']}", srid=SRID)
 
             Localite(
-                pk_uid=pk_uid, wilaya=wilaya, codeWilaya=codeWilaya,
-                codeCommun=codeCommun, communeAr=communeAr, geometry=geometry
+                id=pk_uid, wilaya=wilaya, wilaya_code=wilaya_code,
+                commune_code=commune_code, commune_ar=commune_ar, geometry=geometry
             ).save(session)
     finally:
         session.close()
@@ -54,25 +53,18 @@ def load_all() -> None:
 
 def create_views() -> None:
     """Create database views from SQL file."""
-    session = get_session()
     sql_path = VIEWS_SQL
     with open(sql_path, 'r', encoding='utf-8') as file:
         sql_query = file.read()
 
-    sql_statements = sql_query.split(';')
+    engine = get_engine()
     try:
-        for statement in sql_statements:
-            statement = statement.strip()
-            if statement:
-                session.execute(text(statement))
-
-        session.commit()
+        with engine.raw_connection() as conn:
+            conn.executescript(sql_query)
         logger.info("SQL file executed successfully.")
     except Exception as e:
-        session.rollback()
         logger.error("Error executing SQL: %s", e)
-    finally:
-        session.close()
+        raise
 
 
 def create_all() -> None:

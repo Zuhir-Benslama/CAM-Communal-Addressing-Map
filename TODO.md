@@ -697,16 +697,44 @@ These are intentional patterns, not bugs. Addressed as needed during feature wor
 - [x] **Fix `KeyError: 'layout-position'` crash** — PyQt5 `uic` parser crash on `RNA_dialog_base.ui` when `<property name="alignment">` appeared before `<widget>` in `horizontalLayout_2`. Fixed by reordering XML: widget first, property after.
 -
 - ## 46. Database Schema Refactor — 2026-05-23 ✅
--
-- ### P1 — High ✅
--
-- - [x] **`TimestampMixin` added to `app/core/base.py`** — Mixin with `created_at` / `updated_at` datetime columns. Inherited by all 7 models (User, Localite, Zone, Subdivision, Road, Organization, Numbering, PanelSign).
-- - [x] **`User.affectation_id` type fixed** — Changed from `String` to `Integer` to match `Localite.pk_uid` FK target type. Backward-compatible via SQLite manifest typing.
-- - [x] **`User.password` made non-nullable** — `nullable=False` ensures new users always have a password hash.
-- - [x] **`User.active` made non-nullable with default** — `default=True, nullable=False` ensures new users are active by default.
-- - [x] **`Zone.has_child` made non-nullable** — `default=False, nullable=False` eliminates NULL ambiguity.
-- - [x] **FK indexes added to all models** — `index=True` on all 18 foreign key columns across 7 models for query performance.
-- - [x] **Dual-DB write vulnerability fixed** — `sign_up()` and `sign_in()` now rollback BOTH sessions on failure instead of leaving one committed. `sign_up()` replaced `user.save()` auto-commit with explicit `flush()` + two-phase commit pattern.
-- - [x] **`Stituation` → `situation`** — Column renamed in Python (DB column `"Stituation"` preserved via explicit `Column("Stituation", ...)`). All 7 Python attribute references updated across `models.py`, `repository.py`, `chart_mixin.py`, `popup_dialog.py`.
-- - [x] **Auto-migration for existing databases** — `_add_column_if_not_exists()` + `_migrate_timestamp_columns()` called from both engine init functions, adding `created_at`/`updated_at` DATETIME columns to all 8 existing tables where missing.
-- - [x] **Migration scripts updated** — `scripts/migrate_old_db.py` and `scripts/migrate_production.py` changed `affectation_id TEXT` → `affectation_id INTEGER` in raw SQL CREATE TABLE statements.
+
+### P1 — High ✅
+
+- [x] **`TimestampMixin` added to `app/core/base.py`** — Mixin with `created_at` / `updated_at` datetime columns. Inherited by all 7 models (User, Localite, Zone, Subdivision, Road, Organization, Numbering, PanelSign).
+- [x] **`User.affectation_id` type fixed** — Changed from `String` to `Integer` to match `Localite.pk_uid` FK target type. Backward-compatible via SQLite manifest typing.
+- [x] **`User.password` made non-nullable** — `nullable=False` ensures new users always have a password hash.
+- [x] **`User.active` made non-nullable with default** — `default=True, nullable=False` ensures new users are active by default.
+- [x] **`Zone.has_child` made non-nullable** — `default=False, nullable=False` eliminates NULL ambiguity.
+- [x] **FK indexes added to all models** — `index=True` on all 18 foreign key columns across 7 models for query performance.
+- [x] **Dual-DB write vulnerability fixed** — `sign_up()` and `sign_in()` now rollback BOTH sessions on failure instead of leaving one committed. `sign_up()` replaced `user.save()` auto-commit with explicit `flush()` + two-phase commit pattern.
+- [x] **`Stituation` → `situation`** — Column renamed in Python (DB column `"Stituation"` preserved via explicit `Column("Stituation", ...)`). All 7 Python attribute references updated across `models.py`, `repository.py`, `chart_mixin.py`, `popup_dialog.py`.
+- [x] **Auto-migration for existing databases** — `_add_column_if_not_exists()` + `_migrate_timestamp_columns()` called from both engine init functions, adding `created_at`/`updated_at` DATETIME columns to all 8 existing tables where missing.
+- [x] **Migration scripts updated** — `scripts/migrate_old_db.py` and `scripts/migrate_production.py` changed `affectation_id TEXT` → `affectation_id INTEGER` in raw SQL CREATE TABLE statements.
+
+---
+
+## 47. Code Improvements — 2026-05-23 ✅
+
+### P1 — High ✅
+
+- [x] **Views.sql parsing** — `scripts/create_db.py` uses `executescript()` instead of brittle semicolon splitting. `scripts/migrate_old_db.py` reads from canonical `data/Views.sql` instead of inline `VIEWS_SQL`. `scripts/migrate_production.py` reads from canonical `data/Views.sql` instead of inline `VIEWS_SQL`. `data/Views.sql` uses `CREATE VIEW IF NOT EXISTS` with clean uppercase formatting.
+
+- [x] **Spatial indexes** — `app/core/database.py` calls `CreateSpatialIndex()` for all 7 geometry columns. Checks `geometry_columns.spatial_index_enabled` before creating to avoid stderr noise from SpatiaLite.
+
+- [x] **`has_child` consistency** — `Zone._recalc_has_child()` classmethod added. `delete()` overrides on Subdivision, Road, Organization all call it to recalc the parent zone's `has_child` after deletion.
+
+- [x] **`_allowlist_columns` renamed-column fix** — `app/core/base.py` now accepts both DB column names (e.g. `"Cat"`) and Python attribute names (e.g. `"category"`). Uses mapper attrs to resolve Python→DB name mapping, so `Organization.update(category=...)` no longer silently drops the kwarg.
+
+- [x] **`_migrate_missing_columns()` auto-migration** — `app/core/database.py` adds `commune_fr`, `commune_en`, `Nom_fr`, `Nom_en` to existing tables on engine init. These columns were introduced with the locale-aware name attributes but don't exist in old databases.
+
+- [x] **DB column rename (`scripts/rename_columns.py`)** — All 31 old DB column names renamed across 7 tables to match Python attributes. Old names (`pk_uid`, `codeWilaya`, `communeAr`, `codeCommun`, `pkuid`, `idLoc`, `uid`, `pkuid_poly`, `num_decision`, `idLine`, `idPoly`, `idOrg`, `dim`, `Stituation`, `Cat`) are gone. All `Column("old_name", ...)` mappings removed from models. ForeignKey strings, raw SQL queries, and `_list_columns` updated. `get_all_fields_and_labels` exclusion list updated (`uid`→`user_id`, `idLoc`→`locality_id`, `pkuid_poly`→`zone_id`). Views.sql references updated.
+
+### P2 — Medium ✅
+
+- [x] **Python attribute naming conventions** — 14 Python attributes renamed across 10 files: `pkuid`→`id`, `uid`→`user_id`, `idLoc`→`locality_id`, `idLine`→`road_id`, `idPoly`→`subdivision_id`, `idOrg`→`organization_id`, `pkuid_poly`→`zone_id`, `Cat`→`category`, `dim`→`dimensions`, `num_decision`→`decision_number`, `codeWilaya`→`wilaya_code`, `communeAr`→`commune_ar`, `codeCommun`→`commune_code`. After the DB column rename, the `Column("old_name")` mappings were removed so Python attribute names match DB column names directly.
+
+- [x] **Views single source of truth** — `data/Views.sql` is the canonical file. All three scripts (`create_db.py`, `migrate_old_db.py`, `migrate_production.py`) read from it.
+
+- [x] **Repository function param cleanup** — `add_panel_sign()` params renamed from `idLine`/`idPoly`/`idOrg`/`dim` to `road_id`/`subdivision_id`/`organization_id`/`dimensions`. `add_numbering()` params renamed from `idLine`/`idPoly` to `road_id`/`subdivision_id`. Call sites in `mixins/layer_edit_mixin.py` updated. `create_db.py` shapefile column variable names updated.
+
+### P3 — Low ✅

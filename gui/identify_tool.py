@@ -151,7 +151,7 @@ class IdentifyTool(QgsMapToolIdentify):
                         return
 
                     query = session.query(model).filter(
-                        getattr(model, 'pkuid') == feature_id
+                        model.id == feature_id
                     ).first()
 
                     if query:

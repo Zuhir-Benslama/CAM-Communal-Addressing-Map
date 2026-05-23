@@ -15,6 +15,30 @@ class TimestampMixin:
 
 
 def _allowlist_columns(model_class: type, **kwargs: Any) -> dict:
-    """Filter kwargs to only include valid column names for the model."""
-    valid_columns = {col.name for col in model_class.__table__.columns}
-    return {k: v for k, v in kwargs.items() if k in valid_columns}
+    """Filter kwargs to only include valid column names for the model.
+
+    Accepts both DB column names and Python attribute names. Returns a
+    dict keyed by Python attribute names,
+    safe for use with ``setattr``.
+    """
+    col_map: dict[str, str] = {}
+    for col in model_class.__table__.columns:
+        col_map[col.name] = col.name
+
+    try:
+        mapper = model_class.__mapper__
+        for attr in mapper.attrs:
+            if hasattr(attr, "columns"):
+                for col in attr.columns:
+                    col_map[col.name] = attr.key
+                    col_map[attr.key] = attr.key
+            else:
+                col_map[attr.key] = attr.key
+    except Exception:
+        pass
+
+    return {
+        python_name: kwargs[k]
+        for k in kwargs
+        if (python_name := col_map.get(k)) is not None
+    }

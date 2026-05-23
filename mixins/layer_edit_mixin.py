@@ -100,11 +100,11 @@ class LayerEditMixin:
                 'etat_mont': self.etat_mont.currentData(),
             }
             if layer == LAYER_FACILITIES:
-                add_panel_sign(**kwargs, idLine=None, idPoly=None, idOrg=ref)
+                add_panel_sign(**kwargs, road_id=None, subdivision_id=None, organization_id=ref)
             elif layer == LAYER_ROADS:
-                add_panel_sign(**kwargs, idLine=ref, idPoly=None, idOrg=None)
+                add_panel_sign(**kwargs, road_id=ref, subdivision_id=None, organization_id=None)
             elif layer == LAYER_SUBDIVISIONS:
-                add_panel_sign(**kwargs, idLine=None, idPoly=ref, idOrg=None)
+                add_panel_sign(**kwargs, road_id=None, subdivision_id=ref, organization_id=None)
 
             if self.measure_tool:
                 self.show_confirm_dialog(
@@ -220,9 +220,9 @@ class LayerEditMixin:
                 'type_act': self.type_act.currentData(),
             }
             if ref_data and ref_data.get('layer_name') == LAYER_ROADS:
-                add_numbering(**common, idLine=ref_data.get('pkuid'), idPoly=None)
+                add_numbering(**common, road_id=ref_data.get('pkuid'), subdivision_id=None)
             elif ref_data and ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
-                add_numbering(**common, idLine=None, idPoly=ref_data.get('pkuid'))
+                add_numbering(**common, road_id=None, subdivision_id=ref_data.get('pkuid'))
 
             if self.measure_tool:
                 self.show_confirm_dialog(

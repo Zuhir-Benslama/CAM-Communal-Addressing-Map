@@ -63,6 +63,72 @@ def _add_column_if_not_exists(
         logger.info("Added column %s.%s (%s)", table, column, col_type)
 
 
+_SPATIAL_INDEXES = (
+    ('localite', 'geometry'),
+    ('refpoly', 'geometry'),
+    ('refpolychild', 'geometry'),
+    ('RefLine', 'geometry'),
+    ('reforg', 'geometry'),
+    ('Numerotation', 'geometry'),
+    ('Pannautage', 'geometry'),
+)
+
+
+def _spatial_index_exists(conn: Any, table: str, column: str) -> bool:
+    """Check whether a SpatiaLite spatial index already exists."""
+    result = conn.execute(
+        text(
+            "SELECT spatial_index_enabled FROM geometry_columns "
+            "WHERE LOWER(f_table_name) = LOWER(:table) "
+            "AND LOWER(f_geometry_column) = LOWER(:col)"
+        ),
+        {"table": table, "col": column},
+    )
+    row = result.fetchone()
+    return row is not None and row[0] == 1
+
+
+_MISSING_COLUMNS = (
+    ("localite", "commune_fr", "TEXT"),
+    ("localite", "commune_en", "TEXT"),
+    ("refpoly", "Nom_fr", "TEXT"),
+    ("refpoly", "Nom_en", "TEXT"),
+    ("refpolychild", "Nom_fr", "TEXT"),
+    ("refpolychild", "Nom_en", "TEXT"),
+    ("RefLine", "Nom_fr", "TEXT"),
+    ("RefLine", "Nom_en", "TEXT"),
+    ("reforg", "Nom_fr", "TEXT"),
+    ("reforg", "Nom_en", "TEXT"),
+)
+
+
+def _migrate_missing_columns(engine: Any) -> None:
+    """Add columns introduced during attribute renames."""
+    with engine.connect() as conn:
+        for table, column, col_type in _MISSING_COLUMNS:
+            _add_column_if_not_exists(conn, table, column, col_type)
+
+
+def _create_spatial_indexes(engine: Any) -> None:
+    """Create SpatiaLite spatial indexes for all geometry columns."""
+    with engine.connect() as conn:
+        for table, column in _SPATIAL_INDEXES:
+            if _spatial_index_exists(conn, table, column):
+                logger.debug("Spatial index already exists on %s.%s", table, column)
+                continue
+            try:
+                conn.execute(
+                    text(f"SELECT CreateSpatialIndex('{table}', '{column}')")
+                )
+                conn.commit()
+                logger.info("Created spatial index on %s.%s", table, column)
+            except Exception:
+                logger.warning(
+                    "Could not create spatial index on %s.%s",
+                    table, column, exc_info=True,
+                )
+
+
 _TIMESTAMP_TABLES = (
     'user', 'localite', 'refpoly', 'refpolychild',
     'RefLine', 'reforg', 'Numerotation', 'Pannautage',
@@ -125,6 +191,8 @@ def get_engine() -> Any:
 
         Base.metadata.create_all(_engine)
         _migrate_timestamp_columns(_engine)
+        _migrate_missing_columns(_engine)
+        _create_spatial_indexes(_engine)
     return _engine
 
 

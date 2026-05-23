@@ -42,8 +42,26 @@ REQUIRED_TABLES = [
 ]
 
 ADD_COLUMNS = {
+    "localite": [
+        ("commune_fr", "TEXT"),
+        ("commune_en", "TEXT"),
+    ],
     "refpoly": [
         ("has_child", "INTEGER DEFAULT 0"),
+        ("Nom_fr", "TEXT"),
+        ("Nom_en", "TEXT"),
+    ],
+    "refpolychild": [
+        ("Nom_fr", "TEXT"),
+        ("Nom_en", "TEXT"),
+    ],
+    "RefLine": [
+        ("Nom_fr", "TEXT"),
+        ("Nom_en", "TEXT"),
+    ],
+    "reforg": [
+        ("Nom_fr", "TEXT"),
+        ("Nom_en", "TEXT"),
     ],
     "Numerotation": [("activity_cat", "TEXT"), ("activity_type", "TEXT")],
     "user": [
@@ -54,44 +72,7 @@ ADD_COLUMNS = {
     ],
 }
 
-VIEWS_SQL = [
-    """
-    CREATE VIEW IF NOT EXISTS Num AS
-        SELECT n.*, u.affectation_id
-        FROM Numerotation n
-        JOIN "user" u ON n.uid = u.id
-    """,
-    """
-    CREATE VIEW IF NOT EXISTS Roads AS
-        SELECT
-            r.*,
-            u.affectation_id,
-            CASE
-                WHEN r.num_decision IS NOT NULL AND r.num_decision != '' THEN 1
-                ELSE 0
-            END AS has_decision
-        FROM "RefLine" r
-        JOIN "user" u ON r.uid = u.id
-    """,
-    """
-    CREATE VIEW IF NOT EXISTS Pan AS
-        SELECT
-            p.*,
-            o.type || ' ' || o.nom AS org,
-            c.type || ' ' || c.nom AS city,
-            r.type || ' ' || r.nom AS road,
-            u.affectation_id
-        FROM Pannautage p
-        LEFT JOIN "RefLine" r ON p.idline = r.pkuid
-        LEFT JOIN refpolychild c ON p.idPoly = c.pkuid
-        LEFT JOIN reforg o ON p.idOrg = o.pkuid
-        JOIN "user" u ON p.uid = u.id
-    """,
-    """
-    CREATE VIEW IF NOT EXISTS Pan2 AS
-        SELECT *, COALESCE(city, org, road) AS label FROM Pan
-    """,
-]
+_VIEW_NAMES = ['Num', 'Roads', 'Pan', 'Pan2']
 
 AUTH_USER_SCHEMA = """
     CREATE TABLE IF NOT EXISTS "user" (
@@ -211,22 +192,22 @@ def upgrade_schema(source_path: str, dry_run: bool = False) -> None:
 
 
 def create_views(source_path: str, dry_run: bool = False) -> None:
+    project_root = resolve_project_root()
+    views_path = os.path.join(project_root, "data", "Views.sql")
     logger.info(
         "%s views on: %s",
         "Would create" if dry_run else "Creating",
         source_path,
     )
     if dry_run:
-        for stmt in VIEWS_SQL:
-            view_name = stmt.split("VIEW IF NOT EXISTS")[1].split()[0].strip()
-            logger.info("  [DRY-RUN] Would create view: %s", view_name)
+        for name in _VIEW_NAMES:
+            logger.info("  [DRY-RUN] Would create view: %s", name)
         return
 
     conn = sqlite3.connect(source_path)
-    cursor = conn.cursor()
     try:
-        for stmt in VIEWS_SQL:
-            cursor.execute(stmt)
+        with open(views_path, 'r', encoding='utf-8') as f:
+            conn.executescript(f.read())
         conn.commit()
         logger.info("Views created/verified")
     except Exception:

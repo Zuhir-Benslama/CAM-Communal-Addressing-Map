@@ -32,11 +32,11 @@ def fill_wilayas_list(combobox: QComboBox) -> None:
     combobox.clear()
     session = get_session()
     results = (
-        session.query(Localite.wilaya, Localite.codeWilaya)
-        .distinct().order_by(Localite.codeWilaya).all()
+        session.query(Localite.wilaya, Localite.wilaya_code)
+        .distinct().order_by(Localite.wilaya_code).all()
     )
     for result in results:
-        combobox.addItem(_i18n_tr(result.wilaya, loc), result.codeWilaya)
+        combobox.addItem(_i18n_tr(result.wilaya, loc), result.wilaya_code)
     session.close()
     combobox.setCurrentIndex(0)
     combobox.completer().setCompletionMode(QCompleter.PopupCompletion)
@@ -79,16 +79,16 @@ def fill_commune_of_wilaya(combobox: QComboBox, code_w: int) -> None:
     session = get_session()
     results = (
         session.query(Localite)
-        .filter(Localite.codeWilaya == code_w).all()
+        .filter(Localite.wilaya_code == code_w).all()
     )
     for result in results:
         if loc == 'ar':
-            name = result.communeAr
+            name = result.commune_ar
         else:
             name = getattr(result, f'commune_{loc}', None)
             if not name:
-                name = _i18n_tr(result.communeAr, loc)
-        combobox.addItem(name, result.pk_uid)
+                name = _i18n_tr(result.commune_ar, loc)
+        combobox.addItem(name, result.id)
     session.close()
     combobox.setCurrentIndex(0)
     combobox.completer().setCompletionMode(QCompleter.PopupCompletion)

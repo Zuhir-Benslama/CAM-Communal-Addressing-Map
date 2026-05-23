@@ -37,7 +37,7 @@ class _BaseSpatialModel(Base, TimestampMixin):
 
     @property
     def username(self) -> Optional[str]:
-        if self.uid:
+        if self.user_id:
             return self.user.username
         return None
 
@@ -54,13 +54,13 @@ class _BaseSpatialModel(Base, TimestampMixin):
 
 class Localite(Base, TimestampMixin):
     __tablename__ = 'localite'
-    pk_uid = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     wilaya = Column(Text, nullable=False)
-    codeWilaya = Column(Integer, nullable=False)
-    communeAr = Column(Text, nullable=False)
+    wilaya_code = Column(Integer, nullable=False)
+    commune_ar = Column(Text, nullable=False)
     commune_fr = Column(Text, nullable=True)
     commune_en = Column(Text, nullable=True)
-    codeCommun = Column(Text, nullable=False)
+    commune_code = Column(Text, nullable=False)
     geometry = Column(Geometry(geometry_type='GEOMETRY', srid=SRID))
 
     def save(self, session: Session) -> None:
@@ -72,12 +72,12 @@ class Zone(_BaseSpatialModel):
     __tablename__ = 'refpoly'
     _list_columns = ['Type', 'Nom']
 
-    pkuid = Column(
+    id = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
-    idLoc = Column(String, ForeignKey('localite.pk_uid'), index=True,
-                   info={'label': 'Location'})
+    locality_id = Column(String, ForeignKey('localite.id'), index=True,
+                         info={'label': 'Location'})
     Type = Column(String, nullable=False,
                   info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'})
     Nom = Column(String, info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'})
@@ -86,21 +86,21 @@ class Zone(_BaseSpatialModel):
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=False,
                       info={'label': 'Geometry'})
     has_child = Column(Boolean, default=False, nullable=False)
-    uid = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
-                 info={'label': 'User'})
-    user = relationship("User", backref="user_poly", foreign_keys=[uid])
+    user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
+                     info={'label': 'User'})
+    user = relationship("User", backref="user_poly", foreign_keys=[user_id])
 
     @classmethod
     def update(cls, session: Session, pkuid: str,
                **kwargs: Any) -> Optional['Zone']:
-        instance = session.query(cls).filter_by(pkuid=pkuid).first()
+        instance = session.query(cls).filter_by(id=pkuid).first()
         user_data = _get_current_user()
         if not user_data or not instance:
             raise ValueError("Zone not found or no authenticated user")
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
-        instance.uid = user_data.get('id')
-        instance.idLoc = user_data.get('loc')
+        instance.user_id = user_data.get('id')
+        instance.locality_id = user_data.get('loc')
         instance.has_child = False
         try:
             query = session.query(Road).filter(
@@ -125,11 +125,32 @@ class Zone(_BaseSpatialModel):
         session.commit()
         return instance
 
+    @classmethod
+    def _recalc_has_child(cls, session: Session,
+                          zone_pkuid: str) -> None:
+        """Recalculate has_child for a given zone based on actual spatial data."""
+        zone = session.query(cls).filter_by(id=zone_pkuid).first()
+        if not zone:
+            return
+        zone.has_child = False
+        try:
+            for child_cls in (Road, Organization, Subdivision):
+                query = session.query(child_cls).filter(
+                    ST_Within(child_cls.geometry, zone.geometry)
+                ).first()
+                if query:
+                    zone.has_child = True
+                    break
+        except Exception:
+            logger.warning("Failed to recalc has_child on %s",
+                           zone_pkuid, exc_info=True)
+        session.commit()
+
     def save(self, session: Session) -> None:
         user_data = _get_current_user()
         if user_data:
-            self.uid = user_data.get('id')
-            self.idLoc = user_data.get('loc')
+            self.user_id = user_data.get('id')
+            self.locality_id = user_data.get('loc')
             self.has_child = False
             query = session.query(Road).filter(
                 ST_Within(Road.geometry, self.geometry)
@@ -156,40 +177,40 @@ class Subdivision(_BaseSpatialModel):
     __tablename__ = 'refpolychild'
     _list_columns = ['Type', 'Nom']
 
-    pkuid = Column(
+    id = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
-    idLoc = Column(String, ForeignKey('localite.pk_uid'), index=True)
+    locality_id = Column(String, ForeignKey('localite.id'), index=True)
     Type = Column(String, nullable=False,
                   info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'})
     Nom = Column(String, info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'})
     Nom_fr = Column(String, nullable=True)
     Nom_en = Column(String, nullable=True)
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=True)
-    parent = Column(Text, ForeignKey('refpoly.pkuid'), nullable=True, index=True)
-    uid = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
-                 info={'label': 'User'})
-    user = relationship("User", backref="user_poly_child", foreign_keys=[uid])
+    parent = Column(Text, ForeignKey('refpoly.id'), nullable=True, index=True)
+    user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
+                     info={'label': 'User'})
+    user = relationship("User", backref="user_poly_child", foreign_keys=[user_id])
 
     @classmethod
     def update(cls, session: Session, pkuid: str,
                **kwargs: Any) -> Optional['Subdivision']:
-        instance = session.query(cls).filter_by(pkuid=pkuid).first()
+        instance = session.query(cls).filter_by(id=pkuid).first()
         user_data = _get_current_user()
         if not user_data or not instance:
             raise ValueError("Subdivision not found or no authenticated user")
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
-        instance.uid = user_data.get('id')
-        instance.idLoc = user_data.get('loc')
+        instance.user_id = user_data.get('id')
+        instance.locality_id = user_data.get('loc')
         instance.parent = None
         try:
             query = session.query(Zone).filter(
                 ST_Within(instance.geometry, Zone.geometry)
             ).first()
             if query:
-                instance.parent = query.pkuid
+                instance.parent = query.id
         except Exception:
             logger.warning("Failed to set parent on %s",
                            instance, exc_info=True)
@@ -200,153 +221,174 @@ class Subdivision(_BaseSpatialModel):
     def save(self, session: Session) -> None:
         user_data = _get_current_user()
         if user_data:
-            self.uid = user_data.get('id')
-            self.idLoc = user_data.get('loc')
+            self.user_id = user_data.get('id')
+            self.locality_id = user_data.get('loc')
             query = session.query(Zone).filter(
                 ST_Within(self.geometry, Zone.geometry)
             ).first()
             if query:
-                self.parent = query.pkuid
+                self.parent = query.id
             session.add(self)
             session.commit()
         else:
             raise ValueError("No user found")
 
+    def delete(self, session: Session) -> None:
+        zone_pkuid = self.parent
+        session.delete(self)
+        session.commit()
+        if zone_pkuid:
+            Zone._recalc_has_child(session, zone_pkuid)
+
 
 class Road(_BaseSpatialModel):
     __tablename__ = 'RefLine'
-    _list_columns = ['Type', 'Nom', 'num_decision']
+    _list_columns = ['Type', 'Nom', 'decision_number']
 
-    pkuid = Column(
+    id = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
-    num_decision = Column(Text, nullable=True, info={'label': 'Decision No.', 'label_fr': 'N° décision', 'label_en': 'Decision No.'})
+    decision_number = Column(Text, nullable=True, info={'label': 'Decision No.', 'label_fr': 'N° décision', 'label_en': 'Decision No.'})
     Type = Column(String, nullable=False,
                   info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'})
     Nom = Column(String, info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'})
     Nom_fr = Column(String, nullable=True)
     Nom_en = Column(String, nullable=True)
-    idLoc = Column(String, ForeignKey('localite.pk_uid'), nullable=False, index=True)
+    locality_id = Column(String, ForeignKey('localite.id'), nullable=False, index=True)
     geometry = Column(Geometry('LINESTRING', srid=SRID), nullable=True)
-    pkuid_poly = Column(Text, ForeignKey('refpoly.pkuid'), nullable=True, index=True)
-    uid = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
-    user = relationship("User", backref="user_line", foreign_keys=[uid])
+    zone_id = Column(Text, ForeignKey('refpoly.id'), nullable=True, index=True)
+    user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
+    user = relationship("User", backref="user_line", foreign_keys=[user_id])
 
     @classmethod
     def update(cls, session: Session, pkuid: str,
                **kwargs: Any) -> Optional['Road']:
-        instance = session.query(cls).filter_by(pkuid=pkuid).first()
+        instance = session.query(cls).filter_by(id=pkuid).first()
         user_data = _get_current_user()
         if not user_data or not instance:
             raise ValueError("Road not found or no authenticated user")
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
-        instance.uid = user_data.get('id')
-        instance.idLoc = user_data.get('loc')
-        instance.pkuid_poly = None
+        instance.user_id = user_data.get('id')
+        instance.locality_id = user_data.get('loc')
+        instance.zone_id = None
         try:
             query = session.query(Zone).filter(
                 ST_Within(instance.geometry, Zone.geometry)
             ).first()
             if query:
-                instance.pkuid_poly = query.pkuid
+                instance.zone_id = query.id
         except Exception:
-            logger.warning("Failed to set pkuid_poly on %s",
+            logger.warning("Failed to set zone_id on %s",
                            instance, exc_info=True)
-            instance.pkuid_poly = None
+            instance.zone_id = None
         session.commit()
         return instance
 
     def save(self, session: Session) -> None:
         user_data = _get_current_user()
         if user_data:
-            self.uid = user_data.get('id')
-            self.idLoc = user_data.get('loc')
+            self.user_id = user_data.get('id')
+            self.locality_id = user_data.get('loc')
             query = session.query(Zone).filter(
                 ST_Within(self.geometry, Zone.geometry)
             ).first()
             if query:
-                self.pkuid_poly = query.pkuid
+                self.zone_id = query.id
             session.add(self)
             session.commit()
         else:
             raise ValueError("No user found")
 
+    def delete(self, session: Session) -> None:
+        zone_pkuid = self.zone_id
+        session.delete(self)
+        session.commit()
+        if zone_pkuid:
+            Zone._recalc_has_child(session, zone_pkuid)
+
 
 class Organization(_BaseSpatialModel):
     __tablename__ = 'reforg'
-    _list_columns = ['Cat', 'Type', 'Nom']
+    _list_columns = ['category', 'Type', 'Nom']
 
-    pkuid = Column(Text, primary_key=True, default=lambda: str(uuid.uuid4()))
-    idLoc = Column(String, ForeignKey('localite.pk_uid'), index=True)
+    id = Column(Text, primary_key=True, default=lambda: str(uuid.uuid4()))
+    locality_id = Column(String, ForeignKey('localite.id'), index=True)
     Type = Column(String, nullable=True)
-    Cat = Column(String, nullable=True)
+    category = Column(String, nullable=True)
     Nom = Column(String)
     Nom_fr = Column(String, nullable=True)
     Nom_en = Column(String, nullable=True)
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=True)
-    uid = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
-    pkuid_poly = Column(Text, ForeignKey('refpoly.pkuid'), nullable=True, index=True)
-    user = relationship("User", backref="user_org", foreign_keys=[uid])
+    user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
+    zone_id = Column(Text, ForeignKey('refpoly.id'), nullable=True, index=True)
+    user = relationship("User", backref="user_org", foreign_keys=[user_id])
 
     @property
     def cat(self) -> Optional[str]:
-        return self.Cat
+        return self.category
 
     @classmethod
     def update(cls, session: Session, pkuid: str,
                **kwargs: Any) -> Optional['Organization']:
-        instance = session.query(cls).filter_by(pkuid=pkuid).first()
+        instance = session.query(cls).filter_by(id=pkuid).first()
         user_data = _get_current_user()
         if not user_data or not instance:
             raise ValueError("Organization not found or no authenticated user")
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
-        instance.uid = user_data.get('id')
-        instance.idLoc = user_data.get('loc')
-        instance.pkuid_poly = None
+        instance.user_id = user_data.get('id')
+        instance.locality_id = user_data.get('loc')
+        instance.zone_id = None
         try:
             query = session.query(Zone).filter(
                 ST_Within(instance.geometry, Zone.geometry)
             ).first()
             if query:
-                instance.pkuid_poly = query.pkuid
+                instance.zone_id = query.id
         except Exception:
-            logger.warning("Failed to set pkuid_poly on %s",
+            logger.warning("Failed to set zone_id on %s",
                            instance, exc_info=True)
-            instance.pkuid_poly = None
+            instance.zone_id = None
         session.commit()
         return instance
 
     def save(self, session: Session) -> None:
         user_data = _get_current_user()
         if user_data:
-            self.uid = user_data.get('id')
-            self.idLoc = user_data.get('loc')
+            self.user_id = user_data.get('id')
+            self.locality_id = user_data.get('loc')
             query = session.query(Zone).filter(
                 ST_Within(self.geometry, Zone.geometry)
             ).first()
             if query:
-                self.pkuid_poly = query.pkuid
+                self.zone_id = query.id
             session.add(self)
             session.commit()
         else:
             raise ValueError("No user found")
 
+    def delete(self, session: Session) -> None:
+        zone_pkuid = self.zone_id
+        session.delete(self)
+        session.commit()
+        if zone_pkuid:
+            Zone._recalc_has_child(session, zone_pkuid)
+
 
 class Numbering(_BaseSpatialModel):
     __tablename__ = 'Numerotation'
     _list_columns = ['valeur', 'repetition', 'etat']
-    pkuid = Column(
+    id = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
     valeur = Column(Text, nullable=False, info={'label': 'Number'})
-    idLine = Column(Text, ForeignKey('RefLine.pkuid'), nullable=True, index=True,
-                    info={'label': 'Road'})
-    idPoly = Column(
-        Text, ForeignKey('refpolychild.pkuid'), nullable=True, index=True,
+    road_id = Column(Text, ForeignKey('RefLine.id'), nullable=True, index=True,
+                     info={'label': 'Road'})
+    subdivision_id = Column(
+        Text, ForeignKey('refpolychild.id'), nullable=True, index=True,
         info={'label': 'Subdivision'},
     )
     repetition = Column(String, info={'label': 'Duplicated'})
@@ -354,14 +396,14 @@ class Numbering(_BaseSpatialModel):
                   info={'label': 'State'})
     geometry = Column(Geometry('POINT', srid=SRID), nullable=True,
                       info={'label': 'Geometry'})
-    uid = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
-                 info={'label': 'User'})
+    user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
+                     info={'label': 'User'})
 
-    road = relationship("Road", backref="ref_line_num", foreign_keys=[idLine])
+    road = relationship("Road", backref="ref_line_num", foreign_keys=[road_id])
     subdivision = relationship("Subdivision",
                                backref="ref_polychild_num",
-                               foreign_keys=[idPoly])
-    user = relationship("User", backref="user_num", foreign_keys=[uid])
+                               foreign_keys=[subdivision_id])
+    user = relationship("User", backref="user_num", foreign_keys=[user_id])
 
     activity_cat = Column(String, nullable=True)
     activity_type = Column(String, nullable=True)
@@ -369,20 +411,20 @@ class Numbering(_BaseSpatialModel):
     @classmethod
     def update(cls, session: Session, pkuid: str,
                **kwargs: Any) -> Optional['Numbering']:
-        instance = session.query(cls).filter_by(pkuid=pkuid).first()
+        instance = session.query(cls).filter_by(id=pkuid).first()
         user_data = _get_current_user()
         if not user_data or not instance:
             raise ValueError("Numbering not found or no authenticated user")
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
-        instance.uid = user_data.get('id')
+        instance.user_id = user_data.get('id')
         session.commit()
         return instance
 
     def save(self, session: Session) -> None:
         user_data = _get_current_user()
         if user_data:
-            self.uid = user_data.get('id')
+            self.user_id = user_data.get('id')
             session.add(self)
             session.commit()
         else:
@@ -392,52 +434,52 @@ class Numbering(_BaseSpatialModel):
 class PanelSign(_BaseSpatialModel):
     __tablename__ = 'Pannautage'
 
-    pkuid = Column(
+    id = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
-    dim = Column(String, nullable=False,
-                 info={'label': 'Dimensions'})
+    dimensions = Column(String, nullable=False,
+                        info={'label': 'Dimensions'})
     Type = Column(Text, nullable=True, info={'label': 'Reference Type'})
     situation = Column(
-        "Stituation", String, nullable=True,
+        String, nullable=True,
         info={'label': 'Status'},
     )
-    idLine = Column(Text, ForeignKey('RefLine.pkuid'), nullable=True, index=True,
-                    info={'label': 'Road'})
-    idPoly = Column(
-        Text, ForeignKey('refpolychild.pkuid'), nullable=True, index=True,
+    road_id = Column(Text, ForeignKey('RefLine.id'), nullable=True, index=True,
+                     info={'label': 'Road'})
+    subdivision_id = Column(
+        Text, ForeignKey('refpolychild.id'), nullable=True, index=True,
         info={'label': 'Subdivision'},
     )
-    idOrg = Column(Text, ForeignKey('reforg.pkuid'), nullable=True, index=True,
-                   info={'label': 'Facility'})
+    organization_id = Column(Text, ForeignKey('reforg.id'), nullable=True, index=True,
+                             info={'label': 'Facility'})
     geometry = Column(Geometry('POINT', srid=SRID), nullable=True,
                       info={'label': 'Geometry'})
-    uid = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
-                 info={'label': 'User'})
+    user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
+                     info={'label': 'User'})
 
     organization = relationship("Organization",
                                  backref="ref_org_pan",
-                                 foreign_keys=[idOrg])
-    road = relationship("Road", backref="ref_line_pan", foreign_keys=[idLine])
+                                 foreign_keys=[organization_id])
+    road = relationship("Road", backref="ref_line_pan", foreign_keys=[road_id])
     subdivision = relationship("Subdivision",
                                backref="ref_polychild_pan",
-                               foreign_keys=[idPoly])
-    user = relationship("User", backref="user_pan", foreign_keys=[uid])
+                               foreign_keys=[subdivision_id])
+    user = relationship("User", backref="user_pan", foreign_keys=[user_id])
 
     @property
     def label(self) -> Optional[str]:
         loc = current_locale()
-        if self.idLine is not None and self.idPoly is None \
-                and self.idOrg is None:
+        if self.road_id is not None and self.subdivision_id is None \
+                and self.organization_id is None:
             return ('\u200F' + locale_value(self.road, 'Type', loc)
                     + ' ' + locale_value(self.road, 'Nom', loc))
-        if self.idLine is None and self.idPoly is not None \
-                and self.idOrg is None:
+        if self.road_id is None and self.subdivision_id is not None \
+                and self.organization_id is None:
             return ('\u200F' + locale_value(self.subdivision, 'Type', loc)
                     + ' ' + locale_value(self.subdivision, 'Nom', loc))
-        if self.idLine is None and self.idPoly is None \
-                and self.idOrg is not None:
+        if self.road_id is None and self.subdivision_id is None \
+                and self.organization_id is not None:
             return ('\u200F' + locale_value(self.organization, 'Type', loc)
                     + ' ' + locale_value(self.organization, 'Nom', loc))
         return None
@@ -445,51 +487,51 @@ class PanelSign(_BaseSpatialModel):
     @classmethod
     def update(cls, session: Session, pkuid: str,
                **kwargs: Any) -> Optional['PanelSign']:
-        instance = session.query(cls).filter_by(pkuid=pkuid).first()
+        instance = session.query(cls).filter_by(id=pkuid).first()
         user_data = _get_current_user()
         if not user_data or not instance:
             raise ValueError("PanelSign not found or no authenticated user")
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
-        instance.uid = user_data.get('id')
+        instance.user_id = user_data.get('id')
         session.commit()
         return instance
 
     def save(self, session: Session) -> None:
         user_data = _get_current_user()
         if user_data:
-            self.uid = user_data.get('id')
-            if self.idLine:
+            self.user_id = user_data.get('id')
+            if self.road_id:
                 road = (
                     session.query(Road)
-                    .filter(Road.pkuid == self.idLine)
+                    .filter(Road.id == self.road_id)
                     .first()
                 )
                 if not road:
                     raise ValueError(
-                        f"Road with pkuid {self.idLine} not found"
+                        f"Road with pkuid {self.road_id} not found"
                     )
                 self.Type = LAYER_ROADS
-            if self.idOrg:
+            if self.organization_id:
                 org = (
                     session.query(Organization)
-                    .filter(Organization.pkuid == self.idOrg)
+                    .filter(Organization.id == self.organization_id)
                     .first()
                 )
                 if not org:
                     raise ValueError(
-                        f"Organization with pkuid {self.idOrg} not found"
+                        f"Organization with pkuid {self.organization_id} not found"
                     )
                 self.Type = LAYER_FACILITIES
-            if self.idPoly:
+            if self.subdivision_id:
                 sub = (
                     session.query(Subdivision)
-                    .filter(Subdivision.pkuid == self.idPoly)
+                    .filter(Subdivision.id == self.subdivision_id)
                     .first()
                 )
                 if not sub:
                     raise ValueError(
-                        f"Subdivision with pkuid {self.idPoly} not found"
+                        f"Subdivision with pkuid {self.subdivision_id} not found"
                     )
                 self.Type = LAYER_SUBDIVISIONS
             session.add(self)

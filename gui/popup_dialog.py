@@ -187,12 +187,12 @@ class PopupDialog(QDialog,FORM_CLASS):
         """Populate numbering form fields from a DB query result."""
         self.num_val.setText(query.valeur)
         self.repetition.setText(query.repetition)
-        if query.idLine:
+        if query.road_id:
             self._set_combo_value(self.dyn_ref3, LAYER_ROADS)
             self.ref_name3.setText(
                 locale_value(query.road, 'Type', loc)
                 + ' ' + locale_value(query.road, 'Nom', loc))
-        elif query.idPoly:
+        elif query.subdivision_id:
             self._set_combo_value(self.dyn_ref3, LAYER_SUBDIVISIONS)
             self.ref_name3.setText(
                 locale_value(query.subdivision, 'Nom', loc))
@@ -209,18 +209,18 @@ class PopupDialog(QDialog,FORM_CLASS):
 
     def _populate_panel(self, query, loc):
         """Populate panel form fields from a DB query result."""
-        if query.idLine:
+        if query.road_id:
             self._set_combo_value(self.dyn_ref4, LAYER_ROADS)
             self.ref_name4.setText(
                 locale_value(query.road, 'Type', loc)
                 + ' ' + locale_value(query.road, 'Nom', loc))
-        elif query.idOrg:
+        elif query.organization_id:
             self._set_combo_value(self.dyn_ref4, LAYER_FACILITIES)
             self.ref_name4.setText(
                 locale_value(query.organization, 'Type', loc)
                 + ' '
                 + locale_value(query.organization, 'Nom', loc))
-        elif query.idPoly:
+        elif query.subdivision_id:
             self._set_combo_value(self.dyn_ref4, LAYER_SUBDIVISIONS)
             self.ref_name4.setText(locale_value(query.subdivision, 'Nom', loc))
         index = self.etat_mont.findData(query.situation)
@@ -250,7 +250,7 @@ class PopupDialog(QDialog,FORM_CLASS):
                         continue
 
                     query = session.query(model).filter(
-                        getattr(model, 'pkuid') == self.attribute
+                        model.id == self.attribute
                     ).first()
                     if query:
                         handler = self._POPULATE_DISPATCH.get(
@@ -285,7 +285,7 @@ class PopupDialog(QDialog,FORM_CLASS):
         session = get_session()
         try:
             Organization.update(
-                session, pkuid=self.attribute, Cat=self.cat_org.currentData(),
+                session, pkuid=self.attribute, category=self.cat_org.currentData(),
                 Nom=validate_text(self.nom_org.text()),
                 Type=self.type_org.currentData()
             )
@@ -403,23 +403,23 @@ class PopupDialog(QDialog,FORM_CLASS):
             if ref_data:
                 if ref_data.get('layer_name') == LAYER_FACILITIES:
                     PanelSign.update(session, pkuid=self.attribute,
-                                      idLine=None,
-                                      idPoly=None,
-                                      idOrg=ref_data.get('pkuid'),
+                                      road_id=None,
+                                      subdivision_id=None,
+                                      organization_id=ref_data.get('pkuid'),
                                       situation=self.etat_mont.currentData())
 
                 if ref_data.get('layer_name') == LAYER_ROADS:
                     PanelSign.update(session, pkuid=self.attribute,
-                                      idLine=ref_data.get('pkuid'),
-                                      idPoly=None,
-                                      idOrg=None,
+                                      road_id=ref_data.get('pkuid'),
+                                      subdivision_id=None,
+                                      organization_id=None,
                                       situation=self.etat_mont.currentData())
 
                 if ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
                     PanelSign.update(session, pkuid=self.attribute,
-                                      idLine=None,
-                                      idPoly=ref_data.get('pkuid'),
-                                      idOrg=None,
+                                      road_id=None,
+                                      subdivision_id=ref_data.get('pkuid'),
+                                      organization_id=None,
                                       situation=self.etat_mont.currentData())
             else:
                 PanelSign.update(session, pkuid=self.attribute,
@@ -452,11 +452,11 @@ class PopupDialog(QDialog,FORM_CLASS):
                         repetition=validate_text(self.repetition.text()),
                         valeur=validate_text(self.num_val.text()),
                         etat=self.num_etat.currentData(),
-                        idLine=None,
-                        idPoly=None,
+                        road_id=None,
+                        subdivision_id=None,
                         activity_cat=self.cat_act_3.currentData(),
                         activity_type=self.type_act_3.currentData(),
-                        idOrg=ref_data.get('pkuid')
+                        organization_id=ref_data.get('pkuid')
                     )
 
                 if ref_data.get('layer_name') == LAYER_ROADS:
@@ -465,11 +465,11 @@ class PopupDialog(QDialog,FORM_CLASS):
                         repetition=validate_text(self.repetition.text()),
                         valeur=validate_text(self.num_val.text()),
                         etat=self.num_etat.currentData(),
-                        idLine=ref_data.get('pkuid'),
-                        idPoly=None,
+                        road_id=ref_data.get('pkuid'),
+                        subdivision_id=None,
                         activity_cat=self.cat_act_3.currentData(),
                         activity_type=self.type_act_3.currentData(),
-                        idOrg=None
+                        organization_id=None
                     )
 
                 if ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
@@ -478,11 +478,11 @@ class PopupDialog(QDialog,FORM_CLASS):
                         repetition=validate_text(self.repetition.text()),
                         valeur=validate_text(self.num_val.text()),
                         etat=self.num_etat.currentData(),
-                        idLine=None,
+                        road_id=None,
                         activity_cat=self.cat_act_3.currentData(),
                         activity_type=self.type_act_3.currentData(),
-                        idPoly=ref_data.get('pkuid'),
-                        idOrg=None
+                        subdivision_id=ref_data.get('pkuid'),
+                        organization_id=None
                     )
             else:
                 Numbering.update(

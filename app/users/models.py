@@ -16,7 +16,7 @@ class User(Base, TimestampMixin):
     password = Column(String(255), nullable=False)
     active = Column(Boolean, default=True, nullable=False)
     affectation_id = Column(
-        Integer, ForeignKey('localite.pk_uid'), nullable=True, index=True
+        Integer, ForeignKey('localite.id'), nullable=True, index=True
     )
     api_key = Column(Text, default="", nullable=True)
     email = Column(String(255), nullable=True)

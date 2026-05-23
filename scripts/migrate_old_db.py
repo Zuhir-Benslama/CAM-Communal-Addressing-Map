@@ -19,7 +19,27 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 
 ADD_COLUMNS = {
-    "refpoly": [("has_child", "INTEGER")],
+    "localite": [
+        ("commune_fr", "TEXT"),
+        ("commune_en", "TEXT"),
+    ],
+    "refpoly": [
+        ("has_child", "INTEGER"),
+        ("Nom_fr", "TEXT"),
+        ("Nom_en", "TEXT"),
+    ],
+    "refpolychild": [
+        ("Nom_fr", "TEXT"),
+        ("Nom_en", "TEXT"),
+    ],
+    "RefLine": [
+        ("Nom_fr", "TEXT"),
+        ("Nom_en", "TEXT"),
+    ],
+    "reforg": [
+        ("Nom_fr", "TEXT"),
+        ("Nom_en", "TEXT"),
+    ],
     "Numerotation": [("activity_cat", "TEXT"), ("activity_type", "TEXT")],
     "user": [
         ("first_name", "TEXT"),
@@ -28,40 +48,6 @@ ADD_COLUMNS = {
         ("phone", "TEXT"),
     ],
 }
-
-VIEWS_SQL = """
-create view if not exists Num as
-    SELECT n.*, u.affectation_id
-    FROM Numerotation n
-    JOIN "user" u ON n.uid = u.id;
-
-create view if not exists Roads as
-    SELECT
-        r.*,
-        u.affectation_id,
-        CASE
-            WHEN r.num_decision IS NOT NULL AND r.num_decision != '' THEN 1
-            ELSE 0
-        END AS has_decision
-    FROM "RefLine" r
-    JOIN "user" u ON r.uid = u.id;
-
-create view if not exists Pan as
-    SELECT
-        p.*,
-        o.type || ' ' || o.nom AS org,
-        c.type || ' ' || c.nom AS city,
-        r.type || ' ' || r.nom AS road,
-        u.affectation_id
-    FROM Pannautage p
-    LEFT JOIN "RefLine" r ON p.idline = r.pkuid
-    LEFT JOIN refpolychild c ON p.idPoly = c.pkuid
-    LEFT JOIN reforg o ON p.idOrg = o.pkuid
-    JOIN "user" u ON p.uid = u.id;
-
-create view if not exists Pan2 as
-    select *, COALESCE(city, org, road) as label from Pan;
-"""
 
 REQUIRED_TABLES = [
     "refpoly", "Numerotation", "user", "RefLine", "Pannautage", "refpolychild", "reforg"
@@ -101,11 +87,11 @@ def add_missing_columns(cursor: sqlite3.Cursor) -> None:
                 logger.debug("Column %s.%s already exists, skipping", table, col_name)
 
 
-def create_views(cursor: sqlite3.Cursor) -> None:
-    for statement in VIEWS_SQL.split(";"):
-        stmt = statement.strip()
-        if stmt:
-            cursor.execute(stmt)
+def create_views(conn: sqlite3.Connection) -> None:
+    project_root = resolve_project_root()
+    views_path = os.path.join(project_root, "data", "Views.sql")
+    with open(views_path, 'r', encoding='utf-8') as f:
+        conn.executescript(f.read())
     logger.info("Views created/verified")
 
 
@@ -238,7 +224,7 @@ def main() -> None:
             sys.exit(1)
 
         add_missing_columns(cursor)
-        create_views(cursor)
+        create_views(conn)
         conn.commit()
         logger.info("Schema upgrade complete")
     except Exception:

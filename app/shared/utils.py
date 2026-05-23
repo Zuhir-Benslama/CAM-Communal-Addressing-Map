@@ -88,7 +88,7 @@ def get_all_fields_and_labels(
         if hasattr(attr, 'columns'):
             column = attr.columns[0]
             if column.name not in [
-                'geometry', 'uid', 'idLoc', 'has_child', 'parent', 'pkuid_poly'
+                'geometry', 'user_id', 'locality_id', 'has_child', 'parent', 'zone_id'
             ]:
                 fields.append(column.name)
                 if locale != 'ar':

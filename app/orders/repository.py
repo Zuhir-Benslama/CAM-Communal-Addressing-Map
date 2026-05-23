@@ -69,13 +69,14 @@ def export_model(model_name: str) -> None:
 
 
 def add_panel_sign(
-    geometry_wkt, etat_mont, idLine, idPoly, idOrg, dim=DEFAULT_PANEL_DIM,
-    pkuid=None,
+    geometry_wkt, etat_mont, road_id=None, subdivision_id=None, organization_id=None,
+    dimensions=None, pkuid=None,
 ):
     instance = PanelSign(
-        pkuid=pkuid,
+        id=pkuid,
         situation=etat_mont,
-        idLine=idLine, idPoly=idPoly, idOrg=idOrg, dim=dim,
+        road_id=road_id, subdivision_id=subdivision_id,
+        organization_id=organization_id, dimensions=dimensions or DEFAULT_PANEL_DIM,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
     return _add_entity(instance)
@@ -84,8 +85,8 @@ def add_panel_sign(
 def add_organization(geometry_wkt, nom_org, type_org, cat_org, pkuid=None,
                      nom_org_fr=None, nom_org_en=None):
     instance = Organization(
-        pkuid=pkuid,
-        Type=type_org, Cat=cat_org, Nom=nom_org,
+        id=pkuid,
+        Type=type_org, category=cat_org, Nom=nom_org,
         Nom_fr=nom_org_fr, Nom_en=nom_org_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
@@ -95,8 +96,8 @@ def add_organization(geometry_wkt, nom_org, type_org, cat_org, pkuid=None,
 def add_road(geometry_wkt, nom_voie, type_voie, dec_voie, pkuid=None,
              nom_voie_fr=None, nom_voie_en=None):
     instance = Road(
-        pkuid=pkuid,
-        Type=type_voie, Nom=nom_voie, num_decision=dec_voie,
+        id=pkuid,
+        Type=type_voie, Nom=nom_voie, decision_number=dec_voie,
         Nom_fr=nom_voie_fr, Nom_en=nom_voie_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
@@ -104,12 +105,12 @@ def add_road(geometry_wkt, nom_voie, type_voie, dec_voie, pkuid=None,
 
 
 def add_numbering(
-    geometry_wkt, valeur, idLine, idPoly, repetition, etat,
+    geometry_wkt, valeur, road_id=None, subdivision_id=None, repetition=None, etat=None,
     cat_act=None, type_act=None, pkuid=None,
 ):
     instance = Numbering(
-        pkuid=pkuid,
-        valeur=valeur, idLine=idLine, idPoly=idPoly,
+        id=pkuid,
+        valeur=valeur, road_id=road_id, subdivision_id=subdivision_id,
         repetition=repetition, etat=etat,
         activity_cat=cat_act, activity_type=type_act,
         geometry=WKTElement(geometry_wkt, srid=SRID),
@@ -120,7 +121,7 @@ def add_numbering(
 def add_subdivision(geometry_wkt, subdivision_type, name, pkuid=None,
                     name_fr=None, name_en=None):
     instance = Subdivision(
-        pkuid=pkuid,
+        id=pkuid,
         Nom=name, Type=subdivision_type,
         Nom_fr=name_fr, Nom_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
@@ -131,7 +132,7 @@ def add_subdivision(geometry_wkt, subdivision_type, name, pkuid=None,
 def add_zone(geometry_wkt, zone_type, name, pkuid=None,
              name_fr=None, name_en=None):
     instance = Zone(
-        pkuid=pkuid,
+        id=pkuid,
         Nom=name, Type=zone_type,
         Nom_fr=name_fr, Nom_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
@@ -170,7 +171,7 @@ def count_panels(panel_type: str, etat: str) -> int:
         result = session.execute(
             text(
                 "select count(*) as cpt from Pan "
-                "where Type = :type and Stituation = :etat"
+                "where Type = :type and situation = :etat"
             ),
             {"type": panel_type, "etat": etat}
         )
@@ -192,7 +193,7 @@ def query_missing_pan(etat: str) -> list:
         result = session.execute(
             text(
                 "SELECT label, type, COUNT(*) AS total "
-                "FROM Pan2 WHERE Stituation = :etat GROUP BY label, type"
+                "FROM Pan2 WHERE situation = :etat GROUP BY label, type"
             ),
             {"etat": etat}
         )
@@ -245,12 +246,12 @@ def query_missing_rep(etat: str) -> list:
 def get_zone_distribution(wilaya_number: int) -> list:
     """Query zone type distribution within a given wilaya.
 
-    Joins Zone (refpoly) with Localite on idLoc and filters by
-    codeWilaya. Returns list of (type_name, count) tuples for
+    Joins Zone (refpoly) with Localite on locality_id and filters by
+    wilaya_code. Returns list of (type_name, count) tuples for
     chart rendering.
 
     The Zone/Localite join is defined in scripts/migrate_production.py:
-        Zone.idLoc -> Localite.pk_uid, Localite.codeWilaya
+        Zone.locality_id -> Localite.id, Localite.wilaya_code
     """
     session = get_session()
     try:
@@ -258,8 +259,8 @@ def get_zone_distribution(wilaya_number: int) -> list:
             text(
                 "SELECT z.Type, COUNT(*) AS total "
                 "FROM refpoly z "
-                "JOIN localite l ON l.pk_uid = z.idLoc "
-                "WHERE l.codeWilaya = :wilaya "
+                "JOIN localite l ON l.id = z.locality_id "
+                "WHERE l.wilaya_code = :wilaya "
                 "GROUP BY z.Type "
                 "ORDER BY total DESC"
             ),

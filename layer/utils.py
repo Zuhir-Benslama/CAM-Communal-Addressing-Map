@@ -93,7 +93,7 @@ def init_allowed_zone(iface) -> None:
             if user:
                 localite = (
                     session.query(Localite)
-                    .filter(Localite.pk_uid == user.affectation_id)
+                    .filter(Localite.id == user.affectation_id)
                     .first()
                 )
             else:

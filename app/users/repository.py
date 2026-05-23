@@ -37,7 +37,7 @@ def get_current_user() -> Optional[dict]:
             return None
         localite = (
             session.query(Localite)
-            .filter(Localite.pk_uid == user.affectation_id)
+            .filter(Localite.id == user.affectation_id)
             .first()
         )
         if not localite:
@@ -46,7 +46,7 @@ def get_current_user() -> Optional[dict]:
             'id': user.id,
             'loc': user.affectation_id,
             'wilaya': localite.wilaya,
-            'commune': localite.communeAr
+            'commune': localite.commune_ar
         }
     finally:
         session.close()
@@ -60,7 +60,7 @@ def _get_authenticated_user() -> Any:
     session = get_session()
     try:
         return session.query(Localite).filter(
-            Localite.pk_uid == user_data['loc']
+            Localite.id == user_data['loc']
         ).first()
     finally:
         session.close()
