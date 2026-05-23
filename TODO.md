@@ -664,3 +664,49 @@ These are intentional patterns, not bugs. Addressed as needed during feature wor
 - [x] **Report tab merged into Settings** — removed `tab_4` (Report) from `QTabWidget`; moved Generate Report + Generate Map groupboxes into Settings tab (`scrollAreaWidgetContents_2`), above Database Backup.
 - [x] **Logout option removed** — no logout in UI; window close button triggers cleanup via `closeEvent`.
 - [x] **Tests**: 201 passed, 3 skipped (unchanged).
+
+---
+
+## 45. Code Quality Review — 2026-05-23
+
+### P1 — High ✅
+
+- [x] **`except Exception: pass` after `InitSpatialMetadata(1)`** — `app/core/database.py:75-76`. Changed to `logger.warning(..., exc_info=True)` so spatial init failures are visible.
+- [x] **Discarded query results in `PanelSign.save()`** — `app/orders/models.py:462-473`. Now validates referenced entities exist and raises `ValueError` if not found.
+- [x] **Cookie file race condition in `logout()`** — `app/users/service.py:129-163`. Writes via temp file + `os.replace()` for atomic cookie file update.
+- [x] **`report_mixin.py` duplicated error handling** — Extracted `_run_report(method, data)` helper. Both `gen_report()` and `bon_commande()` delegate to it.
+- [x] **Duplicate geometry validation in `layer_ops_mixin.py`** — Extracted `_check_geometry_in_zone()` helper. Both `on_feature_added()` and `on_geometry_changed()` use it.
+
+### P2 — Medium ✅
+
+- [x] **`refresh_layer_from_db()` has no tests** — Added 5 new tests (unknown model, no results, layer not found, with geometry, no geometry). `test_layer_refresh.py` now has 14 tests (up from 8).
+- [x] **Unprotected `mapLayersByName(name)[0]`** — `mixins/layer_draw_mixin.py:18`. Added list-length guard with warning log.
+- [x] **Potential `None` dereference from `identify_tool2.get_pkuid()`** — `mixins/layer_edit_mixin.py:88-93`. Added `if obj is None: return` guard.
+- [x] **GUI tests are minimal stubs** — Expanded from 5+6+4=15 → 16+16+12=44 tests. Added coverage for: ref mode init, get_pkuid dict, locale_feature_attr, unset, feature_as_ref (identify_tool); clear, unset, first-click marker, key events R/E/P, pause toggle (measure_tool); _set_combo_value, route, dispatch structure, unknown model warning (popup_dialog).
+- [x] **Overly broad `except Exception:` in 8 app locations** — All 8 already logged the error (majority with `exc_info=True`). No silent swallows remained.
+- [x] **`chart_mixin.py` duplicated pattern** — Extracted `_generate_chart(model, column, title_key, show, hide)` parameterized method.
+
+### P3 — Low ✅
+
+- [x] **Wrong icon on success dialog** — `mixins/backup_mixin.py:56`. Changed to `QMessageBox.information` with proper success title and message.
+- [x] **Wrong error message string** — `mixins/backup_mixin.py:104`. Changed "restore" → "backup" in log.
+- [x] **Type mismatch: `affectation_id`** — `app/users/schemas.py:53` changed to `fields.Str` to match model's `Column(String)`. Service converts `int` → `str` before passing to both schema and model.
+- [x] **SQL injection via env var in SpatiaLite fallback** — `app/core/database.py:67`. Added `os.path.exists(dll)` validation and SQL single-quote escaping via `dll.replace("'", "''")`.
+- [x] **Dual-database user storage** — The spatial DB's `user` table is required for FK constraints from spatial entities (Zone, Road, etc. have `uid` → `user.id`). `_migrate_users_to_auth` improved with per-user error tolerance, `exc_info=True` on failures, and clearer docstring explaining the dual-DB architecture. Auth ops always read from `auth.sqlite`; the spatial `user` table is kept in sync via dual-write in `sign_up`/`sign_in`/`logout`.
+- [x] **Generic variable renames** — ~90 cryptic names (`s`→`settings`, `obj`→`ref_data`, `dl`→`layer_cfg`, `identify_tool2`→`ref_identify_tool`, `action1`/`action2`→`form_action`/`ref_action`, `layer1`/`layer2`→`municipality_layer`/`base_layer`, `p1`/`p2`→`point1`/`point2`, `val`→`locale_val`, etc.) across 14 source + 4 test files.
+- [x] **Fix `KeyError: 'layout-position'` crash** — PyQt5 `uic` parser crash on `RNA_dialog_base.ui` when `<property name="alignment">` appeared before `<widget>` in `horizontalLayout_2`. Fixed by reordering XML: widget first, property after.
+-
+- ## 46. Database Schema Refactor — 2026-05-23 ✅
+-
+- ### P1 — High ✅
+-
+- - [x] **`TimestampMixin` added to `app/core/base.py`** — Mixin with `created_at` / `updated_at` datetime columns. Inherited by all 7 models (User, Localite, Zone, Subdivision, Road, Organization, Numbering, PanelSign).
+- - [x] **`User.affectation_id` type fixed** — Changed from `String` to `Integer` to match `Localite.pk_uid` FK target type. Backward-compatible via SQLite manifest typing.
+- - [x] **`User.password` made non-nullable** — `nullable=False` ensures new users always have a password hash.
+- - [x] **`User.active` made non-nullable with default** — `default=True, nullable=False` ensures new users are active by default.
+- - [x] **`Zone.has_child` made non-nullable** — `default=False, nullable=False` eliminates NULL ambiguity.
+- - [x] **FK indexes added to all models** — `index=True` on all 18 foreign key columns across 7 models for query performance.
+- - [x] **Dual-DB write vulnerability fixed** — `sign_up()` and `sign_in()` now rollback BOTH sessions on failure instead of leaving one committed. `sign_up()` replaced `user.save()` auto-commit with explicit `flush()` + two-phase commit pattern.
+- - [x] **`Stituation` → `situation`** — Column renamed in Python (DB column `"Stituation"` preserved via explicit `Column("Stituation", ...)`). All 7 Python attribute references updated across `models.py`, `repository.py`, `chart_mixin.py`, `popup_dialog.py`.
+- - [x] **Auto-migration for existing databases** — `_add_column_if_not_exists()` + `_migrate_timestamp_columns()` called from both engine init functions, adding `created_at`/`updated_at` DATETIME columns to all 8 existing tables where missing.
+- - [x] **Migration scripts updated** — `scripts/migrate_old_db.py` and `scripts/migrate_production.py` changed `affectation_id TEXT` → `affectation_id INTEGER` in raw SQL CREATE TABLE statements.

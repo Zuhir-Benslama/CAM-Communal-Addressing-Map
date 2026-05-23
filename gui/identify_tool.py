@@ -80,27 +80,27 @@ class IdentifyTool(QgsMapToolIdentify):
 
                     menu = QMenu()
                     if self.mode == self.MODE_FORM:
-                        action1 = menu.addAction(
+                        form_action = menu.addAction(
                             get_string("View or Update Form", current_locale())
                         )
-                        action1.triggered.connect(
+                        form_action.triggered.connect(
                             lambda f=feature: self.display_or_update_form_feature(
                                 f['pkuid'])
                         )
 
-                        action2 = menu.addAction(
+                        remove_action = menu.addAction(
                             get_string("Remove Item", current_locale())
                         )
-                        action2.triggered.connect(
+                        remove_action.triggered.connect(
                             lambda f=feature: self.delete_feature(f['pkuid'])
                         )
                     else:
                         nom_locale = self._locale_feature_attr(feature, 'Nom')
                         type_locale = self._locale_feature_attr(feature, 'Type')
-                        action1 = menu.addAction(
+                        ref_action = menu.addAction(
                             get_string("Set Item as Reference", current_locale())
                         )
-                        action1.triggered.connect(
+                        ref_action.triggered.connect(
                             lambda f=feature, t=type_locale, n=nom_locale: self.feature_as_ref(
                                 f['pkuid'],
                                 t,
@@ -179,9 +179,9 @@ class IdentifyTool(QgsMapToolIdentify):
         if loc != 'ar':
             locale_field = f'{base_name}_{loc}'
             if locale_field in feature.fields().names():
-                val = feature[locale_field]
-                if val:
-                    return str(val)
+                locale_val = feature[locale_field]
+                if locale_val:
+                    return str(locale_val)
         return str(feature[base_name]) if feature[base_name] else ''
 
     def feature_as_ref(self, feature_pkuid, feature_type, feature_nom) -> None:

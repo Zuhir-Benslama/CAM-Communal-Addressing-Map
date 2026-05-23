@@ -131,15 +131,15 @@ class SymbolExportMixin:
         """Export a situation map highlighting the municipality to PNG."""
         project = QgsProject.instance()
 
-        layer1 = QgsProject.instance().mapLayersByName(LAYER_MUNICIPALITY)[0]
+        municipality_layer = QgsProject.instance().mapLayersByName(LAYER_MUNICIPALITY)[0]
 
-        layer2 = None
+        base_layer = None
         if self.sat_view:
-            layer2 = QgsProject.instance().mapLayersByName(self.sat_view)[0]
+            base_layer = QgsProject.instance().mapLayersByName(self.sat_view)[0]
         elif self.rast:
-            layer2 = QgsProject.instance().mapLayersByName(self.rast)[0]
+            base_layer = QgsProject.instance().mapLayersByName(self.rast)[0]
 
-        if layer2 is None:
+        if base_layer is None:
             logger.warning(
                 "No base map layer (satellite or raster) "
                 "available for situation map")
@@ -151,11 +151,11 @@ class SymbolExportMixin:
             'outline_width': '0.6'
         })
 
-        cloned_renderer = layer1.renderer().clone()
+        cloned_renderer = municipality_layer.renderer().clone()
         cloned_renderer.setSymbol(red_symbol)
 
-        layer1_copy = layer1.clone()
-        layer1_copy.setRenderer(cloned_renderer)
+        municipality_copy = municipality_layer.clone()
+        municipality_copy.setRenderer(cloned_renderer)
 
         layout = QgsLayout(project)
         layout.initializeDefaults()
@@ -167,9 +167,9 @@ class SymbolExportMixin:
 
         map_item = QgsLayoutItemMap(layout)
         map_item.setRect(20, 20, 257, 170)
-        map_item.setExtent(layer1.extent())
+        map_item.setExtent(municipality_layer.extent())
         map_item.setScale(150000)
-        map_item.setLayers([layer2, layer1_copy])
+        map_item.setLayers([base_layer, municipality_copy])
 
         layout.addLayoutItem(map_item)
 

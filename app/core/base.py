@@ -1,9 +1,17 @@
 """SQLAlchemy declarative base and shared ORM utilities."""
+from datetime import datetime
 from typing import Any
 
+from sqlalchemy import Column, DateTime
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
+
+
+class TimestampMixin:
+    """Mixin that adds ``created_at`` / ``updated_at`` datetime columns."""
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 def _allowlist_columns(model_class: type, **kwargs: Any) -> dict:

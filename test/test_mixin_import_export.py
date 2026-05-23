@@ -187,21 +187,21 @@ class TestImportExportMixin(unittest.TestCase):
         self.mixin.paper = MagicMock()
         self.mixin.paper.currentData = MagicMock(return_value='A0')
         with patch.object(self.mixin, '_render_and_export') as mock_render:
-            self.mixin.export_to_image1()
+            self.mixin.export_to_image()
             mock_render.assert_called_once_with('4', include_situation=True)
 
     def test_export_to_image1_a3(self):
         self.mixin.paper = MagicMock()
         self.mixin.paper.currentData = MagicMock(return_value='A3')
         with patch.object(self.mixin, '_render_and_export') as mock_render:
-            self.mixin.export_to_image1()
+            self.mixin.export_to_image()
             mock_render.assert_called_once_with('3')
 
     def test_export_to_image1_other(self):
         self.mixin.paper = MagicMock()
         self.mixin.paper.currentData = MagicMock(return_value='A4')
         with patch.object(self.mixin, '_render_and_export') as mock_render:
-            self.mixin.export_to_image1()
+            self.mixin.export_to_image()
             mock_render.assert_not_called()
 
 

@@ -23,18 +23,18 @@ logger = logging.getLogger(__name__)
 
 def create_other_layers(iface) -> None:
     """Create non-mapper vector layers from QGIS config."""
-    ols = qgis_config().get('other_layers')
+    other_layer_list = qgis_config().get('other_layers')
     mapper = qgis_config().get('mapper')
-    for ol in ols:
-        layer = QgsVectorLayer(ol.get('url'), ol.get('label'), MEMORY_PROVIDER)
+    for layer_cfg in other_layer_list:
+        layer = QgsVectorLayer(layer_cfg.get('url'), layer_cfg.get('label'), MEMORY_PROVIDER)
         if layer.isValid():
-            existing = QgsProject.instance().mapLayersByName(ol.get('label'))
+            existing = QgsProject.instance().mapLayersByName(layer_cfg.get('label'))
             if not existing:
                 QgsProject.instance().addMapLayer(layer)
                 model_name = None
-                for m in mapper:
-                    if m.get("layer") == layer.name():
-                        model_name = m.get("model")
+                for cfg in mapper:
+                    if cfg.get("layer") == layer.name():
+                        model_name = cfg.get("model")
                         break
 
                 model_class = getattr(_models, model_name, None)
@@ -76,9 +76,9 @@ def init_allowed_zone(iface) -> None:
     filename = COOKIE_FILE
 
     with open(filename, 'r', encoding='utf-8') as f:
-        data = toml.load(f)
-    cookie = data.get('Session', {}).get('cookie', None)
-    uid = data.get('Session', {}).get('uid', None)
+        cookie_data = toml.load(f)
+    cookie = cookie_data.get('Session', {}).get('cookie', None)
+    uid = cookie_data.get('Session', {}).get('uid', None)
     if cookie and uid:
         session = get_session()
         try:

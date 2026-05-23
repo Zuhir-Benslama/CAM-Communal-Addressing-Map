@@ -110,7 +110,7 @@ class RNADialog(
         self.measure_tool = None
 
         self.identify_tool = None
-        self.identify_tool2 = None
+        self.ref_identify_tool = None
         self.popup_dialog = None
         self.current_user = None
         self.update_object = {}
@@ -146,16 +146,16 @@ class RNADialog(
         self.list_pan.clicked.connect(self.list_panels)
 
         self.select_ref.clicked.connect(self.select_ref_handler)
-        self.select_ref2.clicked.connect(self.select_ref_handler2)
+        self.select_ref2.clicked.connect(self.select_panel_ref_handler)
         self.page_num.keyPressEvent = lambda e: self.key_press_event(e, 'add_numbering')
         self.page_pan.keyPressEvent = lambda e: self.key_press_event(e, 'add_panel')
 
         self.mesure_dist.clicked.connect(self.activate_measure)
 
         self.bc.clicked.connect(self.bon_commande)
-        self.print.clicked.connect(self.export_to_image1)
-        self.pan.clicked.connect(self.carte_pano1)
-        self.num_carte.clicked.connect(self.carte_num1)
+        self.print.clicked.connect(self.export_to_image)
+        self.pan.clicked.connect(self.panel_chart)
+        self.num_carte.clicked.connect(self.numbering_chart)
 
         self.backup_db.clicked.connect(self.backup)
         self.restore_db.clicked.connect(self.restore_database)
@@ -206,8 +206,8 @@ class RNADialog(
         for i, name in enumerate(self.LAYER_INDEX_MAP):
             self.layer_selector.setItemText(i, get_string(name, loc))
         for i in range(self._theme_combo.count()):
-            data = self._theme_combo.itemData(i)
-            self._theme_combo.setItemText(i, get_string(data, loc))
+            theme_value = self._theme_combo.itemData(i)
+            self._theme_combo.setItemText(i, get_string(theme_value, loc))
 
     def _tr(self, source: str) -> str:
         """Translate a source string using the current locale."""
@@ -215,7 +215,7 @@ class RNADialog(
 
     def setup_settings_ui(self) -> None:
         """Build the theme and locale selector widgets in the settings area."""
-        s = QSettings(SETTINGS_ORG, SETTINGS_APP)
+        settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
 
         self._settings_group = QGroupBox(get_string("Settings", self._tr_locale))
         self._settings_group.setObjectName("_settings_group")
@@ -230,7 +230,7 @@ class RNADialog(
         self._theme_combo.addItem(THEME_DARK, THEME_DARK)
         self._theme_combo.addItem(THEME_LIGHT, THEME_LIGHT)
         self._theme_combo.currentIndexChanged[int].connect(self._on_theme_changed)
-        saved_theme = s.value(SETTINGS_KEY_THEME, DEFAULT_THEME)
+        saved_theme = settings.value(SETTINGS_KEY_THEME, DEFAULT_THEME)
         theme_map = {'فاتح': THEME_LIGHT, 'داكن': THEME_DARK}
         saved_theme = theme_map.get(saved_theme, saved_theme)
         try:
@@ -239,7 +239,7 @@ class RNADialog(
             idx = -1
         if idx >= 0:
             self._theme_combo.setCurrentIndex(idx)
-            s.setValue(SETTINGS_KEY_THEME, saved_theme)
+            settings.setValue(SETTINGS_KEY_THEME, saved_theme)
         self._current_theme = self._theme_combo.currentData()
         theme_row.addWidget(self._theme_combo)
         self._settings_group.layout().addLayout(theme_row)
@@ -254,7 +254,7 @@ class RNADialog(
             self._locale_combo.addItem(label, code)
         self._locale_combo.currentIndexChanged[int].connect(self._on_locale_changed)
         self._locale_combo.blockSignals(True)
-        saved_locale = s.value(SETTINGS_KEY_LOCALE, "")
+        saved_locale = settings.value(SETTINGS_KEY_LOCALE, "")
         if saved_locale:
             li = self._locale_combo.findData(saved_locale)
             if li >= 0:
@@ -268,8 +268,8 @@ class RNADialog(
     def _on_theme_changed(self, index: int) -> None:
         """Persist and apply the newly selected theme."""
         self._current_theme = self._theme_combo.currentData()
-        s = QSettings(SETTINGS_ORG, SETTINGS_APP)
-        s.setValue(SETTINGS_KEY_THEME, self._current_theme)
+        settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
+        settings.setValue(SETTINGS_KEY_THEME, self._current_theme)
         self.apply_theme()
 
     def _on_locale_changed(self, idx: int) -> None:
@@ -277,8 +277,8 @@ class RNADialog(
         code = self._locale_combo.currentData()
         if not code:
             return
-        s = QSettings(SETTINGS_ORG, SETTINGS_APP)
-        s.setValue(SETTINGS_KEY_LOCALE, code)
+        settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
+        settings.setValue(SETTINGS_KEY_LOCALE, code)
         self._tr_locale = code
         clear_i18n_cache()
         apply_widget_texts(self, code)

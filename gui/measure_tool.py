@@ -111,13 +111,13 @@ class MeasureTool(QgsMapToolEmitPoint):
             self.iface.messageBar().pushMessage(
                 _i18n_tr("Status", current_locale()), state, level=level, duration=10)
 
-    def addDistanceLabel(self, p1, p2) -> None:
+    def addDistanceLabel(self, point1, point2) -> None:
         """Add a distance label between two points on canvas."""
-        mid_x = (p1.x() + p2.x()) / 2
-        mid_y = (p1.y() + p2.y()) / 2
+        mid_x = (point1.x() + point2.x()) / 2
+        mid_y = (point1.y() + point2.y()) / 2
         mid_point = QgsPointXY(mid_x, mid_y)
 
-        segment_distance = self.da.measureLine(p1, p2)
+        segment_distance = self.da.measureLine(point1, point2)
         total_distance = sum(
             self.da.measureLine(self.points[i - 1], self.points[i])
             for i in range(1, len(self.points))

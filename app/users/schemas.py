@@ -50,7 +50,7 @@ class SignupSchema(_EmptyStringMixin, Schema):
         error_messages={"required": "Password is required"},
         allow_none=False
     )
-    affectation_id = fields.Int(
+    affectation_id = fields.Str(
         required=True,
         error_messages={"required": "Affectation is required"},
         allow_none=False

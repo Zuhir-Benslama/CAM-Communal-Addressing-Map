@@ -33,8 +33,8 @@ class LayerOpsMixin:
         """Deactivate all active map tools and clear measurements."""
         if self.identify_tool:
             self.identify_tool.unset_map_tool()
-        if self.identify_tool2:
-            self.identify_tool2.unset_map_tool()
+        if self.ref_identify_tool:
+            self.ref_identify_tool.unset_map_tool()
         if self.measure_tool:
             self.measure_tool.clear()
 
@@ -49,9 +49,9 @@ class LayerOpsMixin:
             visible_names.add(layer_label)
 
         data_list = qgis_config().get('other_layers')
-        for dl in data_list:
-            if dl.get('label') == layer_label and dl.get('show_with'):
-                visible_names.update(dl.get('show_with'))
+        for layer_cfg in data_list:
+            if layer_cfg.get('label') == layer_label and layer_cfg.get('show_with'):
+                visible_names.update(layer_cfg.get('show_with'))
                 break
 
         target_layer = None
@@ -114,11 +114,11 @@ class LayerOpsMixin:
                 else selected_layer
             )
             if selected_key != last_tab:
-                for dl in data_list:
-                    lbl = dl.get('label')
+                for layer_cfg in data_list:
+                    lbl = layer_cfg.get('label')
                     layers = QgsProject.instance().mapLayersByName(lbl)
                     if layers:
-                        filename = os.path.join(DEFAULT_STYLE_DIR, dl.get('style'))
+                        filename = os.path.join(DEFAULT_STYLE_DIR, layer_cfg.get('style'))
                         layers[0].loadNamedStyle(filename)
                 self._last_loaded_tab = selected_key
 
@@ -148,12 +148,12 @@ class LayerOpsMixin:
                 layer_node.setItemVisibilityChecked(False)
             self._show_base_layers(root)
             data_list = qgis_config().get('other_layers')
-            for dl in data_list:
-                tmpl_list = QgsProject.instance().mapLayersByName(dl.get('label'))
+            for layer_cfg in data_list:
+                tmpl_list = QgsProject.instance().mapLayersByName(layer_cfg.get('label'))
                 if not tmpl_list:
                     continue
                 tmpl = tmpl_list[0]
-                filename = os.path.join(CUSTOM_STYLE_DIR, dl.get('style'))
+                filename = os.path.join(CUSTOM_STYLE_DIR, layer_cfg.get('style'))
                 tmpl.loadNamedStyle(filename)
                 for i in [LAYER_SUBDIVISIONS, LAYER_FACILITIES, LAYER_ROADS]:
                     always_shown = QgsProject.instance().mapLayersByName(i)
@@ -223,6 +223,26 @@ class LayerOpsMixin:
         dlg = EntityListDialog(model_name="PanelSign", list_of='Panels')
         dlg.exec_()
 
+    def _check_geometry_in_zone(self, geometry_wkt: str) -> int:
+        """Check if geometry is within the user's allowed zone.
+
+        Returns:
+            0 = outside zone
+            1 = Point within polygon
+            2 = Polygon intersects zone
+            3 = LineString intersects zone
+        """
+        uloc = wkt.loads(get_user_location())
+        current_obj = wkt.loads(geometry_wkt)
+
+        if isinstance(current_obj, Point) and current_obj.within(uloc):
+            return 1
+        if isinstance(current_obj, Polygon) and current_obj.intersects(uloc):
+            return 2
+        if isinstance(current_obj, LineString) and current_obj.intersects(uloc):
+            return 3
+        return 0
+
     def on_feature_added(self, fid) -> None:
         """Validate added feature geometry against the user's allowed zone."""
         layer = self.iface.activeLayer()
@@ -232,24 +252,7 @@ class LayerOpsMixin:
             layer.updateFeature(obj)
 
             if obj.isValid():
-                uloc = wkt.loads(get_user_location())
-                current_obj = wkt.loads(obj.geometry().asWkt())
-
-                case = 0
-                if isinstance(current_obj, Point) and current_obj.within(uloc):
-                    case = 1
-                elif (
-                    isinstance(current_obj, Polygon)
-                    and current_obj.intersects(uloc)
-                ):
-                    case = 2
-                elif (
-                    isinstance(current_obj, LineString)
-                    and current_obj.intersects(uloc)
-                ):
-                    case = 3
-                else:
-                    case = 0
+                case = self._check_geometry_in_zone(obj.geometry().asWkt())
 
                 if case == 0:
                     del_obj = layer.getFeature(fid)
@@ -299,22 +302,7 @@ class LayerOpsMixin:
             if not feature.isValid():
                 return
 
-            uloc = wkt.loads(get_user_location())
-            current_obj = wkt.loads(feature.geometry().asWkt())
-
-            case = 0
-            if isinstance(current_obj, Point) and current_obj.within(uloc):
-                case = 1
-            elif (
-                isinstance(current_obj, Polygon)
-                and current_obj.intersects(uloc)
-            ):
-                case = 2
-            elif (
-                isinstance(current_obj, LineString)
-                and current_obj.intersects(uloc)
-            ):
-                case = 3
+            case = self._check_geometry_in_zone(feature.geometry().asWkt())
 
             if case == 0:
                 layer.rollBack()

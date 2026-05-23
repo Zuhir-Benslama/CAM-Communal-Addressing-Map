@@ -82,7 +82,7 @@ class TestRNADialogCore(unittest.TestCase):
         self.assertEqual(dialog.type_to_hide, "")
         self.assertIsNone(dialog.measure_tool)
         self.assertIsNone(dialog.identify_tool)
-        self.assertIsNone(dialog.identify_tool2)
+        self.assertIsNone(dialog.ref_identify_tool)
         self.assertIsNone(dialog.popup_dialog)
         self.assertIsNone(dialog.current_user)
         self.assertEqual(dialog.update_object, {})

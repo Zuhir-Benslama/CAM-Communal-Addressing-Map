@@ -56,7 +56,7 @@ class PopupDialog(QDialog,FORM_CLASS):
 
         fill_org_category(self.cat_org)
         self.cat_org.currentIndexChanged.connect(self.on_select_catOrg)
-        self.identify_tool2=None
+        self.ref_identify_tool=None
         fill_road_type(self.type_voie)
         fill_road_reference(self.dyn_ref3)
         fill_panel_reference(self.dyn_ref4)
@@ -223,7 +223,7 @@ class PopupDialog(QDialog,FORM_CLASS):
         elif query.idPoly:
             self._set_combo_value(self.dyn_ref4, LAYER_SUBDIVISIONS)
             self.ref_name4.setText(locale_value(query.subdivision, 'Nom', loc))
-        index = self.etat_mont.findData(query.Stituation)
+        index = self.etat_mont.findData(query.situation)
         if index != -1:
             self.etat_mont.setCurrentIndex(index)
 
@@ -347,12 +347,12 @@ class PopupDialog(QDialog,FORM_CLASS):
             if layer:
                 self.iface.setActiveLayer(layer[0])
                 canvas = self.iface.mapCanvas()
-                self.identify_tool2 = IdentifyTool(
+                self.ref_identify_tool = IdentifyTool(
                     canvas, mode=IdentifyTool.MODE_REF)
-                self.identify_tool2.set_iface(self.iface)
-                self.identify_tool2.set_ref_name(self.ref_name3)
-                self.identify_tool2.set_active_layer(layer[0])
-                canvas.setMapTool(self.identify_tool2)
+                self.ref_identify_tool.set_iface(self.iface)
+                self.ref_identify_tool.set_ref_name(self.ref_name3)
+                self.ref_identify_tool.set_active_layer(layer[0])
+                canvas.setMapTool(self.ref_identify_tool)
 
         else:
             QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string("Reference type not specified", self._tr_locale))
@@ -375,12 +375,12 @@ class PopupDialog(QDialog,FORM_CLASS):
             if layer:
                 self.iface.setActiveLayer(layer[0])
                 canvas = self.iface.mapCanvas()
-                self.identify_tool2 = IdentifyTool(
+                self.ref_identify_tool = IdentifyTool(
                     canvas, mode=IdentifyTool.MODE_REF)
-                self.identify_tool2.set_iface(self.iface)
-                self.identify_tool2.set_ref_name(self.ref_name4)
-                self.identify_tool2.set_active_layer(layer[0])
-                canvas.setMapTool(self.identify_tool2)
+                self.ref_identify_tool.set_iface(self.iface)
+                self.ref_identify_tool.set_ref_name(self.ref_name4)
+                self.ref_identify_tool.set_active_layer(layer[0])
+                canvas.setMapTool(self.ref_identify_tool)
 
         else:
             QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string("Reference type not specified", self._tr_locale))
@@ -396,34 +396,34 @@ class PopupDialog(QDialog,FORM_CLASS):
         """Update panel feature in the database."""
         session = get_session()
         try:
-            obj = None
-            if self.identify_tool2:
-                obj = self.identify_tool2.get_pkuid()
+            ref_data = None
+            if self.ref_identify_tool:
+                ref_data = self.ref_identify_tool.get_pkuid()
 
-            if obj:
-                if obj.get('layer_name') == LAYER_FACILITIES:
+            if ref_data:
+                if ref_data.get('layer_name') == LAYER_FACILITIES:
                     PanelSign.update(session, pkuid=self.attribute,
                                       idLine=None,
                                       idPoly=None,
-                                      idOrg=obj.get('pkuid'),
-                                      Stituation=self.etat_mont.currentData())
+                                      idOrg=ref_data.get('pkuid'),
+                                      situation=self.etat_mont.currentData())
 
-                if obj.get('layer_name') == LAYER_ROADS:
+                if ref_data.get('layer_name') == LAYER_ROADS:
                     PanelSign.update(session, pkuid=self.attribute,
-                                      idLine=obj.get('pkuid'),
+                                      idLine=ref_data.get('pkuid'),
                                       idPoly=None,
                                       idOrg=None,
-                                      Stituation=self.etat_mont.currentData())
+                                      situation=self.etat_mont.currentData())
 
-                if obj.get('layer_name') == LAYER_SUBDIVISIONS:
+                if ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
                     PanelSign.update(session, pkuid=self.attribute,
                                       idLine=None,
-                                      idPoly=obj.get('pkuid'),
+                                      idPoly=ref_data.get('pkuid'),
                                       idOrg=None,
-                                      Stituation=self.etat_mont.currentData())
+                                      situation=self.etat_mont.currentData())
             else:
                 PanelSign.update(session, pkuid=self.attribute,
-                                  Stituation=self.etat_mont.currentData())
+                                  situation=self.etat_mont.currentData())
 
             QMessageBox.information(
                 self, get_string("Success", self._tr_locale), get_string("This panel has been updated successfully", self._tr_locale))
@@ -441,12 +441,12 @@ class PopupDialog(QDialog,FORM_CLASS):
         """Update numbering feature in the database."""
         session = get_session()
         try:
-            obj = None
-            if self.identify_tool2:
-                obj = self.identify_tool2.get_pkuid()
+            ref_data = None
+            if self.ref_identify_tool:
+                ref_data = self.ref_identify_tool.get_pkuid()
 
-            if obj:
-                if obj.get('layer_name') == LAYER_FACILITIES:
+            if ref_data:
+                if ref_data.get('layer_name') == LAYER_FACILITIES:
                     Numbering.update(
                         session, pkuid=self.attribute,
                         repetition=validate_text(self.repetition.text()),
@@ -456,23 +456,23 @@ class PopupDialog(QDialog,FORM_CLASS):
                         idPoly=None,
                         activity_cat=self.cat_act_3.currentData(),
                         activity_type=self.type_act_3.currentData(),
-                        idOrg=obj.get('pkuid')
+                        idOrg=ref_data.get('pkuid')
                     )
 
-                if obj.get('layer_name') == LAYER_ROADS:
+                if ref_data.get('layer_name') == LAYER_ROADS:
                     Numbering.update(
                         session, pkuid=self.attribute,
                         repetition=validate_text(self.repetition.text()),
                         valeur=validate_text(self.num_val.text()),
                         etat=self.num_etat.currentData(),
-                        idLine=obj.get('pkuid'),
+                        idLine=ref_data.get('pkuid'),
                         idPoly=None,
                         activity_cat=self.cat_act_3.currentData(),
                         activity_type=self.type_act_3.currentData(),
                         idOrg=None
                     )
 
-                if obj.get('layer_name') == LAYER_SUBDIVISIONS:
+                if ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
                     Numbering.update(
                         session, pkuid=self.attribute,
                         repetition=validate_text(self.repetition.text()),
@@ -481,7 +481,7 @@ class PopupDialog(QDialog,FORM_CLASS):
                         idLine=None,
                         activity_cat=self.cat_act_3.currentData(),
                         activity_type=self.type_act_3.currentData(),
-                        idPoly=obj.get('pkuid'),
+                        idPoly=ref_data.get('pkuid'),
                         idOrg=None
                     )
             else:

@@ -162,8 +162,10 @@ def setup_mocks():
 
     _gda2 = types.ModuleType('geoalchemy2')
     sys.modules['geoalchemy2'] = _gda2
-    _geom = MagicMock()
-    sys.modules['geoalchemy2.Geometry'] = _geom
+    class _FakeGeometryType:
+        """Fake Geometry type for isinstance() checks in tests."""
+    _gda2.Geometry = _FakeGeometryType
+    sys.modules['geoalchemy2.Geometry'] = _FakeGeometryType
     sys.modules['geoalchemy2.elements'] = MagicMock()
 
     _sa = MagicMock()
@@ -212,7 +214,7 @@ def setup_gui_mocks():
     _constants.current_theme = lambda: 'dark'
     _constants.get_theme_qss = lambda t: ''
     _constants.current_locale = lambda: 'ar'
-    _constants.locale_value = lambda v, l: v
+    _constants.locale_value = lambda v, f, l=None: getattr(v, f)
     _constants.validate_text = lambda t, f, l: (True, t)
     _constants.LAYER_KEY = 'key'
     _constants.LAYER_ROADS = 'roads'
@@ -232,7 +234,7 @@ def setup_gui_mocks():
     sys.modules['plans_adressage.scripts.lookup_data'] = _lookup
 
     _i18n = MagicMock()
-    _i18n.tr = lambda s: s
+    _i18n.tr = lambda s, loc=None: s
     sys.modules['plans_adressage.i18n'] = _i18n
 
     _shared_utils = MagicMock()

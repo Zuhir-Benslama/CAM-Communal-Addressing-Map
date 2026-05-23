@@ -100,8 +100,8 @@ def fill_road_reference(combobox) -> None:
     loc = _locale()
     data_list = qgis_config().get('refs')
     combobox.clear()
-    for dl in data_list:
-        source = dl.get('label')
+    for layer_cfg in data_list:
+        source = layer_cfg.get('label')
         combobox.addItem(_i18n_tr(source, loc), source)
     combobox.setCurrentIndex(0)
 
@@ -111,8 +111,8 @@ def fill_panel_reference(combobox) -> None:
     loc = _locale()
     data_list = qgis_config().get('refs2')
     combobox.clear()
-    for dl in data_list:
-        source = dl.get('label')
+    for layer_cfg in data_list:
+        source = layer_cfg.get('label')
         combobox.addItem(_i18n_tr(source, loc), source)
     combobox.setCurrentIndex(0)
 

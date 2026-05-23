@@ -73,8 +73,8 @@ class AuthMixin:
         """Populate the map options combo box from QGIS config."""
         maps = qgis_config().get('map_layers')
         self.map_options.clear()
-        for m in maps:
-            self.map_options.addItem(m.get('label'), m.get('url'))
+        for cfg in maps:
+            self.map_options.addItem(cfg.get('label'), cfg.get('url'))
 
     def add_map_layer(self) -> bool:
         """Add the selected raster or WMS map layer to the project."""

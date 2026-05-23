@@ -60,7 +60,7 @@ class ImportExportMixin:
             current_scale = canvas.scale()
             symb = self.symbols()
             if symb:
-                d = {
+                export_data = {
                     'type_plan': self.type_plan,
                     'date': self.dateEdit.date().toString("yyyy/MM/dd"),
                     'by': validate_text(self.lineEdit_by.text()),
@@ -72,7 +72,7 @@ class ImportExportMixin:
                 }
                 try:
                     with open(TMP_JSON, 'w', encoding='utf-8') as f:
-                        json.dump(d, f, ensure_ascii=False, indent=4)
+                        json.dump(export_data, f, ensure_ascii=False, indent=4)
                 except Exception as e:
                     logger.error("Error saving JSON file: %s", e)
 
@@ -90,7 +90,7 @@ class ImportExportMixin:
                 except Exception as e:
                     logger.exception("Failed to export map: %s", e)
 
-    def export_to_image1(self) -> None:
+    def export_to_image(self) -> None:
         """Render the map canvas and export to PNG via an external
         reporting script."""
         selected_value = self.paper.currentData()

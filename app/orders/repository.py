@@ -74,7 +74,7 @@ def add_panel_sign(
 ):
     instance = PanelSign(
         pkuid=pkuid,
-        Stituation=etat_mont,
+        situation=etat_mont,
         idLine=idLine, idPoly=idPoly, idOrg=idOrg, dim=dim,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )

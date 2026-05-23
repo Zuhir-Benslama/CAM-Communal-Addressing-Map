@@ -49,15 +49,15 @@ class TestChartMixin(unittest.TestCase):
         import shutil
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
-    def test_carte_pano1_queries_and_renders(self):
-        self.mixin.carte_pano1()
+    def test_panel_chart_queries_and_renders(self):
+        self.mixin.panel_chart()
         self.assertEqual(self.mixin.type_plan, 'Panels')
         self.assertEqual(self.mixin.type_to_hide, 'Numbering')
         self.session_mock.query.assert_called_once()
         self.session_mock.close.assert_called_once()
 
-    def test_carte_num1_queries_and_renders(self):
-        self.mixin.carte_num1()
+    def test_numbering_chart_queries_and_renders(self):
+        self.mixin.numbering_chart()
         self.assertEqual(self.mixin.type_plan, 'Numbering')
         self.assertEqual(self.mixin.type_to_hide, 'Panels')
         self.session_mock.query.assert_called_once()

@@ -15,7 +15,11 @@ class LayerDrawMixin:
 
     def _draw_handler(self, layer_name: str) -> None:
         """Start editing a named layer with feature-added tracking."""
-        layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+        layers = QgsProject.instance().mapLayersByName(layer_name)
+        if not layers:
+            logger.warning("Layer '%s' not found for drawing", layer_name)
+            return
+        layer = layers[0]
         try:
             layer.featureAdded.disconnect(self.on_feature_added)
         except TypeError:

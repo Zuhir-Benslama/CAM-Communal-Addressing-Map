@@ -23,8 +23,8 @@ def current_locale() -> str:
     from ..shared.constants import (
         SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
     )
-    s = QSettings(SETTINGS_ORG, SETTINGS_APP)
-    locale = s.value(SETTINGS_KEY_LOCALE, '')
+    settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
+    locale = settings.value(SETTINGS_KEY_LOCALE, '')
     if not locale:
         locale_val = QSettings().value('locale/userLocale')
         locale = locale_val[0:2] if locale_val else 'en'
@@ -47,13 +47,13 @@ def current_theme() -> str:
         SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, THEME_DARK,
         THEME_LIGHT,
     )
-    s = QSettings(SETTINGS_ORG, SETTINGS_APP)
-    value = s.value(SETTINGS_KEY_THEME, THEME_DARK)
+    settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
+    value = settings.value(SETTINGS_KEY_THEME, THEME_DARK)
     # Backward compat: old Arabic values were changed to English
     theme_map = {'فاتح': THEME_LIGHT, 'داكن': THEME_DARK}
     migrated = theme_map.get(value)
     if migrated is not None:
-        s.setValue(SETTINGS_KEY_THEME, migrated)
+        settings.setValue(SETTINGS_KEY_THEME, migrated)
         return migrated
     return value
 

@@ -20,18 +20,18 @@ def sign_up(
     username: str, password: str, affectation_id: int, phone: str,
     email: str, first_name: str, lastname: str
 ) -> tuple[bool, list[str] | None]:
-    data = {
+    signup_data = {
         "username": username,
         "first_name": first_name,
         "last_name": lastname,
         "password": password,
-        "affectation_id": affectation_id,
+        "affectation_id": str(affectation_id),
         "email": email,
         "phone": phone,
     }
     schema = SignupSchema()
     try:
-        schema.load(data)
+        schema.load(signup_data)
         spatial_session = get_session()
         auth_session = get_auth_session()
         try:
@@ -41,7 +41,8 @@ def sign_up(
                 first_name=first_name, last_name=lastname,
                 affectation_id=affectation_id, api_key=""
             )
-            user.save(spatial_session)
+            spatial_session.add(user)
+            spatial_session.flush()
             auth_session.add(User(
                 id=user.id,
                 username=username, password=hash_password(password),
@@ -50,6 +51,11 @@ def sign_up(
                 affectation_id=affectation_id, api_key=""
             ))
             auth_session.commit()
+            spatial_session.commit()
+        except Exception:
+            spatial_session.rollback()
+            auth_session.rollback()
+            raise
         finally:
             spatial_session.close()
             auth_session.close()
@@ -65,10 +71,10 @@ def sign_up(
 def sign_in(
     username: str, password: str,
 ) -> tuple[bool, str | None, str | None]:
-    data = {'USERNAME': username, 'PASSWORD': password}
+    credentials = {'USERNAME': username, 'PASSWORD': password}
     schema = AuthSchema()
     try:
-        schema.load(data)
+        schema.load(credentials)
         auth_session = get_auth_session()
         try:
             existing_user = (
@@ -76,31 +82,35 @@ def sign_in(
             )
             if not existing_user:
                 return False, None, "Username doesn't exist"
-            if verify_password(password, existing_user.password):
-                spatial_session = get_session()
-                try:
-                    spatial_user = (
-                        spatial_session.query(User)
-                        .filter_by(username=username).first()
-                    )
-                    auth_user = (
-                        auth_session.query(User)
-                        .filter_by(username=username).first()
-                    )
-                    token = jwt.encode(
-                        auth_user.to_dict(), get_jwt_secret(),
-                        algorithm='HS256'
-                    )
-                    if spatial_user:
-                        spatial_user.api_key = str(token)
-                        spatial_session.commit()
-                    auth_user.api_key = str(token)
-                    auth_session.commit()
-                    create_cookie(token, auth_user.id)
-                finally:
-                    spatial_session.close()
-                return True, auth_user.username, None
-            return False, None, "Wrong password try again !"
+            if not verify_password(password, existing_user.password):
+                return False, None, "Wrong password try again !"
+            spatial_session = get_session()
+            try:
+                spatial_user = (
+                    spatial_session.query(User)
+                    .filter_by(username=username).first()
+                )
+                auth_user = (
+                    auth_session.query(User)
+                    .filter_by(username=username).first()
+                )
+                token = jwt.encode(
+                    auth_user.to_dict(), get_jwt_secret(),
+                    algorithm='HS256'
+                )
+                if spatial_user:
+                    spatial_user.api_key = str(token)
+                auth_user.api_key = str(token)
+                spatial_session.commit()
+                auth_session.commit()
+                create_cookie(token, auth_user.id)
+            except Exception:
+                spatial_session.rollback()
+                auth_session.rollback()
+                raise
+            finally:
+                spatial_session.close()
+            return True, auth_user.username, None
         except Exception as e:
             QgsMessageLog.logMessage(
                 f"sign_in error: {e}", 'RNA', level=2
@@ -127,12 +137,15 @@ def remove_all_layers(iface) -> None:
 
 
 def logout(iface, dlg) -> None:
+    import os
+    import tempfile
+
     filename = COOKIE_FILE
 
     with open(filename, 'r', encoding='utf-8') as f:
-        data = toml.load(f)
-    cookie = data.get('Session', {}).get('cookie', None)
-    uid = data.get('Session', {}).get('uid', None)
+        cookie_data = toml.load(f)
+    cookie = cookie_data.get('Session', {}).get('cookie', None)
+    uid = cookie_data.get('Session', {}).get('uid', None)
     if cookie and uid:
         spatial_session = get_session()
         auth_session = get_auth_session()
@@ -150,11 +163,19 @@ def logout(iface, dlg) -> None:
                     user.api_key = None
             spatial_session.commit()
             auth_session.commit()
-            data['Session']['cookie'] = None
-            data['Session']['uid'] = None
+            cookie_data['Session']['cookie'] = None
+            cookie_data['Session']['uid'] = None
 
-            with open(filename, 'w', encoding='utf-8') as f:
-                toml.dump(data, f)
+            fd, tmp_path = tempfile.mkstemp(
+                dir=os.path.dirname(filename) or '.'
+            )
+            try:
+                with os.fdopen(fd, 'w', encoding='utf-8') as f:
+                    toml.dump(cookie_data, f)
+                os.replace(tmp_path, filename)
+            except Exception:
+                os.unlink(tmp_path)
+                raise
         finally:
             spatial_session.close()
             auth_session.close()

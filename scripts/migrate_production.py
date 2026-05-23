@@ -101,7 +101,7 @@ AUTH_USER_SCHEMA = """
         last_name TEXT,
         password TEXT,
         active INTEGER,
-        affectation_id TEXT,
+         affectation_id INTEGER,
         api_key TEXT DEFAULT '',
         email TEXT,
         phone TEXT

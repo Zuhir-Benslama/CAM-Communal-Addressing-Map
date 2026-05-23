@@ -53,7 +53,10 @@ class BackupMixin:
             if os.path.exists(temp_path):
                 os.remove(temp_path)
             raise
-        QMessageBox.warning(self, self._tr("Warning"), f"{os.path.basename(source_path)}")
+        QMessageBox.information(
+            self, self._tr("Success"),
+            self._tr("Database restored from %s") % os.path.basename(source_path),
+        )
 
     def restore_auth_database(self) -> None:
         """Ensure the auth database file exists, creating it if needed."""
@@ -101,5 +104,5 @@ class BackupMixin:
                 self, self._tr("Success"), self._tr("File copied successfully"),
             )
         except Exception as e:
-            logger.exception("Failed to restore database: %s", e)
+            logger.exception("Failed to backup database: %s", e)
             QMessageBox.critical(self, self._tr("Error"), self._tr("Failed to copy file"))

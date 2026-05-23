@@ -15,8 +15,8 @@ class MapToolsMixin:
 
     def _selection_handler(self, layer=None) -> None:
         """Activate identify tool for feature selection on the active layer."""
-        if self.identify_tool2:
-            self.identify_tool2.unset_map_tool()
+        if self.ref_identify_tool:
+            self.ref_identify_tool.unset_map_tool()
         canvas = self.iface.mapCanvas()
         self.identify_tool = IdentifyTool(canvas)
         self.identify_tool.set_iface(self.iface)
@@ -49,8 +49,8 @@ class MapToolsMixin:
             if self.identify_tool:
                 self.identify_tool.unset_map_tool()
 
-            if self.identify_tool2:
-                self.identify_tool2.unset_map_tool()
+            if self.ref_identify_tool:
+                self.ref_identify_tool.unset_map_tool()
             if self.measure_tool:
                 self.measure_tool.clear()
 
@@ -94,13 +94,13 @@ class MapToolsMixin:
             if layer:
                 self.iface.setActiveLayer(layer[0])
                 canvas = self.iface.mapCanvas()
-                self.identify_tool2 = IdentifyTool(
+                self.ref_identify_tool = IdentifyTool(
                     canvas, mode=IdentifyTool.MODE_REF,
                 )
-                self.identify_tool2.set_iface(self.iface)
-                self.identify_tool2.set_ref_name(self.ref_name)
-                self.identify_tool2.set_active_layer(layer[0])
-                canvas.setMapTool(self.identify_tool2)
+                self.ref_identify_tool.set_iface(self.iface)
+                self.ref_identify_tool.set_ref_name(self.ref_name)
+                self.ref_identify_tool.set_active_layer(layer[0])
+                canvas.setMapTool(self.ref_identify_tool)
         else:
             QMessageBox.critical(self, self._tr("Error"), self._tr("Reference type not specified"))
         self.set_default_cursor()
@@ -109,16 +109,16 @@ class MapToolsMixin:
         """Activate reference selection for the first reference combo."""
         self._select_ref(self.dyn_ref)
 
-    def select_ref_handler2(self) -> None:
-        """Activate reference selection for the second reference combo."""
+    def select_panel_ref_handler(self) -> None:
+        """Activate reference selection for the panel reference combo."""
         self._select_ref(self.dyn_ref2)
 
     def ref_pan_selected(self) -> None:
         """Handle panel reference selection event."""
-        if not self.identify_tool2:
+        if not self.ref_identify_tool:
             return
-        obj = self.identify_tool2.get_pkuid()
-        if not obj:
+        ref_data = self.ref_identify_tool.get_pkuid()
+        if not ref_data:
             QMessageBox.critical(self, self._tr("Error"), self._tr("Reference type not specified"))
             return
 

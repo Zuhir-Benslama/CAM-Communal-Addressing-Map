@@ -1,9 +1,10 @@
 """Database engine and session management for SQLite/SpatiaLite."""
 import logging
+import os
 from contextlib import contextmanager
 from typing import Any, Iterator
 
-from sqlalchemy import create_engine, event, inspect
+from sqlalchemy import create_engine, event, inspect, text
 from sqlalchemy.orm import sessionmaker, Session
 
 from ..shared.constants import DATABASE_FILE, AUTH_DATABASE_FILE
@@ -45,6 +46,36 @@ def reset_connection_pool() -> None:
     _AuthSession = None
 
 
+def _add_column_if_not_exists(
+    conn: Any, table: str, column: str, col_type: str
+) -> None:
+    """Add a column to a SQLite table if it does not already exist."""
+    result = conn.execute(text(f"PRAGMA table_info('{table}')"))
+    existing = {row[1] for row in result.fetchall()}
+    if column not in existing:
+        conn.execute(text(f"ALTER TABLE '{table}' ADD COLUMN {column} {col_type}"))
+        logger.info("Added column %s.%s (%s)", table, column, col_type)
+
+
+_TIMESTAMP_TABLES = (
+    'user', 'localite', 'refpoly', 'refpolychild',
+    'RefLine', 'reforg', 'Numerotation', 'Pannautage',
+)
+
+
+def _migrate_timestamp_columns(engine: Any) -> None:
+    """Add ``created_at`` / ``updated_at`` columns to all known tables."""
+    with engine.connect() as conn:
+        for table in _TIMESTAMP_TABLES:
+            try:
+                _add_column_if_not_exists(conn, table, 'created_at', 'DATETIME')
+                _add_column_if_not_exists(conn, table, 'updated_at', 'DATETIME')
+            except Exception:
+                logger.warning(
+                    "Could not add timestamp columns to %s", table, exc_info=True
+                )
+
+
 def get_engine() -> Any:
     global _engine
     if _engine is None:
@@ -52,6 +83,7 @@ def get_engine() -> Any:
         _engine = create_engine(
             f'sqlite:///{filename}', echo=False, pool_pre_ping=True
         )
+        _migrate_timestamp_columns(_engine)
 
         @event.listens_for(_engine, "connect")
         def connect_spatialite(dbapi_conn, _connection_record) -> None:
@@ -64,7 +96,14 @@ def get_engine() -> Any:
                     "SpatiaLite load_extension API failed, trying SQL fallback",
                     exc_info=True,
                 )
-                dbapi_conn.execute(f"SELECT load_extension('{dll}')")
+                if not os.path.exists(dll):
+                    raise RuntimeError(
+                        f"SpatiaLite DLL not found: {dll}"
+                    )
+                safe_dll = dll.replace("'", "''")
+                dbapi_conn.execute(
+                    f"SELECT load_extension('{safe_dll}')"
+                )
             try:
                 cursor = dbapi_conn.execute(
                     "SELECT count(*) FROM sqlite_master "
@@ -73,7 +112,11 @@ def get_engine() -> Any:
                 if cursor.fetchone()[0] == 0:
                     dbapi_conn.execute("SELECT InitSpatialMetadata(1)")
             except Exception:
-                pass
+                logger.warning(
+                    "InitSpatialMetadata(1) failed — spatial queries "
+                    "may not work correctly",
+                    exc_info=True,
+                )
 
         Base.metadata.create_all(_engine)
     return _engine
@@ -94,18 +137,38 @@ def get_auth_engine() -> Any:
         _auth_engine = create_engine(
             f'sqlite:///{filename}', echo=False, pool_pre_ping=True
         )
+        _migrate_timestamp_columns(_auth_engine)
         Base.metadata.create_all(_auth_engine, tables=[User.__table__])
         _migrate_users_to_auth()
     return _auth_engine
 
 
 def _migrate_users_to_auth() -> None:
+    """One-shot migration from legacy spatial DB user table to auth DB.
+
+    The spatial DB retains a ``user`` table purely to satisfy ``FOREIGN KEY``
+    constraints from spatial entity models (Zone, Road, etc. have a ``uid``
+    column referencing ``user.id``).  Auth-sensitive columns (``password``,
+    ``api_key``, ``email``, etc.) exist in both tables but **auth operations
+    always read from ``auth.sqlite``** — the spatial ``user`` table is only
+    ever written to keep FK constraints satisfied.
+
+    This migration copies rows from the pre-existing spatial ``user`` table
+    into the new auth DB exactly once (when the auth DB is first created).
+    After that, ``sign_up`` / ``sign_in`` / ``logout`` keep both tables in
+    sync via dual-write.
+    """
     from ..users.models import User
     try:
         auth_session = sessionmaker(bind=_auth_engine)()
+    except Exception:
+        logger.exception(
+            "Cannot create auth session for user migration"
+        )
+        return
+    try:
         count = auth_session.query(User).count()
         if count > 0:
-            auth_session.close()
             return
         spatial_engine = get_engine()
         spatial_session = sessionmaker(bind=spatial_engine)()
@@ -113,25 +176,39 @@ def _migrate_users_to_auth() -> None:
             if not inspect(spatial_engine).has_table('user'):
                 return
             users = spatial_session.query(User).all()
+            migrated = 0
             for user in users:
-                auth_session.add(User(
-                    id=user.id, username=user.username,
-                    password=user.password, active=user.active,
-                    affectation_id=user.affectation_id,
-                    api_key=user.api_key, email=user.email,
-                    phone=user.phone, first_name=user.first_name,
-                    last_name=user.last_name,
-                ))
+                try:
+                    auth_session.add(User(
+                        id=user.id, username=user.username,
+                        password=user.password, active=user.active,
+                        affectation_id=user.affectation_id,
+                        api_key=user.api_key, email=user.email,
+                        phone=user.phone, first_name=user.first_name,
+                        last_name=user.last_name,
+                    ))
+                    migrated += 1
+                except Exception:
+                    logger.warning(
+                        "Failed to migrate user %s", user.id,
+                        exc_info=True,
+                    )
             auth_session.commit()
-            logger.info("Migrated %d user(s) to auth.sqlite", len(users))
+            if migrated:
+                logger.info(
+                    "Migrated %d user(s) to auth.sqlite", migrated
+                )
         finally:
             spatial_session.close()
             auth_session.close()
     except Exception:
         logger.warning(
             "Auto-migration of users to auth.sqlite failed "
-            "(spatial DB may not exist yet)"
+            "(spatial DB may not exist yet)",
+            exc_info=True,
         )
+    finally:
+        auth_session.close()
 
 
 def get_auth_session() -> Session:

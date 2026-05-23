@@ -24,9 +24,54 @@ logger = logging.getLogger(__name__)
 class ReportMixin:
     """Mixin for generating statistical reports and purchase order documents."""
 
+    def _run_report(self, method: str, data: dict) -> bool:
+        """Run the external reporting script and display result dialogs."""
+        try:
+            with open(TMP_JSON, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=4)
+        except Exception as e:
+            logger.error("Error saving JSON file: %s", e)
+            return False
+
+        script_path = REPORTING_SCRIPT
+        command = [f"{get_qgis_python()}", script_path, '--method', method]
+
+        try:
+            subprocess.run(
+                command, capture_output=True, text=True,
+                check=True, **_SUBPROCESS_FLAGS,
+            )
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setWindowTitle(self._tr("Success"))
+            msg.setStyleSheet(get_theme_qss(current_theme()))
+            msg.setInformativeText(self._tr("Report saved to your documents"))
+            msg.exec_()
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error("Subprocess failed with error: %s", e)
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setWindowTitle(self._tr("Error"))
+            msg.setStyleSheet(get_theme_qss(current_theme()))
+            msg.setText(self._tr("Failed to generate report"))
+            msg.setInformativeText(str(e))
+            msg.exec_()
+            return False
+        except Exception as e:
+            logger.exception("Unexpected error: %s", e)
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setWindowTitle(self._tr("Error"))
+            msg.setStyleSheet(get_theme_qss(current_theme()))
+            msg.setText(self._tr("Failed to generate report"))
+            msg.setInformativeText(str(e))
+            msg.exec_()
+            return False
+
     def gen_report(self) -> bool:
         """Generate a statistical report via the external reporting script."""
-        d = {
+        report_data = {
             'prog': count_numberings(NUM_PLANNED),
             'wrong': count_numberings('Numbered and non-matching'),
             'right': count_numberings('Numbered and matching'),
@@ -52,53 +97,11 @@ class ReportMixin:
             'wilaya': self.current_user.get('wilaya'),
             'commune': self.current_user.get('commune'),
         }
-
-        try:
-            with open(TMP_JSON, 'w', encoding='utf-8') as f:
-                json.dump(d, f, ensure_ascii=False, indent=4)
-        except Exception as e:
-            logger.error("Error saving JSON file: %s", e)
-            return False
-
-        script_path = REPORTING_SCRIPT
-        command = [f"{get_qgis_python()}", script_path, '--method', '2']
-
-        try:
-            subprocess.run(
-                command, capture_output=True, text=True,
-                check=True, **_SUBPROCESS_FLAGS,
-            )
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Information)
-            msg.setWindowTitle(self._tr("Success"))
-            msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setInformativeText(self._tr("Report saved to your documents"))
-            msg.exec_()
-            return True
-        except subprocess.CalledProcessError as e:
-            logger.error("Subprocess failed with error: %s", e)
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setWindowTitle(self._tr("Error"))
-            msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setText(self._tr("Failed to generate report"))
-            msg.setInformativeText(str(e))
-            msg.exec_()
-            return False
-        except Exception as e:
-            logger.exception("Unexpected error: %s", e)
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setWindowTitle(self._tr("Error"))
-            msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setText(self._tr("Failed to generate report"))
-            msg.setInformativeText(str(e))
-            msg.exec_()
-            return False
+        return self._run_report('2', report_data)
 
     def bon_commande(self) -> bool:
         """Generate a purchase order via the external reporting script."""
-        d = {
+        order_data = {
             'date': datetime.now().date().strftime('%Y/%m/%d'),
             'wilaya': self.current_user.get('wilaya'),
             'commune': self.current_user.get('commune'),
@@ -107,46 +110,4 @@ class ReportMixin:
             'items3': query_missing_num(NUM_PLANNED),
             'items4': query_missing_rep(NUM_PLANNED),
         }
-
-        try:
-            with open(TMP_JSON, 'w', encoding='utf-8') as f:
-                json.dump(d, f, ensure_ascii=False, indent=4)
-        except Exception as e:
-            logger.error("Error saving JSON file: %s", e)
-            return False
-
-        script_path = REPORTING_SCRIPT
-        command = [f"{get_qgis_python()}", script_path, '--method', '1']
-
-        try:
-            subprocess.run(
-                command, capture_output=True, text=True,
-                check=True, **_SUBPROCESS_FLAGS,
-            )
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Information)
-            msg.setWindowTitle(self._tr("Success"))
-            msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setInformativeText(self._tr("Report saved to your documents"))
-            msg.exec_()
-            return True
-        except subprocess.CalledProcessError as e:
-            logger.error("Subprocess failed with error: %s", e)
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setWindowTitle(self._tr("Error"))
-            msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setText(self._tr("Failed to generate report"))
-            msg.setInformativeText(str(e))
-            msg.exec_()
-            return False
-        except Exception as e:
-            logger.exception("Unexpected error: %s", e)
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setWindowTitle(self._tr("Error"))
-            msg.setStyleSheet(get_theme_qss(current_theme()))
-            msg.setText(self._tr("Failed to generate report"))
-            msg.setInformativeText(str(e))
-            msg.exec_()
-            return False
+        return self._run_report('1', order_data)

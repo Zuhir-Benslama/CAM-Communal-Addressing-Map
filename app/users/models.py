@@ -1,22 +1,22 @@
 """User model for authentication and session management."""
 import uuid
-from sqlalchemy import Column, String, Boolean, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, Text, ForeignKey
 from sqlalchemy.orm import Session
 
-from ..core.base import Base
+from ..core.base import Base, TimestampMixin
 
 
-class User(Base):
+class User(Base, TimestampMixin):
     __tablename__ = 'user'
 
     id = Column(Text, primary_key=True, default=lambda: str(uuid.uuid4()))
     username = Column(String(255), unique=True, nullable=False)
     first_name = Column(String(255), nullable=True)
     last_name = Column(String(255), nullable=True)
-    password = Column(String(255), nullable=True)
-    active = Column(Boolean, nullable=True)
+    password = Column(String(255), nullable=False)
+    active = Column(Boolean, default=True, nullable=False)
     affectation_id = Column(
-        String, ForeignKey('localite.pk_uid'), nullable=True
+        Integer, ForeignKey('localite.pk_uid'), nullable=True, index=True
     )
     api_key = Column(Text, default="", nullable=True)
     email = Column(String(255), nullable=True)

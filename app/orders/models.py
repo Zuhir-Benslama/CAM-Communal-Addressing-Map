@@ -10,7 +10,7 @@ from sqlalchemy.orm import relationship, Session
 from geoalchemy2 import Geometry
 from geoalchemy2.functions import ST_Within
 
-from ..core.base import Base, _allowlist_columns
+from ..core.base import Base, TimestampMixin, _allowlist_columns
 from ..shared.constants import (
     SRID, LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
 )
@@ -25,7 +25,7 @@ def _get_current_user():
 logger = logging.getLogger(__name__)
 
 
-class _BaseSpatialModel(Base):
+class _BaseSpatialModel(Base, TimestampMixin):
     """Base class for spatial models providing shared CRUD operations.
 
     Subclasses override :attr:`_list_columns` to control which columns
@@ -52,7 +52,7 @@ class _BaseSpatialModel(Base):
         session.commit()
 
 
-class Localite(Base):
+class Localite(Base, TimestampMixin):
     __tablename__ = 'localite'
     pk_uid = Column(Integer, primary_key=True, autoincrement=True)
     wilaya = Column(Text, nullable=False)
@@ -76,7 +76,7 @@ class Zone(_BaseSpatialModel):
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
-    idLoc = Column(String, ForeignKey('localite.pk_uid'),
+    idLoc = Column(String, ForeignKey('localite.pk_uid'), index=True,
                    info={'label': 'Location'})
     Type = Column(String, nullable=False,
                   info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'})
@@ -85,8 +85,8 @@ class Zone(_BaseSpatialModel):
     Nom_en = Column(String, nullable=True)
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=False,
                       info={'label': 'Geometry'})
-    has_child = Column(Boolean)
-    uid = Column(Text, ForeignKey('user.id'), nullable=True,
+    has_child = Column(Boolean, default=False, nullable=False)
+    uid = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
                  info={'label': 'User'})
     user = relationship("User", backref="user_poly", foreign_keys=[uid])
 
@@ -160,15 +160,15 @@ class Subdivision(_BaseSpatialModel):
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
-    idLoc = Column(String, ForeignKey('localite.pk_uid'))
+    idLoc = Column(String, ForeignKey('localite.pk_uid'), index=True)
     Type = Column(String, nullable=False,
                   info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'})
     Nom = Column(String, info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'})
     Nom_fr = Column(String, nullable=True)
     Nom_en = Column(String, nullable=True)
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=True)
-    parent = Column(Text, ForeignKey('refpoly.pkuid'), nullable=True)
-    uid = Column(Text, ForeignKey('user.id'), nullable=True,
+    parent = Column(Text, ForeignKey('refpoly.pkuid'), nullable=True, index=True)
+    uid = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
                  info={'label': 'User'})
     user = relationship("User", backref="user_poly_child", foreign_keys=[uid])
 
@@ -227,10 +227,10 @@ class Road(_BaseSpatialModel):
     Nom = Column(String, info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'})
     Nom_fr = Column(String, nullable=True)
     Nom_en = Column(String, nullable=True)
-    idLoc = Column(String, ForeignKey('localite.pk_uid'), nullable=False)
+    idLoc = Column(String, ForeignKey('localite.pk_uid'), nullable=False, index=True)
     geometry = Column(Geometry('LINESTRING', srid=SRID), nullable=True)
-    pkuid_poly = Column(Text, ForeignKey('refpoly.pkuid'), nullable=True)
-    uid = Column(Text, ForeignKey('user.id'), nullable=True)
+    pkuid_poly = Column(Text, ForeignKey('refpoly.pkuid'), nullable=True, index=True)
+    uid = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
     user = relationship("User", backref="user_line", foreign_keys=[uid])
 
     @classmethod
@@ -279,15 +279,15 @@ class Organization(_BaseSpatialModel):
     _list_columns = ['Cat', 'Type', 'Nom']
 
     pkuid = Column(Text, primary_key=True, default=lambda: str(uuid.uuid4()))
-    idLoc = Column(String, ForeignKey('localite.pk_uid'))
+    idLoc = Column(String, ForeignKey('localite.pk_uid'), index=True)
     Type = Column(String, nullable=True)
     Cat = Column(String, nullable=True)
     Nom = Column(String)
     Nom_fr = Column(String, nullable=True)
     Nom_en = Column(String, nullable=True)
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=True)
-    uid = Column(Text, ForeignKey('user.id'), nullable=True)
-    pkuid_poly = Column(Text, ForeignKey('refpoly.pkuid'), nullable=True)
+    uid = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
+    pkuid_poly = Column(Text, ForeignKey('refpoly.pkuid'), nullable=True, index=True)
     user = relationship("User", backref="user_org", foreign_keys=[uid])
 
     @property
@@ -343,10 +343,10 @@ class Numbering(_BaseSpatialModel):
         info={'label': 'Key'},
     )
     valeur = Column(Text, nullable=False, info={'label': 'Number'})
-    idLine = Column(Text, ForeignKey('RefLine.pkuid'), nullable=True,
+    idLine = Column(Text, ForeignKey('RefLine.pkuid'), nullable=True, index=True,
                     info={'label': 'Road'})
     idPoly = Column(
-        Text, ForeignKey('refpolychild.pkuid'), nullable=True,
+        Text, ForeignKey('refpolychild.pkuid'), nullable=True, index=True,
         info={'label': 'Subdivision'},
     )
     repetition = Column(String, info={'label': 'Duplicated'})
@@ -354,7 +354,7 @@ class Numbering(_BaseSpatialModel):
                   info={'label': 'State'})
     geometry = Column(Geometry('POINT', srid=SRID), nullable=True,
                       info={'label': 'Geometry'})
-    uid = Column(Text, ForeignKey('user.id'), nullable=True,
+    uid = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
                  info={'label': 'User'})
 
     road = relationship("Road", backref="ref_line_num", foreign_keys=[idLine])
@@ -399,21 +399,21 @@ class PanelSign(_BaseSpatialModel):
     dim = Column(String, nullable=False,
                  info={'label': 'Dimensions'})
     Type = Column(Text, nullable=True, info={'label': 'Reference Type'})
-    Stituation = Column(
-        String, nullable=True,
+    situation = Column(
+        "Stituation", String, nullable=True,
         info={'label': 'Status'},
     )
-    idLine = Column(Text, ForeignKey('RefLine.pkuid'), nullable=True,
+    idLine = Column(Text, ForeignKey('RefLine.pkuid'), nullable=True, index=True,
                     info={'label': 'Road'})
     idPoly = Column(
-        Text, ForeignKey('refpolychild.pkuid'), nullable=True,
+        Text, ForeignKey('refpolychild.pkuid'), nullable=True, index=True,
         info={'label': 'Subdivision'},
     )
-    idOrg = Column(Text, ForeignKey('reforg.pkuid'), nullable=True,
+    idOrg = Column(Text, ForeignKey('reforg.pkuid'), nullable=True, index=True,
                    info={'label': 'Facility'})
     geometry = Column(Geometry('POINT', srid=SRID), nullable=True,
                       info={'label': 'Geometry'})
-    uid = Column(Text, ForeignKey('user.id'), nullable=True,
+    uid = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
                  info={'label': 'User'})
 
     organization = relationship("Organization",
@@ -460,17 +460,37 @@ class PanelSign(_BaseSpatialModel):
         if user_data:
             self.uid = user_data.get('id')
             if self.idLine:
-                session.query(Road).filter(Road.pkuid == self.idLine).first()
+                road = (
+                    session.query(Road)
+                    .filter(Road.pkuid == self.idLine)
+                    .first()
+                )
+                if not road:
+                    raise ValueError(
+                        f"Road with pkuid {self.idLine} not found"
+                    )
                 self.Type = LAYER_ROADS
             if self.idOrg:
-                session.query(Organization).filter(
-                    Organization.pkuid == self.idOrg
-                ).first()
+                org = (
+                    session.query(Organization)
+                    .filter(Organization.pkuid == self.idOrg)
+                    .first()
+                )
+                if not org:
+                    raise ValueError(
+                        f"Organization with pkuid {self.idOrg} not found"
+                    )
                 self.Type = LAYER_FACILITIES
             if self.idPoly:
-                session.query(Subdivision).filter(
-                    Subdivision.pkuid == self.idPoly
-                ).first()
+                sub = (
+                    session.query(Subdivision)
+                    .filter(Subdivision.pkuid == self.idPoly)
+                    .first()
+                )
+                if not sub:
+                    raise ValueError(
+                        f"Subdivision with pkuid {self.idPoly} not found"
+                    )
                 self.Type = LAYER_SUBDIVISIONS
             session.add(self)
             session.commit()

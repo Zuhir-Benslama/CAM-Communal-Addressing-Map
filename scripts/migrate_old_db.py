@@ -129,7 +129,7 @@ def migrate_users(source_path: str, auth_path: str) -> int:
                 last_name TEXT,
                 password TEXT,
                 active INTEGER,
-                affectation_id TEXT,
+                affectation_id INTEGER,
                 api_key TEXT DEFAULT '',
                 email TEXT,
                 phone TEXT

@@ -58,7 +58,7 @@ class IntegrationFlowTest(unittest.TestCase):
         host.map_options = MagicMock()
 
         host.identify_tool = None
-        host.identify_tool2 = None
+        host.ref_identify_tool = None
         host.popup_dialog = None
 
         host._last_feature_wkt = None

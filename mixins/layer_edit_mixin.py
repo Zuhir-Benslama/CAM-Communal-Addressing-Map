@@ -26,7 +26,7 @@ class LayerEditMixin:
     Cross-mixin protocol (attributes set by map_tools_mixin or owning dialog):
         _last_feature_wkt (str | None) — WKT geometry of the last created feature
         _last_feature_pkuid (str | None) — PK of the last created feature
-        identify_tool2 (IdentifyTool | None) — reference selection tool (get_pkuid)
+        ref_identify_tool (IdentifyTool | None) — reference selection tool (get_pkuid)
         measure_tool (MeasureTool | None) — measurement line tool
         update_object (bool) — flag for edit-vs-insert mode
         is_pan / is_org / is_road / is_num / is_city / is_zone (QCheckBox)
@@ -85,13 +85,16 @@ class LayerEditMixin:
             return
         if self.update_object:
             return
-        obj = self.identify_tool2.get_pkuid()
+        ref_data = self.ref_identify_tool.get_pkuid()
+        if ref_data is None:
+            logger.warning("No object selected for panel reference")
+            return
         geometry_wkt, pkuid = self._get_geometry_and_pkuid('panel')
         if not geometry_wkt or not pkuid:
             return
         try:
-            layer = obj.get('layer_name')
-            ref = obj.get('pkuid')
+            layer = ref_data.get('layer_name')
+            ref = ref_data.get('pkuid')
             kwargs = {
                 'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
                 'etat_mont': self.etat_mont.currentData(),
@@ -117,7 +120,7 @@ class LayerEditMixin:
             logger.exception("Failed to add panel: %s", e)
             self._show_error(str(e))
         finally:
-            self.identify_tool2.unset_map_tool()
+            self.ref_identify_tool.unset_map_tool()
             self._draw_handler(LAYER_PANELS)
 
     def add_organization(self) -> None:
@@ -203,10 +206,10 @@ class LayerEditMixin:
         if not geometry_wkt or not pkuid:
             return
         try:
-            obj = self.identify_tool2.get_pkuid()
+            ref_data = self.ref_identify_tool.get_pkuid()
         except Exception as e:
             logger.warning("Failed to get pkuid from identify tool: %s", e)
-            obj = None
+            ref_data = None
         try:
             common = {
                 'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
@@ -216,10 +219,10 @@ class LayerEditMixin:
                 'cat_act': self.cat_act.currentData(),
                 'type_act': self.type_act.currentData(),
             }
-            if obj and obj.get('layer_name') == LAYER_ROADS:
-                add_numbering(**common, idLine=obj.get('pkuid'), idPoly=None)
-            elif obj and obj.get('layer_name') == LAYER_SUBDIVISIONS:
-                add_numbering(**common, idLine=None, idPoly=obj.get('pkuid'))
+            if ref_data and ref_data.get('layer_name') == LAYER_ROADS:
+                add_numbering(**common, idLine=ref_data.get('pkuid'), idPoly=None)
+            elif ref_data and ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
+                add_numbering(**common, idLine=None, idPoly=ref_data.get('pkuid'))
 
             if self.measure_tool:
                 self.show_confirm_dialog(

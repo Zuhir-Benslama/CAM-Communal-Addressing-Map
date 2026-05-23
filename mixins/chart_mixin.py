@@ -61,51 +61,48 @@ def _toggle_layer_visibility(layer_name: str, visible: bool) -> None:
 class ChartMixin:
     """Mixin providing chart generation for panel and numbering data."""
 
-    def carte_pano1(self) -> None:
+    def _generate_chart(
+        self, model_class, column, title_key: str,
+        layer_to_show: str, layer_to_hide: str,
+    ) -> None:
+        """Query, render a bar chart, and toggle layer visibility."""
+        session = get_session()
+        try:
+            results = session.query(
+                column, func.count().label('count')
+            ).group_by(column).all()
+        finally:
+            session.close()
+
+        _render_bar_chart(
+            results,
+            xlabel=self._tr('Status'),
+            ylabel=self._tr('Count'),
+            title=self._tr(title_key),
+        )
+
+        _toggle_layer_visibility(layer_to_show, True)
+        _toggle_layer_visibility(layer_to_hide, False)
+
+    def panel_chart(self) -> None:
         """Generate a bar chart showing panel sign distribution by situation."""
         self.type_plan = LAYER_PANELS
         self.type_to_hide = LAYER_NUMBERING
-        session = get_session()
-        try:
-            results = session.query(
-                PanelSign.Stituation,
-                func.count().label('count')
-            ).group_by(PanelSign.Stituation).all()
-        finally:
-            session.close()
-
-        _render_bar_chart(
-            results,
-            xlabel=self._tr('Status'),
-            ylabel=self._tr('Count'),
-            title=self._tr('Distribution by Status'),
+        self._generate_chart(
+            PanelSign, PanelSign.situation,
+            'Distribution by Status',
+            LAYER_PANELS, LAYER_NUMBERING,
         )
 
-        _toggle_layer_visibility(LAYER_PANELS, True)
-        _toggle_layer_visibility(LAYER_NUMBERING, False)
-
-    def carte_num1(self) -> None:
+    def numbering_chart(self) -> None:
         """Generate a bar chart showing numbering distribution by state."""
         self.type_plan = LAYER_NUMBERING
         self.type_to_hide = LAYER_PANELS
-        session = get_session()
-        try:
-            results = session.query(
-                Numbering.etat,
-                func.count().label('count')
-            ).group_by(Numbering.etat).all()
-        finally:
-            session.close()
-
-        _render_bar_chart(
-            results,
-            xlabel=self._tr('Status'),
-            ylabel=self._tr('Count'),
-            title=self._tr('Distribution by Numbering State'),
+        self._generate_chart(
+            Numbering, Numbering.etat,
+            'Distribution by Numbering State',
+            LAYER_NUMBERING, LAYER_PANELS,
         )
-
-        _toggle_layer_visibility(LAYER_NUMBERING, True)
-        _toggle_layer_visibility(LAYER_PANELS, False)
 
     def get_zone_chart(self, wilaya_number: int) -> None:
         """Generate a chart for zone type distribution in a wilaya."""

@@ -156,8 +156,8 @@ class EntityListDialog(QDialog, FORM_CLASS):
                 fields, labels = get_all_fields_and_labels(
                     model_class, PROPERTY_LABELS, locale=self._tr_locale)
 
-                labels = [get_string(l, self._tr_locale) if any('\u0600' <= c <= '\u06FF' for c in l) else l
-                          for l in labels]
+                labels = [get_string(label, self._tr_locale) if any('\u0600' <= c <= '\u06FF' for c in label) else label
+                          for label in labels]
 
                 self.table.setRowCount(len(results))
                 self.table.setColumnCount(len(fields))

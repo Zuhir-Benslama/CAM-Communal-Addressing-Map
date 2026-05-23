@@ -112,13 +112,13 @@ def refresh_layer_from_db(iface, layer_name, model_name) -> None:
         session.close()
 
 
-def apply_categorized_style(iface, layer_name, by) -> None:
+def apply_categorized_style(iface, layer_name, category_fields) -> None:
     """Apply a categorized renderer to a layer based on field values."""
     layers = QgsProject.instance().mapLayersByName(layer_name)
     if not layers:
         return
     layer = layers[0]
-    expression_string = " || '  ' || ".join(by)
+    expression_string = " || '  ' || ".join(category_fields)
     expression = QgsExpression(expression_string)
     unique_values = set()
     for feature in layer.getFeatures():
@@ -209,26 +209,26 @@ def add_feature_to_layer(layer, model_instance, geometry_wkt=None) -> None:
 def refresh_all_layers(iface) -> None:
     """Refresh all mapper layers and apply stored styles."""
     data_list = qgis_config().get('mapper')
-    for data in data_list:
+    for cfg in data_list:
         try:
-            refresh_layer_from_db(iface, data.get("layer"), data.get("model"))
+            refresh_layer_from_db(iface, cfg.get("layer"), cfg.get("model"))
         except Exception as e:
             logger.error("Error occurred: %s", e)
 
     data_list = qgis_config().get('other_layers')
-    for dl in data_list:
-        layers = QgsProject.instance().mapLayersByName(dl.get('label'))
+    for layer_cfg in data_list:
+        layers = QgsProject.instance().mapLayersByName(layer_cfg.get('label'))
         if layers:
-            filename = os.path.join(DEFAULT_STYLE_DIR, dl.get('style'))
+            filename = os.path.join(DEFAULT_STYLE_DIR, layer_cfg.get('style'))
             layers[0].loadNamedStyle(filename)
 
 
 def apply_all_categorized_styles(iface) -> None:
     """Apply categorized styles to all configured layers."""
     data_list = qgis_config().get('categorize')
-    for data in data_list:
+    for cfg in data_list:
         try:
-            apply_categorized_style(iface, data.get("layer"), data.get("by"))
+            apply_categorized_style(iface, cfg.get("layer"), cfg.get("by"))
         except Exception as e:
             logger.error("Error occurred: %s", e)
 
@@ -236,9 +236,9 @@ def apply_all_categorized_styles(iface) -> None:
 def remove_all_categorized_styles(iface) -> None:
     """Remove categorized styles from all configured layers."""
     data_list = qgis_config().get('other_layers')
-    for data in data_list:
+    for cfg in data_list:
         try:
-            remove_categorized_style(iface, data.get("label"))
+            remove_categorized_style(iface, cfg.get("label"))
         except Exception as e:
             logger.error("Error occurred: %s", e)
 
