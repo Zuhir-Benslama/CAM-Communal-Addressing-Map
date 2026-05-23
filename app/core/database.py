@@ -83,7 +83,6 @@ def get_engine() -> Any:
         _engine = create_engine(
             f'sqlite:///{filename}', echo=False, pool_pre_ping=True
         )
-        _migrate_timestamp_columns(_engine)
 
         @event.listens_for(_engine, "connect")
         def connect_spatialite(dbapi_conn, _connection_record) -> None:
@@ -118,6 +117,7 @@ def get_engine() -> Any:
                     exc_info=True,
                 )
 
+        _migrate_timestamp_columns(_engine)
         Base.metadata.create_all(_engine)
     return _engine
 
