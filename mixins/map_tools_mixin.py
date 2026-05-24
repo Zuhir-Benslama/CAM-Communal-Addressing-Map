@@ -107,11 +107,11 @@ class MapToolsMixin:
 
     def select_ref_handler(self) -> None:
         """Activate reference selection for the first reference combo."""
-        self._select_ref(self.dyn_ref)
+        self._select_ref(self.road_ref)
 
     def select_panel_ref_handler(self) -> None:
         """Activate reference selection for the panel reference combo."""
-        self._select_ref(self.dyn_ref2)
+        self._select_ref(self.panel_ref)
 
     def ref_pan_selected(self) -> None:
         """Handle panel reference selection event."""

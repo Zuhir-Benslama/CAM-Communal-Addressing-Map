@@ -91,7 +91,7 @@ class LayerOpsMixin:
     def on_opt_selected(self, index) -> None:
         """Handle tab selection: toggle layer visibility and load styles."""
         self.type_plan = ""
-        # Use cached Arabic tab text for internal routing (locale-independent)
+        # Use cached tab text for internal routing (locale-independent)
         if hasattr(self.menu, '_rna_tab_src'):
             tab_name = self.menu._rna_tab_src[index]
         else:
@@ -194,7 +194,7 @@ class LayerOpsMixin:
                 elif isinstance(widget.widget(), QCheckBox):
                     widget.widget().setChecked(False)
 
-    def list_roads(self) -> None:
+    def list_road_entries(self) -> None:
         """Open an entity list dialog for roads."""
         dlg = EntityListDialog(model_name="Road", list_of=LAYER_ROADS)
         dlg.exec_()
@@ -218,7 +218,7 @@ class LayerOpsMixin:
         dlg = EntityListDialog(model_name="Numbering", list_of='Numberings')
         dlg.exec_()
 
-    def list_panels(self) -> None:
+    def list_panel_signs(self) -> None:
         """Open an entity list dialog for panel signs."""
         dlg = EntityListDialog(model_name="PanelSign", list_of='Panels')
         dlg.exec_()

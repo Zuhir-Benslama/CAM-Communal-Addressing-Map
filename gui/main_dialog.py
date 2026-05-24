@@ -32,7 +32,7 @@ from PyQt5.QtWidgets import (
 from qgis.PyQt import uic
 from .ui_fillers import (
     fill_wilayas_list, fill_paper, fill_road_type, fill_numbering_state,
-    fill_mounting_status, fill_subdivision_type, fill_type_zone,
+    fill_mounting_status, fill_subdivision_type, fill_zone_type,
     fill_road_reference, fill_panel_reference, fill_org_category,
     fill_activity_category,
 )
@@ -67,6 +67,41 @@ class RNADialog(
     BackupMixin, SymbolExportMixin, ImportExportMixin, ReportMixin,
 ):
     """Main dialog for the RNA QGIS plugin."""
+
+    @staticmethod
+    def _balance_footer(frame) -> None:
+        """Center footer text and drop one-sided spacers."""
+        if frame is None:
+            return
+
+        layout = None
+        try:
+            layout = frame.layout()
+        except Exception:
+            layout = None
+
+        if layout is not None:
+            try:
+                count = layout.count()
+            except Exception:
+                count = 0
+            if isinstance(count, int):
+                for index in range(count - 1, -1, -1):
+                    item = layout.itemAt(index)
+                    if item is not None and item.spacerItem() is not None:
+                        layout.takeAt(index)
+
+        try:
+            labels = frame.findChildren(QLabel)
+        except Exception:
+            labels = []
+        if not isinstance(labels, list):
+            return
+
+        for label in labels:
+            label.setAlignment(Qt.AlignCenter)
+            label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+
     def __init__(self, iface, parent=None) -> None:
         """Constructor."""
         super().__init__(parent)
@@ -123,8 +158,8 @@ class RNADialog(
         self.submit_usr.clicked.connect(self.submit_add_usr)
         self.sign_in_user.clicked.connect(self.login_user)
         self.wilaya_list.currentIndexChanged.connect(self.on_select_wilaya)
-        self.cat_org.currentIndexChanged.connect(self.on_select_catOrg)
-        self.cat_act.currentIndexChanged.connect(self.on_select_catAct)
+        self.org_cat.currentIndexChanged.connect(self.on_select_org_cat)
+        self.activity_cat.currentIndexChanged.connect(self.on_select_activity_cat)
         self.abort_uc.clicked.connect(lambda: self.public_route('login'))
 
         self.draw_btn.clicked.connect(lambda: self.start_drawing())  # pylint: disable=unnecessary-lambda
@@ -134,21 +169,21 @@ class RNADialog(
             self._on_layer_changed)
 
         self.submit_zone.clicked.connect(self.add_zone)
-        self.submit_voie.clicked.connect(lambda: self.add_road())  # pylint: disable=unnecessary-lambda
+        self.submit_road.clicked.connect(lambda: self.add_road())  # pylint: disable=unnecessary-lambda
         self.submit_org.clicked.connect(lambda: self.add_organization())  # pylint: disable=unnecessary-lambda
-        self.submit_city.clicked.connect(self.add_city)
+        self.submit_subd.clicked.connect(self.add_city)
         self.submit_num.clicked.connect(self.add_numbering)
         self.submit_pan.clicked.connect(self.add_panel)
-        self.list_voie.clicked.connect(self.list_roads)
-        self.list_org.clicked.connect(self.list_organizations)
-        self.list_cities.clicked.connect(self.list_subdivisions)
-        self.list_num.clicked.connect(self.list_numberings)
-        self.list_pan.clicked.connect(self.list_panels)
+        self.list_roads.clicked.connect(self.list_road_entries)
+        self.list_orgs.clicked.connect(self.list_organizations)
+        self.list_subds.clicked.connect(self.list_subdivisions)
+        self.list_nums.clicked.connect(self.list_numberings)
+        self.list_panels.clicked.connect(self.list_panel_signs)
 
-        self.select_ref.clicked.connect(self.select_ref_handler)
-        self.select_ref2.clicked.connect(self.select_panel_ref_handler)
-        self.page_num.keyPressEvent = lambda e: self.key_press_event(e, 'add_numbering')
-        self.page_pan.keyPressEvent = lambda e: self.key_press_event(e, 'add_panel')
+        self.select_road_ref.clicked.connect(self.select_ref_handler)
+        self.select_panel_ref.clicked.connect(self.select_panel_ref_handler)
+        self.page_numbering.keyPressEvent = lambda e: self.key_press_event(e, 'add_numbering')
+        self.page_panels.keyPressEvent = lambda e: self.key_press_event(e, 'add_panel')
 
         self.mesure_dist.clicked.connect(self.activate_measure)
 
@@ -180,13 +215,13 @@ class RNADialog(
         """Fill all combo boxes with their initial data."""
         fill_paper(self.paper)
         fill_wilayas_list(self.wilaya_list)
-        fill_road_type(self.type_voie)
-        fill_numbering_state(self.num_etat)
-        fill_mounting_status(self.etat_mont)
-        fill_subdivision_type(self.type_city)
-        fill_type_zone(self.type_zone)
-        fill_road_reference(self.dyn_ref)
-        fill_panel_reference(self.dyn_ref2)
+        fill_road_type(self.type_road)
+        fill_numbering_state(self.num_state)
+        fill_mounting_status(self.mount_status)
+        fill_subdivision_type(self.subd_type)
+        fill_zone_type(self.zone_type)
+        fill_road_reference(self.road_ref)
+        fill_panel_reference(self.panel_ref)
 
     LAYER_INDEX_MAP = [
         "Zones", "Roads", "Facilities",
@@ -194,7 +229,7 @@ class RNADialog(
     ]
 
     def _current_layer_name(self) -> str:
-        """Return the Arabic name of the currently selected layer."""
+        """Return the name of the currently selected layer."""
         idx = self.layer_selector.currentIndex()
         if 0 <= idx < len(self.LAYER_INDEX_MAP):
             return self.LAYER_INDEX_MAP[idx]
@@ -224,9 +259,11 @@ class RNADialog(
         theme_row = QHBoxLayout()
         self._theme_label = QLabel(get_string("Theme:", self._tr_locale))
         self._theme_label.setObjectName("_theme_label")
+        self._theme_label.setMinimumWidth(120)
         theme_row.addWidget(self._theme_label)
         self._theme_combo = QComboBox()
         self._theme_combo.setObjectName("_theme_combo")
+        self._theme_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self._theme_combo.addItem(THEME_DARK, THEME_DARK)
         self._theme_combo.addItem(THEME_LIGHT, THEME_LIGHT)
         self._theme_combo.currentIndexChanged[int].connect(self._on_theme_changed)
@@ -247,9 +284,11 @@ class RNADialog(
         locale_row = QHBoxLayout()
         self._locale_label = QLabel(get_string("Language:", self._tr_locale))
         self._locale_label.setObjectName("_locale_label")
+        self._locale_label.setMinimumWidth(120)
         locale_row.addWidget(self._locale_label)
         self._locale_combo = QComboBox()
         self._locale_combo.setObjectName("_locale_combo")
+        self._locale_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         for code, label in AVAILABLE_LOCALES:
             self._locale_combo.addItem(label, code)
         self._locale_combo.currentIndexChanged[int].connect(self._on_locale_changed)
@@ -284,16 +323,16 @@ class RNADialog(
         apply_widget_texts(self, code)
         self._translate_internal_combos()
         fill_wilayas_list(self.wilaya_list)
-        fill_road_type(self.type_voie)
-        fill_type_zone(self.type_zone)
-        fill_subdivision_type(self.type_city)
-        fill_mounting_status(self.etat_mont)
-        fill_numbering_state(self.num_etat)
-        fill_road_reference(self.dyn_ref)
-        fill_panel_reference(self.dyn_ref2)
+        fill_road_type(self.type_road)
+        fill_zone_type(self.zone_type)
+        fill_subdivision_type(self.subd_type)
+        fill_mounting_status(self.mount_status)
+        fill_numbering_state(self.num_state)
+        fill_road_reference(self.road_ref)
+        fill_panel_reference(self.panel_ref)
         fill_paper(self.paper)
-        fill_org_category(self.cat_org)
-        fill_activity_category(self.cat_act)
+        fill_org_category(self.org_cat)
+        fill_activity_category(self.activity_cat)
         if code == 'ar':
             QApplication.setLayoutDirection(Qt.RightToLeft)
         else:
@@ -305,9 +344,9 @@ class RNADialog(
             'sign_in_user',
             'submit_usr',
             'submit_zone',
-            'submit_voie',
+            'submit_road',
             'submit_org',
-            'submit_city',
+            'submit_subd',
             'submit_num',
             'submit_pan',
             'report',
@@ -356,13 +395,41 @@ class RNADialog(
             frame = getattr(self, frame_name, None)
             if frame is not None:
                 frame.setProperty('surfaceRole', role)
+                if role == 'footer':
+                    self._balance_footer(frame)
+
+        try:
+            label_username = getattr(self, 'label_username', None)
+        except RuntimeError:
+            label_username = None
+        if label_username is not None:
+            label_username.setAlignment(Qt.AlignCenter)
+            label_username.setSizePolicy(
+                QSizePolicy.Expanding, QSizePolicy.Preferred
+            )
+
+        for layout_name in ('horizontalLayout_8', 'horizontalLayout_16'):
+            try:
+                layout = self.findChild(QLayout, layout_name)
+            except RuntimeError:
+                layout = None
+            if layout is not None and hasattr(layout, 'setStretch'):
+                try:
+                    layout.setStretch(0, 1)
+                    layout.setStretch(1, 1)
+                except Exception:
+                    pass
 
         for layout in self.findChildren(QLayout):
             if isinstance(layout, QFormLayout):
-                if layout.horizontalSpacing() < 12:
-                    layout.setHorizontalSpacing(12)
-                if layout.verticalSpacing() < 10:
-                    layout.setVerticalSpacing(10)
+                if layout.horizontalSpacing() < 16:
+                    layout.setHorizontalSpacing(16)
+                if layout.verticalSpacing() < 12:
+                    layout.setVerticalSpacing(12)
+                for i in range(layout.rowCount()):
+                    item = layout.itemAt(i, QFormLayout.LabelRole)
+                    if item and item.widget():
+                        item.widget().setMinimumWidth(120)
             elif layout.spacing() < 8:
                 layout.setSpacing(8)
 
@@ -381,7 +448,48 @@ class RNADialog(
             widget.setMaximumWidth(16777215)
             widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
+        for label_name in ('label_feature', 'label_type', 'label_subtype', 'label_subsubtype'):
+            label = getattr(self, label_name, None)
+            if label is not None:
+                label.setMinimumWidth(120)
+
         self._set_button_roles()
+
+    def _set_button_roles(self) -> None:
+        """Assign semantic role properties to all push buttons."""
+        primary_buttons = {
+            'sign_in_user',
+            'submit_usr',
+            'submit_zone',
+            'submit_road',
+            'submit_org',
+            'submit_subd',
+            'submit_num',
+            'submit_pan',
+            'report',
+        }
+        danger_buttons = {'abort_uc'}
+        tool_prefixes = ('draw_', 'select_', 'edit_')
+
+        for button in self.findChildren(QPushButton):
+            name = button.objectName()
+            if name in primary_buttons:
+                button.setProperty('role', 'primary')
+            elif name in danger_buttons:
+                button.setProperty('role', 'danger')
+            elif any(name.startswith(prefix) for prefix in tool_prefixes):
+                button.setProperty('role', 'tool')
+                button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+            else:
+                button.setProperty('role', 'ghost')
+
+            button.setMinimumHeight(max(button.minimumHeight(), 34))
+            if name in primary_buttons or name == 'sign_in_user':
+                button.setMinimumWidth(180)
+                button.setMaximumWidth(220)
+            else:
+                button.setMaximumWidth(16777215)
+            button.setIconSize(QSize(16, 16))
 
     def apply_theme(self) -> None:
         """Apply the current theme stylesheet to the dialog."""

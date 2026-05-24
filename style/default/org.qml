@@ -166,7 +166,7 @@
             <Option type="QString" value="MM" name="dash_pattern_offset_unit"/>
             <Option type="QString" value="0" name="draw_inside_polygon"/>
             <Option type="QString" value="round" name="joinstyle"/>
-            <Option type="QString" value="212,179,25,255,rgb:0.83137254901960789,0.70196078431372544,0.09803921568627451,1" name="line_color"/>
+            <Option type="QString" value="90,143,107,255,rgb:0.35294117647058826,0.5607843137254902,0.41960784313725491,1" name="line_color"/>
             <Option type="QString" value="solid" name="line_style"/>
             <Option type="QString" value="0.5" name="line_width"/>
             <Option type="QString" value="MM" name="line_width_unit"/>
@@ -195,7 +195,7 @@
         <layer locked="0" class="SimpleFill" enabled="1" pass="0" id="{679aede1-a2eb-4492-aff3-fce2fd25578c}">
           <Option type="Map">
             <Option type="QString" value="3x:0,0,0,0,0,0" name="border_width_map_unit_scale"/>
-            <Option type="QString" value="212,179,25,255,rgb:0.83137254901960789,0.70196078431372544,0.09803921568627451,1" name="color"/>
+            <Option type="QString" value="90,143,107,255,rgb:0.35294117647058826,0.5607843137254902,0.41960784313725491,1" name="color"/>
             <Option type="QString" value="bevel" name="joinstyle"/>
             <Option type="QString" value="0,0" name="offset"/>
             <Option type="QString" value="3x:0,0,0,0,0,0" name="offset_map_unit_scale"/>
@@ -264,7 +264,7 @@
   </selection>
   <labeling type="simple">
     <settings calloutType="simple">
-      <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textOrientation="horizontal" fontWordSpacing="0" blendMode="0" legendString="Aa" namedStyle="Normal" forcedBold="0" textOpacity="1" fontStrikeout="0" textColor="212,179,25,255,rgb:0.83137254901960789,0.70196078431372544,0.09803921568627451,1" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" fontUnderline="0" tabStopDistance="80" capitalization="0" tabStopDistanceUnit="Point" useSubstitutions="0" multilineHeight="1" isExpression="1" fontSizeUnit="MM" multilineHeightUnit="Percentage" fontKerning="1" forcedItalic="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" allowHtml="0" fontItalic="0" fontWeight="50" fontLetterSpacing="0" fontSize="3.5" fontFamily="MS Shell Dlg 2" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0">
+      <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textOrientation="horizontal" fontWordSpacing="0" blendMode="0" legendString="Aa" namedStyle="Normal" forcedBold="0" textOpacity="1" fontStrikeout="0" textColor="90,143,107,255,rgb:0.35294117647058826,0.5607843137254902,0.41960784313725491,1" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" fontUnderline="0" tabStopDistance="80" capitalization="0" tabStopDistanceUnit="Point" useSubstitutions="0" multilineHeight="1" isExpression="1" fontSizeUnit="MM" multilineHeightUnit="Percentage" fontKerning="1" forcedItalic="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" allowHtml="0" fontItalic="0" fontWeight="50" fontLetterSpacing="0" fontSize="3.5" fontFamily="Arial" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0">
         <families/>
         <text-buffer bufferSizeUnits="MM" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferOpacity="1" bufferDraw="1" bufferSize="1.7" bufferNoFill="1" bufferColor="250,250,250,255,rgb:0.98039215686274506,0.98039215686274506,0.98039215686274506,1" bufferBlendMode="0" bufferJoinStyle="128"/>
         <text-mask maskOpacity="1" maskSizeUnits="RenderMetersInMapUnits" maskedSymbolLayers="" maskType="0" maskSize="1" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="1" maskJoinStyle="128" maskSize2="1"/>
@@ -475,157 +475,157 @@
           <Option type="Map">
             <Option type="List" name="map">
               <Option type="Map">
-                <Option type="QString" value="إقامة جامعية" name="إقامة جامعية"/>
+                <Option type="QString" value="إقامة جامعية" name="University Residence"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="اخر" name="اخر"/>
+                <Option type="QString" value="اخر" name="Other"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="ثانوية" name="ثانوية"/>
+                <Option type="QString" value="ثانوية" name="High School"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="جامعة" name="جامعة"/>
+                <Option type="QString" value="جامعة" name="University"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="حماية مدنية" name="حماية مدنية"/>
+                <Option type="QString" value="حماية مدنية" name="Civil Protection"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="دار الحضانة" name="دار الحضانة"/>
+                <Option type="QString" value="دار الحضانة" name="Kindergarten"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="دار الشباب" name="دار الشباب"/>
+                <Option type="QString" value="دار الشباب" name="Youth Center"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="دار الطفولة" name="دار الطفولة"/>
+                <Option type="QString" value="دار الطفولة" name="Children's Home"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="دار المسنين" name="دار المسنين"/>
+                <Option type="QString" value="دار المسنين" name="Elderly Home"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="روضة أطفال" name="روضة أطفال"/>
+                <Option type="QString" value="روضة أطفال" name="Nursery School"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="عيادة متعددة الخدمات" name="عيادة متعددة الخدمات"/>
+                <Option type="QString" value="عيادة متعددة الخدمات" name="Polyclinic"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="قاعة العلاج" name="قاعة العلاج"/>
+                <Option type="QString" value="قاعة العلاج" name="Treatment Room"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="قاعة حفلات" name="قاعة حفلات"/>
+                <Option type="QString" value="قاعة حفلات" name="Event Hall"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="قاعة متعددة الرياضات" name="قاعة متعددة الرياضات"/>
+                <Option type="QString" value="قاعة متعددة الرياضات" name="Multi-Sports Hall"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="قصر الرياضة" name="قصر الرياضة"/>
+                <Option type="QString" value="قصر الرياضة" name="Sports Palace"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مؤسسة إستشفائية" name="مؤسسة إستشفائية"/>
+                <Option type="QString" value="مؤسسة إستشفائية" name="Hospital"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مؤسسة الصحة الجوارية" name="مؤسسة الصحة الجوارية"/>
+                <Option type="QString" value="مؤسسة الصحة الجوارية" name="Local Health Institution"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="متحف" name="متحف"/>
+                <Option type="QString" value="متحف" name="Museum"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="متوسطة" name="متوسطة"/>
+                <Option type="QString" value="متوسطة" name="Middle School"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="محطة" name="محطة"/>
+                <Option type="QString" value="محطة" name="Station"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مخبر بلدي" name="مخبر بلدي"/>
+                <Option type="QString" value="مخبر بلدي" name="Municipal Laboratory"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مدرسة" name="مدرسة"/>
+                <Option type="QString" value="مدرسة" name="School"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مدرسة قرانية" name="مدرسة قرانية"/>
+                <Option type="QString" value="مدرسة قرانية" name="Quranic School"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مركب رياضي جواري" name="مركب رياضي جواري"/>
+                <Option type="QString" value="مركب رياضي جواري" name="Local Sports Complex"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مركز بريدي" name="مركز بريدي"/>
+                <Option type="QString" value="مركز بريدي" name="Postal Center"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مركز تجاري" name="مركز تجاري"/>
+                <Option type="QString" value="مركز تجاري" name="Shopping Center"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مركز تقافي" name="مركز تقافي"/>
+                <Option type="QString" value="مركز تقافي" name="Cultural Center"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مركز تكوين" name="مركز تكوين"/>
+                <Option type="QString" value="مركز تكوين" name="Training Center"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مركز ثقافي" name="مركز ثقافي"/>
+                <Option type="QString" value="مركز ثقافي" name="Cultural Center"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مركز صحي" name="مركز صحي"/>
+                <Option type="QString" value="مركز صحي" name="Health Center"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مركز طبي اجتماعي" name="مركز طبي اجتماعي"/>
+                <Option type="QString" value="مركز طبي اجتماعي" name="Medical-Social Center"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مسبح بلدي" name="مسبح بلدي"/>
+                <Option type="QString" value="مسبح بلدي" name="Municipal Pool"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مستشفى" name="مستشفى"/>
+                <Option type="QString" value="مستشفى" name="Hospital"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مستوصف" name="مستوصف"/>
+                <Option type="QString" value="مستوصف" name="Dispensary"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مسجد" name="مسجد"/>
+                <Option type="QString" value="مسجد" name="Mosque"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مسرح" name="مسرح"/>
+                <Option type="QString" value="مسرح" name="Theater"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="معهد" name="معهد"/>
+                <Option type="QString" value="معهد" name="Institute"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مكتبة بلدية" name="مكتبة بلدية"/>
+                <Option type="QString" value="مكتبة بلدية" name="Municipal Library"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="ملحقة بلدية" name="ملحقة بلدية"/>
+                <Option type="QString" value="ملحقة بلدية" name="Municipal Annex"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="ملعب" name="ملعب"/>
+                <Option type="QString" value="ملعب" name="Stadium"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="ملعب بلدي" name="ملعب بلدي"/>
+                <Option type="QString" value="ملعب بلدي" name="Municipal Stadium"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="ملعب جواري" name="ملعب جواري"/>
+                <Option type="QString" value="ملعب جواري" name="Local Stadium"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="نزل الشرطة" name="نزل الشرطة"/>
+                <Option type="QString" value="نزل الشرطة" name="Police Station"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="وكالة بنكية" name="وكالة بنكية"/>
+                <Option type="QString" value="وكالة بنكية" name="Bank Agency"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="الدرك الوطني" name="الدرك الوطني"/>
+                <Option type="QString" value="الدرك الوطني" name="National Gendarmerie"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="حديقة" name="حديقة"/>
+                <Option type="QString" value="حديقة" name="Park"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="سوق" name="سوق"/>
+                <Option type="QString" value="سوق" name="Market"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مقر البلدية" name="مقر البلدية"/>
+                <Option type="QString" value="مقر البلدية" name="Municipality Headquarters"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="مقبرة" name="مقبرة"/>
+                <Option type="QString" value="مقبرة" name="Cemetery"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="الجزائرية للمياه" name="الجزائرية للمياه"/>
+                <Option type="QString" value="الجزائرية للمياه" name="Algerian Water Company"/>
               </Option>
               <Option type="Map">
-                <Option type="QString" value="محافظة الغابات" name="محافظة الغابات"/>
+                <Option type="QString" value="محافظة الغابات" name="Forest Directorate"/>
               </Option>
             </Option>
           </Option>
@@ -768,16 +768,16 @@ def my_form_open(dialog, layer, feature):
   <editorlayout>tablayout</editorlayout>
   <attributeEditorForm>
     <labelStyle labelColor="" overrideLabelFont="0" overrideLabelColor="0">
-      <labelFont description="MS Shell Dlg 2,7.8,-1,5,50,0,0,0,0,0" underline="0" italic="0" bold="0" style="" strikethrough="0"/>
+      <labelFont description="Arial,7.8,-1,5,50,0,0,0,0,0" underline="0" italic="0" bold="0" style="" strikethrough="0"/>
     </labelStyle>
     <attributeEditorField horizontalStretch="0" index="3" name="Type" showLabel="1" verticalStretch="0">
       <labelStyle labelColor="" overrideLabelFont="0" overrideLabelColor="0">
-        <labelFont description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" underline="0" italic="0" bold="0" style="" strikethrough="0"/>
+        <labelFont description="Arial,8.3,-1,5,50,0,0,0,0,0" underline="0" italic="0" bold="0" style="" strikethrough="0"/>
       </labelStyle>
     </attributeEditorField>
     <attributeEditorField horizontalStretch="0" index="5" name="Nom" showLabel="1" verticalStretch="0">
       <labelStyle labelColor="" overrideLabelFont="0" overrideLabelColor="0">
-        <labelFont description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" underline="0" italic="0" bold="0" style="" strikethrough="0"/>
+        <labelFont description="Arial,8.3,-1,5,50,0,0,0,0,0" underline="0" italic="0" bold="0" style="" strikethrough="0"/>
       </labelStyle>
     </attributeEditorField>
   </attributeEditorForm>

@@ -22,10 +22,10 @@ def _load(filename: str) -> list[dict[str, Any]]:
 # ---------------------------------------------------------------------------
 
 def road_types() -> list[dict[str, Any]]:
-    return _load('type_voie.json')
+    return _load('type_road.json')
 
 def zone_types() -> list[dict[str, Any]]:
-    return _load('type_zone.json')
+    return _load('zone_type.json')
 
 def subdivision_types() -> list[dict[str, Any]]:
     return _load('type_cite.json')
@@ -91,7 +91,7 @@ def org_subcategories(cat: str) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# Activity types: {القطاع, النوع, cat_fr?, cat_en?, type_fr?, type_en?}
+# Activity types: {sector, type, cat_fr?, cat_en?, type_fr?, type_en?}
 # ---------------------------------------------------------------------------
 
 def activity_types() -> list[dict[str, Any]]:

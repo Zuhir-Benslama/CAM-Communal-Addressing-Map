@@ -146,11 +146,11 @@
   </elevation>
   <renderer-v2 referencescale="-1" enableorderby="0" attr="etat" symbollevels="0" forceraster="0" type="categorizedSymbol">
     <categories>
-      <category value="مبرمجة" label="مبرمجة" symbol="0" render="true" uuid="{2412467a-4004-40d6-8920-6adcff4408d9}" type="string"/>
-      <category value="مرقمة ومطابقة" label="مرقمة ومطابقة" symbol="1" render="true" uuid="{c7d2b4b7-2fa3-4205-b662-3098070f0254}" type="string"/>
-      <category value="مرقمة وغير مطابقة" label="مرقمة وغير مطابقة" symbol="2" render="true" uuid="{f3b6fc2d-8c6c-49f5-a514-2779f068efb4}" type="string"/>
-      <category value="" label="آخر" symbol="3" render="true" uuid="{f3b6fc2d-8c6c-49f5-a514-2779f068efb4}" type="string"/>
-      <category value="محجوز(ة)" label="محجوز(ة)" symbol="4" render="true" uuid="{f3b6fc2d-8c6c-49f5-a514-2779f068efb4}" type="string"/>
+      <category value="مبرمجة" label="Programmed" symbol="0" render="true" uuid="{2412467a-4004-40d6-8920-6adcff4408d9}" type="string"/>
+      <category value="مرقمة ومطابقة" label="Numbered and Matching" symbol="1" render="true" uuid="{c7d2b4b7-2fa3-4205-b662-3098070f0254}" type="string"/>
+      <category value="مرقمة وغير مطابقة" label="Numbered and Mismatched" symbol="2" render="true" uuid="{f3b6fc2d-8c6c-49f5-a514-2779f068efb4}" type="string"/>
+      <category value="" label="Other" symbol="3" render="true" uuid="{f3b6fc2d-8c6c-49f5-a514-2779f068efb4}" type="string"/>
+      <category value="محجوز(ة)" label="Reserved" symbol="4" render="true" uuid="{f3b6fc2d-8c6c-49f5-a514-2779f068efb4}" type="string"/>
     </categories>
     <symbols>
       <symbol clip_to_extent="1" is_animated="0" frame_rate="10" alpha="1" name="0" type="marker" force_rhr="0">
@@ -165,7 +165,7 @@
           <Option type="Map">
             <Option value="0" name="angle" type="QString"/>
             <Option value="square" name="cap_style" type="QString"/>
-            <Option value="255,107,0,255,rgb:1,0.41960784313725491,0,1" name="color" type="QString"/>
+            <Option value="190,106,80,255,rgb:0.74509803921568629,0.41568627450980394,0.31372549019607843,1" name="color" type="QString"/>
             <Option value="1" name="horizontal_anchor_point" type="QString"/>
             <Option value="bevel" name="joinstyle" type="QString"/>
             <Option value="circle" name="name" type="QString"/>
@@ -204,7 +204,7 @@
           <Option type="Map">
             <Option value="0" name="angle" type="QString"/>
             <Option value="square" name="cap_style" type="QString"/>
-            <Option value="114,254,6,255,rgb:0.44705882352941179,0.99607843137254903,0.02352941176470588,1" name="color" type="QString"/>
+            <Option value="80,160,70,255,rgb:0.31372549019607843,0.62745098039215685,0.27450980392156865,1" name="color" type="QString"/>
             <Option value="1" name="horizontal_anchor_point" type="QString"/>
             <Option value="bevel" name="joinstyle" type="QString"/>
             <Option value="circle" name="name" type="QString"/>
@@ -243,7 +243,7 @@
           <Option type="Map">
             <Option value="0" name="angle" type="QString"/>
             <Option value="square" name="cap_style" type="QString"/>
-            <Option value="255,0,14,255,rgb:1,0,0.05490196078431372,1" name="color" type="QString"/>
+            <Option value="180,70,60,255,rgb:0.70588235294117652,0.27450980392156865,0.23529411764705882,1" name="color" type="QString"/>
             <Option value="1" name="horizontal_anchor_point" type="QString"/>
             <Option value="bevel" name="joinstyle" type="QString"/>
             <Option value="circle" name="name" type="QString"/>
@@ -321,7 +321,7 @@
           <Option type="Map">
             <Option value="0" name="angle" type="QString"/>
             <Option value="square" name="cap_style" type="QString"/>
-            <Option value="223,3,252,255,rgb:0.87450980392156863,0.01176470588235294,0.9882352941176471,1" name="color" type="QString"/>
+            <Option value="140,80,140,255,rgb:0.5490196078431373,0.31372549019607843,0.5490196078431373,1" name="color" type="QString"/>
             <Option value="1" name="horizontal_anchor_point" type="QString"/>
             <Option value="bevel" name="joinstyle" type="QString"/>
             <Option value="circle" name="name" type="QString"/>
@@ -448,7 +448,7 @@
     <rules key="{8de589da-eaff-477a-8672-da9765173a26}">
       <rule filter="&quot;etat&quot;='مبرمجة'" key="{6ae8e1fd-3a80-47e4-ba0b-9a583fcec4ac}">
         <settings calloutType="simple">
-          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="255,107,0,255,rgb:1,0.41960784313725491,0,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="coalesce(valeur, '') || ' ' || coalesce( repetition, '')" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="1" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
+          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="190,106,80,255,rgb:0.74509803921568629,0.41568627450980394,0.31372549019607843,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="coalesce(valeur, '') || ' ' || coalesce( repetition, '')" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="1" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
             <families/>
             <text-buffer bufferColor="255,255,255,255,rgb:1,1,1,1" bufferOpacity="1" bufferBlendMode="0" bufferNoFill="1" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferDraw="1" bufferSize="1" bufferSizeUnits="MM" bufferJoinStyle="128"/>
             <text-mask maskOpacity="1" maskSizeUnits="RenderMetersInMapUnits" maskSize2="1.5" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskEnabled="1" maskType="0" maskedSymbolLayers="" maskJoinStyle="128"/>
@@ -572,7 +572,7 @@
       </rule>
       <rule filter="&quot;etat&quot;='مرقمة ومطابقة'" key="{36a272c8-90cc-49c2-ba2d-d489d50ddfab}">
         <settings calloutType="simple">
-          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="114,254,6,255,rgb:0.44705882352941179,0.99607843137254903,0.02352941176470588,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="coalesce(valeur, '') || ' ' || coalesce( repetition, '')" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="1" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
+          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="80,160,70,255,rgb:0.31372549019607843,0.62745098039215685,0.27450980392156865,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="coalesce(valeur, '') || ' ' || coalesce( repetition, '')" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="1" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
             <families/>
             <text-buffer bufferColor="255,255,255,255,rgb:1,1,1,1" bufferOpacity="1" bufferBlendMode="0" bufferNoFill="1" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferDraw="1" bufferSize="1" bufferSizeUnits="MM" bufferJoinStyle="128"/>
             <text-mask maskOpacity="1" maskSizeUnits="RenderMetersInMapUnits" maskSize2="1.5" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskEnabled="1" maskType="0" maskedSymbolLayers="" maskJoinStyle="128"/>
@@ -696,7 +696,7 @@
       </rule>
       <rule filter="&quot;etat&quot;='مرقمة وغير مطابقة'" key="{1c79baea-7b32-4127-aac7-cb89db7b47e9}">
         <settings calloutType="simple">
-          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="255,0,14,255,rgb:1,0,0.05490196078431372,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="coalesce(valeur, '') || ' ' || coalesce( repetition, '')" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="1" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
+          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="180,70,60,255,rgb:0.70588235294117652,0.27450980392156865,0.23529411764705882,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="coalesce(valeur, '') || ' ' || coalesce( repetition, '')" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="1" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
             <families/>
             <text-buffer bufferColor="255,255,255,255,rgb:1,1,1,1" bufferOpacity="1" bufferBlendMode="0" bufferNoFill="1" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferDraw="1" bufferSize="1" bufferSizeUnits="MM" bufferJoinStyle="128"/>
             <text-mask maskOpacity="1" maskSizeUnits="RenderMetersInMapUnits" maskSize2="1.5" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskEnabled="1" maskType="0" maskedSymbolLayers="" maskJoinStyle="128"/>
@@ -820,7 +820,7 @@
       </rule>
       <rule filter="&quot;etat&quot;='محجوز(ة)'" key="{b60468cc-d81d-49b0-ad0c-7568d5467e73}">
         <settings calloutType="simple">
-          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="223,3,252,255,rgb:0.87450980392156863,0.01176470588235294,0.9882352941176471,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="coalesce(valeur, '') || ' ' || coalesce( repetition, '')" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="1" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
+          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="140,80,140,255,rgb:0.5490196078431373,0.31372549019607843,0.5490196078431373,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="coalesce(valeur, '') || ' ' || coalesce( repetition, '')" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="1" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
             <families/>
             <text-buffer bufferColor="255,255,255,255,rgb:1,1,1,1" bufferOpacity="1" bufferBlendMode="0" bufferNoFill="1" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferDraw="1" bufferSize="1" bufferSizeUnits="MM" bufferJoinStyle="128"/>
             <text-mask maskOpacity="1" maskSizeUnits="RenderMetersInMapUnits" maskSize2="1.5" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskEnabled="1" maskType="0" maskedSymbolLayers="" maskJoinStyle="128"/>
@@ -1277,21 +1277,21 @@ def my_form_open(dialog, layer, feature):
   <editorlayout>generatedlayout</editorlayout>
   <attributeEditorForm>
     <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
-      <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0"/>
+      <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="Arial,8.3,-1,5,50,0,0,0,0,0"/>
     </labelStyle>
     <attributeEditorField showLabel="1" verticalStretch="0" index="1" horizontalStretch="0" name="valeur">
       <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0"/>
+        <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="Arial,8.3,-1,5,50,0,0,0,0,0"/>
       </labelStyle>
     </attributeEditorField>
     <attributeEditorField showLabel="1" verticalStretch="0" index="-1" horizontalStretch="0" name="Prefix">
       <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0"/>
+        <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="Arial,8.3,-1,5,50,0,0,0,0,0"/>
       </labelStyle>
     </attributeEditorField>
     <attributeEditorField showLabel="1" verticalStretch="0" index="5" horizontalStretch="0" name="etat">
       <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0"/>
+        <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="Arial,8.3,-1,5,50,0,0,0,0,0"/>
       </labelStyle>
     </attributeEditorField>
   </attributeEditorForm>

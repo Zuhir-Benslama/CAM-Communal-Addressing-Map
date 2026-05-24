@@ -69,12 +69,12 @@ def export_model(model_name: str) -> None:
 
 
 def add_panel_sign(
-    geometry_wkt, etat_mont, road_id=None, subdivision_id=None, organization_id=None,
+    geometry_wkt, mount_status, road_id=None, subdivision_id=None, organization_id=None,
     dimensions=None, pkuid=None,
 ):
     instance = PanelSign(
         id=pkuid,
-        situation=etat_mont,
+        situation=mount_status,
         road_id=road_id, subdivision_id=subdivision_id,
         organization_id=organization_id, dimensions=dimensions or DEFAULT_PANEL_DIM,
         geometry=WKTElement(geometry_wkt, srid=SRID),
@@ -82,22 +82,22 @@ def add_panel_sign(
     return _add_entity(instance)
 
 
-def add_organization(geometry_wkt, nom_org, type_org, cat_org, pkuid=None,
+def add_organization(geometry_wkt, org_name, org_type, org_cat, pkuid=None,
                      nom_org_fr=None, nom_org_en=None):
     instance = Organization(
         id=pkuid,
-        Type=type_org, category=cat_org, Nom=nom_org,
+        Type=org_type, category=org_cat, Nom=org_name,
         Nom_fr=nom_org_fr, Nom_en=nom_org_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
     return _add_entity(instance)
 
 
-def add_road(geometry_wkt, nom_voie, type_voie, dec_voie, pkuid=None,
+def add_road(geometry_wkt, road_name, type_road, road_decision, pkuid=None,
              nom_voie_fr=None, nom_voie_en=None):
     instance = Road(
         id=pkuid,
-        Type=type_voie, Nom=nom_voie, decision_number=dec_voie,
+        Type=type_road, Nom=road_name, decision_number=road_decision,
         Nom_fr=nom_voie_fr, Nom_en=nom_voie_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
@@ -106,13 +106,13 @@ def add_road(geometry_wkt, nom_voie, type_voie, dec_voie, pkuid=None,
 
 def add_numbering(
     geometry_wkt, valeur, road_id=None, subdivision_id=None, repetition=None, etat=None,
-    cat_act=None, type_act=None, pkuid=None,
+    activity_cat=None, activity_type=None, pkuid=None,
 ):
     instance = Numbering(
         id=pkuid,
         valeur=valeur, road_id=road_id, subdivision_id=subdivision_id,
         repetition=repetition, etat=etat,
-        activity_cat=cat_act, activity_type=type_act,
+        activity_cat=activity_cat, activity_type=activity_type,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
     return _add_entity(instance)

@@ -738,3 +738,40 @@ These are intentional patterns, not bugs. Addressed as needed during feature wor
 - [x] **Repository function param cleanup** — `add_panel_sign()` params renamed from `idLine`/`idPoly`/`idOrg`/`dim` to `road_id`/`subdivision_id`/`organization_id`/`dimensions`. `add_numbering()` params renamed from `idLine`/`idPoly` to `road_id`/`subdivision_id`. Call sites in `mixins/layer_edit_mixin.py` updated. `create_db.py` shapefile column variable names updated.
 
 ### P3 — Low ✅
+
+---
+
+## 48. GUI UI Issues — 2026-05-24 ✅
+
+### Critical (P0) ✅
+
+- [x] **`gui/RNA_dialog_base.ui:10` vs `:22`** — `geometry` width (641) exceeds `maximumSize` width (640), causing unpredictable sizing on some platforms. Fix: changed `geometry` width to 640.
+- [x] **`gui/PopupDialog.ui:49`** — `QStackedWidget` `currentIndex=4` starts on the `num` (numbering) page instead of `zone` (index 0). Wrong initial visible page. Fix: changed to `currentIndex="0"`.
+- [x] **`gui/liste.ui:28`** — Header `frame_2` has `maximumSize` width=500, but dialog `minimumSize` is 518. Header won't fill the dialog width, leaving a visual gap. Fix: changed `frame_2` max-width to 16777215.
+- [x] **`gui/RNA_dialog_base.ui:2262-2266`** — `verticalSpacer_ops` has two identical `<property name="orientation">` blocks. This may confuse Qt's UIParser. Fix: removed the duplicate.
+
+### Medium (P1) ✅
+
+- [x] **QSS universal selector** — Both `dark_qss.template` and `light_qss.template` use `* { background-color: ...; font-size: 15px; }`. The universal `background-color` forces a background on **all** widgets including internal popup items like combo dropdown views. The `font-size: 15px` overrides the smaller 7pt–8pt fonts set on footer labels in `.ui` files. Fix: removed `background-color` and `font-size` from universal rule.
+- [x] **Combo box down-arrow hidden** — `QComboBox::down-arrow { image: none; }` in both themes removes the dropdown indicator arrow. Combos look indistinguishable from plain text fields. Fix: replaced `image: none` with `width: 8px; height: 8px`.
+- [x] **`gui/PopupDialog.ui:829`** — `submit_pan` button is placed directly in `formLayout_3` row 2 column 1 with no centering, unlike all other entity pages (zone/road/org/subd) where submit buttons are centered with spacer sandwiches. Fix: added spacer sandwich around `submit_pan`.
+- [x] **NoFrame + lineWidth=2 waste** — Multiple frames (`frame_9`, login `frame`, `frame_16` in RNA_dialog_base.ui; `frame_2`, table `frame` in liste.ui) set `lineWidth=2` with `frameShape=NoFrame`. Fix: removed `lineWidth` from all NoFrame elements (7 total).
+
+### Minor (P2) ✅
+
+- [x] **`gui/popup_dialog.py:44-46`** — Three blank lines before `self._tr_locale = current_locale()` (PEP8: `E303 too many blank lines`). Fix: reduced to one blank line.
+- [x] **`gui/popup_dialog.py:145`** — Missing blank line before `def on_select_activity_cat` (PEP8: `E302 expected 2 blank lines`). Fix: added blank line.
+- [x] **`gui/RNA_dialog_base.ui:1023`** — `gear_btn` uses Unicode `⚙` as button text. This character may not render correctly on all platforms/encodings. Fix: replaced with "Settings" text + tooltip.
+- [x] **HTML tooltips hardcoded for RTL** — 8 tooltips used `<p align="right">` which won't adapt when switching to LTR locales. Fix: changed all to `align="justify"`.
+
+---
+
+## 49. UI Polish Round 3 — Button Sizing & Form Alignment — 2026-05-24 ✅
+
+### Done
+- [x] **Primary (blue) button QSS oversized** — `padding: 12px 24px; min-height: 2em; font-size: 15px` in `QPushButton[role="primary"]` made buttons ~54px tall. Removed all three overrides so primary buttons inherit base QPushButton sizing (`padding: 8px 16px; min-height: 1.2em`).
+- [x] **Both themes fixed** — `dark_qss.template` and `light_qss.template` primary button selectors now only set `background-color`, `color`, `border`, and `font-weight` (no size overrides).
+- [x] **`make build && make install` tested** — changes deployed to `~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/RNA/`.
+
+### Open
+- [ ] **Features not appearing on map** — After login, some map features (roads, zones, etc.) are not visible. Needs investigation of `init_allowed_zone()`, layer creation order, and canvas refresh logic.

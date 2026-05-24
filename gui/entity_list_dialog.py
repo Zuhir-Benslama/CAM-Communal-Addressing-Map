@@ -3,6 +3,7 @@ import logging
 import os
 
 from PyQt5 import uic
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
     QAbstractItemView, QDialog, QHBoxLayout, QLabel, QPushButton,
     QSizePolicy, QTableWidgetItem, QVBoxLayout, QWidget,
@@ -103,6 +104,18 @@ class EntityListDialog(QDialog, FORM_CLASS):
         self.frame_2.setProperty('surfaceRole', 'header')
         self.frame_10.setProperty('surfaceRole', 'toolbar')
         self.frame_9.setProperty('surfaceRole', 'footer')
+        self.frame_2.setMaximumWidth(16777215)
+        self.label.setAlignment(Qt.AlignCenter)
+        self.list_title.setAlignment(Qt.AlignCenter)
+        self.label_24.setAlignment(Qt.AlignCenter)
+        self.label_24.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+
+        footer_layout = self.frame_9.layout()
+        if footer_layout is not None:
+            for index in range(footer_layout.count() - 1, -1, -1):
+                item = footer_layout.itemAt(index)
+                if item is not None and item.spacerItem() is not None:
+                    footer_layout.takeAt(index)
 
         self.table.setAlternatingRowColors(True)
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)

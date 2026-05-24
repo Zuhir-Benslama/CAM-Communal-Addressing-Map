@@ -282,8 +282,8 @@ def setup_gui_mocks():
     for fn in ('fill_org_category', 'fill_road_type', 'fill_road_reference',
                'fill_panel_reference', 'fill_activity_category',
                'fill_numbering_state', 'fill_mounting_status',
-               'fill_subdivision_type', 'fill_type_zone', 'fill_type_org',
-               'fill_type_act'):
+               'fill_subdivision_type', 'fill_zone_type', 'fill_org_type',
+               'fill_activity_type'):
         setattr(_ui_fillers, fn, MagicMock())
     sys.modules['plans_adressage.gui.ui_fillers'] = _ui_fillers
 
@@ -357,13 +357,13 @@ def setup_gui_mocks():
     # SetupUi must create all UI widget attributes referenced by PopupDialog
     def _setupUi(instance):
         uiwidgets = (
-            'cat_org', 'type_voie', 'dyn_ref3', 'dyn_ref4',
-            'cat_act_3', 'num_etat', 'etat_mont', 'type_city',
-            'type_zone', 'type_org', 'type_act_3',
-            'submit_voie', 'submit_zone', 'submit_city',
+            'org_cat', 'type_road', 'dyn_ref3', 'dyn_ref4',
+            'cat_act_3', 'num_state', 'mount_status', 'subd_type',
+            'zone_type', 'org_type', 'activity_type_3',
+            'submit_road', 'submit_zone', 'submit_subd',
             'submit_org', 'submit_num', 'submit_pan',
             'select_ref3', 'select_ref4',
-            'nom_voie', 'dec_voie', 'nom_org', 'nom_city',
+            'road_name', 'road_decision', 'org_name', 'subd_name',
             'nom_zone', 'num_val', 'repetition',
             'ref_name3', 'ref_name4',
             'router', 'frame_12', 'frame_10', 'frame_9',

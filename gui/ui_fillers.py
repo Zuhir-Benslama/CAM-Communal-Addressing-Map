@@ -67,7 +67,7 @@ def fill_subdivision_type(combobox: QComboBox) -> None:
     _fill_from_json(combobox, subdivision_types(), _locale())
 
 
-def fill_type_zone(combobox: QComboBox) -> None:
+def fill_zone_type(combobox: QComboBox) -> None:
     """Populate a combobox with zone types from JSON."""
     _fill_from_json(combobox, zone_types(), _locale())
 
@@ -162,7 +162,7 @@ def fill_activity_subcategory(combobox, cat) -> None:
     combobox.setInsertPolicy(QComboBox.NoInsert)
 
 
-def fill_type_act(combobox, cat) -> None:
+def fill_activity_type(combobox, cat) -> None:
     """Populate a combobox with activity types for a given category."""
     loc = _locale()
     combobox.clear()
@@ -173,7 +173,7 @@ def fill_type_act(combobox, cat) -> None:
         combobox.addItem(_i18n_tr(NO_ACTIVITY, loc), NO_ACTIVITY)
 
 
-def fill_type_org(combobox, cat) -> None:
+def fill_org_type(combobox, cat) -> None:
     """Populate a combobox with organization types for a given category."""
     loc = _locale()
     combobox.clear()

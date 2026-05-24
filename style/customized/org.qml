@@ -146,16 +146,16 @@
   </elevation>
   <renderer-v2 enableorderby="0" type="categorizedSymbol" symbollevels="0" referencescale="-1" forceraster="0" attr="Cat">
     <categories>
-      <category label="الهيئات و المرافق الصحية" type="string" symbol="0" uuid="{bbc56ace-b1a4-4e4c-a8eb-d25a8c31b33a}" value="الهيئات و المرافق الصحية" render="true"/>
-      <category label="مرافق النقل و المواصلات" type="string" symbol="1" uuid="{0e881361-c5de-41ad-a65e-e4280039ca5e}" value="مرافق النقل و المواصلات" render="true"/>
-      <category label="الهيئات و المرافق المالية و السياحية" type="string" symbol="2" uuid="{4e93dc9f-71cc-44e2-81d3-9e192f6d08df}" value="الهيئات و المرافق المالية و السياحية" render="true"/>
-      <category label="الهيئات و المرافق الدينية" type="string" symbol="3" uuid="{af4d1894-7ead-4c64-bfba-90727bc7e752}" value="الهيئات و المرافق الدينية" render="true"/>
-      <category label="الهيئات و المرافق التربوية والجامعية و التكوينية" type="string" symbol="4" uuid="{39b60345-7123-49bd-9b7e-64f418336ed5}" value="الهيئات و المرافق التربوية والجامعية و التكوينية" render="true"/>
-      <category label="المرافق الإقامية" type="string" symbol="5" uuid="{01e4943f-ca9d-4f4a-8618-0f3b8d1d49d0}" value="المرافق الإقامية" render="true"/>
-      <category label="الهيئات و المرافق الرياضية و الثقافية" type="string" symbol="6" uuid="{d8ec317e-a010-40aa-b726-a05696ee8f90}" value="الهيئات و المرافق الرياضية و الثقافية" render="true"/>
-      <category label="الهيئات و المرافق القطاعية" type="string" symbol="7" uuid="{041311b1-7c45-4d42-b647-5529aeb627f7}" value="الهيئات و المرافق القطاعية" render="true"/>
-      <category label="الهيئات و المرافق الأمنية" type="string" symbol="8" uuid="{b48139f0-5bc8-4aea-99d5-9c436e87ed76}" value="الهيئات و المرافق الأمنية" render="true"/>
-      <category label="آخر" type="string" symbol="9" uuid="{b48139f0-5bc8-4aea-99d5-9c436e87ed76}" value="" render="true"/>
+      <category label="Health Bodies & Facilities" type="string" symbol="0" uuid="{bbc56ace-b1a4-4e4c-a8eb-d25a8c31b33a}" value="الهيئات و المرافق الصحية" render="true"/>
+      <category label="Transport Facilities" type="string" symbol="1" uuid="{0e881361-c5de-41ad-a65e-e4280039ca5e}" value="مرافق النقل و المواصلات" render="true"/>
+      <category label="Financial & Tourism Bodies" type="string" symbol="2" uuid="{4e93dc9f-71cc-44e2-81d3-9e192f6d08df}" value="الهيئات و المرافق المالية و السياحية" render="true"/>
+      <category label="Religious Bodies & Facilities" type="string" symbol="3" uuid="{af4d1894-7ead-4c64-bfba-90727bc7e752}" value="الهيئات و المرافق الدينية" render="true"/>
+      <category label="Educational & Training Bodies" type="string" symbol="4" uuid="{39b60345-7123-49bd-9b7e-64f418336ed5}" value="الهيئات و المرافق التربوية والجامعية و التكوينية" render="true"/>
+      <category label="Residential Facilities" type="string" symbol="5" uuid="{01e4943f-ca9d-4f4a-8618-0f3b8d1d49d0}" value="المرافق الإقامية" render="true"/>
+      <category label="Sports & Cultural Bodies" type="string" symbol="6" uuid="{d8ec317e-a010-40aa-b726-a05696ee8f90}" value="الهيئات و المرافق الرياضية و الثقافية" render="true"/>
+      <category label="Sectoral Bodies & Facilities" type="string" symbol="7" uuid="{041311b1-7c45-4d42-b647-5529aeb627f7}" value="الهيئات و المرافق القطاعية" render="true"/>
+      <category label="Security Bodies & Facilities" type="string" symbol="8" uuid="{b48139f0-5bc8-4aea-99d5-9c436e87ed76}" value="الهيئات و المرافق الأمنية" render="true"/>
+      <category label="Other" type="string" symbol="9" uuid="{b48139f0-5bc8-4aea-99d5-9c436e87ed76}" value="" render="true"/>
     </categories>
     <symbols>
       <symbol name="0" type="fill" is_animated="0" alpha="1" clip_to_extent="1" force_rhr="0" frame_rate="10">
@@ -590,7 +590,7 @@
     <rules key="{9f0581cc-ad14-48e7-ae5f-1e801d4ced70}">
       <rule filter="&quot;Cat&quot; = 'الهيئات و المرافق الصحية'" key="{6c9bcda0-5d04-4666-b83e-c76ff8fbc8bc}">
         <settings calloutType="simple">
-          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="164,113,88,255,rgb:0.64313725490196083,0.44313725490196076,0.34509803921568627,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="MS Shell Dlg 2" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
+          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="164,113,88,255,rgb:0.64313725490196083,0.44313725490196076,0.34509803921568627,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="Arial" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
             <families/>
             <text-buffer bufferBlendMode="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferJoinStyle="128" bufferSize="1.7" bufferDraw="1" bufferNoFill="1" bufferColor="250,250,250,255,rgb:0.98039215686274506,0.98039215686274506,0.98039215686274506,1" bufferOpacity="1" bufferSizeUnits="MM"/>
             <text-mask maskType="0" maskSize2="1" maskSizeUnits="RenderMetersInMapUnits" maskOpacity="1" maskJoinStyle="128" maskSize="1" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="1"/>
@@ -750,7 +750,7 @@
       </rule>
       <rule filter="&quot;Cat&quot; = 'مرافق النقل و المواصلات'" key="{a4175f3e-7558-40ab-b600-aa7bfe5204d1}">
         <settings calloutType="simple">
-          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="133,182,111,255,rgb:0.52156862745098043,0.71372549019607845,0.43529411764705883,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="MS Shell Dlg 2" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
+          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="133,182,111,255,rgb:0.52156862745098043,0.71372549019607845,0.43529411764705883,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="Arial" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
             <families/>
             <text-buffer bufferBlendMode="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferJoinStyle="128" bufferSize="1.7" bufferDraw="1" bufferNoFill="1" bufferColor="250,250,250,255,rgb:0.98039215686274506,0.98039215686274506,0.98039215686274506,1" bufferOpacity="1" bufferSizeUnits="MM"/>
             <text-mask maskType="0" maskSize2="1" maskSizeUnits="RenderMetersInMapUnits" maskOpacity="1" maskJoinStyle="128" maskSize="1" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="1"/>
@@ -910,7 +910,7 @@
       </rule>
       <rule filter="&quot;Cat&quot; = 'الهيئات و المرافق المالية و السياحية'" key="{75fcfaa4-91dc-45d2-8a94-4378d02829f5}">
         <settings calloutType="simple">
-          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="125,139,143,255,rgb:0.49019607843137253,0.54509803921568623,0.5607843137254902,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="MS Shell Dlg 2" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
+          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="125,139,143,255,rgb:0.49019607843137253,0.54509803921568623,0.5607843137254902,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="Arial" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
             <families/>
             <text-buffer bufferBlendMode="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferJoinStyle="128" bufferSize="1.7" bufferDraw="1" bufferNoFill="1" bufferColor="250,250,250,255,rgb:0.98039215686274506,0.98039215686274506,0.98039215686274506,1" bufferOpacity="1" bufferSizeUnits="MM"/>
             <text-mask maskType="0" maskSize2="1" maskSizeUnits="RenderMetersInMapUnits" maskOpacity="1" maskJoinStyle="128" maskSize="1" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="1"/>
@@ -1070,7 +1070,7 @@
       </rule>
       <rule filter="&quot;Cat&quot; = 'الهيئات و المرافق الدينية'" key="{71e21a54-9efb-4352-b745-c0df639b9f3b}">
         <settings calloutType="simple">
-          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="145,82,45,255,rgb:0.56862745098039214,0.32156862745098042,0.17647058823529413,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="MS Shell Dlg 2" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
+          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="145,82,45,255,rgb:0.56862745098039214,0.32156862745098042,0.17647058823529413,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="Arial" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
             <families/>
             <text-buffer bufferBlendMode="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferJoinStyle="128" bufferSize="1.7" bufferDraw="1" bufferNoFill="1" bufferColor="250,250,250,255,rgb:0.98039215686274506,0.98039215686274506,0.98039215686274506,1" bufferOpacity="1" bufferSizeUnits="MM"/>
             <text-mask maskType="0" maskSize2="1" maskSizeUnits="RenderMetersInMapUnits" maskOpacity="1" maskJoinStyle="128" maskSize="1" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="1"/>
@@ -1230,7 +1230,7 @@
       </rule>
       <rule filter="&quot;Cat&quot; = 'الهيئات و المرافق التربوية والجامعية و التكوينية'" key="{572f6fd0-9c2a-44dd-96c6-ef0eedba0dc6}">
         <settings calloutType="simple">
-          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="190,178,151,255,rgb:0.74509803921568629,0.69803921568627447,0.59215686274509804,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="MS Shell Dlg 2" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
+          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="190,178,151,255,rgb:0.74509803921568629,0.69803921568627447,0.59215686274509804,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="Arial" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
             <families/>
             <text-buffer bufferBlendMode="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferJoinStyle="128" bufferSize="1.7" bufferDraw="1" bufferNoFill="1" bufferColor="250,250,250,255,rgb:0.98039215686274506,0.98039215686274506,0.98039215686274506,1" bufferOpacity="1" bufferSizeUnits="MM"/>
             <text-mask maskType="0" maskSize2="1" maskSizeUnits="RenderMetersInMapUnits" maskOpacity="1" maskJoinStyle="128" maskSize="1" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="1"/>
@@ -1390,7 +1390,7 @@
       </rule>
       <rule filter="&quot;Cat&quot; = 'المرافق الإقامية'" key="{1a4dd884-fe1a-416c-8d84-5f022f3add72}">
         <settings calloutType="simple">
-          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="196,60,57,255,rgb:0.7686274509803922,0.23529411764705882,0.22352941176470589,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="MS Shell Dlg 2" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
+          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="196,60,57,255,rgb:0.7686274509803922,0.23529411764705882,0.22352941176470589,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="Arial" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
             <families/>
             <text-buffer bufferBlendMode="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferJoinStyle="128" bufferSize="1.7" bufferDraw="1" bufferNoFill="1" bufferColor="250,250,250,255,rgb:0.98039215686274506,0.98039215686274506,0.98039215686274506,1" bufferOpacity="1" bufferSizeUnits="MM"/>
             <text-mask maskType="0" maskSize2="1" maskSizeUnits="RenderMetersInMapUnits" maskOpacity="1" maskJoinStyle="128" maskSize="1" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="1"/>
@@ -1550,7 +1550,7 @@
       </rule>
       <rule filter="&quot;Cat&quot; = 'الهيئات و المرافق الرياضية و الثقافية'" key="{234551cf-74dc-40ba-ad68-d3b83e224cfa}">
         <settings calloutType="simple">
-          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="229,182,54,255,rgb:0.89803921568627454,0.71372549019607845,0.21176470588235294,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="MS Shell Dlg 2" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
+          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="229,182,54,255,rgb:0.89803921568627454,0.71372549019607845,0.21176470588235294,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="Arial" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
             <families/>
             <text-buffer bufferBlendMode="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferJoinStyle="128" bufferSize="1.7" bufferDraw="1" bufferNoFill="1" bufferColor="250,250,250,255,rgb:0.98039215686274506,0.98039215686274506,0.98039215686274506,1" bufferOpacity="1" bufferSizeUnits="MM"/>
             <text-mask maskType="0" maskSize2="1" maskSizeUnits="RenderMetersInMapUnits" maskOpacity="1" maskJoinStyle="128" maskSize="1" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="1"/>
@@ -1710,7 +1710,7 @@
       </rule>
       <rule filter="&quot;Cat&quot; = 'الهيئات و المرافق القطاعية'" key="{b357785f-50d8-4560-9621-12d171641ca7}">
         <settings calloutType="simple">
-          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="225,89,137,255,rgb:0.88235294117647056,0.34901960784313724,0.53725490196078429,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="MS Shell Dlg 2" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
+          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="225,89,137,255,rgb:0.88235294117647056,0.34901960784313724,0.53725490196078429,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="Arial" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
             <families/>
             <text-buffer bufferBlendMode="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferJoinStyle="128" bufferSize="1.7" bufferDraw="1" bufferNoFill="1" bufferColor="250,250,250,255,rgb:0.98039215686274506,0.98039215686274506,0.98039215686274506,1" bufferOpacity="1" bufferSizeUnits="MM"/>
             <text-mask maskType="0" maskSize2="1" maskSizeUnits="RenderMetersInMapUnits" maskOpacity="1" maskJoinStyle="128" maskSize="1" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="1"/>
@@ -1870,7 +1870,7 @@
       </rule>
       <rule filter="&quot;Cat&quot; = 'الهيئات و المرافق الأمنية'" key="{c47aed06-1a3a-4e89-99d0-378979ff01d7}">
         <settings calloutType="simple">
-          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="190,207,80,255,rgb:0.74509803921568629,0.81176470588235294,0.31372549019607843,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="MS Shell Dlg 2" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
+          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="190,207,80,255,rgb:0.74509803921568629,0.81176470588235294,0.31372549019607843,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="Arial" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
             <families/>
             <text-buffer bufferBlendMode="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferJoinStyle="128" bufferSize="1.7" bufferDraw="1" bufferNoFill="1" bufferColor="250,250,250,255,rgb:0.98039215686274506,0.98039215686274506,0.98039215686274506,1" bufferOpacity="1" bufferSizeUnits="MM"/>
             <text-mask maskType="0" maskSize2="1" maskSizeUnits="RenderMetersInMapUnits" maskOpacity="1" maskJoinStyle="128" maskSize="1" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="1"/>
@@ -2030,7 +2030,7 @@
       </rule>
       <rule filter="ELSE" key="{a11e4997-0f9f-4aa8-8d8b-4bfcb53c4fcf}">
         <settings calloutType="simple">
-          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="0,0,0,255,hsv:0.79322222222222227,0,0,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="MS Shell Dlg 2" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
+          <text-style fontSize="7" textOrientation="horizontal" fontWordSpacing="0" legendString="Aa" capitalization="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontSizeUnit="MM" fontUnderline="0" multilineHeight="1" blendMode="0" fontWeight="50" allowHtml="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" isExpression="1" textColor="0,0,0,255,hsv:0.79322222222222227,0,0,1" tabStopDistance="80" forcedItalic="0" multilineHeightUnit="Percentage" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" namedStyle="Normal" textOpacity="1" fontFamily="Arial" fontStrikeout="0" fontLetterSpacing="0" tabStopDistanceUnit="Point" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" useSubstitutions="0" fontKerning="1">
             <families/>
             <text-buffer bufferBlendMode="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferJoinStyle="128" bufferSize="1.7" bufferDraw="1" bufferNoFill="1" bufferColor="250,250,250,255,rgb:0.98039215686274506,0.98039215686274506,0.98039215686274506,1" bufferOpacity="1" bufferSizeUnits="MM"/>
             <text-mask maskType="0" maskSize2="1" maskSizeUnits="RenderMetersInMapUnits" maskOpacity="1" maskJoinStyle="128" maskSize="1" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="1"/>
@@ -2243,157 +2243,157 @@
           <Option type="Map">
             <Option name="map" type="List">
               <Option type="Map">
-                <Option name="إقامة جامعية" type="QString" value="إقامة جامعية"/>
+                <Option name="University Residence" type="QString" value="إقامة جامعية"/>
               </Option>
               <Option type="Map">
-                <Option name="اخر" type="QString" value="اخر"/>
+                <Option name="Other" type="QString" value="اخر"/>
               </Option>
               <Option type="Map">
-                <Option name="ثانوية" type="QString" value="ثانوية"/>
+                <Option name="High School" type="QString" value="ثانوية"/>
               </Option>
               <Option type="Map">
-                <Option name="جامعة" type="QString" value="جامعة"/>
+                <Option name="University" type="QString" value="جامعة"/>
               </Option>
               <Option type="Map">
-                <Option name="حماية مدنية" type="QString" value="حماية مدنية"/>
+                <Option name="Civil Protection" type="QString" value="حماية مدنية"/>
               </Option>
               <Option type="Map">
-                <Option name="دار الحضانة" type="QString" value="دار الحضانة"/>
+                <Option name="Kindergarten" type="QString" value="دار الحضانة"/>
               </Option>
               <Option type="Map">
-                <Option name="دار الشباب" type="QString" value="دار الشباب"/>
+                <Option name="Youth Center" type="QString" value="دار الشباب"/>
               </Option>
               <Option type="Map">
-                <Option name="دار الطفولة" type="QString" value="دار الطفولة"/>
+                <Option name="Children's Home" type="QString" value="دار الطفولة"/>
               </Option>
               <Option type="Map">
-                <Option name="دار المسنين" type="QString" value="دار المسنين"/>
+                <Option name="Elderly Home" type="QString" value="دار المسنين"/>
               </Option>
               <Option type="Map">
-                <Option name="روضة أطفال" type="QString" value="روضة أطفال"/>
+                <Option name="Nursery School" type="QString" value="روضة أطفال"/>
               </Option>
               <Option type="Map">
-                <Option name="عيادة متعددة الخدمات" type="QString" value="عيادة متعددة الخدمات"/>
+                <Option name="Polyclinic" type="QString" value="عيادة متعددة الخدمات"/>
               </Option>
               <Option type="Map">
-                <Option name="قاعة العلاج" type="QString" value="قاعة العلاج"/>
+                <Option name="Treatment Room" type="QString" value="قاعة العلاج"/>
               </Option>
               <Option type="Map">
-                <Option name="قاعة حفلات" type="QString" value="قاعة حفلات"/>
+                <Option name="Event Hall" type="QString" value="قاعة حفلات"/>
               </Option>
               <Option type="Map">
-                <Option name="قاعة متعددة الرياضات" type="QString" value="قاعة متعددة الرياضات"/>
+                <Option name="Multi-Sports Hall" type="QString" value="قاعة متعددة الرياضات"/>
               </Option>
               <Option type="Map">
-                <Option name="قصر الرياضة" type="QString" value="قصر الرياضة"/>
+                <Option name="Sports Palace" type="QString" value="قصر الرياضة"/>
               </Option>
               <Option type="Map">
-                <Option name="مؤسسة إستشفائية" type="QString" value="مؤسسة إستشفائية"/>
+                <Option name="Hospital" type="QString" value="مؤسسة إستشفائية"/>
               </Option>
               <Option type="Map">
-                <Option name="مؤسسة الصحة الجوارية" type="QString" value="مؤسسة الصحة الجوارية"/>
+                <Option name="Local Health Institution" type="QString" value="مؤسسة الصحة الجوارية"/>
               </Option>
               <Option type="Map">
-                <Option name="متحف" type="QString" value="متحف"/>
+                <Option name="Museum" type="QString" value="متحف"/>
               </Option>
               <Option type="Map">
-                <Option name="متوسطة" type="QString" value="متوسطة"/>
+                <Option name="Middle School" type="QString" value="متوسطة"/>
               </Option>
               <Option type="Map">
-                <Option name="محطة" type="QString" value="محطة"/>
+                <Option name="Station" type="QString" value="محطة"/>
               </Option>
               <Option type="Map">
-                <Option name="مخبر بلدي" type="QString" value="مخبر بلدي"/>
+                <Option name="Municipal Laboratory" type="QString" value="مخبر بلدي"/>
               </Option>
               <Option type="Map">
-                <Option name="مدرسة" type="QString" value="مدرسة"/>
+                <Option name="School" type="QString" value="مدرسة"/>
               </Option>
               <Option type="Map">
-                <Option name="مدرسة قرانية" type="QString" value="مدرسة قرانية"/>
+                <Option name="Quranic School" type="QString" value="مدرسة قرانية"/>
               </Option>
               <Option type="Map">
-                <Option name="مركب رياضي جواري" type="QString" value="مركب رياضي جواري"/>
+                <Option name="Local Sports Complex" type="QString" value="مركب رياضي جواري"/>
               </Option>
               <Option type="Map">
-                <Option name="مركز بريدي" type="QString" value="مركز بريدي"/>
+                <Option name="Postal Center" type="QString" value="مركز بريدي"/>
               </Option>
               <Option type="Map">
-                <Option name="مركز تجاري" type="QString" value="مركز تجاري"/>
+                <Option name="Shopping Center" type="QString" value="مركز تجاري"/>
               </Option>
               <Option type="Map">
-                <Option name="مركز تقافي" type="QString" value="مركز تقافي"/>
+                <Option name="Cultural Center" type="QString" value="مركز تقافي"/>
               </Option>
               <Option type="Map">
-                <Option name="مركز تكوين" type="QString" value="مركز تكوين"/>
+                <Option name="Training Center" type="QString" value="مركز تكوين"/>
               </Option>
               <Option type="Map">
-                <Option name="مركز ثقافي" type="QString" value="مركز ثقافي"/>
+                <Option name="Cultural Center" type="QString" value="مركز ثقافي"/>
               </Option>
               <Option type="Map">
-                <Option name="مركز صحي" type="QString" value="مركز صحي"/>
+                <Option name="Health Center" type="QString" value="مركز صحي"/>
               </Option>
               <Option type="Map">
-                <Option name="مركز طبي اجتماعي" type="QString" value="مركز طبي اجتماعي"/>
+                <Option name="Medical-Social Center" type="QString" value="مركز طبي اجتماعي"/>
               </Option>
               <Option type="Map">
-                <Option name="مسبح بلدي" type="QString" value="مسبح بلدي"/>
+                <Option name="Municipal Pool" type="QString" value="مسبح بلدي"/>
               </Option>
               <Option type="Map">
-                <Option name="مستشفى" type="QString" value="مستشفى"/>
+                <Option name="Hospital" type="QString" value="مستشفى"/>
               </Option>
               <Option type="Map">
-                <Option name="مستوصف" type="QString" value="مستوصف"/>
+                <Option name="Dispensary" type="QString" value="مستوصف"/>
               </Option>
               <Option type="Map">
-                <Option name="مسجد" type="QString" value="مسجد"/>
+                <Option name="Mosque" type="QString" value="مسجد"/>
               </Option>
               <Option type="Map">
-                <Option name="مسرح" type="QString" value="مسرح"/>
+                <Option name="Theater" type="QString" value="مسرح"/>
               </Option>
               <Option type="Map">
-                <Option name="معهد" type="QString" value="معهد"/>
+                <Option name="Institute" type="QString" value="معهد"/>
               </Option>
               <Option type="Map">
-                <Option name="مكتبة بلدية" type="QString" value="مكتبة بلدية"/>
+                <Option name="Municipal Library" type="QString" value="مكتبة بلدية"/>
               </Option>
               <Option type="Map">
-                <Option name="ملحقة بلدية" type="QString" value="ملحقة بلدية"/>
+                <Option name="Municipal Annex" type="QString" value="ملحقة بلدية"/>
               </Option>
               <Option type="Map">
-                <Option name="ملعب" type="QString" value="ملعب"/>
+                <Option name="Stadium" type="QString" value="ملعب"/>
               </Option>
               <Option type="Map">
-                <Option name="ملعب بلدي" type="QString" value="ملعب بلدي"/>
+                <Option name="Municipal Stadium" type="QString" value="ملعب بلدي"/>
               </Option>
               <Option type="Map">
-                <Option name="ملعب جواري" type="QString" value="ملعب جواري"/>
+                <Option name="Local Stadium" type="QString" value="ملعب جواري"/>
               </Option>
               <Option type="Map">
-                <Option name="نزل الشرطة" type="QString" value="نزل الشرطة"/>
+                <Option name="Police Station" type="QString" value="نزل الشرطة"/>
               </Option>
               <Option type="Map">
-                <Option name="وكالة بنكية" type="QString" value="وكالة بنكية"/>
+                <Option name="Bank Agency" type="QString" value="وكالة بنكية"/>
               </Option>
               <Option type="Map">
-                <Option name="الدرك الوطني" type="QString" value="الدرك الوطني"/>
+                <Option name="National Gendarmerie" type="QString" value="الدرك الوطني"/>
               </Option>
               <Option type="Map">
-                <Option name="حديقة" type="QString" value="حديقة"/>
+                <Option name="Park" type="QString" value="حديقة"/>
               </Option>
               <Option type="Map">
-                <Option name="سوق" type="QString" value="سوق"/>
+                <Option name="Market" type="QString" value="سوق"/>
               </Option>
               <Option type="Map">
-                <Option name="مقر البلدية" type="QString" value="مقر البلدية"/>
+                <Option name="Municipality Headquarters" type="QString" value="مقر البلدية"/>
               </Option>
               <Option type="Map">
-                <Option name="مقبرة" type="QString" value="مقبرة"/>
+                <Option name="Cemetery" type="QString" value="مقبرة"/>
               </Option>
               <Option type="Map">
-                <Option name="الجزائرية للمياه" type="QString" value="الجزائرية للمياه"/>
+                <Option name="Algerian Water Company" type="QString" value="الجزائرية للمياه"/>
               </Option>
               <Option type="Map">
-                <Option name="محافظة الغابات" type="QString" value="محافظة الغابات"/>
+                <Option name="Forest Directorate" type="QString" value="محافظة الغابات"/>
               </Option>
             </Option>
           </Option>
@@ -2536,16 +2536,16 @@ def my_form_open(dialog, layer, feature):
   <editorlayout>tablayout</editorlayout>
   <attributeEditorForm>
     <labelStyle overrideLabelColor="0" labelColor="" overrideLabelFont="0">
-      <labelFont style="" strikethrough="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" underline="0" bold="0" italic="0"/>
+      <labelFont style="" strikethrough="0" description="Arial,8.25,-1,5,50,0,0,0,0,0" underline="0" bold="0" italic="0"/>
     </labelStyle>
     <attributeEditorField name="Type" verticalStretch="0" horizontalStretch="0" index="3" showLabel="1">
       <labelStyle overrideLabelColor="0" labelColor="" overrideLabelFont="0">
-        <labelFont style="" strikethrough="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" underline="0" bold="0" italic="0"/>
+        <labelFont style="" strikethrough="0" description="Arial,8.3,-1,5,50,0,0,0,0,0" underline="0" bold="0" italic="0"/>
       </labelStyle>
     </attributeEditorField>
     <attributeEditorField name="Nom" verticalStretch="0" horizontalStretch="0" index="5" showLabel="1">
       <labelStyle overrideLabelColor="0" labelColor="" overrideLabelFont="0">
-        <labelFont style="" strikethrough="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" underline="0" bold="0" italic="0"/>
+        <labelFont style="" strikethrough="0" description="Arial,8.3,-1,5,50,0,0,0,0,0" underline="0" bold="0" italic="0"/>
       </labelStyle>
     </attributeEditorField>
   </attributeEditorForm>

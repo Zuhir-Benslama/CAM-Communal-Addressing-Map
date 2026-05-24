@@ -158,7 +158,7 @@
           <Option type="Map">
             <Option name="angle" type="QString" value="0"/>
             <Option name="cap_style" type="QString" value="square"/>
-            <Option name="color" type="QString" value="119,0,255,255,rgb:0.46666666666666667,0,1,1"/>
+            <Option name="color" type="QString" value="90,106,191,255,rgb:0.35294117647058826,0.41568627450980394,0.7490196078431373,1"/>
             <Option name="horizontal_anchor_point" type="QString" value="1"/>
             <Option name="joinstyle" type="QString" value="bevel"/>
             <Option name="name" type="QString" value="circle"/>
@@ -242,7 +242,7 @@
   </selection>
   <labeling type="simple">
     <settings calloutType="simple">
-      <text-style textOpacity="1" useSubstitutions="0" textColor="119,0,255,255,rgb:0.46666666666666667,0,1,1" tabStopDistanceUnit="Percentage" blendMode="0" multilineHeightUnit="Percentage" fontSize="10" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontLetterSpacing="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" textOrientation="horizontal" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="Point" legendString="Aa" fontWordSpacing="0" forcedBold="0" fontStrikeout="0" allowHtml="0" forcedItalic="0" fontUnderline="0" fieldName="coalesce(&quot;valeur&quot;, '') || ' ' || coalesce(&quot;repetition&quot;, '')" multilineHeight="1" fontFamily="Arial" fontKerning="1" isExpression="1" capitalization="0" tabStopDistance="6" fontWeight="50" namedStyle="Normal">
+      <text-style textOpacity="1" useSubstitutions="0" textColor="90,106,191,255,rgb:0.35294117647058826,0.41568627450980394,0.7490196078431373,1" tabStopDistanceUnit="Percentage" blendMode="0" multilineHeightUnit="Percentage" fontSize="10" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontLetterSpacing="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" textOrientation="horizontal" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="Point" legendString="Aa" fontWordSpacing="0" forcedBold="0" fontStrikeout="0" allowHtml="0" forcedItalic="0" fontUnderline="0" fieldName="coalesce(&quot;valeur&quot;, '') || ' ' || coalesce(&quot;repetition&quot;, '')" multilineHeight="1" fontFamily="Arial" fontKerning="1" isExpression="1" capitalization="0" tabStopDistance="6" fontWeight="50" namedStyle="Normal">
         <families/>
         <text-buffer bufferJoinStyle="128" bufferSize="1" bufferColor="255,255,255,255,rgb:1,1,1,1" bufferDraw="1" bufferBlendMode="0" bufferSizeUnits="MM" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferOpacity="1" bufferNoFill="1"/>
         <text-mask maskEnabled="1" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskJoinStyle="128" maskedSymbolLayers="" maskType="0" maskSize2="1.5" maskSizeUnits="MM" maskOpacity="1"/>
@@ -559,21 +559,21 @@ def my_form_open(dialog, layer, feature):
   <editorlayout>generatedlayout</editorlayout>
   <attributeEditorForm>
     <labelStyle overrideLabelColor="0" labelColor="" overrideLabelFont="0">
-      <labelFont bold="0" underline="0" strikethrough="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" style=""/>
+      <labelFont bold="0" underline="0" strikethrough="0" description="Arial,8.25,-1,5,50,0,0,0,0,0" italic="0" style=""/>
     </labelStyle>
     <attributeEditorField index="1" name="valeur" verticalStretch="0" horizontalStretch="0" showLabel="1">
       <labelStyle overrideLabelColor="0" labelColor="" overrideLabelFont="0">
-        <labelFont bold="0" underline="0" strikethrough="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" style=""/>
+        <labelFont bold="0" underline="0" strikethrough="0" description="Arial,8.3,-1,5,50,0,0,0,0,0" italic="0" style=""/>
       </labelStyle>
     </attributeEditorField>
     <attributeEditorField index="-1" name="Prefix" verticalStretch="0" horizontalStretch="0" showLabel="1">
       <labelStyle overrideLabelColor="0" labelColor="" overrideLabelFont="0">
-        <labelFont bold="0" underline="0" strikethrough="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" style=""/>
+        <labelFont bold="0" underline="0" strikethrough="0" description="Arial,8.3,-1,5,50,0,0,0,0,0" italic="0" style=""/>
       </labelStyle>
     </attributeEditorField>
     <attributeEditorField index="6" name="etat" verticalStretch="0" horizontalStretch="0" showLabel="1">
       <labelStyle overrideLabelColor="0" labelColor="" overrideLabelFont="0">
-        <labelFont bold="0" underline="0" strikethrough="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" style=""/>
+        <labelFont bold="0" underline="0" strikethrough="0" description="Arial,8.3,-1,5,50,0,0,0,0,0" italic="0" style=""/>
       </labelStyle>
     </attributeEditorField>
   </attributeEditorForm>

@@ -93,7 +93,7 @@ def _process_menu(menu):
 
     # Layer names in order matching the tabs
     layer_keys = ["zone", "road", "org", "city", "num", "pan"]
-    layer_labels = ["المناطق", "الطرق", "المرافق", "التجزئات", "الترقيم", "اللوحات"]
+    layer_labels = ["Zones", "Roads", "Facilities", "Subdivisions", "Numbering", "Panels"]
 
     # For each operational page, extract the form content (everything after
     # the first toolbar frame) and the submit/list buttons
@@ -120,7 +120,7 @@ def _process_menu(menu):
     ops_page = ET.Element("widget", {"class": "QWidget", "name": "tab_ops"})
 
     title_attr = ET.SubElement(ops_page, "attribute", {"name": "title"})
-    ET.SubElement(title_attr, "string").text = "العمليات"
+    ET.SubElement(title_attr, "string").text = "Operations"
 
     # Main vertical layout
     main_layout = ET.SubElement(ops_page, "layout",
@@ -146,9 +146,9 @@ def _process_menu(menu):
                               {"class": "QHBoxLayout", "name": "toolbar_layout"})
 
     btn_specs = [
-        ("draw_btn", "ارسم", "draw"),
-        ("select_btn", "حدد", "select"),
-        ("edit_btn", "عدل", "edit"),
+        ("draw_btn", "Draw", "draw"),
+        ("select_btn", "Select", "select"),
+        ("edit_btn", "Edit", "edit"),
     ]
     for bname, btext, _ in btn_specs:
         btn_item = ET.SubElement(tb_layout, "item")

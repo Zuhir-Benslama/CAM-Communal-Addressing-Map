@@ -146,11 +146,11 @@
   </elevation>
   <renderer-v2 referencescale="-1" enableorderby="0" attr="Stituation" symbollevels="0" forceraster="0" type="categorizedSymbol">
     <categories>
-      <category value="لتصحيحها" label="لتصحيحها" symbol="0" render="true" uuid="{2412467a-4004-40d6-8920-6adcff4408d9}" type="string"/>
-      <category value="مبرمجة" label="مبرمجة" symbol="1" render="true" uuid="{c7d2b4b7-2fa3-4205-b662-3098070f0254}" type="string"/>
-      <category value="مركبة" label="مركبة" symbol="2" render="true" uuid="{f3b6fc2d-8c6c-49f5-a514-2779f068efb4}" type="string"/>
-      <category value="لنقلها" label="لنقلها" symbol="3" render="true" uuid="{6c2d2ce8-7463-4169-a04f-9b4f75d7c3fa}" type="string"/>
-      <category value="" label="آخر" symbol="4" render="true" uuid="{6c2d2ce8-7463-4169-a04f-9b4f75d7c3fa}" type="string"/>
+      <category value="لتصحيحها" label="To Be Corrected" symbol="0" render="true" uuid="{2412467a-4004-40d6-8920-6adcff4408d9}" type="string"/>
+      <category value="مبرمجة" label="Programmed" symbol="1" render="true" uuid="{c7d2b4b7-2fa3-4205-b662-3098070f0254}" type="string"/>
+      <category value="مركبة" label="Installed" symbol="2" render="true" uuid="{f3b6fc2d-8c6c-49f5-a514-2779f068efb4}" type="string"/>
+      <category value="لنقلها" label="To Be Moved" symbol="3" render="true" uuid="{6c2d2ce8-7463-4169-a04f-9b4f75d7c3fa}" type="string"/>
+      <category value="" label="Other" symbol="4" render="true" uuid="{6c2d2ce8-7463-4169-a04f-9b4f75d7c3fa}" type="string"/>
     </categories>
     <symbols>
       <symbol clip_to_extent="1" is_animated="0" frame_rate="10" alpha="1" name="0" type="marker" force_rhr="0">
@@ -165,7 +165,7 @@
           <Option type="Map">
             <Option value="0" name="angle" type="QString"/>
             <Option value="square" name="cap_style" type="QString"/>
-            <Option value="255,17,0,255,rgb:1,0.06666666666666667,0,1" name="color" type="QString"/>
+            <Option value="180,70,60,255,rgb:0.70588235294117652,0.27450980392156865,0.23529411764705882,1" name="color" type="QString"/>
             <Option value="1" name="horizontal_anchor_point" type="QString"/>
             <Option value="bevel" name="joinstyle" type="QString"/>
             <Option value="circle" name="name" type="QString"/>
@@ -204,7 +204,7 @@
           <Option type="Map">
             <Option value="0" name="angle" type="QString"/>
             <Option value="square" name="cap_style" type="QString"/>
-            <Option value="249,116,6,255,rgb:0.97647058823529409,0.45490196078431372,0.02352941176470588,1" name="color" type="QString"/>
+            <Option value="190,106,80,255,rgb:0.74509803921568629,0.41568627450980394,0.31372549019607843,1" name="color" type="QString"/>
             <Option value="1" name="horizontal_anchor_point" type="QString"/>
             <Option value="bevel" name="joinstyle" type="QString"/>
             <Option value="circle" name="name" type="QString"/>
@@ -243,7 +243,7 @@
           <Option type="Map">
             <Option value="0" name="angle" type="QString"/>
             <Option value="square" name="cap_style" type="QString"/>
-            <Option value="165,249,10,255,rgb:0.6470588235294118,0.97647058823529409,0.0392156862745098,1" name="color" type="QString"/>
+            <Option value="80,160,70,255,rgb:0.31372549019607843,0.62745098039215685,0.27450980392156865,1" name="color" type="QString"/>
             <Option value="1" name="horizontal_anchor_point" type="QString"/>
             <Option value="bevel" name="joinstyle" type="QString"/>
             <Option value="circle" name="name" type="QString"/>
@@ -282,7 +282,7 @@
           <Option type="Map">
             <Option value="0" name="angle" type="QString"/>
             <Option value="square" name="cap_style" type="QString"/>
-            <Option value="246,244,0,255,rgb:0.96470588235294119,0.95686274509803926,0,1" name="color" type="QString"/>
+            <Option value="180,170,60,255,rgb:0.70588235294117652,0.66666666666666663,0.23529411764705882,1" name="color" type="QString"/>
             <Option value="1" name="horizontal_anchor_point" type="QString"/>
             <Option value="bevel" name="joinstyle" type="QString"/>
             <Option value="circle" name="name" type="QString"/>
@@ -448,7 +448,7 @@
     <rules key="{a1e43f42-56e2-4788-bf80-4f1fa09fb034}">
       <rule filter="&quot;Stituation&quot; ='مبرمجة'" key="{5ff87c62-dddc-4e3c-8794-32c4a65481a1}">
         <settings calloutType="simple">
-          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="249,116,6,255,rgb:0.97647058823529409,0.45490196078431372,0.02352941176470588,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="label" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="0" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
+          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="190,106,80,255,rgb:0.74509803921568629,0.41568627450980394,0.31372549019607843,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="label" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="0" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
             <families/>
             <text-buffer bufferColor="255,255,255,255,rgb:1,1,1,1" bufferOpacity="1" bufferBlendMode="0" bufferNoFill="1" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferDraw="1" bufferSize="1" bufferSizeUnits="MM" bufferJoinStyle="128"/>
             <text-mask maskOpacity="1" maskSizeUnits="RenderMetersInMapUnits" maskSize2="1.5" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskEnabled="1" maskType="0" maskedSymbolLayers="" maskJoinStyle="128"/>
@@ -572,7 +572,7 @@
       </rule>
       <rule filter="&quot;Stituation&quot; ='مركبة'" key="{16fb7d00-4a57-4d8c-89ff-0da8d326431d}">
         <settings calloutType="simple">
-          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="165,249,10,255,rgb:0.6470588235294118,0.97647058823529409,0.0392156862745098,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="label" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="0" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
+          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="80,160,70,255,rgb:0.31372549019607843,0.62745098039215685,0.27450980392156865,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="label" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="0" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
             <families/>
             <text-buffer bufferColor="255,255,255,255,rgb:1,1,1,1" bufferOpacity="1" bufferBlendMode="0" bufferNoFill="1" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferDraw="1" bufferSize="1" bufferSizeUnits="MM" bufferJoinStyle="128"/>
             <text-mask maskOpacity="1" maskSizeUnits="RenderMetersInMapUnits" maskSize2="1.5" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskEnabled="1" maskType="0" maskedSymbolLayers="" maskJoinStyle="128"/>
@@ -696,7 +696,7 @@
       </rule>
       <rule filter="&quot;Stituation&quot; ='لتصحيحها'" key="{9ee96354-f5b8-4823-8a7b-96e863db750f}">
         <settings calloutType="simple">
-          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="255,17,0,255,rgb:1,0.06666666666666667,0,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="label" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="0" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
+          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="180,70,60,255,rgb:0.70588235294117652,0.27450980392156865,0.23529411764705882,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="label" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="0" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
             <families/>
             <text-buffer bufferColor="255,255,255,255,rgb:1,1,1,1" bufferOpacity="1" bufferBlendMode="0" bufferNoFill="1" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferDraw="1" bufferSize="1" bufferSizeUnits="MM" bufferJoinStyle="128"/>
             <text-mask maskOpacity="1" maskSizeUnits="RenderMetersInMapUnits" maskSize2="1.5" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskEnabled="1" maskType="0" maskedSymbolLayers="" maskJoinStyle="128"/>
@@ -820,7 +820,7 @@
       </rule>
       <rule filter="&quot;Stituation&quot; ='لنقلها'" key="{edefe076-79bd-4db0-ae4f-f3a868bb6f70}">
         <settings calloutType="simple">
-          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="246,244,0,255,rgb:0.96470588235294119,0.95686274509803926,0,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="label" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="0" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
+          <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="180,170,60,255,rgb:0.70588235294117652,0.66666666666666663,0.23529411764705882,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="label" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="0" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
             <families/>
             <text-buffer bufferColor="255,255,255,255,rgb:1,1,1,1" bufferOpacity="1" bufferBlendMode="0" bufferNoFill="1" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferDraw="1" bufferSize="1" bufferSizeUnits="MM" bufferJoinStyle="128"/>
             <text-mask maskOpacity="1" maskSizeUnits="RenderMetersInMapUnits" maskSize2="1.5" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskEnabled="1" maskType="0" maskedSymbolLayers="" maskJoinStyle="128"/>
@@ -1153,21 +1153,21 @@ def my_form_open(dialog, layer, feature):
   <editorlayout>generatedlayout</editorlayout>
   <attributeEditorForm>
     <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
-      <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0"/>
+      <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="Arial,8.3,-1,5,50,0,0,0,0,0"/>
     </labelStyle>
     <attributeEditorField showLabel="1" verticalStretch="0" index="-1" horizontalStretch="0" name="valeur">
       <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0"/>
+        <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="Arial,8.3,-1,5,50,0,0,0,0,0"/>
       </labelStyle>
     </attributeEditorField>
     <attributeEditorField showLabel="1" verticalStretch="0" index="-1" horizontalStretch="0" name="Prefix">
       <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0"/>
+        <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="Arial,8.3,-1,5,50,0,0,0,0,0"/>
       </labelStyle>
     </attributeEditorField>
     <attributeEditorField showLabel="1" verticalStretch="0" index="-1" horizontalStretch="0" name="etat">
       <labelStyle labelColor="" overrideLabelColor="0" overrideLabelFont="0">
-        <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0"/>
+        <labelFont strikethrough="0" style="" italic="0" underline="0" bold="0" description="Arial,8.3,-1,5,50,0,0,0,0,0"/>
       </labelStyle>
     </attributeEditorField>
   </attributeEditorForm>

@@ -374,27 +374,27 @@
     "fr": "Type :",
     "en": "Type:"
   },
-  "list_cities": {
+  "list_subds": {
     "ar": "قائمة التجزئات",
     "fr": "Liste des lotissements",
     "en": "Subdivisions List"
   },
-  "list_num": {
+  "list_nums": {
     "ar": "قائمة المداخل",
     "fr": "Liste des entrées",
     "en": "Entrance List"
   },
-  "list_org": {
+  "list_orgs": {
     "ar": "قائمة المرافق",
     "fr": "Liste des équipements",
     "en": "Facility List"
   },
-  "list_pan": {
+  "list_panels": {
     "ar": "قائمة اللواحات",
     "fr": "Liste des panneaux",
     "en": "Panels List"
   },
-  "list_voie": {
+  "list_roads": {
     "ar": "قائمة الطرق",
     "fr": "Liste des voies",
     "en": "Road List"
@@ -459,12 +459,12 @@
     "fr": "Sélectionner la géométrie",
     "en": "Select Geometry"
   },
-  "select_ref": {
+  "select_road_ref": {
     "ar": "حدد المرجع",
     "fr": "Sélectionner la référence",
     "en": "Select Reference"
   },
-  "select_ref2": {
+  "select_panel_ref": {
     "ar": "حدد المرجع",
     "fr": "Sélectionner la référence",
     "en": "Select Reference"
@@ -494,7 +494,7 @@
     "fr": "Connexion",
     "en": "Login"
   },
-  "submit_city": {
+  "submit_subd": {
     "ar": "حفظ",
     "fr": "Enregistrer",
     "en": "Save"
@@ -519,7 +519,7 @@
     "fr": "Enregistrer",
     "en": "Save"
   },
-  "submit_voie": {
+  "submit_road": {
     "ar": "حفظ",
     "fr": "Enregistrer",
     "en": "Save"

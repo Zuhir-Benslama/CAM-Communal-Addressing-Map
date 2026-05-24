@@ -28,7 +28,7 @@ class TestAuthMixin(unittest.TestCase):
         self.mixin._tr = lambda s: s
         for attr in ('commune_of_wilaya', 'uname', 'pwd', 'email', 'fname',
                      'lname', 'pnum', 'username', 'password', 'label_username',
-                     'wilaya_list', 'cat_org', 'type_org', 'cat_act', 'type_act'):
+                     'wilaya_list', 'org_cat', 'org_type', 'activity_cat', 'activity_type'):
             setattr(self.mixin, attr, MagicMock())
         self.mixin.map_options = MagicMock()
         self.mixin.router = MagicMock()
@@ -198,13 +198,13 @@ class TestAuthMixin(unittest.TestCase):
             mock_fill.assert_called_once()
 
     def test_on_select_catOrg(self):
-        with patch('plans_adressage.gui.ui_fillers.fill_type_org') as mock_fill:
-            self.mixin.on_select_catOrg(0)
+        with patch('plans_adressage.gui.ui_fillers.fill_org_type') as mock_fill:
+            self.mixin.on_select_org_cat(0)
             mock_fill.assert_called_once()
 
     def test_on_select_catAct(self):
-        with patch('plans_adressage.gui.ui_fillers.fill_type_act') as mock_fill:
-            self.mixin.on_select_catAct(0)
+        with patch('plans_adressage.gui.ui_fillers.fill_activity_type') as mock_fill:
+            self.mixin.on_select_activity_cat(0)
             mock_fill.assert_called_once()
 
 

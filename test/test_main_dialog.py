@@ -98,7 +98,7 @@ class TestRNADialogCore(unittest.TestCase):
     def test_set_button_roles_assigns_primary(self):
         dialog = self._make_raw()
         btn = MagicMock()
-        btn.objectName.return_value = 'submit_voie'
+        btn.objectName.return_value = 'submit_road'
         btn.minimumHeight.return_value = 0
         dialog.findChildren = MagicMock(return_value=[btn])
         dialog._set_button_roles()
@@ -214,10 +214,10 @@ class TestRNADialogCore(unittest.TestCase):
 
     def test_on_locale_changed_updates_tr_locale(self):
         dialog = self._make_raw()
-        _stub_widgets(dialog, ['_locale_combo', 'wilaya_list', 'type_voie',
-                                'type_zone', 'type_city', 'etat_mont',
-                                'num_etat', 'dyn_ref', 'dyn_ref2', 'paper',
-                                'cat_org', 'cat_act'])
+        _stub_widgets(dialog, ['_locale_combo', 'wilaya_list', 'type_road',
+                                'zone_type', 'subd_type', 'mount_status',
+                                'num_state', 'road_ref', 'panel_ref', 'paper',
+                                'org_cat', 'activity_cat'])
         dialog._locale_combo.currentData.return_value = 'fr'
         dialog._translate_internal_combos = MagicMock()
         with patch.object(self.mod, 'QSettings'), \
@@ -225,7 +225,7 @@ class TestRNADialogCore(unittest.TestCase):
              patch.object(self.mod, 'apply_widget_texts'), \
              patch.object(self.mod, 'fill_wilayas_list'), \
              patch.object(self.mod, 'fill_road_type'), \
-             patch.object(self.mod, 'fill_type_zone'), \
+             patch.object(self.mod, 'fill_zone_type'), \
              patch.object(self.mod, 'fill_subdivision_type'), \
              patch.object(self.mod, 'fill_mounting_status'), \
              patch.object(self.mod, 'fill_numbering_state'), \
@@ -240,10 +240,10 @@ class TestRNADialogCore(unittest.TestCase):
     def test_on_locale_changed_sets_rtl_for_ar(self):
         dialog = self._make_raw()
         _stub_widgets(dialog, ['_locale_combo', 'layer_selector', '_theme_combo',
-                                'wilaya_list', 'type_voie', 'type_zone',
-                                'type_city', 'etat_mont', 'num_etat',
-                                'dyn_ref', 'dyn_ref2', 'paper',
-                                'cat_org', 'cat_act'])
+                                'wilaya_list', 'type_road', 'zone_type',
+                                'subd_type', 'mount_status', 'num_state',
+                                'road_ref', 'panel_ref', 'paper',
+                                'org_cat', 'activity_cat'])
         dialog._locale_combo.currentData.return_value = 'ar'
         with patch.object(self.mod.QApplication, 'setLayoutDirection') as mock_dir, \
              patch.object(self.mod, 'QSettings'), \
@@ -256,10 +256,10 @@ class TestRNADialogCore(unittest.TestCase):
     def test_on_locale_changed_sets_ltr_for_fr(self):
         dialog = self._make_raw()
         _stub_widgets(dialog, ['_locale_combo', 'layer_selector', '_theme_combo',
-                                'wilaya_list', 'type_voie', 'type_zone',
-                                'type_city', 'etat_mont', 'num_etat',
-                                'dyn_ref', 'dyn_ref2', 'paper',
-                                'cat_org', 'cat_act'])
+                                'wilaya_list', 'type_road', 'zone_type',
+                                'subd_type', 'mount_status', 'num_state',
+                                'road_ref', 'panel_ref', 'paper',
+                                'org_cat', 'activity_cat'])
         dialog._locale_combo.currentData.return_value = 'fr'
         with patch.object(self.mod.QApplication, 'setLayoutDirection') as mock_dir, \
              patch.object(self.mod, 'QSettings'), \
@@ -271,10 +271,10 @@ class TestRNADialogCore(unittest.TestCase):
 
     def test_on_locale_changed_refills_combos(self):
         dialog = self._make_raw()
-        _stub_widgets(dialog, ['_locale_combo', 'wilaya_list', 'type_voie',
-                                'type_zone', 'type_city', 'etat_mont',
-                                'num_etat', 'dyn_ref', 'dyn_ref2', 'paper',
-                                'cat_org', 'cat_act'])
+        _stub_widgets(dialog, ['_locale_combo', 'wilaya_list', 'type_road',
+                                'zone_type', 'subd_type', 'mount_status',
+                                'num_state', 'road_ref', 'panel_ref', 'paper',
+                                'org_cat', 'activity_cat'])
         dialog._locale_combo.currentData.return_value = 'fr'
         dialog._translate_internal_combos = MagicMock()
         fill_calls = {}
@@ -283,7 +283,7 @@ class TestRNADialogCore(unittest.TestCase):
              patch.object(self.mod, 'apply_widget_texts'):
             with patch.object(self.mod, 'fill_wilayas_list') as m1, \
                  patch.object(self.mod, 'fill_road_type') as m2, \
-                 patch.object(self.mod, 'fill_type_zone') as m3, \
+                 patch.object(self.mod, 'fill_zone_type') as m3, \
                  patch.object(self.mod, 'fill_subdivision_type') as m4, \
                  patch.object(self.mod, 'fill_mounting_status') as m5, \
                  patch.object(self.mod, 'fill_numbering_state') as m6, \

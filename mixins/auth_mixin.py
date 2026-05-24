@@ -162,14 +162,14 @@ class AuthMixin:
         )
         fill_commune_of_wilaya(self.commune_of_wilaya, selected_value)
 
-    def on_select_catOrg(self, index) -> None:
+    def on_select_org_cat(self, index) -> None:
         """Populate the organization type combo when the category changes."""
-        from ..gui.ui_fillers import fill_type_org
-        selected_value = self.cat_org.itemData(self.cat_org.currentIndex())
-        fill_type_org(self.type_org, selected_value)
+        from ..gui.ui_fillers import fill_org_type
+        selected_value = self.org_cat.itemData(self.org_cat.currentIndex())
+        fill_org_type(self.org_type, selected_value)
 
-    def on_select_catAct(self, index) -> None:
+    def on_select_activity_cat(self, index) -> None:
         """Populate the activity type combo when the category changes."""
-        from ..gui.ui_fillers import fill_type_act
-        selected_value = self.cat_act.itemData(self.cat_act.currentIndex())
-        fill_type_act(self.type_act, selected_value)
+        from ..gui.ui_fillers import fill_activity_type
+        selected_value = self.activity_cat.itemData(self.activity_cat.currentIndex())
+        fill_activity_type(self.activity_type, selected_value)

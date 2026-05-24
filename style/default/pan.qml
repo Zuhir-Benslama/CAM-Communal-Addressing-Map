@@ -158,7 +158,7 @@
           <Option type="Map">
             <Option type="QString" name="angle" value="0"/>
             <Option type="QString" name="cap_style" value="square"/>
-            <Option type="QString" name="color" value="17,0,255,255,rgb:0.06666666666666667,0,1,1"/>
+            <Option type="QString" name="color" value="74,138,154,255,rgb:0.29019607843137257,0.54117647058823526,0.60392156862745094,1"/>
             <Option type="QString" name="horizontal_anchor_point" value="1"/>
             <Option type="QString" name="joinstyle" value="bevel"/>
             <Option type="QString" name="name" value="circle"/>
@@ -242,7 +242,7 @@
   </selection>
   <labeling type="simple">
     <settings calloutType="simple">
-      <text-style fontStrikeout="0" tabStopDistanceUnit="Percentage" allowHtml="0" fontFamily="Arial" fontKerning="1" forcedItalic="0" textOrientation="horizontal" fontSizeMapUnitScale="3x:0,0,0,0,0,0" fontLetterSpacing="0" fontItalic="0" namedStyle="Normal" blendMode="0" forcedBold="0" multilineHeightUnit="Percentage" fontSize="10" fontWordSpacing="0" textColor="17,0,255,255,rgb:0.06666666666666667,0,1,1" fontSizeUnit="Point" multilineHeight="1" legendString="Aa" fontWeight="50" isExpression="0" capitalization="0" useSubstitutions="0" fontUnderline="0" textOpacity="1" tabStopDistance="6" fieldName="label" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0">
+      <text-style fontStrikeout="0" tabStopDistanceUnit="Percentage" allowHtml="0" fontFamily="Arial" fontKerning="1" forcedItalic="0" textOrientation="horizontal" fontSizeMapUnitScale="3x:0,0,0,0,0,0" fontLetterSpacing="0" fontItalic="0" namedStyle="Normal" blendMode="0" forcedBold="0" multilineHeightUnit="Percentage" fontSize="10" fontWordSpacing="0" textColor="74,138,154,255,rgb:0.29019607843137257,0.54117647058823526,0.60392156862745094,1" fontSizeUnit="Point" multilineHeight="1" legendString="Aa" fontWeight="50" isExpression="0" capitalization="0" useSubstitutions="0" fontUnderline="0" textOpacity="1" tabStopDistance="6" fieldName="label" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0">
         <families/>
         <text-buffer bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferSize="1" bufferOpacity="1" bufferSizeUnits="MM" bufferBlendMode="0" bufferDraw="1" bufferColor="255,255,255,255,rgb:1,1,1,1" bufferNoFill="1" bufferJoinStyle="128"/>
         <text-mask maskEnabled="1" maskOpacity="1" maskSizeUnits="MM" maskedSymbolLayers="" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize2="1.5" maskJoinStyle="128" maskType="0" maskSize="1.5"/>
@@ -573,21 +573,21 @@ def my_form_open(dialog, layer, feature):
   <editorlayout>generatedlayout</editorlayout>
   <attributeEditorForm>
     <labelStyle overrideLabelColor="0" overrideLabelFont="0" labelColor="">
-      <labelFont strikethrough="0" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" italic="0" bold="0" style="" underline="0"/>
+      <labelFont strikethrough="0" description="Arial,8.25,-1,5,50,0,0,0,0,0" italic="0" bold="0" style="" underline="0"/>
     </labelStyle>
     <attributeEditorField showLabel="1" verticalStretch="0" index="-1" horizontalStretch="0" name="valeur">
       <labelStyle overrideLabelColor="0" overrideLabelFont="0" labelColor="">
-        <labelFont strikethrough="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" bold="0" style="" underline="0"/>
+        <labelFont strikethrough="0" description="Arial,8.3,-1,5,50,0,0,0,0,0" italic="0" bold="0" style="" underline="0"/>
       </labelStyle>
     </attributeEditorField>
     <attributeEditorField showLabel="1" verticalStretch="0" index="-1" horizontalStretch="0" name="Prefix">
       <labelStyle overrideLabelColor="0" overrideLabelFont="0" labelColor="">
-        <labelFont strikethrough="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" bold="0" style="" underline="0"/>
+        <labelFont strikethrough="0" description="Arial,8.3,-1,5,50,0,0,0,0,0" italic="0" bold="0" style="" underline="0"/>
       </labelStyle>
     </attributeEditorField>
     <attributeEditorField showLabel="1" verticalStretch="0" index="-1" horizontalStretch="0" name="etat">
       <labelStyle overrideLabelColor="0" overrideLabelFont="0" labelColor="">
-        <labelFont strikethrough="0" description="MS Shell Dlg 2,8.3,-1,5,50,0,0,0,0,0" italic="0" bold="0" style="" underline="0"/>
+        <labelFont strikethrough="0" description="Arial,8.3,-1,5,50,0,0,0,0,0" italic="0" bold="0" style="" underline="0"/>
       </labelStyle>
     </attributeEditorField>
   </attributeEditorForm>

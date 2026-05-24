@@ -30,9 +30,9 @@ class LayerEditMixin:
         measure_tool (MeasureTool | None) — measurement line tool
         update_object (bool) — flag for edit-vs-insert mode
         is_pan / is_org / is_road / is_num / is_city / is_zone (QCheckBox)
-        num_val / repetition / nom_voie / dec_voie / nom_org / nom_city / nom_zone
-        cat_org / type_org / type_voie / type_city / type_zone / num_etat / etat_mont
-        cat_act / type_act (QComboBox)
+        num_val / repetition / road_name / road_decision / org_name / subd_name / nom_zone
+        org_cat / org_type / type_road / subd_type / zone_type / num_state / mount_status
+        activity_cat / activity_type (QComboBox)
     """
 
     def _update_handler(self, layer_name: str) -> None:
@@ -97,7 +97,7 @@ class LayerEditMixin:
             ref = ref_data.get('pkuid')
             kwargs = {
                 'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
-                'etat_mont': self.etat_mont.currentData(),
+                'mount_status': self.mount_status.currentData(),
             }
             if layer == LAYER_FACILITIES:
                 add_panel_sign(**kwargs, road_id=None, subdivision_id=None, organization_id=ref)
@@ -131,14 +131,14 @@ class LayerEditMixin:
         if not geometry_wkt or not pkuid:
             return
         try:
-            nom = validate_text(self.nom_org.text())
+            nom = validate_text(self.org_name.text())
             kwargs = {
                 'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
-                'cat_org': self.cat_org.currentData(),
-                'nom_org': nom,
-                'type_org': self.type_org.currentData(),
+                'org_cat': self.org_cat.currentData(),
+                'org_name': nom,
+                'org_type': self.org_type.currentData(),
             }
-            kwargs.update(self._make_locale_kwargs('nom_org', nom))
+            kwargs.update(self._make_locale_kwargs('org_name', nom))
             add_organization(**kwargs)
             self._show_success("Facility added successfully")
         except Exception as e:
@@ -153,14 +153,14 @@ class LayerEditMixin:
         if not geometry_wkt or not pkuid:
             return
         try:
-            nom = validate_text(self.nom_voie.text())
+            nom = validate_text(self.road_name.text())
             kwargs = {
                 'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
-                'dec_voie': None,
-                'nom_voie': nom,
-                'type_voie': self.type_voie.currentData(),
+                'road_decision': None,
+                'road_name': nom,
+                'type_road': self.type_road.currentData(),
             }
-            kwargs.update(self._make_locale_kwargs('nom_voie', nom))
+            kwargs.update(self._make_locale_kwargs('road_name', nom))
             add_road(**kwargs)
             self._show_success("Road added successfully")
         except Exception as e:
@@ -215,9 +215,9 @@ class LayerEditMixin:
                 'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
                 'repetition': validate_text(self.repetition.text()),
                 'valeur': validate_text(self.num_val.text()),
-                'etat': self.num_etat.currentData(),
-                'cat_act': self.cat_act.currentData(),
-                'type_act': self.type_act.currentData(),
+                'etat': self.num_state.currentData(),
+                'activity_cat': self.activity_cat.currentData(),
+                'activity_type': self.activity_type.currentData(),
             }
             if ref_data and ref_data.get('layer_name') == LAYER_ROADS:
                 add_numbering(**common, road_id=ref_data.get('pkuid'), subdivision_id=None)
@@ -250,11 +250,11 @@ class LayerEditMixin:
         if not geometry_wkt or not pkuid:
             return
         try:
-            name = validate_text(self.nom_city.text())
+            name = validate_text(self.subd_name.text())
             kwargs = {
                 'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
                 'name': name,
-                'subdivision_type': self.type_city.currentData(),
+                'subdivision_type': self.subd_type.currentData(),
             }
             kwargs.update(self._make_locale_kwargs('name', name))
             add_subdivision(**kwargs)
@@ -277,7 +277,7 @@ class LayerEditMixin:
             kwargs = {
                 'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
                 'name': name,
-                'zone_type': self.type_zone.currentData(),
+                'zone_type': self.zone_type.currentData(),
             }
             kwargs.update(self._make_locale_kwargs('name', name))
             add_zone(**kwargs)

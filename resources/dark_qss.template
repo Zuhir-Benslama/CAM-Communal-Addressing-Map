@@ -1,8 +1,6 @@
 
     * {{
-        background-color: {{DARK_BG}};
         color: {{DARK_TEXT}};
-        font-size: 15px;
     }}
     QGroupBox {{
         background-color: {{DARK_SURFACE}};
@@ -66,7 +64,8 @@
         width: 24px;
     }}
     QComboBox::down-arrow {{
-        image: none;
+        width: 8px;
+        height: 8px;
     }}
     QComboBox QAbstractItemView {{
         background-color: {{DARK_SURFACE}};

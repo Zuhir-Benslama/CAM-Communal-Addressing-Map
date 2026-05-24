@@ -6,7 +6,7 @@
       <rect>
         <x>0</x>
         <y>0</y>
-        <width>641</width>
+        <width>640</width>
         <height>638</height>
       </rect>
     </property>
@@ -49,12 +49,6 @@
           </property>
           <property name="frameShape">
             <enum>QFrame::NoFrame</enum>
-          </property>
-          <property name="frameShadow">
-            <enum>QFrame::Sunken</enum>
-          </property>
-          <property name="lineWidth">
-            <number>2</number>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_10">
             <property name="leftMargin">
@@ -127,9 +121,6 @@
               <property name="frameShadow">
                 <enum>QFrame::Sunken</enum>
               </property>
-              <property name="lineWidth">
-                <number>2</number>
-              </property>
               <property name="currentIndex">
                 <number>0</number>
               </property>
@@ -146,14 +137,8 @@
                       <property name="frameShape">
                         <enum>QFrame::NoFrame</enum>
                       </property>
-                      <property name="frameShadow">
-                        <enum>QFrame::Sunken</enum>
-                      </property>
-                      <property name="lineWidth">
-                        <number>2</number>
-                      </property>
                       <layout class="QGridLayout" name="gridLayout">
-                        <item row="0" column="1">
+                        <item row="0" column="0"><spacer name="hsp_login_left"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item row="0" column="1">
                           <widget class="QGroupBox" name="groupBox">
                             <property name="minimumSize">
                               <size>
@@ -415,14 +400,7 @@
                               </item>
                               <item>
                                 <layout class="QGridLayout" name="gridLayout_5">
-                                  <item row="0" column="0">
-                                    <widget class="QPushButton" name="sign_in_user">
-                                      <property name="maximumSize">
-                                        <size>
-                                          <width>200</width>
-                                          <height>16777215</height>
-                                        </size>
-                                      </property>
+                                  <item row="0" column="0"><layout class="QHBoxLayout" name="hbox_signin"><item><spacer name="sp_si_l"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item><widget class="QPushButton" name="sign_in_user">
                                       <property name="font">
                                         <font>
                                           <weight>75</weight>
@@ -437,8 +415,7 @@
                                           <normaloff>../icons/icons8-login-50.png</normaloff>../icons/icons8-login-50.png</iconset>
                                       </property>
                                     </widget>
-                                  </item>
-                                </layout>
+                                  </item><item><spacer name="sp_si_r"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item></layout></item></layout>
                               </item>
                               <item>
                                 <widget class="Line" name="line_6">
@@ -500,7 +477,7 @@
                                       </property>
                                       <property name="maximumSize">
                                         <size>
-                                          <width>16777215</width>
+                                          <width>180</width>
                                           <height>30</height>
                                         </size>
                                       </property>
@@ -511,7 +488,7 @@
                                         </font>
                                       </property>
                                       <property name="toolTip">
-                                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;In case of an error, you can restore the previous version of the database&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;In case of an error, you can restore the previous version of the database&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                       </property>
                                       <property name="text">
                                         <string>Restore Database</string>
@@ -527,7 +504,7 @@
                             </layout>
                           </widget>
                         </item>
-                      </layout>
+                      <item row="0" column="2"><spacer name="hsp_login_right"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item></layout>
                     </widget>
                   </item>
                 </layout>
@@ -538,12 +515,6 @@
                     <widget class="QFrame" name="frame_16">
                       <property name="frameShape">
                         <enum>QFrame::NoFrame</enum>
-                      </property>
-                      <property name="frameShadow">
-                        <enum>QFrame::Sunken</enum>
-                      </property>
-                      <property name="lineWidth">
-                        <number>2</number>
                       </property>
                       <layout class="QGridLayout" name="gridLayout_10">
                         <item row="0" column="0">
@@ -679,7 +650,7 @@
                                   </item>
                                   <item>
                                     <layout class="QFormLayout" name="formLayout_10">
-                                      <property name="formAlignment">
+                                      <property name="labelAlignment"><set>Qt::AlignRight</set></property><property name="formAlignment">
                                         <set>Qt::AlignCenter</set>
                                       </property>
                                       <property name="horizontalSpacing">
@@ -698,9 +669,6 @@
                                         <number>10</number>
                                       </property>
                                       <property name="rightMargin">
-                                        <number>10</number>
-                                      </property>
-                                      <property name="bottomMargin">
                                         <number>10</number>
                                       </property>
                                       <item row="0" column="0">
@@ -945,17 +913,11 @@
                       <property name="maximumSize">
                         <size>
                           <width>16777215</width>
-                          <height>16777215</height>
+                          <height>40</height>
                         </size>
                       </property>
                       <property name="frameShape">
                         <enum>QFrame::NoFrame</enum>
-                      </property>
-                      <property name="frameShadow">
-                        <enum>QFrame::Sunken</enum>
-                      </property>
-                      <property name="lineWidth">
-                        <number>2</number>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_11">
                         <property name="spacing">
@@ -1001,7 +963,7 @@
                                   <property name="text">
                                     <string />
                                   </property>
-                                </widget>
+                                <property name="minimumSize"><size><width>0</width><height>28</height></size></property></widget>
                               </item>
                               <item>
                                 <spacer name="horizontalSpacer">
@@ -1031,13 +993,13 @@
                                      </size>
                                    </property>
                                    <property name="text">
-                                     <string>⚙</string>
+                                     <string>Settings</string>
+                                   </property>
+                                   <property name="toolTip">
+                                     <string>Toggle Settings</string>
                                    </property>
                                  </widget>
-                               <property name="alignment">
-                                    <set>Qt::AlignVCenter</set>
-                                  </property>
-                                  </item>
+                               </item>
                           </layout>
                         </item>
                       </layout>
@@ -1153,12 +1115,6 @@
 <height>0</height>
 </size>
 </property>
-<property name="maximumSize">
-<size>
-<width>100</width>
-<height>16777215</height>
-</size>
-</property>
 <property name="toolTip">
 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measure Distance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
 </property>
@@ -1176,7 +1132,7 @@
                                         <layout class="QVBoxLayout" name="verticalLayout_28">
                                           <item>
                                             <layout class="QFormLayout" name="formLayout_zone">
-                                              <item row="1" column="0">
+                                              <property name="labelAlignment"><set>Qt::AlignRight</set></property><item row="1" column="0">
                                                 <widget class="QLabel" name="label_25">
                                                   <property name="font">
                                                     <font>
@@ -1190,9 +1146,9 @@
                                                 </widget>
                                               </item>
                                               <item row="1" column="1">
-                                                <widget class="QComboBox" name="type_zone">
+                                                <widget class="QComboBox" name="zone_type">
                                                   <property name="toolTip">
-                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;Select zone type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Select zone type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                   </property>
                                                   <property name="editable">
                                                     <bool>true</bool>
@@ -1214,27 +1170,15 @@
                                               </item>
                                               <item row="2" column="1">
                                                 <widget class="QLineEdit" name="nom_zone">
-                                                  <property name="maximumSize">
-                                                    <size>
-                                                      <width>400</width>
-                                                      <height>16777215</height>
-                                                    </size>
-                                                  </property>
                                                   <property name="toolTip">
-                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;The zone name must not be concatenated with the zone type, e.g.&lt;span style=" font-weight:600;"&gt; Industrial Zone Dar El Beida&lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Zone Type:&lt;/span&gt; Industrial Zone&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Zone Name:&lt;/span&gt; Dar El Beida&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;The zone name must not be concatenated with the zone type, e.g.&lt;span style=" font-weight:600;"&gt; Industrial Zone Dar El Beida&lt;/span&gt;&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Zone Type:&lt;/span&gt; Industrial Zone&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Zone Name:&lt;/span&gt; Dar El Beida&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                   </property>
                                                 </widget>
                                               </item>
                                               <item row="3" column="0" colspan="2">
                                                 <layout class="QHBoxLayout" name="horizontalLayout_19">
-                                                  <item>
+                                                  <item><spacer name="hs_horizontalLayout_19_left"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item>
                                                     <widget class="QPushButton" name="submit_zone">
-                                                      <property name="maximumSize">
-                                                        <size>
-                                                          <width>150</width>
-                                                          <height>16777215</height>
-                                                        </size>
-                                                      </property>
                                                       <property name="font">
                                                         <font>
                                                           <weight>75</weight>
@@ -1253,7 +1197,7 @@
                                                       </property>
                                                     </widget>
                                                   </item>
-                                                </layout>
+                                                <item><spacer name="hs_horizontalLayout_19_right"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item></layout>
                                               </item>
                                               <item row="0" column="1">
                                                 <widget class="QCheckBox" name="is_zone">
@@ -1261,7 +1205,7 @@
                                                     <bool>false</bool>
                                                   </property>
                                                   <property name="toolTip">
-                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;Indicator of geometry availability for zone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Indicator of geometry availability for zone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                   </property>
                                                   <property name="text">
                                                     <string />
@@ -1283,7 +1227,7 @@
                                               </item>
                                             </layout>
                                           </item>
-                                        </layout>
+                                        <property name="leftMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property></layout>
                                       </item>
                                       <item>
                                         <spacer name="verticalSpacer">
@@ -1298,7 +1242,7 @@
                                           </property>
                                         </spacer>
                                       </item>
-                                    </layout>
+                                    <property name="leftMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property></layout>
                                   </widget>
                                   <widget class="QWidget" name="page_road">
                                     <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -1307,7 +1251,7 @@
                                           <layout class="QVBoxLayout" name="verticalLayout_9">
                                             <item>
                                               <layout class="QFormLayout" name="formLayout_road">
-                                                <property name="verticalSpacing">
+                                                <property name="labelAlignment"><set>Qt::AlignRight</set></property><property name="verticalSpacing">
                                                   <number>15</number>
                                                 </property>
                                                 <item row="0" column="0">
@@ -1350,7 +1294,7 @@
                                                   </widget>
                                                 </item>
                                                 <item row="1" column="1">
-                                                  <widget class="QComboBox" name="type_voie">
+                                                  <widget class="QComboBox" name="type_road">
                                                     <property name="toolTip">
                                                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select road type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
@@ -1373,28 +1317,16 @@
                                                   </widget>
                                                 </item>
                                                 <item row="2" column="1">
-                                                  <widget class="QLineEdit" name="nom_voie">
-                                                    <property name="maximumSize">
-                                                      <size>
-                                                        <width>400</width>
-                                                        <height>16777215</height>
-                                                      </size>
-                                                    </property>
+                                                  <widget class="QLineEdit" name="road_name">
                                                     <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;The road name must not be concatenated with the road type, e.g.&lt;span style=" font-weight:600;"&gt; Didouche Mourad Street &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Road Type:&lt;/span&gt; Street&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Road Name:&lt;/span&gt; Didouche Mourad&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;The road name must not be concatenated with the road type, e.g.&lt;span style=" font-weight:600;"&gt; Didouche Mourad Street &lt;/span&gt;&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Road Type:&lt;/span&gt; Street&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Road Name:&lt;/span&gt; Didouche Mourad&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                   </widget>
                                                 </item>
                                                 <item row="3" column="0" colspan="2">
                                                   <layout class="QHBoxLayout" name="horizontalLayout_12">
-                                                    <item>
-                                                      <widget class="QPushButton" name="submit_voie">
-                                                        <property name="maximumSize">
-                                                          <size>
-                                                            <width>150</width>
-                                                            <height>16777215</height>
-                                                          </size>
-                                                        </property>
+                                                    <item><spacer name="hs_horizontalLayout_12_left"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item>
+                                                      <widget class="QPushButton" name="submit_road">
                                                         <property name="font">
                                                           <font>
                                                             <weight>75</weight>
@@ -1414,13 +1346,7 @@
                                                       </widget>
                                                     </item>
                                                     <item>
-                                                      <widget class="QPushButton" name="list_voie">
-                                                        <property name="maximumSize">
-                                                          <size>
-                                                            <width>150</width>
-                                                            <height>16777215</height>
-                                                          </size>
-                                                        </property>
+                                                      <widget class="QPushButton" name="list_roads">
                                                         <property name="font">
                                                           <font>
                                                             <weight>75</weight>
@@ -1439,11 +1365,11 @@
                                                         </property>
                                                       </widget>
                                                     </item>
-                                                  </layout>
+                                                  <item><spacer name="hs_horizontalLayout_12_right"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item></layout>
                                                 </item>
                                               </layout>
                                             </item>
-                                          </layout>
+                                          <property name="leftMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property></layout>
                                         </widget>
                                       </item>
                                       <item>
@@ -1459,7 +1385,7 @@
                                           </property>
                                         </spacer>
                                       </item>
-                                    </layout>
+                                    <property name="leftMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property></layout>
                                   </widget>
                                   <widget class="QWidget" name="page_org">
                                     <layout class="QVBoxLayout" name="verticalLayout_19">
@@ -1468,7 +1394,7 @@
                                           <layout class="QGridLayout" name="gridLayout_8">
                                             <item row="0" column="0">
                                               <layout class="QFormLayout" name="formLayout_org">
-                                                <property name="verticalSpacing">
+                                                <property name="labelAlignment"><set>Qt::AlignRight</set></property><property name="verticalSpacing">
                                                   <number>15</number>
                                                 </property>
                                                 <item row="0" column="0">
@@ -1511,7 +1437,7 @@
                                                   </widget>
                                                 </item>
                                                 <item row="2" column="1">
-                                                  <widget class="QComboBox" name="type_org">
+                                                  <widget class="QComboBox" name="org_type">
                                                     <property name="toolTip">
                                                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select facility type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
@@ -1537,15 +1463,9 @@
                                                   </widget>
                                                 </item>
                                                 <item row="3" column="1">
-                                                  <widget class="QLineEdit" name="nom_org">
-                                                    <property name="maximumSize">
-                                                      <size>
-                                                        <width>400</width>
-                                                        <height>16777215</height>
-                                                      </size>
-                                                    </property>
+                                                  <widget class="QLineEdit" name="org_name">
                                                     <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;The facility name must not be concatenated with the facility type, e.g.&lt;span style=" font-weight:600;"&gt; Bachir Mentouri Hospital &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Facility Type:&lt;/span&gt; Hospital&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Facility Name:&lt;/span&gt; Bachir Mentouri&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;The facility name must not be concatenated with the facility type, e.g.&lt;span style=" font-weight:600;"&gt; Bachir Mentouri Hospital &lt;/span&gt;&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Facility Type:&lt;/span&gt; Hospital&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Facility Name:&lt;/span&gt; Bachir Mentouri&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                     <property name="placeholderText">
                                                       <string />
@@ -1566,7 +1486,7 @@
                                                   </widget>
                                                 </item>
                                                 <item row="1" column="1">
-                                                  <widget class="QComboBox" name="cat_org">
+                                                  <widget class="QComboBox" name="org_cat">
                                                     <property name="editable">
                                                       <bool>true</bool>
                                                     </property>
@@ -1574,14 +1494,8 @@
                                                 </item>
                                                 <item row="4" column="0" colspan="2">
                                                   <layout class="QHBoxLayout" name="horizontalLayout_13">
-                                                    <item>
+                                                    <item><spacer name="hs_horizontalLayout_13_left"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item>
                                                       <widget class="QPushButton" name="submit_org">
-                                                        <property name="maximumSize">
-                                                          <size>
-                                                            <width>150</width>
-                                                            <height>16777215</height>
-                                                          </size>
-                                                        </property>
                                                         <property name="font">
                                                           <font>
                                                             <weight>75</weight>
@@ -1601,13 +1515,7 @@
                                                       </widget>
                                                     </item>
                                                     <item>
-                                                      <widget class="QPushButton" name="list_org">
-                                                        <property name="maximumSize">
-                                                          <size>
-                                                            <width>150</width>
-                                                            <height>16777215</height>
-                                                          </size>
-                                                        </property>
+                                                      <widget class="QPushButton" name="list_orgs">
                                                         <property name="font">
                                                           <font>
                                                             <weight>75</weight>
@@ -1626,11 +1534,11 @@
                                                         </property>
                                                       </widget>
                                                     </item>
-                                                  </layout>
+                                                  <item><spacer name="hs_horizontalLayout_13_right"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item></layout>
                                                 </item>
                                               </layout>
                                             </item>
-                                          </layout>
+                                          <property name="leftMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property></layout>
                                         </widget>
                                       </item>
                                       <item>
@@ -1646,7 +1554,7 @@
                                           </property>
                                         </spacer>
                                       </item>
-                                    </layout>
+                                    <property name="leftMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property></layout>
                                   </widget>
                                   <widget class="QWidget" name="page_city">
                                     <layout class="QVBoxLayout" name="verticalLayout_23">
@@ -1655,7 +1563,7 @@
                                           <layout class="QGridLayout" name="gridLayout_9">
                                             <item row="0" column="0">
                                               <layout class="QFormLayout" name="formLayout_city">
-                                                <property name="horizontalSpacing">
+                                                <property name="labelAlignment"><set>Qt::AlignRight</set></property><property name="horizontalSpacing">
                                                   <number>10</number>
                                                 </property>
                                                 <property name="verticalSpacing">
@@ -1701,7 +1609,7 @@
                                                   </widget>
                                                 </item>
                                                 <item row="1" column="1">
-                                                  <widget class="QComboBox" name="type_city">
+                                                  <widget class="QComboBox" name="subd_type">
                                                     <property name="toolTip">
                                                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select subdivision type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
@@ -1724,28 +1632,16 @@
                                                   </widget>
                                                 </item>
                                                 <item row="2" column="1">
-                                                  <widget class="QLineEdit" name="nom_city">
-                                                    <property name="maximumSize">
-                                                      <size>
-                                                        <width>400</width>
-                                                        <height>16777215</height>
-                                                      </size>
-                                                    </property>
+                                                  <widget class="QLineEdit" name="subd_name">
                                                     <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;The subdivision name must not be concatenated with the subdivision type, e.g.&lt;span style=" font-weight:600;"&gt; El Bortegal Cooperative &lt;/span&gt;&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Subdivision Type: &lt;/span&gt;Cooperative&lt;/p&gt;&lt;p align="right"&gt;&lt;span style=" font-weight:600;"&gt;Subdivision Name:&lt;/span&gt;&lt;span style=" font-weight:600;"/&gt;El Bortegal&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;The subdivision name must not be concatenated with the subdivision type, e.g.&lt;span style=" font-weight:600;"&gt; El Bortegal Cooperative &lt;/span&gt;&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Subdivision Type: &lt;/span&gt;Cooperative&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Subdivision Name:&lt;/span&gt;&lt;span style=" font-weight:600;"/&gt;El Bortegal&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                   </widget>
                                                 </item>
                                                 <item row="3" column="0" colspan="2">
                                                   <layout class="QHBoxLayout" name="horizontalLayout_14">
-                                                    <item>
-                                                      <widget class="QPushButton" name="submit_city">
-                                                        <property name="maximumSize">
-                                                          <size>
-                                                            <width>150</width>
-                                                            <height>16777215</height>
-                                                          </size>
-                                                        </property>
+                                                    <item><spacer name="hs_horizontalLayout_14_left"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item>
+                                                      <widget class="QPushButton" name="submit_subd">
                                                         <property name="font">
                                                           <font>
                                                             <weight>75</weight>
@@ -1765,13 +1661,7 @@
                                                       </widget>
                                                     </item>
                                                     <item>
-                                                      <widget class="QPushButton" name="list_cities">
-                                                        <property name="maximumSize">
-                                                          <size>
-                                                            <width>150</width>
-                                                            <height>16777215</height>
-                                                          </size>
-                                                        </property>
+                                                      <widget class="QPushButton" name="list_subds">
                                                         <property name="font">
                                                           <font>
                                                             <weight>75</weight>
@@ -1790,11 +1680,11 @@
                                                         </property>
                                                       </widget>
                                                     </item>
-                                                  </layout>
+                                                  <item><spacer name="hs_horizontalLayout_14_right"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item></layout>
                                                 </item>
                                               </layout>
                                             </item>
-                                          </layout>
+                                          <property name="leftMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property></layout>
                                         </widget>
                                       </item>
                                       <item>
@@ -1810,9 +1700,9 @@
                                           </property>
                                         </spacer>
                                       </item>
-                                    </layout>
+                                    <property name="leftMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property></layout>
                                   </widget>
-                                  <widget class="QWidget" name="page_num">
+                                  <widget class="QWidget" name="page_numbering">
                                     <layout class="QVBoxLayout" name="verticalLayout_14">
                                       <item>
                                         <widget class="QScrollArea" name="scrollArea_3">
@@ -1824,7 +1714,7 @@
                                           </property>
                                           <widget class="QWidget" name="scrollAreaWidgetContents_3">
                                             <layout class="QFormLayout" name="formLayout_3">
-                                              <item row="0" column="0">
+                                              <property name="labelAlignment"><set>Qt::AlignRight</set></property><item row="0" column="0">
                                                 <widget class="QLabel" name="label_33">
                                                   <property name="font">
                                                     <font>
@@ -1879,14 +1769,14 @@
                                                   </property>
                                                   <layout class="QVBoxLayout" name="verticalLayout_12">
                                                     <item>
-                                                      <widget class="QComboBox" name="dyn_ref">
+                                                      <widget class="QComboBox" name="road_ref">
                                                         <property name="editable">
                                                           <bool>true</bool>
                                                         </property>
                                                       </widget>
                                                     </item>
                                                     <item>
-                                                      <widget class="QPushButton" name="select_ref">
+                                                      <widget class="QPushButton" name="select_road_ref">
                                                         <property name="font">
                                                           <font>
                                                             <weight>75</weight>
@@ -1969,12 +1859,6 @@
                                               </item>
                                               <item row="2" column="1">
                                                 <widget class="QLineEdit" name="num_val">
-                                                  <property name="maximumSize">
-                                                    <size>
-                                                      <width>400</width>
-                                                      <height>16777215</height>
-                                                    </size>
-                                                  </property>
                                                   <property name="clearButtonEnabled">
                                                     <bool>false</bool>
                                                   </property>
@@ -1995,12 +1879,6 @@
                                               </item>
                                               <item row="3" column="1">
                                                 <widget class="QLineEdit" name="repetition">
-                                                  <property name="maximumSize">
-                                                    <size>
-                                                      <width>400</width>
-                                                      <height>16777215</height>
-                                                    </size>
-                                                  </property>
                                                   <property name="placeholderText">
                                                     <string />
                                                   </property>
@@ -2020,7 +1898,7 @@
                                                 </widget>
                                               </item>
                                               <item row="4" column="1">
-                                                <widget class="QComboBox" name="num_etat">
+                                                <widget class="QComboBox" name="num_state">
                                                   <property name="editable">
                                                     <bool>true</bool>
                                                   </property>
@@ -2052,7 +1930,7 @@
                                                   <layout class="QVBoxLayout" name="verticalLayout_29">
                                                     <item>
                                                       <layout class="QFormLayout" name="formLayout_4">
-                                                        <item row="0" column="0">
+                                                        <property name="labelAlignment"><set>Qt::AlignRight</set></property><item row="0" column="0">
                                                           <widget class="QLabel" name="label_35">
                                                             <property name="font">
                                                               <font>
@@ -2066,7 +1944,7 @@
                                                           </widget>
                                                         </item>
                                                         <item row="0" column="1">
-                                                          <widget class="QComboBox" name="cat_act">
+                                                          <widget class="QComboBox" name="activity_cat">
                                                             <property name="editable">
                                                               <bool>true</bool>
                                                             </property>
@@ -2086,7 +1964,7 @@
                                                           </widget>
                                                         </item>
                                                         <item row="1" column="1">
-                                                          <widget class="QComboBox" name="type_act">
+                                                          <widget class="QComboBox" name="activity_type">
                                                             <property name="editable">
                                                               <bool>true</bool>
                                                             </property>
@@ -2099,14 +1977,8 @@
                                               </item>
                                               <item row="6" column="0" colspan="2">
                                                 <layout class="QHBoxLayout" name="horizontalLayout_15">
-                                                  <item>
+                                                  <item><spacer name="hs_horizontalLayout_15_left"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item>
                                                     <widget class="QPushButton" name="submit_num">
-                                                      <property name="maximumSize">
-                                                        <size>
-                                                          <width>150</width>
-                                                          <height>16777215</height>
-                                                        </size>
-                                                      </property>
                                                       <property name="font">
                                                         <font>
                                                           <weight>75</weight>
@@ -2126,13 +1998,7 @@
                                                     </widget>
                                                   </item>
                                                   <item>
-                                                    <widget class="QPushButton" name="list_num">
-                                                      <property name="maximumSize">
-                                                        <size>
-                                                          <width>150</width>
-                                                          <height>16777215</height>
-                                                        </size>
-                                                      </property>
+                                                    <widget class="QPushButton" name="list_nums">
                                                       <property name="font">
                                                         <font>
                                                           <weight>75</weight>
@@ -2151,20 +2017,20 @@
                                                       </property>
                                                     </widget>
                                                   </item>
-                                                </layout>
+                                                <item><spacer name="hs_horizontalLayout_15_right"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item></layout>
                                               </item>
                                             </layout>
                                           </widget>
                                         </widget>
                                       </item>
-                                    </layout>
+                                    <property name="leftMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property></layout>
                                   </widget>
-                                  <widget class="QWidget" name="page_pan">
+                                  <widget class="QWidget" name="page_panels">
                                     <layout class="QVBoxLayout" name="verticalLayout_25">
                                       <item>
                                         <widget class="QWidget" name="formLayout_pan" native="true">
                                           <layout class="QFormLayout" name="formLayout">
-                                            <item row="0" column="0">
+                                            <property name="labelAlignment"><set>Qt::AlignRight</set></property><item row="0" column="0">
                                               <widget class="QLabel" name="label_39">
                                                 <property name="font">
                                                   <font>
@@ -2188,7 +2054,7 @@
                                               </widget>
                                             </item>
                                             <item row="1" column="1">
-                                              <widget class="QComboBox" name="etat_mont">
+                                              <widget class="QComboBox" name="mount_status">
                                                 <property name="editable">
                                                   <bool>true</bool>
                                                 </property>
@@ -2223,14 +2089,14 @@
                                                 </property>
                                                 <layout class="QVBoxLayout" name="verticalLayout_17">
                                                   <item>
-                                                    <widget class="QComboBox" name="dyn_ref2">
+                                                    <widget class="QComboBox" name="panel_ref">
                                                       <property name="editable">
                                                         <bool>true</bool>
                                                       </property>
                                                     </widget>
                                                   </item>
                                                   <item>
-                                                    <widget class="QPushButton" name="select_ref2">
+                                                    <widget class="QPushButton" name="select_panel_ref">
                                                       <property name="font">
                                                         <font>
                                                           <weight>75</weight>
@@ -2306,14 +2172,8 @@
                                                 <property name="bottomMargin">
                                                   <number>5</number>
                                                 </property>
-                                                <item>
+                                                <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item>
                                                   <widget class="QPushButton" name="submit_pan">
-                                                    <property name="maximumSize">
-                                                      <size>
-                                                        <width>150</width>
-                                                        <height>16777215</height>
-                                                      </size>
-                                                    </property>
                                                     <property name="font">
                                                       <font>
                                                         <weight>75</weight>
@@ -2333,13 +2193,7 @@
                                                   </widget>
                                                 </item>
                                                 <item>
-                                                  <widget class="QPushButton" name="list_pan">
-                                                    <property name="maximumSize">
-                                                      <size>
-                                                        <width>150</width>
-                                                        <height>16777215</height>
-                                                      </size>
-                                                    </property>
+                                                  <widget class="QPushButton" name="list_panels">
                                                     <property name="font">
                                                       <font>
                                                         <weight>75</weight>
@@ -2358,7 +2212,7 @@
                                                     </property>
                                                   </widget>
                                                 </item>
-                                              </layout>
+                                              <item><spacer name="hs_horizontalLayout_17_right"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item></layout>
                                             </item>
                                             <item row="1" column="0">
                                               <widget class="QLabel" name="label_30">
@@ -2376,16 +2230,13 @@
                                           </layout>
                                         </widget>
                                       </item>
-                                    </layout>
+                                    <property name="leftMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property></layout>
                                   </widget>
                                 </widget>
                               </item>
                               <item>
                                 <spacer name="verticalSpacer_ops">
                                   <property name="orientation"><enum>Qt::Vertical</enum></property>
-                                  <property name="orientation">
-                                    <enum>Qt::Vertical</enum>
-                                  </property>
                                 </spacer>
                               </item>
                             </layout>
@@ -2495,7 +2346,7 @@
                                                    <number>5</number>
                                                  </property>
                                                  <item row="0" column="0">
-                                                   <widget class="QLabel" name="type_moj">
+                                                   <widget class="QLabel" name="type_plan">
                                                      <property name="font">
                                                        <font>
                                                          <weight>75</weight>
@@ -2509,13 +2360,7 @@
                                                  </item>
                                                  <item row="0" column="1">
                                                    <widget class="QLineEdit" name="lineEdit_type">
-                                                     <property name="maximumSize">
-                                                       <size>
-                                                         <width>400</width>
-                                                         <height>16777215</height>
-                                                       </size>
-                                                     </property>
-                                                   </widget>
+                                                     </widget>
                                                  </item>
                                                  <item row="1" column="0">
                                                    <widget class="QLabel" name="by_">
@@ -2526,19 +2371,13 @@
                                                        </font>
                                                      </property>
                                                      <property name="text">
-                                                       <string>   Produced by </string>
+                                                       <string>Produced by</string>
                                                      </property>
                                                    </widget>
                                                  </item>
                                                  <item row="1" column="1">
                                                    <widget class="QLineEdit" name="lineEdit_by">
-                                                     <property name="maximumSize">
-                                                       <size>
-                                                         <width>400</width>
-                                                         <height>16777215</height>
-                                                       </size>
-                                                     </property>
-                                                   </widget>
+                                                     </widget>
                                                  </item>
                                                  <item row="2" column="0">
                                                    <widget class="QLabel" name="num_mokh">
@@ -2555,13 +2394,7 @@
                                                  </item>
                                                  <item row="2" column="1">
                                                    <widget class="QLineEdit" name="lineEdit_nummokh">
-                                                     <property name="maximumSize">
-                                                       <size>
-                                                         <width>400</width>
-                                                         <height>16777215</height>
-                                                       </size>
-                                                     </property>
-                                                   </widget>
+                                                     </widget>
                                                  </item>
                                                  <item row="3" column="0">
                                                    <widget class="QLabel" name="label_49">
@@ -2652,7 +2485,7 @@
                                             <item>
                                               <widget class="QPushButton" name="backup_db">
                                                 <property name="toolTip">
-                                                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="right"&gt;Create a database backup&lt;/p&gt;&lt;p align="right"&gt; to import in case of an error&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                                                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Create a database backup&lt;/p&gt;&lt;p align="justify"&gt; to import in case of an error&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                 </property>
                                                 <property name="text">
                                                   <string>Create Database Backup</string>
@@ -2676,7 +2509,7 @@
                                               <layout class="QHBoxLayout" name="horizontalLayout_feature">
                                                 <item>
                                                   <widget class="QLabel" name="label_feature">
-                                                    <property name="text">
+                                                    <property name="font"><font><weight>75</weight><bold>true</bold></font></property><property name="text">
                                                       <string>Main Type:</string>
                                                     </property>
                                                   </widget>
@@ -2697,20 +2530,14 @@
                                               <layout class="QHBoxLayout" name="horizontalLayout_type">
                                                 <item>
                                                   <widget class="QLabel" name="label_type">
-                                                    <property name="text">
+                                                    <property name="font"><font><weight>75</weight><bold>true</bold></font></property><property name="text">
                                                       <string>Type:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
                                                 <item>
                                                   <widget class="QLineEdit" name="new_type">
-                                                    <property name="maximumSize">
-                                                      <size>
-                                                        <width>400</width>
-                                                        <height>16777215</height>
-                                                      </size>
-                                                    </property>
-                                                  </widget>
+                                                    </widget>
                                                 </item>
                                                 <item>
                                                   <widget class="QPushButton" name="add_type_btn">
@@ -2734,7 +2561,7 @@
                                               <layout class="QHBoxLayout" name="horizontalLayout_subtype">
                                                 <item>
                                                   <widget class="QLabel" name="label_subtype">
-                                                    <property name="text">
+                                                    <property name="font"><font><weight>75</weight><bold>true</bold></font></property><property name="text">
                                                       <string>Subtype:</string>
                                                     </property>
                                                   </widget>
@@ -2758,20 +2585,14 @@
                                               <layout class="QHBoxLayout" name="horizontalLayout_subsubtype">
                                                 <item>
                                                   <widget class="QLabel" name="label_subsubtype">
-                                                    <property name="text">
+                                                    <property name="font"><font><weight>75</weight><bold>true</bold></font></property><property name="text">
                                                       <string>Sub-subtype:</string>
                                                     </property>
                                                   </widget>
                                                 </item>
                                                 <item>
                                                   <widget class="QLineEdit" name="subsubtype_combo">
-                                                    <property name="maximumSize">
-                                                      <size>
-                                                        <width>400</width>
-                                                        <height>16777215</height>
-                                                      </size>
-                                                    </property>
-                                                  </widget>
+                                                    </widget>
                                                 </item>
                                               </layout>
                                             </item>
