@@ -1,5 +1,7 @@
 """Layer operations mixin for feature CRUD and tab-based layer management."""
 
+from __future__ import annotations
+
 import logging
 import os
 import uuid

@@ -1,5 +1,7 @@
 """Map tool management mixin for measure and identify interactions."""
 
+from __future__ import annotations
+
 from typing import Any
 
 from qgis.PyQt.QtWidgets import QMessageBox

@@ -1,5 +1,7 @@
 """Symbol and layout export mixin for SVG, PNG map generation."""
 
+from __future__ import annotations
+
 import logging
 
 from qgis.PyQt.QtCore import QRectF, Qt

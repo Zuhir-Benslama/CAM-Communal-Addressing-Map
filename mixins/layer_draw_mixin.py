@@ -1,5 +1,7 @@
 """Drawing mixin for activating edit mode on map layers."""
 
+from __future__ import annotations
+
 import logging
 
 from qgis.PyQt.QtCore import Qt

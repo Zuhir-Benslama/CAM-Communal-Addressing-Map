@@ -1,5 +1,7 @@
 """Reporting mixin for generating statistical reports and purchase orders."""
 
+from __future__ import annotations
+
 import logging
 
 from qgis.PyQt.QtWidgets import QMessageBox

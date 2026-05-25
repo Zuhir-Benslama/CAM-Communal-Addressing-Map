@@ -1,5 +1,7 @@
 """Backup and restore mixin for SQLite/SpatiaLite database files."""
 
+from __future__ import annotations
+
 import logging
 import os
 import shutil

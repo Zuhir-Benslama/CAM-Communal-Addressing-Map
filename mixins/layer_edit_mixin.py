@@ -1,5 +1,7 @@
 """Layer editing mixin for adding and updating features via forms."""
 
+from __future__ import annotations
+
 import logging
 
 from qgis.PyQt.QtCore import Qt

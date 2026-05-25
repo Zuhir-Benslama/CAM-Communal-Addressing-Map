@@ -1,5 +1,7 @@
 """Chart generation mixins for panel and numbering distribution plots."""
 
+from __future__ import annotations
+
 import logging
 
 import matplotlib.pyplot as plt
