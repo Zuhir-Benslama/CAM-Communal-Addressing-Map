@@ -8,7 +8,11 @@ def _setup_package_tree(packages):
     """Register a list of dotted package names in sys.modules."""
     for name in packages:
         mod = types.ModuleType(name)
-        mod.__path__ = name.replace('.', '/')
+        parts = name.split('.')
+        if len(parts) == 1:
+            mod.__path__ = ['.']
+        else:
+            mod.__path__ = ['/'.join(parts[1:])]
         mod.__package__ = name
         sys.modules[name] = mod
 
