@@ -21,12 +21,14 @@ from ..constants import CRS, COOKIE_FILE, LAYER_MUNICIPALITY, MEMORY_PROVIDER
 logger = logging.getLogger(__name__)
 
 
-def create_other_layers(iface) -> None:
+def create_other_layers(_iface) -> None:
     """Create non-mapper vector layers from QGIS config."""
     other_layer_list = qgis_config().get('other_layers')
     mapper = qgis_config().get('mapper')
     for layer_cfg in other_layer_list:
-        layer = QgsVectorLayer(layer_cfg.get('url'), layer_cfg.get('label'), MEMORY_PROVIDER)
+        layer = QgsVectorLayer(
+            layer_cfg.get('url'), layer_cfg.get('label'), MEMORY_PROVIDER
+        )
         if layer.isValid():
             existing = QgsProject.instance().mapLayersByName(layer_cfg.get('label'))
             if not existing:

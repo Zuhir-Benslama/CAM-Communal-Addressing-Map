@@ -1,4 +1,6 @@
 """Application-specific exception hierarchy."""
+
+
 class AppError(Exception):
     """Base exception for application errors."""
 

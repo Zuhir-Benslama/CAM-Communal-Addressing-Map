@@ -6,6 +6,7 @@ from qgis.PyQt.QtCore import Qt
 from qgis.core import QgsProject
 
 from ..layer.editing import start_editing_layer
+from ._protocols import HasCurrentLayer, HasIface, HasDrawSignals
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +14,7 @@ logger = logging.getLogger(__name__)
 class LayerDrawMixin:
     """Mixin to start drawing/editing sessions on specific map layers."""
 
-    def _draw_handler(self, layer_name: str) -> None:
+    def _draw_handler(self: HasIface & HasDrawSignals, layer_name: str) -> None:
         """Start editing a named layer with feature-added tracking."""
         layers = QgsProject.instance().mapLayersByName(layer_name)
         if not layers:
@@ -34,6 +35,6 @@ class LayerDrawMixin:
         self.iface.mapCanvas().setContextMenuPolicy(Qt.DefaultContextMenu)
         start_editing_layer(self.iface, layer_name)
 
-    def start_drawing(self) -> None:
+    def start_drawing(self: HasCurrentLayer) -> None:
         """Start drawing on the currently selected layer."""
         self._draw_handler(self._current_layer_name())

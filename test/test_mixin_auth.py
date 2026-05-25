@@ -4,7 +4,7 @@ import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
-from test.helpers import setup_mocks, setup_gui_mocks, make_mock_iface, get_qapp
+from test.helpers import setup_gui_mocks, get_qapp
 
 
 @unittest.skipIf(get_qapp() is None, 'PyQt5 not available')

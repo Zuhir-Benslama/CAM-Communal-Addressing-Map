@@ -2,7 +2,7 @@
 import importlib
 import sys
 import unittest
-from unittest.mock import MagicMock, PropertyMock, patch
+from unittest.mock import MagicMock
 
 from .helpers import setup_gui_mocks, get_qapp
 

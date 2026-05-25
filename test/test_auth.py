@@ -20,8 +20,8 @@ sys.modules['qgis.PyQt.QtCore'] = qgis.PyQt.QtCore
 sys.modules['qgis.PyQt.QtWidgets'] = qgis.PyQt.QtWidgets
 sys.modules['qgis.core'] = qgis.core
 
-from app.users.service import sign_up, sign_in, logout
-from app.core.security import get_jwt_secret
+from app.users.service import sign_up, sign_in, logout  # noqa: E402
+from app.core.security import get_jwt_secret  # noqa: E402
 
 
 class TestJWTSecret(unittest.TestCase):

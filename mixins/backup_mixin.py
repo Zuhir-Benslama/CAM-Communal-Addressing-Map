@@ -11,6 +11,7 @@ from ..constants import (
     PLUGIN_DIR, DATABASE_FILE, AUTH_DATABASE_FILE,
     current_theme, get_dialog_qss,
 )
+from ._protocols import HasTranslation
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +19,7 @@ logger = logging.getLogger(__name__)
 class BackupMixin:
     """Mixin for backing up and restoring SQLite/SpatiaLite databases."""
 
-    def restore_database(self) -> None:
+    def restore_database(self: HasTranslation) -> None:
         """Restore the main database from a user-selected SQLite file."""
         file_dialog_open = QFileDialog(self)
         file_dialog_open.setDirectory(PLUGIN_DIR)
@@ -58,7 +59,7 @@ class BackupMixin:
             self._tr("Database restored from %s") % os.path.basename(source_path),
         )
 
-    def restore_auth_database(self) -> None:
+    def restore_auth_database(self: HasTranslation) -> None:
         """Ensure the auth database file exists, creating it if needed."""
         auth_path = AUTH_DATABASE_FILE
         if os.path.exists(auth_path):
@@ -73,7 +74,7 @@ class BackupMixin:
                 self._tr("Auth database created"),
             )
 
-    def backup(self) -> None:
+    def backup(self: HasTranslation) -> None:
         """Backup the main and auth databases to a user-chosen location."""
         source_path = DATABASE_FILE
         auth_source = AUTH_DATABASE_FILE
@@ -105,4 +106,6 @@ class BackupMixin:
             )
         except (IOError, OSError, shutil.Error) as e:
             logger.exception("Failed to backup database: %s", e)
-            QMessageBox.critical(self, self._tr("Error"), self._tr("Failed to copy file"))
+            QMessageBox.critical(
+                self, self._tr("Error"), self._tr("Failed to copy file")
+            )

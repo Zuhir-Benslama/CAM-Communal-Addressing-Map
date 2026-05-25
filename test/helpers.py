@@ -1,7 +1,7 @@
 """Test helpers for mocking QGIS and project dependencies."""
 import sys
 import types
-from unittest.mock import MagicMock, PropertyMock
+from unittest.mock import MagicMock
 
 
 def _setup_package_tree(packages):
@@ -174,6 +174,7 @@ def setup_mocks():
 
     _gda2 = types.ModuleType('geoalchemy2')
     sys.modules['geoalchemy2'] = _gda2
+
     class _FakeGeometryType:
         """Fake Geometry type for isinstance() checks in tests."""
     _gda2.Geometry = _FakeGeometryType
@@ -271,9 +272,11 @@ def _make_gui_pyqt_mocks():
             self._slots = []
             self.clicked = MagicMock()
             self.clicked.connect = self._connect_clicked
+
         def _connect_clicked(self, slot):
             self._slots.append(slot)
             self.clicked.connect = lambda s: self._slots.append(s)
+
         def click(self):
             for slot in self._slots:
                 slot()
@@ -396,10 +399,12 @@ def _setup_gui_qgis_mocks():
         def __init__(self, canvas):
             self.canvas = canvas
             self.paused = False
+
         def reset(self):
             self.points = []
             self.markers = []
             self.labels = []
+
         def deactivate(self):
             self.reset()
 
@@ -472,8 +477,8 @@ def get_qapp():
         from PyQt5.QtWidgets import QApplication
         app = QApplication.instance()
         if app is None:
-            import sys
-            app = QApplication(sys.argv)
+            import sys as _sys
+            app = QApplication(_sys.argv)
         return app
     except ImportError:
         return None

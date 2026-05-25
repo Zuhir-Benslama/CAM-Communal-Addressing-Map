@@ -105,8 +105,8 @@ class RNA:
                 loc = current_locale()
                 QMessageBox.critical(
                     None, get_string("RNA Plugin Error", loc),
-                    get_string("Failed to create dialog", loc) + "\n\n"
-                    + get_string("Check the QGIS log for details.", loc),
+                    get_string("Failed to create dialog", loc) + "\n\n" +
+                    get_string("Check the QGIS log for details.", loc),
                 )
                 return
 
@@ -135,6 +135,6 @@ class RNA:
 
         self.dock_widget.setMinimumWidth(min_width)
         self.dock_widget.setMaximumWidth(max_width)
-        if (self.dock_widget.width() > 760
-                or self.dock_widget.width() < min_width):
+        if (self.dock_widget.width() > 760 or
+                self.dock_widget.width() < min_width):
             self.dock_widget.resize(default_width, self.dock_widget.height())

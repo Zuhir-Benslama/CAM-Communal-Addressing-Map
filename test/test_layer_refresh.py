@@ -74,7 +74,7 @@ class TestLayerRefresh(unittest.TestCase):
         self.mod.remove_all_categorized_styles(self.iface)
 
     @patch('plans_adressage.layer.refresh.QgsProject')
-    def test_add_feature_to_layer_with_wkt(self, mock_project):
+    def test_add_feature_to_layer_with_wkt(self, _mock_project):
         model_instance = MagicMock(spec=[])
         table_mock = MagicMock()
         table_mock.columns = []
@@ -93,7 +93,7 @@ class TestLayerRefresh(unittest.TestCase):
     @patch('plans_adressage.layer.refresh._models', MagicMock(spec=[]))
     @patch('plans_adressage.layer.refresh.get_session')
     @patch('plans_adressage.layer.refresh.QgsProject')
-    def test_refresh_from_db_unknown_model(self, mock_project, mock_get_session):
+    def test_refresh_from_db_unknown_model(self, _mock_project, mock_get_session):
         mock_session = MagicMock()
         mock_get_session.return_value = mock_session
         self.mod.refresh_layer_from_db(self.iface, 'test_layer', 'NonExistentModel')
@@ -109,7 +109,7 @@ class TestLayerRefresh(unittest.TestCase):
     @patch('plans_adressage.layer.refresh._models')
     @patch('plans_adressage.layer.refresh.get_session')
     @patch('plans_adressage.layer.refresh.QgsProject')
-    def test_refresh_from_db_no_results(self, mock_project, mock_get_session, mock_models):
+    def test_refresh_from_db_no_results(self, _mock_project, mock_get_session, mock_models):
         mock_session = MagicMock()
         mock_get_session.return_value = mock_session
         mock_session.query.return_value.all.return_value = []

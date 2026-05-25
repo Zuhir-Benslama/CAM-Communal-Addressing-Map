@@ -2,18 +2,10 @@
 
 import logging
 
-from datetime import datetime
 from qgis.PyQt.QtWidgets import QMessageBox
 
-from ..constants import (
-    current_theme, get_theme_qss,
-    NUM_PLANNED, PAN_MOUNTED, PAN_PLANNED, PAN_TO_MOVE, PAN_TO_FIX,
-    LAYER_SUBDIVISIONS, LAYER_FACILITIES, LAYER_ROADS,
-)
-from ..app.orders.repository import (
-    count_numberings, count_panels,
-    query_missing_pan, query_missing_num, query_missing_rep,
-)
+from ..constants import current_theme, get_theme_qss
+from ._protocols import HasTranslation
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +13,7 @@ logger = logging.getLogger(__name__)
 class ReportMixin:
     """Mixin for generating statistical reports and purchase order documents."""
 
-    def _notify_unavailable(self, feature: str) -> None:
+    def _notify_unavailable(self: HasTranslation, feature: str) -> None:
         """Show a message that the reporting feature is no longer available."""
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)

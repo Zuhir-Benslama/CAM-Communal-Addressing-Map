@@ -1,6 +1,7 @@
 """Popup dialog for viewing and editing feature attributes."""
 import logging
 import os
+from typing import TYPE_CHECKING
 
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QSize, Qt
@@ -30,11 +31,15 @@ from .ui_fillers import (
 )
 from ..app.users.repository import qgis_config
 from ..layer.refresh import refresh_all_layers
+from ..mixins._protocols import UiForm
 
 logger = logging.getLogger(__name__)
 
-FORM_CLASS, _ = uic.loadUiType(os.path.join(
-    os.path.dirname(__file__), 'PopupDialog.ui'))
+if TYPE_CHECKING:
+    FORM_CLASS = UiForm
+else:
+    FORM_CLASS, _ = uic.loadUiType(os.path.join(
+        os.path.dirname(__file__), 'PopupDialog.ui'))
 
 
 class PopupDialog(QDialog, FORM_CLASS):
@@ -144,13 +149,13 @@ class PopupDialog(QDialog, FORM_CLASS):
             button.setMinimumHeight(max(button.minimumHeight(), 34))
             button.setIconSize(QSize(16, 16))
 
-    def on_select_activity_cat(self, index) -> None:
+    def on_select_activity_cat(self, _index) -> None:
         """Populate activity type based on category selection."""
         current_index = self.cat_act_3.currentIndex()
         selected_value = self.cat_act_3.itemData(current_index)
         fill_activity_type(self.activity_type_3, selected_value)
 
-    def on_select_org_cat(self, index) -> None:
+    def on_select_org_cat(self, _index) -> None:
         """Populate org type based on category selection."""
         current_index = self.org_cat.currentIndex()
         selected_value = self.org_cat.itemData(current_index)
@@ -205,8 +210,8 @@ class PopupDialog(QDialog, FORM_CLASS):
         if query.road_id:
             self._set_combo_value(self.dyn_ref3, LAYER_ROADS)
             self.ref_name3.setText(
-                locale_value(query.road, 'Type', loc)
-                + ' ' + locale_value(query.road, 'Nom', loc))
+                locale_value(query.road, 'Type', loc) +
+                ' ' + locale_value(query.road, 'Nom', loc))
         elif query.subdivision_id:
             self._set_combo_value(self.dyn_ref3, LAYER_SUBDIVISIONS)
             self.ref_name3.setText(
@@ -227,14 +232,13 @@ class PopupDialog(QDialog, FORM_CLASS):
         if query.road_id:
             self._set_combo_value(self.dyn_ref4, LAYER_ROADS)
             self.ref_name4.setText(
-                locale_value(query.road, 'Type', loc)
-                + ' ' + locale_value(query.road, 'Nom', loc))
+                locale_value(query.road, 'Type', loc) +
+                ' ' + locale_value(query.road, 'Nom', loc))
         elif query.organization_id:
             self._set_combo_value(self.dyn_ref4, LAYER_FACILITIES)
             self.ref_name4.setText(
-                locale_value(query.organization, 'Type', loc)
-                + ' '
-                + locale_value(query.organization, 'Nom', loc))
+                locale_value(query.organization, 'Type', loc) +
+                ' ' + locale_value(query.organization, 'Nom', loc))
         elif query.subdivision_id:
             self._set_combo_value(self.dyn_ref4, LAYER_SUBDIVISIONS)
             self.ref_name4.setText(locale_value(query.subdivision, 'Nom', loc))
@@ -285,10 +289,17 @@ class PopupDialog(QDialog, FORM_CLASS):
                 Type=self.type_road.currentData(),
             )
             QMessageBox.information(
-                self, get_string("Success", self._tr_locale), get_string("This road has been updated successfully", self._tr_locale))
+                self,
+                get_string("Success", self._tr_locale),
+                get_string("This road has been updated successfully", self._tr_locale),
+            )
         except Exception as e:
             logger.exception("Failed to update road: %s", e)
-            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string('Cannot update road', self._tr_locale))
+            QMessageBox.critical(
+                self,
+                get_string("Error", self._tr_locale),
+                get_string('Cannot update road', self._tr_locale),
+            )
         finally:
             session.close()
         refresh_all_layers(self.iface)
@@ -304,10 +315,20 @@ class PopupDialog(QDialog, FORM_CLASS):
                 Type=self.org_type.currentData()
             )
             QMessageBox.information(
-                self, get_string("Success", self._tr_locale), get_string("This facility has been updated successfully", self._tr_locale))
+                self,
+                get_string("Success", self._tr_locale),
+                get_string(
+                    "This facility has been updated successfully",
+                    self._tr_locale,
+                ),
+            )
         except Exception as e:
             logger.exception("Failed to update organization: %s", e)
-            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string('Cannot update facility', self._tr_locale))
+            QMessageBox.critical(
+                self,
+                get_string("Error", self._tr_locale),
+                get_string('Cannot update facility', self._tr_locale),
+            )
         finally:
             session.close()
         refresh_all_layers(self.iface)
@@ -322,10 +343,21 @@ class PopupDialog(QDialog, FORM_CLASS):
                 Nom=validate_text(self.subd_name.text()),
                 Type=self.subd_type.currentData()
             )
-            QMessageBox.information(self, get_string("Success", self._tr_locale), get_string("This subdivision has been updated successfully", self._tr_locale))
+            QMessageBox.information(
+                self,
+                get_string("Success", self._tr_locale),
+                get_string(
+                    "This subdivision has been updated successfully",
+                    self._tr_locale,
+                ),
+            )
         except Exception as e:
             logger.exception("Failed to update subdivision: %s", e)
-            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string('Cannot update subdivision', self._tr_locale))
+            QMessageBox.critical(
+                self,
+                get_string("Error", self._tr_locale),
+                get_string('Cannot update subdivision', self._tr_locale),
+            )
         finally:
             session.close()
         refresh_all_layers(self.iface)
@@ -341,10 +373,17 @@ class PopupDialog(QDialog, FORM_CLASS):
                 Type=self.zone_type.currentData()
             )
             QMessageBox.information(
-                self, get_string("Success", self._tr_locale), get_string("This zone has been updated successfully", self._tr_locale))
+                self,
+                get_string("Success", self._tr_locale),
+                get_string("This zone has been updated successfully", self._tr_locale),
+            )
         except Exception as e:
             logger.exception("Failed to update zone: %s", e)
-            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string('Cannot update zone', self._tr_locale))
+            QMessageBox.critical(
+                self,
+                get_string("Error", self._tr_locale),
+                get_string('Cannot update zone', self._tr_locale),
+            )
         finally:
             session.close()
         refresh_all_layers(self.iface)
@@ -369,7 +408,11 @@ class PopupDialog(QDialog, FORM_CLASS):
                 canvas.setMapTool(self.ref_identify_tool)
 
         else:
-            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string("Reference type not specified", self._tr_locale))
+            QMessageBox.critical(
+                self,
+                get_string("Error", self._tr_locale),
+                get_string("Reference type not specified", self._tr_locale),
+            )
 
         layer = project.mapLayersByName(self.layer_name_key)
         if layer:
@@ -394,7 +437,11 @@ class PopupDialog(QDialog, FORM_CLASS):
                 canvas.setMapTool(self.ref_identify_tool)
 
         else:
-            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string("Reference type not specified", self._tr_locale))
+            QMessageBox.critical(
+                self,
+                get_string("Error", self._tr_locale),
+                get_string("Reference type not specified", self._tr_locale),
+            )
 
         layer = project.mapLayersByName(self.layer_name_key)
         if layer:
@@ -434,16 +481,21 @@ class PopupDialog(QDialog, FORM_CLASS):
                                   situation=self.mount_status.currentData())
 
             QMessageBox.information(
-                self, get_string("Success", self._tr_locale), get_string("This panel has been updated successfully", self._tr_locale))
+                self,
+                get_string("Success", self._tr_locale),
+                get_string("This panel has been updated successfully", self._tr_locale),
+            )
         except Exception as e:
             logger.exception("Failed to update panel: %s", e)
-            QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string('Cannot update panel', self._tr_locale))
+            QMessageBox.critical(
+                self,
+                get_string("Error", self._tr_locale),
+                get_string('Cannot update panel', self._tr_locale),
+            )
         finally:
             session.close()
         refresh_all_layers(self.iface)
         self.close()
-
-
 
     def update_numbering(self) -> None:
         """Update numbering feature in the database."""
@@ -503,7 +555,13 @@ class PopupDialog(QDialog, FORM_CLASS):
                 )
 
             QMessageBox.information(
-                self, get_string("Success", self._tr_locale), get_string("This numbering has been updated successfully", self._tr_locale))
+                self,
+                get_string("Success", self._tr_locale),
+                get_string(
+                    "This numbering has been updated successfully",
+                    self._tr_locale,
+                ),
+            )
         except Exception as e:
             logger.exception("Failed to update numbering: %s", e)
             QMessageBox.critical(self, get_string("Error", self._tr_locale), f'{e}')

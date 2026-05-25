@@ -13,6 +13,7 @@ from qgis.core import QgsProject
 from ..app.core.database import get_session
 from ..app.orders.models import PanelSign, Numbering
 from ..constants import LAYER_PANELS, LAYER_NUMBERING, CHART_SVG
+from ._protocols import HasTranslation, HasPlanState
 
 logger = logging.getLogger(__name__)
 
@@ -62,7 +63,7 @@ class ChartMixin:
     """Mixin providing chart generation for panel and numbering data."""
 
     def _generate_chart(
-        self, model_class, column, title_key: str,
+        self: HasTranslation, _model_class, column, title_key: str,
         layer_to_show: str, layer_to_hide: str,
     ) -> None:
         """Query, render a bar chart, and toggle layer visibility."""
@@ -84,7 +85,7 @@ class ChartMixin:
         _toggle_layer_visibility(layer_to_show, True)
         _toggle_layer_visibility(layer_to_hide, False)
 
-    def panel_chart(self) -> None:
+    def panel_chart(self: HasPlanState) -> None:
         """Generate a bar chart showing panel sign distribution by situation."""
         self.type_plan = LAYER_PANELS
         self.type_to_hide = LAYER_NUMBERING
@@ -94,7 +95,7 @@ class ChartMixin:
             LAYER_PANELS, LAYER_NUMBERING,
         )
 
-    def numbering_chart(self) -> None:
+    def numbering_chart(self: HasPlanState) -> None:
         """Generate a bar chart showing numbering distribution by state."""
         self.type_plan = LAYER_NUMBERING
         self.type_to_hide = LAYER_PANELS
@@ -104,7 +105,7 @@ class ChartMixin:
             LAYER_NUMBERING, LAYER_PANELS,
         )
 
-    def get_zone_chart(self, wilaya_number: int) -> None:
+    def get_zone_chart(self: HasTranslation, wilaya_number: int) -> None:
         """Generate a chart for zone type distribution in a wilaya."""
         from ..app.orders.repository import get_zone_distribution
         results = get_zone_distribution(wilaya_number)

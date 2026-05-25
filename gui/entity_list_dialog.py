@@ -1,6 +1,7 @@
 """Paginated dialog for browsing entity records."""
 import logging
 import os
+from typing import TYPE_CHECKING
 
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
@@ -17,12 +18,15 @@ from ..constants import (
     current_locale, locale_value,
 )
 from ..scripts.lookup_data import get_string, apply_widget_texts
+from ..mixins._protocols import UiForm
 
 logger = logging.getLogger(__name__)
 
-
-FORM_CLASS, _ = uic.loadUiType(os.path.join(
-    os.path.dirname(__file__), 'liste.ui'))
+if TYPE_CHECKING:
+    FORM_CLASS = UiForm
+else:
+    FORM_CLASS, _ = uic.loadUiType(os.path.join(
+        os.path.dirname(__file__), 'liste.ui'))
 
 
 class EntityListDialog(QDialog, FORM_CLASS):
@@ -45,7 +49,10 @@ class EntityListDialog(QDialog, FORM_CLASS):
         apply_widget_texts(self, self._tr_locale)
         self.setStyleSheet(get_theme_qss(current_theme()))
 
-        self.list_title.setText("\u200f " + get_string("List", self._tr_locale) + "\u200f " + get_string(list_of, self._tr_locale))
+        self.list_title.setText(
+            "\u200f " + get_string("List", self._tr_locale) +
+            "\u200f " + get_string(list_of, self._tr_locale)
+        )
 
         self._prev_btn = QPushButton(get_string("Previous", self._tr_locale))
         self._next_btn = QPushButton(get_string("Next", self._tr_locale))
@@ -149,10 +156,12 @@ class EntityListDialog(QDialog, FORM_CLASS):
                 total_pages = max(
                     1, (self._total_records + self.PAGE_SIZE - 1) // self.PAGE_SIZE)
                 self._page_label.setText(
-                    get_string("Page", self._tr_locale) + f" {self._page + 1} / {total_pages}")
+                    get_string("Page", self._tr_locale) +
+                    f" {self._page + 1} / {total_pages}"
+                )
                 self._total_label.setText(
-                    get_string("Total", self._tr_locale)
-                    + f": {self._total_records}"
+                    get_string("Total", self._tr_locale) +
+                    f": {self._total_records}"
                 )
 
                 offset = self._page * self.PAGE_SIZE
@@ -169,8 +178,12 @@ class EntityListDialog(QDialog, FORM_CLASS):
                 fields, labels = get_all_fields_and_labels(
                     model_class, PROPERTY_LABELS, locale=self._tr_locale)
 
-                labels = [get_string(label, self._tr_locale) if any('\u0600' <= c <= '\u06FF' for c in label) else label
-                          for label in labels]
+                labels = [
+                    get_string(label, self._tr_locale)
+                    if any('\u0600' <= c <= '\u06FF' for c in label)
+                    else label
+                    for label in labels
+                ]
 
                 self.table.setRowCount(len(results))
                 self.table.setColumnCount(len(fields))
@@ -180,10 +193,10 @@ class EntityListDialog(QDialog, FORM_CLASS):
                     for col_index, field in enumerate(fields):
                         try:
                             value = locale_value(record, field, self._tr_locale)
-                        except Exception:
+                        except AttributeError:
                             try:
                                 value = getattr(record, field)
-                            except Exception:
+                            except AttributeError:
                                 logger.debug(
                                     "Field %s not found on record %s",
                                     field, record, exc_info=True

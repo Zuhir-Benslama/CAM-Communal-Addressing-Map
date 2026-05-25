@@ -101,7 +101,9 @@ class IdentifyTool(QgsMapToolIdentify):
                             get_string("Set Item as Reference", current_locale())
                         )
                         ref_action.triggered.connect(
-                            lambda f=feature, t=type_locale, n=nom_locale: self.feature_as_ref(
+                            lambda f=feature,
+                            t=type_locale,
+                            n=nom_locale: self.feature_as_ref(
                                 f['pkuid'],
                                 t,
                                 n,
@@ -190,5 +192,7 @@ class IdentifyTool(QgsMapToolIdentify):
         self.type = feature_type
         self.nom = feature_nom
         if self.pkuid:
-            self.ref_name.setText(f"\u200F{self.type} \u200F{self.nom}")  # \u200F = RTL mark
+            self.ref_name.setText(
+                f"\u200F{self.type} \u200F{self.nom}"
+            )  # \u200F = RTL mark
             self.canvas.unsetMapTool(self)

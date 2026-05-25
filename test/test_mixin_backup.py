@@ -4,9 +4,10 @@ import os
 import sys
 import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from test.helpers import setup_mocks, setup_gui_mocks, make_mock_iface, get_qapp
+from test.helpers import setup_gui_mocks, get_qapp
 
 
 @unittest.skipIf(get_qapp() is None, 'PyQt5 not available')
@@ -31,7 +32,7 @@ class TestBackupMixin(unittest.TestCase):
         with open(self.valid_sqlite, 'wb') as f:
             f.write(b'SQLite format 3\x00')
         self.invalid_file = os.path.join(self.tmpdir, 'not_sqlite.txt')
-        with open(self.invalid_file, 'w') as f:
+        with open(self.invalid_file, 'w', encoding='utf-8') as f:
             f.write('not a database')
 
         self.mod.DATABASE_FILE = os.path.join(self.tmpdir, 'main.sqlite')
@@ -48,9 +49,6 @@ class TestBackupMixin(unittest.TestCase):
         )
         self._mock_qfiledialog_cls.start()
 
-        self.messages = []
-        def fake_msgbox(cls, parent, title, text):
-            self.messages.append((cls, str(title), str(text)))
         self._mock_qmessagebox = patch.object(
             self.mod, 'QMessageBox', autospec=False,
         )
@@ -89,7 +87,7 @@ class TestBackupMixin(unittest.TestCase):
         self.assertFalse(os.path.exists(self.mod.DATABASE_FILE))
 
     def test_restore_auth_exists(self):
-        open(self.mod.AUTH_DATABASE_FILE, 'w').close()
+        Path(self.mod.AUTH_DATABASE_FILE).touch()
         self.mixin.restore_auth_database()
         self.assertTrue(os.path.exists(self.mod.AUTH_DATABASE_FILE))
 
@@ -100,7 +98,7 @@ class TestBackupMixin(unittest.TestCase):
             self.mod.get_auth_engine.assert_called_once()
 
     def test_backup_copies_main_only(self):
-        open(self.mod.DATABASE_FILE, 'w').close()
+        Path(self.mod.DATABASE_FILE).touch()
         dest = os.path.join(self.tmpdir, 'backup.sqlite')
         fake_dialog = MagicMock()
         fake_dialog.exec_ = MagicMock(return_value=MagicMock())
@@ -110,8 +108,8 @@ class TestBackupMixin(unittest.TestCase):
         self.assertTrue(os.path.exists(dest))
 
     def test_backup_copies_both(self):
-        open(self.mod.DATABASE_FILE, 'w').close()
-        open(self.mod.AUTH_DATABASE_FILE, 'w').close()
+        Path(self.mod.DATABASE_FILE).touch()
+        Path(self.mod.AUTH_DATABASE_FILE).touch()
         dest = os.path.join(self.tmpdir, 'backup.sqlite')
         fake_dialog = MagicMock()
         fake_dialog.exec_ = MagicMock(return_value=MagicMock())
@@ -123,14 +121,14 @@ class TestBackupMixin(unittest.TestCase):
         self.assertTrue(os.path.exists(auth_dest))
 
     def test_backup_no_selection(self):
-        open(self.mod.DATABASE_FILE, 'w').close()
+        Path(self.mod.DATABASE_FILE).touch()
         fake_dialog = MagicMock()
         fake_dialog.exec_ = MagicMock(return_value=None)
         self._mock_qfiledialog.return_value = fake_dialog
         self.mixin.backup()
 
     def test_backup_copy_failure(self):
-        open(self.mod.DATABASE_FILE, 'w').close()
+        Path(self.mod.DATABASE_FILE).touch()
         dest = os.path.join(self.tmpdir, 'backup.sqlite')
         fake_dialog = MagicMock()
         fake_dialog.exec_ = MagicMock(return_value=MagicMock())

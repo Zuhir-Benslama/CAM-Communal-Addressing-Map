@@ -5,7 +5,7 @@ from unittest.mock import patch, MagicMock
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from app.orders.repository import (
+from app.orders.repository import (  # noqa: E402
     count_numberings, count_panels,
     query_missing_pan, query_missing_num, query_missing_rep,
     get_zone_distribution,
@@ -70,7 +70,6 @@ class TestCountQueries(unittest.TestCase):
         result = query_missing_rep('planned')
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]['valeur'], 'R1')
-
 
 
 class TestGetZoneDistribution(unittest.TestCase):

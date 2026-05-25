@@ -2,7 +2,7 @@
 import importlib
 import sys
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from .helpers import setup_mocks, wire_module_attributes, make_mock_iface, make_mock_layer
 

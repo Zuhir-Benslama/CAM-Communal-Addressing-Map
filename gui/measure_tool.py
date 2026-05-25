@@ -1,5 +1,7 @@
 """Map measure tool for distance measurement on canvas."""
 
+from typing import List
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QCursor, QFont
 from PyQt5.QtWidgets import (
@@ -12,6 +14,7 @@ from qgis.core import QgsPointXY, QgsDistanceArea, QgsWkbTypes
 from ..constants import current_locale
 from ..i18n import tr as _i18n_tr
 
+
 class MeasureTool(QgsMapToolEmitPoint):
     """Map tool for measuring distances on the canvas."""
     def __init__(self, canvas, iface) -> None:
@@ -19,7 +22,7 @@ class MeasureTool(QgsMapToolEmitPoint):
         super().__init__(canvas)
         self.canvas = canvas
         self.iface = iface
-        self.points = []
+        self.points: List[QgsPointXY] = []
         self.da = QgsDistanceArea()
         self.da.setEllipsoid('WGS84')
 
@@ -27,8 +30,8 @@ class MeasureTool(QgsMapToolEmitPoint):
         self.rubber_band.setColor(QColor(255, 0, 0, 180))
         self.rubber_band.setWidth(2)
 
-        self.markers = []
-        self.labels = []
+        self.markers: List[QgsVertexMarker] = []
+        self.labels: List[QGraphicsItemGroup] = []
         self.paused = False
 
         # Connect to both signals to ensure labels update on any canvas change
@@ -92,14 +95,18 @@ class MeasureTool(QgsMapToolEmitPoint):
         if event.key() == Qt.Key_R:
             self.clear()
             self.iface.messageBar().pushMessage(
-                _i18n_tr("Update", current_locale()), _i18n_tr("Restart Measurement", current_locale()), level=1, duration=10
+                _i18n_tr("Update", current_locale()),
+                _i18n_tr("Restart Measurement", current_locale()),
+                level=1, duration=10
             )
 
         elif event.key() == Qt.Key_E:
             self.clear()
             self.canvas.unsetMapTool(self)
             self.iface.messageBar().pushMessage(
-                _i18n_tr("Finish", current_locale()), _i18n_tr("Measurement tool terminated", current_locale()), level=0, duration=10
+                _i18n_tr("Finish", current_locale()),
+                _i18n_tr("Measurement tool terminated", current_locale()),
+                level=0, duration=10
             )
 
         elif event.key() == Qt.Key_P:

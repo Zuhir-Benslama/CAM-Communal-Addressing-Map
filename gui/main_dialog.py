@@ -152,7 +152,7 @@ class RNADialog(
         self.dateEdit.setDate(QDate.currentDate())
 
     def _connect_signals(self) -> None:
-        """Connect all UI signals to their handlers."""  
+        """Connect all UI signals to their handlers."""
         self.add_u.clicked.connect(lambda: self.public_route('add_usr'))
         self.submit_usr.clicked.connect(self.submit_add_usr)
         self.sign_in_user.clicked.connect(self.login_user)
@@ -161,15 +161,25 @@ class RNADialog(
         self.activity_cat.currentIndexChanged.connect(self.on_select_activity_cat)
         self.abort_uc.clicked.connect(lambda: self.public_route('login'))
 
-        self.draw_btn.clicked.connect(lambda: self.start_drawing())  # pylint: disable=unnecessary-lambda
-        self.select_btn.clicked.connect(lambda: self.start_selecting())  # pylint: disable=unnecessary-lambda
-        self.edit_btn.clicked.connect(lambda: self.start_editing())  # pylint: disable=unnecessary-lambda
+        self.draw_btn.clicked.connect(
+            lambda: self.start_drawing()
+        )  # pylint: disable=unnecessary-lambda
+        self.select_btn.clicked.connect(
+            lambda: self.start_selecting()
+        )  # pylint: disable=unnecessary-lambda
+        self.edit_btn.clicked.connect(
+            lambda: self.start_editing()
+        )  # pylint: disable=unnecessary-lambda
         self.layer_selector.currentIndexChanged.connect(
             self._on_layer_changed)
 
         self.submit_zone.clicked.connect(self.add_zone)
-        self.submit_road.clicked.connect(lambda: self.add_road())  # pylint: disable=unnecessary-lambda
-        self.submit_org.clicked.connect(lambda: self.add_organization())  # pylint: disable=unnecessary-lambda
+        self.submit_road.clicked.connect(
+            lambda: self.add_road()
+        )  # pylint: disable=unnecessary-lambda
+        self.submit_org.clicked.connect(
+            lambda: self.add_organization()
+        )  # pylint: disable=unnecessary-lambda
         self.submit_subd.clicked.connect(self.add_city)
         self.submit_num.clicked.connect(self.add_numbering)
         self.submit_pan.clicked.connect(self.add_panel)
@@ -181,7 +191,9 @@ class RNADialog(
 
         self.select_road_ref.clicked.connect(self.select_ref_handler)
         self.select_panel_ref.clicked.connect(self.select_panel_ref_handler)
-        self.page_numbering.keyPressEvent = lambda e: self.key_press_event(e, 'add_numbering')
+        self.page_numbering.keyPressEvent = (
+            lambda e: self.key_press_event(e, 'add_numbering')
+        )
         self.page_panels.keyPressEvent = lambda e: self.key_press_event(e, 'add_panel')
 
         self.mesure_dist.clicked.connect(self.activate_measure)
@@ -207,7 +219,10 @@ class RNADialog(
     def _on_layer_changed(self, index: int) -> None:
         """Switch the form stack page and refresh layer visibility."""
         self.form_stack.setCurrentIndex(index)
-        if self.menu.currentWidget() and self.menu.currentWidget().objectName() == 'tab_ops':
+        if (
+            self.menu.currentWidget() and
+            self.menu.currentWidget().objectName() == 'tab_ops'
+        ):
             self.on_opt_selected(self.menu.currentIndex())
 
     def _populate_combos(self) -> None:
@@ -303,14 +318,14 @@ class RNADialog(
 
         self.scrollAreaWidgetContents_2.layout().addWidget(self._settings_group)
 
-    def _on_theme_changed(self, index: int) -> None:
+    def _on_theme_changed(self, _index: int) -> None:
         """Persist and apply the newly selected theme."""
         self._current_theme = self._theme_combo.currentData()
         settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
         settings.setValue(SETTINGS_KEY_THEME, self._current_theme)
         self.apply_theme()
 
-    def _on_locale_changed(self, idx: int) -> None:
+    def _on_locale_changed(self, _idx: int) -> None:
         """Persist the selected locale and re-translate all UI text."""
         code = self._locale_combo.currentData()
         if not code:
@@ -447,7 +462,9 @@ class RNADialog(
             widget.setMaximumWidth(16777215)
             widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-        for label_name in ('label_feature', 'label_type', 'label_subtype', 'label_subsubtype'):
+        for label_name in (
+            'label_feature', 'label_type', 'label_subtype', 'label_subsubtype'
+        ):
             label = getattr(self, label_name, None)
             if label is not None:
                 label.setMinimumWidth(120)

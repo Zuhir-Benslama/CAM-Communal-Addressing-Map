@@ -137,7 +137,8 @@ def stop_editing_layer(iface, layer_name) -> None:
             else:
                 iface.messageBar().pushMessage(
                     get_string("Erreur", loc),
-                    get_string("Cannot stop editing for layer", loc) + f" {layer.name()}.",
+                    get_string("Cannot stop editing for layer", loc) +
+                    f" {layer.name()}.",
                     level=Qgis.Critical, duration=NOTIFY_DURATION
                 )
         else:

@@ -2,7 +2,7 @@
 import importlib
 import sys
 import unittest
-from unittest.mock import MagicMock, patch, PropertyMock
+from unittest.mock import MagicMock, patch
 
 from .helpers import setup_gui_mocks, make_mock_iface, get_qapp
 
@@ -279,7 +279,6 @@ class TestRNADialogCore(unittest.TestCase):
                                 'org_cat', 'activity_cat'])
         dialog._locale_combo.currentData.return_value = 'fr'
         dialog._translate_internal_combos = MagicMock()
-        fill_calls = {}
         with patch.object(self.mod, 'QSettings'), \
              patch.object(self.mod, 'clear_i18n_cache'), \
              patch.object(self.mod, 'apply_widget_texts'):

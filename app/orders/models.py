@@ -249,7 +249,14 @@ class Road(_BaseSpatialModel):
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
-    decision_number = Column(Text, nullable=True, info={'label': 'Decision No.', 'label_fr': 'N° décision', 'label_en': 'Decision No.'})
+    decision_number = Column(
+        Text, nullable=True,
+        info={
+            'label': 'Decision No.',
+            'label_fr': 'N° décision',
+            'label_en': 'Decision No.',
+        },
+    )
     Type = Column(String, nullable=False,
                   info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'})
     Nom = Column(String, info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'})
@@ -472,16 +479,16 @@ class PanelSign(_BaseSpatialModel):
         loc = current_locale()
         if self.road_id is not None and self.subdivision_id is None \
                 and self.organization_id is None:
-            return ('\u200F' + locale_value(self.road, 'Type', loc)
-                    + ' ' + locale_value(self.road, 'Nom', loc))
+            return ('\u200F' + locale_value(self.road, 'Type', loc) +
+                    ' ' + locale_value(self.road, 'Nom', loc))
         if self.road_id is None and self.subdivision_id is not None \
                 and self.organization_id is None:
-            return ('\u200F' + locale_value(self.subdivision, 'Type', loc)
-                    + ' ' + locale_value(self.subdivision, 'Nom', loc))
+            return ('\u200F' + locale_value(self.subdivision, 'Type', loc) +
+                    ' ' + locale_value(self.subdivision, 'Nom', loc))
         if self.road_id is None and self.subdivision_id is None \
                 and self.organization_id is not None:
-            return ('\u200F' + locale_value(self.organization, 'Type', loc)
-                    + ' ' + locale_value(self.organization, 'Nom', loc))
+            return ('\u200F' + locale_value(self.organization, 'Type', loc) +
+                    ' ' + locale_value(self.organization, 'Nom', loc))
         return None
 
     @classmethod

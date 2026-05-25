@@ -1,5 +1,7 @@
 """Map tool management mixin for measure and identify interactions."""
 
+from typing import Any
+
 from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.PyQt.QtCore import Qt
 from qgis.core import QgsProject
@@ -7,13 +9,14 @@ from qgis.core import QgsProject
 from ..gui.measure_tool import MeasureTool
 from ..gui.identify_tool import IdentifyTool
 from ..constants import LAYER_PANELS
+from ._protocols import HasTranslation, HasIface, HasLayerTools, HasCurrentLayer
 
 
 class MapToolsMixin:
     """Mixin providing map tool activation for measurement and feature
     selection."""
 
-    def _selection_handler(self, layer=None) -> None:
+    def _selection_handler(self: HasIface & HasLayerTools, layer=None) -> None:
         """Activate identify tool for feature selection on the active layer."""
         if self.ref_identify_tool:
             self.ref_identify_tool.unset_map_tool()
@@ -24,12 +27,12 @@ class MapToolsMixin:
         self.identify_tool.set_active_layer(target)
         canvas.setMapTool(self.identify_tool)
 
-    def activate_measure(self) -> None:
+    def activate_measure(self: HasIface & HasLayerTools) -> None:
         """Activate the distance measurement tool on the map canvas."""
         self.measure_tool = MeasureTool(self.iface.mapCanvas(), self.iface)
         self.iface.mapCanvas().setMapTool(self.measure_tool)
 
-    def start_selecting(self) -> None:
+    def start_selecting(self: HasCurrentLayer & HasIface & HasTranslation) -> None:
         """Activate the identify tool on the currently selected layer."""
         layer_name = self._current_layer_name()
         layers = QgsProject.instance().mapLayersByName(layer_name)
@@ -42,7 +45,7 @@ class MapToolsMixin:
         self.iface.setActiveLayer(layers[0])
         self._selection_handler(layer=layers[0])
 
-    def stop(self) -> None:
+    def stop(self: HasIface & HasLayerTools) -> None:
         """Deactivate all active map tools and clear measurements."""
         layer = self.iface.activeLayer()
         if layer:
@@ -54,11 +57,11 @@ class MapToolsMixin:
             if self.measure_tool:
                 self.measure_tool.clear()
 
-    def on_edition_release(self, event) -> None:
+    def on_edition_release(self: HasIface & HasLayerTools, _event) -> None:
         """Stop active tools when the edition context menu is triggered."""
         self.stop()
 
-    def _reconnect_context_menu(self) -> None:
+    def _reconnect_context_menu(self: HasIface) -> None:
         """Reconnect the custom context menu to ensure it stays active."""
         canvas = self.iface.mapCanvas()
         try:
@@ -71,7 +74,7 @@ class MapToolsMixin:
             pass
         canvas.setContextMenuPolicy(Qt.CustomContextMenu)
 
-    def _on_map_tool_changed(self, new_tool) -> None:
+    def _on_map_tool_changed(self: HasIface, _new_tool) -> None:
         """Reconnect context menu when the map tool changes."""
         try:
             self.iface.mapCanvas()
@@ -79,11 +82,13 @@ class MapToolsMixin:
             return
         self._reconnect_context_menu()
 
-    def set_default_cursor(self) -> None:
+    def set_default_cursor(self: HasIface) -> None:
         """Reset the cursor to the default arrow cursor on the map canvas."""
         self.iface.mapCanvas().setCursor(Qt.ArrowCursor)
 
-    def _select_ref(self, combo) -> None:
+    def _select_ref(
+        self: HasIface & HasLayerTools & HasTranslation & HasUiWidgets, combo,
+    ) -> None:
         """Activate identify tool in reference mode for selecting a
         reference feature."""
         self.ref_name.clear()
@@ -102,24 +107,28 @@ class MapToolsMixin:
                 self.ref_identify_tool.set_active_layer(layer[0])
                 canvas.setMapTool(self.ref_identify_tool)
         else:
-            QMessageBox.critical(self, self._tr("Error"), self._tr("Reference type not specified"))
+            QMessageBox.critical(
+                self, self._tr("Error"), self._tr("Reference type not specified")
+            )
         self.set_default_cursor()
 
-    def select_ref_handler(self) -> None:
+    def select_ref_handler(self: HasUiWidgets) -> None:
         """Activate reference selection for the first reference combo."""
         self._select_ref(self.road_ref)
 
-    def select_panel_ref_handler(self) -> None:
+    def select_panel_ref_handler(self: HasUiWidgets) -> None:
         """Activate reference selection for the panel reference combo."""
         self._select_ref(self.panel_ref)
 
-    def ref_pan_selected(self) -> None:
+    def ref_pan_selected(self: HasIface & HasLayerTools & HasTranslation) -> None:
         """Handle panel reference selection event."""
         if not self.ref_identify_tool:
             return
         ref_data = self.ref_identify_tool.get_pkuid()
         if not ref_data:
-            QMessageBox.critical(self, self._tr("Error"), self._tr("Reference type not specified"))
+            QMessageBox.critical(
+                self, self._tr("Error"), self._tr("Reference type not specified")
+            )
             return
 
         layer = QgsProject.instance().mapLayersByName(LAYER_PANELS)

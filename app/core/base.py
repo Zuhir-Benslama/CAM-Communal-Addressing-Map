@@ -34,7 +34,7 @@ def _allowlist_columns(model_class: type, **kwargs: Any) -> dict:
                     col_map[attr.key] = attr.key
             else:
                 col_map[attr.key] = attr.key
-    except Exception:
+    except AttributeError:
         pass
 
     return {

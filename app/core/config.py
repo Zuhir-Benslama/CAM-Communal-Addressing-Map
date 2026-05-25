@@ -103,7 +103,7 @@ def find_mod_spatialite_dll() -> str:
                     path = parts[1].strip()
                     if os.path.exists(path):
                         return path
-    except Exception:
+    except (subprocess.CalledProcessError, FileNotFoundError, PermissionError, OSError):
         logger.debug(
             "mod_spatialite not found at candidate path", exc_info=True,
         )

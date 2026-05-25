@@ -172,7 +172,8 @@ def count_panels(panel_type: str, etat: str) -> int:
 
 
 def query_missing_pan(etat: str) -> list:
-    """Query missing panels grouped by label/type from the Pan2 view (defined in Views.sql)."""
+    """Query missing panels grouped by label/type
+    from the Pan2 view (defined in Views.sql)."""
     session = get_session()
     try:
         result = session.execute(

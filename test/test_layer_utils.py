@@ -4,7 +4,7 @@ import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
-from .helpers import setup_mocks, wire_module_attributes, make_mock_iface, make_mock_layer
+from .helpers import setup_mocks, wire_module_attributes, make_mock_iface
 
 
 class TestLayerUtils(unittest.TestCase):
@@ -80,7 +80,7 @@ class TestLayerUtils(unittest.TestCase):
     @patch('plans_adressage.layer.utils.QgsProject')
     @patch('plans_adressage.layer.utils.qgis_config')
     def test_init_allowed_zone_with_cookie(
-        self, mock_qgis_config, mock_project, mock_get_session, mock_toml_load, mock_open,
+        self, mock_qgis_config, mock_project, mock_get_session, mock_toml_load, _mock_open,
     ):
         mock_qgis_config.return_value = {'other_layers': [], 'mapper': []}
         mock_toml_load.return_value = {
@@ -96,8 +96,8 @@ class TestLayerUtils(unittest.TestCase):
 
     @patch('plans_adressage.layer.utils.open')
     @patch('plans_adressage.layer.utils.toml.load')
-    def test_init_allowed_zone_no_cookie(self, mock_toml_load, mock_open):
-        mock_toml_load.return_value = {'Session': {}}
+    def test_init_allowed_zone_no_cookie(self, _mock_toml_load, _mock_open):
+        _mock_toml_load.return_value = {'Session': {}}
         self.mod.init_allowed_zone(self.iface)
 
 

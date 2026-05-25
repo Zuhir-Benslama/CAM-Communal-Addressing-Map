@@ -4,7 +4,7 @@ import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
-from .helpers import setup_mocks, setup_gui_mocks, make_mock_iface, get_qapp
+from .helpers import setup_gui_mocks, get_qapp
 
 
 @unittest.skipIf(get_qapp() is None, 'PyQt5 not available')
@@ -165,8 +165,6 @@ class IntegrationFlowTest(unittest.TestCase):
              else patch.object(mods['layer_edit_mixin'], 'add_road') as _:
             pass
 
-
-
-
 if __name__ == '__main__':
+    unittest.main()
     unittest.main()

@@ -15,6 +15,7 @@ from ..constants import (
     LAYER_MUNICIPALITY, LAYER_NAMES, SYMBOLS_SVG, SITUATION_PNG,
     NORTH_ARROW_SVG, SCALE_BAR_SVG,
 )
+from ._protocols import HasTranslation, HasIface, HasAuthState, HasPlanState
 
 logger = logging.getLogger(__name__)
 
@@ -23,115 +24,130 @@ class SymbolExportMixin:
     """Mixin for exporting map layouts (legend, north arrow, scale bar)
     to SVG/PNG."""
 
-    def symbols(self):
+    @staticmethod
+    def _build_legend(layout, map_item):
+        """Create a legend item with styled text formats."""
+        legend = QgsLayoutItemLegend(layout)
+        legend.setLinkedMap(map_item)
+        legend.setAutoUpdateModel(False)
+        legend.setSymbolWidth(15)
+        legend.setSymbolHeight(10)
+        legend.setColumnCount(2)
+        legend.setSplitLayer(True)
+        legend.setEqualColumnWidth(True)
+
+        text_format = QgsTextFormat()
+        text_format.setSize(14)
+        text_format.setColor(QColor(0, 0, 0))
+        font = QFont()
+        font.setBold(True)
+        font.setPointSize(30)
+        font.setUnderline(True)
+        text_format.setFont(font)
+
+        for style in [QgsLegendStyle.Group, QgsLegendStyle.Subgroup]:
+            s = legend.style(style)
+            s.setTextFormat(text_format)
+            s.setMargin(QgsLegendStyle.Top, 4)
+            s.setMargin(QgsLegendStyle.Bottom, 4)
+            s.setAlignment(Qt.AlignHCenter)
+            legend.setStyle(style, s)
+
+        symbol_style = legend.style(QgsLegendStyle.Symbol)
+        symbol_style.setMargin(QgsLegendStyle.Top, 3)
+        symbol_style.setMargin(QgsLegendStyle.Bottom, 3)
+        legend.setStyle(QgsLegendStyle.Symbol, symbol_style)
+
+        layout.addLayoutItem(legend)
+        return legend
+
+    @staticmethod
+    def _populate_legend_model(legend, layers_to_hide):
+        """Populate legend with visible desired layers."""
+        legend_model = legend.model()
+        root = legend_model.rootGroup()
+        root.removeAllChildren()
+
+        for layer_name in LAYER_NAMES:
+            for layer in QgsProject.instance().mapLayers().values():
+                if (
+                    layer.name() == layer_name and
+                    layer.name() not in layers_to_hide
+                ):
+                    root.addLayer(layer)
+                    break
+
+        legend.setLegendFilterByMapEnabled(False)
+        legend.adjustBoxSize()
+
+    @staticmethod
+    def _adjust_page_size(layout, map_item, legend):
+        """Resize page to fit map and legend."""
+        map_rect = map_item.sceneBoundingRect()
+        legend_rect = legend.sceneBoundingRect()
+
+        total_width = max(map_rect.right(), legend_rect.right()) + 20
+        total_height = max(map_rect.bottom(), legend_rect.bottom()) + 20
+
+        page = layout.pageCollection().pages()[0]
+        page.setPageSize(
+            QgsLayoutSize(
+                total_width, total_height,
+                QgsUnitTypes.LayoutMillimeters,
+            ),
+        )
+
+        if legend_rect.height() < total_height - 40:
+            new_y = (total_height - legend_rect.height()) / 2
+            legend.setPos(legend.scenePos().x(), new_y)
+
+    def symbols(self: HasPlanState & HasAuthState):
         """Export a layout with map and legend to SVG."""
-        if self.type_plan and self.type_to_hide:
-            project = QgsProject.instance()
-            layout = QgsPrintLayout(project)
-            layout.initializeDefaults()
-
-            layers_to_hide = [self.sat_view, self.rast, self.type_to_hide]
-            visible_layers = [
-                layer for layer in project.mapLayers().values()
-                if layer.name() not in layers_to_hide
-            ]
-
-            map_item = QgsLayoutItemMap(layout)
-            map_item.setLayers(visible_layers)
-            map_item.attemptSetSceneRect(QRectF(20, 20, 200, 350))
-            layout.addLayoutItem(map_item)
-
-            legend = QgsLayoutItemLegend(layout)
-            legend.setLinkedMap(map_item)
-            legend.setAutoUpdateModel(False)
-            legend.setSymbolWidth(15)
-            legend.setSymbolHeight(10)
-            legend.setColumnCount(2)
-            legend.setSplitLayer(True)
-            legend.setEqualColumnWidth(True)
-
-            text_format = QgsTextFormat()
-            text_format.setSize(14)
-            text_format.setColor(QColor(0, 0, 0))
-            font = QFont()
-            font.setBold(True)
-            font.setPointSize(30)
-            font.setUnderline(True)
-            text_format.setFont(font)
-
-            for style in [QgsLegendStyle.Group, QgsLegendStyle.Subgroup]:
-                s = legend.style(style)
-                s.setTextFormat(text_format)
-                s.setMargin(QgsLegendStyle.Top, 4)
-                s.setMargin(QgsLegendStyle.Bottom, 4)
-                s.setAlignment(Qt.AlignHCenter)
-                legend.setStyle(style, s)
-
-            symbol_style = legend.style(QgsLegendStyle.Symbol)
-            symbol_style.setMargin(QgsLegendStyle.Top, 3)
-            symbol_style.setMargin(QgsLegendStyle.Bottom, 3)
-            legend.setStyle(QgsLegendStyle.Symbol, symbol_style)
-
-            layout.addLayoutItem(legend)
-
-            legend_model = legend.model()
-            root = legend_model.rootGroup()
-            root.removeAllChildren()
-
-            desired_layers = LAYER_NAMES
-
-            for layer_name in desired_layers:
-                for layer in project.mapLayers().values():
-                    if (
-                        layer.name() == layer_name
-                        and layer.name() not in layers_to_hide
-                    ):
-                        root.addLayer(layer)
-                        break
-
-            legend.setLegendFilterByMapEnabled(False)
-            legend.adjustBoxSize()
-
-            map_rect = map_item.sceneBoundingRect()
-            legend_rect = legend.sceneBoundingRect()
-
-            total_width = max(map_rect.right(), legend_rect.right()) + 20
-            total_height = max(map_rect.bottom(), legend_rect.bottom()) + 20
-
-            page = layout.pageCollection().pages()[0]
-            page.setPageSize(
-                QgsLayoutSize(
-                    total_width, total_height,
-                    QgsUnitTypes.LayoutMillimeters,
-                ),
-            )
-
-            if legend_rect.height() < total_height - 40:
-                new_y = (total_height - legend_rect.height()) / 2
-                legend.setPos(legend.scenePos().x(), new_y)
-
-            output_path = SYMBOLS_SVG
-            exporter = QgsLayoutExporter(layout)
-            svg_settings = QgsLayoutExporter.SvgExportSettings()
-            svg_settings.forceVectorOutput = True
-            svg_settings.dpi = 900
-
-            result = exporter.exportToSvg(output_path, svg_settings)
-
-            if result == QgsLayoutExporter.Success:
-                logger.info(
-                    "SVG exported with dynamic page size: %s", output_path,
-                )
-                return output_path
-            logger.error("Export failed!")
+        if not (self.type_plan and self.type_to_hide):
             return None
+
+        project = QgsProject.instance()
+        layout = QgsPrintLayout(project)
+        layout.initializeDefaults()
+
+        layers_to_hide = [self.sat_view, self.rast, self.type_to_hide]
+        visible_layers = [
+            layer for layer in project.mapLayers().values()
+            if layer.name() not in layers_to_hide
+        ]
+
+        map_item = QgsLayoutItemMap(layout)
+        map_item.setLayers(visible_layers)
+        map_item.attemptSetSceneRect(QRectF(20, 20, 200, 350))
+        layout.addLayoutItem(map_item)
+
+        legend = self._build_legend(layout, map_item)
+        self._populate_legend_model(legend, layers_to_hide)
+        self._adjust_page_size(layout, map_item, legend)
+
+        output_path = SYMBOLS_SVG
+        exporter = QgsLayoutExporter(layout)
+        svg_settings = QgsLayoutExporter.SvgExportSettings()
+        svg_settings.forceVectorOutput = True
+        svg_settings.dpi = 900
+
+        result = exporter.exportToSvg(output_path, svg_settings)
+
+        if result == QgsLayoutExporter.Success:
+            logger.info(
+                "SVG exported with dynamic page size: %s", output_path,
+            )
+            return output_path
+        logger.error("Export failed!")
         return None
 
-    def map_situation(self) -> None:
+    def map_situation(self: HasAuthState & HasIface) -> None:
         """Export a situation map highlighting the municipality to PNG."""
         project = QgsProject.instance()
 
-        municipality_layer = QgsProject.instance().mapLayersByName(LAYER_MUNICIPALITY)[0]
+        municipality_layer = (
+            QgsProject.instance().mapLayersByName(LAYER_MUNICIPALITY)[0]
+        )
 
         base_layer = None
         if self.sat_view:
@@ -180,7 +196,7 @@ class SymbolExportMixin:
 
         logger.info("Map exported to %s", output_path)
 
-    def north(self) -> None:
+    def north(self: HasIface) -> None:
         """Export a north arrow SVG aligned with the current map rotation."""
         project = QgsProject.instance()
         layout = QgsPrintLayout(project)
@@ -220,7 +236,7 @@ class SymbolExportMixin:
         output_path = NORTH_ARROW_SVG
         exporter.exportToSvg(output_path, export_settings)
 
-    def scale(self) -> None:
+    def scale(self: HasIface & HasTranslation) -> None:
         """Export a scale bar SVG matching the current map canvas scale."""
         project = QgsProject.instance()
         layout = QgsPrintLayout(project)

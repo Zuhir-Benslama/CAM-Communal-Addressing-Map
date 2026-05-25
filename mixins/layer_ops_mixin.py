@@ -21,6 +21,10 @@ from ..constants import (
     LAYER_MUNICIPALITY, DEFAULT_STYLE_DIR, CUSTOM_STYLE_DIR,
 )
 from ..gui.entity_list_dialog import EntityListDialog
+from ._protocols import (
+    HasTranslation, HasIface, HasAuthState, HasFeatureState,
+    HasUiWidgets, HasLayerTools, HasCurrentLayer, HasPlanState, HasDrawSignals,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +33,7 @@ class LayerOpsMixin:
     """Mixin for layer tab management, feature validation, and
     entity listing."""
 
-    def _reset_tools(self) -> None:
+    def _reset_tools(self: HasLayerTools) -> None:
         """Deactivate all active map tools and clear measurements."""
         if self.identify_tool:
             self.identify_tool.unset_map_tool()
@@ -38,7 +42,7 @@ class LayerOpsMixin:
         if self.measure_tool:
             self.measure_tool.clear()
 
-    def _show_layers_for_label(self, root, layer_label: str) -> None:
+    def _show_layers_for_label(self: HasAuthState & HasIface, root, layer_label: str) -> None:
         """Show the selected operation layer plus configured dependencies."""
         visible_names = {LAYER_MUNICIPALITY}
         if self.sat_view:
@@ -71,7 +75,7 @@ class LayerOpsMixin:
         if target_layer:
             self.iface.setActiveLayer(target_layer)
 
-    def _show_base_layers(self, root) -> None:
+    def _show_base_layers(self: HasAuthState, root) -> None:
         """Ensure base/context layers stay visible."""
         for name in [self.sat_view, self.rast, LAYER_MUNICIPALITY]:
             if not name:
@@ -82,16 +86,51 @@ class LayerOpsMixin:
                 if node:
                     node.setItemVisibilityChecked(True)
 
-    def _current_ops_layer(self) -> str:
+    def _hide_all_tab_layers(self, root) -> None:
+        """Rollback editable layers and hide all."""
+        for layer_node in root.children():
+            if not isinstance(layer_node, QgsLayerTreeLayer):
+                continue
+            lyr = layer_node.layer()
+            if not lyr:
+                continue
+            if lyr.isEditable():
+                lyr.rollBack()
+                lyr.commitChanges()
+            layer_node.setItemVisibilityChecked(False)
+
+    @staticmethod
+    def _load_tab_styles(data_list, style_dir: str) -> None:
+        """Load named styles for each layer in the config list."""
+        for layer_cfg in data_list:
+            tmpl_list = QgsProject.instance().mapLayersByName(
+                layer_cfg.get('label')
+            )
+            if not tmpl_list:
+                continue
+            filename = os.path.join(style_dir, layer_cfg.get('style'))
+            tmpl_list[0].loadNamedStyle(filename)
+
+    def _show_always_shown_layers(self, root) -> None:
+        """Ensure core layers are visible."""
+        for i in [LAYER_SUBDIVISIONS, LAYER_FACILITIES, LAYER_ROADS]:
+            always_shown = QgsProject.instance().mapLayersByName(i)
+            if always_shown:
+                layer_to_show = root.findLayer(always_shown[0].id())
+                if layer_to_show:
+                    layer_to_show.setItemVisibilityChecked(True)
+
+    def _current_ops_layer(self: HasCurrentLayer) -> str:
         """Return the currently selected layer name via the mixin protocol."""
         if hasattr(self, "_current_layer_name"):
             return self._current_layer_name()
         return ""
 
-    def on_opt_selected(self, index) -> None:
+    def on_opt_selected(
+        self: HasPlanState & HasUiWidgets & HasIface & HasLayerTools & HasAuthState, index,
+    ) -> None:
         """Handle tab selection: toggle layer visibility and load styles."""
         self.type_plan = ""
-        # Use cached tab text for internal routing (locale-independent)
         if hasattr(self.menu, '_rna_tab_src'):
             tab_name = self.menu._rna_tab_src[index]
         else:
@@ -114,64 +153,28 @@ class LayerOpsMixin:
                 else selected_layer
             )
             if selected_key != last_tab:
-                for layer_cfg in data_list:
-                    lbl = layer_cfg.get('label')
-                    layers = QgsProject.instance().mapLayersByName(lbl)
-                    if layers:
-                        filename = os.path.join(DEFAULT_STYLE_DIR, layer_cfg.get('style'))
-                        layers[0].loadNamedStyle(filename)
+                self._load_tab_styles(data_list, DEFAULT_STYLE_DIR)
                 self._last_loaded_tab = selected_key
 
         elif tab_name == "Settings":
-            for layer_node in root.children():
-                if not isinstance(layer_node, QgsLayerTreeLayer):
-                    continue
-                lyr = layer_node.layer()
-                if not lyr:
-                    continue
-                if lyr.isEditable():
-                    lyr.rollBack()
-                    lyr.commitChanges()
-                layer_node.setItemVisibilityChecked(False)
+            self._hide_all_tab_layers(root)
             self._show_base_layers(root)
 
         elif tab_name == "Report":
-            for layer_node in root.children():
-                if not isinstance(layer_node, QgsLayerTreeLayer):
-                    continue
-                lyr = layer_node.layer()
-                if not lyr:
-                    continue
-                if lyr.isEditable():
-                    lyr.rollBack()
-                    lyr.commitChanges()
-                layer_node.setItemVisibilityChecked(False)
+            self._hide_all_tab_layers(root)
             self._show_base_layers(root)
             data_list = qgis_config().get('other_layers')
-            for layer_cfg in data_list:
-                tmpl_list = QgsProject.instance().mapLayersByName(layer_cfg.get('label'))
-                if not tmpl_list:
-                    continue
-                tmpl = tmpl_list[0]
-                filename = os.path.join(CUSTOM_STYLE_DIR, layer_cfg.get('style'))
-                tmpl.loadNamedStyle(filename)
-                for i in [LAYER_SUBDIVISIONS, LAYER_FACILITIES, LAYER_ROADS]:
-                    always_shown = QgsProject.instance().mapLayersByName(i)
-                    if always_shown:
-                        layer_to_show = root.findLayer(always_shown[0].id())
-                        if layer_to_show:
-                            layer_to_show.setItemVisibilityChecked(True)
+            self._load_tab_styles(data_list, CUSTOM_STYLE_DIR)
+            self._show_always_shown_layers(root)
 
         else:
+            self._hide_all_tab_layers(root)
             for layer_node in root.children():
                 if not isinstance(layer_node, QgsLayerTreeLayer):
                     continue
                 lyr = layer_node.layer()
                 if not lyr:
                     continue
-                if lyr.isEditable():
-                    lyr.rollBack()
-                    lyr.commitChanges()
                 if lyr.name() in [LAYER_PANELS, LAYER_NUMBERING]:
                     layer_node.setItemVisibilityChecked(False)
                 else:
@@ -243,7 +246,9 @@ class LayerOpsMixin:
             return 3
         return 0
 
-    def on_feature_added(self, fid) -> None:
+    def on_feature_added(
+        self: HasIface & HasDrawSignals & HasFeatureState & HasUiWidgets & HasCurrentLayer, fid,
+    ) -> None:
         """Validate added feature geometry against the user's allowed zone."""
         layer = self.iface.activeLayer()
         if layer and layer.isEditable():
@@ -294,7 +299,7 @@ class LayerOpsMixin:
             if LAYER_NUMBERING in (tab_text, selected_ops):
                 self.num_val.setFocus()
 
-    def on_geometry_changed(self, fid) -> None:
+    def on_geometry_changed(self: HasIface & HasTranslation, fid) -> None:
         """Validate geometry edits and persist changes to the database."""
         layer = self.iface.activeLayer()
         if layer and layer.isEditable():

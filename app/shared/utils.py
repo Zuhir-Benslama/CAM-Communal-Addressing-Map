@@ -4,11 +4,20 @@ import os
 import shutil
 import subprocess
 from types import MappingProxyType
-from typing import List, Mapping, Optional, Tuple
+from typing import List, Mapping, Optional, Tuple, TypeVar
 
 from sqlalchemy import inspect
 
 logger = logging.getLogger(__name__)
+
+T = TypeVar('T')
+
+
+def ensure(value: Optional[T], message: str = "") -> T:
+    """Assert value is not None, returning it or raising ValueError."""
+    if value is None:
+        raise ValueError(message or "Expected non-None value")
+    return value
 
 
 def validate_text(value: str, max_length: int = 255) -> str:

@@ -29,7 +29,6 @@ class TestChartMixin(unittest.TestCase):
         self.mod.LAYER_PANELS = 'Panels'
         self.mod.LAYER_NUMBERING = 'Numbering'
 
-        host = type('Host', (), {'_tr': lambda self, s: s})()
         self.mixin = self.mod.ChartMixin()
         self.mixin._tr = lambda s: s
         self.mixin.type_plan = None

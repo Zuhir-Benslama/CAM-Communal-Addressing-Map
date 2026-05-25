@@ -20,7 +20,7 @@ from ..constants import DEFAULT_STYLE_DIR, STYLE_QML
 logger = logging.getLogger(__name__)
 
 
-def refresh_layer_from_db(iface, layer_name, model_name) -> None:
+def refresh_layer_from_db(_iface, layer_name, model_name) -> None:
     """Refresh a map layer with data from the database model."""
     session = get_session()
     try:
@@ -112,7 +112,7 @@ def refresh_layer_from_db(iface, layer_name, model_name) -> None:
         session.close()
 
 
-def apply_categorized_style(iface, layer_name, category_fields) -> None:
+def apply_categorized_style(_iface, layer_name, category_fields) -> None:
     """Apply a categorized renderer to a layer based on field values."""
     layers = QgsProject.instance().mapLayersByName(layer_name)
     if not layers:
@@ -138,7 +138,7 @@ def apply_categorized_style(iface, layer_name, category_fields) -> None:
     layer.triggerRepaint()
 
 
-def remove_categorized_style(iface, layer_name) -> None:
+def remove_categorized_style(_iface, layer_name) -> None:
     """Remove categorized style and revert to single symbol."""
     layers = QgsProject.instance().mapLayersByName(layer_name)
     if not layers:

@@ -23,12 +23,12 @@ class SafeTranslationsTest(unittest.TestCase):
     def setUp(self):
         """Runs before each test."""
         if 'LANG' in os.environ:
-            os.environ.__delitem__('LANG')
+            del os.environ['LANG']
 
     def tearDown(self):
         """Runs after each test."""
         if 'LANG' in os.environ:
-            os.environ.__delitem__('LANG')
+            del os.environ['LANG']
 
     def test_qgis_translations(self):
         """Test that translations work."""
@@ -46,6 +46,6 @@ class SafeTranslationsTest(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    suite = unittest.makeSuite(SafeTranslationsTest)
+    suite = unittest.TestLoader().loadTestsFromTestCase(SafeTranslationsTest)
     runner = unittest.TextTestRunner(verbosity=2)
     runner.run(suite)

@@ -8,6 +8,7 @@ from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import QgsMapSettings, QgsMapRendererParallelJob
 
 from ..constants import MAP_PNG, TMP_JSON, validate_text
+from ._protocols import HasTranslation, HasPlanState, HasIface, HasAuthState, HasExportMethods, HasUiWidgets
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +19,10 @@ class ImportExportMixin:
     """Mixin for exporting map canvases and invoking external
     reporting scripts."""
 
-    def _render_and_export(self, method: str, include_situation: bool = False) -> None:
+    def _render_and_export(
+        self: HasTranslation & HasPlanState & HasIface & HasAuthState & HasExportMethods & HasUiWidgets,
+        _method: str, include_situation: bool = False,
+    ) -> None:
         """Render map canvas and invoke external reporting script."""
         if not (self.type_plan and self.type_to_hide):
             QMessageBox.critical(
@@ -79,7 +83,7 @@ class ImportExportMixin:
                     self._tr("Your file has been saved to your documents"),
                 )
 
-    def export_to_image(self) -> None:
+    def export_to_image(self: HasUiWidgets) -> None:
         """Render the map canvas and export to PNG via an external
         reporting script."""
         selected_value = self.paper.currentData()

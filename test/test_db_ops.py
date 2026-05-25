@@ -6,9 +6,9 @@ from unittest.mock import patch, MagicMock
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from app.core.config import find_mod_spatialite_dll
-from app.core.security import hash_password, verify_password
-from app.users.repository import create_cookie, qgis_config, _get_authenticated_user
+from app.core.config import find_mod_spatialite_dll  # noqa: E402
+from app.core.security import hash_password, verify_password  # noqa: E402
+from app.users.repository import create_cookie, qgis_config, _get_authenticated_user  # noqa: E402
 
 
 TMPDIR = os.path.join(os.path.dirname(__file__), '__testtmp__')
@@ -45,7 +45,7 @@ class TestFindModSpatialiteDLL(unittest.TestCase):
     @patch('app.core.config.os.path.exists', return_value=False)
     @patch('app.core.config.os.name', 'posix')
     @patch('app.core.config.os.uname')
-    def test_linux_default(self, mock_uname, mock_exists):
+    def test_linux_default(self, mock_uname, _mock_exists):
         mock_uname.return_value.sysname = 'Linux'
         result = find_mod_spatialite_dll()
         self.assertEqual(result, 'mod_spatialite.so')

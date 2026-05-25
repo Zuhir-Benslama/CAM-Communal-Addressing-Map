@@ -16,6 +16,10 @@ from ..constants import (
     LAYER_NUMBERING, LAYER_PANELS, validate_text,
     current_locale,
 )
+from ._protocols import (
+    HasTranslation, HasCurrentLayer, HasIface, HasFeatureState,
+    HasUiWidgets, HasLayerTools, HasDrawSignals,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -30,12 +34,14 @@ class LayerEditMixin:
         measure_tool (MeasureTool | None) — measurement line tool
         update_object (bool) — flag for edit-vs-insert mode
         is_pan / is_org / is_road / is_num / is_city / is_zone (QCheckBox)
-        num_val / repetition / road_name / road_decision / org_name / subd_name / nom_zone
-        org_cat / org_type / type_road / subd_type / zone_type / num_state / mount_status
+        num_val / repetition / road_name / road_decision / org_name
+        / subd_name / nom_zone
+        org_cat / org_type / type_road / subd_type / zone_type / num_state
+        / mount_status
         activity_cat / activity_type (QComboBox)
     """
 
-    def _update_handler(self, layer_name: str) -> None:
+    def _update_handler(self: HasIface & HasDrawSignals, layer_name: str) -> None:
         """Enable geometry editing for a named layer."""
         layers = QgsProject.instance().mapLayersByName(layer_name)
         if not layers:
@@ -48,11 +54,11 @@ class LayerEditMixin:
         layer.geometryChanged.connect(self.on_geometry_changed)
         update_layer(self.iface, layer_name)
 
-    def start_editing(self) -> None:
+    def start_editing(self: HasCurrentLayer) -> None:
         """Enable geometry editing on the currently selected layer."""
         self._update_handler(self._current_layer_name())
 
-    def _get_geometry_and_pkuid(self, entity_name: str):
+    def _get_geometry_and_pkuid(self: HasFeatureState, entity_name: str):
         """Retrieve the captured geometry WKT and feature PK."""
         geometry_wkt = getattr(self, '_last_feature_wkt', None)
         pkuid = getattr(self, '_last_feature_pkuid', None)
@@ -61,13 +67,13 @@ class LayerEditMixin:
             return None, None
         return geometry_wkt, pkuid
 
-    def _show_success(self, message: str) -> None:
+    def _show_success(self: HasTranslation, message: str) -> None:
         """Show a success information dialog."""
         QMessageBox.information(
             self, self._tr("Success"), self._tr(message),
         )
 
-    def _show_error(self, message: str) -> None:
+    def _show_error(self: HasTranslation, message: str) -> None:
         """Show a critical error dialog."""
         QMessageBox.critical(self, self._tr("Error"), self._tr(message))
 
@@ -78,7 +84,9 @@ class LayerEditMixin:
             return {f'{field_base}_{loc}': value}
         return {}
 
-    def add_panel(self) -> None:
+    def add_panel(
+        self: HasUiWidgets & HasFeatureState & HasLayerTools & HasTranslation & HasDrawSignals,
+    ) -> None:
         """Add a new panel sign linked to a selected road, org, or
         subdivision."""
         if not self.is_pan.isChecked():
@@ -100,17 +108,21 @@ class LayerEditMixin:
                 'mount_status': self.mount_status.currentData(),
             }
             if layer == LAYER_FACILITIES:
-                add_panel_sign(**kwargs, road_id=None, subdivision_id=None, organization_id=ref)
+                add_panel_sign(**kwargs, road_id=None,
+                               subdivision_id=None, organization_id=ref)
             elif layer == LAYER_ROADS:
-                add_panel_sign(**kwargs, road_id=ref, subdivision_id=None, organization_id=None)
+                add_panel_sign(**kwargs, road_id=ref,
+                               subdivision_id=None, organization_id=None)
             elif layer == LAYER_SUBDIVISIONS:
-                add_panel_sign(**kwargs, road_id=None, subdivision_id=ref, organization_id=None)
+                add_panel_sign(**kwargs, road_id=None,
+                               subdivision_id=ref, organization_id=None)
 
             if self.measure_tool:
                 self.show_confirm_dialog(
                     title=self._tr("Success"),
                     message=self._tr(
-                        "Panel added successfully\n Do you want to clear the measurement line?"
+                        "Panel added successfully\n"
+                        " Do you want to clear the measurement line?"
                     ),
                     yes_callback=self.measure_tool.clear,
                 )
@@ -123,7 +135,9 @@ class LayerEditMixin:
             self.ref_identify_tool.unset_map_tool()
             self._draw_handler(LAYER_PANELS)
 
-    def add_organization(self) -> None:
+    def add_organization(
+        self: HasUiWidgets & HasFeatureState & HasTranslation,
+    ) -> None:
         """Add a new organization through the form."""
         if not self.is_org.isChecked():
             return
@@ -145,7 +159,7 @@ class LayerEditMixin:
             logger.exception("Failed to add organization: %s", e)
             self._show_error('Cannot add facility, it already exists')
 
-    def add_road(self) -> None:
+    def add_road(self: HasUiWidgets & HasFeatureState & HasTranslation) -> None:
         """Add a new road through the form."""
         if not self.is_road.isChecked():
             return
@@ -173,7 +187,7 @@ class LayerEditMixin:
             getattr(self, action)()
 
     def show_confirm_dialog(
-        self, title: str, message: str,
+        self: HasTranslation, title: str, message: str,
         yes_callback=None, no_callback=None,
     ) -> bool:
         """Display a confirmation dialog with yes/no callbacks."""
@@ -198,7 +212,9 @@ class LayerEditMixin:
             no_callback()
         return False
 
-    def add_numbering(self) -> None:
+    def add_numbering(
+        self: HasUiWidgets & HasLayerTools & HasTranslation & HasDrawSignals,
+    ) -> None:
         """Add a new numbering linked to a selected road or subdivision."""
         if not self.is_num.isChecked():
             return
@@ -220,15 +236,20 @@ class LayerEditMixin:
                 'activity_type': self.activity_type.currentData(),
             }
             if ref_data and ref_data.get('layer_name') == LAYER_ROADS:
-                add_numbering(**common, road_id=ref_data.get('pkuid'), subdivision_id=None)
+                add_numbering(
+                    **common, road_id=ref_data.get('pkuid'), subdivision_id=None
+                )
             elif ref_data and ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
-                add_numbering(**common, road_id=None, subdivision_id=ref_data.get('pkuid'))
+                add_numbering(
+                    **common, road_id=None, subdivision_id=ref_data.get('pkuid')
+                )
 
             if self.measure_tool:
                 self.show_confirm_dialog(
                     title=self._tr("Success"),
                     message=self._tr(
-                        "Numbering added successfully\n Do you want to clear the measurement line?"
+                        "Numbering added successfully\n"
+                        " Do you want to clear the measurement line?"
                     ),
                     yes_callback=self.measure_tool.clear,
                 )
@@ -242,7 +263,7 @@ class LayerEditMixin:
         self.num_val.clear()
         self._draw_handler(LAYER_NUMBERING)
 
-    def add_city(self) -> None:
+    def add_city(self: HasUiWidgets & HasFeatureState & HasTranslation) -> None:
         """Add a new subdivision through the form."""
         if not self.is_city.isChecked():
             return
@@ -263,7 +284,9 @@ class LayerEditMixin:
             logger.exception("Failed to add city: %s", e)
             self._show_error(str(e))
 
-    def add_zone(self) -> None:
+    def add_zone(
+        self: HasUiWidgets & HasFeatureState & HasTranslation,
+    ) -> None:
         """Add a new zone through the form."""
         if not self.is_zone.isChecked():
             return

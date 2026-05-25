@@ -70,6 +70,7 @@ LAYER_MODEL = {
     LAYER_SUBDIVISIONS: "Subdivision",
 }
 
+
 class PanelStatus(str, Enum):
     MOUNTED = "Mounted"
     PLANNED = "Planned"

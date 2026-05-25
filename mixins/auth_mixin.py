@@ -2,7 +2,6 @@
 
 import logging
 
-
 from qgis.PyQt.QtWidgets import QMessageBox, QFileDialog, QWidget
 from qgis.core import QgsProject, QgsRasterLayer
 
@@ -12,6 +11,9 @@ from ..layer.utils import init_allowed_zone
 from ..layer.refresh import refresh_all_layers
 from ..app.users.repository import qgis_config
 from ..constants import validate_text, current_theme, get_dialog_qss
+from ._protocols import (
+    HasTranslation, HasIface, HasAuthState, HasUiWidgets, HasLayerTools,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -20,15 +22,15 @@ class AuthMixin:
     """Mixin handling user authentication, registration, and session
     management."""
 
-    def _show_error(self, text: str) -> None:
+    def _show_error(self: HasTranslation, text: str) -> None:
         """Show a critical error message dialog."""
         QMessageBox.critical(self, self._tr("Error"), text)
 
-    def _show_info(self, text: str) -> None:
+    def _show_info(self: HasTranslation, text: str) -> None:
         """Show an informational success message dialog."""
         QMessageBox.information(self, self._tr("Success"), text)
 
-    def submit_add_usr(self) -> None:
+    def submit_add_usr(self: HasUiWidgets & HasTranslation) -> None:
         """Register a new user via the sign-up API."""
         current_index = self.commune_of_wilaya.currentIndex()
         selected_value = self.commune_of_wilaya.itemData(current_index)
@@ -46,7 +48,9 @@ class AuthMixin:
         elif errors:
             self._show_error("\n".join(errors))
 
-    def login_user(self) -> None:
+    def login_user(
+        self: HasUiWidgets & HasIface & HasAuthState & HasTranslation,
+    ) -> None:
         """Authenticate the user and initialize the map session on success."""
         ok, username, error = sign_in(
             username=validate_text(self.username.text()),
@@ -69,14 +73,14 @@ class AuthMixin:
         elif error:
             self._show_error(error)
 
-    def fill_map_options(self) -> None:
+    def fill_map_options(self: HasUiWidgets) -> None:
         """Populate the map options combo box from QGIS config."""
         maps = qgis_config().get('map_layers')
         self.map_options.clear()
         for cfg in maps:
             self.map_options.addItem(cfg.get('label'), cfg.get('url'))
 
-    def add_map_layer(self) -> bool:
+    def add_map_layer(self: HasUiWidgets & HasAuthState & HasTranslation) -> bool:
         """Add the selected raster or WMS map layer to the project."""
         selected_label = self.map_options.currentText()
         selected_value = self.map_options.currentData()
@@ -118,26 +122,32 @@ class AuthMixin:
                         return False
                     return False
                 return False
-            QMessageBox.critical(self, self._tr("Error"), self._tr("Failed to Map layer."))
+            QMessageBox.critical(
+                self, self._tr("Error"), self._tr("Failed to Map layer.")
+            )
         else:
             QMessageBox.warning(
-                self, self._tr("No Selection"), self._tr("Please select a map layer option."),
+                self,
+                self._tr("No Selection"),
+                self._tr("Please select a map layer option."),
             )
         return False
 
-    def private_route(self, page_index) -> None:
+    def private_route(self: HasUiWidgets, page_index) -> None:
         """Navigate to a private (authenticated) page in the stacked widget."""
         page = self.router.findChild(QWidget, page_index)
         if page:
             self.router.setCurrentWidget(page)
 
-    def public_route(self, page_index) -> None:
+    def public_route(self: HasUiWidgets, page_index) -> None:
         """Navigate to a public (login/register) page in the stacked widget."""
         page = self.router.findChild(QWidget, page_index)
         if page:
             self.router.setCurrentWidget(page)
 
-    def closeEvent(self, event) -> None:
+    def closeEvent(
+        self: HasIface & HasAuthState & HasLayerTools & HasUiWidgets, event,
+    ) -> None:
         """Clean up tools and logout on dialog close."""
         self.stop()
         self.sat_view = None
@@ -154,7 +164,7 @@ class AuthMixin:
             self.router.setCurrentWidget(page)
         event.accept()
 
-    def on_select_wilaya(self, index) -> None:
+    def on_select_wilaya(self: HasUiWidgets, _index) -> None:
         """Populate the commune combo when the wilaya selection changes."""
         from ..gui.ui_fillers import fill_commune_of_wilaya
         selected_value = self.wilaya_list.itemData(
@@ -162,13 +172,13 @@ class AuthMixin:
         )
         fill_commune_of_wilaya(self.commune_of_wilaya, selected_value)
 
-    def on_select_org_cat(self, index) -> None:
+    def on_select_org_cat(self: HasUiWidgets, _index) -> None:
         """Populate the organization type combo when the category changes."""
         from ..gui.ui_fillers import fill_org_type
         selected_value = self.org_cat.itemData(self.org_cat.currentIndex())
         fill_org_type(self.org_type, selected_value)
 
-    def on_select_activity_cat(self, index) -> None:
+    def on_select_activity_cat(self: HasUiWidgets, _index) -> None:
         """Populate the activity type combo when the category changes."""
         from ..gui.ui_fillers import fill_activity_type
         selected_value = self.activity_cat.itemData(self.activity_cat.currentIndex())
