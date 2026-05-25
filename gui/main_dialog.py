@@ -44,11 +44,6 @@ from ..constants import (
     AVAILABLE_LOCALES, current_locale,
 )
 from ..scripts.lookup_data import get_string, apply_widget_texts, clear_i18n_cache
-logger = logging.getLogger(__name__)
-
-FORM_CLASS, _ = uic.loadUiType(os.path.join(
-    os.path.dirname(__file__), 'RNA_dialog_base.ui'))
-
 from ..mixins.chart_mixin import ChartMixin
 from ..mixins.map_tools_mixin import MapToolsMixin
 from ..mixins.auth_mixin import AuthMixin
@@ -59,6 +54,10 @@ from ..mixins.backup_mixin import BackupMixin
 from ..mixins.symbol_export_mixin import SymbolExportMixin
 from ..mixins.import_export_mixin import ImportExportMixin
 from ..mixins.report_mixin import ReportMixin
+logger = logging.getLogger(__name__)
+
+FORM_CLASS, _ = uic.loadUiType(os.path.join(
+    os.path.dirname(__file__), 'RNA_dialog_base.ui'))
 
 
 class RNADialog(

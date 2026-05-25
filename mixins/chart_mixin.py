@@ -69,7 +69,7 @@ class ChartMixin:
         session = get_session()
         try:
             results = session.query(
-                column, func.count().label('count')
+                column, func.count().label('count')  # noqa: E1102
             ).group_by(column).all()
         finally:
             session.close()

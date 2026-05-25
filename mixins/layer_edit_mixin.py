@@ -116,7 +116,7 @@ class LayerEditMixin:
                 )
             else:
                 self._show_success("Panel added successfully")
-        except Exception as e:
+        except Exception as e:  # noqa: W0718
             logger.exception("Failed to add panel: %s", e)
             self._show_error(str(e))
         finally:
@@ -141,7 +141,7 @@ class LayerEditMixin:
             kwargs.update(self._make_locale_kwargs('org_name', nom))
             add_organization(**kwargs)
             self._show_success("Facility added successfully")
-        except Exception as e:
+        except Exception as e:  # noqa: W0718
             logger.exception("Failed to add organization: %s", e)
             self._show_error('Cannot add facility, it already exists')
 
@@ -163,7 +163,7 @@ class LayerEditMixin:
             kwargs.update(self._make_locale_kwargs('road_name', nom))
             add_road(**kwargs)
             self._show_success("Road added successfully")
-        except Exception as e:
+        except Exception as e:  # noqa: W0718
             logger.exception("Failed to add road: %s", e)
             self._show_error('Cannot add road, it already exists')
 
@@ -207,7 +207,7 @@ class LayerEditMixin:
             return
         try:
             ref_data = self.ref_identify_tool.get_pkuid()
-        except Exception as e:
+        except Exception as e:  # noqa: W0718
             logger.warning("Failed to get pkuid from identify tool: %s", e)
             ref_data = None
         try:
@@ -234,7 +234,7 @@ class LayerEditMixin:
                 )
             else:
                 self._show_success("Numbering added successfully")
-        except Exception as e:
+        except Exception as e:  # noqa: W0718
             logger.exception("Failed to add numbering: %s", e)
             self._show_error(str(e))
 
@@ -259,7 +259,7 @@ class LayerEditMixin:
             kwargs.update(self._make_locale_kwargs('name', name))
             add_subdivision(**kwargs)
             self._show_success("Subdivision added successfully")
-        except Exception as e:
+        except Exception as e:  # noqa: W0718
             logger.exception("Failed to add city: %s", e)
             self._show_error(str(e))
 
@@ -282,6 +282,6 @@ class LayerEditMixin:
             kwargs.update(self._make_locale_kwargs('name', name))
             add_zone(**kwargs)
             self._show_success("Zone added successfully")
-        except Exception as e:
+        except Exception as e:  # noqa: W0718
             logger.exception("Failed to add zone: %s", e)
             self._show_error('Cannot add zone, zone already exists')

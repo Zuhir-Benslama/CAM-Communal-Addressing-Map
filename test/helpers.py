@@ -4,34 +4,99 @@ import types
 from unittest.mock import MagicMock, PropertyMock
 
 
+def _setup_package_tree(packages):
+    """Register a list of dotted package names in sys.modules."""
+    for name in packages:
+        mod = types.ModuleType(name)
+        mod.__path__ = name.replace('.', '/')
+        mod.__package__ = name
+        sys.modules[name] = mod
+
+
+def _mock_model_table(model, columns=None):
+    """Attach a fake ``__table__`` with ``.columns`` to a MagicMock model."""
+    object.__setattr__(model, '__table__', MagicMock())
+    model.__table__.columns = columns or {}
+    return model
+
+
+def _mock_constants_base():
+    """Return a MagicMock constants module with test defaults."""
+    c = MagicMock()
+    c.NOTIFY_DURATION = 5
+    c.current_locale = lambda: 'en'
+    c.CRS = 'EPSG:4326'
+    c.COOKIE_FILE = '/tmp/test_cookie.toml'
+    c.LAYER_MUNICIPALITY = 'My Municipality'
+    c.MEMORY_PROVIDER = 'memory'
+    c.DEFAULT_STYLE_DIR = '/tmp/styles'
+    c.STYLE_QML = '/tmp/style.qml'
+    return c
+
+
+def _mock_qgis_core():
+    """Return a MagicMock ``qgis.core`` module."""
+    core = MagicMock()
+    core.QgsProject = MagicMock()
+    core.QgsProject.instance = MagicMock(return_value=MagicMock())
+    core.QgsMapLayer = MagicMock()
+    core.QgsMapLayer.VectorLayer = 0
+    core.QgsMapLayer.RasterLayer = 1
+    core.QgsWkbTypes = MagicMock()
+    core.QgsWkbTypes.PointGeometry = 0
+    core.QgsWkbTypes.LineGeometry = 1
+    core.QgsWkbTypes.PolygonGeometry = 2
+    core.Qgis = MagicMock()
+    core.Qgis.Info = 0
+    core.Qgis.Critical = 1
+    core.Qgis.Warning = 2
+    core.QgsFeature = MagicMock()
+    core.QgsGeometry = MagicMock()
+    core.QgsGeometry.fromWkt = MagicMock(return_value=MagicMock())
+    core.QgsField = MagicMock()
+    core.QgsSymbol = MagicMock()
+    core.QgsSymbol.defaultSymbol = MagicMock(return_value=MagicMock())
+    type(core.QgsSymbol.defaultSymbol).__name__ = 'builtin_function_or_method'
+    core.QgsExpression = MagicMock()
+    core.QgsExpressionContext = MagicMock()
+    core.QgsExpressionContext().setFeature = MagicMock()
+    core.QgsCategorizedSymbolRenderer = MagicMock()
+    core.QgsSingleSymbolRenderer = MagicMock()
+    core.QgsRendererCategory = MagicMock()
+    core.QgsFillSymbol = MagicMock()
+    core.QgsFillSymbol.createSimple = MagicMock(return_value=MagicMock())
+    core.QgsVectorLayer = MagicMock()
+    return core
+
+
+def _mock_orders_models(names):
+    """Return a MagicMock orders.models module with named model stubs."""
+    m = MagicMock()
+    for name in names:
+        setattr(m, name, _mock_model_table(MagicMock()))
+    return m
+
+
+def _mirror_app_modules():
+    """Mirror ``plans_adressage.app.*`` under ``app.*`` for direct imports."""
+    for key in list(sys.modules.keys()):
+        if key.startswith('plans_adressage.app'):
+            app_key = key[len('plans_adressage.'):]
+            if app_key not in sys.modules:
+                sys.modules[app_key] = sys.modules[key]
+
+
 def setup_mocks():
     """Set up mock modules for QGIS and project dependencies in sys.modules.
 
     Must be called before importing any module that depends on ``qgis``
     or uses relative imports from a ``plans_adressage`` package context.
     """
-    # Always re-setup mocks to ensure they are in place
-
-    _pkg = types.ModuleType('plans_adressage')
-    _pkg.__path__ = ['.']
-    _pkg.__package__ = 'plans_adressage'
-    sys.modules['plans_adressage'] = _pkg
-
-    _layer_pkg = types.ModuleType('plans_adressage.layer')
-    _layer_pkg.__path__ = ['layer']
-    _layer_pkg.__package__ = 'plans_adressage.layer'
-    sys.modules['plans_adressage.layer'] = _layer_pkg
-
-    _app_pkg = types.ModuleType('plans_adressage.app')
-    _app_pkg.__path__ = ['app']
-    _app_pkg.__package__ = 'plans_adressage.app'
-    sys.modules['plans_adressage.app'] = _app_pkg
-
-    for subpkg in ('app.core', 'app.orders', 'app.users', 'app.shared'):
-        _sp = types.ModuleType(f'plans_adressage.{subpkg}')
-        _sp.__path__ = [subpkg.replace('.', '/')]
-        _sp.__package__ = f'plans_adressage.{subpkg}'
-        sys.modules[f'plans_adressage.{subpkg}'] = _sp
+    _setup_package_tree([
+        'plans_adressage', 'plans_adressage.layer', 'plans_adressage.app',
+        'plans_adressage.app.core', 'plans_adressage.app.orders',
+        'plans_adressage.app.users', 'plans_adressage.app.shared',
+    ])
 
     _shared_utils = MagicMock()
     _shared_utils.get_all_fields_and_labels = MagicMock(return_value=(
@@ -39,22 +104,10 @@ def setup_mocks():
     ))
     sys.modules['plans_adressage.app.shared.utils'] = _shared_utils
 
-    _constants = MagicMock()
-    _constants.NOTIFY_DURATION = 5
-    _constants.current_locale = lambda: 'en'
-    _constants.CRS = 'EPSG:4326'
-    _constants.COOKIE_FILE = '/tmp/test_cookie.toml'
-    _constants.LAYER_MUNICIPALITY = 'My Municipality'
-    _constants.MEMORY_PROVIDER = 'memory'
-    _constants.DEFAULT_STYLE_DIR = '/tmp/styles'
-    _constants.STYLE_QML = '/tmp/style.qml'
+    _constants = _mock_constants_base()
     sys.modules['plans_adressage.constants'] = _constants
 
-    _scripts_pkg = types.ModuleType('plans_adressage.scripts')
-    _scripts_pkg.__path__ = ['scripts']
-    _scripts_pkg.__package__ = 'plans_adressage.scripts'
-    sys.modules['plans_adressage.scripts'] = _scripts_pkg
-
+    _setup_package_tree(['plans_adressage.scripts'])
     _lookup = MagicMock()
     _lookup.get_string = lambda s, loc=None: s
     sys.modules['plans_adressage.scripts.lookup_data'] = _lookup
@@ -68,9 +121,7 @@ def setup_mocks():
         'other_layers': [
             {'label': 'basemap', 'style': 'basemap.qml', 'url': '?query=select 1'},
         ],
-        'categorize': [
-            {'layer': 'roads', 'by': ['type']},
-        ],
+        'categorize': [{'layer': 'roads', 'by': ['type']}],
     })
     _users_repo.get_current_user = MagicMock()
     sys.modules['plans_adressage.app.users.repository'] = _users_repo
@@ -79,28 +130,20 @@ def setup_mocks():
     _orders_repo.export_model = MagicMock()
     _orders_repo.count_numberings = MagicMock()
     _orders_repo.count_panels = MagicMock()
-    _orders_repo.query_missing_pan = MagicMock()
-    _orders_repo.query_missing_num = MagicMock()
-    _orders_repo.query_missing_rep = MagicMock()
+    for fn in ('query_missing_pan', 'query_missing_num', 'query_missing_rep'):
+        setattr(_orders_repo, fn, MagicMock())
     sys.modules['plans_adressage.app.orders.repository'] = _orders_repo
 
     _database = MagicMock()
     _database.get_session = MagicMock()
     sys.modules['plans_adressage.app.core.database'] = _database
 
-    _orders_models = MagicMock()
-    for name in ('Road', 'Zone', 'Localite', 'Organization', 'Subdivision', 'PanelSign', 'Numbering'):
-        m = MagicMock()
-        object.__setattr__(m, '__table__', MagicMock())
-        m.__table__.columns = {}
-        setattr(_orders_models, name, m)
-    sys.modules['plans_adressage.app.orders.models'] = _orders_models
+    sys.modules['plans_adressage.app.orders.models'] = _mock_orders_models(
+        ['Road', 'Zone', 'Localite', 'Organization', 'Subdivision', 'PanelSign', 'Numbering'],
+    )
 
     _users_models = MagicMock()
-    _user = MagicMock()
-    object.__setattr__(_user, '__table__', MagicMock())
-    _user.__table__.columns = {}
-    _users_models.User = _user
+    _users_models.User = _mock_model_table(MagicMock())
     sys.modules['plans_adressage.app.users.models'] = _users_models
 
     _qgis = MagicMock()
@@ -108,36 +151,7 @@ def setup_mocks():
     _qgis.__name__ = 'qgis'
     sys.modules['qgis'] = _qgis
 
-    _core = MagicMock()
-    _core.QgsProject = MagicMock()
-    _core.QgsProject.instance = MagicMock(return_value=MagicMock())
-    _core.QgsMapLayer = MagicMock()
-    _core.QgsMapLayer.VectorLayer = 0
-    _core.QgsMapLayer.RasterLayer = 1
-    _core.QgsWkbTypes = MagicMock()
-    _core.QgsWkbTypes.PointGeometry = 0
-    _core.QgsWkbTypes.LineGeometry = 1
-    _core.QgsWkbTypes.PolygonGeometry = 2
-    _core.Qgis = MagicMock()
-    _core.Qgis.Info = 0
-    _core.Qgis.Critical = 1
-    _core.Qgis.Warning = 2
-    _core.QgsFeature = MagicMock()
-    _core.QgsGeometry = MagicMock()
-    _core.QgsGeometry.fromWkt = MagicMock(return_value=MagicMock())
-    _core.QgsField = MagicMock()
-    _core.QgsSymbol = MagicMock()
-    _core.QgsSymbol.defaultSymbol = MagicMock(return_value=MagicMock())
-    type(_core.QgsSymbol.defaultSymbol).__name__ = 'builtin_function_or_method'
-    _core.QgsExpression = MagicMock()
-    _core.QgsExpressionContext = MagicMock()
-    _core.QgsExpressionContext().setFeature = MagicMock()
-    _core.QgsCategorizedSymbolRenderer = MagicMock()
-    _core.QgsSingleSymbolRenderer = MagicMock()
-    _core.QgsRendererCategory = MagicMock()
-    _core.QgsFillSymbol = MagicMock()
-    _core.QgsFillSymbol.createSimple = MagicMock(return_value=MagicMock())
-    _core.QgsVectorLayer = MagicMock()
+    _core = _mock_qgis_core()
     sys.modules['qgis.core'] = _core
 
     _PyQt = MagicMock()
@@ -152,13 +166,7 @@ def setup_mocks():
     _QtCore.QVariant.Bool = 5
     sys.modules['qgis.PyQt.QtCore'] = _QtCore
 
-    # Mirror 'plans_adressage.app.*' under 'app.*' so that
-    # code using direct top-level 'app' imports works in tests.
-    for key in list(sys.modules.keys()):
-        if key.startswith('plans_adressage.app'):
-            app_key = key[len('plans_adressage.'):]
-            if app_key not in sys.modules:
-                sys.modules[app_key] = sys.modules[key]
+    _mirror_app_modules()
 
     _gda2 = types.ModuleType('geoalchemy2')
     sys.modules['geoalchemy2'] = _gda2
@@ -178,28 +186,115 @@ def setup_mocks():
     return _core, _constants
 
 
-def setup_gui_mocks():
-    """Set up ``plans_adressage`` package hierarchy for GUI module tests.
+def _make_gui_qgis_core():
+    """Return a lighter ``qgis.core`` mock for GUI tests."""
+    core = MagicMock()
+    for attr in ('QgsProject', 'QgsSymbol', 'QgsWkbTypes', 'QgsFeatureRequest',
+                 'QgsExpression', 'QgsMapLayer', 'QgsApplication', 'QgsField',
+                 'QgsFeature', 'QgsGeometry', 'QgsDistanceArea', 'QgsPointXY'):
+        setattr(core, attr, MagicMock())
+    return core
 
-    Must be called before ``importlib``-loading any ``gui/`` module that
-    uses relative imports (``from ..models import ...``).
+
+def _make_gui_pyqt_mocks():
+    """Return a dict of PyQt subsystem mocks for GUI tests.
+
+    Contains keys: qgis.PyQt, QtCore, QtGui, QtWidgets, uic
     """
-    if 'plans_adressage' in sys.modules and hasattr(sys.modules['plans_adressage'], '_gui_mocks_ready'):
-        return
+    _qgis_pyqt = types.ModuleType('qgis.PyQt')
+    _qgis_pyqt.__path__ = ['/fake/qgis/PyQt']
 
-    _pkg = types.ModuleType('plans_adressage')
-    _pkg.__path__ = ['.']
-    _pkg.__package__ = 'plans_adressage'
-    _pkg._gui_mocks_ready = True
-    sys.modules['plans_adressage'] = _pkg
+    _qwidget_attrs = {
+        '__init__': lambda self, parent=None: None,
+        'setObjectName': lambda self, name: None,
+        'setSizeGripEnabled': lambda self, enabled: None,
+        'setMinimumSize': lambda self, w, h: None,
+        'setMaximumSize': lambda self, w, h: None,
+        'setWindowTitle': lambda self, title: None,
+        'setStyleSheet': lambda self, ss: None,
+        'close': lambda self: None,
+        'resize': lambda self, w, h: None,
+        'width': lambda self: 800,
+        'height': lambda self: 600,
+        'layout': property(lambda _self: MagicMock()),
+    }
+    _FakeDialog = type('QDialog', (), _qwidget_attrs)
+    _FakeFormClass = type('FORM_CLASS', (), _qwidget_attrs)
 
-    for sub in ('gui', 'scripts', 'layer', 'i18n'):
-        _sub = types.ModuleType(f'plans_adressage.{sub}')
-        _sub.__path__ = [sub]
-        _sub.__package__ = f'plans_adressage.{sub}'
-        sys.modules[f'plans_adressage.{sub}'] = _sub
+    def _setupUi(instance):
+        for w in (
+            'org_cat', 'type_road', 'dyn_ref3', 'dyn_ref4',
+            'cat_act_3', 'num_state', 'mount_status', 'subd_type',
+            'zone_type', 'org_type', 'activity_type_3',
+            'submit_road', 'submit_zone', 'submit_subd',
+            'submit_org', 'submit_num', 'submit_pan',
+            'select_ref3', 'select_ref4',
+            'road_name', 'road_decision', 'org_name', 'subd_name',
+            'nom_zone', 'num_val', 'repetition',
+            'ref_name3', 'ref_name4',
+            'router', 'frame_12', 'frame_10', 'frame_9',
+            'table', 'list_title',
+        ):
+            setattr(instance, w, MagicMock())
+        instance.router.findChild = MagicMock(return_value=MagicMock())
+        instance.router.setCurrentWidget = MagicMock()
+        instance.findChildren = MagicMock(return_value=[])
 
-    # Mock app packages to prevent real SQLAlchemy-dependent imports
+    class _FakeFormWithSetup:
+        def setupUi(self, w):
+            _setupUi(w)
+
+    class _FakePopupDialogType(_FakeFormClass, _FakeFormWithSetup):
+        pass
+
+    _qgis_uic = MagicMock()
+    _qgis_uic.loadUiType = MagicMock(return_value=(_FakePopupDialogType, MagicMock))
+
+    _qgis_qtcore = MagicMock()
+    _qgis_qtcore.Qt = MagicMock()
+    _qgis_qtcore.QVariant = MagicMock()
+    _qgis_qtcore.QSize = MagicMock()
+    _qgis_qtcore.pyqtSignal = MagicMock()
+    _qgis_qtcore.pyqtSlot = MagicMock(lambda x: lambda f: f)
+    _qgis_qtcore.QObject = MagicMock()
+
+    _qgis_qtgui = MagicMock()
+    _qgis_qtgui.QIcon = MagicMock()
+
+    class _FakeQPushButton:
+        def __init__(self, text=''):
+            self.text = text
+            self._slots = []
+            self.clicked = MagicMock()
+            self.clicked.connect = self._connect_clicked
+        def _connect_clicked(self, slot):
+            self._slots.append(slot)
+            self.clicked.connect = lambda s: self._slots.append(s)
+        def click(self):
+            for slot in self._slots:
+                slot()
+
+    _qgis_qtwidgets = MagicMock()
+    _qgis_qtwidgets.QComboBox = MagicMock()
+    for w in ('QDateEdit', 'QFormLayout', 'QLayout', 'QLineEdit', 'QSizePolicy',
+              'QDialogButtonBox', 'QApplication'):
+        setattr(_qgis_qtwidgets, w, MagicMock())
+    _qgis_qtwidgets.QMessageBox = MagicMock()
+    _qgis_qtwidgets.QPushButton = _FakeQPushButton
+    _qgis_qtwidgets.QWidget = MagicMock()
+    _qgis_qtwidgets.QDialog = _FakeDialog
+
+    return {
+        'qgis.PyQt': _qgis_pyqt,
+        'qgis.PyQt.QtCore': _qgis_qtcore,
+        'qgis.PyQt.QtGui': _qgis_qtgui,
+        'qgis.PyQt.QtWidgets': _qgis_qtwidgets,
+        'qgis.PyQt.uic': _qgis_uic,
+    }
+
+
+def _setup_gui_app_packages():
+    """Register MagicMock stubs for ``app.*`` subpackages in sys.modules."""
     for pkg in ('app', 'app.core', 'app.users', 'app.orders', 'app.shared',
                 'app.core.database', 'app.orders.models', 'app.orders.repository',
                 'app.users.models', 'app.users.repository', 'app.users.service',
@@ -210,12 +305,15 @@ def setup_gui_mocks():
         _mock.__spec__ = None
         sys.modules[f'plans_adressage.{pkg}'] = _mock
 
+
+def _setup_gui_domain_mocks():
+    """Register constants, scripts, i18n, database, models, and repo mocks."""
     _constants = MagicMock()
     _constants.current_theme = lambda: 'dark'
     _constants.get_theme_qss = lambda t: ''
     _constants.current_locale = lambda: 'ar'
-    _constants.locale_value = lambda v, f, l=None: getattr(v, f)
-    _constants.validate_text = lambda t, f, l: (True, t)
+    _constants.locale_value = lambda v, f, loc=None: getattr(v, f)
+    _constants.validate_text = lambda t, f, loc: (True, t)
     _constants.LAYER_KEY = 'key'
     _constants.LAYER_ROADS = 'roads'
     _constants.LAYER_FACILITIES = 'facilities'
@@ -230,7 +328,7 @@ def setup_gui_mocks():
 
     _lookup = MagicMock()
     _lookup.get_string = lambda s, loc=None: s if isinstance(s, str) else 'test'
-    _lookup.apply_widget_texts = lambda w, l: None
+    _lookup.apply_widget_texts = lambda w, loc: None
     sys.modules['plans_adressage.scripts.lookup_data'] = _lookup
 
     _i18n = MagicMock()
@@ -253,16 +351,11 @@ def setup_gui_mocks():
         ['id', 'name'], {'id': 'ID', 'name': 'Name'},
     ))
     for name in ('Road', 'Zone', 'Localite', 'Organization', 'Subdivision', 'PanelSign', 'Numbering'):
-        m = MagicMock()
-        object.__setattr__(m, '__table__', MagicMock())
-        m.__table__.columns = {}
-        setattr(_orders_models, name, m)
+        setattr(_orders_models, name, _mock_model_table(MagicMock()))
     sys.modules['plans_adressage.app.orders.models'] = _orders_models
 
     _users_models = MagicMock()
-    _users_models.User = MagicMock()
-    object.__setattr__(_users_models.User, '__table__', MagicMock())
-    _users_models.User.__table__.columns = {}
+    _users_models.User = _mock_model_table(MagicMock())
     sys.modules['plans_adressage.app.users.models'] = _users_models
 
     _users_repo = MagicMock()
@@ -287,29 +380,15 @@ def setup_gui_mocks():
         setattr(_ui_fillers, fn, MagicMock())
     sys.modules['plans_adressage.gui.ui_fillers'] = _ui_fillers
 
-    # Mock qgis.core and qgis.gui — their C extensions (qgis._core / qgis._gui)
-    # depend on Qt5Quick which has a missing symbol on this system.
+
+def _setup_gui_qgis_mocks():
+    """Register qgis, qgis.core, and qgis.gui mocks in sys.modules."""
     _qgis = types.ModuleType('qgis')
     _qgis.__path__ = ['/fake/qgis']
     sys.modules['qgis'] = _qgis
-
-    _core = MagicMock()
-    _core.QgsProject = MagicMock()
-    _core.QgsSymbol = MagicMock()
-    _core.QgsWkbTypes = MagicMock()
-    _core.QgsFeatureRequest = MagicMock()
-    _core.QgsExpression = MagicMock()
-    _core.QgsMapLayer = MagicMock()
-    _core.QgsApplication = MagicMock()
-    _core.QgsField = MagicMock()
-    _core.QgsFeature = MagicMock()
-    _core.QgsGeometry = MagicMock()
-    _core.QgsDistanceArea = MagicMock()
-    _core.QgsPointXY = MagicMock()
-    sys.modules['qgis.core'] = _core
+    sys.modules['qgis.core'] = _make_gui_qgis_core()
 
     class _FakeMapTool:
-        """Minimal stub that accepts canvas arg in __init__."""
         def __init__(self, canvas):
             self.canvas = canvas
             self.paused = False
@@ -321,7 +400,6 @@ def setup_gui_mocks():
             self.reset()
 
     class _FakeIdentifyTool(_FakeMapTool):
-        """Stub IdentifyTool base class."""
         MODE_FORM = "form"
         MODE_REF = "ref"
 
@@ -332,96 +410,29 @@ def setup_gui_mocks():
     _gui.QgsVertexMarker = MagicMock()
     sys.modules['qgis.gui'] = _gui
 
-    _qgis_pyqt = types.ModuleType('qgis.PyQt')
-    _qgis_pyqt.__path__ = ['/fake/qgis/PyQt']
-    sys.modules['qgis.PyQt'] = _qgis_pyqt
+    for name, mock in _make_gui_pyqt_mocks().items():
+        sys.modules[name] = mock
 
-    # Common QWidget methods needed by PopupDialog
-    _qwidget_attrs = {
-        '__init__': lambda self, parent=None: None,
-        'setObjectName': lambda self, name: None,
-        'setSizeGripEnabled': lambda self, enabled: None,
-        'setMinimumSize': lambda self, w, h: None,
-        'setMaximumSize': lambda self, w, h: None,
-        'setWindowTitle': lambda self, title: None,
-        'setStyleSheet': lambda self, ss: None,
-        'close': lambda self: None,
-        'resize': lambda self, w, h: None,
-        'width': lambda self: 800,
-        'height': lambda self: 600,
-        'layout': property(lambda self: MagicMock()),
-    }
-    _FakeDialog = type('QDialog', (), _qwidget_attrs)
-    _FakeFormClass = type('FORM_CLASS', (), _qwidget_attrs)
 
-    # SetupUi must create all UI widget attributes referenced by PopupDialog
-    def _setupUi(instance):
-        uiwidgets = (
-            'org_cat', 'type_road', 'dyn_ref3', 'dyn_ref4',
-            'cat_act_3', 'num_state', 'mount_status', 'subd_type',
-            'zone_type', 'org_type', 'activity_type_3',
-            'submit_road', 'submit_zone', 'submit_subd',
-            'submit_org', 'submit_num', 'submit_pan',
-            'select_ref3', 'select_ref4',
-            'road_name', 'road_decision', 'org_name', 'subd_name',
-            'nom_zone', 'num_val', 'repetition',
-            'ref_name3', 'ref_name4',
-            'router', 'frame_12', 'frame_10', 'frame_9',
-            'table', 'list_title',
-        )
-        for w in uiwidgets:
-            setattr(instance, w, MagicMock())
-        instance.router.findChild = MagicMock(return_value=MagicMock())
-        instance.router.setCurrentWidget = MagicMock()
-        instance.findChildren = MagicMock(return_value=[])
+def setup_gui_mocks():
+    """Set up ``plans_adressage`` package hierarchy for GUI module tests.
 
-    class _FakeFormWithSetup:
-        def setupUi(self, w):
-            _setupUi(w)
+    Must be called before ``importlib``-loading any ``gui/`` module that
+    uses relative imports (``from ..models import ...``).
+    """
+    if 'plans_adressage' in sys.modules and hasattr(sys.modules['plans_adressage'], '_gui_mocks_ready'):
+        return
 
-    _FakePopupDialogType = type('PopupDialog', (_FakeFormClass, _FakeFormWithSetup), {})
+    _pkg = types.ModuleType('plans_adressage')
+    _pkg.__path__ = ['.']
+    _pkg.__package__ = 'plans_adressage'
+    _pkg._gui_mocks_ready = True
+    sys.modules['plans_adressage'] = _pkg
 
-    _qgis_uic = MagicMock()
-    _qgis_uic.loadUiType = MagicMock(return_value=(_FakePopupDialogType, MagicMock))
-    sys.modules['qgis.PyQt.uic'] = _qgis_uic
-
-    _qgis_qtcore = MagicMock()
-    _qgis_qtcore.Qt = MagicMock()
-    _qgis_qtcore.QVariant = MagicMock()
-    _qgis_qtcore.QSize = MagicMock()
-    _qgis_qtcore.pyqtSignal = MagicMock()
-    _qgis_qtcore.pyqtSlot = MagicMock(lambda x: lambda f: f)
-    _qgis_qtcore.QObject = MagicMock()
-    sys.modules['qgis.PyQt.QtCore'] = _qgis_qtcore
-
-    _qgis_qtgui = MagicMock()
-    _qgis_qtgui.QIcon = MagicMock()
-    sys.modules['qgis.PyQt.QtGui'] = _qgis_qtgui
-
-    class _FakeQPushButton:
-        """QPushButton stub that properly connects and emits signals."""
-        def __init__(self, text=''):
-            self.text = text
-            self._slots = []
-            self.clicked = MagicMock()
-            self.clicked.connect = self._connect_clicked
-        def _connect_clicked(self, slot):
-            self._slots.append(slot)
-            self.clicked.connect = lambda s: self._slots.append(s)
-        def click(self):
-            for slot in self._slots:
-                slot()
-
-    _qgis_qtwidgets = MagicMock()
-    _qgis_qtwidgets.QComboBox = MagicMock()
-    for w in ('QDateEdit', 'QFormLayout', 'QLayout', 'QLineEdit', 'QSizePolicy',
-              'QDialogButtonBox', 'QApplication'):
-        setattr(_qgis_qtwidgets, w, MagicMock())
-    _qgis_qtwidgets.QMessageBox = MagicMock()
-    _qgis_qtwidgets.QPushButton = _FakeQPushButton
-    _qgis_qtwidgets.QWidget = MagicMock()
-    _qgis_qtwidgets.QDialog = _FakeDialog
-    sys.modules['qgis.PyQt.QtWidgets'] = _qgis_qtwidgets
+    _setup_package_tree([f'plans_adressage.{sub}' for sub in ('gui', 'scripts', 'layer', 'i18n')])
+    _setup_gui_app_packages()
+    _setup_gui_domain_mocks()
+    _setup_gui_qgis_mocks()
 
     wire_module_attributes()
 

@@ -1,6 +1,5 @@
 """Tests for mixins/import_export_mixin.py."""
 import importlib
-import subprocess
 import sys
 import unittest
 from unittest.mock import MagicMock, patch
@@ -78,7 +77,6 @@ class TestImportExportMixin(unittest.TestCase):
              patch.object(self.mod, 'validate_text',
                           return_value='valid'), \
              patch.object(self.mod, 'json') as mock_json, \
-             patch.object(self.mod, 'subprocess') as mock_subprocess, \
              patch.object(self.mod, 'QMessageBox') as mock_mb:
             self.mixin._render_and_export('3')
 
@@ -93,7 +91,6 @@ class TestImportExportMixin(unittest.TestCase):
             mock_job.waitForFinished.assert_called_once()
             mock_image.save.assert_called_once()
             mock_json.dump.assert_called_once()
-            mock_subprocess.run.assert_called_once()
             mock_mb.information.assert_called_once()
 
     def test_render_and_export_with_include_situation(self):
@@ -108,7 +105,6 @@ class TestImportExportMixin(unittest.TestCase):
              patch.object(self.mod, 'QgsMapSettings'), \
              patch.object(self.mod, 'validate_text', return_value='valid'), \
              patch.object(self.mod, 'json'), \
-             patch.object(self.mod, 'subprocess'), \
              patch.object(self.mod, 'QMessageBox'):
             self.mixin._render_and_export('4', include_situation=True)
             self.mixin.map_situation.assert_called_once()
@@ -124,12 +120,11 @@ class TestImportExportMixin(unittest.TestCase):
 
         with patch.object(self.mod, 'QgsMapRendererParallelJob',
                           return_value=mock_job), \
-             patch.object(self.mod, 'QgsMapSettings'), \
-             patch.object(self.mod, 'subprocess') as mock_subprocess:
+             patch.object(self.mod, 'QgsMapSettings'):
             self.mixin._render_and_export('3')
-            mock_subprocess.run.assert_not_called()
+            mock_image.save.assert_called_once()
 
-    def test_render_and_export_no_symbols_skips_json_and_subprocess(self):
+    def test_render_and_export_no_symbols_skips_json(self):
         self.mock_canvas()
         self.mixin.symbols = MagicMock(return_value=None)
 
@@ -140,13 +135,11 @@ class TestImportExportMixin(unittest.TestCase):
         with patch.object(self.mod, 'QgsMapRendererParallelJob',
                           return_value=mock_job), \
              patch.object(self.mod, 'QgsMapSettings'), \
-             patch.object(self.mod, 'subprocess') as mock_subprocess, \
              patch.object(self.mod, 'json') as mock_json:
             self.mixin._render_and_export('3')
-            mock_subprocess.run.assert_not_called()
             mock_json.dump.assert_not_called()
 
-    def test_render_and_export_json_write_failure_logs_error_continues(self):
+    def test_render_and_export_json_write_failure_logged(self):
         self.mock_canvas()
 
         mock_job = MagicMock()
@@ -157,31 +150,10 @@ class TestImportExportMixin(unittest.TestCase):
                           return_value=mock_job), \
              patch.object(self.mod, 'QgsMapSettings'), \
              patch.object(self.mod, 'validate_text', return_value='valid'), \
-             patch.object(self.mod, 'json') as mock_json, \
-             patch.object(self.mod, 'subprocess') as mock_subprocess:
+             patch.object(self.mod, 'json') as mock_json:
             mock_json.dump = MagicMock(side_effect=OSError('write error'))
+            # Should not raise despite JSON write failure
             self.mixin._render_and_export('3')
-            # JSON write failure is logged but does not stop execution
-            mock_subprocess.run.assert_called_once()
-
-    def test_render_and_export_subprocess_failure(self):
-        self.mock_canvas()
-
-        mock_job = MagicMock()
-        mock_job.renderedImage.return_value.save = MagicMock(return_value=True)
-        mock_job.waitForFinished = MagicMock()
-
-        with patch.object(self.mod, 'QgsMapRendererParallelJob',
-                          return_value=mock_job), \
-             patch.object(self.mod, 'QgsMapSettings'), \
-             patch.object(self.mod, 'validate_text', return_value='valid'), \
-             patch.object(self.mod, 'json'), \
-             patch.object(self.mod, 'subprocess') as mock_subprocess, \
-             patch.object(self.mod, 'QMessageBox') as mock_mb:
-            mock_subprocess.run = MagicMock(
-                side_effect=subprocess.CalledProcessError(1, 'cmd'))
-            self.mixin._render_and_export('3')
-            mock_mb.information.assert_not_called()
 
     def test_export_to_image1_a0(self):
         self.mixin.paper = MagicMock()

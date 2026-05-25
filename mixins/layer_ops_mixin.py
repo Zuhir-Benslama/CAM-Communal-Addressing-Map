@@ -291,7 +291,7 @@ class LayerOpsMixin:
             else:
                 tab_text = self.menu.tabText(current_index)
             selected_ops = self._current_ops_layer()
-            if tab_text == LAYER_NUMBERING or selected_ops == LAYER_NUMBERING:
+            if LAYER_NUMBERING in (tab_text, selected_ops):
                 self.num_val.setFocus()
 
     def on_geometry_changed(self, fid) -> None:
@@ -328,7 +328,7 @@ class LayerOpsMixin:
                                     str(geometry_wkt), srid=SRID
                                 ),
                             )
-                        except Exception as e:
+                        except Exception as e:  # noqa: W0718
                             logger.exception("Failed to save feature: %s", e)
                             QMessageBox.critical(
                                 self, self._tr("Erreur"), str(e))

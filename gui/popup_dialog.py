@@ -35,7 +35,9 @@ logger = logging.getLogger(__name__)
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'PopupDialog.ui'))
-class PopupDialog(QDialog,FORM_CLASS):
+
+
+class PopupDialog(QDialog, FORM_CLASS):
     """Dialog for updating attributes of a selected feature."""
     def __init__(self, layer_name_value, layer_name_key, attribute, iface,
                  parent=None) -> None:
@@ -54,7 +56,7 @@ class PopupDialog(QDialog,FORM_CLASS):
 
         fill_org_category(self.org_cat)
         self.org_cat.currentIndexChanged.connect(self.on_select_org_cat)
-        self.ref_identify_tool=None
+        self.ref_identify_tool = None
         fill_road_type(self.type_road)
         fill_road_reference(self.dyn_ref3)
         fill_panel_reference(self.dyn_ref4)
@@ -62,14 +64,10 @@ class PopupDialog(QDialog,FORM_CLASS):
 
         fill_numbering_state(self.num_state)
 
-
         fill_mounting_status(self.mount_status)
-
-
 
         fill_subdivision_type(self.subd_type)
         fill_zone_type(self.zone_type)
-
 
         self.set_form()
         self.setWindowTitle(self.layer_name_key)
@@ -277,8 +275,6 @@ class PopupDialog(QDialog,FORM_CLASS):
                 finally:
                     session.close()
 
-
-
     def update_road(self) -> None:
         """Update road feature in the database."""
         session = get_session()
@@ -297,6 +293,7 @@ class PopupDialog(QDialog,FORM_CLASS):
             session.close()
         refresh_all_layers(self.iface)
         self.close()
+
     def update_organization(self) -> None:
         """Update organization feature in the database."""
         session = get_session()
@@ -374,12 +371,9 @@ class PopupDialog(QDialog,FORM_CLASS):
         else:
             QMessageBox.critical(self, get_string("Error", self._tr_locale), get_string("Reference type not specified", self._tr_locale))
 
-
         layer = project.mapLayersByName(self.layer_name_key)
         if layer:
             self.iface.setActiveLayer(layer[0])
-
-
 
     def select_panel_reference(self) -> None:
         """Activate map tool to select a reference for panel."""
@@ -405,9 +399,6 @@ class PopupDialog(QDialog,FORM_CLASS):
         layer = project.mapLayersByName(self.layer_name_key)
         if layer:
             self.iface.setActiveLayer(layer[0])
-
-
-
 
     def update_panel(self) -> None:
         """Update panel feature in the database."""
@@ -520,6 +511,7 @@ class PopupDialog(QDialog,FORM_CLASS):
             session.close()
         refresh_all_layers(self.iface)
         self.close()
+
     def route(self, page_index) -> None:
         """Switch the stacked widget to the given page."""
         page = self.router.findChild(QWidget, page_index)

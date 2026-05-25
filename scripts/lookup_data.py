@@ -10,6 +10,7 @@ _cache: dict[str, list[dict[str, Any]]] = {}
 
 
 def _load(filename: str) -> list[dict[str, Any]]:
+    """Load and cache JSON data from a template data file."""
     if filename not in _cache:
         path = os.path.join(_DATA_DIR, filename)
         with open(path, 'r', encoding='utf-8') as f:
@@ -22,18 +23,23 @@ def _load(filename: str) -> list[dict[str, Any]]:
 # ---------------------------------------------------------------------------
 
 def road_types() -> list[dict[str, Any]]:
+    """Return road type lookup data."""
     return _load('type_road.json')
 
 def zone_types() -> list[dict[str, Any]]:
+    """Return zone type lookup data."""
     return _load('zone_type.json')
 
 def subdivision_types() -> list[dict[str, Any]]:
+    """Return subdivision type lookup data."""
     return _load('type_cite.json')
 
 def mounting_statuses() -> list[dict[str, Any]]:
+    """Return mounting status lookup data."""
     return _load('situation_Montage.json')
 
 def numbering_states() -> list[dict[str, Any]]:
+    """Return numbering state lookup data."""
     return _load('Etat_Numerotation.json')
 
 
@@ -45,6 +51,7 @@ def numbering_states() -> list[dict[str, Any]]:
 # ---------------------------------------------------------------------------
 
 def organization_types() -> list[dict[str, Any]]:
+    """Return organization type lookup data."""
     return _load('type_organisme.json')
 
 def org_categories(locale: str = 'ar') -> list[tuple[str, str]]:
@@ -95,6 +102,7 @@ def org_subcategories(cat: str) -> list[str]:
 # ---------------------------------------------------------------------------
 
 def activity_types() -> list[dict[str, Any]]:
+    """Return activity type lookup data."""
     return _load('activity.json')
 
 def activity_categories(locale: str = 'ar') -> list[tuple[str, str]]:
@@ -152,6 +160,7 @@ def locale_label(entry: dict[str, Any], locale: str) -> str:
 
 
 def clear_cache() -> None:
+    """Clear the lookup data cache."""
     _cache.clear()
 
 
@@ -176,6 +185,7 @@ def _get_string(source: str, locale: str) -> str:
 _widgets_data: dict[str, dict[str, str]] | None = None
 
 def _load_widgets() -> dict[str, dict[str, str]]:
+    """Load and cache widgets.json data."""
     global _widgets_data
     if _widgets_data is None:
         path = os.path.join(_DATA_DIR, 'widgets.json')

@@ -775,3 +775,63 @@ These are intentional patterns, not bugs. Addressed as needed during feature wor
 
 ### Open
 - [ ] **Features not appearing on map** — After login, some map features (roads, zones, etc.) are not visible. Needs investigation of `init_allowed_zone()`, layer creation order, and canvas refresh logic.
+
+---
+
+## 50. Current Code Quality Findings — 2026-05-25
+
+**Pylint: 8.65/10** (up from 9.05 — new issues discovered)
+
+### Errors (P0/P1)
+
+- [x] **`scripts/create_db.py:60` — undefined variable `get_engine`** — added `get_engine` to imports from `app.core.database`.
+- [x] **`scripts/rename_columns.py:154` — `os` possibly used before assignment** — added `import os` at module level, removed inner `import os` from `if __name__` guard.
+
+### Warnings (P1/P2)
+
+- [x] **`scripts/update_json.py:172` — duplicate dictionary keys** — removed duplicate `مقهى` and `مطعم` entries from `_translate_activity_type()`.
+- [x] **`mixins/chart_mixin.py:72` — `func.count` not callable** — suppressed with `# noqa: E1102` (false positive; SQLAlchemy `func` generates SQL functions dynamically).
+- [x] **Broad `except Exception` (15+ occurrences)** — narrowed file I/O exceptions to `(IOError, OSError, shutil.Error)`; added `# noqa: W0718` where broad catch is intentional (DB calls, subprocess).
+- [x] **`mixins/layer_ops_mixin.py:294` — consider merging comparisons with `in`** — changed `tab_text == LAYER_NUMBERING or selected_ops == LAYER_NUMBERING` to `LAYER_NUMBERING in (tab_text, selected_ops)`.
+
+### Conventions (P2/P3)
+
+- [x] **`scripts/gen_translations.py` — severe line-length violations** — split the 4 longest HTML tooltip strings (~400+ chars) across multiple lines using string concatenation. Remaining lines under 150 chars noted as acceptable for data-heavy translation file.
+- [x] **Missing function docstrings in `scripts/`** — added 45 docstrings across 11 script files (lookup_data, rename_columns, gen_translations, migrate_old_db, migrate_production, rename_french_widget_names, update_json, consolidate_tabs, translate_qml, create_db, migrate_split_db).
+- [x] **`test/helpers.py` — too many statements/locals** — split `setup_mocks()` (172→98 lines, 37→13 locals) and `setup_gui_mocks()` (246→21 lines, 26→1 local) into 11 helper functions.
+- [x] **Duplicate code between scripts** — moved `ADD_COLUMNS`, `REQUIRED_TABLES`, `AUTH_USER_SCHEMA` to `scripts/__init__.py`; both migration scripts import from there.
+
+### PEP8 (pycodestyle) — Line Length
+
+- [ ] **Many files exceed 79-char limit** — `app/orders/models.py`, `app/core/database.py`, `gui/popup_dialog.py`, `gui/main_dialog.py`, `mixins/layer_edit_mixin.py`, `test/*.py` all have line-length violations (pylintrc allows 88 but pycodestyle default is 79).
+- [x] **`gui/popup_dialog.py` — blank line/whitespace issues** — fixed `E302` (class spacing), `E303` (extra blank lines), `E301` (missing blank lines), `E225` (missing whitespace around operator).
+- [x] **`gui/main_dialog.py` — 10 module-level imports not at top of file** (`E402`) — moved all mixin imports above `FORM_CLASS` assignment.
+- [x] **`test/helpers.py` — ambiguous variable name `l`** (`E741`) — renamed `l` → `loc` in lambda params. Fixed same issue in `test/test_mixin_symbol_export.py` (`l` → `ly`).
+
+---
+
+## 51. Script Cleanup & Build — 2026-05-25 ✅
+
+### Removed 11 legacy scripts
+- [x] **One-time DB scripts removed**: `create_db.py`, `migrate_old_db.py`, `migrate_split_db.py`, `migrate_production.py`
+- [x] **One-time migration scripts removed**: `translate_qml.py`, `update_json.py`, `rename_french_widget_names.py`, `gen_translations.py`, `consolidate_tabs.py`, `rename_columns.py`
+- [x] **Broken script removed**: `reporting.py` (dangling import, script was non-functional)
+
+### Cleanup
+- [x] **`REPORTING_SCRIPT` constant removed** from `app/shared/constants.py` and top-level `constants.py`
+- [x] **`report_mixin.py` simplified** — replaced subprocess calls with "not available" user message
+- [x] **`import_export_mixin.py` simplified** — removed subprocess call, keeps map rendering
+- [x] **`app/orders/repository.py` docstrings updated** — 4 docstrings referencing `migrate_production.py` updated
+- [x] **`README.md` scripts listing updated** — only `lookup_data.py` and `plugin_upload.py` listed
+- [x] **`test_mixin_report.py` deleted** (tested removed functionality)
+- [x] **`test_mixin_import_export.py` updated** — 10/10 tests pass (subprocess mocks removed)
+
+### Remaining scripts
+- [x] `scripts/__init__.py` — empty package marker
+- [x] `scripts/lookup_data.py` — actively used by 8 app files (i18n & lookup data)
+- [x] `scripts/plugin_upload.py` — referenced by `Makefile` for deployment
+- [x] Shell scripts preserved: `qgis-rna.sh` (JWT QGIS launcher), `run-env-linux.sh`, `compile-strings.sh`, `update-strings.sh`
+
+### Build & Install
+- [x] `make build && make install` — plugin deployed to `~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/RNA/`
+- [x] **Pylint: 9.48/10** (up from 7.06 baseline)

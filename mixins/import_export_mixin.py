@@ -1,15 +1,13 @@
-"""Import/export mixin for rendering maps and invoking reporting scripts."""
+"""Import/export mixin for rendering maps to PNG."""
 
 import json
 import logging
-import subprocess
 
 from qgis.PyQt.QtCore import QSize
 from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import QgsMapSettings, QgsMapRendererParallelJob
 
-from ..constants import get_qgis_python, _SUBPROCESS_FLAGS
-from ..constants import MAP_PNG, TMP_JSON, REPORTING_SCRIPT, validate_text
+from ..constants import MAP_PNG, TMP_JSON, validate_text
 
 logger = logging.getLogger(__name__)
 
@@ -73,22 +71,13 @@ class ImportExportMixin:
                 try:
                     with open(TMP_JSON, 'w', encoding='utf-8') as f:
                         json.dump(export_data, f, ensure_ascii=False, indent=4)
-                except Exception as e:
+                except (IOError, OSError) as e:
                     logger.error("Error saving JSON file: %s", e)
 
-                try:
-                    subprocess.run(
-                        [f"{get_qgis_python()}", REPORTING_SCRIPT,
-                         '--method', method],
-                        capture_output=True, text=True,
-                        check=True, **_SUBPROCESS_FLAGS,
-                    )
-                    QMessageBox.information(
-                        self, self._tr("Success"),
-                        self._tr("Your file has been saved to your documents"),
-                    )
-                except Exception as e:
-                    logger.exception("Failed to export map: %s", e)
+                QMessageBox.information(
+                    self, self._tr("Success"),
+                    self._tr("Your file has been saved to your documents"),
+                )
 
     def export_to_image(self) -> None:
         """Render the map canvas and export to PNG via an external

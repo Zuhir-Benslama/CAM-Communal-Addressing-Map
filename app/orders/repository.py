@@ -141,12 +141,7 @@ def add_zone(geometry_wkt, zone_type, name, pkuid=None,
 
 
 def count_numberings(etat: str) -> int:
-    """Count numberings by state, querying the Num view.
-
-    The Num view is defined in scripts/migrate_production.py:
-        CREATE VIEW IF NOT EXISTS Num AS
-            SELECT n.*, r.Nom AS road_name, ... FROM Numerotation n ...
-    """
+    """Count numberings by state, querying the Num view (defined in Views.sql)."""
     session = get_session()
     try:
         result = session.execute(
@@ -160,12 +155,7 @@ def count_numberings(etat: str) -> int:
 
 
 def count_panels(panel_type: str, etat: str) -> int:
-    """Count panels by type and state, querying the Pan view.
-
-    The Pan view is defined in scripts/migrate_production.py:
-        CREATE VIEW IF NOT EXISTS Pan AS
-            SELECT p.*, r.Nom AS road, ... FROM Pannautage p ...
-    """
+    """Count panels by type and state, querying the Pan view (defined in Views.sql)."""
     session = get_session()
     try:
         result = session.execute(
@@ -182,12 +172,7 @@ def count_panels(panel_type: str, etat: str) -> int:
 
 
 def query_missing_pan(etat: str) -> list:
-    """Query missing panels grouped by label/type from the Pan2 view.
-
-    Pan2 is defined in scripts/migrate_production.py:
-        CREATE VIEW IF NOT EXISTS Pan2 AS
-            SELECT *, COALESCE(city, org, road) AS label FROM Pan;
-    """
+    """Query missing panels grouped by label/type from the Pan2 view (defined in Views.sql)."""
     session = get_session()
     try:
         result = session.execute(
@@ -247,11 +232,7 @@ def get_zone_distribution(wilaya_number: int) -> list:
     """Query zone type distribution within a given wilaya.
 
     Joins Zone (refpoly) with Localite on locality_id and filters by
-    wilaya_code. Returns list of (type_name, count) tuples for
-    chart rendering.
-
-    The Zone/Localite join is defined in scripts/migrate_production.py:
-        Zone.locality_id -> Localite.id, Localite.wilaya_code
+    wilaya_code. Returns list of (type_name, count) tuples for chart rendering.
     """
     session = get_session()
     try:

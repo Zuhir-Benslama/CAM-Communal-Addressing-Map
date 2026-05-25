@@ -75,7 +75,6 @@ This plugin was originally developed on Windows and required significant changes
 | **Wildcard imports** (`from .module import *`) | All modules use explicit imports |
 | **Function name typo** — `sauvegarderModifications` | Normalized to `sauvegarder_modifications` |
 | **Import name error** — `RNAResourcesTest` in test file | Fixed to `RNADialogTest` |
-| **`reporting.py` runs arg parser on import** — Code ran at module level | Moved inside `if __name__ == '__main__':` |
 
 ### P2 — Code Quality
 
@@ -148,7 +147,7 @@ plans_adressage/
 │   ├── auth_mixin.py            # Authentication UI
 │   ├── backup_mixin.py          # DB backup/restore
 │   ├── chart_mixin.py           # Chart generation
-│   ├── import_export_mixin.py   # Map export, reporting
+│   ├── import_export_mixin.py   # Map export
 │   ├── layer_draw_mixin.py      # Drawing mode activation
 │   ├── layer_edit_mixin.py      # Feature editing
 │   ├── layer_ops_mixin.py       # Tab/layer management
@@ -162,11 +161,8 @@ plans_adressage/
 │   └── utils.py                 # Layer creation helpers
 │
 ├── scripts/                     # Standalone scripts
-│   ├── create_db.py             # Database creation
-│   ├── reporting.py             # ODT report generation (subprocess)
-│   ├── plugin_upload.py         # Plugin upload helper
-│   ├── migrate_old_db.py        # Legacy DB migration
-│   └── migrate_split_db.py      # Auth DB split migration
+│   ├── lookup_data.py           # Lookup tables & i18n (active)
+│   └── plugin_upload.py         # Plugin upload helper
 │
 ├── resources/                   # Static assets
 │   ├── icon.png / map.png / situation.png

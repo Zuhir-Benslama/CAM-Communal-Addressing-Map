@@ -49,7 +49,7 @@ class BackupMixin:
         try:
             shutil.copy2(source_path, temp_path)
             os.replace(temp_path, destination_path)
-        except Exception:
+        except (IOError, OSError, shutil.Error):
             if os.path.exists(temp_path):
                 os.remove(temp_path)
             raise
@@ -103,6 +103,6 @@ class BackupMixin:
             QMessageBox.information(
                 self, self._tr("Success"), self._tr("File copied successfully"),
             )
-        except Exception as e:
+        except (IOError, OSError, shutil.Error) as e:
             logger.exception("Failed to backup database: %s", e)
             QMessageBox.critical(self, self._tr("Error"), self._tr("Failed to copy file"))

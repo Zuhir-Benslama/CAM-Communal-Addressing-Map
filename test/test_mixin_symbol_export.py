@@ -38,9 +38,9 @@ class TestSymbolExportMixin(unittest.TestCase):
             layer_names = ['My Municipality', 'Numbering', 'Panels']
         layers = {}
         for name in layer_names:
-            l = MagicMock()
-            l.name.return_value = name
-            layers[name] = l
+            ly = MagicMock()
+            ly.name.return_value = name
+            layers[name] = ly
         project = MagicMock()
         project.mapLayers.return_value = layers
         return project
@@ -113,7 +113,7 @@ class TestSymbolExportMixin(unittest.TestCase):
             call_args = mock_map.return_value.setLayers.call_args
             self.assertIsNotNone(call_args)
             passed_layers = call_args[0][0]
-            passed_names = [l.name() for l in passed_layers]
+            passed_names = [ly.name() for ly in passed_layers]
             self.assertNotIn('Panels', passed_names)
             self.assertNotIn('Satellite View', passed_names)
             self.assertIn('Numbering', passed_names)
