@@ -45,14 +45,16 @@ class TestLayerUtils(unittest.TestCase):
         mock_project.instance.return_value.mapLayersByName.return_value = []
         mock_qgis_config.return_value = {
             'other_layers': [
-                {'label': 'test_layer', 'style': 'test.qml', 'url': '?query=select 1'},
+                {'label': 'test_layer', 'style': 'test.qml',
+                 'url': '?query=select 1'},
             ],
             'mapper': [
                 {'layer': 'test_layer', 'model': 'Road'},
             ],
         }
         self.mod.create_other_layers(self.iface)
-        mock_project.instance.return_value.addMapLayer.assert_called_once_with(layer)
+        (mock_project.instance.return_value.addMapLayer
+         .assert_called_once_with(layer))
 
     @patch('plans_adressage.layer.utils.qgis_config')
     @patch('plans_adressage.layer.utils.QgsVectorLayer')
@@ -64,10 +66,12 @@ class TestLayerUtils(unittest.TestCase):
         mock_vector_layer.return_value = existing_layer
         existing_layer.isValid.return_value = True
         existing_layer.name.return_value = 'test_layer'
-        mock_project.instance.return_value.mapLayersByName.return_value = [MagicMock()]
+        (mock_project.instance.return_value
+         .mapLayersByName.return_value) = [MagicMock()]
         mock_qgis_config.return_value = {
             'other_layers': [
-                {'label': 'test_layer', 'style': 'test.qml', 'url': '?query=select 1'},
+                {'label': 'test_layer', 'style': 'test.qml',
+                 'url': '?query=select 1'},
             ],
             'mapper': [],
         }
@@ -80,7 +84,8 @@ class TestLayerUtils(unittest.TestCase):
     @patch('plans_adressage.layer.utils.QgsProject')
     @patch('plans_adressage.layer.utils.qgis_config')
     def test_init_allowed_zone_with_cookie(
-        self, mock_qgis_config, mock_project, mock_get_session, mock_toml_load, _mock_open,
+        self, mock_qgis_config, mock_project,
+        mock_get_session, mock_toml_load, _mock_open,
     ):
         mock_qgis_config.return_value = {'other_layers': [], 'mapper': []}
         mock_toml_load.return_value = {
@@ -90,7 +95,8 @@ class TestLayerUtils(unittest.TestCase):
         mock_get_session.return_value = mock_session
         user = MagicMock()
         user.affectation_id = 'loc1'
-        mock_session.query.return_value.filter.return_value.first.side_effect = [user, None]
+        (mock_session.query.return_value.filter.return_value
+         .first.side_effect) = [user, None]
         mock_project.instance.return_value.mapLayersByName.return_value = []
         self.mod.init_allowed_zone(self.iface)
 

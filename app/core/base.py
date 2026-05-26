@@ -11,7 +11,9 @@ Base = declarative_base()
 class TimestampMixin:
     """Mixin that adds ``created_at`` / ``updated_at`` datetime columns."""
     created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow,
+    )
 
 
 def _allowlist_columns(model_class: type, **kwargs: Any) -> dict:

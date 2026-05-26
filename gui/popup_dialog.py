@@ -113,10 +113,14 @@ class PopupDialog(QDialog, FORM_CLASS):
 
         # Keep footer text centered and spanning the full row.
         if hasattr(self, 'formLayout_2') and hasattr(self, 'label_26'):
-            self.formLayout_2.setWidget(0, QFormLayout.SpanningRole, self.label_26)
+            self.formLayout_2.setWidget(
+                0, QFormLayout.SpanningRole, self.label_26,
+            )
             self.label_26.setAlignment(Qt.AlignCenter)
         if hasattr(self, 'formLayout_3') and hasattr(self, 'submit_pan'):
-            self.formLayout_3.setWidget(2, QFormLayout.SpanningRole, self.submit_pan)
+            self.formLayout_3.setWidget(
+                2, QFormLayout.SpanningRole, self.submit_pan,
+            )
 
         for widget in self.findChildren(QLineEdit):
             widget.setMinimumHeight(max(widget.minimumHeight(), 34))
@@ -291,7 +295,9 @@ class PopupDialog(QDialog, FORM_CLASS):
             QMessageBox.information(
                 self,
                 get_string("Success", self._tr_locale),
-                get_string("This road has been updated successfully", self._tr_locale),
+                get_string(
+                    "This road has been updated successfully", self._tr_locale,
+                ),
             )
         except Exception as e:
             logger.exception("Failed to update road: %s", e)
@@ -310,16 +316,16 @@ class PopupDialog(QDialog, FORM_CLASS):
         session = get_session()
         try:
             Organization.update(
-                session, pkuid=self.attribute, category=self.org_cat.currentData(),
+                session, pkuid=self.attribute,
+                category=self.org_cat.currentData(),
                 Nom=validate_text(self.org_name.text()),
-                Type=self.org_type.currentData()
+                Type=self.org_type.currentData(),
             )
             QMessageBox.information(
                 self,
                 get_string("Success", self._tr_locale),
-                get_string(
-                    "This facility has been updated successfully",
-                    self._tr_locale,
+                get_string("This facility has been updated successfully",
+                           self._tr_locale,
                 ),
             )
         except Exception as e:
@@ -375,7 +381,9 @@ class PopupDialog(QDialog, FORM_CLASS):
             QMessageBox.information(
                 self,
                 get_string("Success", self._tr_locale),
-                get_string("This zone has been updated successfully", self._tr_locale),
+                get_string(
+                    "This zone has been updated successfully", self._tr_locale,
+                ),
             )
         except Exception as e:
             logger.exception("Failed to update zone: %s", e)
@@ -457,33 +465,40 @@ class PopupDialog(QDialog, FORM_CLASS):
 
             if ref_data:
                 if ref_data.get('layer_name') == LAYER_FACILITIES:
-                    PanelSign.update(session, pkuid=self.attribute,
-                                      road_id=None,
-                                      subdivision_id=None,
-                                      organization_id=ref_data.get('pkuid'),
-                                      situation=self.mount_status.currentData())
+                    PanelSign.update(
+                        session, pkuid=self.attribute,
+                        road_id=None, subdivision_id=None,
+                        organization_id=ref_data.get('pkuid'),
+                        situation=self.mount_status.currentData(),
+                    )
 
                 if ref_data.get('layer_name') == LAYER_ROADS:
-                    PanelSign.update(session, pkuid=self.attribute,
-                                      road_id=ref_data.get('pkuid'),
-                                      subdivision_id=None,
-                                      organization_id=None,
-                                      situation=self.mount_status.currentData())
+                    PanelSign.update(
+                        session, pkuid=self.attribute,
+                        road_id=ref_data.get('pkuid'),
+                        subdivision_id=None, organization_id=None,
+                        situation=self.mount_status.currentData(),
+                    )
 
                 if ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
-                    PanelSign.update(session, pkuid=self.attribute,
-                                      road_id=None,
-                                      subdivision_id=ref_data.get('pkuid'),
-                                      organization_id=None,
-                                      situation=self.mount_status.currentData())
+                    PanelSign.update(
+                        session, pkuid=self.attribute,
+                        road_id=None,
+                        subdivision_id=ref_data.get('pkuid'),
+                        organization_id=None,
+                        situation=self.mount_status.currentData(),
+                    )
             else:
-                PanelSign.update(session, pkuid=self.attribute,
-                                  situation=self.mount_status.currentData())
+                PanelSign.update(
+                    session, pkuid=self.attribute,
+                    situation=self.mount_status.currentData(),
+                )
 
             QMessageBox.information(
                 self,
                 get_string("Success", self._tr_locale),
-                get_string("This panel has been updated successfully", self._tr_locale),
+                get_string("This panel has been updated successfully",
+                           self._tr_locale),
             )
         except Exception as e:
             logger.exception("Failed to update panel: %s", e)
@@ -564,7 +579,9 @@ class PopupDialog(QDialog, FORM_CLASS):
             )
         except Exception as e:
             logger.exception("Failed to update numbering: %s", e)
-            QMessageBox.critical(self, get_string("Error", self._tr_locale), f'{e}')
+            QMessageBox.critical(
+                self, get_string("Error", self._tr_locale), f'{e}',
+            )
         finally:
             session.close()
         refresh_all_layers(self.iface)

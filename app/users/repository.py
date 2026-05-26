@@ -71,7 +71,8 @@ def get_user_location() -> Any:
     if result:
         session = get_session()
         try:
-            wkt = str(session.query(func.ST_AsText(result.geometry)).first()[0])
+            row = session.query(func.ST_AsText(result.geometry)).first()
+            wkt = str(row[0])
             return wkt
         finally:
             session.close()

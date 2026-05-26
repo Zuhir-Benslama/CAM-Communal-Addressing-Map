@@ -35,12 +35,14 @@ class TestChartMixin(unittest.TestCase):
         self.mixin.type_to_hide = None
 
         self.session_mock = MagicMock()
-        self.session_mock.query.return_value.group_by.return_value.all.return_value = [
+        self.session_mock.query.return_value.group_by.return_value\
+            .all.return_value = [
             ('installed', 5), ('planned', 3),
         ]
         self.session_mock.close = MagicMock()
 
-        session_patch = patch.object(self.mod, 'get_session', return_value=self.session_mock)
+        session_patch = patch.object(
+            self.mod, 'get_session', return_value=self.session_mock)
         self._session_patch = session_patch.start()
 
     def tearDown(self):
@@ -64,13 +66,19 @@ class TestChartMixin(unittest.TestCase):
 
     def test_get_zone_chart_with_data(self):
         dist_mock = MagicMock(return_value=[('type_a', 10), ('type_b', 5)])
-        with patch('plans_adressage.app.orders.repository.get_zone_distribution', dist_mock):
+        with patch(
+            'plans_adressage.app.orders.repository.get_zone_distribution',
+            dist_mock,
+        ):
             self.mixin.get_zone_chart(16)
             dist_mock.assert_called_once_with(16)
 
     def test_get_zone_chart_no_data(self):
         dist_mock = MagicMock(return_value=[])
-        with patch('plans_adressage.app.orders.repository.get_zone_distribution', dist_mock):
+        with patch(
+            'plans_adressage.app.orders.repository.get_zone_distribution',
+            dist_mock,
+        ):
             self.mixin.get_zone_chart(16)
             dist_mock.assert_called_once_with(16)
 
@@ -85,8 +93,10 @@ class TestChartMixin(unittest.TestCase):
         mock_node = MagicMock()
 
         qgis_project = MagicMock()
-        qgis_project.instance.return_value.mapLayersByName.return_value = [mock_layer]
-        qgis_project.instance.return_value.layerTreeRoot.return_value.findLayer.return_value = mock_node
+        (qgis_project.instance.return_value
+         .mapLayersByName.return_value) = [mock_layer]
+        (qgis_project.instance.return_value.layerTreeRoot.return_value
+         .findLayer.return_value) = mock_node
 
         with patch.object(self.mod, 'QgsProject', qgis_project):
             self.mod._toggle_layer_visibility('test_layer', False)
@@ -98,8 +108,10 @@ class TestChartMixin(unittest.TestCase):
         mock_node = MagicMock()
 
         qgis_project = MagicMock()
-        qgis_project.instance.return_value.mapLayersByName.return_value = [mock_layer]
-        qgis_project.instance.return_value.layerTreeRoot.return_value.findLayer.return_value = mock_node
+        (qgis_project.instance.return_value
+         .mapLayersByName.return_value) = [mock_layer]
+        (qgis_project.instance.return_value.layerTreeRoot.return_value
+         .findLayer.return_value) = mock_node
 
         with patch.object(self.mod, 'QgsProject', qgis_project):
             self.mod._toggle_layer_visibility('test_layer', True)

@@ -76,11 +76,18 @@ class Zone(_BaseSpatialModel):
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
-    locality_id = Column(String, ForeignKey('localite.id'), index=True,
-                         info={'label': 'Location'})
-    Type = Column(String, nullable=False,
-                  info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'})
-    Nom = Column(String, info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'})
+    locality_id = Column(
+        String, ForeignKey('localite.id'), index=True,
+        info={'label': 'Location'},
+    )
+    Type = Column(
+        String, nullable=False,
+        info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'},
+    )
+    Nom = Column(
+        String,
+        info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'},
+    )
     Nom_fr = Column(String, nullable=True)
     Nom_en = Column(String, nullable=True)
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=False,
@@ -128,7 +135,7 @@ class Zone(_BaseSpatialModel):
     @classmethod
     def _recalc_has_child(cls, session: Session,
                           zone_pkuid: str) -> None:
-        """Recalculate has_child for a given zone based on actual spatial data."""
+        """Recalculate has_child for a zone based on actual spatial data."""
         zone = session.query(cls).filter_by(id=zone_pkuid).first()
         if not zone:
             return
@@ -182,16 +189,25 @@ class Subdivision(_BaseSpatialModel):
         info={'label': 'Key'},
     )
     locality_id = Column(String, ForeignKey('localite.id'), index=True)
-    Type = Column(String, nullable=False,
-                  info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'})
-    Nom = Column(String, info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'})
+    Type = Column(
+        String, nullable=False,
+        info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'},
+    )
+    Nom = Column(
+        String,
+        info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'},
+    )
     Nom_fr = Column(String, nullable=True)
     Nom_en = Column(String, nullable=True)
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=True)
     parent = Column(Text, ForeignKey('refpoly.id'), nullable=True, index=True)
-    user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
-                     info={'label': 'User'})
-    user = relationship("User", backref="user_poly_child", foreign_keys=[user_id])
+    user_id = Column(
+        Text, ForeignKey('user.id'), nullable=True, index=True,
+        info={'label': 'User'},
+    )
+    user = relationship(
+        "User", backref="user_poly_child", foreign_keys=[user_id],
+    )
 
     @classmethod
     def update(cls, session: Session, pkuid: str,
@@ -257,12 +273,19 @@ class Road(_BaseSpatialModel):
             'label_en': 'Decision No.',
         },
     )
-    Type = Column(String, nullable=False,
-                  info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'})
-    Nom = Column(String, info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'})
+    Type = Column(
+        String, nullable=False,
+        info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'},
+    )
+    Nom = Column(
+        String,
+        info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'},
+    )
     Nom_fr = Column(String, nullable=True)
     Nom_en = Column(String, nullable=True)
-    locality_id = Column(String, ForeignKey('localite.id'), nullable=False, index=True)
+    locality_id = Column(
+        String, ForeignKey('localite.id'), nullable=False, index=True,
+    )
     geometry = Column(Geometry('LINESTRING', srid=SRID), nullable=True)
     zone_id = Column(Text, ForeignKey('refpoly.id'), nullable=True, index=True)
     user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
@@ -458,8 +481,10 @@ class PanelSign(_BaseSpatialModel):
         Text, ForeignKey('refpolychild.id'), nullable=True, index=True,
         info={'label': 'Subdivision'},
     )
-    organization_id = Column(Text, ForeignKey('reforg.id'), nullable=True, index=True,
-                             info={'label': 'Facility'})
+    organization_id = Column(
+        Text, ForeignKey('reforg.id'), nullable=True, index=True,
+        info={'label': 'Facility'},
+    )
     geometry = Column(Geometry('POINT', srid=SRID), nullable=True,
                       info={'label': 'Geometry'})
     user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
@@ -527,7 +552,7 @@ class PanelSign(_BaseSpatialModel):
                 )
                 if not org:
                     raise ValueError(
-                        f"Organization with pkuid {self.organization_id} not found"
+                        f"Organization {self.organization_id} not found"
                     )
                 self.Type = LAYER_FACILITIES
             if self.subdivision_id:
@@ -538,7 +563,7 @@ class PanelSign(_BaseSpatialModel):
                 )
                 if not sub:
                     raise ValueError(
-                        f"Subdivision with pkuid {self.subdivision_id} not found"
+                        f"Subdivision {self.subdivision_id} not found"
                     )
                 self.Type = LAYER_SUBDIVISIONS
             session.add(self)

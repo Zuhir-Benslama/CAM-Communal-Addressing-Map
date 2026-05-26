@@ -26,9 +26,10 @@ class TestAuthMixin(unittest.TestCase):
     def setUp(self):
         self.mixin = self.mod.AuthMixin()
         self.mixin._tr = lambda s: s
-        for attr in ('commune_of_wilaya', 'uname', 'pwd', 'email', 'fname',
-                     'lname', 'pnum', 'username', 'password', 'label_username',
-                     'wilaya_list', 'org_cat', 'org_type', 'activity_cat', 'activity_type'):
+        for attr in ('commune_of_wilaya', 'uname', 'pwd', 'email',
+                     'fname', 'lname', 'pnum', 'username', 'password',
+                     'label_username', 'wilaya_list', 'org_cat',
+                     'org_type', 'activity_cat', 'activity_type'):
             setattr(self.mixin, attr, MagicMock())
         self.mixin.map_options = MagicMock()
         self.mixin.router = MagicMock()
@@ -114,12 +115,15 @@ class TestAuthMixin(unittest.TestCase):
         self.mixin.map_options = MagicMock()
         self.mixin.map_options.currentText = MagicMock(
             return_value='Satellite View 1')
-        self.mixin.map_options.currentData = MagicMock(return_value='url_value')
+        self.mixin.map_options.currentData = MagicMock(
+            return_value='url_value')
         osm_layer = MagicMock()
         osm_layer.isValid = MagicMock(return_value=True)
-        with patch.object(self.mod, 'QgsRasterLayer', return_value=osm_layer), \
+        with patch.object(self.mod, 'QgsRasterLayer',
+                          return_value=osm_layer), \
              patch.object(self.mod, 'QgsProject') as mock_project:
-            mock_project.instance.return_value.mapLayersByName.return_value = []
+            (mock_project.instance.return_value
+             .mapLayersByName.return_value) = []
             result = self.mixin.add_map_layer()
             self.assertTrue(result)
             self.assertEqual(self.mixin.sat_view, 'Satellite View 1')
@@ -129,10 +133,12 @@ class TestAuthMixin(unittest.TestCase):
         self.mixin.map_options = MagicMock()
         self.mixin.map_options.currentText = MagicMock(
             return_value='Satellite View 1')
-        self.mixin.map_options.currentData = MagicMock(return_value='url_value')
+        self.mixin.map_options.currentData = MagicMock(
+            return_value='url_value')
         osm_layer = MagicMock()
         osm_layer.isValid = MagicMock(return_value=True)
-        with patch.object(self.mod, 'QgsRasterLayer', return_value=osm_layer), \
+        with patch.object(self.mod, 'QgsRasterLayer',
+                          return_value=osm_layer), \
              patch.object(self.mod, 'QgsProject') as mock_project:
             mock_project.instance.return_value.mapLayersByName.return_value = [
                 'existing']
@@ -143,7 +149,8 @@ class TestAuthMixin(unittest.TestCase):
         self.mixin.map_options = MagicMock()
         self.mixin.map_options.currentText = MagicMock(
             return_value='Satellite View 1')
-        self.mixin.map_options.currentData = MagicMock(return_value='url_value')
+        self.mixin.map_options.currentData = MagicMock(
+            return_value='url_value')
         osm_layer = MagicMock()
         osm_layer.isValid = MagicMock(return_value=False)
         with patch.object(self.mod, 'QgsRasterLayer', return_value=osm_layer):
@@ -189,21 +196,27 @@ class TestAuthMixin(unittest.TestCase):
         self.mixin.router.findChild = MagicMock(return_value=MagicMock())
         with patch.object(self.mod, 'logout') as mock_logout:
             self.mixin.closeEvent(event)
-            mock_logout.assert_called_once_with(iface=self.mixin.iface, dlg=None)
+            mock_logout.assert_called_once_with(
+                iface=self.mixin.iface, dlg=None)
             event.accept.assert_called_once()
 
     def test_on_select_wilaya(self):
-        with patch('plans_adressage.gui.ui_fillers.fill_commune_of_wilaya') as mock_fill:
+        with patch(
+            'plans_adressage.gui.ui_fillers.fill_commune_of_wilaya'
+        ) as mock_fill:
             self.mixin.on_select_wilaya(0)
             mock_fill.assert_called_once()
 
     def test_on_select_catOrg(self):
-        with patch('plans_adressage.gui.ui_fillers.fill_org_type') as mock_fill:
+        with patch(
+            'plans_adressage.gui.ui_fillers.fill_org_type') as mock_fill:
             self.mixin.on_select_org_cat(0)
             mock_fill.assert_called_once()
 
     def test_on_select_catAct(self):
-        with patch('plans_adressage.gui.ui_fillers.fill_activity_type') as mock_fill:
+        with patch(
+            'plans_adressage.gui.ui_fillers.fill_activity_type'
+        ) as mock_fill:
             self.mixin.on_select_activity_cat(0)
             mock_fill.assert_called_once()
 

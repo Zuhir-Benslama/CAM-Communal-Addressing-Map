@@ -69,14 +69,16 @@ def export_model(model_name: str) -> None:
 
 
 def add_panel_sign(
-    geometry_wkt, mount_status, road_id=None, subdivision_id=None, organization_id=None,
+    geometry_wkt, mount_status,
+    road_id=None, subdivision_id=None, organization_id=None,
     dimensions=None, pkuid=None,
 ):
     instance = PanelSign(
         id=pkuid,
         situation=mount_status,
         road_id=road_id, subdivision_id=subdivision_id,
-        organization_id=organization_id, dimensions=dimensions or DEFAULT_PANEL_DIM,
+        organization_id=organization_id,
+        dimensions=dimensions or DEFAULT_PANEL_DIM,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
     return _add_entity(instance)
@@ -105,7 +107,8 @@ def add_road(geometry_wkt, road_name, type_road, road_decision, pkuid=None,
 
 
 def add_numbering(
-    geometry_wkt, valeur, road_id=None, subdivision_id=None, repetition=None, etat=None,
+    geometry_wkt, valeur,
+    road_id=None, subdivision_id=None, repetition=None, etat=None,
     activity_cat=None, activity_type=None, pkuid=None,
 ):
     instance = Numbering(
@@ -141,7 +144,7 @@ def add_zone(geometry_wkt, zone_type, name, pkuid=None,
 
 
 def count_numberings(etat: str) -> int:
-    """Count numberings by state, querying the Num view (defined in Views.sql)."""
+    """Count numberings by state (query Num view in Views.sql)."""
     session = get_session()
     try:
         result = session.execute(
@@ -155,7 +158,7 @@ def count_numberings(etat: str) -> int:
 
 
 def count_panels(panel_type: str, etat: str) -> int:
-    """Count panels by type and state, querying the Pan view (defined in Views.sql)."""
+    """Count panels by type and state (query Pan view in Views.sql)."""
     session = get_session()
     try:
         result = session.execute(

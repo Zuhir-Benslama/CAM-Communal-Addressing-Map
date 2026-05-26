@@ -8,7 +8,8 @@ class ResourcesTest(unittest.TestCase):
 
     def test_icon_exists(self):
         """The plugin icon should exist at the expected path."""
-        path = os.path.join(os.path.dirname(__file__), '..', 'resources', 'icon.png')
+        path = os.path.join(
+            os.path.dirname(__file__), '..', 'resources', 'icon.png')
         self.assertTrue(os.path.isfile(os.path.abspath(path)),
                         'resources/icon.png should exist')
 

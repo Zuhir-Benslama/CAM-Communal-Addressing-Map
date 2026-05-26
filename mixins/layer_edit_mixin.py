@@ -30,9 +30,9 @@ class LayerEditMixin:
     """Mixin for updating layer geometries and adding features via forms.
 
     Cross-mixin protocol (attributes set by map_tools_mixin or owning dialog):
-        _last_feature_wkt (str | None) — WKT geometry of the last created feature
-        _last_feature_pkuid (str | None) — PK of the last created feature
-        ref_identify_tool (IdentifyTool | None) — reference selection tool (get_pkuid)
+        _last_feature_wkt (str | None) — WKT geometry of last created feature
+        _last_feature_pkuid (str | None) — PK of last created feature
+        ref_identify_tool (IdentifyTool | None) — ref selection tool
         measure_tool (MeasureTool | None) — measurement line tool
         update_object (bool) — flag for edit-vs-insert mode
         is_pan / is_org / is_road / is_num / is_city / is_zone (QCheckBox)
@@ -43,7 +43,9 @@ class LayerEditMixin:
         activity_cat / activity_type (QComboBox)
     """
 
-    def _update_handler(self: HasIface & HasDrawSignals, layer_name: str) -> None:
+    def _update_handler(
+        self: HasIface & HasDrawSignals, layer_name: str,
+    ) -> None:
         """Enable geometry editing for a named layer."""
         layers = QgsProject.instance().mapLayersByName(layer_name)
         if not layers:
@@ -65,7 +67,9 @@ class LayerEditMixin:
         geometry_wkt = getattr(self, '_last_feature_wkt', None)
         pkuid = getattr(self, '_last_feature_pkuid', None)
         if not geometry_wkt or not pkuid:
-            logger.warning("No geometry or pkuid available for %s", entity_name)
+            logger.warning(
+                "No geometry or pkuid available for %s", entity_name,
+            )
             return None, None
         return geometry_wkt, pkuid
 
@@ -86,8 +90,9 @@ class LayerEditMixin:
             return {f'{field_base}_{loc}': value}
         return {}
 
-    def add_panel(
-        self: HasUiWidgets & HasFeatureState & HasLayerTools & HasTranslation & HasDrawSignals,
+    def add_panel(  # noqa: E501
+        self: HasUiWidgets & HasFeatureState & HasLayerTools
+        & HasTranslation & HasDrawSignals,
     ) -> None:
         """Add a new panel sign linked to a selected road, org, or
         subdivision."""
@@ -161,7 +166,9 @@ class LayerEditMixin:
             logger.exception("Failed to add organization: %s", e)
             self._show_error('Cannot add facility, it already exists')
 
-    def add_road(self: HasUiWidgets & HasFeatureState & HasTranslation) -> None:
+    def add_road(
+        self: HasUiWidgets & HasFeatureState & HasTranslation,
+    ) -> None:
         """Add a new road through the form."""
         if not self.is_road.isChecked():
             return
@@ -214,8 +221,9 @@ class LayerEditMixin:
             no_callback()
         return False
 
-    def add_numbering(
-        self: HasUiWidgets & HasLayerTools & HasTranslation & HasDrawSignals,
+    def add_numbering(  # noqa: E501
+        self: HasUiWidgets & HasLayerTools & HasTranslation
+        & HasDrawSignals,
     ) -> None:
         """Add a new numbering linked to a selected road or subdivision."""
         if not self.is_num.isChecked():
@@ -239,11 +247,13 @@ class LayerEditMixin:
             }
             if ref_data and ref_data.get('layer_name') == LAYER_ROADS:
                 add_numbering(
-                    **common, road_id=ref_data.get('pkuid'), subdivision_id=None
+                    **common,
+                    road_id=ref_data.get('pkuid'), subdivision_id=None,
                 )
             elif ref_data and ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
                 add_numbering(
-                    **common, road_id=None, subdivision_id=ref_data.get('pkuid')
+                    **common,
+                    road_id=None, subdivision_id=ref_data.get('pkuid'),
                 )
 
             if self.measure_tool:
@@ -265,7 +275,9 @@ class LayerEditMixin:
         self.num_val.clear()
         self._draw_handler(LAYER_NUMBERING)
 
-    def add_city(self: HasUiWidgets & HasFeatureState & HasTranslation) -> None:
+    def add_city(
+        self: HasUiWidgets & HasFeatureState & HasTranslation,
+    ) -> None:
         """Add a new subdivision through the form."""
         if not self.is_city.isChecked():
             return

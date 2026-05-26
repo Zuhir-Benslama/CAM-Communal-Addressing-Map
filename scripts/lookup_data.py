@@ -4,7 +4,9 @@ import json
 import os
 from typing import Any
 
-_DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'template_data')
+_DATA_DIR = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), 'template_data',
+)
 
 _cache: dict[str, list[dict[str, Any]]] = {}
 
@@ -44,7 +46,8 @@ def numbering_states() -> list[dict[str, Any]]:
 
 
 # ---------------------------------------------------------------------------
-# Organization types: {TypeAr, TypeFr?, categorie, categorie_fr?, categorie_en?, ...}
+# Organization types: {TypeAr, TypeFr?, categorie, categorie_fr?,
+#                     categorie_en?, ...}
 #   - TypeAr = Arabic PK
 #   - TypeFr -> pk_fr equivalent
 #   - categorie = category (Arabic)
@@ -70,7 +73,9 @@ def org_categories(locale: str = 'ar') -> list[tuple[str, str]]:
     result.sort(key=lambda x: x[1])
     return result
 
-def org_types_for_category(cat: str, locale: str = 'ar') -> list[tuple[str, str]]:
+def org_types_for_category(
+    cat: str, locale: str = 'ar',
+) -> list[tuple[str, str]]:
     """Return organization types for a category -> (display, pk)."""
     result: list[tuple[str, str]] = []
     for entry in organization_types():
@@ -121,7 +126,9 @@ def activity_categories(locale: str = 'ar') -> list[tuple[str, str]]:
     result.sort(key=lambda x: x[1])
     return result
 
-def activity_types_for_category(cat: str, locale: str = 'ar') -> list[tuple[str, str]]:
+def activity_types_for_category(
+    cat: str, locale: str = 'ar',
+) -> list[tuple[str, str]]:
     """Return activity types for a category -> (display, value)."""
     result: list[tuple[str, str]] = []
     for entry in activity_types():
@@ -247,7 +254,9 @@ def apply_widget_texts(dialog, locale: str) -> None:
     for w in dialog.findChildren((QLabel, QPushButton, QCheckBox)):
         name = w.objectName()
         if name in widgets_data:
-            w.setText(widgets_data[name].get(locale, widgets_data[name].get('ar', '')))
+            w.setText(widgets_data[name].get(
+                locale, widgets_data[name].get('ar', ''),
+            ))
         else:
             src = _src_text(w, 'text')
             if src:
@@ -257,7 +266,9 @@ def apply_widget_texts(dialog, locale: str) -> None:
     for w in dialog.findChildren(QGroupBox):
         name = w.objectName()
         if name in widgets_data:
-            w.setTitle(widgets_data[name].get(locale, widgets_data[name].get('ar', '')))
+            w.setTitle(widgets_data[name].get(
+                locale, widgets_data[name].get('ar', ''),
+            ))
         else:
             src = _src_text(w, 'title')
             if src:
@@ -289,7 +300,9 @@ def apply_widget_texts(dialog, locale: str) -> None:
         if not tip:
             continue
         if name in widgets_data:
-            w.setToolTip(widgets_data[name].get(locale, widgets_data[name].get('ar', '')))
+            w.setToolTip(widgets_data[name].get(
+                locale, widgets_data[name].get('ar', ''),
+            ))
         else:
             translated = _get_string(tip, locale)
             if translated != tip:

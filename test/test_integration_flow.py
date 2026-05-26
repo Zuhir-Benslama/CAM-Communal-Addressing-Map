@@ -39,8 +39,8 @@ class IntegrationFlowTest(unittest.TestCase):
                  mods['layer_ops_mixin'].LayerOpsMixin,
                  mods['map_tools_mixin'].MapToolsMixin)
         host = type('Host', bases, {'_tr': lambda self, s: s})()
-        # Override validate_text to accept single-arg calls and return just text
-        mods['auth_mixin'].validate_text = lambda t: t
+        # Override validate_text to accept single arg and return just text
+        mods['auth_mixin'].validate_text = lambda t: t  # noqa: E731
         return host, mods
 
     def _setup_widgets(self, host):
@@ -104,7 +104,7 @@ class IntegrationFlowTest(unittest.TestCase):
     # --- Integration scenarios ---
 
     def test_login_flow_invokes_layer_init_and_add_map(self):
-        """Login calls sign_in, init_allowed_zone, refresh_all_layers, add_map_layer."""
+        """Login calls sign_in, init_allowed_zone, refresh, add_map_layer."""
         host, mods = self._make_host()
         self._setup_widgets(host)
 
@@ -114,8 +114,10 @@ class IntegrationFlowTest(unittest.TestCase):
         with patch.object(mods['auth_mixin'], 'sign_in', sign_in), \
              patch.object(mods['auth_mixin'], 'get_current_user',
                           get_current_user), \
-             patch.object(mods['auth_mixin'], 'init_allowed_zone') as mock_init, \
-             patch.object(mods['auth_mixin'], 'refresh_all_layers') as mock_refresh, \
+             patch.object(mods['auth_mixin'],
+                          'init_allowed_zone') as mock_init, \
+             patch.object(mods['auth_mixin'],
+                          'refresh_all_layers') as mock_refresh, \
              patch.object(host, 'add_map_layer', return_value=True), \
              patch.object(host, 'private_route') as mock_route:
             host.login_user()

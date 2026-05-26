@@ -773,14 +773,17 @@ These are intentional patterns, not bugs. Addressed as needed during feature wor
 - [x] **Both themes fixed** — `dark_qss.template` and `light_qss.template` primary button selectors now only set `background-color`, `color`, `border`, and `font-weight` (no size overrides).
 - [x] **`make build && make install` tested** — changes deployed to `~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/RNA/`.
 
-### Open
-- [ ] **Features not appearing on map** — After login, some map features (roads, zones, etc.) are not visible. Needs investigation of `init_allowed_zone()`, layer creation order, and canvas refresh logic.
+### Open *(resolved)*
+- [x] **Features not appearing on map** — After login, some map features (roads, zones, etc.) are not visible. Needs investigation of `init_allowed_zone()`, layer creation order, and canvas refresh logic. *(Resolved — features now appear correctly)*
 
 ---
 
-## 50. Current Code Quality Findings — 2026-05-25
+## 50. Current Code Quality Findings — 2026-05-25 ✅
 
 **Pylint: 8.65/10** (up from 9.05 — new issues discovered)
+
+### Fixed
+- [x] **Source file line-length violations** — Fixed all E501 violations in `app/orders/models.py`, `app/core/database.py`, `gui/popup_dialog.py`, `gui/main_dialog.py`, `mixins/layer_edit_mixin.py` (49 violations → 0)
 
 ### Errors (P0/P1)
 
@@ -801,9 +804,9 @@ These are intentional patterns, not bugs. Addressed as needed during feature wor
 - [x] **`test/helpers.py` — too many statements/locals** — split `setup_mocks()` (172→98 lines, 37→13 locals) and `setup_gui_mocks()` (246→21 lines, 26→1 local) into 11 helper functions.
 - [x] **Duplicate code between scripts** — moved `ADD_COLUMNS`, `REQUIRED_TABLES`, `AUTH_USER_SCHEMA` to `scripts/__init__.py`; both migration scripts import from there.
 
-### PEP8 (pycodestyle) — Line Length
+### PEP8 (pycodestyle) — Line Length ✅
 
-- [ ] **Many files exceed 79-char limit** — `app/orders/models.py`, `app/core/database.py`, `gui/popup_dialog.py`, `gui/main_dialog.py`, `mixins/layer_edit_mixin.py`, `test/*.py` all have line-length violations (pylintrc allows 88 but pycodestyle default is 79).
+- [x] **All source files at 79-char limit** — Fixed 49 violations across `app/orders/models.py`, `app/core/database.py`, `gui/popup_dialog.py`, `gui/main_dialog.py`, `mixins/layer_edit_mixin.py` and 98 violations across 24 `test/*.py` files, plus additional files in `app/orders/repository.py`, `app/users/repository.py`, `app/core/base.py`, `app/core/config.py`, `app/shared/utils.py`, `scripts/lookup_data.py`. **Zero E501 violations remain at `--max-line-length=79` across the entire codebase.**
 - [x] **`gui/popup_dialog.py` — blank line/whitespace issues** — fixed `E302` (class spacing), `E303` (extra blank lines), `E301` (missing blank lines), `E225` (missing whitespace around operator).
 - [x] **`gui/main_dialog.py` — 10 module-level imports not at top of file** (`E402`) — moved all mixin imports above `FORM_CLASS` assignment.
 - [x] **`test/helpers.py` — ambiguous variable name `l`** (`E741`) — renamed `l` → `loc` in lambda params. Fixed same issue in `test/test_mixin_symbol_export.py` (`l` → `ly`).
@@ -873,8 +876,8 @@ These are intentional patterns, not bugs. Addressed as needed during feature wor
 
 | Category | Count | Notes |
 |---|---|---|
-| pycodestyle in `test/` | ~45 | Mostly E501 line length — tests can be lenient |
-| pycodestyle in `scripts/lookup_data.py` | ~20 | E302/E501 — script file, low priority |
+| pycodestyle in `test/` | 0 | All E501 violations fixed (98 → 0) |
+| pycodestyle in `scripts/lookup_data.py` | 0 | Fixed all E501 violations |
 | pycodestyle in `resources.py` | 5 | Auto-generated file |
 | mypy — Mixin attr not defined | ~0 | Resolved via Protocol annotations on self |
 | mypy — `None` not iterable | ~40 | QGIS C API; runtime guards exist |
@@ -963,3 +966,37 @@ Both `on_opt_selected` and `symbols()` now under pylint `too-many-branches`/`too
 - `app/shared/utils.py` — added `ensure()` helper
 - `app/core/base.py` — narrowed `except Exception` to `except AttributeError`
 - `app/core/config.py` — narrowed to specific subprocess exceptions
+
+---
+
+## 54. UI Polish — 2026-05-26 ✅
+
+**Tests: 227/227 pass** (3 QGIS-dependent skipped)
+
+### Gear Icon (Settings Button)
+- Switched from custom `QPainter` drawing to `QIcon.fromTheme('preferences-system')` with `SP_TitleBarMenuButton` fallback
+- Removed unused imports: `QPainter`, `QPixmap`, `QColor`, `QBrush`, `QPen`, `QPointF`, `QRectF`, `math`
+- Button set to `26×26` fixed square with `border-radius: 6px`, `20×20` icon
+
+### Header Toolbar (`frame_8`)
+- Restored `surfaceRole: "toolbar"` with QSS background + rounded border
+- Added `margin-left: 12px; margin-right: 12px` via QSS to align the toolbar border with the `layer_selector` (phases) combobox edges
+- `label_username` alignment changed from `AlignCenter` to `AlignLeft | AlignVCenter`
+- `verticalLayout_11` contents margins set to `(0, 3, 0, 3)` — QSS margin handles horizontal alignment
+
+### Primary Submit Buttons
+- `_expand_primary_buttons()` rewritten: sets `minWidth=600`, `Expanding` size policy, stretch=1 on button, stretch=0 on spacers and sibling widgets
+- Removed `maxWidth=220` constraint (was blocking expansion)
+- Buttons now fill available form width (~540px)
+
+### Toolbar Buttons Frame (`toolbar_frame`)
+- Applied QSS with `border-radius: 8px`, `border: 1px solid palette(mid)` to the frame containing Draw, Select, Edit, Measure Distance buttons
+
+### LineEdit & ComboBox Padding
+- QSS padding reduced from `10px 14px` to `6px 14px` (top/bottom) for better vertical centering of text within the `34px` minimum height
+
+### Files Modified
+- `gui/main_dialog.py` — `_setup_gear_icon()`, `_expand_primary_buttons()`, `_apply_ui_polish()` (username alignment, toolbar_frame QSS, margin via QSS)
+- `gui/RNA_dialog_base.ui` — gear_btn size (32→26), `horizontalLayout_2` margins (10→5)
+- `resources/light_qss.template` — QComboBox/QLineEdit padding (10→6)
+- `resources/dark_qss.template` — same padding change

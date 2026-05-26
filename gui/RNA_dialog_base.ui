@@ -937,21 +937,21 @@
                         </property>
                         <item>
                           <layout class="QHBoxLayout" name="horizontalLayout_2">
-                            <property name="spacing">
-                              <number>1</number>
-                            </property>
-                            <property name="leftMargin">
-                              <number>10</number>
-                            </property>
-                            <property name="topMargin">
-                              <number>1</number>
-                            </property>
-                            <property name="rightMargin">
-                              <number>10</number>
-                            </property>
-                            <property name="bottomMargin">
-                              <number>1</number>
-                            </property>
+                             <property name="spacing">
+                               <number>1</number>
+                             </property>
+                             <property name="leftMargin">
+                               <number>5</number>
+                             </property>
+                             <property name="topMargin">
+                               <number>1</number>
+                             </property>
+                             <property name="rightMargin">
+                               <number>5</number>
+                             </property>
+                             <property name="bottomMargin">
+                               <number>1</number>
+                             </property>
                               <item>
                                 <widget class="QLabel" name="label_username">
                                   <property name="font">
@@ -982,18 +982,18 @@
                                   <widget class="QPushButton" name="gear_btn">
                                    <property name="minimumSize">
                                      <size>
-                                       <width>28</width>
-                                       <height>28</height>
+                                       <width>26</width>
+                                       <height>26</height>
                                      </size>
                                    </property>
                                    <property name="maximumSize">
                                      <size>
-                                       <width>28</width>
-                                       <height>28</height>
+                                       <width>26</width>
+                                       <height>26</height>
                                      </size>
                                    </property>
                                    <property name="text">
-                                     <string>Settings</string>
+                                     <string/>
                                    </property>
                                    <property name="toolTip">
                                      <string>Toggle Settings</string>

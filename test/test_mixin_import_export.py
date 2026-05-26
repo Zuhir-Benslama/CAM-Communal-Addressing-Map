@@ -33,7 +33,8 @@ class TestImportExportMixin(unittest.TestCase):
         self.mixin.type_to_hide = 'Panels'
         self.mixin.current_user = {'wilaya': '16', 'commune': 'Alger Centre'}
         self.mixin.dateEdit = MagicMock()
-        self.mixin.dateEdit.date().toString = MagicMock(return_value='2026/05/21')
+        self.mixin.dateEdit.date().toString = MagicMock(
+            return_value='2026/05/21')
         self.mixin.lineEdit_by = MagicMock()
         self.mixin.lineEdit_by.text = MagicMock(return_value='admin')
         self.mixin.lineEdit_type = MagicMock()
@@ -45,7 +46,8 @@ class TestImportExportMixin(unittest.TestCase):
         canvas = MagicMock()
         canvas.extent.return_value.scale = MagicMock()
         canvas.layers.return_value = []
-        canvas.mapSettings.return_value.destinationCrs.return_value = MagicMock()
+        (canvas.mapSettings.return_value
+         .destinationCrs.return_value) = MagicMock()
         canvas.scale.return_value = scale_value
         self.mixin.iface.mapCanvas = MagicMock(return_value=canvas)
         return canvas

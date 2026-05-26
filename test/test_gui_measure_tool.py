@@ -24,7 +24,8 @@ class TestMeasureTool(unittest.TestCase):
 
     def setUp(self):
         self.canvas = MagicMock()
-        self.canvas.getCoordinateTransform.return_value.transform.return_value = MagicMock()
+        tr = self.canvas.getCoordinateTransform.return_value
+        tr.transform.return_value = MagicMock()
         self.iface = MagicMock()
         self.tool = self.mod.MeasureTool(self.canvas, self.iface)
         self.tool.toMapCoordinates = MagicMock(return_value=MagicMock())

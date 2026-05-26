@@ -23,6 +23,7 @@
 import logging
 import os
 from PyQt5.QtCore import Qt, QDate, QSettings, QSize
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QApplication, QDialog, QGroupBox, QLabel,
     QPushButton, QVBoxLayout, QHBoxLayout,
@@ -43,7 +44,9 @@ from ..constants import (
     SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, SETTINGS_KEY_LOCALE,
     AVAILABLE_LOCALES, current_locale,
 )
-from ..scripts.lookup_data import get_string, apply_widget_texts, clear_i18n_cache
+from ..scripts.lookup_data import (
+    get_string, apply_widget_texts, clear_i18n_cache,
+)
 from ..mixins.chart_mixin import ChartMixin
 from ..mixins.map_tools_mixin import MapToolsMixin
 from ..mixins.auth_mixin import AuthMixin
@@ -158,7 +161,9 @@ class RNADialog(
         self.sign_in_user.clicked.connect(self.login_user)
         self.wilaya_list.currentIndexChanged.connect(self.on_select_wilaya)
         self.org_cat.currentIndexChanged.connect(self.on_select_org_cat)
-        self.activity_cat.currentIndexChanged.connect(self.on_select_activity_cat)
+        self.activity_cat.currentIndexChanged.connect(
+            self.on_select_activity_cat,
+        )
         self.abort_uc.clicked.connect(lambda: self.public_route('login'))
 
         self.draw_btn.clicked.connect(
@@ -194,7 +199,9 @@ class RNADialog(
         self.page_numbering.keyPressEvent = (
             lambda e: self.key_press_event(e, 'add_numbering')
         )
-        self.page_panels.keyPressEvent = lambda e: self.key_press_event(e, 'add_panel')
+        self.page_panels.keyPressEvent = lambda e: self.key_press_event(
+            e, 'add_panel',
+        )
 
         self.mesure_dist.clicked.connect(self.activate_measure)
 
@@ -266,7 +273,9 @@ class RNADialog(
         """Build the theme and locale selector widgets in the settings area."""
         settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
 
-        self._settings_group = QGroupBox(get_string("Settings", self._tr_locale))
+        self._settings_group = QGroupBox(
+            get_string("Settings", self._tr_locale),
+        )
         self._settings_group.setObjectName("_settings_group")
         self._settings_group.setLayout(QVBoxLayout())
 
@@ -277,10 +286,14 @@ class RNADialog(
         theme_row.addWidget(self._theme_label)
         self._theme_combo = QComboBox()
         self._theme_combo.setObjectName("_theme_combo")
-        self._theme_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self._theme_combo.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Fixed,
+        )
         self._theme_combo.addItem(THEME_DARK, THEME_DARK)
         self._theme_combo.addItem(THEME_LIGHT, THEME_LIGHT)
-        self._theme_combo.currentIndexChanged[int].connect(self._on_theme_changed)
+        self._theme_combo.currentIndexChanged[int].connect(
+            self._on_theme_changed,
+        )
         saved_theme = settings.value(SETTINGS_KEY_THEME, DEFAULT_THEME)
         theme_map = {'فاتح': THEME_LIGHT, 'داكن': THEME_DARK}
         saved_theme = theme_map.get(saved_theme, saved_theme)
@@ -302,10 +315,14 @@ class RNADialog(
         locale_row.addWidget(self._locale_label)
         self._locale_combo = QComboBox()
         self._locale_combo.setObjectName("_locale_combo")
-        self._locale_combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self._locale_combo.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Fixed,
+        )
         for code, label in AVAILABLE_LOCALES:
             self._locale_combo.addItem(label, code)
-        self._locale_combo.currentIndexChanged[int].connect(self._on_locale_changed)
+        self._locale_combo.currentIndexChanged[int].connect(
+            self._on_locale_changed,
+        )
         self._locale_combo.blockSignals(True)
         saved_locale = settings.value(SETTINGS_KEY_LOCALE, "")
         if saved_locale:
@@ -316,7 +333,9 @@ class RNADialog(
         locale_row.addWidget(self._locale_combo)
         self._settings_group.layout().addLayout(locale_row)
 
-        self.scrollAreaWidgetContents_2.layout().addWidget(self._settings_group)
+        self.scrollAreaWidgetContents_2.layout().addWidget(
+            self._settings_group,
+        )
 
     def _on_theme_changed(self, _index: int) -> None:
         """Persist and apply the newly selected theme."""
@@ -352,38 +371,6 @@ class RNADialog(
         else:
             QApplication.setLayoutDirection(Qt.LeftToRight)
 
-    def _set_button_roles(self) -> None:
-        """Assign semantic role properties to all push buttons."""
-        primary_buttons = {
-            'sign_in_user',
-            'submit_usr',
-            'submit_zone',
-            'submit_road',
-            'submit_org',
-            'submit_subd',
-            'submit_num',
-            'submit_pan',
-            'report',
-        }
-        danger_buttons = {'abort_uc'}
-        tool_prefixes = ('draw_', 'select_', 'edit_')
-
-        for button in self.findChildren(QPushButton):
-            name = button.objectName()
-            if name in primary_buttons:
-                button.setProperty('role', 'primary')
-            elif name in danger_buttons:
-                button.setProperty('role', 'danger')
-            elif any(name.startswith(prefix) for prefix in tool_prefixes):
-                button.setProperty('role', 'tool')
-                button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-            else:
-                button.setProperty('role', 'ghost')
-
-            button.setMinimumHeight(max(button.minimumHeight(), 34))
-            button.setMaximumWidth(16777215)
-            button.setIconSize(QSize(16, 16))
-
     def _apply_ui_polish(self) -> None:
         """Apply consistent sizing, spacing, and styling across all widgets."""
         self.setObjectName('rnaMainDialog')
@@ -396,11 +383,26 @@ class RNADialog(
         self.router.setMaximumHeight(16777215)
         self.groupBox.setMaximumSize(16777215, 16777215)
         self.groupBox.setMinimumSize(500, 390)
-        self.groupBox.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        self.groupBox.setSizePolicy(
+            QSizePolicy.Preferred, QSizePolicy.Preferred,
+        )
 
         self.menu.setDocumentMode(True)
         self.menu.setUsesScrollButtons(True)
         self.menu.tabBar().hide()
+
+        self.frame_8.layout().setContentsMargins(0, 3, 0, 3)
+
+        try:
+            self.toolbar_frame.setStyleSheet("""
+                QFrame#toolbar_frame {
+                    border: 1px solid palette(mid);
+                    border-radius: 8px;
+                    background: palette(window);
+                }
+            """)
+        except (AttributeError, RuntimeError):
+            pass
 
         for frame_name, role in {
             'frame_8': 'toolbar',
@@ -409,6 +411,10 @@ class RNADialog(
             frame = getattr(self, frame_name, None)
             if frame is not None:
                 frame.setProperty('surfaceRole', role)
+                if role == 'toolbar':
+                    frame.setStyleSheet(
+                        "QFrame#frame_8 { margin-left: 12px; margin-right: 12px; }"
+                    )
                 if role == 'footer':
                     self._balance_footer(frame)
 
@@ -417,7 +423,7 @@ class RNADialog(
         except RuntimeError:
             label_username = None
         if label_username is not None:
-            label_username.setAlignment(Qt.AlignCenter)
+            label_username.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
             label_username.setSizePolicy(
                 QSizePolicy.Expanding, QSizePolicy.Preferred
             )
@@ -452,6 +458,11 @@ class RNADialog(
             widget.setMaximumWidth(16777215)
             widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
+        for widget in self.findChildren(QLabel):
+            widget.setAlignment(
+                widget.alignment() | Qt.AlignVCenter,
+            )
+
         for widget in self.findChildren(QComboBox):
             widget.setMinimumHeight(max(widget.minimumHeight(), 34))
             widget.setMaximumWidth(16777215)
@@ -470,6 +481,29 @@ class RNADialog(
                 label.setMinimumWidth(120)
 
         self._set_button_roles()
+        self._setup_gear_icon()
+
+    def _setup_gear_icon(self) -> None:
+        """Set a gear icon from the system theme on the settings button."""
+        try:
+            gear = self.gear_btn
+        except (AttributeError, RuntimeError):
+            return
+        if gear is None:
+            return
+        icon = QIcon.fromTheme('preferences-system',
+                                gear.style().standardIcon(gear.style().SP_TitleBarMenuButton))
+        if not icon.isNull():
+            gear.setIcon(icon)
+            gear.setIconSize(QSize(20, 20))
+        gear.setText('')
+        gear.setFixedSize(26, 26)
+        gear.setStyleSheet("QPushButton { border: 1px solid palette(mid); border-radius: 6px; background: transparent; padding: 0px; }")
+        try:
+            tip = self._tr("Settings")
+        except (AttributeError, RuntimeError):
+            tip = "Settings"
+        gear.setToolTip(tip)
 
     def _set_button_roles(self) -> None:
         """Assign semantic role properties to all push buttons."""
@@ -502,10 +536,39 @@ class RNADialog(
             button.setMinimumHeight(max(button.minimumHeight(), 34))
             if name in primary_buttons or name == 'sign_in_user':
                 button.setMinimumWidth(180)
-                button.setMaximumWidth(220)
+                button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
             else:
                 button.setMaximumWidth(16777215)
             button.setIconSize(QSize(16, 16))
+        self._expand_primary_buttons()
+
+    def _expand_primary_buttons(self) -> None:
+        """Make primary buttons expand to fill available width."""
+        primary_names = {
+            'sign_in_user', 'submit_usr', 'submit_zone', 'submit_road',
+            'submit_org', 'submit_subd', 'submit_num', 'submit_pan', 'report',
+        }
+        for layout in self.findChildren(QHBoxLayout):
+            has_primary = False
+            for i in range(layout.count()):
+                item = layout.itemAt(i)
+                if item and item.widget() and item.widget().objectName() in primary_names:
+                    has_primary = True
+                    break
+            if not has_primary:
+                continue
+            for i in range(layout.count()):
+                item = layout.itemAt(i)
+                if item and item.widget() and item.widget().objectName() in primary_names:
+                    item.widget().setMinimumWidth(600)
+                    item.widget().setSizePolicy(
+                        QSizePolicy.Expanding, QSizePolicy.Fixed,
+                    )
+                    layout.setStretch(i, 1)
+                elif item and item.spacerItem():
+                    layout.setStretch(i, 0)
+                elif item and item.widget():
+                    layout.setStretch(i, 0)
 
     def apply_theme(self) -> None:
         """Apply the current theme stylesheet to the dialog."""

@@ -86,7 +86,8 @@ class TestPopupDialog(unittest.TestCase):
         expected = {
             self.mod.LAYER_ROADS: self.mod.PopupDialog._populate_road,
             self.mod.LAYER_FACILITIES: self.mod.PopupDialog._populate_facility,
-            self.mod.LAYER_SUBDIVISIONS: self.mod.PopupDialog._populate_subdivision,
+            self.mod.LAYER_SUBDIVISIONS:
+                self.mod.PopupDialog._populate_subdivision,
             self.mod.LAYER_ZONES: self.mod.PopupDialog._populate_zone,
             self.mod.LAYER_NUMBERING: self.mod.PopupDialog._populate_numbering,
             self.mod.LAYER_PANELS: self.mod.PopupDialog._populate_panel,
@@ -99,7 +100,9 @@ class TestPopupDialog(unittest.TestCase):
                 )
 
     @patch('plans_adressage.gui.popup_dialog.get_session')
-    def test_set_form_unknown_model_warns_and_continues(self, mock_get_session):
+    def test_set_form_unknown_model_warns_and_continues(
+        self, mock_get_session,
+    ):
         mock_get_session.return_value = MagicMock()
         with patch('plans_adressage.gui.popup_dialog.qgis_config') as mock_cfg:
             mock_cfg.return_value = {

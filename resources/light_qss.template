@@ -40,7 +40,7 @@
         color: {{LIGHT_TEXT}};
         border: 1px solid {{LIGHT_BORDER}};
         border-radius: 6px;
-        padding: 10px 14px;
+        padding: 6px 14px;
         min-height: 1.2em;
         selection-background-color: {{LIGHT_SELECTION}};
     }}
@@ -52,7 +52,7 @@
         color: {{LIGHT_TEXT}};
         border: 1px solid {{LIGHT_BORDER}};
         border-radius: 6px;
-        padding: 10px 14px;
+        padding: 6px 14px;
         min-height: 1.2em;
         combobox-popup: 0;
     }}

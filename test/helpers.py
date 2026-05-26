@@ -123,7 +123,8 @@ def setup_mocks():
             {'layer': 'zones', 'model': 'Zone'},
         ],
         'other_layers': [
-            {'label': 'basemap', 'style': 'basemap.qml', 'url': '?query=select 1'},
+            {'label': 'basemap', 'style': 'basemap.qml',
+             'url': '?query=select 1'},
         ],
         'categorize': [{'layer': 'roads', 'by': ['type']}],
     })
@@ -143,7 +144,8 @@ def setup_mocks():
     sys.modules['plans_adressage.app.core.database'] = _database
 
     sys.modules['plans_adressage.app.orders.models'] = _mock_orders_models(
-        ['Road', 'Zone', 'Localite', 'Organization', 'Subdivision', 'PanelSign', 'Numbering'],
+        ['Road', 'Zone', 'Localite', 'Organization',
+         'Subdivision', 'PanelSign', 'Numbering'],
     )
 
     _users_models = MagicMock()
@@ -253,7 +255,8 @@ def _make_gui_pyqt_mocks():
         pass
 
     _qgis_uic = MagicMock()
-    _qgis_uic.loadUiType = MagicMock(return_value=(_FakePopupDialogType, MagicMock))
+    _qgis_uic.loadUiType = MagicMock(
+        return_value=(_FakePopupDialogType, MagicMock))
 
     _qgis_qtcore = MagicMock()
     _qgis_qtcore.Qt = MagicMock()
@@ -283,8 +286,8 @@ def _make_gui_pyqt_mocks():
 
     _qgis_qtwidgets = MagicMock()
     _qgis_qtwidgets.QComboBox = MagicMock()
-    for w in ('QDateEdit', 'QFormLayout', 'QLayout', 'QLineEdit', 'QSizePolicy',
-              'QDialogButtonBox', 'QApplication'):
+    for w in ('QDateEdit', 'QFormLayout', 'QLayout', 'QLineEdit',
+              'QSizePolicy', 'QDialogButtonBox', 'QApplication'):
         setattr(_qgis_qtwidgets, w, MagicMock())
     _qgis_qtwidgets.QMessageBox = MagicMock()
     _qgis_qtwidgets.QPushButton = _FakeQPushButton
@@ -302,9 +305,10 @@ def _make_gui_pyqt_mocks():
 
 def _setup_gui_app_packages():
     """Register MagicMock stubs for ``app.*`` subpackages in sys.modules."""
-    for pkg in ('app', 'app.core', 'app.users', 'app.orders', 'app.shared',
-                'app.core.database', 'app.orders.models', 'app.orders.repository',
-                'app.users.models', 'app.users.repository', 'app.users.service',
+    for pkg in ('app', 'app.core', 'app.users', 'app.orders',
+                'app.shared', 'app.core.database', 'app.orders.models',
+                'app.orders.repository', 'app.users.models',
+                'app.users.repository', 'app.users.service',
                 'app.shared.utils'):
         _mock = MagicMock()
         _mock.__path__ = [pkg.replace('.', '/')]
@@ -334,7 +338,8 @@ def _setup_gui_domain_mocks():
     sys.modules['plans_adressage.constants'] = _constants
 
     _lookup = MagicMock()
-    _lookup.get_string = lambda s, loc=None: s if isinstance(s, str) else 'test'
+    _lookup.get_string = lambda s, loc=None: (
+        s if isinstance(s, str) else 'test')
     _lookup.apply_widget_texts = lambda w, loc: None
     sys.modules['plans_adressage.scripts.lookup_data'] = _lookup
 
@@ -350,14 +355,16 @@ def _setup_gui_domain_mocks():
 
     _database = MagicMock()
     _database.get_session = MagicMock()
-    _database.get_session.return_value.query.return_value.count.return_value = 0
+    sess_q = _database.get_session.return_value.query.return_value
+    sess_q.count.return_value = 0
     sys.modules['plans_adressage.app.core.database'] = _database
 
     _orders_models = MagicMock()
     _orders_models.get_all_fields_and_labels = MagicMock(return_value=(
         ['id', 'name'], {'id': 'ID', 'name': 'Name'},
     ))
-    for name in ('Road', 'Zone', 'Localite', 'Organization', 'Subdivision', 'PanelSign', 'Numbering'):
+    for name in ('Road', 'Zone', 'Localite', 'Organization',
+                 'Subdivision', 'PanelSign', 'Numbering'):
         setattr(_orders_models, name, _mock_model_table(MagicMock()))
     sys.modules['plans_adressage.app.orders.models'] = _orders_models
 
@@ -429,7 +436,8 @@ def setup_gui_mocks():
     Must be called before ``importlib``-loading any ``gui/`` module that
     uses relative imports (``from ..models import ...``).
     """
-    if 'plans_adressage' in sys.modules and hasattr(sys.modules['plans_adressage'], '_gui_mocks_ready'):
+    if ('plans_adressage' in sys.modules
+            and hasattr(sys.modules['plans_adressage'], '_gui_mocks_ready')):
         return
 
     _pkg = types.ModuleType('plans_adressage')
@@ -438,7 +446,9 @@ def setup_gui_mocks():
     _pkg._gui_mocks_ready = True
     sys.modules['plans_adressage'] = _pkg
 
-    _setup_package_tree([f'plans_adressage.{sub}' for sub in ('gui', 'scripts', 'layer', 'i18n')])
+    _setup_package_tree([
+        f'plans_adressage.{sub}'
+        for sub in ('gui', 'scripts', 'layer', 'i18n')])
     _setup_gui_app_packages()
     _setup_gui_domain_mocks()
     _setup_gui_qgis_mocks()
@@ -447,7 +457,7 @@ def setup_gui_mocks():
 
 
 def wire_module_attributes():
-    """Ensure all ``plans_adressage.*`` submodules are set as parent attributes.
+    """Ensure all ``plans_adressage.*`` submodules are set as parent attrs.
 
     Python 3.10's ``unittest.mock._importer`` resolves dotted ``@patch``
     targets (e.g. ``'plans_adressage.layer.utils.open'``) by calling
@@ -462,7 +472,8 @@ def wire_module_attributes():
             attr_name = parts[-1]
             if parent_key in sys.modules:
                 try:
-                    setattr(sys.modules[parent_key], attr_name, sys.modules[key])
+                    parent_mod = sys.modules[parent_key]
+                    setattr(parent_mod, attr_name, sys.modules[key])
                 except (TypeError, AttributeError):
                     pass
 

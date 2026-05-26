@@ -55,7 +55,10 @@ class TestInit(unittest.TestCase):
         metadata.extend(parser.items('general'))
 
         for expectation in required_metadata:
-            message = f'Cannot find metadata "{expectation}" in metadata source ({file_path}).'
+            message = (
+                f'Cannot find metadata "{expectation}"'
+                f' in metadata source ({file_path}).'
+            )
 
             self.assertIn(expectation, dict(metadata), message)
 

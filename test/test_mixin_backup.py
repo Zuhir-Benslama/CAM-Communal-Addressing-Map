@@ -93,7 +93,8 @@ class TestBackupMixin(unittest.TestCase):
 
     def test_restore_auth_not_exists(self):
         mock_engine = MagicMock()
-        with patch.object(self.mod, 'get_auth_engine', return_value=mock_engine):
+        with patch.object(self.mod, 'get_auth_engine',
+                          return_value=mock_engine):
             self.mixin.restore_auth_database()
             self.mod.get_auth_engine.assert_called_once()
 

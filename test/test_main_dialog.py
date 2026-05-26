@@ -46,8 +46,9 @@ class TestRNADialogCore(unittest.TestCase):
     def test_current_layer_name_returns_by_index(self):
         dialog = self._make_raw()
         _stub_widgets(dialog, ['layer_selector'])
-        for idx, expected in enumerate(["Zones", "Roads", "Facilities",
-                                         "Subdivisions", "Numbering", "Panels"]):
+        for idx, expected in enumerate(
+            ["Zones", "Roads", "Facilities",
+             "Subdivisions", "Numbering", "Panels"]):
             dialog.layer_selector.currentIndex.return_value = idx
             self.assertEqual(dialog._current_layer_name(), expected)
 
@@ -156,7 +157,8 @@ class TestRNADialogCore(unittest.TestCase):
     def test_on_layer_changed_sets_form_stack(self):
         dialog = self._make_raw()
         _stub_widgets(dialog, ['form_stack', 'menu'])
-        dialog.menu.currentWidget.return_value.objectName.return_value = 'tab_ops'
+        (dialog.menu.currentWidget.return_value
+         .objectName.return_value) = 'tab_ops'
         dialog.menu.currentIndex.return_value = 2
         dialog.on_opt_selected = MagicMock()
         dialog._on_layer_changed(2)
@@ -166,7 +168,8 @@ class TestRNADialogCore(unittest.TestCase):
     def test_on_layer_changed_skips_opt_for_non_ops_tab(self):
         dialog = self._make_raw()
         _stub_widgets(dialog, ['form_stack', 'menu'])
-        dialog.menu.currentWidget.return_value.objectName.return_value = 'tab_settings'
+        (dialog.menu.currentWidget.return_value
+         .objectName.return_value) = 'tab_settings'
         dialog.on_opt_selected = MagicMock()
         dialog._on_layer_changed(1)
         dialog.form_stack.setCurrentIndex.assert_called_once_with(1)
@@ -241,13 +244,16 @@ class TestRNADialogCore(unittest.TestCase):
 
     def test_on_locale_changed_sets_rtl_for_ar(self):
         dialog = self._make_raw()
-        _stub_widgets(dialog, ['_locale_combo', 'layer_selector', '_theme_combo',
-                                'wilaya_list', 'type_road', 'zone_type',
-                                'subd_type', 'mount_status', 'num_state',
-                                'road_ref', 'panel_ref', 'paper',
-                                'org_cat', 'activity_cat'])
+        _stub_widgets(dialog,
+                      ['_locale_combo', 'layer_selector', '_theme_combo',
+                       'wilaya_list', 'type_road', 'zone_type',
+                       'subd_type', 'mount_status', 'num_state',
+                       'road_ref', 'panel_ref', 'paper',
+                       'org_cat', 'activity_cat'])
         dialog._locale_combo.currentData.return_value = 'ar'
-        with patch.object(self.mod.QApplication, 'setLayoutDirection') as mock_dir, \
+        with patch.object(
+            self.mod.QApplication, 'setLayoutDirection',
+        ) as mock_dir, \
              patch.object(self.mod, 'QSettings'), \
              patch.object(self.mod, 'clear_i18n_cache'), \
              patch.object(self.mod, 'apply_widget_texts'), \
@@ -257,13 +263,16 @@ class TestRNADialogCore(unittest.TestCase):
 
     def test_on_locale_changed_sets_ltr_for_fr(self):
         dialog = self._make_raw()
-        _stub_widgets(dialog, ['_locale_combo', 'layer_selector', '_theme_combo',
-                                'wilaya_list', 'type_road', 'zone_type',
-                                'subd_type', 'mount_status', 'num_state',
-                                'road_ref', 'panel_ref', 'paper',
-                                'org_cat', 'activity_cat'])
+        _stub_widgets(dialog,
+                      ['_locale_combo', 'layer_selector', '_theme_combo',
+                       'wilaya_list', 'type_road', 'zone_type',
+                       'subd_type', 'mount_status', 'num_state',
+                       'road_ref', 'panel_ref', 'paper',
+                       'org_cat', 'activity_cat'])
         dialog._locale_combo.currentData.return_value = 'fr'
-        with patch.object(self.mod.QApplication, 'setLayoutDirection') as mock_dir, \
+        with patch.object(
+            self.mod.QApplication, 'setLayoutDirection',
+        ) as mock_dir, \
              patch.object(self.mod, 'QSettings'), \
              patch.object(self.mod, 'clear_i18n_cache'), \
              patch.object(self.mod, 'apply_widget_texts'), \

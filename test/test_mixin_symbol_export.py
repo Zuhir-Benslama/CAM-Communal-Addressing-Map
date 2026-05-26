@@ -30,8 +30,10 @@ class TestSymbolExportMixin(unittest.TestCase):
         self.mixin.rast = None
         self.mixin.iface = MagicMock()
         self.mixin.iface.mapCanvas.return_value.rotation.return_value = 0.0
-        self.mixin.iface.mapCanvas.return_value.extent.return_value = MagicMock()
-        self.mixin.iface.mapCanvas.return_value.mapSettings.return_value.scale.return_value = 500
+        (self.mixin.iface.mapCanvas.return_value
+         .extent.return_value) = MagicMock()
+        (self.mixin.iface.mapCanvas.return_value.mapSettings
+         .return_value.scale.return_value) = 500
 
     def _make_project(self, layer_names=None):
         if layer_names is None:
@@ -74,7 +76,8 @@ class TestSymbolExportMixin(unittest.TestCase):
              patch.object(self.mod, 'QgsLayoutExporter') as mock_exporter:
             mock_qp.instance.return_value = project
             mock_map.return_value.sceneBoundingRect.return_value = scene_rect
-            mock_legend.return_value.sceneBoundingRect.return_value = scene_rect
+            (mock_legend.return_value
+    .sceneBoundingRect.return_value) = scene_rect
             mock_exporter.Success = 0
             mock_exporter.return_value.exportToSvg.return_value = 0
             result = self.mixin.symbols()
@@ -90,14 +93,16 @@ class TestSymbolExportMixin(unittest.TestCase):
              patch.object(self.mod, 'QgsLayoutExporter') as mock_exporter:
             mock_qp.instance.return_value = project
             mock_map.return_value.sceneBoundingRect.return_value = scene_rect
-            mock_legend.return_value.sceneBoundingRect.return_value = scene_rect
+            (mock_legend.return_value
+    .sceneBoundingRect.return_value) = scene_rect
             mock_exporter.Success = 0
             mock_exporter.return_value.exportToSvg.return_value = 1
             result = self.mixin.symbols()
             self.assertIsNone(result)
 
     def test_symbols_hides_layers_in_to_hide_list(self):
-        project = self._make_project(['My Municipality', 'Numbering', 'Panels', 'Satellite View'])
+        project = self._make_project(
+            ['My Municipality', 'Numbering', 'Panels', 'Satellite View'])
         scene_rect = self._make_scene_rect()
         with patch.object(self.mod, 'QgsProject') as mock_qp, \
              patch.object(self.mod, 'QgsPrintLayout'), \
@@ -106,7 +111,8 @@ class TestSymbolExportMixin(unittest.TestCase):
              patch.object(self.mod, 'QgsLayoutExporter') as mock_exporter:
             mock_qp.instance.return_value = project
             mock_map.return_value.sceneBoundingRect.return_value = scene_rect
-            mock_legend.return_value.sceneBoundingRect.return_value = scene_rect
+            (mock_legend.return_value
+    .sceneBoundingRect.return_value) = scene_rect
             mock_exporter.Success = 0
             mock_exporter.return_value.exportToSvg.return_value = 0
             self.mixin.symbols()
@@ -199,7 +205,8 @@ class TestSymbolExportMixin(unittest.TestCase):
              patch.object(self.mod, 'QgsApplication'), \
              patch.object(self.mod, 'QgsLayoutExporter'):
             mock_qp.instance.return_value = project
-            self.mixin.iface.mapCanvas.return_value.rotation.return_value = 45.0
+            (self.mixin.iface.mapCanvas.return_value
+             .rotation.return_value) = 45.0
             self.mixin.north()
             mock_pic.return_value.setRotation.assert_called_once_with(45.0)
 
@@ -207,7 +214,8 @@ class TestSymbolExportMixin(unittest.TestCase):
 
     def test_scale_uses_kilometers_when_scale_large(self):
         project = MagicMock()
-        self.mixin.iface.mapCanvas.return_value.mapSettings.return_value.scale.return_value = 10000
+        (self.mixin.iface.mapCanvas.return_value.mapSettings
+         .return_value.scale.return_value) = 10000
         with patch.object(self.mod, 'QgsProject') as mock_qp, \
              patch.object(self.mod, 'QgsPrintLayout'), \
              patch.object(self.mod, 'QgsLayoutItemPage'), \

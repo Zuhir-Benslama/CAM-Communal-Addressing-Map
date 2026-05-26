@@ -51,7 +51,10 @@ def _add_column_if_not_exists(
 ) -> None:
     """Add a column to a SQLite table if it does not already exist."""
     result = conn.execute(
-        text("SELECT count(*) FROM sqlite_master WHERE type='table' AND name=:name"),
+        text(
+            "SELECT count(*) FROM sqlite_master"
+            " WHERE type='table' AND name=:name",
+        ),
         {"name": table},
     )
     if result.fetchone()[0] == 0:
@@ -59,7 +62,9 @@ def _add_column_if_not_exists(
     result = conn.execute(text(f"PRAGMA table_info('{table}')"))
     existing = {row[1] for row in result.fetchall()}
     if column not in existing:
-        conn.execute(text(f"ALTER TABLE '{table}' ADD COLUMN {column} {col_type}"))
+        conn.execute(
+            text(f"ALTER TABLE '{table}' ADD COLUMN {column} {col_type}")
+        )
         logger.info("Added column %s.%s (%s)", table, column, col_type)
 
 
@@ -114,7 +119,9 @@ def _create_spatial_indexes(engine: Any) -> None:
     with engine.connect() as conn:
         for table, column in _SPATIAL_INDEXES:
             if _spatial_index_exists(conn, table, column):
-                logger.debug("Spatial index already exists on %s.%s", table, column)
+                logger.debug(
+                    "Spatial index already exists on %s.%s", table, column,
+                )
                 continue
             try:
                 conn.execute(
@@ -140,11 +147,16 @@ def _migrate_timestamp_columns(engine: Any) -> None:
     with engine.connect() as conn:
         for table in _TIMESTAMP_TABLES:
             try:
-                _add_column_if_not_exists(conn, table, 'created_at', 'DATETIME')
-                _add_column_if_not_exists(conn, table, 'updated_at', 'DATETIME')
+                _add_column_if_not_exists(
+                    conn, table, 'created_at', 'DATETIME',
+                )
+                _add_column_if_not_exists(
+                    conn, table, 'updated_at', 'DATETIME',
+                )
             except Exception:
                 logger.warning(
-                    "Could not add timestamp columns to %s", table, exc_info=True
+                    "Could not add timestamp columns to %s",
+                    table, exc_info=True,
                 )
 
 
@@ -164,7 +176,7 @@ def get_engine() -> Any:
                 dbapi_conn.load_extension(dll)
             except Exception:
                 logger.debug(
-                    "SpatiaLite load_extension API failed, trying SQL fallback",
+                    "SpatiaLite load_extension failed, trying SQL fallback",
                     exc_info=True,
                 )
                 if not os.path.exists(dll):

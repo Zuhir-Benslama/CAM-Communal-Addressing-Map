@@ -104,9 +104,12 @@ class TestEntityListDialogWithData(unittest.TestCase):
             mock_session.query.return_value.count.return_value = total_count
         else:
             mock_session.query.return_value.count.return_value = len(records)
-        mock_session.query.return_value.offset.return_value.limit.return_value.all.return_value = records
+        mock_all = (mock_session.query.return_value.offset
+                    .return_value.limit.return_value.all)
+        mock_all.return_value = records
 
-        patcher = patch.object(self.mod, 'get_session', return_value=mock_session)
+        patcher = patch.object(self.mod, 'get_session',
+                               return_value=mock_session)
         patcher.start()
         self.addCleanup(patcher.stop)
 
@@ -169,9 +172,12 @@ class TestEntityListDialogWithData(unittest.TestCase):
     def test_session_closed(self):
         mock_session = MagicMock()
         mock_session.query.return_value.count.return_value = 0
-        mock_session.query.return_value.offset.return_value.limit.return_value.all.return_value = []
+        mock_all = (mock_session.query.return_value.offset
+                    .return_value.limit.return_value.all)
+        mock_all.return_value = []
 
-        patcher = patch.object(self.mod, 'get_session', return_value=mock_session)
+        patcher = patch.object(self.mod, 'get_session',
+                               return_value=mock_session)
         patcher.start()
         self.addCleanup(patcher.stop)
 

@@ -4,7 +4,8 @@ import sys
 import unittest
 from unittest.mock import patch
 
-from .helpers import setup_mocks, wire_module_attributes, make_mock_iface, make_mock_layer
+from .helpers import (setup_mocks, wire_module_attributes,
+                      make_mock_iface, make_mock_layer)
 
 
 class TestEditing(unittest.TestCase):
@@ -80,7 +81,8 @@ class TestEditing(unittest.TestCase):
 
     @patch('plans_adressage.layer.editing.QgsProject')
     def test_start_editing_layer_found(self, mock_project):
-        mock_project.instance.return_value.mapLayersByName.return_value = [self.layer]
+        (mock_project.instance.return_value
+    .mapLayersByName.return_value) = [self.layer]
         self.mod.start_editing_layer(self.iface, 'test_layer')
         self.iface.setActiveLayer.assert_called_once_with(self.layer)
         self.layer.startEditing.assert_called_once()
@@ -94,7 +96,8 @@ class TestEditing(unittest.TestCase):
 
     @patch('plans_adressage.layer.editing.QgsProject')
     def test_stop_editing_layer_success(self, mock_project):
-        mock_project.instance.return_value.mapLayersByName.return_value = [self.layer]
+        (mock_project.instance.return_value
+    .mapLayersByName.return_value) = [self.layer]
         self.layer.isEditable.return_value = True
         self.mod.stop_editing_layer(self.iface, 'test_layer')
         self.layer.commitChanges.assert_called_once()
@@ -107,14 +110,16 @@ class TestEditing(unittest.TestCase):
 
     @patch('plans_adressage.layer.editing.QgsProject')
     def test_stop_editing_layer_not_editable(self, mock_project):
-        mock_project.instance.return_value.mapLayersByName.return_value = [self.layer]
+        (mock_project.instance.return_value
+    .mapLayersByName.return_value) = [self.layer]
         self.layer.isEditable.return_value = False
         self.mod.stop_editing_layer(self.iface, 'test_layer')
         self.layer.commitChanges.assert_not_called()
 
     @patch('plans_adressage.layer.editing.QgsProject')
     def test_update_layer_enables_vertex_tool(self, mock_project):
-        mock_project.instance.return_value.mapLayersByName.return_value = [self.layer]
+        (mock_project.instance.return_value
+    .mapLayersByName.return_value) = [self.layer]
         self.mod.update_layer(self.iface, 'test_layer')
         self.iface.setActiveLayer.assert_called_once_with(self.layer)
         self.iface.actionVertexTool().trigger.assert_called_once()

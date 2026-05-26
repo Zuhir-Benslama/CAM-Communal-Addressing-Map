@@ -33,11 +33,13 @@ class TestIdentifyTool(unittest.TestCase):
         self.assertEqual(self.tool.mode, self.mod.IdentifyTool.MODE_FORM)
 
     def test_tool_ref_mode(self):
-        tool = self.mod.IdentifyTool(self.canvas, mode=self.mod.IdentifyTool.MODE_REF)
+        tool = self.mod.IdentifyTool(
+            self.canvas, mode=self.mod.IdentifyTool.MODE_REF)
         self.assertEqual(tool.mode, self.mod.IdentifyTool.MODE_REF)
 
     def test_ref_mode_initializes_ref_attrs(self):
-        tool = self.mod.IdentifyTool(self.canvas, mode=self.mod.IdentifyTool.MODE_REF)
+        tool = self.mod.IdentifyTool(
+            self.canvas, mode=self.mod.IdentifyTool.MODE_REF)
         self.assertIsNone(tool.pkuid)
         self.assertIsNone(tool.type)
         self.assertIsNone(tool.nom)
@@ -89,7 +91,8 @@ class TestIdentifyTool(unittest.TestCase):
         self.canvas.unsetMapTool.assert_called_once_with(self.tool)
 
     def test_feature_as_ref_sets_attrs_and_unset(self):
-        tool = self.mod.IdentifyTool(self.canvas, mode=self.mod.IdentifyTool.MODE_REF)
+        tool = self.mod.IdentifyTool(
+            self.canvas, mode=self.mod.IdentifyTool.MODE_REF)
         tool.ref_name = MagicMock()
         tool.feature_as_ref('pk-1', 'Route', 'Main St')
         self.assertEqual(tool.pkuid, 'pk-1')
@@ -97,7 +100,8 @@ class TestIdentifyTool(unittest.TestCase):
         self.assertEqual(tool.nom, 'Main St')
 
     def test_feature_as_ref_skips_unset_when_pkuid_none(self):
-        tool = self.mod.IdentifyTool(self.canvas, mode=self.mod.IdentifyTool.MODE_REF)
+        tool = self.mod.IdentifyTool(
+            self.canvas, mode=self.mod.IdentifyTool.MODE_REF)
         tool.ref_name = MagicMock()
         tool.feature_as_ref(None, 'Type', 'Name')
         self.canvas.unsetMapTool.assert_not_called()
@@ -105,7 +109,8 @@ class TestIdentifyTool(unittest.TestCase):
     def test_locale_feature_attr_arabic_default(self):
         feature = MagicMock()
         feature.__getitem__.return_value = 'شارع'
-        with patch('plans_adressage.gui.identify_tool.current_locale', return_value='ar'):
+        with patch('plans_adressage.gui.identify_tool.current_locale',
+                   return_value='ar'):
             result = self.tool._locale_feature_attr(feature, 'Nom')
         self.assertEqual(result, 'شارع')
 
@@ -113,14 +118,16 @@ class TestIdentifyTool(unittest.TestCase):
         feature = MagicMock()
         feature.__getitem__.side_effect = lambda k: 'Rue' if k == 'Nom' else ''
         feature.fields.return_value.names.return_value = ['Nom_fr', 'Nom']
-        with patch('plans_adressage.gui.identify_tool.current_locale', return_value='fr'):
+        with patch('plans_adressage.gui.identify_tool.current_locale',
+                   return_value='fr'):
             result = self.tool._locale_feature_attr(feature, 'Nom')
         self.assertEqual(result, 'Rue')
 
     def test_locale_feature_attr_returns_empty_on_missing(self):
         feature = MagicMock()
         feature.__getitem__.return_value = None
-        with patch('plans_adressage.gui.identify_tool.current_locale', return_value='ar'):
+        with patch('plans_adressage.gui.identify_tool.current_locale',
+                   return_value='ar'):
             result = self.tool._locale_feature_attr(feature, 'Nom')
         self.assertEqual(result, '')
 
@@ -128,7 +135,9 @@ class TestIdentifyTool(unittest.TestCase):
     def test_delete_feature_no_mapper_entry_closes_session(
         self, mock_get_session,
     ):
-        with patch('plans_adressage.gui.identify_tool.qgis_config') as mock_cfg:
+        with patch(
+            'plans_adressage.gui.identify_tool.qgis_config'
+        ) as mock_cfg:
             mock_cfg.return_value = {'mapper': []}
             layer = MagicMock()
             layer.name.return_value = 'Roads'

@@ -46,7 +46,8 @@ class TestSignUp(unittest.TestCase):
         patch.stopall()
 
     def test_sign_up_creates_user_in_both_dbs(self):
-        with patch('app.users.service.hash_password', return_value='hashed_pw'):
+        with patch('app.users.service.hash_password',
+                    return_value='hashed_pw'):
             ok, errors = sign_up(
                 'newuser', 'secret123', 1, '0555000000',
                 'new@test.com', 'New', 'User'
