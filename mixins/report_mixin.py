@@ -1,4 +1,5 @@
 """Reporting mixin for generating statistical reports and purchase orders."""
+# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -27,12 +28,12 @@ class ReportMixin:
         )
         msg.exec_()
 
-    def gen_report(self) -> bool:
+    def gen_report(self: HasTranslation) -> bool:
         """Show notice that report generation is no longer available."""
         self._notify_unavailable("Report generation")
         return False
 
-    def bon_commande(self) -> bool:
+    def bon_commande(self: HasTranslation) -> bool:
         """Show notice that purchase order generation is no longer available."""
         self._notify_unavailable("Purchase order generation")
         return False

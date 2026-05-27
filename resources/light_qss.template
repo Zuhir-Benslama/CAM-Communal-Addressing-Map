@@ -52,8 +52,9 @@
         color: {{LIGHT_TEXT}};
         border: 1px solid {{LIGHT_BORDER}};
         border-radius: 6px;
-        padding: 6px 14px;
-        min-height: 1.2em;
+        padding-left: 14px;
+        padding-right: 14px;
+        min-height: 2em;
         combobox-popup: 0;
     }}
     QComboBox:hover {{
@@ -193,10 +194,10 @@
         padding: 4px 8px;
     }}
     QFrame[surfaceRole="header"],
-    QFrame[surfaceRole="toolbar"],
+    QGroupBox[surfaceRole="toolbar"],
     QFrame[surfaceRole="footer"] {{
         background-color: {{LIGHT_SURFACE}};
-        border: 1px solid {{LIGHT_BORDER}};
+        border: 1px solid #1a1b26;
         border-radius: 10px;
     }}
     QPushButton[role="primary"] {{

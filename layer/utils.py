@@ -23,8 +23,8 @@ logger = logging.getLogger(__name__)
 
 def create_other_layers(_iface) -> None:
     """Create non-mapper vector layers from QGIS config."""
-    other_layer_list = qgis_config().get('other_layers')
-    mapper = qgis_config().get('mapper')
+    other_layer_list = qgis_config().get('other_layers') or []
+    mapper = qgis_config().get('mapper') or []
     for layer_cfg in other_layer_list:
         layer = QgsVectorLayer(
             layer_cfg.get('url'), layer_cfg.get('label'), MEMORY_PROVIDER
@@ -39,7 +39,7 @@ def create_other_layers(_iface) -> None:
                         model_name = cfg.get("model")
                         break
 
-                model_class = getattr(_models, model_name, None)
+                model_class = getattr(_models, model_name, None) if model_name else None
                 if model_class is None:
                     continue
                 fields = []

@@ -6,7 +6,13 @@ import subprocess
 from types import MappingProxyType
 from typing import List, Mapping, Optional, Tuple, TypeVar
 
+from qgis.PyQt.QtCore import QSettings
 from sqlalchemy import inspect
+
+from ..shared.constants import (
+    SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
+    SETTINGS_KEY_THEME, THEME_DARK, THEME_LIGHT,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -28,10 +34,6 @@ def validate_text(value: str, max_length: int = 255) -> str:
 
 
 def current_locale() -> str:
-    from qgis.PyQt.QtCore import QSettings
-    from ..shared.constants import (
-        SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
-    )
     settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
     locale = settings.value(SETTINGS_KEY_LOCALE, '')
     if not locale:
@@ -51,11 +53,6 @@ def locale_value(instance, field_base: str, locale: str = '') -> str:
 
 
 def current_theme() -> str:
-    from qgis.PyQt.QtCore import QSettings
-    from ..shared.constants import (
-        SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_THEME, THEME_DARK,
-        THEME_LIGHT,
-    )
     settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
     value = settings.value(SETTINGS_KEY_THEME, THEME_DARK)
     # Backward compat: old Arabic values were changed to English
@@ -118,6 +115,10 @@ def get_all_fields_and_labels(
     return fields, labels
 
 
-_SUBPROCESS_FLAGS: Mapping[str, int] = MappingProxyType(
-    {'creationflags': subprocess.CREATE_NO_WINDOW} if os.name == 'nt' else {}
-)
+_SUBPROCESS_FLAGS: Mapping[str, int]
+if os.name == 'nt':
+    _SUBPROCESS_FLAGS = MappingProxyType(
+        {'creationflags': subprocess.CREATE_NO_WINDOW},  # type: ignore[attr-defined]
+    )
+else:
+    _SUBPROCESS_FLAGS = MappingProxyType({})

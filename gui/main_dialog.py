@@ -22,15 +22,19 @@
 """
 import logging
 import os
+from typing import Any, TYPE_CHECKING, Dict, Optional
+
 from PyQt5.QtCore import Qt, QDate, QSettings, QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
-    QApplication, QDialog, QGroupBox, QLabel,
+    QApplication, QDialog, QGridLayout, QGroupBox, QLabel,
     QPushButton, QVBoxLayout, QHBoxLayout,
     QComboBox, QDateEdit, QFormLayout, QLayout, QLineEdit,
     QSizePolicy,
 )
 from qgis.PyQt import uic
+
+from ..mixins._protocols import UiForm
 from .ui_fillers import (
     fill_wilayas_list, fill_paper, fill_road_type, fill_numbering_state,
     fill_mounting_status, fill_subdivision_type, fill_zone_type,
@@ -57,14 +61,21 @@ from ..mixins.backup_mixin import BackupMixin
 from ..mixins.symbol_export_mixin import SymbolExportMixin
 from ..mixins.import_export_mixin import ImportExportMixin
 from ..mixins.report_mixin import ReportMixin
+from ..gui.measure_tool import MeasureTool
+from ..gui.identify_tool import IdentifyTool
+from ..gui.popup_dialog import PopupDialog
 logger = logging.getLogger(__name__)
 
-FORM_CLASS, _ = uic.loadUiType(os.path.join(
-    os.path.dirname(__file__), 'RNA_dialog_base.ui'))
+if TYPE_CHECKING:
+    FORM_CLASS = UiForm
+else:
+    FORM_CLASS, _ = uic.loadUiType(os.path.join(
+        os.path.dirname(__file__), 'RNA_dialog_base.ui'))
 
 
 class RNADialog(
-    QDialog, FORM_CLASS, ChartMixin, MapToolsMixin,
+    QDialog, FORM_CLASS,  # type: ignore[misc,valid-type]
+    ChartMixin, MapToolsMixin,
     AuthMixin, LayerOpsMixin, LayerDrawMixin, LayerEditMixin,
     BackupMixin, SymbolExportMixin, ImportExportMixin, ReportMixin,
 ):
@@ -79,13 +90,13 @@ class RNADialog(
         layout = None
         try:
             layout = frame.layout()
-        except Exception:
+        except RuntimeError:
             layout = None
 
         if layout is not None:
             try:
                 count = layout.count()
-            except Exception:
+            except RuntimeError:
                 count = 0
             if isinstance(count, int):
                 for index in range(count - 1, -1, -1):
@@ -95,13 +106,13 @@ class RNADialog(
 
         try:
             labels = frame.findChildren(QLabel)
-        except Exception:
+        except RuntimeError:
             labels = []
         if not isinstance(labels, list):
             return
 
         for label in labels:
-            label.setAlignment(Qt.AlignCenter)
+            label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
 
     def __init__(self, iface, parent=None) -> None:
@@ -110,21 +121,23 @@ class RNADialog(
         self.iface = iface
         self._tr_locale = current_locale()
         if self._tr_locale == 'ar':
-            QApplication.setLayoutDirection(Qt.RightToLeft)
+            QApplication.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         else:
-            QApplication.setLayoutDirection(Qt.LeftToRight)
+            QApplication.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
         try:
             self.setupUi(self)
         except Exception as e:
             logger.exception("setupUi failed: %s", e)
             raise
 
+        self._align_buttons()
         self._init_state()
         self._connect_signals()
         self._populate_combos()
         self.fill_map_options()
 
-        self.iface.mapCanvas().setContextMenuPolicy(Qt.CustomContextMenu)
+        self.iface.mapCanvas().setContextMenuPolicy(
+            Qt.ContextMenuPolicy.CustomContextMenu)
         self.iface.mapCanvas().customContextMenuRequested.connect(
             self.on_edition_release
         )
@@ -137,21 +150,48 @@ class RNADialog(
         self._translate_internal_combos()
         self.apply_theme()
 
+    def _align_buttons(self) -> None:
+        for hbox_name in (
+            'horizontalLayout_19',
+            'horizontalLayout_12',
+            'horizontalLayout_13',
+            'horizontalLayout_14',
+            'horizontalLayout_15',
+            'horizontalLayout_17',
+        ):
+            hbox = getattr(self, hbox_name, None)
+            if hbox is None:
+                continue
+            for i in range(hbox.count() - 1, -1, -1):
+                item = hbox.itemAt(i)
+                if item is not None and item.spacerItem() is not None:
+                    hbox.takeAt(i)
+                    break
+
+        login_hbox = getattr(self, 'horizontalLayout_20', None)
+        if login_hbox is not None:
+            for i in range(login_hbox.count() - 1, -1, -1):
+                item = login_hbox.itemAt(i)
+                if item is not None and item.spacerItem() is not None:
+                    login_hbox.takeAt(i)
+                    break
+            login_hbox.insertStretch(0)
+
     def _init_state(self) -> None:
         """Initialize instance state variables for tools and UI state."""
-        self.sat_view = None
-        self.rast = None
-        self.ln = None
-        self.type_plan = ""
-        self.type_to_hide = ""
-        self.measure_tool = None
+        self.sat_view: Optional[str] = None
+        self.rast: Optional[str] = None
+        self.ln: Optional[str] = None
+        self.type_plan: str = ""
+        self.type_to_hide: str = ""
+        self.measure_tool: Optional[MeasureTool] = None
 
-        self.identify_tool = None
-        self.ref_identify_tool = None
-        self.popup_dialog = None
-        self.current_user = None
-        self.update_object = {}
-        self.update_only_form = {}
+        self.identify_tool: Optional[IdentifyTool] = None
+        self.ref_identify_tool: Optional[IdentifyTool] = None
+        self.popup_dialog: Optional[PopupDialog] = None
+        self.current_user: Optional[Dict[str, Any]] = None
+        self.update_object: Dict[str, Any] = {}
+        self.update_only_form: Dict[str, Any] = {}
         self.dateEdit.setDate(QDate.currentDate())
 
     def _connect_signals(self) -> None:
@@ -166,25 +206,15 @@ class RNADialog(
         )
         self.abort_uc.clicked.connect(lambda: self.public_route('login'))
 
-        self.draw_btn.clicked.connect(
-            lambda: self.start_drawing()
-        )  # pylint: disable=unnecessary-lambda
-        self.select_btn.clicked.connect(
-            lambda: self.start_selecting()
-        )  # pylint: disable=unnecessary-lambda
-        self.edit_btn.clicked.connect(
-            lambda: self.start_editing()
-        )  # pylint: disable=unnecessary-lambda
+        self.draw_btn.clicked.connect(self.start_drawing)
+        self.select_btn.clicked.connect(self.start_selecting)
+        self.edit_btn.clicked.connect(self.start_editing)
         self.layer_selector.currentIndexChanged.connect(
             self._on_layer_changed)
 
         self.submit_zone.clicked.connect(self.add_zone)
-        self.submit_road.clicked.connect(
-            lambda: self.add_road()
-        )  # pylint: disable=unnecessary-lambda
-        self.submit_org.clicked.connect(
-            lambda: self.add_organization()
-        )  # pylint: disable=unnecessary-lambda
+        self.submit_road.clicked.connect(self.add_road)
+        self.submit_org.clicked.connect(self.add_organization)
         self.submit_subd.clicked.connect(self.add_city)
         self.submit_num.clicked.connect(self.add_numbering)
         self.submit_pan.clicked.connect(self.add_panel)
@@ -306,7 +336,8 @@ class RNADialog(
             settings.setValue(SETTINGS_KEY_THEME, saved_theme)
         self._current_theme = self._theme_combo.currentData()
         theme_row.addWidget(self._theme_combo)
-        self._settings_group.layout().addLayout(theme_row)
+        settings_layout = self._settings_group.layout()
+        settings_layout.addLayout(theme_row)  # type: ignore[union-attr]
 
         locale_row = QHBoxLayout()
         self._locale_label = QLabel(get_string("Language:", self._tr_locale))
@@ -331,7 +362,7 @@ class RNADialog(
                 self._locale_combo.setCurrentIndex(li)
         self._locale_combo.blockSignals(False)
         locale_row.addWidget(self._locale_combo)
-        self._settings_group.layout().addLayout(locale_row)
+        settings_layout.addLayout(locale_row)  # type: ignore[union-attr]
 
         self.scrollAreaWidgetContents_2.layout().addWidget(
             self._settings_group,
@@ -367,12 +398,24 @@ class RNADialog(
         fill_org_category(self.org_cat)
         fill_activity_category(self.activity_cat)
         if code == 'ar':
-            QApplication.setLayoutDirection(Qt.RightToLeft)
+            QApplication.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         else:
-            QApplication.setLayoutDirection(Qt.LeftToRight)
+            QApplication.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
 
     def _apply_ui_polish(self) -> None:
         """Apply consistent sizing, spacing, and styling across all widgets."""
+        self._apply_window_geometry()
+        self._style_main_widgets()
+        self._style_frames()
+        self._setup_username_label()
+        self._adjust_layout_spacing()
+        self._fix_button_spacers()
+        self._standardize_widgets()
+        self._set_field_label_widths()
+        self._set_button_roles()
+        self._setup_gear_icon()
+
+    def _apply_window_geometry(self) -> None:
         self.setObjectName('rnaMainDialog')
         self.setSizeGripEnabled(True)
         self.setMinimumSize(640, 680)
@@ -380,54 +423,106 @@ class RNADialog(
         if self.width() < 680:
             self.resize(680, 720)
 
+    def _style_main_widgets(self) -> None:
         self.router.setMaximumHeight(16777215)
         self.groupBox.setMaximumSize(16777215, 16777215)
         self.groupBox.setMinimumSize(500, 390)
         self.groupBox.setSizePolicy(
-            QSizePolicy.Preferred, QSizePolicy.Preferred,
+            QSizePolicy.Expanding, QSizePolicy.Expanding,
         )
-
         self.menu.setDocumentMode(True)
         self.menu.setUsesScrollButtons(True)
         self.menu.tabBar().hide()
-
         self.frame_8.layout().setContentsMargins(0, 3, 0, 3)
 
-        try:
-            self.toolbar_frame.setStyleSheet("""
-                QFrame#toolbar_frame {
-                    border: 1px solid palette(mid);
-                    border-radius: 8px;
-                    background: palette(window);
-                }
-            """)
-        except (AttributeError, RuntimeError):
-            pass
-
+    def _style_frames(self) -> None:
         for frame_name, role in {
+            'toolbar_frame': 'toolbar',
             'frame_8': 'toolbar',
             'frame_9': 'footer',
         }.items():
             frame = getattr(self, frame_name, None)
             if frame is not None:
                 frame.setProperty('surfaceRole', role)
-                if role == 'toolbar':
+                if frame_name == 'frame_8' and role == 'toolbar':
                     frame.setStyleSheet(
-                        "QFrame#frame_8 { margin-left: 12px; margin-right: 12px; }"
+                        "QFrame#frame_8 {"
+                        " margin-left: 12px; margin-right: 12px; }"
                     )
                 if role == 'footer':
                     self._balance_footer(frame)
 
+    def _setup_username_label(self) -> None:
         try:
             label_username = getattr(self, 'label_username', None)
         except RuntimeError:
             label_username = None
         if label_username is not None:
-            label_username.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+            label_username.setAlignment(
+                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             label_username.setSizePolicy(
                 QSizePolicy.Expanding, QSizePolicy.Preferred
             )
 
+    def _set_grid_stretch(self) -> None:
+        for name, row_stretches, col_stretches in (
+            ('gridLayout_19', {0: 1, 1: 0}, {0: 1}),
+            ('gridLayout_4',  {1: 0, 2: 1}, {0: 1}),
+            ('gridLayout_7',  {0: 1},        {0: 1}),
+            ('gridLayout',    {0: 1},        {0: 0, 1: 1, 2: 0}),
+        ):
+            try:
+                layout = self.findChild(QGridLayout, name)
+            except RuntimeError:
+                layout = None
+            if layout is None:
+                continue
+            for row, stretch in row_stretches.items():
+                layout.setRowStretch(row, stretch)
+            for col, stretch in col_stretches.items():
+                layout.setColumnStretch(col, stretch)
+
+    def _fix_button_spacers(self) -> None:
+        spacer_width = 10
+        for layout_name in (
+            'hbox_signin',
+            'horizontalLayout_19',
+            'horizontalLayout_12',
+            'horizontalLayout_13',
+            'horizontalLayout_14',
+            'horizontalLayout_15',
+            'horizontalLayout_17',
+        ):
+            try:
+                layout = self.findChild(QHBoxLayout, layout_name)
+            except RuntimeError:
+                layout = None
+            if layout is None:
+                continue
+            for i in range(layout.count()):
+                item = layout.itemAt(i)
+                spacer = item.spacerItem() if item is not None else None
+                if spacer is not None:
+                    spacer.changeSize(
+                        spacer_width, 20,
+                        QSizePolicy.Fixed, QSizePolicy.Minimum,
+                    )
+        try:
+            login_grid = self.findChild(QGridLayout, 'gridLayout')
+        except RuntimeError:
+            login_grid = None
+        if login_grid is not None:
+            for col in (0, 2):
+                item = login_grid.itemAtPosition(0, col)
+                spacer = item.spacerItem() if item is not None else None
+                if spacer is not None:
+                    spacer.changeSize(
+                        spacer_width, 20,
+                        QSizePolicy.Fixed, QSizePolicy.Minimum,
+                    )
+
+    def _adjust_layout_spacing(self) -> None:
+        self._set_grid_stretch()
         for layout_name in ('horizontalLayout_8', 'horizontalLayout_16'):
             try:
                 layout = self.findChild(QLayout, layout_name)
@@ -437,9 +532,8 @@ class RNADialog(
                 try:
                     layout.setStretch(0, 1)
                     layout.setStretch(1, 1)
-                except Exception:
+                except RuntimeError:
                     pass
-
         for layout in self.findChildren(QLayout):
             if isinstance(layout, QFormLayout):
                 if layout.horizontalSpacing() < 16:
@@ -447,41 +541,38 @@ class RNADialog(
                 if layout.verticalSpacing() < 12:
                     layout.setVerticalSpacing(12)
                 for i in range(layout.rowCount()):
-                    item = layout.itemAt(i, QFormLayout.LabelRole)
-                    if item and item.widget():
-                        item.widget().setMinimumWidth(120)
+                    item = layout.itemAt(i, QFormLayout.ItemRole.LabelRole)
+                    widget = item.widget() if item else None
+                    if widget:
+                        widget.setMinimumWidth(120)
             elif layout.spacing() < 8:
                 layout.setSpacing(8)
 
+    def _standardize_widgets(self) -> None:
         for widget in self.findChildren(QLineEdit):
             widget.setMinimumHeight(max(widget.minimumHeight(), 34))
             widget.setMaximumWidth(16777215)
             widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
         for widget in self.findChildren(QLabel):
             widget.setAlignment(
-                widget.alignment() | Qt.AlignVCenter,
+                widget.alignment() | Qt.AlignmentFlag.AlignVCenter,
             )
-
         for widget in self.findChildren(QComboBox):
             widget.setMinimumHeight(max(widget.minimumHeight(), 34))
             widget.setMaximumWidth(16777215)
             widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
         for widget in self.findChildren(QDateEdit):
             widget.setMinimumHeight(max(widget.minimumHeight(), 34))
             widget.setMaximumWidth(16777215)
             widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
+    def _set_field_label_widths(self) -> None:
         for label_name in (
             'label_feature', 'label_type', 'label_subtype', 'label_subsubtype'
         ):
             label = getattr(self, label_name, None)
             if label is not None:
                 label.setMinimumWidth(120)
-
-        self._set_button_roles()
-        self._setup_gear_icon()
 
     def _setup_gear_icon(self) -> None:
         """Set a gear icon from the system theme on the settings button."""
@@ -491,14 +582,17 @@ class RNADialog(
             return
         if gear is None:
             return
-        icon = QIcon.fromTheme('preferences-system',
-                                gear.style().standardIcon(gear.style().SP_TitleBarMenuButton))
+        std_icon = gear.style().standardIcon(
+            gear.style().SP_TitleBarMenuButton)
+        icon = QIcon.fromTheme('preferences-system', std_icon)
         if not icon.isNull():
             gear.setIcon(icon)
             gear.setIconSize(QSize(20, 20))
         gear.setText('')
         gear.setFixedSize(26, 26)
-        gear.setStyleSheet("QPushButton { border: 1px solid palette(mid); border-radius: 6px; background: transparent; padding: 0px; }")
+        gear.setStyleSheet(
+            "QPushButton { border: 1px solid palette(mid);"
+            " border-radius: 6px; background: transparent; padding: 0px; }")
         try:
             tip = self._tr("Settings")
         except (AttributeError, RuntimeError):
@@ -542,6 +636,31 @@ class RNADialog(
             button.setIconSize(QSize(16, 16))
         self._expand_primary_buttons()
 
+    @staticmethod
+    def _layout_has_primary(
+        layout: QHBoxLayout, primary_names: set[str],
+    ) -> bool:
+        for i in range(layout.count()):
+            item = layout.itemAt(i)
+            if item:
+                widget = item.widget()
+                if widget and widget.objectName() in primary_names:
+                    return True
+        return False
+
+    @staticmethod
+    def _set_primary_stretch(
+        layout: QHBoxLayout, primary_names: set[str],
+    ) -> None:
+        for i in range(layout.count()):
+            item = layout.itemAt(i)
+            if item:
+                widget = item.widget()
+                if widget and widget.objectName() in primary_names:
+                    widget.setSizePolicy(
+                        QSizePolicy.Expanding, QSizePolicy.Fixed,
+                    )
+
     def _expand_primary_buttons(self) -> None:
         """Make primary buttons expand to fill available width."""
         primary_names = {
@@ -549,26 +668,9 @@ class RNADialog(
             'submit_org', 'submit_subd', 'submit_num', 'submit_pan', 'report',
         }
         for layout in self.findChildren(QHBoxLayout):
-            has_primary = False
-            for i in range(layout.count()):
-                item = layout.itemAt(i)
-                if item and item.widget() and item.widget().objectName() in primary_names:
-                    has_primary = True
-                    break
-            if not has_primary:
+            if not self._layout_has_primary(layout, primary_names):
                 continue
-            for i in range(layout.count()):
-                item = layout.itemAt(i)
-                if item and item.widget() and item.widget().objectName() in primary_names:
-                    item.widget().setMinimumWidth(600)
-                    item.widget().setSizePolicy(
-                        QSizePolicy.Expanding, QSizePolicy.Fixed,
-                    )
-                    layout.setStretch(i, 1)
-                elif item and item.spacerItem():
-                    layout.setStretch(i, 0)
-                elif item and item.widget():
-                    layout.setStretch(i, 0)
+            self._set_primary_stretch(layout, primary_names)
 
     def apply_theme(self) -> None:
         """Apply the current theme stylesheet to the dialog."""

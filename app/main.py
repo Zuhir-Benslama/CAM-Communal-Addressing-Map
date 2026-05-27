@@ -1,12 +1,13 @@
 """Main plugin entry point for the RNA QGIS plugin."""
 import os
 import logging
-from typing import Any
+from typing import Any, List, Optional
 
 from qgis.PyQt.QtCore import QSettings, QCoreApplication, Qt, QTimer
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QDockWidget, QMessageBox
 from qgis.core import QgsApplication
+from qgis.gui import QgisInterface
 
 from ..gui.main_dialog import RNADialog
 from .shared.constants import (
@@ -19,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class RNA:
-    def __init__(self, iface) -> None:
+    def __init__(self, iface: QgisInterface) -> None:
         QgsApplication.setPrefixPath(os.getenv('QGIS_BASE_PATH', '/usr'), True)
 
         svg_path = os.path.join(
@@ -29,22 +30,22 @@ class RNA:
         QgsApplication.setDefaultSvgPaths([svg_path])
         QgsApplication.instance().setSvgPaths([svg_path])
 
-        self.iface = iface
-        self.plugin_dir = os.path.dirname(os.path.dirname(__file__))
+        self.iface: QgisInterface = iface
+        self.plugin_dir: str = os.path.dirname(os.path.dirname(__file__))
         settings = QSettings()
         settings.beginGroup('digitizing')
         settings.setValue('disable-enter-attribute-values-dialog', True)
         settings.endGroup()
 
-        self._locale_code = QSettings(SETTINGS_ORG, SETTINGS_APP).value(
+        self._locale_code: str = QSettings(SETTINGS_ORG, SETTINGS_APP).value(
             SETTINGS_KEY_LOCALE, '')
         if not self._locale_code:
             locale_val = QSettings().value('locale/userLocale')
             self._locale_code = locale_val[0:2] if locale_val else 'en'
 
-        self.actions = []
-        self.menu = self.tr('&RNA')
-        self.first_start = None
+        self.actions: List[QAction] = []
+        self.menu: str = self.tr('&RNA')
+        self.first_start: Optional[bool] = None
 
     def tr(self, message) -> str:
         return QCoreApplication.translate('RNA', message)
@@ -54,6 +55,7 @@ class RNA:
         icon_path,
         text,
         callback,
+        *,
         enabled_flag=True,
         add_to_menu=True,
         add_to_toolbar=True,
@@ -111,11 +113,13 @@ class RNA:
                 return
 
             loc = current_locale()
-            self.dock_widget = QDockWidget(
+            self.dock_widget: QDockWidget = QDockWidget(
                 get_string("RNA Plugin", loc), self.iface.mainWindow()
             )
             self.dock_widget.setWidget(self.dlg)
-            self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dock_widget)
+            self.iface.addDockWidget(
+                Qt.DockWidgetArea.LeftDockWidgetArea, self.dock_widget,
+            )
             self.dock_widget.show()
             QTimer.singleShot(0, self._normalize_dock_width)
 
@@ -131,10 +135,8 @@ class RNA:
 
         default_width = 680
         min_width = 580
-        max_width = 920
 
         self.dock_widget.setMinimumWidth(min_width)
-        self.dock_widget.setMaximumWidth(max_width)
         if (self.dock_widget.width() > 760 or
                 self.dock_widget.width() < min_width):
             self.dock_widget.resize(default_width, self.dock_widget.height())

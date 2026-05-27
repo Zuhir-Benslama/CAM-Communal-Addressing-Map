@@ -52,8 +52,9 @@
         color: {{DARK_TEXT}};
         border: 1px solid {{DARK_BORDER}};
         border-radius: 6px;
-        padding: 6px 14px;
-        min-height: 1.2em;
+        padding-left: 14px;
+        padding-right: 14px;
+        min-height: 2em;
         combobox-popup: 0;
     }}
     QComboBox:hover {{
@@ -193,7 +194,7 @@
         padding: 4px 8px;
     }}
     QFrame[surfaceRole="header"],
-    QFrame[surfaceRole="toolbar"],
+    QGroupBox[surfaceRole="toolbar"],
     QFrame[surfaceRole="footer"] {{
         background-color: {{DARK_SURFACE}};
         border: 1px solid {{DARK_BORDER}};

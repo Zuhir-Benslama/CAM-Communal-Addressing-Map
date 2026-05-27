@@ -69,25 +69,13 @@ class IntegrationFlowTest(unittest.TestCase):
         host.rest = None
         host.current_user = None
 
-        host.is_road = MagicMock()
-        host.is_road.isChecked = MagicMock(return_value=True)
+        host._geometry_ready = 'Roads'
         host.road_name = MagicMock()
         host.road_name.text = MagicMock(return_value='Test Road')
         host.road_decision = MagicMock()
         host.road_decision.text = MagicMock(return_value='Decision 1')
         host.type_road = MagicMock()
         host.type_road.currentData = MagicMock(return_value='road_type_1')
-
-        host.is_org = MagicMock()
-        host.is_org.isChecked = MagicMock(return_value=False)
-        host.is_city = MagicMock()
-        host.is_city.isChecked = MagicMock(return_value=False)
-        host.is_num = MagicMock()
-        host.is_num.isChecked = MagicMock(return_value=False)
-        host.is_pan = MagicMock()
-        host.is_pan.isChecked = MagicMock(return_value=False)
-        host.is_zone = MagicMock()
-        host.is_zone.isChecked = MagicMock(return_value=False)
 
         host.num_val = MagicMock()
         host.sat_view = None

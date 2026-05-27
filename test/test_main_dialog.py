@@ -144,7 +144,7 @@ class TestRNADialogCore(unittest.TestCase):
         tab_bar_mock = MagicMock()
         dialog.menu.tabBar = MagicMock(return_value=tab_bar_mock)
         dialog._set_button_roles = MagicMock()
-        _stub_widgets(dialog, ['frame_8', 'frame_9',
+        _stub_widgets(dialog, ['toolbar_frame', 'frame_8', 'frame_9',
                                 'label_feature', 'label_type',
                                 'label_subtype', 'label_subsubtype'])
         dialog.findChildren = MagicMock(return_value=[])

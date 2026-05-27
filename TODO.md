@@ -531,7 +531,7 @@ These are intentional patterns, not bugs. Addressed as needed during feature wor
 - **`attribute-defined-outside-init` (~108)** — mixin attrs set in methods, not `__init__`; by design but noisy
 - **`import-outside-toplevel` (~26)** — try/except fallbacks in scripts + lazy imports for circular deps
 - **`global-statement` (8)** — engine/session caching pattern in `database.py`, `security.py`, `config.py`
-- **`too-many-arguments` / `too-many-positional-arguments` (9)** — `add_action` takes 10 params; writer functions take 7–9
+- **`too-many-arguments` / `too-many-positional-arguments` (0)** — all converted to keyword-only ✅
 - **`too-many-instance-attributes` (7)**, **`too-many-ancestors` (1)** — RNADialog inheritance complexity
 
 ### False Positives (ignore)
@@ -1000,3 +1000,65 @@ Both `on_opt_selected` and `symbols()` now under pylint `too-many-branches`/`too
 - `gui/RNA_dialog_base.ui` — gear_btn size (32→26), `horizontalLayout_2` margins (10→5)
 - `resources/light_qss.template` — QComboBox/QLineEdit padding (10→6)
 - `resources/dark_qss.template` — same padding change
+
+---
+
+## 55. Code Quality Scan — 2026-05-26
+
+**Pylint: 8.96/10** (6587 statements)
+
+### Issues by severity
+
+| ID | Issue | Count | Notes |
+|----|-------|-------|-------|
+| C0116 | missing-function-docstring | 315 | Mostly test files and scripts |
+| W0212 | protected-access | 123 | Tests accessing `_private` members |
+| W0718 | broad-exception-caught | 37 | Most log with `exc_info=True`; ~4 remain silent |
+| C0415 | import-outside-toplevel | 33 | Circular dep workarounds, lazy imports |
+| C0115 | missing-class-docstring | 29 | |
+| W0107 | unnecessary-pass | 12 | Stub methods |
+| R0903 | too-few-public-methods | 10 | |
+| C0301 | line-too-long | 10 | `resources.py`, `gen_translations.py` |
+| R0917 | too-many-positional-arguments | 9 | Writer functions take 7-9 params |
+| W0603 | global-statement | 8 | Engine/session caching |
+| W0621 | wrong-import-position | 6 | |
+| W0108 | unnecessary-lambda | 6 | PyQt signal connections |
+| E0602 | undefined-variable | 4 | **Potential bugs** |
+| R0912 | too-many-branches | 4 | |
+| C0114 | missing-module-docstring | 3 | |
+| E1101 | no-member | 2 | PyQt5 C extensions (false positives) |
+| W0611 | unused-import | 1 | `mixins/map_tools_mixin.py:5` — `Any` |
+| R0915 | too-many-statements | 1 | |
+| R1702 | too-many-nested-blocks | 1 | |
+| W0404 | reimported | 1 | |
+| W0707 | raise-missing-from | 1 | |
+| E1102 | not-callable | 1 | SQLAlchemy `func` (false positive) |
+| R1711 | consider-using-dict-items | 1 | |
+
+### pycodestyle (PEP8)
+- **resources.py**: 5 violations (auto-generated, excluded)
+- **test/helpers.py**: W503 (line break before binary operator)
+- **test/qgis_interface.py**: E265 (block comment style)
+- **mixins/_protocols.py**: E704 (multiple statements on one line)
+- **scripts/lookup_data.py**: E302 (blank line spacing)
+- **mixins/layer_edit_mixin.py**: W503
+
+### Key action items (P0/P1)
+- [x] **Fix 4 undefined variables** (`E0602`) — real bugs, not style
+- [x] **Fix unused import** in `mixins/map_tools_mixin.py`
+- [x] **Fix 4 broad-exception-caught that don't log** — silent error swallows (narrowed to `RuntimeError`)
+- [x] **Fix raise-missing-from** — chain context properly
+- [x] **Fix reimported** — duplicate import
+- [x] **Fix consider-using-dict-items** — use `.items()` instead of `.keys()`
+
+### Medium priority (P2)
+- [x] **Move imports to top-level** where possible (reduce C0415 from 33 → 12; remaining 12 are circular-import workarounds)
+- [ ] Add missing docstrings (C0116 × 315, C0115 × 29, C0114 × 3)
+- [ ] Address protected-access (123) — intentional test pattern
+- [x] **Improve `app/orders/models.py` maintainability** — B(16.49) → already A(20.33) (improved earlier)
+- [x] **`app/core/database.py` — 8 broad `except Exception`** — narrowed 4 (`CreateSpatialIndex`, `_add_column_if_not_exists`, `InitSpatialMetadata`); remaining 4 are legitimate top-level catch-alls (extension loading, auth setup, migration).
+- [x] **`app/users/service.py:115` — `except Exception`** — inner handlers narrowed; outer handler kept as `Exception` (legitimate top-level catch-all).
+- [ ] **Add docstrings to remaining undocumented functions** in `app/lifespan.py`, `app/main.py`, `app/orders/models.py`, `app/users/schemas.py`, `app/core/security.py`, `app/core/config.py`, `app/core/database.py` (C0116/C0115 conventions)
+- [x] **`app/orders/repository.py` — 6 functions with 7+ positional args** (R0917). Converted to keyword-only with `*`.
+- [x] **`app/users/service.py:20` — 7 positional args** (R0917). Converted to keyword-only with `*`.
+- [x] **`gui/popup_dialog.py:49` — 6 positional args** (R0917). Converted to keyword-only with `*`.

@@ -278,7 +278,7 @@ def _make_gui_pyqt_mocks():
 
         def _connect_clicked(self, slot):
             self._slots.append(slot)
-            self.clicked.connect = lambda s: self._slots.append(s)
+            self.clicked.connect = self._slots.append
 
         def click(self):
             for slot in self._slots:
@@ -488,8 +488,7 @@ def get_qapp():
         from PyQt5.QtWidgets import QApplication
         app = QApplication.instance()
         if app is None:
-            import sys as _sys
-            app = QApplication(_sys.argv)
+            app = QApplication(sys.argv)
         return app
     except ImportError:
         return None

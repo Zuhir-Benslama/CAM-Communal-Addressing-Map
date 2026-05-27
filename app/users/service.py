@@ -1,10 +1,16 @@
 """Authentication service: sign-up, sign-in, logout, and session management."""
+# mypy: disable-error-code="assignment,union-attr,arg-type,return-value"
 import logging
+import os
+import tempfile
+
 import jwt
 import toml
 from marshmallow import ValidationError
 
 from qgis.core import QgsProject, QgsMessageLog
+
+from sqlalchemy.exc import SQLAlchemyError
 
 from ..core.security import get_jwt_secret, hash_password, verify_password
 from ..core.database import get_session, get_auth_session
@@ -17,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 def sign_up(
-    username: str, password: str, affectation_id: int, phone: str,
+    *, username: str, password: str, affectation_id: int, phone: str,
     email: str, first_name: str, lastname: str
 ) -> tuple[bool, list[str] | None]:
     signup_data = {
@@ -104,7 +110,7 @@ def sign_in(
                 spatial_session.commit()
                 auth_session.commit()
                 create_cookie(token, auth_user.id)
-            except Exception:
+            except (jwt.PyJWTError, SQLAlchemyError):
                 spatial_session.rollback()
                 auth_session.rollback()
                 raise
@@ -137,9 +143,6 @@ def remove_all_layers(iface) -> None:
 
 
 def logout(iface, dlg) -> None:
-    import os
-    import tempfile
-
     filename = COOKIE_FILE
 
     with open(filename, 'r', encoding='utf-8') as f:

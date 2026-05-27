@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# mypy: disable-error-code="union-attr"
 
 # Resource object code
 #

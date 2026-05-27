@@ -24,11 +24,11 @@ def _allowlist_columns(model_class: type, **kwargs: Any) -> dict:
     safe for use with ``setattr``.
     """
     col_map: dict[str, str] = {}
-    for col in model_class.__table__.columns:
+    for col in model_class.__table__.columns:  # type: ignore[attr-defined]
         col_map[col.name] = col.name
 
     try:
-        mapper = model_class.__mapper__
+        mapper = model_class.__mapper__  # type: ignore[attr-defined]
         for attr in mapper.attrs:
             if hasattr(attr, "columns"):
                 for col in attr.columns:
@@ -40,7 +40,7 @@ def _allowlist_columns(model_class: type, **kwargs: Any) -> dict:
         pass
 
     return {
-        python_name: kwargs[k]
-        for k in kwargs
+        python_name: v
+        for k, v in kwargs.items()
         if (python_name := col_map.get(k)) is not None
     }

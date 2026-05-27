@@ -49,8 +49,9 @@ class TestSignUp(unittest.TestCase):
         with patch('app.users.service.hash_password',
                     return_value='hashed_pw'):
             ok, errors = sign_up(
-                'newuser', 'secret123', 1, '0555000000',
-                'new@test.com', 'New', 'User'
+                username='newuser', password='secret123',
+                affectation_id=1, phone='0555000000',
+                email='new@test.com', first_name='New', lastname='User'
             )
         self.assertTrue(ok)
         self.assertIsNone(errors)
@@ -67,7 +68,10 @@ class TestSignUp(unittest.TestCase):
             'app.users.service.SignupSchema.load',
             side_effect=ValidationError({'username': ['Required']})
         ):
-            ok, errors = sign_up('', '', 0, '', '', '', '')
+            ok, errors = sign_up(
+                username='', password='', affectation_id=0, phone='',
+                email='', first_name='', lastname='',
+            )
         self.assertFalse(ok)
         self.assertIsNotNone(errors)
         self.mock_spatial_session.add.assert_not_called()

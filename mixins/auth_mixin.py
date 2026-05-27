@@ -1,4 +1,5 @@
 """Authentication and login flow mixin for user management."""
+# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -14,7 +15,8 @@ from ..layer.refresh import refresh_all_layers
 from ..app.users.repository import qgis_config
 from ..constants import validate_text, current_theme, get_dialog_qss
 from ._protocols import (
-    HasTranslation, HasIface, HasAuthState, HasUiWidgets, HasLayerTools,
+    HasTranslation, HasUiWidgets,
+    HasAuthContext, HasAuthMapContext, HasLoginContext, HasCloseContext,
 )
 
 logger = logging.getLogger(__name__)
@@ -32,7 +34,7 @@ class AuthMixin:
         """Show an informational success message dialog."""
         QMessageBox.information(self, self._tr("Success"), text)
 
-    def submit_add_usr(self: HasUiWidgets & HasTranslation) -> None:
+    def submit_add_usr(self: HasAuthContext) -> None:
         """Register a new user via the sign-up API."""
         current_index = self.commune_of_wilaya.currentIndex()
         selected_value = self.commune_of_wilaya.itemData(current_index)
@@ -51,7 +53,7 @@ class AuthMixin:
             self._show_error("\n".join(errors))
 
     def login_user(
-        self: HasUiWidgets & HasIface & HasAuthState & HasTranslation,
+        self: HasLoginContext,
     ) -> None:
         """Authenticate the user and initialize the map session on success."""
         ok, username, error = sign_in(
@@ -77,12 +79,12 @@ class AuthMixin:
 
     def fill_map_options(self: HasUiWidgets) -> None:
         """Populate the map options combo box from QGIS config."""
-        maps = qgis_config().get('map_layers')
+        maps = qgis_config().get('map_layers') or []
         self.map_options.clear()
         for cfg in maps:
             self.map_options.addItem(cfg.get('label'), cfg.get('url'))
 
-    def add_map_layer(self: HasUiWidgets & HasAuthState & HasTranslation) -> bool:
+    def add_map_layer(self: HasAuthMapContext) -> bool:
         """Add the selected raster or WMS map layer to the project."""
         selected_label = self.map_options.currentText()
         selected_value = self.map_options.currentData()
@@ -148,7 +150,7 @@ class AuthMixin:
             self.router.setCurrentWidget(page)
 
     def closeEvent(
-        self: HasIface & HasAuthState & HasLayerTools & HasUiWidgets, event,
+        self: HasCloseContext, event,
     ) -> None:
         """Clean up tools and logout on dialog close."""
         self.stop()

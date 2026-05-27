@@ -2,9 +2,10 @@
 import logging
 import os
 from contextlib import contextmanager
-from typing import Any, Iterator
+from typing import Any, Iterator, Optional
 
 from sqlalchemy import create_engine, event, inspect, text
+from sqlalchemy.exc import SQLAlchemyError, OperationalError
 from sqlalchemy.orm import sessionmaker, Session
 
 from ..shared.constants import DATABASE_FILE, AUTH_DATABASE_FILE
@@ -14,15 +15,105 @@ from .base import Base
 logger = logging.getLogger(__name__)
 
 
-_engine = None
-_Session = None
-_auth_engine = None
-_AuthSession = None
+class ConnectionPool:
+    """Lazily-initialised singleton pool for main and auth DB engines and
+    session factories."""
+
+    def __init__(self) -> None:
+        self._engine: Any = None
+        self._Session: Any = None
+        self._auth_engine: Any = None
+        self._AuthSession: Any = None
+
+    def reset(self) -> None:
+        """Clear all cached engines and session factories."""
+        self._engine = None
+        self._Session = None
+        self._auth_engine = None
+        self._AuthSession = None
+
+    def get_engine(self) -> Any:
+        """Return (and lazily initialise) the spatial DB engine."""
+        if self._engine is None:
+            filename = DATABASE_FILE
+            self._engine = create_engine(
+                f'sqlite:///{filename}', echo=False, pool_pre_ping=True
+            )
+
+            @event.listens_for(self._engine, "connect")
+            def connect_spatialite(dbapi_conn, _connection_record) -> None:
+                dll = find_mod_spatialite_dll()
+                dbapi_conn.enable_load_extension(True)
+                try:
+                    dbapi_conn.load_extension(dll)
+                except Exception as exc:
+                    logger.debug(
+                        "SpatiaLite load_extension failed, trying SQL fallback",
+                        exc_info=True,
+                    )
+                    if not os.path.exists(dll):
+                        raise RuntimeError(
+                            f"SpatiaLite DLL not found: {dll}"
+                        ) from exc
+                    safe_dll = dll.replace("'", "''")
+                    dbapi_conn.execute(
+                        f"SELECT load_extension('{safe_dll}')"
+                    )
+                try:
+                    cursor = dbapi_conn.execute(
+                        "SELECT count(*) FROM sqlite_master "
+                        "WHERE type='table' AND name='spatial_ref_sys'"
+                    )
+                    if cursor.fetchone()[0] == 0:
+                        dbapi_conn.execute("SELECT InitSpatialMetadata(1)")
+                except (OperationalError, SQLAlchemyError):
+                    logger.warning(
+                        "InitSpatialMetadata(1) failed — spatial queries "
+                        "may not work correctly",
+                        exc_info=True,
+                    )
+
+            Base.metadata.create_all(self._engine)
+            _migrate_timestamp_columns(self._engine)
+            _migrate_missing_columns(self._engine)
+            _create_spatial_indexes(self._engine)
+        return self._engine
+
+    def get_session(self) -> Session:
+        """Return a new session bound to the spatial DB engine."""
+        if self._Session is None:
+            self._Session = sessionmaker(bind=self.get_engine())
+        return self._Session()
+
+    def get_auth_engine(self) -> Any:
+        """Return (and lazily initialise) the auth DB engine."""
+        if self._auth_engine is None:
+            from ..users.models import User
+            filename = AUTH_DATABASE_FILE
+            self._auth_engine = create_engine(
+                f'sqlite:///{filename}', echo=False, pool_pre_ping=True
+            )
+            Base.metadata.create_all(
+                self._auth_engine, tables=[User.__table__]
+            )
+            _migrate_timestamp_columns(self._auth_engine)
+            _migrate_users_to_auth(self._auth_engine)
+        return self._auth_engine
+
+    def get_auth_session(self) -> Session:
+        """Return a new session bound to the auth DB engine."""
+        if self._AuthSession is None:
+            self._AuthSession = sessionmaker(bind=self.get_auth_engine())
+        return self._AuthSession()
+
+
+_pool = ConnectionPool()
 
 
 @contextmanager
 def session_scope() -> Iterator[Session]:
-    session = get_session()
+    """Context manager yielding a spatial DB session, auto-closed on exit."""
+    session = _pool.get_session()
     try:
         yield session
     finally:
@@ -31,7 +122,8 @@ def session_scope() -> Iterator[Session]:
 
 @contextmanager
 def auth_session_scope() -> Iterator[Session]:
-    session = get_auth_session()
+    """Context manager yielding an auth DB session, auto-closed on exit."""
+    session = _pool.get_auth_session()
     try:
         yield session
     finally:
@@ -39,11 +131,8 @@ def auth_session_scope() -> Iterator[Session]:
 
 
 def reset_connection_pool() -> None:
-    global _engine, _Session, _auth_engine, _AuthSession
-    _engine = None
-    _Session = None
-    _auth_engine = None
-    _AuthSession = None
+    """Clear all cached engines and session factories."""
+    _pool.reset()
 
 
 def _add_column_if_not_exists(
@@ -129,7 +218,7 @@ def _create_spatial_indexes(engine: Any) -> None:
                 )
                 conn.commit()
                 logger.info("Created spatial index on %s.%s", table, column)
-            except Exception:
+            except (OperationalError, SQLAlchemyError):
                 logger.warning(
                     "Could not create spatial index on %s.%s",
                     table, column, exc_info=True,
@@ -153,7 +242,7 @@ def _migrate_timestamp_columns(engine: Any) -> None:
                 _add_column_if_not_exists(
                     conn, table, 'updated_at', 'DATETIME',
                 )
-            except Exception:
+            except SQLAlchemyError:
                 logger.warning(
                     "Could not add timestamp columns to %s",
                     table, exc_info=True,
@@ -161,75 +250,26 @@ def _migrate_timestamp_columns(engine: Any) -> None:
 
 
 def get_engine() -> Any:
-    global _engine
-    if _engine is None:
-        filename = DATABASE_FILE
-        _engine = create_engine(
-            f'sqlite:///{filename}', echo=False, pool_pre_ping=True
-        )
-
-        @event.listens_for(_engine, "connect")
-        def connect_spatialite(dbapi_conn, _connection_record) -> None:
-            dll = find_mod_spatialite_dll()
-            dbapi_conn.enable_load_extension(True)
-            try:
-                dbapi_conn.load_extension(dll)
-            except Exception:
-                logger.debug(
-                    "SpatiaLite load_extension failed, trying SQL fallback",
-                    exc_info=True,
-                )
-                if not os.path.exists(dll):
-                    raise RuntimeError(
-                        f"SpatiaLite DLL not found: {dll}"
-                    )
-                safe_dll = dll.replace("'", "''")
-                dbapi_conn.execute(
-                    f"SELECT load_extension('{safe_dll}')"
-                )
-            try:
-                cursor = dbapi_conn.execute(
-                    "SELECT count(*) FROM sqlite_master "
-                    "WHERE type='table' AND name='spatial_ref_sys'"
-                )
-                if cursor.fetchone()[0] == 0:
-                    dbapi_conn.execute("SELECT InitSpatialMetadata(1)")
-            except Exception:
-                logger.warning(
-                    "InitSpatialMetadata(1) failed — spatial queries "
-                    "may not work correctly",
-                    exc_info=True,
-                )
-
-        Base.metadata.create_all(_engine)
-        _migrate_timestamp_columns(_engine)
-        _migrate_missing_columns(_engine)
-        _create_spatial_indexes(_engine)
-    return _engine
+    """Return the lazily-initialised spatial DB engine."""
+    return _pool.get_engine()
 
 
 def get_session() -> Session:
-    global _Session
-    if _Session is None:
-        _Session = sessionmaker(bind=get_engine())
-    return _Session()
+    """Return a new session bound to the spatial DB engine."""
+    return _pool.get_session()
 
 
 def get_auth_engine() -> Any:
-    global _auth_engine
-    if _auth_engine is None:
-        from ..users.models import User
-        filename = AUTH_DATABASE_FILE
-        _auth_engine = create_engine(
-            f'sqlite:///{filename}', echo=False, pool_pre_ping=True
-        )
-        Base.metadata.create_all(_auth_engine, tables=[User.__table__])
-        _migrate_timestamp_columns(_auth_engine)
-        _migrate_users_to_auth()
-    return _auth_engine
+    """Return the lazily-initialised auth DB engine."""
+    return _pool.get_auth_engine()
 
 
-def _migrate_users_to_auth() -> None:
+def get_auth_session() -> Session:
+    """Return a new session bound to the auth DB engine."""
+    return _pool.get_auth_session()
+
+
+def _migrate_users_to_auth(auth_engine: Any) -> None:
     """One-shot migration from legacy spatial DB user table to auth DB.
 
     The spatial DB retains a ``user`` table purely to satisfy ``FOREIGN KEY``
@@ -246,7 +286,7 @@ def _migrate_users_to_auth() -> None:
     """
     from ..users.models import User
     try:
-        auth_session = sessionmaker(bind=_auth_engine)()
+        auth_session = sessionmaker(bind=auth_engine)()
     except Exception:
         logger.exception(
             "Cannot create auth session for user migration"
@@ -295,10 +335,3 @@ def _migrate_users_to_auth() -> None:
         )
     finally:
         auth_session.close()
-
-
-def get_auth_session() -> Session:
-    global _AuthSession
-    if _AuthSession is None:
-        _AuthSession = sessionmaker(bind=get_auth_engine())
-    return _AuthSession()

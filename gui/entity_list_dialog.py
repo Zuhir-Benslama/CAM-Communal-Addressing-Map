@@ -1,4 +1,5 @@
 """Paginated dialog for browsing entity records."""
+from __future__ import annotations
 import logging
 import os
 from typing import TYPE_CHECKING
@@ -29,12 +30,12 @@ else:
         os.path.dirname(__file__), 'liste.ui'))
 
 
-class EntityListDialog(QDialog, FORM_CLASS):
+class EntityListDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
     """Paginated dialog displaying a table of entity records."""
     PAGE_SIZE = 50
 
     def __init__(self, model_name: str, list_of: str,
-                 parent: object = None) -> None:
+                 parent: QWidget | None = None) -> None:
         """Initialize the list dialog with paginated table."""
 
         self.model_name = model_name
@@ -94,7 +95,10 @@ class EntityListDialog(QDialog, FORM_CLASS):
         main_layout.setSpacing(8)
         main_layout.addWidget(info_container)
         main_layout.addWidget(container)
-        self.layout().addLayout(main_layout)
+        _layout = self.layout()
+        if _layout is None:
+            return
+        _layout.addLayout(main_layout)  # type: ignore[attr-defined]
 
         self.populate_table()
 
@@ -112,9 +116,9 @@ class EntityListDialog(QDialog, FORM_CLASS):
         self.frame_10.setProperty('surfaceRole', 'toolbar')
         self.frame_9.setProperty('surfaceRole', 'footer')
         self.frame_2.setMaximumWidth(16777215)
-        self.label.setAlignment(Qt.AlignCenter)
-        self.list_title.setAlignment(Qt.AlignCenter)
-        self.label_24.setAlignment(Qt.AlignCenter)
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.list_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label_24.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label_24.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
 
         footer_layout = self.frame_9.layout()

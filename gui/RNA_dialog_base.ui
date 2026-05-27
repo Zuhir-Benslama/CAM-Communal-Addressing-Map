@@ -993,7 +993,7 @@
                                      </size>
                                    </property>
                                    <property name="text">
-                                     <string/>
+                                     <string />
                                    </property>
                                    <property name="toolTip">
                                      <string>Toggle Settings</string>
@@ -1049,8 +1049,11 @@
                                 </widget>
                               </item>
                               <item>
-                                <widget class="QFrame" name="toolbar_frame">
-                                  <property name="frameShape"><enum>QFrame::StyledPanel</enum></property><layout class="QHBoxLayout" name="toolbar_layout">
+                                <widget class="QGroupBox" name="toolbar_frame">
+                                  <property name="title">
+                                    <string>Tools</string>
+                                  </property>
+                                  <layout class="QHBoxLayout" name="toolbar_layout">
                                     <item>
                                       <widget class="QPushButton" name="draw_btn">
                                         <property name="minimumSize">
@@ -1132,7 +1135,7 @@
                                         <layout class="QVBoxLayout" name="verticalLayout_28">
                                           <item>
                                             <layout class="QFormLayout" name="formLayout_zone">
-                                              <property name="labelAlignment"><set>Qt::AlignRight</set></property><item row="1" column="0">
+                                              <property name="labelAlignment"><set>Qt::AlignRight</set></property><item row="0" column="0">
                                                 <widget class="QLabel" name="label_25">
                                                   <property name="font">
                                                     <font>
@@ -1145,7 +1148,7 @@
                                                   </property>
                                                 </widget>
                                               </item>
-                                              <item row="1" column="1">
+                                              <item row="0" column="1">
                                                 <widget class="QComboBox" name="zone_type">
                                                   <property name="toolTip">
                                                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Select zone type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -1155,7 +1158,7 @@
                                                   </property>
                                                 </widget>
                                               </item>
-                                              <item row="2" column="0">
+                                              <item row="1" column="0">
                                                 <widget class="QLabel" name="label_28">
                                                   <property name="font">
                                                     <font>
@@ -1168,14 +1171,14 @@
                                                   </property>
                                                 </widget>
                                               </item>
-                                              <item row="2" column="1">
+                                              <item row="1" column="1">
                                                 <widget class="QLineEdit" name="nom_zone">
                                                   <property name="toolTip">
                                                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;The zone name must not be concatenated with the zone type, e.g.&lt;span style=" font-weight:600;"&gt; Industrial Zone Dar El Beida&lt;/span&gt;&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Zone Type:&lt;/span&gt; Industrial Zone&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Zone Name:&lt;/span&gt; Dar El Beida&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                   </property>
                                                 </widget>
                                               </item>
-                                              <item row="3" column="0" colspan="2">
+                                              <item row="2" column="0" colspan="2">
                                                 <layout class="QHBoxLayout" name="horizontalLayout_19">
                                                   <item><spacer name="hs_horizontalLayout_19_left"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item>
                                                     <widget class="QPushButton" name="submit_zone">
@@ -1199,33 +1202,7 @@
                                                   </item>
                                                 <item><spacer name="hs_horizontalLayout_19_right"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item></layout>
                                               </item>
-                                              <item row="0" column="1">
-                                                <widget class="QCheckBox" name="is_zone">
-                                                  <property name="enabled">
-                                                    <bool>false</bool>
-                                                  </property>
-                                                  <property name="toolTip">
-                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Indicator of geometry availability for zone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                                                  </property>
-                                                  <property name="text">
-                                                    <string />
-                                                  </property>
-                                                </widget>
-                                              </item>
-                                              <item row="0" column="0">
-                                                <widget class="QLabel" name="label_21">
-                                                  <property name="font">
-                                                    <font>
-                                                      <weight>75</weight>
-                                                      <bold>true</bold>
-                                                    </font>
-                                                  </property>
-                                                  <property name="text">
-                                                    <string>Geometry Available:</string>
-                                                  </property>
-                                                </widget>
-                                              </item>
-                                            </layout>
+                                              </layout>
                                           </item>
                                         <property name="leftMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property></layout>
                                       </item>
@@ -1255,32 +1232,6 @@
                                                   <number>15</number>
                                                 </property>
                                                 <item row="0" column="0">
-                                                  <widget class="QLabel" name="label_20">
-                                                    <property name="font">
-                                                      <font>
-                                                        <weight>75</weight>
-                                                        <bold>true</bold>
-                                                      </font>
-                                                    </property>
-                                                    <property name="text">
-                                                      <string>Geometry Available:</string>
-                                                    </property>
-                                                  </widget>
-                                                </item>
-                                                <item row="0" column="1">
-                                                  <widget class="QCheckBox" name="is_road">
-                                                    <property name="enabled">
-                                                      <bool>false</bool>
-                                                    </property>
-                                                    <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Indicator of geometry availability for road&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                                                    </property>
-                                                    <property name="text">
-                                                      <string />
-                                                    </property>
-                                                  </widget>
-                                                </item>
-                                                <item row="1" column="0">
                                                   <widget class="QLabel" name="label_22">
                                                     <property name="font">
                                                       <font>
@@ -1293,7 +1244,7 @@
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="1" column="1">
+                                                <item row="0" column="1">
                                                   <widget class="QComboBox" name="type_road">
                                                     <property name="toolTip">
                                                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select road type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -1303,7 +1254,7 @@
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="2" column="0">
+                                                <item row="1" column="0">
                                                   <widget class="QLabel" name="label_23">
                                                     <property name="font">
                                                       <font>
@@ -1316,14 +1267,14 @@
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="2" column="1">
+                                                <item row="1" column="1">
                                                   <widget class="QLineEdit" name="road_name">
                                                     <property name="toolTip">
                                                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;The road name must not be concatenated with the road type, e.g.&lt;span style=" font-weight:600;"&gt; Didouche Mourad Street &lt;/span&gt;&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Road Type:&lt;/span&gt; Street&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Road Name:&lt;/span&gt; Didouche Mourad&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="3" column="0" colspan="2">
+                                                <item row="2" column="0" colspan="2">
                                                   <layout class="QHBoxLayout" name="horizontalLayout_12">
                                                     <item><spacer name="hs_horizontalLayout_12_left"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item>
                                                       <widget class="QPushButton" name="submit_road">
@@ -1397,33 +1348,7 @@
                                                 <property name="labelAlignment"><set>Qt::AlignRight</set></property><property name="verticalSpacing">
                                                   <number>15</number>
                                                 </property>
-                                                <item row="0" column="0">
-                                                  <widget class="QLabel" name="label_17">
-                                                    <property name="font">
-                                                      <font>
-                                                        <weight>75</weight>
-                                                        <bold>true</bold>
-                                                      </font>
-                                                    </property>
-                                                    <property name="text">
-                                                      <string>Geometry Available:</string>
-                                                    </property>
-                                                  </widget>
-                                                </item>
-                                                <item row="0" column="1">
-                                                  <widget class="QCheckBox" name="is_org">
-                                                    <property name="enabled">
-                                                      <bool>false</bool>
-                                                    </property>
-                                                    <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Indicator of geometry availability for facility&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                                                    </property>
-                                                    <property name="text">
-                                                      <string />
-                                                    </property>
-                                                  </widget>
-                                                </item>
-                                                <item row="2" column="0">
+                                                <item row="1" column="0">
                                                   <widget class="QLabel" name="label_18">
                                                     <property name="font">
                                                       <font>
@@ -1436,7 +1361,7 @@
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="2" column="1">
+                                                <item row="1" column="1">
                                                   <widget class="QComboBox" name="org_type">
                                                     <property name="toolTip">
                                                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select facility type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -1449,7 +1374,7 @@
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="3" column="0">
+                                                <item row="2" column="0">
                                                   <widget class="QLabel" name="label_19">
                                                     <property name="font">
                                                       <font>
@@ -1462,7 +1387,7 @@
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="3" column="1">
+                                                <item row="2" column="1">
                                                   <widget class="QLineEdit" name="org_name">
                                                     <property name="toolTip">
                                                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;The facility name must not be concatenated with the facility type, e.g.&lt;span style=" font-weight:600;"&gt; Bachir Mentouri Hospital &lt;/span&gt;&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Facility Type:&lt;/span&gt; Hospital&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Facility Name:&lt;/span&gt; Bachir Mentouri&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -1472,7 +1397,7 @@
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="1" column="0">
+                                                <item row="0" column="0">
                                                   <widget class="QLabel" name="label_48">
                                                     <property name="font">
                                                       <font>
@@ -1485,14 +1410,14 @@
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="1" column="1">
+                                                <item row="0" column="1">
                                                   <widget class="QComboBox" name="org_cat">
                                                     <property name="editable">
                                                       <bool>true</bool>
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="4" column="0" colspan="2">
+                                                <item row="3" column="0" colspan="2">
                                                   <layout class="QHBoxLayout" name="horizontalLayout_13">
                                                     <item><spacer name="hs_horizontalLayout_13_left"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item>
                                                       <widget class="QPushButton" name="submit_org">
@@ -1570,32 +1495,6 @@
                                                   <number>15</number>
                                                 </property>
                                                 <item row="0" column="0">
-                                                  <widget class="QLabel" name="label_26_geo_avail">
-                                                    <property name="font">
-                                                      <font>
-                                                        <weight>75</weight>
-                                                        <bold>true</bold>
-                                                      </font>
-                                                    </property>
-                                                    <property name="text">
-                                                      <string>Geometry Available:</string>
-                                                    </property>
-                                                  </widget>
-                                                </item>
-                                                <item row="0" column="1">
-                                                  <widget class="QCheckBox" name="is_city">
-                                                    <property name="enabled">
-                                                      <bool>false</bool>
-                                                    </property>
-                                                    <property name="toolTip">
-                                                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Indicator of geometry availability for subdivision&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                                                    </property>
-                                                    <property name="text">
-                                                      <string />
-                                                    </property>
-                                                  </widget>
-                                                </item>
-                                                <item row="1" column="0">
                                                   <widget class="QLabel" name="label_27">
                                                     <property name="font">
                                                       <font>
@@ -1608,7 +1507,7 @@
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="1" column="1">
+                                                <item row="0" column="1">
                                                   <widget class="QComboBox" name="subd_type">
                                                     <property name="toolTip">
                                                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select subdivision type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -1618,7 +1517,7 @@
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="2" column="0">
+                                                <item row="1" column="0">
                                                   <widget class="QLabel" name="label_32">
                                                     <property name="font">
                                                       <font>
@@ -1631,14 +1530,14 @@
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="2" column="1">
+                                                <item row="1" column="1">
                                                   <widget class="QLineEdit" name="subd_name">
                                                     <property name="toolTip">
                                                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;The subdivision name must not be concatenated with the subdivision type, e.g.&lt;span style=" font-weight:600;"&gt; El Bortegal Cooperative &lt;/span&gt;&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Subdivision Type: &lt;/span&gt;Cooperative&lt;/p&gt;&lt;p align="justify"&gt;&lt;span style=" font-weight:600;"&gt;Subdivision Name:&lt;/span&gt;&lt;span style=" font-weight:600;"/&gt;El Bortegal&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                                                     </property>
                                                   </widget>
                                                 </item>
-                                                <item row="3" column="0" colspan="2">
+                                                <item row="2" column="0" colspan="2">
                                                   <layout class="QHBoxLayout" name="horizontalLayout_14">
                                                     <item><spacer name="hs_horizontalLayout_14_left"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item>
                                                       <widget class="QPushButton" name="submit_subd">
@@ -1715,32 +1614,6 @@
                                           <widget class="QWidget" name="scrollAreaWidgetContents_3">
                                             <layout class="QFormLayout" name="formLayout_3">
                                               <property name="labelAlignment"><set>Qt::AlignRight</set></property><item row="0" column="0">
-                                                <widget class="QLabel" name="label_33">
-                                                  <property name="font">
-                                                    <font>
-                                                      <weight>75</weight>
-                                                      <bold>true</bold>
-                                                    </font>
-                                                  </property>
-                                                  <property name="text">
-                                                    <string>Geometry Available:</string>
-                                                  </property>
-                                                </widget>
-                                              </item>
-                                              <item row="0" column="1">
-                                                <widget class="QCheckBox" name="is_num">
-                                                  <property name="enabled">
-                                                    <bool>false</bool>
-                                                  </property>
-                                                  <property name="toolTip">
-                                                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Indicator of geometry availability for entrance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                                                  </property>
-                                                  <property name="text">
-                                                    <string />
-                                                  </property>
-                                                </widget>
-                                              </item>
-                                              <item row="1" column="0">
                                                 <widget class="QLabel" name="label_40">
                                                   <property name="font">
                                                     <font>
@@ -1753,7 +1626,7 @@
                                                   </property>
                                                 </widget>
                                               </item>
-                                              <item row="1" column="1">
+                                              <item row="0" column="1">
                                                 <widget class="QFrame" name="frame_10_ref_sel">
                                                   <property name="minimumSize">
                                                     <size>
@@ -1844,7 +1717,7 @@
                                                   </layout>
                                                 </widget>
                                               </item>
-                                              <item row="2" column="0">
+                                              <item row="1" column="0">
                                                 <widget class="QLabel" name="label_34">
                                                   <property name="font">
                                                     <font>
@@ -1857,14 +1730,14 @@
                                                   </property>
                                                 </widget>
                                               </item>
-                                              <item row="2" column="1">
+                                              <item row="1" column="1">
                                                 <widget class="QLineEdit" name="num_val">
                                                   <property name="clearButtonEnabled">
                                                     <bool>false</bool>
                                                   </property>
                                                 </widget>
                                               </item>
-                                              <item row="3" column="0">
+                                              <item row="2" column="0">
                                                 <widget class="QLabel" name="label_38">
                                                   <property name="font">
                                                     <font>
@@ -1877,14 +1750,14 @@
                                                   </property>
                                                 </widget>
                                               </item>
-                                              <item row="3" column="1">
+                                              <item row="2" column="1">
                                                 <widget class="QLineEdit" name="repetition">
                                                   <property name="placeholderText">
                                                     <string />
                                                   </property>
                                                 </widget>
                                               </item>
-                                              <item row="4" column="0">
+                                              <item row="3" column="0">
                                                 <widget class="QLabel" name="label_16">
                                                   <property name="font">
                                                     <font>
@@ -1897,7 +1770,7 @@
                                                   </property>
                                                 </widget>
                                               </item>
-                                              <item row="4" column="1">
+                                              <item row="3" column="1">
                                                 <widget class="QComboBox" name="num_state">
                                                   <property name="editable">
                                                     <bool>true</bool>
@@ -1907,7 +1780,7 @@
                                                   </property>
                                                 </widget>
                                               </item>
-                                              <item row="5" column="0" colspan="2">
+                                              <item row="4" column="0" colspan="2">
                                                 <widget class="QGroupBox" name="groupBox_8_entrance">
                                                   <property name="minimumSize">
                                                     <size>
@@ -1975,7 +1848,7 @@
                                                   </layout>
                                                 </widget>
                                               </item>
-                                              <item row="6" column="0" colspan="2">
+                                              <item row="5" column="0" colspan="2">
                                                 <layout class="QHBoxLayout" name="horizontalLayout_15">
                                                   <item><spacer name="hs_horizontalLayout_15_left"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item><item>
                                                     <widget class="QPushButton" name="submit_num">
@@ -2030,37 +1903,14 @@
                                       <item>
                                         <widget class="QWidget" name="formLayout_pan" native="true">
                                           <layout class="QFormLayout" name="formLayout">
-                                            <property name="labelAlignment"><set>Qt::AlignRight</set></property><item row="0" column="0">
-                                              <widget class="QLabel" name="label_39">
-                                                <property name="font">
-                                                  <font>
-                                                    <weight>75</weight>
-                                                    <bold>true</bold>
-                                                  </font>
-                                                </property>
-                                                <property name="text">
-                                                  <string>Geometry Available:</string>
-                                                </property>
-                                              </widget>
-                                            </item>
-                                            <item row="0" column="1">
-                                              <widget class="QCheckBox" name="is_pan">
-                                                <property name="enabled">
-                                                  <bool>false</bool>
-                                                </property>
-                                                <property name="text">
-                                                  <string />
-                                                </property>
-                                              </widget>
-                                            </item>
-                                            <item row="1" column="1">
+                                            <property name="labelAlignment"><set>Qt::AlignRight</set></property><item row="0" column="1">
                                               <widget class="QComboBox" name="mount_status">
                                                 <property name="editable">
                                                   <bool>true</bool>
                                                 </property>
                                               </widget>
                                             </item>
-                                            <item row="2" column="0">
+                                            <item row="1" column="0">
                                               <widget class="QLabel" name="label_31">
                                                 <property name="font">
                                                   <font>
@@ -2073,7 +1923,7 @@
                                                 </property>
                                               </widget>
                                             </item>
-                                            <item row="2" column="1">
+                                            <item row="1" column="1">
                                               <widget class="QFrame" name="frame_14">
                                                 <property name="minimumSize">
                                                   <size>
@@ -2164,7 +2014,7 @@
                                                 </layout>
                                               </widget>
                                             </item>
-                                            <item row="3" column="0" colspan="2">
+                                            <item row="2" column="0" colspan="2">
                                               <layout class="QHBoxLayout" name="horizontalLayout_17">
                                                 <property name="spacing">
                                                   <number>5</number>
@@ -2214,7 +2064,7 @@
                                                 </item>
                                               <item><spacer name="hs_horizontalLayout_17_right"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item></layout>
                                             </item>
-                                            <item row="1" column="0">
+                                            <item row="0" column="0">
                                               <widget class="QLabel" name="label_30">
                                                 <property name="font">
                                                   <font>

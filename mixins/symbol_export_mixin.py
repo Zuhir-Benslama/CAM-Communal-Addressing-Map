@@ -1,4 +1,5 @@
 """Symbol and layout export mixin for SVG, PNG map generation."""
+# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -17,7 +18,10 @@ from ..constants import (
     LAYER_MUNICIPALITY, LAYER_NAMES, SYMBOLS_SVG, SITUATION_PNG,
     NORTH_ARROW_SVG, SCALE_BAR_SVG,
 )
-from ._protocols import HasTranslation, HasIface, HasAuthState, HasPlanState
+from ._protocols import (
+    HasIface,
+    HasSymbolPlanContext, HasSymbolMapContext, HasScaleContext,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +107,7 @@ class SymbolExportMixin:
             new_y = (total_height - legend_rect.height()) / 2
             legend.setPos(legend.scenePos().x(), new_y)
 
-    def symbols(self: HasPlanState & HasAuthState):
+    def symbols(self: HasSymbolPlanContext):
         """Export a layout with map and legend to SVG."""
         if not (self.type_plan and self.type_to_hide):
             return None
@@ -143,7 +147,7 @@ class SymbolExportMixin:
         logger.error("Export failed!")
         return None
 
-    def map_situation(self: HasAuthState & HasIface) -> None:
+    def map_situation(self: HasSymbolMapContext) -> None:
         """Export a situation map highlighting the municipality to PNG."""
         project = QgsProject.instance()
 
@@ -238,7 +242,7 @@ class SymbolExportMixin:
         output_path = NORTH_ARROW_SVG
         exporter.exportToSvg(output_path, export_settings)
 
-    def scale(self: HasIface & HasTranslation) -> None:
+    def scale(self: HasScaleContext) -> None:
         """Export a scale bar SVG matching the current map canvas scale."""
         project = QgsProject.instance()
         layout = QgsPrintLayout(project)

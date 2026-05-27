@@ -1,4 +1,5 @@
 """SQLAlchemy models for spatial entities (zones, roads, etc.)."""
+# mypy: disable-error-code="assignment,arg-type,return-value"
 import uuid
 import logging
 from typing import Any, ClassVar, List, Optional
@@ -20,6 +21,31 @@ from ..shared.utils import current_locale, locale_value
 def _get_current_user():
     from ..users.repository import get_current_user
     return get_current_user()
+
+
+def _parent_zone_id(session: Session, geometry: Any) -> Optional[str]:
+    """Return the ID of the Zone that contains *geometry*, or None."""
+    try:
+        zone = session.query(Zone).filter(
+            ST_Within(geometry, Zone.geometry)
+        ).first()
+        return zone.id if zone else None
+    except Exception:
+        logger.warning("parent zone lookup failed", exc_info=True)
+        return None
+
+
+def _has_child_entities(session: Session, zone_geometry: Any) -> bool:
+    """Check if any Road, Organization, or Subdivision lies inside the zone."""
+    try:
+        for cls in (Road, Organization, Subdivision):
+            if session.query(cls).filter(
+                ST_Within(cls.geometry, zone_geometry)
+            ).first():
+                return True
+    except Exception:
+        logger.warning("has_child check failed", exc_info=True)
+    return False
 
 
 logger = logging.getLogger(__name__)
@@ -108,27 +134,7 @@ class Zone(_BaseSpatialModel):
             setattr(instance, key, value)
         instance.user_id = user_data.get('id')
         instance.locality_id = user_data.get('loc')
-        instance.has_child = False
-        try:
-            query = session.query(Road).filter(
-                ST_Within(Road.geometry, instance.geometry)
-            ).first()
-            if query:
-                instance.has_child = True
-            query = session.query(Organization).filter(
-                ST_Within(Organization.geometry, instance.geometry)
-            ).first()
-            if query:
-                instance.has_child = True
-            query = session.query(Subdivision).filter(
-                ST_Within(Subdivision.geometry, instance.geometry)
-            ).first()
-            if query:
-                instance.has_child = True
-        except Exception:
-            logger.warning("Failed to set has_child on %s",
-                           instance, exc_info=True)
-            instance.has_child = False
+        instance.has_child = _has_child_entities(session, instance.geometry)
         session.commit()
         return instance
 
@@ -139,45 +145,18 @@ class Zone(_BaseSpatialModel):
         zone = session.query(cls).filter_by(id=zone_pkuid).first()
         if not zone:
             return
-        zone.has_child = False
-        try:
-            for child_cls in (Road, Organization, Subdivision):
-                query = session.query(child_cls).filter(
-                    ST_Within(child_cls.geometry, zone.geometry)
-                ).first()
-                if query:
-                    zone.has_child = True
-                    break
-        except Exception:
-            logger.warning("Failed to recalc has_child on %s",
-                           zone_pkuid, exc_info=True)
+        zone.has_child = _has_child_entities(session, zone.geometry)
         session.commit()
 
     def save(self, session: Session) -> None:
         user_data = _get_current_user()
-        if user_data:
-            self.user_id = user_data.get('id')
-            self.locality_id = user_data.get('loc')
-            self.has_child = False
-            query = session.query(Road).filter(
-                ST_Within(Road.geometry, self.geometry)
-            ).first()
-            if query:
-                self.has_child = True
-            query = session.query(Organization).filter(
-                ST_Within(Organization.geometry, self.geometry)
-            ).first()
-            if query:
-                self.has_child = True
-            query = session.query(Subdivision).filter(
-                ST_Within(Subdivision.geometry, self.geometry)
-            ).first()
-            if query:
-                self.has_child = True
-            session.add(self)
-            session.commit()
-        else:
+        if not user_data:
             raise ValueError("No user found")
+        self.user_id = user_data.get('id')
+        self.locality_id = user_data.get('loc')
+        self.has_child = _has_child_entities(session, self.geometry)
+        session.add(self)
+        session.commit()
 
 
 class Subdivision(_BaseSpatialModel):
@@ -220,34 +199,19 @@ class Subdivision(_BaseSpatialModel):
             setattr(instance, key, value)
         instance.user_id = user_data.get('id')
         instance.locality_id = user_data.get('loc')
-        instance.parent = None
-        try:
-            query = session.query(Zone).filter(
-                ST_Within(instance.geometry, Zone.geometry)
-            ).first()
-            if query:
-                instance.parent = query.id
-        except Exception:
-            logger.warning("Failed to set parent on %s",
-                           instance, exc_info=True)
-            instance.parent = None
+        instance.parent = _parent_zone_id(session, instance.geometry)
         session.commit()
         return instance
 
     def save(self, session: Session) -> None:
         user_data = _get_current_user()
-        if user_data:
-            self.user_id = user_data.get('id')
-            self.locality_id = user_data.get('loc')
-            query = session.query(Zone).filter(
-                ST_Within(self.geometry, Zone.geometry)
-            ).first()
-            if query:
-                self.parent = query.id
-            session.add(self)
-            session.commit()
-        else:
+        if not user_data:
             raise ValueError("No user found")
+        self.user_id = user_data.get('id')
+        self.locality_id = user_data.get('loc')
+        self.parent = _parent_zone_id(session, self.geometry)
+        session.add(self)
+        session.commit()
 
     def delete(self, session: Session) -> None:
         zone_pkuid = self.parent
@@ -302,34 +266,19 @@ class Road(_BaseSpatialModel):
             setattr(instance, key, value)
         instance.user_id = user_data.get('id')
         instance.locality_id = user_data.get('loc')
-        instance.zone_id = None
-        try:
-            query = session.query(Zone).filter(
-                ST_Within(instance.geometry, Zone.geometry)
-            ).first()
-            if query:
-                instance.zone_id = query.id
-        except Exception:
-            logger.warning("Failed to set zone_id on %s",
-                           instance, exc_info=True)
-            instance.zone_id = None
+        instance.zone_id = _parent_zone_id(session, instance.geometry)
         session.commit()
         return instance
 
     def save(self, session: Session) -> None:
         user_data = _get_current_user()
-        if user_data:
-            self.user_id = user_data.get('id')
-            self.locality_id = user_data.get('loc')
-            query = session.query(Zone).filter(
-                ST_Within(self.geometry, Zone.geometry)
-            ).first()
-            if query:
-                self.zone_id = query.id
-            session.add(self)
-            session.commit()
-        else:
+        if not user_data:
             raise ValueError("No user found")
+        self.user_id = user_data.get('id')
+        self.locality_id = user_data.get('loc')
+        self.zone_id = _parent_zone_id(session, self.geometry)
+        session.add(self)
+        session.commit()
 
     def delete(self, session: Session) -> None:
         zone_pkuid = self.zone_id
@@ -370,34 +319,19 @@ class Organization(_BaseSpatialModel):
             setattr(instance, key, value)
         instance.user_id = user_data.get('id')
         instance.locality_id = user_data.get('loc')
-        instance.zone_id = None
-        try:
-            query = session.query(Zone).filter(
-                ST_Within(instance.geometry, Zone.geometry)
-            ).first()
-            if query:
-                instance.zone_id = query.id
-        except Exception:
-            logger.warning("Failed to set zone_id on %s",
-                           instance, exc_info=True)
-            instance.zone_id = None
+        instance.zone_id = _parent_zone_id(session, instance.geometry)
         session.commit()
         return instance
 
     def save(self, session: Session) -> None:
         user_data = _get_current_user()
-        if user_data:
-            self.user_id = user_data.get('id')
-            self.locality_id = user_data.get('loc')
-            query = session.query(Zone).filter(
-                ST_Within(self.geometry, Zone.geometry)
-            ).first()
-            if query:
-                self.zone_id = query.id
-            session.add(self)
-            session.commit()
-        else:
+        if not user_data:
             raise ValueError("No user found")
+        self.user_id = user_data.get('id')
+        self.locality_id = user_data.get('loc')
+        self.zone_id = _parent_zone_id(session, self.geometry)
+        session.add(self)
+        session.commit()
 
     def delete(self, session: Session) -> None:
         zone_pkuid = self.zone_id
@@ -490,13 +424,17 @@ class PanelSign(_BaseSpatialModel):
     user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
                      info={'label': 'User'})
 
-    organization = relationship("Organization",
-                                 backref="ref_org_pan",
-                                 foreign_keys=[organization_id])
+    organization = relationship(
+        "Organization",
+        backref="ref_org_pan",
+        foreign_keys=[organization_id],
+    )
     road = relationship("Road", backref="ref_line_pan", foreign_keys=[road_id])
-    subdivision = relationship("Subdivision",
-                               backref="ref_polychild_pan",
-                               foreign_keys=[subdivision_id])
+    subdivision = relationship(
+        "Subdivision",
+        backref="ref_polychild_pan",
+        foreign_keys=[subdivision_id],
+    )
     user = relationship("User", backref="user_pan", foreign_keys=[user_id])
 
     @property

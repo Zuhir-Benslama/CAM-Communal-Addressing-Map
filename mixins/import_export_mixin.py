@@ -1,4 +1,5 @@
 """Import/export mixin for rendering maps to PNG."""
+# mypy: disable-error-code="attr-defined,func-returns-value"
 
 from __future__ import annotations
 
@@ -10,7 +11,9 @@ from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import QgsMapSettings, QgsMapRendererParallelJob
 
 from ..constants import MAP_PNG, TMP_JSON, validate_text
-from ._protocols import HasTranslation, HasPlanState, HasIface, HasAuthState, HasExportMethods, HasUiWidgets
+from ._protocols import (
+    HasUiWidgets, HasExportContext,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +25,7 @@ class ImportExportMixin:
     reporting scripts."""
 
     def _render_and_export(
-        self: HasTranslation & HasPlanState & HasIface & HasAuthState & HasExportMethods & HasUiWidgets,
+        self: HasExportContext,
         _method: str, include_situation: bool = False,
     ) -> None:
         """Render map canvas and invoke external reporting script."""

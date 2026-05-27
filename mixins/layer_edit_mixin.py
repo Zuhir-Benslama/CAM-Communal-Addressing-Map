@@ -1,4 +1,5 @@
 """Layer editing mixin for adding and updating features via forms."""
+# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -15,12 +16,12 @@ from ..app.orders.repository import (
 )
 from ..constants import (
     LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
-    LAYER_NUMBERING, LAYER_PANELS, validate_text,
+    LAYER_NUMBERING, LAYER_PANELS, LAYER_ZONES, validate_text,
     current_locale,
 )
 from ._protocols import (
-    HasTranslation, HasCurrentLayer, HasIface, HasFeatureState,
-    HasUiWidgets, HasLayerTools, HasDrawSignals,
+    HasTranslation, HasCurrentLayer, HasFeatureState,
+    HasDrawContext, HasBasicEditContext, HasFullEditContext,
 )
 
 logger = logging.getLogger(__name__)
@@ -32,10 +33,10 @@ class LayerEditMixin:
     Cross-mixin protocol (attributes set by map_tools_mixin or owning dialog):
         _last_feature_wkt (str | None) — WKT geometry of last created feature
         _last_feature_pkuid (str | None) — PK of last created feature
+        _geometry_ready (str | None) — layer name of last drawn geometry
         ref_identify_tool (IdentifyTool | None) — ref selection tool
         measure_tool (MeasureTool | None) — measurement line tool
         update_object (bool) — flag for edit-vs-insert mode
-        is_pan / is_org / is_road / is_num / is_city / is_zone (QCheckBox)
         num_val / repetition / road_name / road_decision / org_name
         / subd_name / nom_zone
         org_cat / org_type / type_road / subd_type / zone_type / num_state
@@ -44,7 +45,7 @@ class LayerEditMixin:
     """
 
     def _update_handler(
-        self: HasIface & HasDrawSignals, layer_name: str,
+        self: HasDrawContext, layer_name: str,
     ) -> None:
         """Enable geometry editing for a named layer."""
         layers = QgsProject.instance().mapLayersByName(layer_name)
@@ -91,12 +92,11 @@ class LayerEditMixin:
         return {}
 
     def add_panel(  # noqa: E501
-        self: HasUiWidgets & HasFeatureState & HasLayerTools
-        & HasTranslation & HasDrawSignals,
+        self: HasFullEditContext,
     ) -> None:
         """Add a new panel sign linked to a selected road, org, or
         subdivision."""
-        if not self.is_pan.isChecked():
+        if self._geometry_ready != LAYER_PANELS:
             return
         if self.update_object:
             return
@@ -143,10 +143,10 @@ class LayerEditMixin:
             self._draw_handler(LAYER_PANELS)
 
     def add_organization(
-        self: HasUiWidgets & HasFeatureState & HasTranslation,
+        self: HasBasicEditContext,
     ) -> None:
         """Add a new organization through the form."""
-        if not self.is_org.isChecked():
+        if self._geometry_ready != LAYER_FACILITIES:
             return
         geometry_wkt, pkuid = self._get_geometry_and_pkuid('organization')
         if not geometry_wkt or not pkuid:
@@ -167,10 +167,10 @@ class LayerEditMixin:
             self._show_error('Cannot add facility, it already exists')
 
     def add_road(
-        self: HasUiWidgets & HasFeatureState & HasTranslation,
+        self: HasBasicEditContext,
     ) -> None:
         """Add a new road through the form."""
-        if not self.is_road.isChecked():
+        if self._geometry_ready != LAYER_ROADS:
             return
         geometry_wkt, pkuid = self._get_geometry_and_pkuid('road')
         if not geometry_wkt or not pkuid:
@@ -222,11 +222,10 @@ class LayerEditMixin:
         return False
 
     def add_numbering(  # noqa: E501
-        self: HasUiWidgets & HasLayerTools & HasTranslation
-        & HasDrawSignals,
+        self: HasFullEditContext,
     ) -> None:
         """Add a new numbering linked to a selected road or subdivision."""
-        if not self.is_num.isChecked():
+        if self._geometry_ready != LAYER_NUMBERING:
             return
         geometry_wkt, pkuid = self._get_geometry_and_pkuid('numbering')
         if not geometry_wkt or not pkuid:
@@ -276,10 +275,10 @@ class LayerEditMixin:
         self._draw_handler(LAYER_NUMBERING)
 
     def add_city(
-        self: HasUiWidgets & HasFeatureState & HasTranslation,
+        self: HasBasicEditContext,
     ) -> None:
         """Add a new subdivision through the form."""
-        if not self.is_city.isChecked():
+        if self._geometry_ready != LAYER_SUBDIVISIONS:
             return
         geometry_wkt, pkuid = self._get_geometry_and_pkuid('subdivision')
         if not geometry_wkt or not pkuid:
@@ -299,10 +298,10 @@ class LayerEditMixin:
             self._show_error(str(e))
 
     def add_zone(
-        self: HasUiWidgets & HasFeatureState & HasTranslation,
+        self: HasBasicEditContext,
     ) -> None:
         """Add a new zone through the form."""
-        if not self.is_zone.isChecked():
+        if self._geometry_ready != LAYER_ZONES:
             return
         if self.update_object:
             return

@@ -92,7 +92,7 @@ class MeasureTool(QgsMapToolEmitPoint):
 
     def keyPressEvent(self, event) -> None:
         """Handle keyboard shortcuts for tool control."""
-        if event.key() == Qt.Key_R:
+        if event.key() == Qt.Key.Key_R:
             self.clear()
             self.iface.messageBar().pushMessage(
                 _i18n_tr("Update", current_locale()),
@@ -100,7 +100,7 @@ class MeasureTool(QgsMapToolEmitPoint):
                 level=1, duration=10
             )
 
-        elif event.key() == Qt.Key_E:
+        elif event.key() == Qt.Key.Key_E:
             self.clear()
             self.canvas.unsetMapTool(self)
             self.iface.messageBar().pushMessage(
@@ -109,7 +109,7 @@ class MeasureTool(QgsMapToolEmitPoint):
                 level=0, duration=10
             )
 
-        elif event.key() == Qt.Key_P:
+        elif event.key() == Qt.Key.Key_P:
             self.paused = not self.paused
             state = (_i18n_tr("Paused", current_locale())
                      if self.paused
@@ -140,7 +140,7 @@ class MeasureTool(QgsMapToolEmitPoint):
 
         # Create a group to hold the text with outline effect
         group = QGraphicsItemGroup()
-        group.mid_point = mid_point  # Store the map coordinates
+        group.mid_point = mid_point  # type: ignore[attr-defined]
 
         font = QFont("Arial", 11)
         text_item = QGraphicsSimpleTextItem(label_text)

@@ -69,7 +69,7 @@ def export_model(model_name: str) -> None:
 
 
 def add_panel_sign(
-    geometry_wkt, mount_status,
+    *, geometry_wkt, mount_status,
     road_id=None, subdivision_id=None, organization_id=None,
     dimensions=None, pkuid=None,
 ):
@@ -84,8 +84,10 @@ def add_panel_sign(
     return _add_entity(instance)
 
 
-def add_organization(geometry_wkt, org_name, org_type, org_cat, pkuid=None,
-                     nom_org_fr=None, nom_org_en=None):
+def add_organization(
+    *, geometry_wkt, org_name, org_type, org_cat, pkuid=None,
+    nom_org_fr=None, nom_org_en=None,
+):
     instance = Organization(
         id=pkuid,
         Type=org_type, category=org_cat, Nom=org_name,
@@ -95,8 +97,10 @@ def add_organization(geometry_wkt, org_name, org_type, org_cat, pkuid=None,
     return _add_entity(instance)
 
 
-def add_road(geometry_wkt, road_name, type_road, road_decision, pkuid=None,
-             nom_voie_fr=None, nom_voie_en=None):
+def add_road(
+    *, geometry_wkt, road_name, type_road, road_decision, pkuid=None,
+    nom_voie_fr=None, nom_voie_en=None,
+):
     instance = Road(
         id=pkuid,
         Type=type_road, Nom=road_name, decision_number=road_decision,
@@ -107,7 +111,7 @@ def add_road(geometry_wkt, road_name, type_road, road_decision, pkuid=None,
 
 
 def add_numbering(
-    geometry_wkt, valeur,
+    *, geometry_wkt, valeur,
     road_id=None, subdivision_id=None, repetition=None, etat=None,
     activity_cat=None, activity_type=None, pkuid=None,
 ):
@@ -121,8 +125,10 @@ def add_numbering(
     return _add_entity(instance)
 
 
-def add_subdivision(geometry_wkt, subdivision_type, name, pkuid=None,
-                    name_fr=None, name_en=None):
+def add_subdivision(
+    *, geometry_wkt, subdivision_type, name, pkuid=None,
+    name_fr=None, name_en=None,
+):
     instance = Subdivision(
         id=pkuid,
         Nom=name, Type=subdivision_type,
@@ -132,8 +138,10 @@ def add_subdivision(geometry_wkt, subdivision_type, name, pkuid=None,
     return _add_entity(instance)
 
 
-def add_zone(geometry_wkt, zone_type, name, pkuid=None,
-             name_fr=None, name_en=None):
+def add_zone(
+    *, geometry_wkt, zone_type, name, pkuid=None,
+    name_fr=None, name_en=None,
+):
     instance = Zone(
         id=pkuid,
         Nom=name, Type=zone_type,

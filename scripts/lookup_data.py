@@ -4,6 +4,10 @@ import json
 import os
 from typing import Any
 
+from qgis.PyQt.QtWidgets import (
+    QCheckBox, QGroupBox, QLabel, QLineEdit, QPushButton, QTabWidget, QWidget,
+)
+
 _DATA_DIR = os.path.join(
     os.path.dirname(os.path.dirname(__file__)), 'template_data',
 )
@@ -28,17 +32,21 @@ def road_types() -> list[dict[str, Any]]:
     """Return road type lookup data."""
     return _load('type_road.json')
 
+
 def zone_types() -> list[dict[str, Any]]:
     """Return zone type lookup data."""
     return _load('zone_type.json')
+
 
 def subdivision_types() -> list[dict[str, Any]]:
     """Return subdivision type lookup data."""
     return _load('type_cite.json')
 
+
 def mounting_statuses() -> list[dict[str, Any]]:
     """Return mounting status lookup data."""
     return _load('situation_Montage.json')
+
 
 def numbering_states() -> list[dict[str, Any]]:
     """Return numbering state lookup data."""
@@ -57,6 +65,7 @@ def organization_types() -> list[dict[str, Any]]:
     """Return organization type lookup data."""
     return _load('type_organisme.json')
 
+
 def org_categories(locale: str = 'ar') -> list[tuple[str, str]]:
     """Return distinct organization categories -> (display, value)."""
     seen: set[str] = set()
@@ -73,6 +82,7 @@ def org_categories(locale: str = 'ar') -> list[tuple[str, str]]:
     result.sort(key=lambda x: x[1])
     return result
 
+
 def org_types_for_category(
     cat: str, locale: str = 'ar',
 ) -> list[tuple[str, str]]:
@@ -88,6 +98,7 @@ def org_types_for_category(
             if pk:
                 result.append((display, pk))
     return result
+
 
 def org_subcategories(cat: str) -> list[str]:
     """Return distinct subcategories for an org category."""
@@ -110,6 +121,7 @@ def activity_types() -> list[dict[str, Any]]:
     """Return activity type lookup data."""
     return _load('activity.json')
 
+
 def activity_categories(locale: str = 'ar') -> list[tuple[str, str]]:
     """Return distinct activity categories -> (display, value)."""
     seen: set[str] = set()
@@ -126,6 +138,7 @@ def activity_categories(locale: str = 'ar') -> list[tuple[str, str]]:
     result.sort(key=lambda x: x[1])
     return result
 
+
 def activity_types_for_category(
     cat: str, locale: str = 'ar',
 ) -> list[tuple[str, str]]:
@@ -141,6 +154,7 @@ def activity_types_for_category(
             if typ:
                 result.append((display, typ))
     return result
+
 
 def activity_subcategories(cat: str) -> list[str]:
     """Return distinct subcategories for an activity category."""
@@ -177,6 +191,7 @@ def clear_cache() -> None:
 
 _str_cache: dict[str, dict[str, str]] = {}
 
+
 def _get_string(source: str, locale: str) -> str:
     """Look up a source string in strings.json for the given locale."""
     if 'strings' not in _str_cache:
@@ -184,12 +199,13 @@ def _get_string(source: str, locale: str) -> str:
         with open(path, 'r', encoding='utf-8') as f:
             _str_cache['strings'] = json.load(f)
     data = _str_cache['strings'].get(source)
-    if data:
+    if isinstance(data, dict):
         return data.get(locale, data.get('ar', source))
     return source
 
 
 _widgets_data: dict[str, dict[str, str]] | None = None
+
 
 def _load_widgets() -> dict[str, dict[str, str]]:
     """Load and cache widgets.json data."""
@@ -244,43 +260,56 @@ def _src_text(w, attr='text'):
     return src
 
 
-def apply_widget_texts(dialog, locale: str) -> None:
-    """Set text on all children of dialog using widgets.json data."""
-    from qgis.PyQt.QtWidgets import (
-        QLabel, QPushButton, QCheckBox, QGroupBox, QTabWidget, QLineEdit,
-    )
-    from qgis.PyQt.QtWidgets import QWidget
-    widgets_data = _load_widgets()
+def _translate_text(src: str, locale: str) -> str:
+    """Translate a source string via _get_string, or return empty."""
+    if not src:
+        return ''
+    translated = _get_string(src, locale)
+    return translated if translated != src else ''
+
+
+def _set_from_lookup(w, locale, widgets_data, *, attr='text', setter='setText',
+                     src_attr=None) -> None:
+    """Set a widget attribute from widgets_data or _src_text fallback."""
+    name = w.objectName()
+    if name in widgets_data:
+        value = widgets_data[name].get(
+            locale, widgets_data[name].get('ar', ''),
+        )
+        getattr(w, setter)(value)
+        return
+    src = _src_text(w, src_attr or attr)
+    if src:
+        translated = _translate_text(src, locale)
+        if translated:
+            getattr(w, setter)(translated)
+
+
+def _translate_labels(dialog, locale, widgets_data) -> None:
+    """Translate QLabel, QPushButton, QCheckBox text."""
     for w in dialog.findChildren((QLabel, QPushButton, QCheckBox)):
-        name = w.objectName()
-        if name in widgets_data:
-            w.setText(widgets_data[name].get(
-                locale, widgets_data[name].get('ar', ''),
-            ))
-        else:
-            src = _src_text(w, 'text')
-            if src:
-                translated = _get_string(src, locale)
-                if translated != src:
-                    w.setText(translated)
+        _set_from_lookup(w, locale, widgets_data)
+
+
+def _translate_groupbox(dialog, locale, widgets_data) -> None:
+    """Translate QGroupBox titles."""
     for w in dialog.findChildren(QGroupBox):
-        name = w.objectName()
-        if name in widgets_data:
-            w.setTitle(widgets_data[name].get(
-                locale, widgets_data[name].get('ar', ''),
-            ))
-        else:
-            src = _src_text(w, 'title')
-            if src:
-                translated = _get_string(src, locale)
-                if translated != src:
-                    w.setTitle(translated)
+        _set_from_lookup(w, locale, widgets_data,
+                         attr='title', setter='setTitle')
+
+
+def _translate_placeholder(dialog, locale) -> None:
+    """Translate QLineEdit placeholder text."""
     for w in dialog.findChildren(QLineEdit):
         src = _src_text(w, 'placeholder')
         if src:
-            translated = _get_string(src, locale)
-            if translated != src:
+            translated = _translate_text(src, locale)
+            if translated:
                 w.setPlaceholderText(translated)
+
+
+def _translate_tabs(dialog, locale) -> None:
+    """Translate QTabWidget tab texts using cached source strings."""
     for w in dialog.findChildren(QTabWidget):
         if not hasattr(w, '_rna_tab_src'):
             w._rna_tab_src = [w.tabText(i) for i in range(w.count())]
@@ -288,12 +317,21 @@ def apply_widget_texts(dialog, locale: str) -> None:
             src = w._rna_tab_src[i]
             if src:
                 w.setTabText(i, _get_string(src, locale))
-    if hasattr(dialog, "windowTitle"):
-        src = _src_text(dialog, 'windowtitle')
-        if src:
-            translated = _get_string(src, locale)
-            if translated != src:
-                dialog.setWindowTitle(translated)
+
+
+def _translate_window_title(dialog, locale) -> None:
+    """Translate dialog window title."""
+    if not hasattr(dialog, 'windowTitle'):
+        return
+    src = _src_text(dialog, 'windowtitle')
+    if src:
+        translated = _translate_text(src, locale)
+        if translated:
+            dialog.setWindowTitle(translated)
+
+
+def _translate_tooltips(dialog, locale, widgets_data) -> None:
+    """Translate QWidget tooltips."""
     for w in dialog.findChildren(QWidget):
         name = w.objectName()
         tip = _src_text(w, 'tooltip')
@@ -304,6 +342,17 @@ def apply_widget_texts(dialog, locale: str) -> None:
                 locale, widgets_data[name].get('ar', ''),
             ))
         else:
-            translated = _get_string(tip, locale)
-            if translated != tip:
+            translated = _translate_text(tip, locale)
+            if translated:
                 w.setToolTip(translated)
+
+
+def apply_widget_texts(dialog, locale: str) -> None:
+    """Set text on all children of dialog using widgets.json data."""
+    widgets_data = _load_widgets()
+    _translate_labels(dialog, locale, widgets_data)
+    _translate_groupbox(dialog, locale, widgets_data)
+    _translate_placeholder(dialog, locale)
+    _translate_tabs(dialog, locale)
+    _translate_window_title(dialog, locale)
+    _translate_tooltips(dialog, locale, widgets_data)

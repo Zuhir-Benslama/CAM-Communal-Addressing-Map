@@ -1,4 +1,5 @@
 """Layer operations mixin for feature CRUD and tab-based layer management."""
+# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -19,13 +20,14 @@ from ..app.orders import models as _models
 from ..app.core.database import get_session
 from ..constants import (
     LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
-    LAYER_ZONES, LAYER_NUMBERING, LAYER_PANELS, SRID,
+    LAYER_NUMBERING, LAYER_PANELS, SRID,
     LAYER_MUNICIPALITY, DEFAULT_STYLE_DIR, CUSTOM_STYLE_DIR,
 )
 from ..gui.entity_list_dialog import EntityListDialog
 from ._protocols import (
-    HasTranslation, HasIface, HasAuthState, HasFeatureState,
-    HasUiWidgets, HasLayerTools, HasCurrentLayer, HasPlanState, HasDrawSignals,
+    HasAuthState, HasCurrentLayer, HasLayerTools,
+    HasLayerOpsContext, HasTabSwitchContext, HasGeometryChangedContext,
+    HasAuthIfaceContext,
 )
 
 logger = logging.getLogger(__name__)
@@ -44,7 +46,9 @@ class LayerOpsMixin:
         if self.measure_tool:
             self.measure_tool.clear()
 
-    def _show_layers_for_label(self: HasAuthState & HasIface, root, layer_label: str) -> None:
+    def _show_layers_for_label(
+        self: HasAuthIfaceContext, root, layer_label: str,
+    ) -> None:
         """Show the selected operation layer plus configured dependencies."""
         visible_names = {LAYER_MUNICIPALITY}
         if self.sat_view:
@@ -54,9 +58,12 @@ class LayerOpsMixin:
         if layer_label:
             visible_names.add(layer_label)
 
-        data_list = qgis_config().get('other_layers')
+        data_list = qgis_config().get('other_layers') or []
         for layer_cfg in data_list:
-            if layer_cfg.get('label') == layer_label and layer_cfg.get('show_with'):
+            if (
+                layer_cfg.get('label') == layer_label and
+                layer_cfg.get('show_with')
+            ):
                 visible_names.update(layer_cfg.get('show_with'))
                 break
 
@@ -129,7 +136,7 @@ class LayerOpsMixin:
         return ""
 
     def on_opt_selected(
-        self: HasPlanState & HasUiWidgets & HasIface & HasLayerTools & HasAuthState, index,
+        self: HasTabSwitchContext, index,
     ) -> None:
         """Handle tab selection: toggle layer visibility and load styles."""
         self.type_plan = ""
@@ -244,12 +251,15 @@ class LayerOpsMixin:
             return 1
         if isinstance(current_obj, Polygon) and current_obj.intersects(uloc):
             return 2
-        if isinstance(current_obj, LineString) and current_obj.intersects(uloc):
+        if (
+            isinstance(current_obj, LineString) and
+            current_obj.intersects(uloc)
+        ):
             return 3
         return 0
 
     def on_feature_added(
-        self: HasIface & HasDrawSignals & HasFeatureState & HasUiWidgets & HasCurrentLayer, fid,
+        self: HasLayerOpsContext, fid,
     ) -> None:
         """Validate added feature geometry against the user's allowed zone."""
         layer = self.iface.activeLayer()
@@ -274,23 +284,7 @@ class LayerOpsMixin:
                     self._reconnect_context_menu()
                     canvas = self.iface.mapCanvas()
                     canvas.unsetMapTool(canvas.mapTool())
-                    self.is_org.setChecked(False)
-                    self.is_road.setChecked(False)
-                    self.is_city.setChecked(False)
-                    self.is_num.setChecked(False)
-                    self.is_pan.setChecked(False)
-                    self.is_zone.setChecked(False)
-                    layer_check_map = {
-                        LAYER_ROADS: self.is_road,
-                        LAYER_FACILITIES: self.is_org,
-                        LAYER_SUBDIVISIONS: self.is_city,
-                        LAYER_NUMBERING: self.is_num,
-                        LAYER_PANELS: self.is_pan,
-                        LAYER_ZONES: self.is_zone,
-                    }
-                    target_checkbox = layer_check_map.get(layer.name())
-                    if target_checkbox:
-                        target_checkbox.setChecked(True)
+                    self._geometry_ready = layer.name()
 
             current_index = self.menu.currentIndex()
             if hasattr(self.menu, '_rna_tab_src'):
@@ -301,7 +295,7 @@ class LayerOpsMixin:
             if LAYER_NUMBERING in (tab_text, selected_ops):
                 self.num_val.setFocus()
 
-    def on_geometry_changed(self: HasIface & HasTranslation, fid) -> None:
+    def on_geometry_changed(self: HasGeometryChangedContext, fid) -> None:
         """Validate geometry edits and persist changes to the database."""
         layer = self.iface.activeLayer()
         if layer and layer.isEditable():
@@ -320,7 +314,7 @@ class LayerOpsMixin:
                 return
 
             geometry_wkt = feature.geometry().asWkt()
-            data_list = qgis_config().get('mapper')
+            data_list = qgis_config().get('mapper') or []
             for data in data_list:
                 if data.get('layer') == layer.name():
                     model_name = data.get('model')

@@ -1,4 +1,5 @@
 """Type protocols for mixin host contracts."""
+# pylint: disable=too-few-public-methods
 from typing import Protocol, runtime_checkable, Any, Optional, Dict
 
 from qgis.gui import QgisInterface
@@ -43,6 +44,7 @@ class HasPlanState(Protocol):
     """Mixin host provides plan export state."""
     type_plan: str
     type_to_hide: str
+    def _generate_chart(self, *args: Any, **kwargs: Any) -> None: ...
 
 
 @runtime_checkable
@@ -50,6 +52,7 @@ class HasFeatureState(Protocol):
     """Mixin host provides feature tracking state."""
     _last_feature_wkt: Optional[str]
     _last_feature_pkuid: Optional[str]
+    _geometry_ready: Optional[str]
     update_object: Dict[str, Any]
 
 
@@ -59,12 +62,6 @@ class HasUiWidgets(Protocol):
     menu: Any
     router: Any
     num_val: Any
-    is_pan: Any
-    is_org: Any
-    is_road: Any
-    is_num: Any
-    is_city: Any
-    is_zone: Any
     ref_name: Any
     road_ref: Any
     panel_ref: Any
@@ -73,6 +70,14 @@ class HasUiWidgets(Protocol):
     lineEdit_by: Any
     lineEdit_type: Any
     lineEdit_nummokh: Any
+    map_options: Any
+    wilaya_list: Any
+    commune_of_wilaya: Any
+    org_cat: Any
+    org_type: Any
+    activity_cat: Any
+    activity_type: Any
+    def _select_ref(self, *args: Any, **kwargs: Any) -> None: ...
 
 
 @runtime_checkable
@@ -83,6 +88,7 @@ class HasDrawSignals(Protocol):
     def on_edition_release(self, *args: Any, **kwargs: Any) -> None: ...
     def _reconnect_context_menu(self) -> None: ...
     def _draw_handler(self, *args: Any, **kwargs: Any) -> None: ...
+    def _update_handler(self, *args: Any, **kwargs: Any) -> None: ...
 
 
 @runtime_checkable
@@ -92,9 +98,137 @@ class HasExportMethods(Protocol):
     def scale(self) -> None: ...
     def map_situation(self) -> None: ...
     def symbols(self) -> None: ...
+    def _render_and_export(self, *args: Any, **kwargs: Any) -> None: ...
 
 
 @runtime_checkable
 class UiForm(Protocol):
     """Type stub for dynamically loaded Qt UI forms (setupUi)."""
     def setupUi(self, obj: object) -> None: ...
+
+
+# --- Combined protocols (replaces unsupported `A & B` syntax) ---
+
+@runtime_checkable
+class HasDrawContext(HasIface, HasDrawSignals, Protocol):
+    """Mixin host needed for draw operations."""
+
+
+@runtime_checkable
+class HasBasicEditContext(
+    HasUiWidgets, HasFeatureState, HasTranslation, Protocol,
+):
+    """Mixin host needed for basic entity editing."""
+
+
+@runtime_checkable
+class HasFullEditContext(
+    HasBasicEditContext, HasLayerTools, HasDrawSignals, Protocol,
+):
+    """Mixin host needed for full entity editing with ref tools."""
+
+
+@runtime_checkable
+class HasChartContext(HasTranslation, HasPlanState, Protocol):
+    """Mixin host needed for chart operations."""
+
+
+@runtime_checkable
+class HasExportContext(
+    HasTranslation, HasPlanState, HasIface, HasAuthState,
+    HasExportMethods, HasUiWidgets, Protocol,
+):
+    """Mixin host needed for export operations."""
+
+
+@runtime_checkable
+class HasLayerOpsContext(
+    HasIface, HasDrawSignals, HasFeatureState,
+    HasUiWidgets, HasCurrentLayer, Protocol,
+):
+    """Mixin host for layer ops feature-add signal."""
+
+
+@runtime_checkable
+class HasTabSwitchContext(
+    HasPlanState, HasUiWidgets, HasIface,
+    HasLayerTools, HasAuthState, Protocol,
+):
+    """Mixin host for tab switching operations."""
+
+
+@runtime_checkable
+class HasGeometryChangedContext(HasIface, HasTranslation, Protocol):
+    """Mixin host for geometry change handling."""
+
+
+@runtime_checkable
+class HasAuthIfaceContext(HasAuthState, HasIface, Protocol):
+    """Mixin host for auth + iface operations."""
+
+
+@runtime_checkable
+class HasSymbolPlanContext(HasPlanState, HasAuthState, Protocol):
+    """Mixin host for symbol plan export operations."""
+
+
+@runtime_checkable
+class HasSymbolMapContext(HasAuthState, HasIface, Protocol):
+    """Mixin host for symbol map situation operations."""
+
+
+@runtime_checkable
+class HasScaleContext(HasIface, HasTranslation, Protocol):
+    """Mixin host for scale bar operations."""
+
+
+@runtime_checkable
+class HasMapToolsContext(HasIface, HasLayerTools, Protocol):
+    """Mixin host for map tool operations."""
+
+
+@runtime_checkable
+class HasFullMapToolsContext(
+    HasIface, HasLayerTools, HasTranslation, HasUiWidgets, Protocol,
+):
+    """Mixin host for full map tool operations with ref selection."""
+
+
+@runtime_checkable
+class HasSelectContext(
+    HasCurrentLayer, HasIface, HasTranslation, Protocol,
+):
+    """Mixin host for layer selection operations."""
+
+
+@runtime_checkable
+class HasAuthContext(HasUiWidgets, HasTranslation, Protocol):
+    """Mixin host for basic auth UI operations."""
+
+
+@runtime_checkable
+class HasAuthMapContext(
+    HasUiWidgets, HasTranslation, HasAuthState, Protocol,
+):
+    """Mixin host for auth map layer operations."""
+
+
+@runtime_checkable
+class HasLoginContext(
+    HasUiWidgets, HasIface, HasAuthState, HasTranslation, Protocol,
+):
+    """Mixin host for login flow operations."""
+
+
+@runtime_checkable
+class HasCloseContext(
+    HasIface, HasAuthState, HasLayerTools, HasUiWidgets, Protocol,
+):
+    """Mixin host for close event operations."""
+
+
+@runtime_checkable
+class HasRefSelectContext(
+    HasIface, HasLayerTools, HasTranslation, Protocol,
+):
+    """Mixin host for reference selection operations."""

@@ -1,5 +1,6 @@
 """QSS theme configuration and mod_spatialite library discovery."""
 import os
+import subprocess
 import logging
 
 from ..shared.constants import THEME_DARK, THEME_LIGHT, PLUGIN_DIR
@@ -64,11 +65,39 @@ DEFAULT_THEME = THEME_DARK
 
 
 def get_theme_qss(theme_name: str) -> str:
-    return THEMES.get(theme_name, THEMES[DEFAULT_THEME])[0]
+    return THEMES.get(theme_name, THEMES[DEFAULT_THEME])[0]  # type: ignore
 
 
 def get_dialog_qss(theme_name: str) -> str:
-    return THEMES.get(theme_name, THEMES[DEFAULT_THEME])[1]
+    return THEMES.get(theme_name, THEMES[DEFAULT_THEME])[1]  # type: ignore
+
+
+def _find_in_candidate_paths(candidates: list[str]) -> str | None:
+    for p in candidates:
+        if os.path.exists(p):
+            return p
+    return None
+
+
+def _find_via_ldconfig() -> str | None:
+    try:
+        result = subprocess.run(
+            ['ldconfig', '-p'], capture_output=True, text=True, check=True,
+        )
+        for line in result.stdout.splitlines():
+            if 'mod_spatialite' not in line:
+                continue
+            parts = line.split('=>')
+            if len(parts) == 2:
+                path = parts[1].strip()
+                if os.path.exists(path):
+                    return path
+    except (subprocess.CalledProcessError, FileNotFoundError,
+            PermissionError, OSError):
+        logger.debug(
+            "mod_spatialite not found via ldconfig", exc_info=True,
+        )
+    return None
 
 
 def find_mod_spatialite_dll() -> str:
@@ -88,25 +117,12 @@ def find_mod_spatialite_dll() -> str:
         '/usr/lib64/mod_spatialite.so',
         '/usr/lib/x86_64-linux-gnu/mod_spatialite.so',
     ]
-    for p in candidates:
-        if os.path.exists(p):
-            return p
+    found = _find_in_candidate_paths(candidates)
+    if found:
+        return found
 
-    try:
-        result = __import__('subprocess').run(
-            ['ldconfig', '-p'], capture_output=True, text=True, check=True
-        )
-        for line in result.stdout.splitlines():
-            if 'mod_spatialite' in line:
-                parts = line.split('=>')
-                if len(parts) == 2:
-                    path = parts[1].strip()
-                    if os.path.exists(path):
-                        return path
-    except (subprocess.CalledProcessError, FileNotFoundError,
-            PermissionError, OSError):
-        logger.debug(
-            "mod_spatialite not found at candidate path", exc_info=True,
-        )
+    found = _find_via_ldconfig()
+    if found:
+        return found
 
     return 'mod_spatialite.so'

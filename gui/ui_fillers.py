@@ -1,4 +1,5 @@
 """ComboBox population functions for reference data."""
+# mypy: disable-error-code="assignment,union-attr"
 import logging
 
 from qgis.PyQt.QtWidgets import QCompleter, QComboBox
@@ -87,7 +88,7 @@ def fill_commune_of_wilaya(combobox: QComboBox, code_w: int) -> None:
         else:
             name = getattr(result, f'commune_{loc}', None)
             if not name:
-                name = _i18n_tr(result.commune_ar, loc)
+                name = _i18n_tr(str(result.commune_ar), loc)
         combobox.addItem(name, result.id)
     session.close()
     combobox.setCurrentIndex(0)

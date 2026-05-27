@@ -29,13 +29,12 @@ class IdentifyTool(QgsMapToolIdentify):
         self._iface = None
         self.mode = mode
 
+        self.dlg: Any = None
         if mode == self.MODE_REF:
             self.pkuid = None
             self.type = None
             self.nom = None
             self.ref_name = None
-        else:
-            self.dlg = None
 
     def set_active_layer(self, layer) -> None:
         """Set the active layer to identify features on."""
@@ -141,7 +140,7 @@ class IdentifyTool(QgsMapToolIdentify):
     def delete_feature(self, feature_id) -> None:
         """Delete the identified feature from DB and map layer."""
         layer_name = self.get_active_layer().name()
-        data_list = qgis_config().get('mapper')
+        data_list = qgis_config().get('mapper') or []
         for data in data_list:
             if data.get('layer') == layer_name:
                 session = get_session()

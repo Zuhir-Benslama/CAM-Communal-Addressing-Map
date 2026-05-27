@@ -1,50 +1,54 @@
 """Popup dialog for viewing and editing feature attributes."""
 import logging
 import os
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from qgis.PyQt import uic
-from qgis.PyQt.QtCore import QSize, Qt
+from qgis.PyQt.QtCore import Qt, QSize
 from qgis.PyQt.QtWidgets import (
     QComboBox, QDateEdit, QDialog, QFormLayout, QLayout, QLineEdit,
     QMessageBox, QPushButton, QSizePolicy, QWidget,
 )
 from qgis.core import QgsProject
 
+from sqlalchemy.exc import SQLAlchemyError
+
+from ..app.core.config import get_theme_qss
+from ..app.core.database import get_session
 from ..app.orders import models as _models
 from ..app.orders.models import (
     Road, Organization, Subdivision, Zone, PanelSign, Numbering,
 )
-from ..app.core.database import get_session
+from ..app.users.repository import qgis_config
 from ..constants import (
-    validate_text, current_theme, get_theme_qss,
-    current_locale, locale_value,
+    current_locale, current_theme, locale_value, validate_text,
     LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
     LAYER_ZONES, LAYER_NUMBERING, LAYER_PANELS,
 )
-from ..scripts.lookup_data import get_string, apply_widget_texts
-from .ui_fillers import (
-    fill_org_category, fill_road_type, fill_road_reference,
-    fill_panel_reference, fill_activity_category,
-    fill_numbering_state, fill_mounting_status, fill_subdivision_type,
-    fill_zone_type, fill_org_type, fill_activity_type,
-)
-from ..app.users.repository import qgis_config
 from ..layer.refresh import refresh_all_layers
-from ..mixins._protocols import UiForm
+from ..scripts.lookup_data import apply_widget_texts, get_string
+from .ui_fillers import (
+    fill_activity_category, fill_activity_type,
+    fill_mounting_status, fill_numbering_state,
+    fill_org_category, fill_org_type,
+    fill_panel_reference, fill_road_reference, fill_road_type,
+    fill_subdivision_type, fill_zone_type,
+)
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
+    from .identify_tool import IdentifyTool
+    from ..mixins._protocols import UiForm
     FORM_CLASS = UiForm
 else:
     FORM_CLASS, _ = uic.loadUiType(os.path.join(
         os.path.dirname(__file__), 'PopupDialog.ui'))
 
 
-class PopupDialog(QDialog, FORM_CLASS):
+class PopupDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
     """Dialog for updating attributes of a selected feature."""
-    def __init__(self, layer_name_value, layer_name_key, attribute, iface,
+    def __init__(self, layer_name_value, layer_name_key, attribute, iface, *,
                  parent=None) -> None:
         """Initialize the popup dialog with layer and attribute."""
         super().__init__(parent)
@@ -61,7 +65,7 @@ class PopupDialog(QDialog, FORM_CLASS):
 
         fill_org_category(self.org_cat)
         self.org_cat.currentIndexChanged.connect(self.on_select_org_cat)
-        self.ref_identify_tool = None
+        self.ref_identify_tool: Optional[IdentifyTool] = None
         fill_road_type(self.type_road)
         fill_road_reference(self.dyn_ref3)
         fill_panel_reference(self.dyn_ref4)
@@ -88,8 +92,8 @@ class PopupDialog(QDialog, FORM_CLASS):
         self.select_ref4.clicked.connect(self.select_panel_reference)
         self.cat_act_3.currentIndexChanged.connect(self.on_select_activity_cat)
 
-    def _apply_ui_polish(self) -> None:
-        """Apply consistent sizing, spacing, and styling to the dialog."""
+    def _set_dialog_defaults(self) -> None:
+        """Configure default dialog sizing and geometry."""
         self.setObjectName('rnaPopupDialog')
         self.setSizeGripEnabled(True)
         self.setMinimumSize(700, 500)
@@ -97,21 +101,28 @@ class PopupDialog(QDialog, FORM_CLASS):
         if self.width() < 760:
             self.resize(760, 560)
 
+    def _adjust_formlayout_spacing(self, layout: QFormLayout) -> None:
+        """Normalize spacing and label widths for a form layout."""
+        if layout.horizontalSpacing() < 16:
+            layout.setHorizontalSpacing(16)
+        if layout.verticalSpacing() < 12:
+            layout.setVerticalSpacing(12)
+        for i in range(layout.rowCount()):
+            item = layout.itemAt(i, QFormLayout.LabelRole)
+            if item and item.widget():
+                item.widget().setMinimumWidth(120)
+
+    def _adjust_layouts(self) -> None:
+        """Normalize spacing across all child layouts."""
         self.router.setMaximumHeight(16777215)
         for layout in self.findChildren(QLayout):
             if isinstance(layout, QFormLayout):
-                if layout.horizontalSpacing() < 16:
-                    layout.setHorizontalSpacing(16)
-                if layout.verticalSpacing() < 12:
-                    layout.setVerticalSpacing(12)
-                for i in range(layout.rowCount()):
-                    item = layout.itemAt(i, QFormLayout.LabelRole)
-                    if item and item.widget():
-                        item.widget().setMinimumWidth(120)
+                self._adjust_formlayout_spacing(layout)
             elif layout.spacing() < 8:
                 layout.setSpacing(8)
 
-        # Keep footer text centered and spanning the full row.
+    def _center_footer_widgets(self) -> None:
+        """Ensure footer labels and submit buttons span the full row."""
         if hasattr(self, 'formLayout_2') and hasattr(self, 'label_26'):
             self.formLayout_2.setWidget(
                 0, QFormLayout.SpanningRole, self.label_26,
@@ -122,18 +133,20 @@ class PopupDialog(QDialog, FORM_CLASS):
                 2, QFormLayout.SpanningRole, self.submit_pan,
             )
 
+    def _size_input_widgets(self) -> None:
+        """Apply consistent height and expanding policy to input widgets."""
         for widget in self.findChildren(QLineEdit):
             widget.setMinimumHeight(max(widget.minimumHeight(), 34))
             widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
         for widget in self.findChildren(QComboBox):
             widget.setMinimumHeight(max(widget.minimumHeight(), 34))
             widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
         for widget in self.findChildren(QDateEdit):
             widget.setMinimumHeight(max(widget.minimumHeight(), 34))
             widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
+    def _style_buttons(self) -> None:
+        """Assign role properties and consistent sizing to buttons."""
         for button in self.findChildren(QPushButton):
             name = button.objectName()
             if name.startswith('submit_'):
@@ -152,6 +165,14 @@ class PopupDialog(QDialog, FORM_CLASS):
                 button.setMaximumWidth(16777215)
             button.setMinimumHeight(max(button.minimumHeight(), 34))
             button.setIconSize(QSize(16, 16))
+
+    def _apply_ui_polish(self) -> None:
+        """Apply consistent sizing, spacing, and styling to the dialog."""
+        self._set_dialog_defaults()
+        self._adjust_layouts()
+        self._center_footer_widgets()
+        self._size_input_widgets()
+        self._style_buttons()
 
     def on_select_activity_cat(self, _index) -> None:
         """Populate activity type based on category selection."""
@@ -261,7 +282,7 @@ class PopupDialog(QDialog, FORM_CLASS):
 
     def set_form(self) -> None:
         """Populate form fields from the selected feature."""
-        data_list = qgis_config().get('mapper')
+        data_list = qgis_config().get('mapper') or []
         for data in data_list:
             if data.get('layer') == self.layer_name_key:
                 session = get_session()
@@ -299,7 +320,7 @@ class PopupDialog(QDialog, FORM_CLASS):
                     "This road has been updated successfully", self._tr_locale,
                 ),
             )
-        except Exception as e:
+        except (ValueError, SQLAlchemyError) as e:
             logger.exception("Failed to update road: %s", e)
             QMessageBox.critical(
                 self,
@@ -324,11 +345,12 @@ class PopupDialog(QDialog, FORM_CLASS):
             QMessageBox.information(
                 self,
                 get_string("Success", self._tr_locale),
-                get_string("This facility has been updated successfully",
-                           self._tr_locale,
+                get_string(
+                    "This facility has been updated successfully",
+                    self._tr_locale,
                 ),
             )
-        except Exception as e:
+        except (ValueError, SQLAlchemyError) as e:
             logger.exception("Failed to update organization: %s", e)
             QMessageBox.critical(
                 self,
@@ -357,7 +379,7 @@ class PopupDialog(QDialog, FORM_CLASS):
                     self._tr_locale,
                 ),
             )
-        except Exception as e:
+        except (ValueError, SQLAlchemyError) as e:
             logger.exception("Failed to update subdivision: %s", e)
             QMessageBox.critical(
                 self,
@@ -385,7 +407,7 @@ class PopupDialog(QDialog, FORM_CLASS):
                     "This zone has been updated successfully", self._tr_locale,
                 ),
             )
-        except Exception as e:
+        except (ValueError, SQLAlchemyError) as e:
             logger.exception("Failed to update zone: %s", e)
             QMessageBox.critical(
                 self,
@@ -500,7 +522,7 @@ class PopupDialog(QDialog, FORM_CLASS):
                 get_string("This panel has been updated successfully",
                            self._tr_locale),
             )
-        except Exception as e:
+        except (ValueError, SQLAlchemyError) as e:
             logger.exception("Failed to update panel: %s", e)
             QMessageBox.critical(
                 self,
@@ -577,7 +599,7 @@ class PopupDialog(QDialog, FORM_CLASS):
                     self._tr_locale,
                 ),
             )
-        except Exception as e:
+        except (ValueError, SQLAlchemyError) as e:
             logger.exception("Failed to update numbering: %s", e)
             QMessageBox.critical(
                 self, get_string("Error", self._tr_locale), f'{e}',
