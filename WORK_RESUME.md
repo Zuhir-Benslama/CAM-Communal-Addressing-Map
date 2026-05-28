@@ -64,7 +64,7 @@ A comprehensive QGIS plugin modernization and code quality overhaul.
 
 - 3 languages: Arabic (ar), French (fr), English (en)
 - Translation caching rewritten: widget-level dynamic properties instead of dicts
-- All dialogs translated: EntityListDialog, PopupDialog, RNADialog settings
+- All dialogs translated: EntityListDialog, PopupDialog, MainDialog settings
 - Seed data: 44 translated combo items (road types, zone types, statuses)
 - 318 messages in `.ts` files
 - RTL layout support for Arabic
@@ -156,7 +156,7 @@ A comprehensive QGIS plugin modernization and code quality overhaul.
 - **5 tests** added for `get_zone_distribution` in `test_operations.py` (now 17 tests)
 - **`test/helpers.py`**: added `app.shared.utils` mock + reorganized to fix pre-existing test pollution
 - **`test_gui_entity_list.py`**: rewritten — 26 tests (7 original + 19 new) covering populate_table, pagination, empty results, N/A fallback, session closure
-- **`test_main_dialog.py`**: 22 tests for `RNADialog` core methods (`_current_layer_name`, `_tr`, `_init_state`, `_on_layer_changed`, `_on_theme_changed`, `_on_locale_changed`, `_set_button_roles`, `_apply_ui_polish`, `apply_theme`, `setup_settings_ui`, `_translate_internal_combos`)
+- **`test_main_dialog.py`**: 22 tests for `MainDialog` core methods (`_current_layer_name`, `_tr`, `_init_state`, `_on_layer_changed`, `_on_theme_changed`, `_on_locale_changed`, `_set_button_roles`, `_apply_ui_polish`, `apply_theme`, `setup_settings_ui`, `_translate_internal_combos`)
 
 ### §41 Direct `app.*` Imports
 - `app` is importable as a top-level package (no `plans_adressage.app.*` needed)

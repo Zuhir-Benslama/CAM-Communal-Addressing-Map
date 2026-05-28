@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="en" sourcelanguage="en">
 <context>
-    <name>RNADialog</name>
+    <name>MainDialog</name>
     <message>
         <source>Done by</source>
         <translation>Done by</translation>

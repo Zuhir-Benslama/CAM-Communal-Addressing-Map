@@ -143,7 +143,7 @@ plans_adressage/
 │   ├── measure_tool.py          # Distance measurement tool
 │   └── ui_fillers.py            # ComboBox population functions
 │
-├── mixins/                      # RNADialog mixin classes
+├── mixins/                      # MainDialog mixin classes
 │   ├── auth_mixin.py            # Authentication UI
 │   ├── backup_mixin.py          # DB backup/restore
 │   ├── chart_mixin.py           # Chart generation

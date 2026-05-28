@@ -167,11 +167,20 @@
         color: {{LIGHT_TEXT}};
         border: 1px solid {{LIGHT_BORDER}};
         border-radius: 6px;
-        padding: 10px 14px;
-        min-height: 1.2em;
+        padding-left: 14px;
+        padding-right: 14px;
+        min-height: 2em;
     }}
     QDateEdit:focus {{
         border-color: {{LIGHT_ACCENT}};
+    }}
+    QDateEdit::drop-down {{
+        border: none;
+        width: 24px;
+    }}
+    QDateEdit::down-arrow {{
+        width: 8px;
+        height: 8px;
     }}
     QStackedWidget {{
         background-color: {{LIGHT_BG}};

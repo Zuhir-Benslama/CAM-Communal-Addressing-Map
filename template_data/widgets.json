@@ -5,9 +5,9 @@
     "en": "Cancel"
   },
   "add_type_btn": {
-    "ar": "+",
-    "fr": "+",
-    "en": "+"
+    "ar": "حفظ",
+    "fr": "Enregistrer",
+    "en": "Save"
   },
   "add_u": {
     "ar": "إضافة مستخدم",
@@ -359,11 +359,6 @@
     "fr": "Type principal :",
     "en": "Main type:"
   },
-  "label_subsubtype": {
-    "ar": "النوع الفرعي الفرعي :",
-    "fr": "Sous-sous-type :",
-    "en": "Sub-subtype:"
-  },
   "label_subtype": {
     "ar": "النوع الفرعي :",
     "fr": "Sous-type :",
@@ -554,7 +549,7 @@
     "fr": "Dessiner le lotissement",
     "en": "Draw Subdivision"
   },
-  "RNADialogBase": {
+  "MainDialogBase": {
     "ar": "مركز التطبيقات الفضائية  2025 ©",
     "fr": "Centre des Applications Spatiales 2025 ©",
     "en": "Space Applications Center 2025 ©"

@@ -9,7 +9,7 @@ from qgis.PyQt.QtWidgets import QAction, QDockWidget, QMessageBox
 from qgis.core import QgsApplication
 from qgis.gui import QgisInterface
 
-from ..gui.main_dialog import RNADialog
+from ..gui.main_dialog import MainDialog
 from .shared.constants import (
     ICON_PNG, SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
 )
@@ -107,10 +107,10 @@ class RNA:
         if self.first_start is True:
             self.first_start = False
             try:
-                self.dlg = RNADialog(self.iface)
-                logger.info("RNADialog created successfully")
+                self.dlg = MainDialog(self.iface)
+                logger.info("MainDialog created successfully")
             except Exception as e:
-                logger.exception("Failed to create RNADialog: %s", e)
+                logger.exception("Failed to create MainDialog: %s", e)
                 loc = current_locale()
                 QMessageBox.critical(
                     None, get_string("RNA Plugin Error", loc),

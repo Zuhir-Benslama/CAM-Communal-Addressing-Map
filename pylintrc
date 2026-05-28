@@ -187,7 +187,7 @@ max-branches=15
 # Maximum number of statements in function / method body
 max-statements=60
 
-# Maximum number of parents for a class (RNADialog inherits 12 mixins).
+# Maximum number of parents for a class (MainDialog inherits 12 mixins).
 max-parents=15
 
 # Maximum number of attributes for a class (mixins set attrs dynamically).

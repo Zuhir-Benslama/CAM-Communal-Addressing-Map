@@ -314,7 +314,7 @@
 - [x] **Translation caching rewritten** — replaced Python dicts keyed by `objectName` with Qt dynamic properties (`setProperty("_rna_src", ...)`) stored directly on widgets. `_cache_originals()` is additive; `_apply_translations()` iterates `findChildren` directly.
 - [x] **Root cause of whitespace mismatch fixed** — `.ui` label text has leading space (`" : اسم المستخدم"`) but `.ts` sources had none. `gen_translations.py` now uses exact `.ui` strings.
 - [x] **All frames set to NoFrame** — all 38 QFrames across `RNA_dialog_base.ui`, `liste.ui`, `PopupDialog.ui` changed to `NoFrame` via Python XML script.
-- [x] **Fully translated dialogs**: `EntityListDialog`, `PopupDialog`, `RNADialog.setup_settings_ui()`
+- [x] **Fully translated dialogs**: `EntityListDialog`, `PopupDialog`, `MainDialog.setup_settings_ui()`
 - [x] **Database seed data translated** — `gui/ui_fillers.py` all `fill_*` functions translate combo items via `_locale()` + `_i18n_tr()`.
 - [x] **`_on_locale_changed` re-populates combos** — re-calls `fill_road_type`, `fill_zone_type`, etc. on locale switch.
 - [x] **44 seed data translations added** — road types, zone types, subdivision types, mounting statuses, numbering states.
@@ -328,7 +328,7 @@
 - [x] **Fix EntityListDialog locale init order** — `entity_list_dialog.py:40-49`: moved `_tr_locale` detection above `super().__init__()` and `apply_widget_texts()` so the correct saved locale is applied on first render.
 - [x] **Add RTL layout support** — `RNA_dialog.py`: `QApplication.setLayoutDirection()` called on startup and locale change (RightToLeft for Arabic, LeftToRight for else).
 - [x] **Add missing strings to `strings.json`** — `"  قائمة "` (EntityListDialog titles) and `"تم حفظ تقريرك في مستنداتك"` (report_mixin.py). Zero missing strings confirmed by comprehensive audit.
-- [x] **Add 13 missing display-text widgets to `widgets.json`** — `Other`, `RNADialogBase`, `add_usr`, `frame_9`, `frame_10`, `frame_11`, `menu`, `widget`, `formLayout_pan`, `scrollArea_3`, `widget_3`, `widget_5`, `widget_11` — now translated on locale switch.
+- [x] **Add 13 missing display-text widgets to `widgets.json`** — `Other`, `MainDialogBase`, `add_usr`, `frame_9`, `frame_10`, `frame_11`, `menu`, `widget`, `formLayout_pan`, `scrollArea_3`, `widget_3`, `widget_5`, `widget_11` — now translated on locale switch.
 - [x] **Tooltip fallback to `strings.json`** — `apply_widget_texts()` in `lookup_data.py` now attempts `_get_string(tip, locale)` as fallback when widget is not in `widgets.json`, so 15+ HTML tooltips on `is_city`, `is_num`, `type_city`, `nom_voie`, etc. are now translated without needing individual entries.
 - [x] **Regenerate `RNA_ar.ts`** — `gen_translations.py` now writes all 286 Arabic identity entries (was only 5).
 
@@ -532,7 +532,7 @@ These are intentional patterns, not bugs. Addressed as needed during feature wor
 - **`import-outside-toplevel` (~26)** — try/except fallbacks in scripts + lazy imports for circular deps
 - **`global-statement` (8)** — engine/session caching pattern in `database.py`, `security.py`, `config.py`
 - **`too-many-arguments` / `too-many-positional-arguments` (0)** — all converted to keyword-only ✅
-- **`too-many-instance-attributes` (7)**, **`too-many-ancestors` (1)** — RNADialog inheritance complexity
+- **`too-many-instance-attributes` (7)**, **`too-many-ancestors` (1)** — MainDialog inheritance complexity
 
 ### False Positives (ignore)
 
@@ -897,7 +897,7 @@ These are intentional patterns, not bugs. Addressed as needed during feature wor
 
 ### Mixin Protocol Contracts
 
-Created `mixins/_protocols.py` with 10 `Protocol` classes defining explicit contracts between mixins and their host (`RNADialog`):
+Created `mixins/_protocols.py` with 10 `Protocol` classes defining explicit contracts between mixins and their host (`MainDialog`):
 
 | Protocol | Attributes/Methods | Used by |
 |---|---|---|
@@ -1121,3 +1121,56 @@ Both `on_opt_selected` and `symbols()` now under pylint `too-many-branches`/`too
 - `gui/RNA_dialog_base.ui` — login page layout margins/spacing, gear button, footer hLayout_10 margins
 - `resources/light_qss.template` — footer QSS border removed
 - `resources/dark_qss.template` — footer QSS border removed
+
+---
+
+## 58. Settings UI Fixes & DB Migration Script — 2026-05-28 ✅
+
+### Settings UI — Generate Map Buttons Alignment
+- [x] **`horizontalLayout_16` layout orientation** — `QHBoxLayout` → `QVBoxLayout` with zero margins so `pan` (Generate Panels Map) and `num_carte` (Generate Numbering Map) stack vertically
+- [x] **Primary button styling** — `pan`, `num_carte`, `print`, `bc`, `backup_db`, `restore_db`, `add_type_btn` added to `primary_buttons` set → blue styling, 180px min-width, Expanding size policy
+- [x] **QDateEdit QSS** — changed from `padding: 2px 14px; min-height: 2em` to `padding-left: 14px; padding-right: 14px; min-height: 2em` in both dark/light templates (matching QComboBox style)
+
+### Add New Types Section
+- [x] **Activities added** — Added as 4th option in `feature_combo` main types (Zones, Roads, Subdivisions, Activities)
+- [x] **Subtype row visibility** — Subtype label + input hidden for non-Activities; Save button always visible for all types
+- [x] **Save logic** — For non-Activities reads type name from editable combo text; for Activities, passes selected category from combo to `save_new_type()`
+- [x] **`save_new_type()` in `gui/ui_fillers.py`** — handles saving to `activity.json` for Activities, dispatches to correct JSON file for other types
+
+### Form Layout Alignment
+- [x] **QFormLayout → QHBoxLayout rows** — Replaced `formLayout_pan_2` with individual `QHBoxLayout` rows for Generate Map form fields (fixes label/field alignment inconsistency with other sections)
+- [x] **Label width setting** — Added `type_plan`, `by_`, `num_mokh`, `label_49` to `_set_field_label_widths()` (120px min-width)
+- [x] **Type conflict fix** — `self.type_plan` was a `str` attribute conflicting with QLabel widget; now uses `findChild(QLabel, 'type_plan')` in `_set_field_label_widths()`
+
+### Layout Spacing Guards
+- [x] **`count >= 2` guard** in `_adjust_layout_spacing()` for `setStretch()` calls to prevent index errors
+- [x] **`completer()` None checks** — all `completer()` calls guarded with `None` check to avoid crash when combo is non-editable
+
+### Files Modified
+- `gui/main_dialog.py` — `_set_button_roles()`, `_set_field_label_widths()`, `_adjust_layout_spacing()`, `_on_feature_changed()`, `_save_new_type()`
+- `gui/main_dialog_base.ui` — Generate Map layout (QHBoxLayout rows, QVBoxLayout for pan/num_carte), Add New Types section widgets
+- `gui/ui_fillers.py` — `_ACTIVITY_KEY`, `fill_feature_combo()`, `fill_subtype_combo()`, `save_new_type()` with Activities support
+- `resources/dark_qss.template`, `resources/light_qss.template` — QDateEdit QSS matched to QComboBox
+- `template_data/widgets.json` — translation strings for `add_type_btn`, removed `label_subsubtype`
+
+### DB Migration Script (`scripts/migrate_db.py`) — New
+- [x] **Column mapping** — maps 31 old column names to new: `pkuid→id`, `idLoc→locality_id`, `uid→user_id`, `Cat→category`, `dim→dimensions`, `Stituation→situation`, `idLine→road_id`, `idPoly→subdivision_id`, `idOrg→organization_id`, `codeWilaya→wilaya_code`, `communeAr→commune_ar`, `codeCommun→commune_code`, `num_decision→decision_number`, `pkuid_poly→zone_id`
+- [x] **SpatiaLite initialization** — loads `mod_spatialite` extension via `conn.enable_load_extension()` + `conn.load_extension()`
+- [x] **Lookup table migration** — copies 8 lookup tables (DimPan, Etat_Numerotation, situation_Montage, type_cite, type_voie, type_zone, type_organisme, activity)
+- [x] **Spatial table migration** — creates 7 spatial tables + user + localite with new schema
+- [x] **Geometry column registration** — uses `AddGeometryColumn()` after table creation (not inline `GEOMETRY` type) for proper SpatiaLite metadata
+- [x] **Spatial index creation** — `CreateSpatialIndex()` for all 7 geometry columns
+- [x] **New columns added** — `created_at`, `updated_at`, `commune_fr`, `commune_en`, `Nom_fr`, `Nom_en`
+
+### Migration Verified
+- [x] **Merahna.sqlite** — all 8 tables migrated successfully:
+  - `localite`: 1,541 rows
+  - `user`: 1 row
+  - `refpoly`: 1 row
+  - `refpolychild`: 14 rows
+  - `RefLine`: 404 rows
+  - `reforg`: 41 rows
+  - `Numerotation`: 653 rows
+  - `Pannautage`: 931 rows
+
+- `scripts/migrate_db.py` — new migration script

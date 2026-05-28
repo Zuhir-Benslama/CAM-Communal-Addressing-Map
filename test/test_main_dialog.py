@@ -1,4 +1,4 @@
-"""Tests for gui/main_dialog.py — RNADialog."""
+"""Tests for gui/main_dialog.py — MainDialog."""
 import importlib
 import sys
 import unittest
@@ -14,8 +14,8 @@ def _stub_widgets(target, names):
 
 
 @unittest.skipIf(get_qapp() is None, 'PyQt5 not available')
-class TestRNADialogCore(unittest.TestCase):
-    """Test RNADialog core methods defined in main_dialog.py."""
+class TestMainDialogCore(unittest.TestCase):
+    """Test MainDialog core methods defined in main_dialog.py."""
 
     @classmethod
     def setUpClass(cls):
@@ -30,8 +30,8 @@ class TestRNADialogCore(unittest.TestCase):
         spec.loader.exec_module(cls.mod)
 
     def _make_raw(self):
-        """Create a raw RNADialog instance without calling __init__."""
-        dialog = self.mod.RNADialog.__new__(self.mod.RNADialog)
+        """Create a raw MainDialog instance without calling __init__."""
+        dialog = self.mod.MainDialog.__new__(self.mod.MainDialog)
         dialog.iface = make_mock_iface()
         dialog._tr_locale = 'ar'
         dialog._current_theme = 'dark'
@@ -146,7 +146,7 @@ class TestRNADialogCore(unittest.TestCase):
         dialog._set_button_roles = MagicMock()
         _stub_widgets(dialog, ['toolbar_frame', 'frame_8', 'frame_9',
                                 'label_feature', 'label_type',
-                                'label_subtype', 'label_subsubtype'])
+                                'label_subtype'])
         dialog.findChildren = MagicMock(return_value=[])
         dialog._apply_ui_polish()
         dialog.setObjectName.assert_called_once_with('rnaMainDialog')

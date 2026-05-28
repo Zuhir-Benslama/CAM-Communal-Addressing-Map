@@ -36,6 +36,9 @@ Thumbs.db
 venv/
 .venv/
 
+# Unrelated assets
+liquid-glass/
+
 # Reports / output
 *.pdf
 *.odt

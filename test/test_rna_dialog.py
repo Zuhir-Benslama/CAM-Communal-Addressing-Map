@@ -3,7 +3,7 @@ import os
 import unittest
 
 
-class RNADialogImportTest(unittest.TestCase):
+class MainDialogImportTest(unittest.TestCase):
     """Verify the main dialog file exists."""
 
     def test_module_file_exists(self):
