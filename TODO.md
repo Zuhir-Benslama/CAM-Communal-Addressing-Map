@@ -1053,12 +1053,71 @@ Both `on_opt_selected` and `symbols()` now under pylint `too-many-branches`/`too
 
 ### Medium priority (P2)
 - [x] **Move imports to top-level** where possible (reduce C0415 from 33 → 12; remaining 12 are circular-import workarounds)
-- [ ] Add missing docstrings (C0116 × 315, C0115 × 29, C0114 × 3)
-- [ ] Address protected-access (123) — intentional test pattern
+- [ ] **Add missing docstrings** — C0116 × 326, C0115 × 29, C0114 × 3 (increase from 315 due to new code in `app/`)
+- [ ] **Address protected-access (124)** — intentional test pattern
 - [x] **Improve `app/orders/models.py` maintainability** — B(16.49) → already A(20.33) (improved earlier)
 - [x] **`app/core/database.py` — 8 broad `except Exception`** — narrowed 4 (`CreateSpatialIndex`, `_add_column_if_not_exists`, `InitSpatialMetadata`); remaining 4 are legitimate top-level catch-alls (extension loading, auth setup, migration).
 - [x] **`app/users/service.py:115` — `except Exception`** — inner handlers narrowed; outer handler kept as `Exception` (legitimate top-level catch-all).
-- [ ] **Add docstrings to remaining undocumented functions** in `app/lifespan.py`, `app/main.py`, `app/orders/models.py`, `app/users/schemas.py`, `app/core/security.py`, `app/core/config.py`, `app/core/database.py` (C0116/C0115 conventions)
 - [x] **`app/orders/repository.py` — 6 functions with 7+ positional args** (R0917). Converted to keyword-only with `*`.
 - [x] **`app/users/service.py:20` — 7 positional args** (R0917). Converted to keyword-only with `*`.
 - [x] **`gui/popup_dialog.py:49` — 6 positional args** (R0917). Converted to keyword-only with `*`.
+
+---
+
+## 56. Code Quality Scan — 2026-05-28
+
+**Pylint: 9.10/10** (up from 8.96 — 6587 statements)
+
+### New / Increased
+| Issue | Count | Change | Notes |
+|-------|-------|--------|-------|
+| `C0116` missing-function-docstring | 326 | ↑ +11 | New undocumented functions added |
+| `W0212` protected-access | 124 | ↑ +1 | Slight increase |
+| `W0718` broad-exception-caught | 20 | ↓ -17 | Reduced from 37; most log with `exc_info=True` |
+| `C0415` import-outside-toplevel | 24 | ↓ -9 | Reduced from 33; remaining are dep workarounds |
+| `C0115` missing-class-docstring | 29 | — | Unchanged |
+| `E0401` import-error | 8 | — | QGIS/PyQt5 not in env (false positives) |
+| `C0413` wrong-import-position | 6 | *new* | Imports after module-level code in test files |
+| `C0301` line-too-long | 4 | ↓ -6 | Down from 10; auto-generated files only |
+| `W0603` global-statement | 3 | ↓ -5 | Down from 8 |
+| `C0114` missing-module-docstring | 3 | — | Unchanged |
+| `R0903` too-few-public-methods | 2 | ↓ -8 | Down from 10 |
+| `C0411` wrong-import-order | 2 | *new* | Stdlib after third-party in a few files |
+| `W0611` unused-import | 1 | — | Unchanged |
+
+### Untracked Issues Found
+- **`C0413` wrong-import-position (6)** — `test/test_operations.py`, `test/test_db_ops.py`, `test/test_auth.py` have imports after module-level code
+- **`C0411` wrong-import-order (2)** — `scripts/lookup_data.py`, `mixins/map_tools_mixin.py` — stdlib imports placed after third-party
+
+### Open Items (carried forward)
+- [x] **Add missing docstrings** — C0116 × 326, C0115 × 29, C0114 × 3. **Done in `app/`** (zero remain). All remaining C011x are in `test/` files only.
+- [ ] **Address protected-access (124)** — acceptable for test files accessing private members
+- [ ] **Fix wrong-import-position (6)** — move module-level imports in `test/test_operations.py`, `test/test_db_ops.py`, `test/test_auth.py` before class/function definitions
+- [ ] **Fix wrong-import-order (2)** — reorder in `scripts/lookup_data.py` and `mixins/map_tools_mixin.py`
+
+---
+
+## 57. UI Polish — Login & Main Page Alignment — 2026-05-28 ✅
+
+### Login Page
+- [x] **Form layout spacing** — `verticalLayout_7.spacing` 10 → 20; form layouts `topMargin`/`bottomMargin` zeroed; `formAlignment` → `Qt::AlignHCenter`
+- [x] **Button spacers** — spacer width 10px; `_align_buttons` removes trailing spacer from hbox rows
+
+### Gear Button (Settings)
+- [x] **Icon: ⚙️ emoji** — font-size 16→18px, border-radius 10→4px, square via `setFixedSize(sz, sz)` with min 34px
+- [x] **Bottom-clipping fix** — `frame_8.setMinimumHeight(sz + 14)` inside `_match_gear_height`
+
+### Main Page Horizontal Alignment
+- [x] **Layout margins** — `gridLayout_4` set to `(10, 0, 10, 0)`; `vLayout_11`/`hLayout_2` left/right zeroed; save-button spacer removed; footer `hLayout_10` at 10px
+- [x] **Dynamic margin alignment** — `_align_main_margins()` adjusts `frame_8`/`frame_9` layout margins to match tab content using `layer_selector.mapTo()` coordinates
+
+### Footer (Copyright Widget)
+- [x] **Copyright text left-aligned** — `_balance_footer` changed from `AlignCenter` to `AlignLeft | AlignVCenter`
+- [x] **Footer border removed** — split QSS rule: `QFrame[surfaceRole="footer"]` now has background-color only (no `border` or `border-radius`). Header/toolbar keep their borders.
+- [x] **`showEvent` added** — calls `_align_main_margins()` when dialog is fully shown (geometries final)
+
+### Files Modified
+- `gui/main_dialog.py` — `_balance_footer`, `_style_main_widgets`, `_align_main_margins`, `showEvent`
+- `gui/RNA_dialog_base.ui` — login page layout margins/spacing, gear button, footer hLayout_10 margins
+- `resources/light_qss.template` — footer QSS border removed
+- `resources/dark_qss.template` — footer QSS border removed

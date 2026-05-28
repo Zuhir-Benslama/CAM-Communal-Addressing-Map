@@ -194,11 +194,13 @@
         padding: 4px 8px;
     }}
     QFrame[surfaceRole="header"],
-    QGroupBox[surfaceRole="toolbar"],
-    QFrame[surfaceRole="footer"] {{
+    QGroupBox[surfaceRole="toolbar"] {{
         background-color: {{LIGHT_SURFACE}};
         border: 1px solid #1a1b26;
         border-radius: 10px;
+    }}
+    QFrame[surfaceRole="footer"] {{
+        background-color: {{LIGHT_SURFACE}};
     }}
     QPushButton[role="primary"] {{
         background-color: {{LIGHT_ACCENT}};

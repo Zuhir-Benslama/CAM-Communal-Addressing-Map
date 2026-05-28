@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_current_user() -> Optional[dict]:
+    """Return authenticated user info from cookie, or None."""
     from ..orders.models import Localite
     filename = COOKIE_FILE
     try:
@@ -53,6 +54,7 @@ def get_current_user() -> Optional[dict]:
 
 
 def _get_authenticated_user() -> Any:
+    """Return the Localite record for the currently authenticated user."""
     from ..orders.models import Localite
     user_data = get_current_user()
     if not user_data:
@@ -67,6 +69,7 @@ def _get_authenticated_user() -> Any:
 
 
 def get_user_location() -> Any:
+    """Return the WKT geometry of the authenticated user's municipality."""
     result = _get_authenticated_user()
     if result:
         session = get_session()
@@ -80,6 +83,7 @@ def get_user_location() -> Any:
 
 
 def create_cookie(cookie: str, uid: str) -> None:
+    """Persist a session cookie to disk (permissions 0600)."""
     data = {'Session': {'cookie': cookie, 'uid': uid}}
     filename = COOKIE_FILE
     try:
@@ -95,6 +99,7 @@ _qgis_config_cache = None
 
 
 def qgis_config() -> dict:
+    """Return the QGIS layer configuration from the JSON config file (cached)."""
     global _qgis_config_cache
     if _qgis_config_cache is not None:
         return _qgis_config_cache

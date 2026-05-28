@@ -8,7 +8,9 @@ from qgis.gui import QgisInterface
 @runtime_checkable
 class HasTranslation(Protocol):
     """Mixin host provides translation method."""
-    def _tr(self, source: str) -> str: ...
+    def _tr(self, source: str) -> str:
+        """Translate *source* string for the current locale."""
+        ...
 
 
 @runtime_checkable
@@ -20,7 +22,9 @@ class HasIface(Protocol):
 @runtime_checkable
 class HasCurrentLayer(Protocol):
     """Mixin host provides current layer name."""
-    def _current_layer_name(self) -> str: ...
+    def _current_layer_name(self) -> str:
+        """Return the name of the currently active layer."""
+        ...
 
 
 @runtime_checkable
@@ -44,7 +48,9 @@ class HasPlanState(Protocol):
     """Mixin host provides plan export state."""
     type_plan: str
     type_to_hide: str
-    def _generate_chart(self, *args: Any, **kwargs: Any) -> None: ...
+    def _generate_chart(self, *args: Any, **kwargs: Any) -> None:
+        """Generate a chart for the current plan data."""
+        ...
 
 
 @runtime_checkable
@@ -77,34 +83,60 @@ class HasUiWidgets(Protocol):
     org_type: Any
     activity_cat: Any
     activity_type: Any
-    def _select_ref(self, *args: Any, **kwargs: Any) -> None: ...
+    def _select_ref(self, *args: Any, **kwargs: Any) -> None:
+        """Open reference selection tool for a combo box."""
+        ...
 
 
 @runtime_checkable
 class HasDrawSignals(Protocol):
     """Mixin host provides drawing signal handlers."""
-    def on_feature_added(self, *args: Any, **kwargs: Any) -> None: ...
-    def on_geometry_changed(self, *args: Any, **kwargs: Any) -> None: ...
-    def on_edition_release(self, *args: Any, **kwargs: Any) -> None: ...
-    def _reconnect_context_menu(self) -> None: ...
-    def _draw_handler(self, *args: Any, **kwargs: Any) -> None: ...
-    def _update_handler(self, *args: Any, **kwargs: Any) -> None: ...
+    def on_feature_added(self, *args: Any, **kwargs: Any) -> None:
+        """Handle the feature-added signal from a layer."""
+        ...
+    def on_geometry_changed(self, *args: Any, **kwargs: Any) -> None:
+        """Handle the geometry-changed signal from a layer."""
+        ...
+    def on_edition_release(self, *args: Any, **kwargs: Any) -> None:
+        """Handle the edit context menu release signal."""
+        ...
+    def _reconnect_context_menu(self) -> None:
+        """Re-connect the custom context menu handler."""
+        ...
+    def _draw_handler(self, *args: Any, **kwargs: Any) -> None:
+        """Activate drawing mode for a specific layer."""
+        ...
+    def _update_handler(self, *args: Any, **kwargs: Any) -> None:
+        """Activate geometry update mode for a specific layer."""
+        ...
 
 
 @runtime_checkable
 class HasExportMethods(Protocol):
     """Mixin host provides export-related methods."""
-    def north(self) -> None: ...
-    def scale(self) -> None: ...
-    def map_situation(self) -> None: ...
-    def symbols(self) -> None: ...
-    def _render_and_export(self, *args: Any, **kwargs: Any) -> None: ...
+    def north(self) -> None:
+        """Render a north arrow on the layout."""
+        ...
+    def scale(self) -> None:
+        """Render a scale bar on the layout."""
+        ...
+    def map_situation(self) -> None:
+        """Render a situation map on the layout."""
+        ...
+    def symbols(self) -> None:
+        """Render legend symbols on the layout."""
+        ...
+    def _render_and_export(self, *args: Any, **kwargs: Any) -> None:
+        """Export the current map layout to an image file."""
+        ...
 
 
 @runtime_checkable
 class UiForm(Protocol):
     """Type stub for dynamically loaded Qt UI forms (setupUi)."""
-    def setupUi(self, obj: object) -> None: ...
+    def setupUi(self, obj: object) -> None:
+        """Set up the UI on the given parent object."""
+        ...
 
 
 # --- Combined protocols (replaces unsupported `A & B` syntax) ---

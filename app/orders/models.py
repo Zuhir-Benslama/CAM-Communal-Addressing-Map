@@ -19,6 +19,7 @@ from ..shared.utils import current_locale, locale_value
 
 
 def _get_current_user():
+    """Return the currently authenticated user dict, or None."""
     from ..users.repository import get_current_user
     return get_current_user()
 
@@ -63,22 +64,27 @@ class _BaseSpatialModel(Base, TimestampMixin):
 
     @property
     def username(self) -> Optional[str]:
+        """Return the related user's username, or None."""
         if self.user_id:
             return self.user.username
         return None
 
     @classmethod
     def list_all(cls, session: Session) -> dict:
+        """Query all rows, returning only columns listed in _list_columns."""
         columns = [column for column in cls.__table__.columns
                    if column.name in cls._list_columns]
         return {'data': session.query(*columns).all(), "cols": columns}
 
     def delete(self, session: Session) -> None:
+        """Delete this instance via *session* and commit."""
         session.delete(self)
         session.commit()
 
 
 class Localite(Base, TimestampMixin):
+    """Municipality / locality spatial model."""
+
     __tablename__ = 'localite'
     id = Column(Integer, primary_key=True, autoincrement=True)
     wilaya = Column(Text, nullable=False)
@@ -90,11 +96,14 @@ class Localite(Base, TimestampMixin):
     geometry = Column(Geometry(geometry_type='GEOMETRY', srid=SRID))
 
     def save(self, session: Session) -> None:
+        """Persist this locality via *session* and commit."""
         session.add(self)
         session.commit()
 
 
 class Zone(_BaseSpatialModel):
+    """Spatial zone (polygon) model — refpoly in the DB."""
+
     __tablename__ = 'refpoly'
     _list_columns = ['Type', 'Nom']
 
@@ -126,6 +135,8 @@ class Zone(_BaseSpatialModel):
     @classmethod
     def update(cls, session: Session, pkuid: str,
                **kwargs: Any) -> Optional['Zone']:
+        """Update zone attributes and recalc has_child."""
+
         instance = session.query(cls).filter_by(id=pkuid).first()
         user_data = _get_current_user()
         if not user_data or not instance:
@@ -149,6 +160,7 @@ class Zone(_BaseSpatialModel):
         session.commit()
 
     def save(self, session: Session) -> None:
+        """Persist zone, linking to user and locality."""
         user_data = _get_current_user()
         if not user_data:
             raise ValueError("No user found")
@@ -160,6 +172,8 @@ class Zone(_BaseSpatialModel):
 
 
 class Subdivision(_BaseSpatialModel):
+    """Subdivision (referred to as refpolychild in the DB)."""
+
     __tablename__ = 'refpolychild'
     _list_columns = ['Type', 'Nom']
 
@@ -191,6 +205,7 @@ class Subdivision(_BaseSpatialModel):
     @classmethod
     def update(cls, session: Session, pkuid: str,
                **kwargs: Any) -> Optional['Subdivision']:
+        """Update subdivision attributes and recalc parent zone."""
         instance = session.query(cls).filter_by(id=pkuid).first()
         user_data = _get_current_user()
         if not user_data or not instance:
@@ -204,6 +219,7 @@ class Subdivision(_BaseSpatialModel):
         return instance
 
     def save(self, session: Session) -> None:
+        """Persist subdivision, linking to user and parent zone."""
         user_data = _get_current_user()
         if not user_data:
             raise ValueError("No user found")
@@ -214,6 +230,7 @@ class Subdivision(_BaseSpatialModel):
         session.commit()
 
     def delete(self, session: Session) -> None:
+        """Delete subdivision and recalc parent zone has_child."""
         zone_pkuid = self.parent
         session.delete(self)
         session.commit()
@@ -222,6 +239,8 @@ class Subdivision(_BaseSpatialModel):
 
 
 class Road(_BaseSpatialModel):
+    """Road spatial model (RefLine in the DB)."""
+
     __tablename__ = 'RefLine'
     _list_columns = ['Type', 'Nom', 'decision_number']
 
@@ -257,20 +276,32 @@ class Road(_BaseSpatialModel):
 
     @classmethod
     def update(cls, session: Session, pkuid: str,
-               **kwargs: Any) -> Optional['Road']:
+               **kwargs: Any) -> Optional['Zone']:
+        """Update zone attributes and recalc has_child."""
         instance = session.query(cls).filter_by(id=pkuid).first()
         user_data = _get_current_user()
         if not user_data or not instance:
-            raise ValueError("Road not found or no authenticated user")
+            raise ValueError("Zone not found or no authenticated user")
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
         instance.user_id = user_data.get('id')
         instance.locality_id = user_data.get('loc')
-        instance.zone_id = _parent_zone_id(session, instance.geometry)
+        instance.has_child = _has_child_entities(session, instance.geometry)
         session.commit()
         return instance
 
+    @classmethod
+    def _recalc_has_child(cls, session: Session,
+                          zone_pkuid: str) -> None:
+        """Recalculate has_child flag for a road's parent zone."""
+        instance = session.query(cls).filter_by(id=zone_pkuid).first()
+        if not instance:
+            return
+        instance.has_child = _has_child_entities(session, instance.geometry)
+        session.commit()
+
     def save(self, session: Session) -> None:
+        """Persist road, linking to user and parent zone."""
         user_data = _get_current_user()
         if not user_data:
             raise ValueError("No user found")
@@ -281,6 +312,7 @@ class Road(_BaseSpatialModel):
         session.commit()
 
     def delete(self, session: Session) -> None:
+        """Delete road and recalc parent zone has_child."""
         zone_pkuid = self.zone_id
         session.delete(self)
         session.commit()
@@ -289,6 +321,8 @@ class Road(_BaseSpatialModel):
 
 
 class Organization(_BaseSpatialModel):
+    """Organization / facility spatial model (reforg in the DB)."""
+
     __tablename__ = 'reforg'
     _list_columns = ['category', 'Type', 'Nom']
 
@@ -306,11 +340,13 @@ class Organization(_BaseSpatialModel):
 
     @property
     def cat(self) -> Optional[str]:
+        """Return the category value."""
         return self.category
 
     @classmethod
     def update(cls, session: Session, pkuid: str,
                **kwargs: Any) -> Optional['Organization']:
+        """Update organization attributes and recalc parent zone."""
         instance = session.query(cls).filter_by(id=pkuid).first()
         user_data = _get_current_user()
         if not user_data or not instance:
@@ -324,6 +360,7 @@ class Organization(_BaseSpatialModel):
         return instance
 
     def save(self, session: Session) -> None:
+        """Persist organization, linking to user and parent zone."""
         user_data = _get_current_user()
         if not user_data:
             raise ValueError("No user found")
@@ -334,6 +371,7 @@ class Organization(_BaseSpatialModel):
         session.commit()
 
     def delete(self, session: Session) -> None:
+        """Delete organization and recalc parent zone has_child."""
         zone_pkuid = self.zone_id
         session.delete(self)
         session.commit()
@@ -342,6 +380,8 @@ class Organization(_BaseSpatialModel):
 
 
 class Numbering(_BaseSpatialModel):
+    """Numbering attribute model (Numerotation in the DB)."""
+
     __tablename__ = 'Numerotation'
     _list_columns = ['valeur', 'repetition', 'etat']
     id = Column(
@@ -375,6 +415,7 @@ class Numbering(_BaseSpatialModel):
     @classmethod
     def update(cls, session: Session, pkuid: str,
                **kwargs: Any) -> Optional['Numbering']:
+        """Update numbering attributes."""
         instance = session.query(cls).filter_by(id=pkuid).first()
         user_data = _get_current_user()
         if not user_data or not instance:
@@ -386,6 +427,7 @@ class Numbering(_BaseSpatialModel):
         return instance
 
     def save(self, session: Session) -> None:
+        """Persist numbering, linking to the current user."""
         user_data = _get_current_user()
         if user_data:
             self.user_id = user_data.get('id')
@@ -396,6 +438,8 @@ class Numbering(_BaseSpatialModel):
 
 
 class PanelSign(_BaseSpatialModel):
+    """Panel sign model (Pannautage in the DB)."""
+
     __tablename__ = 'Pannautage'
 
     id = Column(
@@ -439,6 +483,7 @@ class PanelSign(_BaseSpatialModel):
 
     @property
     def label(self) -> Optional[str]:
+        """Return a human-readable label based on the referenced entity."""
         loc = current_locale()
         if self.road_id is not None and self.subdivision_id is None \
                 and self.organization_id is None:
@@ -457,6 +502,7 @@ class PanelSign(_BaseSpatialModel):
     @classmethod
     def update(cls, session: Session, pkuid: str,
                **kwargs: Any) -> Optional['PanelSign']:
+        """Update panel sign attributes."""
         instance = session.query(cls).filter_by(id=pkuid).first()
         user_data = _get_current_user()
         if not user_data or not instance:
@@ -468,6 +514,7 @@ class PanelSign(_BaseSpatialModel):
         return instance
 
     def save(self, session: Session) -> None:
+        """Validate referenced entities and persist panel sign."""
         user_data = _get_current_user()
         if user_data:
             self.user_id = user_data.get('id')

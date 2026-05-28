@@ -72,6 +72,8 @@ LAYER_MODEL = {
 
 
 class PanelStatus(str, Enum):
+    """Panel mount statuses (Mounted, Planned, To Move, To Fix)."""
+
     MOUNTED = "Mounted"
     PLANNED = "Planned"
     TO_MOVE = "To Move"
@@ -79,10 +81,14 @@ class PanelStatus(str, Enum):
 
 
 class ActivityStatus(str, Enum):
+    """Activity status (currently only No Activity)."""
+
     NONE = "No Activity"
 
 
 class Theme(str, Enum):
+    """Theme enum (Dark / Light) with backward-compat lookup."""
+
     DARK = "Dark"
     LIGHT = "Light"
 

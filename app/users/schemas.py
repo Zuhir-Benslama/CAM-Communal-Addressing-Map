@@ -10,6 +10,7 @@ class _EmptyStringMixin:
 
     @pre_load
     def convert_empty_strings(self, data, **_kwargs) -> dict:
+        """Replace empty-string values with None during deserialization."""
         return {
             key: (None if value == "" else value)
             for key, value in data.items()
@@ -17,6 +18,7 @@ class _EmptyStringMixin:
 
 
 class AuthSchema(_EmptyStringMixin, Schema):
+    """Validate login credentials (USERNAME + PASSWORD)."""
     USERNAME = fields.Str(
         required=True,
         error_messages={"required": "Username is required"},
@@ -30,6 +32,7 @@ class AuthSchema(_EmptyStringMixin, Schema):
 
 
 class SignupSchema(_EmptyStringMixin, Schema):
+    """Validate sign-up fields (username, name, password, affectation, contact)."""
     username = fields.Str(
         required=True,
         error_messages={"required": "Username is required"},
@@ -68,6 +71,7 @@ class SignupSchema(_EmptyStringMixin, Schema):
 
     @validates('username')
     def validate_username(self, value, **_kwargs) -> None:
+        """Ensure the username is unique and non-empty."""
         if value is not None:
             if value:
                 session = get_auth_session()

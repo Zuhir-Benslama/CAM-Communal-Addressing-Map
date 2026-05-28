@@ -27,6 +27,7 @@ def ensure(value: Optional[T], message: str = "") -> T:
 
 
 def validate_text(value: str, max_length: int = 255) -> str:
+    """Strip whitespace and truncate *value* to *max_length* chars."""
     value = value.strip()
     if len(value) > max_length:
         value = value[:max_length]
@@ -34,6 +35,7 @@ def validate_text(value: str, max_length: int = 255) -> str:
 
 
 def current_locale() -> str:
+    """Return the current locale code ('ar', 'fr', 'en', etc.)."""
     settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
     locale = settings.value(SETTINGS_KEY_LOCALE, '')
     if not locale:
@@ -43,6 +45,7 @@ def current_locale() -> str:
 
 
 def locale_value(instance, field_base: str, locale: str = '') -> str:
+    """Return a locale-aware field value from a model instance."""
     if not locale:
         locale = current_locale()
     if locale == 'ar':
@@ -53,6 +56,7 @@ def locale_value(instance, field_base: str, locale: str = '') -> str:
 
 
 def current_theme() -> str:
+    """Return the current theme name ('dark' or 'light')."""
     settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
     value = settings.value(SETTINGS_KEY_THEME, THEME_DARK)
     # Backward compat: old Arabic values were changed to English
@@ -65,6 +69,7 @@ def current_theme() -> str:
 
 
 def get_qgis_python() -> Optional[str]:
+    """Return the path to a suitable QGIS Python interpreter."""
     python = os.getenv('PYTHON_QGIS_BAT')
     if python:
         if not os.path.isfile(python) or not os.access(python, os.X_OK):
@@ -84,6 +89,7 @@ def get_qgis_python() -> Optional[str]:
 def get_all_fields_and_labels(
     model_class, property_labels=None, locale=''
 ) -> Tuple[List[str], List[str]]:
+    """Return column names and their locale-aware labels for a model class."""
     if not locale:
         locale = current_locale()
     fields = []

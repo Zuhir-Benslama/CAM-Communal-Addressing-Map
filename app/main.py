@@ -20,6 +20,8 @@ logger = logging.getLogger(__name__)
 
 
 class RNA:
+    """Main plugin class — handles startup, GUI creation, and teardown."""
+
     def __init__(self, iface: QgisInterface) -> None:
         QgsApplication.setPrefixPath(os.getenv('QGIS_BASE_PATH', '/usr'), True)
 
@@ -48,6 +50,7 @@ class RNA:
         self.first_start: Optional[bool] = None
 
     def tr(self, message) -> str:
+        """Translate *message* via Qt's internationalisation framework."""
         return QCoreApplication.translate('RNA', message)
 
     def add_action(
@@ -63,6 +66,7 @@ class RNA:
         whats_this=None,
         parent=None,
     ) -> Any:
+        """Register a QGIS toolbar action and/or menu item."""
         icon = QIcon(icon_path)
         action = QAction(icon, text, parent)
         action.triggered.connect(callback)
@@ -81,6 +85,7 @@ class RNA:
         return action
 
     def initGui(self) -> None:
+        """Create the plugin toolbar button and menu entry."""
         self.add_action(
             ICON_PNG,
             text=self.tr(''),
@@ -90,11 +95,13 @@ class RNA:
         self.first_start = True
 
     def unload(self) -> None:
+        """Remove all plugin toolbar buttons and menu entries."""
         for action in self.actions:
             self.iface.removePluginMenu(self.tr('&RNA'), action)
             self.iface.removeToolBarIcon(action)
 
     def run(self) -> None:
+        """Launch (or raise) the plugin dock widget."""
         logger.info("run() called, first_start=%s", self.first_start)
 
         if self.first_start is True:
@@ -130,6 +137,7 @@ class RNA:
             QTimer.singleShot(0, self._normalize_dock_width)
 
     def _normalize_dock_width(self) -> None:
+        """Constrain dock widget width within acceptable bounds."""
         if not hasattr(self, 'dock_widget'):
             return
 

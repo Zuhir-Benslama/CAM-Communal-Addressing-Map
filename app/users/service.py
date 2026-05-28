@@ -26,6 +26,7 @@ def sign_up(
     *, username: str, password: str, affectation_id: int, phone: str,
     email: str, first_name: str, lastname: str
 ) -> tuple[bool, list[str] | None]:
+    """Register a new user. Returns (success, error_details_or_None)."""
     signup_data = {
         "username": username,
         "first_name": first_name,
@@ -77,6 +78,7 @@ def sign_up(
 def sign_in(
     username: str, password: str,
 ) -> tuple[bool, str | None, str | None]:
+    """Authenticate a user. Returns (success, username_or_None, error_or_None)."""
     credentials = {'USERNAME': username, 'PASSWORD': password}
     schema = AuthSchema()
     try:
@@ -135,6 +137,7 @@ def sign_in(
 
 
 def remove_all_layers(iface) -> None:
+    """Remove all layers from the QGIS project and refresh the canvas."""
     project = QgsProject.instance()
     layers = project.mapLayers().values()
     for layer in layers:
@@ -143,6 +146,7 @@ def remove_all_layers(iface) -> None:
 
 
 def logout(iface, dlg) -> None:
+    """Clear session cookie, revoke API key, remove layers, and close dialog."""
     filename = COOKIE_FILE
 
     with open(filename, 'r', encoding='utf-8') as f:

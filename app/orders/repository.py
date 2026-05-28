@@ -40,6 +40,7 @@ def _add_entity(instance, session=None) -> Any:
 
 
 def export_model(model_name: str) -> None:
+    """Export all records of *model_name* to a Shapefile."""
     session = get_session()
     try:
         model_class = _WRITER_MODELS.get(model_name)
@@ -73,6 +74,7 @@ def add_panel_sign(
     road_id=None, subdivision_id=None, organization_id=None,
     dimensions=None, pkuid=None,
 ):
+    """Create and persist a new PanelSign entity."""
     instance = PanelSign(
         id=pkuid,
         situation=mount_status,
@@ -88,6 +90,7 @@ def add_organization(
     *, geometry_wkt, org_name, org_type, org_cat, pkuid=None,
     nom_org_fr=None, nom_org_en=None,
 ):
+    """Create and persist a new Organization entity."""
     instance = Organization(
         id=pkuid,
         Type=org_type, category=org_cat, Nom=org_name,
@@ -101,6 +104,7 @@ def add_road(
     *, geometry_wkt, road_name, type_road, road_decision, pkuid=None,
     nom_voie_fr=None, nom_voie_en=None,
 ):
+    """Create and persist a new Road entity."""
     instance = Road(
         id=pkuid,
         Type=type_road, Nom=road_name, decision_number=road_decision,
@@ -115,6 +119,7 @@ def add_numbering(
     road_id=None, subdivision_id=None, repetition=None, etat=None,
     activity_cat=None, activity_type=None, pkuid=None,
 ):
+    """Create and persist a new Numbering entity."""
     instance = Numbering(
         id=pkuid,
         valeur=valeur, road_id=road_id, subdivision_id=subdivision_id,
@@ -129,6 +134,7 @@ def add_subdivision(
     *, geometry_wkt, subdivision_type, name, pkuid=None,
     name_fr=None, name_en=None,
 ):
+    """Create and persist a new Subdivision entity."""
     instance = Subdivision(
         id=pkuid,
         Nom=name, Type=subdivision_type,
@@ -142,6 +148,7 @@ def add_zone(
     *, geometry_wkt, zone_type, name, pkuid=None,
     name_fr=None, name_en=None,
 ):
+    """Create and persist a new Zone entity."""
     instance = Zone(
         id=pkuid,
         Nom=name, Type=zone_type,

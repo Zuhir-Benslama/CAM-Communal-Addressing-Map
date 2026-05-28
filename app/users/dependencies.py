@@ -18,6 +18,7 @@ def _navigate_to_login(self) -> None:
 
 
 def login_required(func) -> Callable:
+    """Decorator: redirect to login page if no valid session cookie exists."""
     @wraps(func)
     def wrapper(self, *args, **kwargs) -> Any:
         filename = COOKIE_FILE

@@ -65,14 +65,17 @@ DEFAULT_THEME = THEME_DARK
 
 
 def get_theme_qss(theme_name: str) -> str:
+    """Return the main QSS stylesheet for *theme_name*."""
     return THEMES.get(theme_name, THEMES[DEFAULT_THEME])[0]  # type: ignore
 
 
 def get_dialog_qss(theme_name: str) -> str:
+    """Return the dialog QSS stylesheet for *theme_name*."""
     return THEMES.get(theme_name, THEMES[DEFAULT_THEME])[1]  # type: ignore
 
 
 def _find_in_candidate_paths(candidates: list[str]) -> str | None:
+    """Return the first existing path from *candidates*, or None."""
     for p in candidates:
         if os.path.exists(p):
             return p
@@ -80,6 +83,7 @@ def _find_in_candidate_paths(candidates: list[str]) -> str | None:
 
 
 def _find_via_ldconfig() -> str | None:
+    """Locate mod_spatialite.so via ``ldconfig -p`` output."""
     try:
         result = subprocess.run(
             ['ldconfig', '-p'], capture_output=True, text=True, check=True,
@@ -101,6 +105,7 @@ def _find_via_ldconfig() -> str | None:
 
 
 def find_mod_spatialite_dll() -> str:
+    """Locate the mod_spatialite shared library on the system."""
     env_path = os.getenv('MOD_SPATIALITE_DLL')
     if env_path:
         return env_path

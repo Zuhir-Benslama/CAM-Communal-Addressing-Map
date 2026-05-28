@@ -24,7 +24,7 @@ import logging
 import os
 from typing import Any, TYPE_CHECKING, Dict, Optional
 
-from PyQt5.QtCore import Qt, QDate, QSettings, QSize
+from PyQt5.QtCore import Qt, QDate, QSettings, QSize, QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (
     QApplication, QDialog, QGridLayout, QGroupBox, QLabel,
@@ -112,8 +112,13 @@ class RNADialog(
             return
 
         for label in labels:
-            label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            label.setAlignment(
+                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+
+    def showEvent(self, event) -> None:
+        super().showEvent(event)
+        QTimer.singleShot(100, self._align_main_margins)
 
     def __init__(self, iface, parent=None) -> None:
         """Constructor."""
@@ -151,6 +156,7 @@ class RNADialog(
         self.apply_theme()
 
     def _align_buttons(self) -> None:
+        """Remove trailing spacers and align button rows."""
         for hbox_name in (
             'horizontalLayout_19',
             'horizontalLayout_12',
@@ -416,6 +422,7 @@ class RNADialog(
         self._setup_gear_icon()
 
     def _apply_window_geometry(self) -> None:
+        """Set dialog sizing constraints and defaults."""
         self.setObjectName('rnaMainDialog')
         self.setSizeGripEnabled(True)
         self.setMinimumSize(640, 680)
@@ -424,6 +431,7 @@ class RNADialog(
             self.resize(680, 720)
 
     def _style_main_widgets(self) -> None:
+        """Apply size/scroll policies to main UI widgets."""
         self.router.setMaximumHeight(16777215)
         self.groupBox.setMaximumSize(16777215, 16777215)
         self.groupBox.setMinimumSize(500, 390)
@@ -433,9 +441,18 @@ class RNADialog(
         self.menu.setDocumentMode(True)
         self.menu.setUsesScrollButtons(True)
         self.menu.tabBar().hide()
+        self.menu.setStyleSheet(
+            "QTabWidget::pane { margin: 0px; border: none; }")
+        grid_layout = self.findChild(QGridLayout, 'gridLayout_4')
+        if grid_layout is not None:
+            grid_layout.setContentsMargins(10, 0, 10, 0)
         self.frame_8.layout().setContentsMargins(0, 3, 0, 3)
+        hbox = self.frame_8.layout().itemAt(0)
+        if hbox is not None and hbox.layout() is not None:
+            hbox.layout().setContentsMargins(0, 1, 0, 1)
 
     def _style_frames(self) -> None:
+        """Assign surface roles and apply QSS to frame widgets."""
         for frame_name, role in {
             'toolbar_frame': 'toolbar',
             'frame_8': 'toolbar',
@@ -444,15 +461,11 @@ class RNADialog(
             frame = getattr(self, frame_name, None)
             if frame is not None:
                 frame.setProperty('surfaceRole', role)
-                if frame_name == 'frame_8' and role == 'toolbar':
-                    frame.setStyleSheet(
-                        "QFrame#frame_8 {"
-                        " margin-left: 12px; margin-right: 12px; }"
-                    )
                 if role == 'footer':
                     self._balance_footer(frame)
 
     def _setup_username_label(self) -> None:
+        """Configure the username label alignment and size policy."""
         try:
             label_username = getattr(self, 'label_username', None)
         except RuntimeError:
@@ -465,6 +478,7 @@ class RNADialog(
             )
 
     def _set_grid_stretch(self) -> None:
+        """Apply row/column stretch factors to named grid layouts."""
         for name, row_stretches, col_stretches in (
             ('gridLayout_19', {0: 1, 1: 0}, {0: 1}),
             ('gridLayout_4',  {1: 0, 2: 1}, {0: 1}),
@@ -483,7 +497,8 @@ class RNADialog(
                 layout.setColumnStretch(col, stretch)
 
     def _fix_button_spacers(self) -> None:
-        spacer_width = 10
+        """Replace flexible spacers with fixed-width spacers in button rows."""
+        spacer_width = 0
         for layout_name in (
             'hbox_signin',
             'horizontalLayout_19',
@@ -522,6 +537,7 @@ class RNADialog(
                     )
 
     def _adjust_layout_spacing(self) -> None:
+        """Normalise spacing and stretch across all layouts."""
         self._set_grid_stretch()
         for layout_name in ('horizontalLayout_8', 'horizontalLayout_16'):
             try:
@@ -549,6 +565,7 @@ class RNADialog(
                 layout.setSpacing(8)
 
     def _standardize_widgets(self) -> None:
+        """Unify min-height, max-width and size policy across widget types."""
         for widget in self.findChildren(QLineEdit):
             widget.setMinimumHeight(max(widget.minimumHeight(), 34))
             widget.setMaximumWidth(16777215)
@@ -567,6 +584,7 @@ class RNADialog(
             widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
     def _set_field_label_widths(self) -> None:
+        """Set minimum width on feature/type/subtype labels."""
         for label_name in (
             'label_feature', 'label_type', 'label_subtype', 'label_subsubtype'
         ):
@@ -575,29 +593,66 @@ class RNADialog(
                 label.setMinimumWidth(120)
 
     def _setup_gear_icon(self) -> None:
-        """Set a gear icon from the system theme on the settings button."""
+        """Set a gear emoji as the settings button icon."""
         try:
             gear = self.gear_btn
         except (AttributeError, RuntimeError):
             return
         if gear is None:
             return
-        std_icon = gear.style().standardIcon(
-            gear.style().SP_TitleBarMenuButton)
-        icon = QIcon.fromTheme('preferences-system', std_icon)
-        if not icon.isNull():
-            gear.setIcon(icon)
-            gear.setIconSize(QSize(20, 20))
-        gear.setText('')
-        gear.setFixedSize(26, 26)
+        gear.setText('⚙️')
         gear.setStyleSheet(
             "QPushButton { border: 1px solid palette(mid);"
-            " border-radius: 6px; background: transparent; padding: 0px; }")
+            " border-radius: 4px; background: transparent; padding: 0px;"
+            " font-size: 18px; }")
         try:
             tip = self._tr("Settings")
         except (AttributeError, RuntimeError):
             tip = "Settings"
         gear.setToolTip(tip)
+        QTimer.singleShot(0, self._match_gear_height)
+
+    def _match_gear_height(self) -> None:
+        """Match gear button size to reference widgets after layout."""
+        try:
+            gear = self.gear_btn
+        except (AttributeError, RuntimeError):
+            return
+        if gear is None:
+            return
+        for ref in (self.map_options, self.username, self.password):
+            sz = ref.height()
+            if sz > 10:
+                sz = max(sz, 34)
+                gear.setFixedSize(sz, sz)
+                self.frame_8.setMinimumHeight(sz + 14)
+                break
+        self._align_main_margins()
+
+    def _align_main_margins(self) -> None:
+        """Match toolbar and footer horizontal margins to tab content."""
+        ref = self.layer_selector
+        if ref is None:
+            return
+        tab_left = ref.mapTo(self, ref.rect().topLeft()).x()
+        tab_right = ref.mapTo(self, ref.rect().topRight()).x()
+        f8 = self.frame_8
+        if f8 is not None:
+            f8_left = f8.mapTo(self, f8.rect().topLeft()).x()
+            f8_right = f8.mapTo(self, f8.rect().topRight()).x()
+            fm = f8.layout().contentsMargins()
+            f8.layout().setContentsMargins(
+                tab_left - f8_left, fm.top(),
+                f8_right - tab_right, fm.bottom(),
+            )
+        f9 = self.frame_9
+        if f9 is not None:
+            f9_left = f9.mapTo(self, f9.contentsRect().topLeft()).x()
+            f9_right = f9.mapTo(self, f9.contentsRect().topRight()).x()
+            f9.layout().setContentsMargins(
+                tab_left - f9_left, 2,
+                f9_right - tab_right, 2,
+            )
 
     def _set_button_roles(self) -> None:
         """Assign semantic role properties to all push buttons."""
@@ -640,6 +695,7 @@ class RNADialog(
     def _layout_has_primary(
         layout: QHBoxLayout, primary_names: set[str],
     ) -> bool:
+        """Check whether *layout* contains any button with a primary name."""
         for i in range(layout.count()):
             item = layout.itemAt(i)
             if item:
@@ -652,6 +708,7 @@ class RNADialog(
     def _set_primary_stretch(
         layout: QHBoxLayout, primary_names: set[str],
     ) -> None:
+        """Set Expanding size policy on primary buttons within *layout*."""
         for i in range(layout.count()):
             item = layout.itemAt(i)
             if item:
