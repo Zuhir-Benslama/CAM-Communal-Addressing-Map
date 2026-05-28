@@ -116,10 +116,6 @@ class RNADialog(
                 Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
 
-    def showEvent(self, event) -> None:
-        super().showEvent(event)
-        QTimer.singleShot(100, self._align_main_margins)
-
     def __init__(self, iface, parent=None) -> None:
         """Constructor."""
         super().__init__(parent)
@@ -443,7 +439,10 @@ class RNADialog(
         self.menu.tabBar().hide()
         self.menu.setStyleSheet(
             "QTabWidget::pane { margin: 0px; border: none; }")
-        grid_layout = self.findChild(QGridLayout, 'gridLayout_4')
+        try:
+            grid_layout = self.findChild(QGridLayout, 'gridLayout_4')
+        except RuntimeError:
+            grid_layout = None
         if grid_layout is not None:
             grid_layout.setContentsMargins(10, 0, 10, 0)
         self.frame_8.layout().setContentsMargins(0, 3, 0, 3)
@@ -610,7 +609,7 @@ class RNADialog(
         except (AttributeError, RuntimeError):
             tip = "Settings"
         gear.setToolTip(tip)
-        QTimer.singleShot(0, self._match_gear_height)
+        QTimer.singleShot(100, self._match_gear_height)
 
     def _match_gear_height(self) -> None:
         """Match gear button size to reference widgets after layout."""
