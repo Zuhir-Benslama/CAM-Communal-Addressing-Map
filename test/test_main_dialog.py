@@ -146,7 +146,9 @@ class TestMainDialogCore(unittest.TestCase):
         dialog._set_button_roles = MagicMock()
         _stub_widgets(dialog, ['toolbar_frame', 'frame_8', 'frame_9',
                                 'label_feature', 'label_type',
-                                'label_subtype'])
+                                'label_subtype', 'by_', 'num_mokh',
+                                'label_49'])
+        dialog.findChild = MagicMock(return_value=None)
         dialog.findChildren = MagicMock(return_value=[])
         dialog._apply_ui_polish()
         dialog.setObjectName.assert_called_once_with('rnaMainDialog')
