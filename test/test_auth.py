@@ -32,8 +32,13 @@ class TestJWTSecret(unittest.TestCase):
 class TestSignUp(unittest.TestCase):
     def setUp(self):
         self.mock_session = MagicMock()
+        self.mock_session.query.return_value.filter_by.return_value.first.return_value = None
         self.mock_get_session = patch(
             'app.users.service.get_session',
+            return_value=self.mock_session
+        ).start()
+        patch(
+            'app.users.schemas.get_session',
             return_value=self.mock_session
         ).start()
 
@@ -52,7 +57,7 @@ class TestSignUp(unittest.TestCase):
         self.assertIsNone(errors)
         self.mock_session.add.assert_called_once()
         self.mock_session.commit.assert_called_once()
-        self.mock_session.close.assert_called_once()
+        self.mock_session.close.assert_called()
 
     def test_sign_up_validation_error_returns_false(self):
         from marshmallow import ValidationError
@@ -73,8 +78,13 @@ class TestSignUp(unittest.TestCase):
 class TestSignIn(unittest.TestCase):
     def setUp(self):
         self.mock_session = MagicMock()
+        self.mock_session.query.return_value.filter_by.return_value.first.return_value = None
         self.mock_get_session = patch(
             'app.users.service.get_session',
+            return_value=self.mock_session
+        ).start()
+        patch(
+            'app.users.schemas.get_session',
             return_value=self.mock_session
         ).start()
         self.mock_jwt_encode = patch(
