@@ -14,6 +14,9 @@ from ..layer.utils import init_allowed_zone
 from ..layer.refresh import refresh_all_layers
 from ..app.users.repository import qgis_config
 from ..constants import validate_text, current_theme, get_dialog_qss
+from ..gui.ui_fillers import (
+    fill_commune_of_wilaya, fill_org_type, fill_activity_type,
+)
 from ._protocols import (
     HasTranslation, HasUiWidgets,
     HasAuthContext, HasAuthMapContext, HasLoginContext, HasCloseContext,
@@ -170,7 +173,6 @@ class AuthMixin:
 
     def on_select_wilaya(self: HasUiWidgets, _index) -> None:
         """Populate the commune combo when the wilaya selection changes."""
-        from ..gui.ui_fillers import fill_commune_of_wilaya
         selected_value = self.wilaya_list.itemData(
             self.wilaya_list.currentIndex(),
         )
@@ -178,12 +180,10 @@ class AuthMixin:
 
     def on_select_org_cat(self: HasUiWidgets, _index) -> None:
         """Populate the organization type combo when the category changes."""
-        from ..gui.ui_fillers import fill_org_type
         selected_value = self.org_cat.itemData(self.org_cat.currentIndex())
         fill_org_type(self.org_type, selected_value)
 
     def on_select_activity_cat(self: HasUiWidgets, _index) -> None:
         """Populate the activity type combo when the category changes."""
-        from ..gui.ui_fillers import fill_activity_type
         selected_value = self.activity_cat.itemData(self.activity_cat.currentIndex())
         fill_activity_type(self.activity_type, selected_value)

@@ -12,7 +12,7 @@ from ..core.database import get_session
 from ..orders.models import (
     Road, Organization, Subdivision, Zone, PanelSign, Numbering,
 )
-from ..shared.constants import SRID, DEFAULT_PANEL_DIM
+from ..shared.constants import SRID, DEFAULT_PANEL_DIM, PANEL_TYPE_MAP
 
 logger = logging.getLogger(__name__)
 
@@ -174,6 +174,7 @@ def count_numberings(etat: str) -> int:
 
 def count_panels(panel_type: str, etat: str) -> int:
     """Count panels by type and state (query Pan view in Views.sql)."""
+    db_type = PANEL_TYPE_MAP.get(panel_type, panel_type)
     session = get_session()
     try:
         result = session.execute(
@@ -181,7 +182,7 @@ def count_panels(panel_type: str, etat: str) -> int:
                 "select count(*) as cpt from Pan "
                 "where Type = :type and situation = :etat"
             ),
-            {"type": panel_type, "etat": etat}
+            {"type": db_type, "etat": etat}
         )
         row = result.fetchone()
         return row[0] if row else 0

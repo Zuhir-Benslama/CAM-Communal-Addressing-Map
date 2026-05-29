@@ -123,7 +123,7 @@ class IdentifyTool(QgsMapToolIdentify):
 
     def display_or_update_form_feature(self, feature_id) -> None:
         """Open the popup dialog for the identified feature."""
-        from .popup_dialog import PopupDialog
+        from .popup_dialog import PopupDialog  # pylint: disable=import-outside-toplevel
         layer_name = self.get_active_layer().name()
         layer_map = LAYER_KEY
         if self.dlg:

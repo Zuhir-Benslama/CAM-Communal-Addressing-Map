@@ -24,10 +24,10 @@ import logging
 import os
 from typing import Any, TYPE_CHECKING, Dict, Optional
 
-from PyQt5.QtCore import Qt, QDate, QSettings, QSize, QTimer
-from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt, QSettings, QSize, QTimer
 from PyQt5.QtWidgets import (
-    QApplication, QDialog, QGridLayout, QGroupBox, QLabel,
+    QApplication, QDialog, QFileDialog, QGridLayout, QGroupBox,
+    QLabel,
     QPushButton, QVBoxLayout, QHBoxLayout,
     QComboBox, QDateEdit, QFormLayout, QLayout, QLineEdit,
     QSizePolicy,
@@ -134,6 +134,7 @@ class MainDialog(
 
         self._align_buttons()
         self._init_state()
+        self._rebuild_settings_section()
         self._connect_signals()
         self._populate_combos()
         self.fill_map_options()
@@ -193,9 +194,94 @@ class MainDialog(
         self.ref_identify_tool: Optional[IdentifyTool] = None
         self.popup_dialog: Optional[PopupDialog] = None
         self.current_user: Optional[Dict[str, Any]] = None
+        self._output_dir: str = os.path.expanduser('~/Documents')
         self.update_object: Dict[str, Any] = {}
         self.update_only_form: Dict[str, Any] = {}
-        self.dateEdit.setDate(QDate.currentDate())
+
+    def _rebuild_settings_section(self) -> None:
+        """Merge Generate Report, Generate Map, and Database Backup into
+        a single 'Maps, Reports and Backup' section."""
+        for box_name in ('groupBox_4', 'groupBox_5'):
+            box = getattr(self, box_name, None)
+            if box is not None:
+                box.hide()
+
+        group_box = getattr(self, 'groupBox_3', None)
+        if group_box is None:
+            return
+        group_box.setTitle(self._tr("Maps, Reports and Backup"))
+        layout = group_box.layout()
+        if layout is None:
+            return
+        while layout.count():
+            item = layout.takeAt(0)
+            w = item.widget()
+            if w is not None:
+                w.deleteLater()
+
+        self._action_combo = QComboBox()
+        self._action_combo.setObjectName("_action_combo")
+        self._action_combo.addItem(
+            self._tr("Report"), 'report',
+        )
+        self._action_combo.addItem(
+            self._tr("Purchase Order"), 'order',
+        )
+        self._action_combo.addItem(
+            self._tr("Panels Map"), 'panels_map',
+        )
+        self._action_combo.addItem(
+            self._tr("Numbering Map"), 'num_map',
+        )
+        self._action_combo.addItem(
+            self._tr("Database Backup"), 'backup',
+        )
+        layout.addWidget(self._action_combo)
+
+        self.paper.setObjectName("paper")
+        self.paper.setVisible(False)
+        layout.addWidget(self.paper)
+
+        self._save_action = QPushButton(self._tr("Save"))
+        self._save_action.setObjectName("_save_action")
+        self._save_action.setProperty("role", "primary")
+        layout.addWidget(self._save_action)
+
+        self._action_combo.currentIndexChanged.connect(
+            self._on_action_changed,
+        )
+
+    def _on_action_changed(self, _index: int) -> None:
+        """Show paper-size combo for map actions and prepare the view."""
+        action = self._action_combo.currentData()
+        is_map = action in ('panels_map', 'num_map')
+        self.paper.setVisible(is_map)
+        if action == 'panels_map':
+            self.panel_chart()
+        elif action == 'num_map':
+            self.numbering_chart()
+
+    def _on_save_action(self) -> None:
+        """Pick output folder, then dispatch the selected action."""
+        directory = QFileDialog.getExistingDirectory(
+            self, self._tr("Choose output directory"), self._output_dir,
+        )
+        if not directory:
+            return
+        self._output_dir = directory
+        action = self._action_combo.currentData()
+        if action == 'report':
+            self.gen_report()
+        elif action == 'order':
+            self.bon_commande()
+        elif action == 'panels_map':
+            self.panel_chart()
+            self.export_to_image()
+        elif action == 'num_map':
+            self.numbering_chart()
+            self.export_to_image()
+        elif action == 'backup':
+            self.backup()
 
     def _connect_signals(self) -> None:
         """Connect all UI signals to their handlers."""
@@ -238,14 +324,8 @@ class MainDialog(
 
         self.mesure_dist.clicked.connect(self.activate_measure)
 
-        self.bc.clicked.connect(self.bon_commande)
-        self.print.clicked.connect(self.export_to_image)
-        self.pan.clicked.connect(self.panel_chart)
-        self.num_carte.clicked.connect(self.numbering_chart)
-
-        self.backup_db.clicked.connect(self.backup)
         self.restore_db.clicked.connect(self.restore_database)
-        self.report.clicked.connect(self.gen_report)
+        self._save_action.clicked.connect(self._on_save_action)
         self.menu.currentChanged.connect(self.on_opt_selected)
         self.gear_btn.clicked.connect(self._toggle_settings)
         self.feature_combo.currentIndexChanged.connect(self._on_feature_changed)
@@ -273,11 +353,13 @@ class MainDialog(
         type_name = self.new_type.text().strip()
         if not type_name:
             type_name = self.subtype_combo.currentText().strip()
-        category = self.subtype_combo.currentData() if main_type == _ACTIVITY_KEY else ''
+        category = (
+            self.subtype_combo.currentData()
+            if main_type == _ACTIVITY_KEY else ''
+        )
         if save_new_type(main_type, type_name, category):
             self.new_type.clear()
             fill_subtype_combo(self.subtype_combo, main_type)
-            from ..scripts.lookup_data import clear_i18n_cache
             clear_i18n_cache()
             count = self.subtype_combo.count()
             if count > 0:
@@ -336,7 +418,7 @@ class MainDialog(
         settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
 
         self._settings_group = QGroupBox(
-            get_string("Settings", self._tr_locale),
+            get_string("Theme and Language", self._tr_locale),
         )
         self._settings_group.setObjectName("_settings_group")
         self._settings_group.setLayout(QVBoxLayout())
@@ -568,7 +650,7 @@ class MainDialog(
     def _adjust_layout_spacing(self) -> None:
         """Normalise spacing and stretch across all layouts."""
         self._set_grid_stretch()
-        for layout_name in ('horizontalLayout_8', 'horizontalLayout_16'):
+        for layout_name in ('horizontalLayout_8',):
             try:
                 layout = self.findChild(QLayout, layout_name)
             except RuntimeError:
@@ -622,14 +704,10 @@ class MainDialog(
         """Set minimum width on feature/type/subtype labels."""
         for label_name in (
             'label_feature', 'label_type', 'label_subtype',
-            'by_', 'num_mokh', 'label_49',
         ):
             label = getattr(self, label_name, None)
             if label is not None:
                 label.setMinimumWidth(120)
-        type_plan = self.findChild(QLabel, 'type_plan')
-        if type_plan is not None:
-            type_plan.setMinimumWidth(120)
 
     def _setup_gear_icon(self) -> None:
         """Set a gear emoji as the settings button icon."""
@@ -704,14 +782,9 @@ class MainDialog(
             'submit_subd',
             'submit_num',
             'submit_pan',
-            'report',
-            'bc',
-            'pan',
-            'num_carte',
-            'print',
-            'backup_db',
             'restore_db',
             'add_type_btn',
+            '_save_action',
         }
         danger_buttons = {'abort_uc'}
         tool_prefixes = ('draw_', 'select_', 'edit_')
@@ -771,7 +844,7 @@ class MainDialog(
         """Make primary buttons expand to fill available width."""
         primary_names = {
             'sign_in_user', 'submit_usr', 'submit_zone', 'submit_road',
-            'submit_org', 'submit_subd', 'submit_num', 'submit_pan', 'report',
+            'submit_org', 'submit_subd', 'submit_num', 'submit_pan',
         }
         for layout in self.findChildren(QHBoxLayout):
             if not self._layout_has_primary(layout, primary_names):

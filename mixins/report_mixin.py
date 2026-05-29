@@ -3,11 +3,23 @@
 
 from __future__ import annotations
 
+import json
 import logging
+import subprocess
 
+from datetime import datetime
 from qgis.PyQt.QtWidgets import QMessageBox
 
-from ..constants import current_theme, get_theme_qss
+from ..constants import (
+    get_qgis_python, _SUBPROCESS_FLAGS, get_theme_qss, current_theme,
+    REPORTING_SCRIPT, TMP_JSON,
+    NUM_PLANNED, PAN_MOUNTED, PAN_PLANNED, PAN_TO_MOVE, PAN_TO_FIX,
+    LAYER_SUBDIVISIONS, LAYER_FACILITIES, LAYER_ROADS,
+)
+from ..app.orders.repository import (
+    count_numberings, count_panels,
+    query_missing_pan, query_missing_num, query_missing_rep,
+)
 from ._protocols import HasTranslation
 
 logger = logging.getLogger(__name__)
@@ -16,24 +28,94 @@ logger = logging.getLogger(__name__)
 class ReportMixin:
     """Mixin for generating statistical reports and purchase order documents."""
 
-    def _notify_unavailable(self: HasTranslation, feature: str) -> None:
-        """Show a message that the reporting feature is no longer available."""
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-        msg.setWindowTitle(self._tr("Not Available"))
-        msg.setStyleSheet(get_theme_qss(current_theme()))
-        msg.setText(self._tr(f"{feature} is no longer available"))
-        msg.setInformativeText(
-            self._tr("The reporting script has been removed from this version.")
-        )
-        msg.exec_()
+    def _run_report(
+        self: HasTranslation, method: str, data: dict,
+        label: str = "report",
+    ) -> bool:
+        """Run the external reporting script and display result dialogs."""
+        try:
+            with open(TMP_JSON, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=4)
+        except Exception:
+            logger.exception("Error saving JSON file")
+            return False
+
+        script_path = REPORTING_SCRIPT
+        command = [f"{get_qgis_python()}", script_path, '--method', method]
+
+        success_msg = self._tr("Report saved to your documents") if label == "report" \
+            else self._tr("Order saved to your documents")
+        fail_msg = self._tr("Failed to generate report") if label == "report" \
+            else self._tr("Failed to generate order")
+
+        try:
+            subprocess.run(
+                command, capture_output=True, text=True,
+                check=True, **_SUBPROCESS_FLAGS,
+            )
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setWindowTitle(self._tr("Success"))
+            msg.setStyleSheet(get_theme_qss(current_theme()))
+            msg.setInformativeText(success_msg)
+            msg.exec_()
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error("Subprocess failed with error: %s", e)
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setWindowTitle(self._tr("Error"))
+            msg.setStyleSheet(get_theme_qss(current_theme()))
+            msg.setText(fail_msg)
+            msg.setInformativeText(str(e))
+            msg.exec_()
+            return False
+        except Exception:
+            logger.exception("Unexpected error")
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setWindowTitle(self._tr("Error"))
+            msg.setStyleSheet(get_theme_qss(current_theme()))
+            msg.setText(fail_msg)
+            msg.exec_()
+            return False
 
     def gen_report(self: HasTranslation) -> bool:
-        """Show notice that report generation is no longer available."""
-        self._notify_unavailable("Report generation")
-        return False
+        """Generate a statistical report via the external reporting script."""
+        report_data = {
+            'prog': count_numberings(NUM_PLANNED),
+            'wrong': count_numberings('مرقمة وغير مطابقة'),
+            'right': count_numberings('مرقمة ومطابقة'),
+            'booked': count_numberings('محجوز(ة)'),
+            'date': datetime.now().date().strftime('%Y/%m/%d'),
+            'pan_city0': count_panels(LAYER_SUBDIVISIONS, PAN_MOUNTED),
+            'pan_org0': count_panels(LAYER_FACILITIES, PAN_MOUNTED),
+            'pan_road0': count_panels(LAYER_ROADS, PAN_MOUNTED),
+            'pan_city1': count_panels(LAYER_SUBDIVISIONS, PAN_PLANNED),
+            'pan_org1': count_panels(LAYER_FACILITIES, PAN_PLANNED),
+            'pan_road1': count_panels(LAYER_ROADS, PAN_PLANNED),
+            'pan_city2': count_panels(LAYER_SUBDIVISIONS, PAN_TO_MOVE),
+            'pan_org2': count_panels(LAYER_FACILITIES, PAN_TO_MOVE),
+            'pan_road2': count_panels(LAYER_ROADS, PAN_TO_MOVE),
+            'pan_city3': count_panels(LAYER_SUBDIVISIONS, PAN_TO_FIX),
+            'pan_org3': count_panels(LAYER_FACILITIES, PAN_TO_FIX),
+            'pan_road3': count_panels(LAYER_ROADS, PAN_TO_FIX),
+            'wilaya': self.current_user.get('wilaya'),
+            'commune': self.current_user.get('commune'),
+            'output_dir': self._output_dir,
+        }
+        return self._run_report('2', report_data, label="report")
 
     def bon_commande(self: HasTranslation) -> bool:
-        """Show notice that purchase order generation is no longer available."""
-        self._notify_unavailable("Purchase order generation")
-        return False
+        """Generate a purchase order via the external reporting script."""
+        order_data = {
+            'date': datetime.now().date().strftime('%Y/%m/%d'),
+            'wilaya': self.current_user.get('wilaya'),
+            'commune': self.current_user.get('commune'),
+            'items': query_missing_pan(PAN_PLANNED),
+            'items2': query_missing_pan(PAN_TO_FIX),
+            'items3': query_missing_num(NUM_PLANNED),
+            'items4': query_missing_rep(NUM_PLANNED),
+            'output_dir': self._output_dir,
+        }
+        return self._run_report('1', order_data, label="order")

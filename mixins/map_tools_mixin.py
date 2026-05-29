@@ -3,11 +3,11 @@
 
 from __future__ import annotations
 
+from typing import Optional
+
 from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.PyQt.QtCore import Qt
 from qgis.core import QgsProject
-
-from typing import Optional
 
 from ..gui.measure_tool import MeasureTool
 from ..gui.identify_tool import IdentifyTool

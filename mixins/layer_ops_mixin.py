@@ -7,6 +7,8 @@ import logging
 import os
 import uuid
 
+from sqlalchemy.exc import SQLAlchemyError
+
 from qgis.PyQt.QtWidgets import (
     QMessageBox, QFormLayout, QLineEdit, QComboBox, QSpinBox, QCheckBox,
 )
@@ -329,7 +331,7 @@ class LayerOpsMixin:
                                     str(geometry_wkt), srid=SRID
                                 ),
                             )
-                        except Exception as e:  # noqa: W0718
+                        except SQLAlchemyError as e:
                             logger.exception("Failed to save feature: %s", e)
                             QMessageBox.critical(
                                 self, self._tr("Erreur"), str(e))

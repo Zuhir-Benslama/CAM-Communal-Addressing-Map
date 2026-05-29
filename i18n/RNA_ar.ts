@@ -652,8 +652,8 @@
         <translation>الموقع</translation>
     </message>
     <message>
-        <source>Database Backup</source>
-        <translation>النسخ الاحتياطي لقاعدة البيانات</translation>
+        <source>Maps, Reports and Backup</source>
+        <translation>الخرائط والتقارير والنسخ الاحتياطي</translation>
     </message>
     <message>
         <source>Entrance-related Activity</source>

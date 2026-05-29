@@ -109,7 +109,7 @@ class RNA:
             try:
                 self.dlg = MainDialog(self.iface)
                 logger.info("MainDialog created successfully")
-            except Exception as e:
+            except Exception as e:  # pylint: disable=W0718
                 logger.exception("Failed to create MainDialog: %s", e)
                 loc = current_locale()
                 QMessageBox.critical(

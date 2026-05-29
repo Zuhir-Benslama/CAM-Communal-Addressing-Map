@@ -31,6 +31,7 @@ NORTH_ARROW_SVG = os.path.join(PLUGIN_DIR, "resources", "north_arrow.svg")
 SYMBOLS_SVG = os.path.join(PLUGIN_DIR, "resources", "symbols.svg")
 SCALE_BAR_SVG = os.path.join(PLUGIN_DIR, "resources", "scale_bar.svg")
 CHART_SVG = os.path.join(PLUGIN_DIR, "resources", "chart.svg")
+REPORTING_SCRIPT = os.path.join(PLUGIN_DIR, "scripts", "reporting.py")
 
 MEMORY_PROVIDER = "memory"
 NOTIFY_DURATION = 3
@@ -70,14 +71,20 @@ LAYER_MODEL = {
     LAYER_SUBDIVISIONS: "Subdivision",
 }
 
+PANEL_TYPE_MAP = {
+    LAYER_ROADS: "الطرق",
+    LAYER_FACILITIES: "المرافق",
+    LAYER_SUBDIVISIONS: "التجزئات",
+}
+
 
 class PanelStatus(str, Enum):
-    """Panel mount statuses (Mounted, Planned, To Move, To Fix)."""
+    """Panel mount statuses (matching DB Arabic values)."""
 
-    MOUNTED = "Mounted"
-    PLANNED = "Planned"
-    TO_MOVE = "To Move"
-    TO_FIX = "To Fix"
+    MOUNTED = "مركبة"
+    PLANNED = "مبرمجة"
+    TO_MOVE = "لنقلها"
+    TO_FIX = "لتصحيحها"
 
 
 class ActivityStatus(str, Enum):
@@ -103,7 +110,7 @@ PAN_PLANNED = PanelStatus.PLANNED
 PAN_TO_MOVE = PanelStatus.TO_MOVE
 PAN_TO_FIX = PanelStatus.TO_FIX
 
-NUM_PLANNED = "Planned"
+NUM_PLANNED = "مبرمجة"
 
 NO_ACTIVITY = ActivityStatus.NONE
 DEFAULT_PANEL_DIM = "30X40"

@@ -90,9 +90,9 @@
     "en": "Update Zone"
   },
   "groupBox_3": {
-    "ar": "النسخ الاحتياطي لقاعدة البيانات",
-    "fr": "Sauvegarde BD",
-    "en": "Database Backup"
+    "ar": "الخرائط والتقارير والنسخ الاحتياطي",
+    "fr": "Plans, Rapports et Sauvegarde",
+    "en": "Maps, Reports and Backup"
   },
   "groupBox_4": {
     "ar": "إنشاء التقرير",
@@ -355,9 +355,9 @@
     "en": "<html><head/><body><p>Phone number <span style=\" color:red;\">*</span>:</p></body></html>"
   },
   "label_feature": {
-    "ar": "النوع الرئيسي :",
-    "fr": "Type principal :",
-    "en": "Main type:"
+    "ar": "التصنيف :",
+    "fr": "Catégorie :",
+    "en": "Category:"
   },
   "label_subtype": {
     "ar": "النوع الفرعي :",

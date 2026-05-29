@@ -202,20 +202,20 @@ class TestAuthMixin(unittest.TestCase):
 
     def test_on_select_wilaya(self):
         with patch(
-            'plans_adressage.gui.ui_fillers.fill_commune_of_wilaya'
+            'plans_adressage.mixins.auth_mixin.fill_commune_of_wilaya'
         ) as mock_fill:
             self.mixin.on_select_wilaya(0)
             mock_fill.assert_called_once()
 
     def test_on_select_catOrg(self):
         with patch(
-            'plans_adressage.gui.ui_fillers.fill_org_type') as mock_fill:
+            'plans_adressage.mixins.auth_mixin.fill_org_type') as mock_fill:
             self.mixin.on_select_org_cat(0)
             mock_fill.assert_called_once()
 
     def test_on_select_catAct(self):
         with patch(
-            'plans_adressage.gui.ui_fillers.fill_activity_type'
+            'plans_adressage.mixins.auth_mixin.fill_activity_type'
         ) as mock_fill:
             self.mixin.on_select_activity_cat(0)
             mock_fill.assert_called_once()

@@ -1,6 +1,8 @@
 """ComboBox population functions for reference data."""
 # mypy: disable-error-code="assignment,union-attr"
+import json
 import logging
+import os
 
 from qgis.PyQt.QtWidgets import QCompleter, QComboBox
 
@@ -18,6 +20,7 @@ from ..constants import (
     current_locale,
 )
 from ..i18n import tr as _i18n_tr
+from ..scripts.lookup_data import clear_cache
 from ..app.shared.constants import LAYER_ZONES, LAYER_ROADS, LAYER_SUBDIVISIONS
 
 logger = logging.getLogger(__name__)
@@ -257,12 +260,9 @@ def fill_subtype_combo(combobox: QComboBox, main_type: str) -> None:
 
 def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
     """Append a new type entry to the appropriate JSON file.
-    
+
     Returns True on success, False on failure.
     """
-    import json
-    import os
-
     type_name = type_name.strip()
     if not type_name or not main_type:
         return False
@@ -271,41 +271,30 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
         os.path.dirname(os.path.dirname(__file__)), 'template_data',
     )
 
-    if main_type == _ACTIVITY_KEY:
-        if not category:
-            return False
-        filepath = os.path.join(_DATA_DIR, 'activity.json')
-        try:
-            with open(filepath, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-            data.append({"القطاع": category, "النوع": type_name})
-            with open(filepath, 'w', encoding='utf-8') as f:
-                json.dump(data, f, ensure_ascii=False, indent=2)
-            from ..scripts.lookup_data import clear_cache
-            clear_cache()
-            return True
-        except (OSError, json.JSONDecodeError):
-            logger.exception("Failed to save new activity type to %s", filepath)
-            return False
-
-    _JSON_FILES = {
-        LAYER_ZONES: 'zone_type.json',
-        LAYER_ROADS: 'type_road.json',
-        LAYER_SUBDIVISIONS: 'type_cite.json',
-    }
-
-    filename = _JSON_FILES.get(main_type)
-    if not filename:
+    if main_type == _ACTIVITY_KEY and not category:
         return False
 
-    filepath = os.path.join(_DATA_DIR, filename)
+    if main_type == _ACTIVITY_KEY:
+        filepath = os.path.join(_DATA_DIR, 'activity.json')
+        entry = {"القطاع": category, "النوع": type_name}
+    else:
+        _JSON_FILES = {
+            LAYER_ZONES: 'zone_type.json',
+            LAYER_ROADS: 'type_road.json',
+            LAYER_SUBDIVISIONS: 'type_cite.json',
+        }
+        filename = _JSON_FILES.get(main_type)
+        if not filename:
+            return False
+        filepath = os.path.join(_DATA_DIR, filename)
+        entry = {"pk": type_name}
+
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             data = json.load(f)
-        data.append({"pk": type_name})
+        data.append(entry)
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
-        from ..scripts.lookup_data import clear_cache
         clear_cache()
         return True
     except (OSError, json.JSONDecodeError):

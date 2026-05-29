@@ -652,8 +652,8 @@
         <translation>Emplacement</translation>
     </message>
     <message>
-        <source>Database Backup</source>
-        <translation>Sauvegarde BD</translation>
+        <source>Maps, Reports and Backup</source>
+        <translation>Plans, Rapports et Sauvegarde</translation>
     </message>
     <message>
         <source>Entrance-related Activity</source>

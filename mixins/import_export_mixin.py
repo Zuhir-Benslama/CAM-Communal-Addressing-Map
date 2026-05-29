@@ -5,12 +5,18 @@ from __future__ import annotations
 
 import json
 import logging
+import subprocess
+from datetime import datetime
 
 from qgis.PyQt.QtCore import QSize
-from qgis.PyQt.QtWidgets import QMessageBox
-from qgis.core import QgsMapSettings, QgsMapRendererParallelJob
+from qgis.PyQt.QtWidgets import QApplication, QMessageBox
+from qgis.core import QgsMapSettings, QgsMapRendererSequentialJob
 
-from ..constants import MAP_PNG, TMP_JSON, validate_text
+from ..constants import (
+    MAP_PNG, TMP_JSON, REPORTING_SCRIPT, validate_text,
+    get_qgis_python, _SUBPROCESS_FLAGS,
+)
+from ..layer.refresh import refresh_all_layers
 from ._protocols import (
     HasUiWidgets, HasExportContext,
 )
@@ -42,22 +48,22 @@ class ImportExportMixin:
         if include_situation:
             self.map_situation()
 
+        refresh_all_layers(self.iface)
+
         canvas = self.iface.mapCanvas()
+        canvas.refreshAllLayers()
+        QApplication.processEvents()
         extent = canvas.extent()
         extent.scale(1.1)
 
-        map_settings = QgsMapSettings()
-        map_settings.setLayers(canvas.layers())
+        map_settings = canvas.mapSettings()
         map_settings.setExtent(extent)
         map_settings.setOutputSize(EXPORT_MAP_SIZE)
         map_settings.setFlag(
-            QgsMapSettings.Flag.UseAdvancedEffects, True,
-        )
-        map_settings.setDestinationCrs(
-            canvas.mapSettings().destinationCrs(),
+            QgsMapSettings.Flag.Antialiasing, True,
         )
 
-        render_job = QgsMapRendererParallelJob(map_settings)
+        render_job = QgsMapRendererSequentialJob(map_settings)
         render_job.start()
         render_job.waitForFinished()
 
@@ -67,26 +73,70 @@ class ImportExportMixin:
             current_scale = canvas.scale()
             symb = self.symbols()
             if symb:
+                now = datetime.now()
+                first = self.current_user.get('first_name', '') or ''
+                last = self.current_user.get('last_name', '') or ''
                 export_data = {
                     'type_plan': self.type_plan,
-                    'date': self.dateEdit.date().toString("yyyy/MM/dd"),
-                    'by': validate_text(self.lineEdit_by.text()),
+                    'date': now.strftime("%Y/%m/%d %H:%M"),
+                    'by': validate_text(f"{first} {last}".strip()),
                     'wilaya': self.current_user.get('wilaya'),
                     'commune': self.current_user.get('commune'),
-                    'zone': validate_text(self.lineEdit_type.text()),
-                    'num_plan': validate_text(self.lineEdit_nummokh.text()),
+                    'zone': validate_text(
+                        self.current_user.get('commune', '')
+                    ),
                     'scale': f"1:{round(current_scale)}",
+                    'num_plan': self.type_plan,
+                    'output_dir': self._output_dir,
                 }
                 try:
                     with open(TMP_JSON, 'w', encoding='utf-8') as f:
                         json.dump(export_data, f, ensure_ascii=False, indent=4)
-                except (IOError, OSError) as e:
-                    logger.error("Error saving JSON file: %s", e)
+                except Exception:  # pylint: disable=W0718
+                    logger.exception("Error saving JSON data to %s", TMP_JSON)
+                    QMessageBox.critical(
+                        self, self._tr("Error"),
+                        self._tr("Failed to write export data"),
+                    )
+                    return
 
-                QMessageBox.information(
-                    self, self._tr("Success"),
-                    self._tr("Your file has been saved to your documents"),
-                )
+                required_keys = ('type_plan', 'num_plan', 'scale', 'by', 'date')
+                missing = [k for k in required_keys if k not in export_data]
+                if missing:
+                    logger.error("Missing keys in export data: %s", missing)
+                    QMessageBox.critical(
+                        self, self._tr("Error"),
+                        self._tr("Internal error: missing export data"),
+                    )
+                    return
+
+                try:
+                    subprocess.run(
+                        [f"{get_qgis_python()}", REPORTING_SCRIPT,
+                         '--method', _method],
+                        capture_output=True, text=True,
+                        check=True, **_SUBPROCESS_FLAGS,
+                    )
+                    QMessageBox.information(
+                        self, self._tr("Success"),
+                        self._tr("Map saved to your documents"),
+                    )
+                except subprocess.CalledProcessError as e:
+                    err_msg = e.stderr.strip() if e.stderr else "(no output)"
+                    logger.error(
+                        "Map export failed (exit %d): %s",
+                        e.returncode, err_msg,
+                    )
+                    QMessageBox.critical(
+                        self, self._tr("Error"),
+                        f"{self._tr('Failed to generate map PDF')}\n\n{err_msg[:500]}",
+                    )
+                except Exception:  # pylint: disable=W0718
+                    logger.exception("Failed to export map")
+                    QMessageBox.critical(
+                        self, self._tr("Error"),
+                        self._tr("Failed to export map"),
+                    )
 
     def export_to_image(self: HasUiWidgets) -> None:
         """Render the map canvas and export to PNG via an external
@@ -96,3 +146,8 @@ class ImportExportMixin:
             self._render_and_export('4', include_situation=True)
         elif selected_value == 'A3':
             self._render_and_export('3')
+        else:
+            QMessageBox.critical(
+                self, "Error",
+                "Please select a paper size",
+            )

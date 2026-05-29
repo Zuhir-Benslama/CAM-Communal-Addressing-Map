@@ -1174,3 +1174,35 @@ Both `on_opt_selected` and `symbols()` now under pylint `too-many-branches`/`too
   - `Pannautage`: 931 rows
 
 - `scripts/migrate_db.py` — new migration script
+
+---
+
+## 59. Map Export Pipeline Fix — 2026-05-29 ✅
+
+**Tests: 224/227 pass** (3 QGIS-dependent skipped) **Pylint: ~9.94/10** (all source files clean)
+
+### Reporting Pipeline Restored
+- [x] **`scripts/reporting.py`** — restored from git history (4 methods: order form, report, A3 map, A0 map). Fixed subprocess import (absolute via `sys.path.insert`). Added `_find_soffice()` helper (env var `SOFFICE_EXE` + `shutil.which()` fallback). Added `_output_path()` helper.
+- [x] **`mixins/report_mixin.py`** — restored with real `_run_report()`, `gen_report()`, `bon_commande()`. Added i18n `label` param for distinct success/error messages.
+- [x] **`constants.py`** — restored `REPORTING_SCRIPT` constant and re-exports for all layer constants, settings keys, theme enums, `NO_ACTIVITY`.
+- [x] **`mixins/import_export_mixin.py`** — restored subprocess call with improved error handling (actual stderr display, JSON write failure abort, validation of required keys).
+
+### Map Rendering Fixes
+- [x] **Rendering approach** — iterated through 3 strategies, settled on `canvas.mapSettings()` (preserves full canvas state: layers, CRS, labeling engine) + `QgsMapRendererSequentialJob` (reliable single-threaded rendering) + antialiasing flag.
+- [x] **`refresh_all_layers()` added** before rendering to sync DB → memory layers. Called in both `_render_and_export()` and now in `panel_chart()`/`numbering_chart()`.
+- [x] **`_on_action_changed()` fixed** — now calls `panel_chart()`/`numbering_chart()` immediately when selecting a map action from the combobox, so features appear on the canvas right away (not just on Save).
+
+### Feature Loading on View Switch
+- [x] **`mixins/chart_mixin.py`** — `panel_chart()` and `numbering_chart()` now call `refresh_all_layers(self.iface)` after toggling layer visibility.
+- [x] **`mixins/_protocols.py`** — `HasChartContext` now includes `HasIface` so chart mixin can access `self.iface`.
+- [x] **`gui/main_dialog.py`** — `_on_action_changed()` dispatches to `panel_chart()`/`numbering_chart()` on combobox selection.
+
+### Settings UI Restructure
+- [x] **Combobox replaces 5 buttons** — single action combobox (Report, Order, Panels Map, Numbering Map, Backup) + paper-size combo (visible only for map actions) + single Save button.
+- [x] **Fields removed** — study area, done-by, number, date fields removed (derived from current user / datetime). Import DB field removed.
+- [x] **Output directory** — removed persistent path field; Save button opens `QFileDialog.getExistingDirectory()` each time.
+
+### Misc
+- [x] **`app/core/database.py`** — removed auth DB (single connection pool). Added `_migrate_old_columns()` for old-format column renames, `_migrate_users_from_auth()` one-shot merge, `_create_views()` from `data/Views.sql`.
+- [x] **`app/core/migration.py`** — shared migration logic extracted from `scripts/migrate_db.py`.
+- [x] **RTL-aware constants** — `PanelStatus` enum, `NUM_PLANNED`, hardcoded status strings use Arabic matching stored DB data. `PANEL_TYPE_MAP` translates English layer names → Arabic Type values in `count_panels()`.

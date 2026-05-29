@@ -15,7 +15,8 @@ from qgis.core import QgsProject
 from ..app.core.database import get_session
 from ..app.orders.models import PanelSign, Numbering
 from ..constants import LAYER_PANELS, LAYER_NUMBERING, CHART_SVG
-from ._protocols import HasTranslation, HasPlanState
+from ..layer.refresh import refresh_all_layers
+from ._protocols import HasTranslation, HasChartContext
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +73,7 @@ class ChartMixin:
         session = get_session()
         try:
             results = session.query(
-                column, func.count().label('count')  # noqa: E1102
+                column, func.count(1).label('count')  # pylint: disable=not-callable
             ).group_by(column).all()
         finally:
             session.close()
@@ -87,7 +88,7 @@ class ChartMixin:
         _toggle_layer_visibility(layer_to_show, True)
         _toggle_layer_visibility(layer_to_hide, False)
 
-    def panel_chart(self: HasPlanState) -> None:
+    def panel_chart(self: HasChartContext) -> None:
         """Generate a bar chart showing panel sign distribution by situation."""
         self.type_plan = LAYER_PANELS
         self.type_to_hide = LAYER_NUMBERING
@@ -96,8 +97,9 @@ class ChartMixin:
             'Distribution by Status',
             LAYER_PANELS, LAYER_NUMBERING,
         )
+        refresh_all_layers(self.iface)
 
-    def numbering_chart(self: HasPlanState) -> None:
+    def numbering_chart(self: HasChartContext) -> None:
         """Generate a bar chart showing numbering distribution by state."""
         self.type_plan = LAYER_NUMBERING
         self.type_to_hide = LAYER_PANELS
@@ -106,10 +108,11 @@ class ChartMixin:
             'Distribution by Numbering State',
             LAYER_NUMBERING, LAYER_PANELS,
         )
+        refresh_all_layers(self.iface)
 
     def get_zone_chart(self: HasTranslation, wilaya_number: int) -> None:
         """Generate a chart for zone type distribution in a wilaya."""
-        from ..app.orders.repository import get_zone_distribution
+        from ..app.orders.repository import get_zone_distribution  # pylint: disable=import-outside-toplevel
         results = get_zone_distribution(wilaya_number)
         if not results:
             logger.warning(

@@ -74,7 +74,6 @@ class TestMainDialogCore(unittest.TestCase):
 
     def test_init_state_resets_tool_state(self):
         dialog = self._make_raw()
-        dialog.dateEdit = MagicMock()
         dialog._init_state()
         self.assertIsNone(dialog.sat_view)
         self.assertIsNone(dialog.rast)
@@ -88,7 +87,6 @@ class TestMainDialogCore(unittest.TestCase):
         self.assertIsNone(dialog.current_user)
         self.assertEqual(dialog.update_object, {})
         self.assertEqual(dialog.update_only_form, {})
-        dialog.dateEdit.setDate.assert_called_once()
 
     def test_apply_theme_sets_stylesheet(self):
         dialog = self._make_raw()
@@ -146,8 +144,7 @@ class TestMainDialogCore(unittest.TestCase):
         dialog._set_button_roles = MagicMock()
         _stub_widgets(dialog, ['toolbar_frame', 'frame_8', 'frame_9',
                                 'label_feature', 'label_type',
-                                'label_subtype', 'by_', 'num_mokh',
-                                'label_49'])
+                                'label_subtype'])
         dialog.findChild = MagicMock(return_value=None)
         dialog.findChildren = MagicMock(return_value=[])
         dialog._apply_ui_polish()

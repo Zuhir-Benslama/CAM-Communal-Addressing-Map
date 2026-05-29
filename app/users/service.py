@@ -13,7 +13,7 @@ from qgis.core import QgsProject, QgsMessageLog
 from sqlalchemy.exc import SQLAlchemyError
 
 from ..core.security import get_jwt_secret, hash_password, verify_password
-from ..core.database import get_session, get_auth_session
+from ..core.database import get_session
 from ..users.models import User
 from ..users.schemas import AuthSchema, SignupSchema
 from ..users.repository import create_cookie
@@ -39,8 +39,7 @@ def sign_up(
     schema = SignupSchema()
     try:
         schema.load(signup_data)
-        spatial_session = get_session()
-        auth_session = get_auth_session()
+        session = get_session()
         try:
             user = User(
                 username=username, password=hash_password(password),
@@ -48,24 +47,13 @@ def sign_up(
                 first_name=first_name, last_name=lastname,
                 affectation_id=affectation_id, api_key=""
             )
-            spatial_session.add(user)
-            spatial_session.flush()
-            auth_session.add(User(
-                id=user.id,
-                username=username, password=hash_password(password),
-                active=True, phone=phone, email=email,
-                first_name=first_name, last_name=lastname,
-                affectation_id=affectation_id, api_key=""
-            ))
-            auth_session.commit()
-            spatial_session.commit()
+            session.add(user)
+            session.commit()
         except Exception:
-            spatial_session.rollback()
-            auth_session.rollback()
+            session.rollback()
             raise
         finally:
-            spatial_session.close()
-            auth_session.close()
+            session.close()
         return True, None
     except ValidationError as err:
         error_details = [
@@ -83,51 +71,31 @@ def sign_in(
     schema = AuthSchema()
     try:
         schema.load(credentials)
-        auth_session = get_auth_session()
+        session = get_session()
         try:
-            existing_user = (
-                auth_session.query(User).filter_by(username=username).first()
+            user = (
+                session.query(User).filter_by(username=username).first()
             )
-            if not existing_user:
+            if not user:
                 return False, None, "Username doesn't exist"
-            if not verify_password(password, existing_user.password):
+            if not verify_password(password, user.password):
                 return False, None, "Wrong password try again !"
-            spatial_session = get_session()
-            try:
-                spatial_user = (
-                    spatial_session.query(User)
-                    .filter_by(username=username).first()
-                )
-                auth_user = (
-                    auth_session.query(User)
-                    .filter_by(username=username).first()
-                )
-                token = jwt.encode(
-                    auth_user.to_dict(), get_jwt_secret(),
-                    algorithm='HS256'
-                )
-                if spatial_user:
-                    spatial_user.api_key = str(token)
-                auth_user.api_key = str(token)
-                spatial_session.commit()
-                auth_session.commit()
-                create_cookie(token, auth_user.id)
-            except (jwt.PyJWTError, SQLAlchemyError):
-                spatial_session.rollback()
-                auth_session.rollback()
-                raise
-            finally:
-                spatial_session.close()
-            return True, auth_user.username, None
+            token = jwt.encode(
+                user.to_dict(), get_jwt_secret(), algorithm='HS256'
+            )
+            user.api_key = str(token)
+            session.commit()
+            create_cookie(token, user.id)
+            return True, user.username, None
         except Exception as e:
+            session.rollback()
             QgsMessageLog.logMessage(
                 f"sign_in error: {e}", 'RNA', level=2
             )
             logger.error("An error occurred: %s", e)
-            auth_session.rollback()
             return False, None, str(e)
         finally:
-            auth_session.close()
+            session.close()
     except ValidationError as err:
         error_details = "; ".join(
             f"{field}: {'; '.join(messages)}"
@@ -154,22 +122,19 @@ def logout(iface, dlg) -> None:
     cookie = cookie_data.get('Session', {}).get('cookie', None)
     uid = cookie_data.get('Session', {}).get('uid', None)
     if cookie and uid:
-        spatial_session = get_session()
-        auth_session = get_auth_session()
+        session = get_session()
         try:
-            for sess in (spatial_session, auth_session):
-                user = (
-                    sess.query(User)
-                    .filter(
-                        User.id == uid, User.api_key == cookie,
-                        User.active.is_(True)
-                    )
-                    .first()
+            user = (
+                session.query(User)
+                .filter(
+                    User.id == uid, User.api_key == cookie,
+                    User.active.is_(True)
                 )
-                if user:
-                    user.api_key = None
-            spatial_session.commit()
-            auth_session.commit()
+                .first()
+            )
+            if user:
+                user.api_key = None
+            session.commit()
             cookie_data['Session']['cookie'] = None
             cookie_data['Session']['uid'] = None
 
@@ -184,8 +149,7 @@ def logout(iface, dlg) -> None:
                 os.unlink(tmp_path)
                 raise
         finally:
-            spatial_session.close()
-            auth_session.close()
+            session.close()
         remove_all_layers(iface)
         if dlg:
             dlg.close()

@@ -649,10 +649,10 @@
     "fr": "Emplacement",
     "en": "Location"
   },
-  "النسخ الاحتياطي لقاعدة البيانات": {
-    "ar": "النسخ الاحتياطي لقاعدة البيانات",
-    "fr": "Sauvegarde BD",
-    "en": "Database Backup"
+  "Maps, Reports and Backup": {
+    "ar": "الخرائط والتقارير والنسخ الاحتياطي",
+    "fr": "Plans, Rapports et Sauvegarde",
+    "en": "Maps, Reports and Backup"
   },
   "النشاط المرافق بالمدخل": {
     "ar": "النشاط المرافق بالمدخل",

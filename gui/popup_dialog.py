@@ -421,7 +421,7 @@ class PopupDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
 
     def select_numbering_reference(self) -> None:
         """Activate map tool to select a reference for numbering."""
-        from .identify_tool import IdentifyTool
+        from .identify_tool import IdentifyTool  # pylint: disable=import-outside-toplevel
         self.ref_name3.clear()
         project = QgsProject.instance()
         layer_name = self.dyn_ref3.currentData() or self.dyn_ref3.currentText()
@@ -450,7 +450,7 @@ class PopupDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
 
     def select_panel_reference(self) -> None:
         """Activate map tool to select a reference for panel."""
-        from .identify_tool import IdentifyTool
+        from .identify_tool import IdentifyTool  # pylint: disable=import-outside-toplevel
         self.ref_name4.clear()
         project = QgsProject.instance()
         layer_name = self.dyn_ref4.currentData() or self.dyn_ref4.currentText()

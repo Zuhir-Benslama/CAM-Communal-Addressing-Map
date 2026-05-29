@@ -1,7 +1,7 @@
 """Marshmallow schemas for user authentication and signup validation."""
 from marshmallow import Schema, fields, pre_load, validates, ValidationError
 
-from ..core.database import get_auth_session
+from ..core.database import get_session
 from ..users.models import User
 
 
@@ -74,7 +74,7 @@ class SignupSchema(_EmptyStringMixin, Schema):
         """Ensure the username is unique and non-empty."""
         if value is not None:
             if value:
-                session = get_auth_session()
+                session = get_session()
                 try:
                     existing_user = (
                         session.query(User).filter_by(username=value).first()

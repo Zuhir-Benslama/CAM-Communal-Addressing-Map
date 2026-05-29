@@ -209,7 +209,7 @@ _widgets_data: dict[str, dict[str, str]] | None = None
 
 def _load_widgets() -> dict[str, dict[str, str]]:
     """Load and cache widgets.json data."""
-    global _widgets_data
+    global _widgets_data  # pylint: disable=global-statement
     if _widgets_data is None:
         path = os.path.join(_DATA_DIR, 'widgets.json')
         with open(path, 'r', encoding='utf-8') as f:
@@ -312,9 +312,9 @@ def _translate_tabs(dialog, locale) -> None:
     """Translate QTabWidget tab texts using cached source strings."""
     for w in dialog.findChildren(QTabWidget):
         if not hasattr(w, '_rna_tab_src'):
-            w._rna_tab_src = [w.tabText(i) for i in range(w.count())]
+            w._rna_tab_src = [w.tabText(i) for i in range(w.count())]  # pylint: disable=protected-access
         for i in range(w.count()):
-            src = w._rna_tab_src[i]
+            src = w._rna_tab_src[i]  # pylint: disable=protected-access
             if src:
                 w.setTabText(i, _get_string(src, locale))
 

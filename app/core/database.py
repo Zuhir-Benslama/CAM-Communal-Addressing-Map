@@ -2,13 +2,13 @@
 import logging
 import os
 from contextlib import contextmanager
-from typing import Any, Iterator, Optional
+from typing import Any, Iterator
 
-from sqlalchemy import create_engine, event, inspect, text
+from sqlalchemy import create_engine, event, text
 from sqlalchemy.exc import SQLAlchemyError, OperationalError
 from sqlalchemy.orm import sessionmaker, Session
 
-from ..shared.constants import DATABASE_FILE, AUTH_DATABASE_FILE
+from ..shared.constants import DATABASE_FILE, VIEWS_SQL
 from ..core.config import find_mod_spatialite_dll
 from .base import Base
 
@@ -16,21 +16,17 @@ logger = logging.getLogger(__name__)
 
 
 class ConnectionPool:
-    """Lazily-initialised singleton pool for main and auth DB engines and
-    session factories."""
+    """Lazily-initialised singleton pool for the spatial DB engine and
+    session factory."""
 
     def __init__(self) -> None:
         self._engine: Any = None
         self._Session: Any = None
-        self._auth_engine: Any = None
-        self._AuthSession: Any = None
 
     def reset(self) -> None:
-        """Clear all cached engines and session factories."""
+        """Clear the cached engine and session factory."""
         self._engine = None
         self._Session = None
-        self._auth_engine = None
-        self._AuthSession = None
 
     def get_engine(self) -> Any:
         """Return (and lazily initialise) the spatial DB engine."""
@@ -74,8 +70,11 @@ class ConnectionPool:
                     )
 
             Base.metadata.create_all(self._engine)
+            _migrate_users_from_auth(self._engine)
             _migrate_timestamp_columns(self._engine)
             _migrate_missing_columns(self._engine)
+            _migrate_old_columns(self._engine)
+            _create_views(self._engine)
             _create_spatial_indexes(self._engine)
         return self._engine
 
@@ -85,27 +84,6 @@ class ConnectionPool:
             self._Session = sessionmaker(bind=self.get_engine())
         return self._Session()
 
-    def get_auth_engine(self) -> Any:
-        """Return (and lazily initialise) the auth DB engine."""
-        if self._auth_engine is None:
-            from ..users.models import User
-            filename = AUTH_DATABASE_FILE
-            self._auth_engine = create_engine(
-                f'sqlite:///{filename}', echo=False, pool_pre_ping=True
-            )
-            Base.metadata.create_all(
-                self._auth_engine, tables=[User.__table__]
-            )
-            _migrate_timestamp_columns(self._auth_engine)
-            _migrate_users_to_auth(self._auth_engine)
-        return self._auth_engine
-
-    def get_auth_session(self) -> Session:
-        """Return a new session bound to the auth DB engine."""
-        if self._AuthSession is None:
-            self._AuthSession = sessionmaker(bind=self.get_auth_engine())
-        return self._AuthSession()
-
 
 _pool = ConnectionPool()
 
@@ -114,16 +92,6 @@ _pool = ConnectionPool()
 def session_scope() -> Iterator[Session]:
     """Context manager yielding a spatial DB session, auto-closed on exit."""
     session = _pool.get_session()
-    try:
-        yield session
-    finally:
-        session.close()
-
-
-@contextmanager
-def auth_session_scope() -> Iterator[Session]:
-    """Context manager yielding an auth DB session, auto-closed on exit."""
-    session = _pool.get_auth_session()
     try:
         yield session
     finally:
@@ -230,6 +198,112 @@ _TIMESTAMP_TABLES = (
     'RefLine', 'reforg', 'Numerotation', 'Pannautage',
 )
 
+_OLD_COLUMN_RENAMES: dict[str, dict[str, str]] = {
+    "localite": {
+        "pk_uid": "id",
+        "codeWilaya": "wilaya_code",
+        "communeAr": "commune_ar",
+        "codeCommun": "commune_code",
+    },
+    "refpoly": {
+        "pkuid": "id",
+        "idLoc": "locality_id",
+        "uid": "user_id",
+    },
+    "refpolychild": {
+        "pkuid": "id",
+        "idLoc": "locality_id",
+        "uid": "user_id",
+    },
+    "RefLine": {
+        "pkuid": "id",
+        "num_decision": "decision_number",
+        "idLoc": "locality_id",
+        "pkuid_poly": "zone_id",
+        "uid": "user_id",
+    },
+    "reforg": {
+        "pkuid": "id",
+        "idLoc": "locality_id",
+        "Cat": "category",
+        "uid": "user_id",
+        "pkuid_poly": "zone_id",
+    },
+    "Numerotation": {
+        "pkuid": "id",
+        "idLine": "road_id",
+        "idPoly": "subdivision_id",
+        "uid": "user_id",
+    },
+    "Pannautage": {
+        "pkuid": "id",
+        "dim": "dimensions",
+        "Stituation": "situation",
+        "idLine": "road_id",
+        "idPoly": "subdivision_id",
+        "idOrg": "organization_id",
+        "uid": "user_id",
+    },
+}
+
+
+def _migrate_old_columns(engine: Any) -> None:
+    """Rename old-format column names to current model names.
+
+    Very early versions of the plugin used different column names
+    (e.g. ``pk_uid`` / ``pkuid`` for the primary key, ``codeWilaya``
+    instead of ``wilaya_code``, etc.).  This migration renames those
+    columns to match the current SQLAlchemy models so that ORM queries
+    do not fail with ``no such column`` errors.
+    """
+    with engine.connect() as conn:
+        for table, renames in _OLD_COLUMN_RENAMES.items():
+            info = conn.execute(
+                text(f"PRAGMA table_info('{table}')")
+            ).fetchall()
+            cols = {r[1] for r in info}
+            for old_name, new_name in renames.items():
+                if old_name in cols and new_name not in cols:
+                    try:
+                        conn.execute(
+                            text(
+                                f"ALTER TABLE {table} "
+                                f"RENAME COLUMN {old_name} TO {new_name}"
+                            )
+                        )
+                        conn.commit()
+                        logger.info(
+                            "Renamed %s.%s → %s",
+                            table, old_name, new_name,
+                        )
+                    except SQLAlchemyError:
+                        logger.warning(
+                            "Could not rename %s.%s → %s",
+                            table, old_name, new_name,
+                            exc_info=True,
+                        )
+
+
+def _create_views(engine: Any) -> None:
+    """Create database views (Num, Roads, Pan, Pan2) from Views.sql."""
+    if not os.path.exists(VIEWS_SQL):
+        logger.warning("Views.sql not found at %s", VIEWS_SQL)
+        return
+    with engine.connect() as conn:
+        try:
+            with open(VIEWS_SQL, 'r', encoding='utf-8') as f:
+                sql = f.read()
+            for statement in sql.split(';'):
+                stmt = statement.strip()
+                if stmt:
+                    conn.execute(text(stmt))
+            conn.commit()
+            logger.info("Created database views from Views.sql")
+        except SQLAlchemyError:
+            logger.warning(
+                "Could not create database views", exc_info=True,
+            )
+
 
 def _migrate_timestamp_columns(engine: Any) -> None:
     """Add ``created_at`` / ``updated_at`` columns to all known tables."""
@@ -259,79 +333,59 @@ def get_session() -> Session:
     return _pool.get_session()
 
 
-def get_auth_engine() -> Any:
-    """Return the lazily-initialised auth DB engine."""
-    return _pool.get_auth_engine()
+def _migrate_users_from_auth(engine: Any) -> None:
+    """One-shot merge of ``auth.sqlite`` users into the main DB.
 
-
-def get_auth_session() -> Session:
-    """Return a new session bound to the auth DB engine."""
-    return _pool.get_auth_session()
-
-
-def _migrate_users_to_auth(auth_engine: Any) -> None:
-    """One-shot migration from legacy spatial DB user table to auth DB.
-
-    The spatial DB retains a ``user`` table purely to satisfy ``FOREIGN KEY``
-    constraints from spatial entity models (Zone, Road, etc. have a ``uid``
-    column referencing ``user.id``).  Auth-sensitive columns (``password``,
-    ``api_key``, ``email``, etc.) exist in both tables but **auth operations
-    always read from ``auth.sqlite``** — the spatial ``user`` table is only
-    ever written to keep FK constraints satisfied.
-
-    This migration copies rows from the pre-existing spatial ``user`` table
-    into the new auth DB exactly once (when the auth DB is first created).
-    After that, ``sign_up`` / ``sign_in`` / ``logout`` keep both tables in
-    sync via dual-write.
+    Prior to the DB merge the project used two files:
+    ``database.sqlite`` (spatial) and ``auth.sqlite`` (credentials).
+    If ``auth.sqlite`` still exists on disk, this function attaches it
+    and copies any users not yet present in the main DB, then renames
+    the old file to ``auth.sqlite.migrated`` so the migration runs at
+    most once.
     """
-    from ..users.models import User
-    try:
-        auth_session = sessionmaker(bind=auth_engine)()
-    except Exception:
-        logger.exception(
-            "Cannot create auth session for user migration"
-        )
+    from ..shared.constants import AUTH_DATABASE_FILE
+    auth_path = AUTH_DATABASE_FILE
+    if not os.path.exists(auth_path):
         return
+
     try:
-        count = auth_session.query(User).count()
-        if count > 0:
-            return
-        spatial_engine = get_engine()
-        spatial_session = sessionmaker(bind=spatial_engine)()
-        try:
-            if not inspect(spatial_engine).has_table('user'):
-                return
-            users = spatial_session.query(User).all()
-            migrated = 0
-            for user in users:
-                try:
-                    auth_session.add(User(
-                        id=user.id, username=user.username,
-                        password=user.password, active=user.active,
-                        affectation_id=user.affectation_id,
-                        api_key=user.api_key, email=user.email,
-                        phone=user.phone, first_name=user.first_name,
-                        last_name=user.last_name,
-                    ))
-                    migrated += 1
-                except Exception:
-                    logger.warning(
-                        "Failed to migrate user %s", user.id,
-                        exc_info=True,
-                    )
-            auth_session.commit()
-            if migrated:
-                logger.info(
-                    "Migrated %d user(s) to auth.sqlite", migrated
+        with engine.connect() as conn:
+            conn.execute(
+                text(f"ATTACH DATABASE '{auth_path}' AS auth_db")
+            )
+            result = conn.execute(
+                text(
+                    "SELECT count(*) FROM auth_db.user "
+                    "WHERE id NOT IN (SELECT id FROM user)"
                 )
-        finally:
-            spatial_session.close()
-            auth_session.close()
+            )
+            missing = result.fetchone()[0]
+            if missing:
+                conn.execute(
+                    text(
+                        "INSERT OR IGNORE INTO user "
+                        "(id, username, password, active, affectation_id, "
+                        "api_key, email, phone, first_name, last_name, "
+                        "created_at, updated_at) "
+                        "SELECT id, username, password, active, affectation_id, "
+                        "api_key, email, phone, first_name, last_name, "
+                        "created_at, updated_at FROM auth_db.user"
+                    )
+                )
+                conn.commit()
+                logger.info(
+                    "Merged %d user(s) from auth.sqlite into main DB",
+                    missing,
+                )
+            conn.execute(text("DETACH DATABASE auth_db"))
     except Exception:
         logger.warning(
-            "Auto-migration of users to auth.sqlite failed "
-            "(spatial DB may not exist yet)",
-            exc_info=True,
+            "Failed to merge users from auth.sqlite", exc_info=True,
         )
-    finally:
-        auth_session.close()
+        return
+
+    try:
+        os.rename(auth_path, auth_path + ".migrated")
+        logger.info("Renamed auth.sqlite → auth.sqlite.migrated")
+    except OSError:
+        logger.warning("Could not rename auth.sqlite after merge")

@@ -31,21 +31,16 @@ class TestJWTSecret(unittest.TestCase):
 
 class TestSignUp(unittest.TestCase):
     def setUp(self):
-        self.mock_spatial_session = MagicMock()
-        self.mock_auth_session = MagicMock()
+        self.mock_session = MagicMock()
         self.mock_get_session = patch(
             'app.users.service.get_session',
-            return_value=self.mock_spatial_session
-        ).start()
-        self.mock_get_auth_session = patch(
-            'app.users.service.get_auth_session',
-            return_value=self.mock_auth_session
+            return_value=self.mock_session
         ).start()
 
     def tearDown(self):
         patch.stopall()
 
-    def test_sign_up_creates_user_in_both_dbs(self):
+    def test_sign_up_creates_user(self):
         with patch('app.users.service.hash_password',
                     return_value='hashed_pw'):
             ok, errors = sign_up(
@@ -55,12 +50,9 @@ class TestSignUp(unittest.TestCase):
             )
         self.assertTrue(ok)
         self.assertIsNone(errors)
-        self.mock_spatial_session.add.assert_called_once()
-        self.mock_spatial_session.commit.assert_called_once()
-        self.mock_auth_session.add.assert_called_once()
-        self.mock_auth_session.commit.assert_called_once()
-        self.mock_spatial_session.close.assert_called_once()
-        self.mock_auth_session.close.assert_called_once()
+        self.mock_session.add.assert_called_once()
+        self.mock_session.commit.assert_called_once()
+        self.mock_session.close.assert_called_once()
 
     def test_sign_up_validation_error_returns_false(self):
         from marshmallow import ValidationError
@@ -74,22 +66,16 @@ class TestSignUp(unittest.TestCase):
             )
         self.assertFalse(ok)
         self.assertIsNotNone(errors)
-        self.mock_spatial_session.add.assert_not_called()
-        self.mock_spatial_session.close.assert_not_called()
-        self.mock_auth_session.close.assert_not_called()
+        self.mock_session.add.assert_not_called()
+        self.mock_session.close.assert_not_called()
 
 
 class TestSignIn(unittest.TestCase):
     def setUp(self):
-        self.mock_auth_session = MagicMock()
-        self.mock_spatial_session = MagicMock()
-        self.mock_get_auth_session = patch(
-            'app.users.service.get_auth_session',
-            return_value=self.mock_auth_session
-        ).start()
+        self.mock_session = MagicMock()
         self.mock_get_session = patch(
             'app.users.service.get_session',
-            return_value=self.mock_spatial_session
+            return_value=self.mock_session
         ).start()
         self.mock_jwt_encode = patch(
             'app.users.service.jwt.encode', return_value='fake.jwt.token'
@@ -111,11 +97,8 @@ class TestSignIn(unittest.TestCase):
     def test_sign_in_success_returns_true(self):
         mock_user = self._make_user_mock()
 
-        auth_query = self.mock_auth_session.query.return_value
-        auth_query.filter_by.return_value.first.return_value = mock_user
-
-        spatial_query = self.mock_spatial_session.query.return_value
-        spatial_query.filter_by.return_value.first.return_value = mock_user
+        session_query = self.mock_session.query.return_value
+        session_query.filter_by.return_value.first.return_value = mock_user
 
         with patch('app.users.service.verify_password', return_value=True):
             ok, username, error = sign_in('test', 'password')
@@ -125,8 +108,8 @@ class TestSignIn(unittest.TestCase):
         self.assertIsNone(error)
 
     def test_sign_in_username_does_not_exist(self):
-        auth_query = self.mock_auth_session.query.return_value
-        auth_query.filter_by.return_value.first.return_value = None
+        session_query = self.mock_session.query.return_value
+        session_query.filter_by.return_value.first.return_value = None
 
         ok, username, error = sign_in('unknown', 'password')
         self.assertFalse(ok)
@@ -136,8 +119,8 @@ class TestSignIn(unittest.TestCase):
     def test_sign_in_wrong_password(self):
         mock_user = self._make_user_mock()
 
-        auth_query = self.mock_auth_session.query.return_value
-        auth_query.filter_by.return_value.first.return_value = mock_user
+        session_query = self.mock_session.query.return_value
+        session_query.filter_by.return_value.first.return_value = mock_user
 
         with patch('app.users.service.verify_password', return_value=False):
             ok, username, error = sign_in('test', 'wrongpass')
@@ -157,25 +140,20 @@ class TestSignIn(unittest.TestCase):
         self.assertIsNotNone(error)
 
     def test_sign_in_exception_triggers_rollback(self):
-        self.mock_auth_session.query.side_effect = Exception('DB error')
+        self.mock_session.query.side_effect = Exception('DB error')
         ok, username, error = sign_in('test', 'password')
         self.assertFalse(ok)
         self.assertIsNone(username)
         self.assertIsNotNone(error)
-        self.mock_auth_session.rollback.assert_called_once()
+        self.mock_session.rollback.assert_called_once()
 
 
 class TestLogout(unittest.TestCase):
     def setUp(self):
-        self.mock_spatial_session = MagicMock()
-        self.mock_auth_session = MagicMock()
+        self.mock_session = MagicMock()
         self.mock_get_session = patch(
             'app.users.service.get_session',
-            return_value=self.mock_spatial_session
-        ).start()
-        self.mock_get_auth_session = patch(
-            'app.users.service.get_auth_session',
-            return_value=self.mock_auth_session
+            return_value=self.mock_session
         ).start()
         self.mock_toml = patch('app.users.service.toml').start()
         self.mock_iface = MagicMock()
@@ -190,19 +168,15 @@ class TestLogout(unittest.TestCase):
             'Session': {'cookie': 'tok', 'uid': 1}
         }
 
-        spatial_query = self.mock_spatial_session.query.return_value
-        spatial_query.filter.return_value.first.return_value = mock_user
-        auth_query = self.mock_auth_session.query.return_value
-        auth_query.filter.return_value.first.return_value = mock_user
+        session_query = self.mock_session.query.return_value
+        session_query.filter.return_value.first.return_value = mock_user
 
         with patch('builtins.open', MagicMock()):
             logout(self.mock_iface, None)
 
         self.assertIsNone(mock_user.api_key)
-        self.mock_spatial_session.commit.assert_called_once()
-        self.mock_auth_session.commit.assert_called_once()
-        self.mock_spatial_session.close.assert_called_once()
-        self.mock_auth_session.close.assert_called_once()
+        self.mock_session.commit.assert_called_once()
+        self.mock_session.close.assert_called_once()
 
     def test_logout_no_cookie_skips_clear(self):
         self.mock_toml.load.return_value = {
@@ -210,13 +184,13 @@ class TestLogout(unittest.TestCase):
         }
         with patch('builtins.open', MagicMock()):
             logout(self.mock_iface, None)
-        self.mock_spatial_session.query.assert_not_called()
+        self.mock_session.query.assert_not_called()
 
     def test_logout_no_cookie_entry_skips_clear(self):
         self.mock_toml.load.return_value = {}
         with patch('builtins.open', MagicMock()):
             logout(self.mock_iface, None)
-        self.mock_spatial_session.query.assert_not_called()
+        self.mock_session.query.assert_not_called()
 
 
 if __name__ == '__main__':

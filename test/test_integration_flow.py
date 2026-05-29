@@ -125,6 +125,7 @@ class IntegrationFlowTest(unittest.TestCase):
         sign_in = MagicMock(return_value=(True, 'admin_user', None))
         get_current_user = MagicMock(return_value={
             'id': 'u1', 'loc': 'loc1', 'wilaya': '16', 'commune': 'Alger',
+            'first_name': 'Admin', 'last_name': 'User',
         })
 
         with patch.object(mods['auth_mixin'], 'sign_in', sign_in), \
@@ -139,6 +140,7 @@ class IntegrationFlowTest(unittest.TestCase):
 
             self.assertEqual(host.current_user, {
                 'id': 'u1', 'loc': 'loc1', 'wilaya': '16', 'commune': 'Alger',
+                'first_name': 'Admin', 'last_name': 'User',
             })
             host.label_username.setText.assert_called_once_with('admin_user')
 

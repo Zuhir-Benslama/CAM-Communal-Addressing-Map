@@ -47,7 +47,9 @@ def get_current_user() -> Optional[dict]:
             'id': user.id,
             'loc': user.affectation_id,
             'wilaya': localite.wilaya,
-            'commune': localite.commune_ar
+            'commune': localite.commune_ar,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
         }
     finally:
         session.close()

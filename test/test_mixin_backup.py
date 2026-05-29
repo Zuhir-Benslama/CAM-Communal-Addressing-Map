@@ -36,7 +36,6 @@ class TestBackupMixin(unittest.TestCase):
             f.write('not a database')
 
         self.mod.DATABASE_FILE = os.path.join(self.tmpdir, 'main.sqlite')
-        self.mod.AUTH_DATABASE_FILE = os.path.join(self.tmpdir, 'auth.sqlite')
         self.mod.PLUGIN_DIR = self.tmpdir
 
         fake_dialog = MagicMock()
@@ -86,19 +85,7 @@ class TestBackupMixin(unittest.TestCase):
         self.mixin.restore_database()
         self.assertFalse(os.path.exists(self.mod.DATABASE_FILE))
 
-    def test_restore_auth_exists(self):
-        Path(self.mod.AUTH_DATABASE_FILE).touch()
-        self.mixin.restore_auth_database()
-        self.assertTrue(os.path.exists(self.mod.AUTH_DATABASE_FILE))
-
-    def test_restore_auth_not_exists(self):
-        mock_engine = MagicMock()
-        with patch.object(self.mod, 'get_auth_engine',
-                          return_value=mock_engine):
-            self.mixin.restore_auth_database()
-            self.mod.get_auth_engine.assert_called_once()
-
-    def test_backup_copies_main_only(self):
+    def test_backup_copies_main(self):
         Path(self.mod.DATABASE_FILE).touch()
         dest = os.path.join(self.tmpdir, 'backup.sqlite')
         fake_dialog = MagicMock()
@@ -107,19 +94,6 @@ class TestBackupMixin(unittest.TestCase):
         self._mock_qfiledialog.return_value = fake_dialog
         self.mixin.backup()
         self.assertTrue(os.path.exists(dest))
-
-    def test_backup_copies_both(self):
-        Path(self.mod.DATABASE_FILE).touch()
-        Path(self.mod.AUTH_DATABASE_FILE).touch()
-        dest = os.path.join(self.tmpdir, 'backup.sqlite')
-        fake_dialog = MagicMock()
-        fake_dialog.exec_ = MagicMock(return_value=MagicMock())
-        fake_dialog.selectedFiles = MagicMock(return_value=[dest])
-        self._mock_qfiledialog.return_value = fake_dialog
-        self.mixin.backup()
-        self.assertTrue(os.path.exists(dest))
-        auth_dest = os.path.join(self.tmpdir, 'backup_auth.sqlite')
-        self.assertTrue(os.path.exists(auth_dest))
 
     def test_backup_no_selection(self):
         Path(self.mod.DATABASE_FILE).touch()

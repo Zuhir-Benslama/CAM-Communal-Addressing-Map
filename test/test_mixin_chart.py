@@ -33,6 +33,7 @@ class TestChartMixin(unittest.TestCase):
         self.mixin._tr = lambda s: s
         self.mixin.type_plan = None
         self.mixin.type_to_hide = None
+        self.mixin.iface = MagicMock()
 
         self.session_mock = MagicMock()
         self.session_mock.query.return_value.group_by.return_value\
@@ -51,14 +52,16 @@ class TestChartMixin(unittest.TestCase):
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
     def test_panel_chart_queries_and_renders(self):
-        self.mixin.panel_chart()
+        with patch.object(self.mod, 'refresh_all_layers'):
+            self.mixin.panel_chart()
         self.assertEqual(self.mixin.type_plan, 'Panels')
         self.assertEqual(self.mixin.type_to_hide, 'Numbering')
         self.session_mock.query.assert_called_once()
         self.session_mock.close.assert_called_once()
 
     def test_numbering_chart_queries_and_renders(self):
-        self.mixin.numbering_chart()
+        with patch.object(self.mod, 'refresh_all_layers'):
+            self.mixin.numbering_chart()
         self.assertEqual(self.mixin.type_plan, 'Numbering')
         self.assertEqual(self.mixin.type_to_hide, 'Panels')
         self.session_mock.query.assert_called_once()

@@ -31,16 +31,16 @@ class TestImportExportMixin(unittest.TestCase):
         self.mixin.iface = MagicMock()
         self.mixin.type_plan = 'Numbering'
         self.mixin.type_to_hide = 'Panels'
-        self.mixin.current_user = {'wilaya': '16', 'commune': 'Alger Centre'}
-        self.mixin.dateEdit = MagicMock()
-        self.mixin.dateEdit.date().toString = MagicMock(
-            return_value='2026/05/21')
-        self.mixin.lineEdit_by = MagicMock()
-        self.mixin.lineEdit_by.text = MagicMock(return_value='admin')
-        self.mixin.lineEdit_type = MagicMock()
-        self.mixin.lineEdit_type.text = MagicMock(return_value='Zone A')
-        self.mixin.lineEdit_nummokh = MagicMock()
-        self.mixin.lineEdit_nummokh.text = MagicMock(return_value='001')
+        self.mixin._output_dir = '/tmp/pytest_output'
+        self.mixin.current_user = {
+            'wilaya': '16', 'commune': 'Alger Centre',
+            'first_name': 'Admin', 'last_name': 'User',
+        }
+        self._subprocess_run = self.mod.subprocess.run
+        self.mod.subprocess.run = MagicMock(return_value=MagicMock())
+
+    def tearDown(self):
+        self.mod.subprocess.run = self._subprocess_run
 
     def mock_canvas(self, scale_value=1000):
         canvas = MagicMock()
@@ -65,7 +65,8 @@ class TestImportExportMixin(unittest.TestCase):
             mock_mb.critical.assert_called_once()
 
     def test_render_and_export_renders_and_saves(self):
-        self.mock_canvas(scale_value=2500)
+        canvas = self.mock_canvas(scale_value=2500)
+        ms = canvas.mapSettings.return_value
 
         mock_image = MagicMock()
         mock_image.save = MagicMock(return_value=True)
@@ -73,9 +74,8 @@ class TestImportExportMixin(unittest.TestCase):
         mock_job.renderedImage.return_value = mock_image
         mock_job.waitForFinished = MagicMock()
 
-        with patch.object(self.mod, 'QgsMapRendererParallelJob',
+        with patch.object(self.mod, 'QgsMapRendererSequentialJob',
                           return_value=mock_job), \
-             patch.object(self.mod, 'QgsMapSettings') as mock_settings, \
              patch.object(self.mod, 'validate_text',
                           return_value='valid'), \
              patch.object(self.mod, 'json') as mock_json, \
@@ -85,10 +85,10 @@ class TestImportExportMixin(unittest.TestCase):
             self.mixin.north.assert_called_once()
             self.mixin.scale.assert_called_once()
             self.mixin.map_situation.assert_not_called()
-            mock_settings.return_value.setLayers.assert_called_once()
-            mock_settings.return_value.setExtent.assert_called_once()
-            mock_settings.return_value.setOutputSize.assert_called_once_with(
+            ms.setExtent.assert_called_once()
+            ms.setOutputSize.assert_called_once_with(
                 self.mod.EXPORT_MAP_SIZE)
+            ms.setFlag.assert_called_once()
             mock_job.start.assert_called_once()
             mock_job.waitForFinished.assert_called_once()
             mock_image.save.assert_called_once()
@@ -102,7 +102,7 @@ class TestImportExportMixin(unittest.TestCase):
         mock_job.renderedImage.return_value.save = MagicMock(return_value=True)
         mock_job.waitForFinished = MagicMock()
 
-        with patch.object(self.mod, 'QgsMapRendererParallelJob',
+        with patch.object(self.mod, 'QgsMapRendererSequentialJob',
                           return_value=mock_job), \
              patch.object(self.mod, 'QgsMapSettings'), \
              patch.object(self.mod, 'validate_text', return_value='valid'), \
@@ -120,7 +120,7 @@ class TestImportExportMixin(unittest.TestCase):
         mock_job.renderedImage.return_value = mock_image
         mock_job.waitForFinished = MagicMock()
 
-        with patch.object(self.mod, 'QgsMapRendererParallelJob',
+        with patch.object(self.mod, 'QgsMapRendererSequentialJob',
                           return_value=mock_job), \
              patch.object(self.mod, 'QgsMapSettings'):
             self.mixin._render_and_export('3')
@@ -134,7 +134,7 @@ class TestImportExportMixin(unittest.TestCase):
         mock_job.renderedImage.return_value.save = MagicMock(return_value=True)
         mock_job.waitForFinished = MagicMock()
 
-        with patch.object(self.mod, 'QgsMapRendererParallelJob',
+        with patch.object(self.mod, 'QgsMapRendererSequentialJob',
                           return_value=mock_job), \
              patch.object(self.mod, 'QgsMapSettings'), \
              patch.object(self.mod, 'json') as mock_json:
@@ -148,7 +148,7 @@ class TestImportExportMixin(unittest.TestCase):
         mock_job.renderedImage.return_value.save = MagicMock(return_value=True)
         mock_job.waitForFinished = MagicMock()
 
-        with patch.object(self.mod, 'QgsMapRendererParallelJob',
+        with patch.object(self.mod, 'QgsMapRendererSequentialJob',
                           return_value=mock_job), \
              patch.object(self.mod, 'QgsMapSettings'), \
              patch.object(self.mod, 'validate_text', return_value='valid'), \
