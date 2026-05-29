@@ -5,7 +5,7 @@ import logging
 from typing import Any, ClassVar, List, Optional
 
 from sqlalchemy import (
-    Column, Integer, String, Text, Boolean, ForeignKey,
+    Column, String, Text, Boolean, ForeignKey,
 )
 from sqlalchemy.orm import relationship, Session
 from geoalchemy2 import Geometry
@@ -82,25 +82,6 @@ class _BaseSpatialModel(Base, TimestampMixin):
         session.commit()
 
 
-class Localite(Base, TimestampMixin):
-    """Municipality / locality spatial model."""
-
-    __tablename__ = 'localite'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    wilaya = Column(Text, nullable=False)
-    wilaya_code = Column(Integer, nullable=False)
-    commune_ar = Column(Text, nullable=False)
-    commune_fr = Column(Text, nullable=True)
-    commune_en = Column(Text, nullable=True)
-    commune_code = Column(Text, nullable=False)
-    geometry = Column(Geometry(geometry_type='GEOMETRY', srid=SRID))
-
-    def save(self, session: Session) -> None:
-        """Persist this locality via *session* and commit."""
-        session.add(self)
-        session.commit()
-
-
 class Zone(_BaseSpatialModel):
     """Spatial zone (polygon) model — refpoly in the DB."""
 
@@ -112,7 +93,7 @@ class Zone(_BaseSpatialModel):
         info={'label': 'Key'},
     )
     locality_id = Column(
-        String, ForeignKey('localite.id'), index=True,
+        String, index=True,
         info={'label': 'Location'},
     )
     Type = Column(
@@ -144,7 +125,7 @@ class Zone(_BaseSpatialModel):
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
         instance.user_id = user_data.get('id')
-        instance.locality_id = user_data.get('loc')
+        instance.locality_id = user_data.get('commune_code')
         instance.has_child = _has_child_entities(session, instance.geometry)
         session.commit()
         return instance
@@ -165,7 +146,7 @@ class Zone(_BaseSpatialModel):
         if not user_data:
             raise ValueError("No user found")
         self.user_id = user_data.get('id')
-        self.locality_id = user_data.get('loc')
+        self.locality_id = user_data.get('commune_code')
         self.has_child = _has_child_entities(session, self.geometry)
         session.add(self)
         session.commit()
@@ -181,7 +162,7 @@ class Subdivision(_BaseSpatialModel):
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
-    locality_id = Column(String, ForeignKey('localite.id'), index=True)
+    locality_id = Column(String, index=True)
     Type = Column(
         String, nullable=False,
         info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'},
@@ -213,7 +194,7 @@ class Subdivision(_BaseSpatialModel):
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
         instance.user_id = user_data.get('id')
-        instance.locality_id = user_data.get('loc')
+        instance.locality_id = user_data.get('commune_code')
         instance.parent = _parent_zone_id(session, instance.geometry)
         session.commit()
         return instance
@@ -224,7 +205,7 @@ class Subdivision(_BaseSpatialModel):
         if not user_data:
             raise ValueError("No user found")
         self.user_id = user_data.get('id')
-        self.locality_id = user_data.get('loc')
+        self.locality_id = user_data.get('commune_code')
         self.parent = _parent_zone_id(session, self.geometry)
         session.add(self)
         session.commit()
@@ -267,7 +248,7 @@ class Road(_BaseSpatialModel):
     Nom_fr = Column(String, nullable=True)
     Nom_en = Column(String, nullable=True)
     locality_id = Column(
-        String, ForeignKey('localite.id'), nullable=False, index=True,
+        String, nullable=False, index=True,
     )
     geometry = Column(Geometry('LINESTRING', srid=SRID), nullable=True)
     zone_id = Column(Text, ForeignKey('refpoly.id'), nullable=True, index=True)
@@ -285,7 +266,7 @@ class Road(_BaseSpatialModel):
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
         instance.user_id = user_data.get('id')
-        instance.locality_id = user_data.get('loc')
+        instance.locality_id = user_data.get('commune_code')
         instance.has_child = _has_child_entities(session, instance.geometry)
         session.commit()
         return instance
@@ -306,7 +287,7 @@ class Road(_BaseSpatialModel):
         if not user_data:
             raise ValueError("No user found")
         self.user_id = user_data.get('id')
-        self.locality_id = user_data.get('loc')
+        self.locality_id = user_data.get('commune_code')
         self.zone_id = _parent_zone_id(session, self.geometry)
         session.add(self)
         session.commit()
@@ -327,7 +308,7 @@ class Organization(_BaseSpatialModel):
     _list_columns = ['category', 'Type', 'Nom']
 
     id = Column(Text, primary_key=True, default=lambda: str(uuid.uuid4()))
-    locality_id = Column(String, ForeignKey('localite.id'), index=True)
+    locality_id = Column(String, index=True)
     Type = Column(String, nullable=True)
     category = Column(String, nullable=True)
     Nom = Column(String)
@@ -354,7 +335,7 @@ class Organization(_BaseSpatialModel):
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
         instance.user_id = user_data.get('id')
-        instance.locality_id = user_data.get('loc')
+        instance.locality_id = user_data.get('commune_code')
         instance.zone_id = _parent_zone_id(session, instance.geometry)
         session.commit()
         return instance
@@ -365,7 +346,7 @@ class Organization(_BaseSpatialModel):
         if not user_data:
             raise ValueError("No user found")
         self.user_id = user_data.get('id')
-        self.locality_id = user_data.get('loc')
+        self.locality_id = user_data.get('commune_code')
         self.zone_id = _parent_zone_id(session, self.geometry)
         session.add(self)
         session.commit()

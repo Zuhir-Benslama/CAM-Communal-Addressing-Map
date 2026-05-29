@@ -1,6 +1,6 @@
 """User model for authentication and session management."""
 import uuid
-from sqlalchemy import Column, Integer, String, Boolean, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, Text
 from sqlalchemy.orm import Session
 
 from ..core.base import Base, TimestampMixin
@@ -16,9 +16,8 @@ class User(Base, TimestampMixin):
     last_name = Column(String(255), nullable=True)
     password = Column(String(255), nullable=False)
     active = Column(Boolean, default=True, nullable=False)
-    affectation_id = Column(
-        Integer, ForeignKey('localite.id'), nullable=True, index=True
-    )
+    wilaya_code = Column(Integer, nullable=True)
+    commune_code = Column(String(255), nullable=True)
     api_key = Column(Text, default="", nullable=True)
     email = Column(String(255), nullable=True)
     phone = Column(String(255), nullable=True)

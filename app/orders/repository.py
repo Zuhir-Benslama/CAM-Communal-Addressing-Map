@@ -251,17 +251,18 @@ def query_missing_rep(etat: str) -> list:
 def get_zone_distribution(wilaya_number: int) -> list:
     """Query zone type distribution within a given wilaya.
 
-    Joins Zone (refpoly) with Localite on locality_id and filters by
-    wilaya_code. Returns list of (type_name, count) tuples for chart rendering.
+    Filters zones by users whose wilaya_code matches. Returns list of
+    (type_name, count) tuples for chart rendering.
     """
+    from ..users.models import User
     session = get_session()
     try:
         result = session.execute(
             text(
                 "SELECT z.Type, COUNT(*) AS total "
                 "FROM refpoly z "
-                "JOIN localite l ON l.id = z.locality_id "
-                "WHERE l.wilaya_code = :wilaya "
+                "JOIN \"user\" u ON u.id = z.user_id "
+                "WHERE u.wilaya_code = :wilaya "
                 "GROUP BY z.Type "
                 "ORDER BY total DESC"
             ),

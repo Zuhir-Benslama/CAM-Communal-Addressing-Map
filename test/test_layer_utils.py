@@ -78,32 +78,29 @@ class TestLayerUtils(unittest.TestCase):
         self.mod.create_other_layers(self.iface)
         mock_project.instance.return_value.addMapLayer.assert_not_called()
 
-    @patch('plans_adressage.layer.utils.open')
-    @patch('plans_adressage.layer.utils.toml.load')
-    @patch('plans_adressage.layer.utils.get_session')
+    @patch('plans_adressage.layer.utils.get_current_user')
     @patch('plans_adressage.layer.utils.QgsProject')
     @patch('plans_adressage.layer.utils.qgis_config')
-    def test_init_allowed_zone_with_cookie(
-        self, mock_qgis_config, mock_project,
-        mock_get_session, mock_toml_load, _mock_open,
+    def test_init_allowed_zone_with_commune(
+        self, mock_qgis_config, mock_project, mock_get_user,
     ):
-        mock_qgis_config.return_value = {'other_layers': [], 'mapper': []}
-        mock_toml_load.return_value = {
-            'Session': {'cookie': 'test_cookie', 'uid': 'test_uid'},
+        mock_get_user.return_value = {
+            'commune_code': '4112',
+            'wilaya_code': 41,
+            'wilaya': 'Wilaya',
+            'commune': 'Commune',
         }
-        mock_session = MagicMock()
-        mock_get_session.return_value = mock_session
-        user = MagicMock()
-        user.affectation_id = 'loc1'
-        (mock_session.query.return_value.filter.return_value
-         .first.side_effect) = [user, None]
+        mock_qgis_config.return_value = {'other_layers': [], 'mapper': []}
         mock_project.instance.return_value.mapLayersByName.return_value = []
-        self.mod.init_allowed_zone(self.iface)
+        # Mock GeoJSON loading to return empty (no geometry found)
+        with patch('plans_adressage.layer.utils.open') as mock_open, \
+             patch('plans_adressage.layer.utils.json.load') as mock_json_load:
+            mock_json_load.return_value = {"type": "FeatureCollection", "features": []}
+            self.mod.init_allowed_zone(self.iface)
 
-    @patch('plans_adressage.layer.utils.open')
-    @patch('plans_adressage.layer.utils.toml.load')
-    def test_init_allowed_zone_no_cookie(self, _mock_toml_load, _mock_open):
-        _mock_toml_load.return_value = {'Session': {}}
+    @patch('plans_adressage.layer.utils.get_current_user')
+    def test_init_allowed_zone_no_user(self, mock_get_user):
+        mock_get_user.return_value = None
         self.mod.init_allowed_zone(self.iface)
 
 

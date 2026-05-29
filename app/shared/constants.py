@@ -23,6 +23,8 @@ MAP_PNG = os.path.join(PLUGIN_DIR, "resources", "map.png")
 ICON_PNG = os.path.join(PLUGIN_DIR, "resources", "icon.png")
 VIEWS_SQL = os.path.join(PLUGIN_DIR, "data", "Views.sql")
 TEMPLATE_DATA_DIR = os.path.join(PLUGIN_DIR, "template_data")
+LOCALITES_JSON = os.path.join(TEMPLATE_DATA_DIR, "localites.json")
+LOCALITE_GEOJSON = os.path.join(TEMPLATE_DATA_DIR, "localite.geojson")
 
 MAP_A3_TEMPLATE = os.path.join(PLUGIN_DIR, "templates", "map_a3.odt")
 MAP_A0_TEMPLATE = os.path.join(PLUGIN_DIR, "templates", "map_a0.odt")

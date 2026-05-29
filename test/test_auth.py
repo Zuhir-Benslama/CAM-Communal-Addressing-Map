@@ -47,10 +47,13 @@ class TestSignUp(unittest.TestCase):
 
     def test_sign_up_creates_user(self):
         with patch('app.users.service.hash_password',
-                    return_value='hashed_pw'):
+                    return_value='hashed_pw'), \
+             patch('app.users.service.LOCALITES_JSON', '/dev/null'), \
+             patch('app.users.service.open') as mock_open, \
+             patch('app.users.service.json.load', return_value=[{'commune_code': '4112', 'wilaya_code': 41}]):
             ok, errors = sign_up(
                 username='newuser', password='secret123',
-                affectation_id=1, phone='0555000000',
+                commune_code='4112', phone='0555000000',
                 email='new@test.com', first_name='New', lastname='User'
             )
         self.assertTrue(ok)
@@ -66,7 +69,7 @@ class TestSignUp(unittest.TestCase):
             side_effect=ValidationError({'username': ['Required']})
         ):
             ok, errors = sign_up(
-                username='', password='', affectation_id=0, phone='',
+                username='', password='', commune_code='', phone='',
                 email='', first_name='', lastname='',
             )
         self.assertFalse(ok)

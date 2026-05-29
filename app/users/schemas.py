@@ -53,9 +53,9 @@ class SignupSchema(_EmptyStringMixin, Schema):
         error_messages={"required": "Password is required"},
         allow_none=False
     )
-    affectation_id = fields.Str(
+    commune_code = fields.Str(
         required=True,
-        error_messages={"required": "Affectation is required"},
+        error_messages={"required": "Commune is required"},
         allow_none=False
     )
     email = fields.Str(

@@ -48,7 +48,7 @@ class AuthMixin:
             first_name=validate_text(self.fname.text()),
             lastname=validate_text(self.lname.text()),
             phone=validate_text(self.pnum.text()),
-            affectation_id=selected_value,
+            commune_code=selected_value,
         )
         if ok:
             self.public_route('login')

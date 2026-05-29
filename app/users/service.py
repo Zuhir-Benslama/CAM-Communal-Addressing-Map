@@ -1,5 +1,6 @@
 """Authentication service: sign-up, sign-in, logout, and session management."""
 # mypy: disable-error-code="assignment,union-attr,arg-type,return-value"
+import json
 import logging
 import os
 import tempfile
@@ -17,13 +18,13 @@ from ..core.database import get_session
 from ..users.models import User
 from ..users.schemas import AuthSchema, SignupSchema
 from ..users.repository import create_cookie
-from ..shared.constants import COOKIE_FILE
+from ..shared.constants import COOKIE_FILE, LOCALITES_JSON
 
 logger = logging.getLogger(__name__)
 
 
 def sign_up(
-    *, username: str, password: str, affectation_id: int, phone: str,
+    *, username: str, password: str, commune_code: str, phone: str,
     email: str, first_name: str, lastname: str
 ) -> tuple[bool, list[str] | None]:
     """Register a new user. Returns (success, error_details_or_None)."""
@@ -32,20 +33,31 @@ def sign_up(
         "first_name": first_name,
         "last_name": lastname,
         "password": password,
-        "affectation_id": str(affectation_id),
+        "commune_code": commune_code,
         "email": email,
         "phone": phone,
     }
     schema = SignupSchema()
     try:
         schema.load(signup_data)
+        # Look up wilaya_code from localites.json
+        wilaya_code = None
+        try:
+            with open(LOCALITES_JSON, 'r', encoding='utf-8') as f:
+                for c in json.load(f):
+                    if c.get('commune_code') == commune_code:
+                        wilaya_code = c.get('wilaya_code')
+                        break
+        except (FileNotFoundError, json.JSONDecodeError):
+            pass
+
         session = get_session()
         try:
             user = User(
                 username=username, password=hash_password(password),
                 active=True, phone=phone, email=email,
                 first_name=first_name, last_name=lastname,
-                affectation_id=affectation_id, api_key=""
+                commune_code=commune_code, wilaya_code=wilaya_code, api_key=""
             )
             session.add(user)
             session.commit()

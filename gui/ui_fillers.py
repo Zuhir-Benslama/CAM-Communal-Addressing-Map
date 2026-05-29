@@ -6,8 +6,7 @@ import os
 
 from qgis.PyQt.QtWidgets import QCompleter, QComboBox
 
-from ..app.orders.models import Localite
-from ..app.core.database import get_session
+from ..app.shared.constants import LOCALITES_JSON
 from ..scripts.lookup_data import (
     road_types, zone_types, subdivision_types, mounting_statuses,
     numbering_states, org_categories, org_types_for_category,
@@ -31,18 +30,29 @@ def _locale() -> str:
     return current_locale()
 
 
+def _load_localites() -> list[dict]:
+    """Load commune metadata from JSON file."""
+    try:
+        with open(LOCALITES_JSON, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+
+
 def fill_wilayas_list(combobox: QComboBox) -> None:
-    """Populate a combobox with distinct wilaya names from the database."""
+    """Populate a combobox with distinct wilaya names from JSON."""
     loc = _locale()
     combobox.clear()
-    session = get_session()
-    results = (
-        session.query(Localite.wilaya, Localite.wilaya_code)
-        .distinct().order_by(Localite.wilaya_code).all()
-    )
-    for result in results:
-        combobox.addItem(_i18n_tr(result.wilaya, loc), result.wilaya_code)
-    session.close()
+    seen: set[int] = set()
+    wilayas: list[tuple[str, int]] = []
+    for entry in _load_localites():
+        code = entry.get('wilaya_code')
+        if code is not None and code not in seen:
+            seen.add(code)
+            wilayas.append((entry.get('wilaya', ''), code))
+    wilayas.sort(key=lambda x: x[1])
+    for name, code in wilayas:
+        combobox.addItem(_i18n_tr(name, loc), code)
     combobox.setCurrentIndex(0)
     completer = combobox.completer()
     if completer is not None:
@@ -85,20 +95,15 @@ def fill_commune_of_wilaya(combobox: QComboBox, code_w: int) -> None:
     """Populate a combobox with communes for a given wilaya code."""
     loc = _locale()
     combobox.clear()
-    session = get_session()
-    results = (
-        session.query(Localite)
-        .filter(Localite.wilaya_code == code_w).all()
-    )
-    for result in results:
-        if loc == 'ar':
-            name = result.commune_ar
-        else:
-            name = getattr(result, f'commune_{loc}', None)
-            if not name:
-                name = _i18n_tr(str(result.commune_ar), loc)
-        combobox.addItem(name, result.id)
-    session.close()
+    for entry in _load_localites():
+        if entry.get('wilaya_code') == code_w:
+            if loc == 'ar':
+                name = entry.get('commune_ar', '')
+            else:
+                name = entry.get(f'commune_{loc}', '')
+                if not name:
+                    name = _i18n_tr(str(entry.get('commune_ar', '')), loc)
+            combobox.addItem(name, entry.get('commune_code', ''))
     combobox.setCurrentIndex(0)
     completer = combobox.completer()
     if completer is not None:

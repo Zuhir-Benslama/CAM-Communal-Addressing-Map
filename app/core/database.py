@@ -61,7 +61,13 @@ class ConnectionPool:
                         "WHERE type='table' AND name='spatial_ref_sys'"
                     )
                     if cursor.fetchone()[0] == 0:
-                        dbapi_conn.execute("SELECT InitSpatialMetadata(1)")
+                        dbapi_conn.execute("SELECT InitSpatialMetadata(0)")
+                        dbapi_conn.execute(
+                            "INSERT OR IGNORE INTO spatial_ref_sys "
+                            "(srid, auth_name, auth_srid, ref_sys_name, proj4text) "
+                            "VALUES (4326, 'EPSG', 4326, 'WGS 84', "
+                            "'+proj=longlat +datum=WGS84 +no_defs')"
+                        )
                 except (OperationalError, SQLAlchemyError):
                     logger.warning(
                         "InitSpatialMetadata(1) failed — spatial queries "
@@ -126,7 +132,6 @@ def _add_column_if_not_exists(
 
 
 _SPATIAL_INDEXES = (
-    ('localite', 'geometry'),
     ('refpoly', 'geometry'),
     ('refpolychild', 'geometry'),
     ('RefLine', 'geometry'),
@@ -151,8 +156,6 @@ def _spatial_index_exists(conn: Any, table: str, column: str) -> bool:
 
 
 _MISSING_COLUMNS = (
-    ("localite", "commune_fr", "TEXT"),
-    ("localite", "commune_en", "TEXT"),
     ("refpoly", "Nom_fr", "TEXT"),
     ("refpoly", "Nom_en", "TEXT"),
     ("refpolychild", "Nom_fr", "TEXT"),
@@ -194,17 +197,11 @@ def _create_spatial_indexes(engine: Any) -> None:
 
 
 _TIMESTAMP_TABLES = (
-    'user', 'localite', 'refpoly', 'refpolychild',
+    'user', 'refpoly', 'refpolychild',
     'RefLine', 'reforg', 'Numerotation', 'Pannautage',
 )
 
 _OLD_COLUMN_RENAMES: dict[str, dict[str, str]] = {
-    "localite": {
-        "pk_uid": "id",
-        "codeWilaya": "wilaya_code",
-        "communeAr": "commune_ar",
-        "codeCommun": "commune_code",
-    },
     "refpoly": {
         "pkuid": "id",
         "idLoc": "locality_id",
@@ -364,10 +361,10 @@ def _migrate_users_from_auth(engine: Any) -> None:
                 conn.execute(
                     text(
                         "INSERT OR IGNORE INTO user "
-                        "(id, username, password, active, affectation_id, "
+                        "(id, username, password, active, wilaya_code, commune_code, "
                         "api_key, email, phone, first_name, last_name, "
                         "created_at, updated_at) "
-                        "SELECT id, username, password, active, affectation_id, "
+                        "SELECT id, username, password, active, wilaya_code, commune_code, "
                         "api_key, email, phone, first_name, last_name, "
                         "created_at, updated_at FROM auth_db.user"
                     )

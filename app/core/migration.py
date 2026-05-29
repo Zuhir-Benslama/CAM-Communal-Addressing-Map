@@ -10,14 +10,6 @@ logger = logging.getLogger(__name__)
 
 
 COLUMN_MAP = {
-    "localite": {
-        "pk_uid": "id",
-        "wilaya": "wilaya",
-        "codeWilaya": "wilaya_code",
-        "communeAr": "commune_ar",
-        "codeCommun": "commune_code",
-        "geometry": "geometry",
-    },
     "user": {
         "id": "id",
         "username": "username",
@@ -25,7 +17,8 @@ COLUMN_MAP = {
         "last_name": "last_name",
         "password": "password",
         "active": "active",
-        "affectation_id": "affectation_id",
+        "wilaya_code": "wilaya_code",
+        "commune_code": "commune_code",
         "api_key": "api_key",
         "email": "email",
         "phone": "phone",
@@ -93,43 +86,9 @@ COLUMN_MAP = {
     },
 }
 
-LOOKUP_TABLE_DDL = {
-    "DimPan": "CREATE TABLE DimPan (pk VARCHAR NOT NULL PRIMARY KEY)",
-    "Etat_Numerotation": (
-        "CREATE TABLE Etat_Numerotation (pk VARCHAR NOT NULL PRIMARY KEY)"
-    ),
-    "situation_Montage": (
-        "CREATE TABLE situation_Montage (pk VARCHAR NOT NULL PRIMARY KEY)"
-    ),
-    "type_cite": "CREATE TABLE type_cite (pk VARCHAR NOT NULL PRIMARY KEY)",
-    "type_voie": "CREATE TABLE type_voie (pk VARCHAR NOT NULL PRIMARY KEY)",
-    "type_zone": "CREATE TABLE type_zone (pk VARCHAR NOT NULL PRIMARY KEY)",
-    "type_organisme": (
-        "CREATE TABLE type_organisme ("
-        "pk VARCHAR NOT NULL, cat VARCHAR NOT NULL, PRIMARY KEY (pk, cat)"
-        ")"
-    ),
-    "activity": (
-        "CREATE TABLE activity ("
-        "cat VARCHAR NOT NULL, type VARCHAR NOT NULL, PRIMARY KEY (cat, type)"
-        ")"
-    ),
-}
+LOOKUP_TABLE_DDL: dict[str, str] = {}
 
 NEW_TABLES = {
-    "localite": """
-        CREATE TABLE localite (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            wilaya TEXT NOT NULL,
-            wilaya_code INTEGER NOT NULL,
-            commune_ar TEXT NOT NULL,
-            commune_fr TEXT,
-            commune_en TEXT,
-            commune_code TEXT NOT NULL,
-            created_at DATETIME,
-            updated_at DATETIME
-        )
-    """,
     "user": """
         CREATE TABLE user (
             id TEXT NOT NULL,
@@ -138,15 +97,15 @@ NEW_TABLES = {
             last_name VARCHAR(255),
             password VARCHAR(255),
             active BOOLEAN,
-            affectation_id INTEGER,
+            wilaya_code INTEGER,
+            commune_code VARCHAR(255),
             api_key TEXT,
             email VARCHAR(255),
             phone VARCHAR(255),
             created_at DATETIME,
             updated_at DATETIME,
             PRIMARY KEY (id),
-            UNIQUE (username),
-            FOREIGN KEY (affectation_id) REFERENCES localite(id)
+            UNIQUE (username)
         )
     """,
     "refpoly": """
@@ -162,8 +121,6 @@ NEW_TABLES = {
             created_at DATETIME,
             updated_at DATETIME,
             PRIMARY KEY (id),
-            FOREIGN KEY (locality_id) REFERENCES localite(id),
-            FOREIGN KEY (Type) REFERENCES type_zone(pk),
             FOREIGN KEY (user_id) REFERENCES user(id)
         )
     """,
@@ -180,8 +137,6 @@ NEW_TABLES = {
             created_at DATETIME,
             updated_at DATETIME,
             PRIMARY KEY (id),
-            FOREIGN KEY (locality_id) REFERENCES localite(id),
-            FOREIGN KEY (Type) REFERENCES type_cite(pk),
             FOREIGN KEY (parent) REFERENCES refpoly(id),
             FOREIGN KEY (user_id) REFERENCES user(id)
         )
@@ -200,8 +155,6 @@ NEW_TABLES = {
             created_at DATETIME,
             updated_at DATETIME,
             PRIMARY KEY (id),
-            FOREIGN KEY (Type) REFERENCES type_voie(pk),
-            FOREIGN KEY (locality_id) REFERENCES localite(id),
             FOREIGN KEY (zone_id) REFERENCES refpoly(id),
             FOREIGN KEY (user_id) REFERENCES user(id)
         )
@@ -220,7 +173,6 @@ NEW_TABLES = {
             created_at DATETIME,
             updated_at DATETIME,
             PRIMARY KEY (id),
-            FOREIGN KEY (locality_id) REFERENCES localite(id),
             FOREIGN KEY (user_id) REFERENCES user(id),
             FOREIGN KEY (zone_id) REFERENCES refpoly(id)
         )
@@ -241,7 +193,6 @@ NEW_TABLES = {
             PRIMARY KEY (id),
             FOREIGN KEY (road_id) REFERENCES RefLine(id),
             FOREIGN KEY (subdivision_id) REFERENCES refpolychild(id),
-            FOREIGN KEY (etat) REFERENCES Etat_Numerotation(pk),
             FOREIGN KEY (user_id) REFERENCES user(id)
         )
     """,
@@ -258,8 +209,6 @@ NEW_TABLES = {
             created_at DATETIME,
             updated_at DATETIME,
             PRIMARY KEY (id),
-            FOREIGN KEY (dimensions) REFERENCES DimPan(pk),
-            FOREIGN KEY (situation) REFERENCES situation_Montage(pk),
             FOREIGN KEY (road_id) REFERENCES RefLine(id),
             FOREIGN KEY (subdivision_id) REFERENCES refpolychild(id),
             FOREIGN KEY (organization_id) REFERENCES reforg(id),
@@ -274,7 +223,6 @@ SPATIALITE_LIB = os.environ.get(
 )
 
 GEOMETRY_TYPES = {
-    "localite": ("GEOMETRY", 4326, 2, 0),
     "refpoly": ("POLYGON", 4326, 2, 3),
     "refpolychild": ("POLYGON", 4326, 2, 3),
     "RefLine": ("LINESTRING", 4326, 2, 2),

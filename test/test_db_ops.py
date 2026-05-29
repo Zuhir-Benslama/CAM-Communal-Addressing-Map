@@ -131,22 +131,21 @@ class TestGetAuthenticatedUser(unittest.TestCase):
             result = _get_authenticated_user()
             self.assertIsNone(result)
 
-    def test_localite_not_found_returns_none(self):
+    def test_commune_not_found_returns_none(self):
         cookie_path = os.path.join(TMPDIR, 'cookie.toml')
         with open(cookie_path, 'w', encoding='utf-8') as f:
             f.write('[Session]\ncookie = "ck"\nuid = "ui"\n')
         with patch('app.users.repository.COOKIE_FILE', cookie_path), \
-             patch('app.users.repository.get_session') as mock_session:
+             patch('app.users.repository.get_session') as mock_session, \
+             patch('app.users.repository._load_localites', return_value=[]):
             mock_session_instance = MagicMock()
             mock_session.return_value = mock_session_instance
             mock_session_instance.query.return_value \
-                .filter.return_value.first.side_effect = [
-                    MagicMock(
-                        id='u1', api_key='ck',
-                        active=True, affectation_id='loc1',
-                    ),
-                    None,
-                ]
+                .filter.return_value.first.return_value = MagicMock(
+                    id='u1', api_key='ck',
+                    active=True, commune_code='unknown',
+                    wilaya_code=None,
+                )
             result = _get_authenticated_user()
             self.assertIsNone(result)
 

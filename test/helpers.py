@@ -144,7 +144,7 @@ def setup_mocks():
     sys.modules['plans_adressage.app.core.database'] = _database
 
     sys.modules['plans_adressage.app.orders.models'] = _mock_orders_models(
-        ['Road', 'Zone', 'Localite', 'Organization',
+        ['Road', 'Zone', 'Organization',
          'Subdivision', 'PanelSign', 'Numbering'],
     )
 
@@ -363,7 +363,7 @@ def _setup_gui_domain_mocks():
     _orders_models.get_all_fields_and_labels = MagicMock(return_value=(
         ['id', 'name'], {'id': 'ID', 'name': 'Name'},
     ))
-    for name in ('Road', 'Zone', 'Localite', 'Organization',
+    for name in ('Road', 'Zone', 'Organization',
                  'Subdivision', 'PanelSign', 'Numbering'):
         setattr(_orders_models, name, _mock_model_table(MagicMock()))
     sys.modules['plans_adressage.app.orders.models'] = _orders_models

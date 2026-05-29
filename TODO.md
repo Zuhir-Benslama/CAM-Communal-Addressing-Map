@@ -1206,3 +1206,48 @@ Both `on_opt_selected` and `symbols()` now under pylint `too-many-branches`/`too
 - [x] **`app/core/database.py`** — removed auth DB (single connection pool). Added `_migrate_old_columns()` for old-format column renames, `_migrate_users_from_auth()` one-shot merge, `_create_views()` from `data/Views.sql`.
 - [x] **`app/core/migration.py`** — shared migration logic extracted from `scripts/migrate_db.py`.
 - [x] **RTL-aware constants** — `PanelStatus` enum, `NUM_PLANNED`, hardcoded status strings use Arabic matching stored DB data. `PANEL_TYPE_MAP` translates English layer names → Arabic Type values in `count_panels()`.
+
+---
+
+## 60. Database Size Reduction — Remove Static/Reference Data from DB — 2026-05-29 ✅
+
+**DB: 29.25 MB → 1.04 MB (96.4% reduction). Disk recovered: ~108 MB total.**
+
+### Goal
+Keep only user working data in the database. All static/reference data moved to JSON files.
+
+### What changed
+- [x] **Commune metadata (1,541 records)** — exported from `localite` table to `template_data/localites.json` (~2 MB)
+- [x] **Commune geometries (1,541 polygons)** — exported from `localite` geometry column to `template_data/localite.geojson` (51 MB)
+- [x] **8 lookup tables removed from DB** — `DimPan`, `Etat_Numerotation`, `situation_Montage`, `type_cite`, `type_voie`, `type_zone`, `type_organisme`, `activity` (all already served from JSON at runtime)
+- [x] **SpatiaLite internals removed** — `ElementaryGeometries`, `KNN2`, `SpatialIndex`, `data_licenses`, `sql_statements_log`
+- [x] **SRID table trimmed** — 6,559 → 1 (only SRID 4326 kept). Also cleared `spatial_ref_sys_aux`.
+- [x] **`InitSpatialMetadata(1)` → `InitSpatialMetadata(0)`** — manual SRID 4326 insert prevents future SRID bloat
+- [x] **`VACUUM` ran** in-place to reclaim space
+
+### Code changes
+- [x] **`app/users/models.py`** — `affectation_id` FK→`localite.id` replaced with `wilaya_code` (Integer) + `commune_code` (String)
+- [x] **`app/orders/models.py`** — `Localite` class removed; `locality_id` columns changed from `ForeignKey('localite.id')` to plain `String`
+- [x] **`app/users/repository.py`** — `get_current_user()`, `get_user_location()` load from JSON/GeoJSON. Added `_load_localites()`, `_load_localite_geojson()`, `_geojson_to_wkt()`
+- [x] **`layer/utils.py`** — `init_allowed_zone()` reads commune polygon from `localite.geojson` instead of DB. Added `import json`
+- [x] **`gui/ui_fillers.py`** — `fill_wilayas_list()`, `fill_commune_of_wilaya()` load from `localites.json`. Added `_load_localites()` helper
+- [x] **`app/orders/repository.py`** — `get_zone_distribution()` joins via `user.wilaya_code` instead of `localite` table
+- [x] **`app/users/service.py`** — `sign_up()` accepts `commune_code` instead of `affectation_id`, looks up `wilaya_code` from JSON. Moved `import json` and `LOCALITES_JSON` import to module level
+- [x] **`app/users/schemas.py`** — `commune_code` field replaces `affectation_id`
+- [x] **`mixins/auth_mixin.py`** — passes `commune_code` instead of `affectation_id`
+- [x] **`app/shared/constants.py` + `constants.py`** — added `LOCALITES_JSON`, `LOCALITE_GEOJSON` constants
+- [x] **`app/core/migration.py`** — removed `LOOKUP_TABLE_DDL`, `localite` from `NEW_TABLES`, all FK clauses to lookup/localite, `localite` from `COLUMN_MAP`, `GEOMETRY_TYPES`
+- [x] **`app/core/database.py`** — `InitSpatialMetadata(0)` + manual SRID 4326 insert; removed `localite` from `_SPATIAL_INDEXES`, `_MISSING_COLUMNS`, `_TIMESTAMP_TABLES`, `_OLD_COLUMN_RENAMES`
+
+### Tests updated
+- [x] **`test/helpers.py`** — removed `'Localite'` from mock model lists
+- [x] **`test/test_db_ops.py`** — `test_localite_not_found_returns_none` → `test_commune_not_found_returns_none` with JSON-based mock
+- [x] **`test/test_auth.py`** — `sign_up()` calls use `commune_code` parameter; test patches `json.load` and `open` for JSON-based commune lookup
+- [x] **`test/test_layer_utils.py`** — mocks `get_current_user()` with `commune_code`, patches GeoJSON reading. Removed unused session/layer mocks
+- [x] **All 224 tests pass**, 3 skipped (QGIS env)
+
+### Cleanup
+- [x] Deleted backup files (58 MB)
+- [x] Deleted old `localite.shp` shapefile directory (22 MB)
+- [x] Deleted temp files: `data/user_data_export.json`, `scripts/rebuild_db.py`, old `.bak` files
+- [x] DB integrity verified: all user data intact, all 6 spatial tables with geometries, only SRID 4326, no leftover localite/lookup tables
