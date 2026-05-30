@@ -775,6 +775,8 @@ These are intentional patterns, not bugs. Addressed as needed during feature wor
 
 ### Open *(resolved)*
 - [x] **Features not appearing on map** — After login, some map features (roads, zones, etc.) are not visible. Needs investigation of `init_allowed_zone()`, layer creation order, and canvas refresh logic. *(Resolved — features now appear correctly)*
+- [x] **Blank canvas after login** — Login routed to the main page before map data was loaded, so failures in `init_allowed_zone()` / `refresh_all_layers()` could leave the user on an empty canvas. Fix: load map data synchronously before routing, stop routing on load errors, reuse an existing satellite base layer as valid, and add regression coverage.
+- [x] **Login lag / delayed map readiness** — Removed the timer-deferred map initialization path after login. The plugin now completes base-layer reuse, municipality initialization, layer refresh, and tab visibility setup in deterministic order before showing the main workflow.
 
 ---
 

@@ -67,18 +67,29 @@ class AuthMixin:
             self.label_username.setText(username)
             indicator = self.add_map_layer()
             if indicator:
-                init_allowed_zone(self.iface)
-                refresh_all_layers(self.iface)
+                self.current_user = get_current_user()
+                if not self._load_map_data():
+                    return
                 self.private_route('main')
                 self.menu.setCurrentIndex(0)
                 self.on_opt_selected(0)
-                self.current_user = get_current_user()
             else:
                 self._show_error(
                     self._tr("Unable to log in to server or image not found"),
                 )
         elif error:
             self._show_error(error)
+
+    def _load_map_data(self: HasFullAuthContext) -> bool:
+        """Load zone and layers for the authenticated user."""
+        try:
+            init_allowed_zone(self.iface)
+            refresh_all_layers(self.iface)
+            return True
+        except Exception as e:  # pylint: disable=W0718
+            logger.error("Error loading map data after login: %s", e)
+            self._show_error(self._tr(f"Error loading map: {e}"))
+            return False
 
     def fill_map_options(self: HasMapOptionWidgets) -> None:
         """Populate the map options combo box from QGIS config."""
@@ -101,11 +112,14 @@ class AuthMixin:
                     existing_layers = (
                         QgsProject.instance().mapLayersByName(selected_label)
                     )
-                    if not existing_layers:
-                        QgsProject.instance().addMapLayer(osm_layer)
+                    if existing_layers:
                         self.sat_view = selected_label
                         self.rast = None
                         return True
+                    QgsProject.instance().addMapLayer(osm_layer)
+                    self.sat_view = selected_label
+                    self.rast = None
+                    return True
 
             if selected_label == 'Raster':
                 dialog = QFileDialog(self, self._tr("Select a file"))

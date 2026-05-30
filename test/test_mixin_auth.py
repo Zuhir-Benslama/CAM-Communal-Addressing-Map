@@ -92,6 +92,22 @@ class TestAuthMixin(unittest.TestCase):
             self.mixin.login_user()
             mock_err.assert_called_once()
 
+    def test_login_user_map_load_failure_does_not_route(self):
+        sign_in = MagicMock(return_value=(True, 'user1', None))
+        get_current_user = MagicMock(return_value={'uid': 1})
+        with patch.object(self.mod, 'sign_in', sign_in), \
+             patch.object(self.mod, 'get_current_user', get_current_user), \
+             patch.object(self.mod, 'init_allowed_zone',
+                          side_effect=RuntimeError('load failed')), \
+             patch.object(self.mixin, 'add_map_layer', return_value=True), \
+             patch.object(self.mixin, 'private_route') as mock_route, \
+             patch.object(self.mixin, '_show_error') as mock_err:
+            self.mixin.login_user()
+            mock_route.assert_not_called()
+            self.mixin.menu.setCurrentIndex.assert_not_called()
+            self.mixin.on_opt_selected.assert_not_called()
+            mock_err.assert_called_once()
+
     def test_login_user_wrong_password(self):
         sign_in = MagicMock(return_value=(False, None, 'wrong password'))
         with patch.object(self.mod, 'sign_in', sign_in), \
@@ -143,7 +159,10 @@ class TestAuthMixin(unittest.TestCase):
             mock_project.instance.return_value.mapLayersByName.return_value = [
                 'existing']
             result = self.mixin.add_map_layer()
-            self.assertFalse(result)
+            self.assertTrue(result)
+            self.assertEqual(self.mixin.sat_view, 'Satellite View 1')
+            self.assertIsNone(self.mixin.rast)
+            mock_project.instance.return_value.addMapLayer.assert_not_called()
 
     def test_add_map_layer_wms_invalid(self):
         self.mixin.map_options = MagicMock()
@@ -208,8 +227,7 @@ class TestAuthMixin(unittest.TestCase):
             mock_fill.assert_called_once()
 
     def test_on_select_catOrg(self):
-        with patch.object(
-            self.mod, 'fill_org_type') as mock_fill:
+        with patch.object(self.mod, 'fill_org_type') as mock_fill:
             self.mixin.on_select_org_cat(0)
             mock_fill.assert_called_once()
 
