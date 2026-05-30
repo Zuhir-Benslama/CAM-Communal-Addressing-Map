@@ -1,5 +1,4 @@
 """Symbol and layout export mixin for SVG, PNG map generation."""
-# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 

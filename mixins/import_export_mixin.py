@@ -1,5 +1,5 @@
 """Import/export mixin for rendering maps to PNG."""
-# mypy: disable-error-code="attr-defined,func-returns-value"
+# mypy: disable-error-code="func-returns-value"
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ from ..constants import (
 )
 from ..layer.refresh import refresh_all_layers
 from ._protocols import (
-    HasUiWidgets, HasExportContext,
+    HasFormWidgets, HasExportContext,
 )
 
 logger = logging.getLogger(__name__)
@@ -138,7 +138,7 @@ class ImportExportMixin:
                         self._tr("Failed to export map"),
                     )
 
-    def export_to_image(self: HasUiWidgets) -> None:
+    def export_to_image(self: HasFormWidgets) -> None:
         """Render the map canvas and export to PNG via an external
         reporting script."""
         selected_value = self.paper.currentData()

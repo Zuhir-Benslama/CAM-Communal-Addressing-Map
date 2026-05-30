@@ -189,7 +189,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
+            <Option name="line_color" type="QString" value="181,121,74,255,rgb:0.70980392156862747,0.47450980392156861,0.29019607843137257,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="1.67578" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -262,7 +262,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -295,7 +295,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -324,7 +324,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -332,7 +332,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -355,7 +355,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -388,7 +388,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333415,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -417,7 +417,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -425,7 +425,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -460,7 +460,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
+            <Option name="line_color" type="QString" value="181,121,74,255,rgb:0.70980392156862747,0.47450980392156861,0.29019607843137257,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.29821" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -533,7 +533,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -566,7 +566,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000089,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -595,7 +595,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -603,7 +603,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -626,7 +626,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -659,7 +659,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333504,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -688,7 +688,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,hsv:0.14697222222222223,0,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -696,7 +696,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -731,7 +731,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.2391388888888889,0,1,1" />
+            <Option name="line_color" type="QString" value="131,196,47,255,hsv:0.2391388888888889,0.75982299534599829,0.76762035553521024,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -804,7 +804,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -837,7 +837,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -866,7 +866,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -874,7 +874,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -897,7 +897,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -930,7 +930,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -959,7 +959,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -967,7 +967,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -1002,7 +1002,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.7905833333333333,0,1,1" />
+            <Option name="line_color" type="QString" value="82,10,107,255,hsv:0.7905833333333333,0.90919356069275958,0.42011139085984589,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -1075,7 +1075,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -1108,7 +1108,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -1137,7 +1137,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -1145,7 +1145,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -1168,7 +1168,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -1201,7 +1201,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -1230,7 +1230,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -1238,7 +1238,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -1273,7 +1273,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.44619444444444445,0,1,1" />
+            <Option name="line_color" type="QString" value="43,189,142,255,hsv:0.44619444444444445,0.77286945906767379,0.74302281223773559,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -1346,7 +1346,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -1379,7 +1379,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -1408,7 +1408,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -1416,7 +1416,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -1439,7 +1439,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -1472,7 +1472,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -1501,7 +1501,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -1509,7 +1509,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -1544,7 +1544,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.49444444444444446,0,1,1" />
+            <Option name="line_color" type="QString" value="91,246,240,255,hsv:0.49444444444444446,0.62854962996871899,0.96310368505378807,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -1617,7 +1617,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -1650,7 +1650,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -1679,7 +1679,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -1687,7 +1687,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -1710,7 +1710,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -1743,7 +1743,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -1772,7 +1772,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -1780,7 +1780,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -1815,7 +1815,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.54633333333333334,0,1,1" />
+            <Option name="line_color" type="QString" value="173,183,186,255,hsv:0.54633333333333334,0.0707866025787747,0.731136034180209,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -1888,7 +1888,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -1921,7 +1921,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -1950,7 +1950,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -1958,7 +1958,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -1981,7 +1981,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -2014,7 +2014,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -2043,7 +2043,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -2051,7 +2051,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -2086,7 +2086,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.09188888888888889,0,1,1" />
+            <Option name="line_color" type="QString" value="253,140,0,255,hsv:0.09188888888888889,1,0.99357595178149083,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -2159,7 +2159,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -2192,7 +2192,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -2221,7 +2221,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -2229,7 +2229,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -2252,7 +2252,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -2285,7 +2285,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -2314,7 +2314,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -2322,7 +2322,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -2357,7 +2357,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.65938888888888891,0,1,1" />
+            <Option name="line_color" type="QString" value="156,161,252,255,hsv:0.65938888888888891,0.37941557946135651,0.9882200350957504,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -2430,7 +2430,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -2463,7 +2463,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -2492,7 +2492,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -2500,7 +2500,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -2523,7 +2523,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -2556,7 +2556,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -2585,7 +2585,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -2593,7 +2593,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -2628,7 +2628,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.81416666666666671,0,1,1" />
+            <Option name="line_color" type="QString" value="226,0,255,255,hsv:0.81416666666666671,1,1,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -2701,7 +2701,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -2734,7 +2734,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -2763,7 +2763,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -2771,7 +2771,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -2794,7 +2794,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -2827,7 +2827,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -2856,7 +2856,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -2864,7 +2864,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -2899,7 +2899,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.94191666666666662,0,1,1" />
+            <Option name="line_color" type="QString" value="227,0,79,255,hsv:0.94191666666666662,1,0.88960097657740134,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -2972,7 +2972,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -3005,7 +3005,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -3034,7 +3034,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -3042,7 +3042,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -3065,7 +3065,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -3098,7 +3098,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -3127,7 +3127,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -3135,7 +3135,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -3170,7 +3170,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.19838888888888889,0,1,1" />
+            <Option name="line_color" type="QString" value="181,217,28,255,hsv:0.19838888888888889,0.86929121843289847,0.85197222858014798,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -3243,7 +3243,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -3276,7 +3276,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -3305,7 +3305,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -3313,7 +3313,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -3336,7 +3336,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -3369,7 +3369,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -3398,7 +3398,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -3406,7 +3406,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -3441,7 +3441,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
+            <Option name="line_color" type="QString" value="255,208,1,255,rgb:1,0.81568627450980391,0.00392156862745098,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="3.575" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -3514,7 +3514,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -3547,7 +3547,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -3576,7 +3576,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -3584,7 +3584,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -3607,7 +3607,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -3640,7 +3640,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -3669,7 +3669,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -3677,7 +3677,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -3712,7 +3712,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.19838888888888889,0,1,1" />
+            <Option name="line_color" type="QString" value="0,0,0,255,hsv:0.19838888888888889,0,0,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -3785,7 +3785,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -3818,7 +3818,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -3847,7 +3847,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="0,0,0,255,hsv:0.19838888888888889,0,0,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -3855,7 +3855,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -3878,7 +3878,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -3911,7 +3911,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -3940,7 +3940,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="0,0,0,255,hsv:0.19838888888888889,0,0,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -3948,7 +3948,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -3983,7 +3983,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.28688888888888892,0,1,1" />
+            <Option name="line_color" type="QString" value="131,248,85,255,hsv:0.28688888888888892,0.65537499046311132,0.97183184557869839,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -4056,7 +4056,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -4089,7 +4089,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -4118,7 +4118,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -4126,7 +4126,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -4149,7 +4149,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -4182,7 +4182,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -4211,7 +4211,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -4219,7 +4219,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -4254,7 +4254,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.36338888888888887,0,1,1" />
+            <Option name="line_color" type="QString" value="76,163,92,255,hsv:0.36338888888888887,0.53287556267643243,0.63949034866865029,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -4327,7 +4327,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -4360,7 +4360,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -4389,7 +4389,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -4397,7 +4397,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -4420,7 +4420,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -4453,7 +4453,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -4482,7 +4482,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -4490,7 +4490,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -4525,7 +4525,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.63427777777777783,0,1,1" />
+            <Option name="line_color" type="QString" value="31,70,232,255,hsv:0.63427777777777783,0.86788738841840241,0.90859845883878843,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -4598,7 +4598,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -4631,7 +4631,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -4660,7 +4660,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -4668,7 +4668,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -4691,7 +4691,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -4724,7 +4724,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -4753,7 +4753,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -4761,7 +4761,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -4796,7 +4796,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.37486111111111109,0,1,1" />
+            <Option name="line_color" type="QString" value="44,255,97,255,hsv:0.37486111111111109,0.82734416723887994,1,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="3.575" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -4869,7 +4869,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -4902,7 +4902,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -4931,7 +4931,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -4939,7 +4939,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -4962,7 +4962,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -4995,7 +4995,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -5024,7 +5024,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -5032,7 +5032,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -5067,7 +5067,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.16500000000000001,0,1,1" />
+            <Option name="line_color" type="QString" value="188,186,7,255,hsv:0.16500000000000001,0.96252384222171361,0.73685816739147025,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -5140,7 +5140,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -5173,7 +5173,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -5202,7 +5202,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -5210,7 +5210,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -5233,7 +5233,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -5266,7 +5266,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -5295,7 +5295,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -5303,7 +5303,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -5338,7 +5338,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.11724999999999999,0,1,1" />
+            <Option name="line_color" type="QString" value="226,161,6,255,hsv:0.11724999999999999,0.97178606851300831,0.88697642481116956,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -5411,7 +5411,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -5444,7 +5444,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -5473,7 +5473,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -5481,7 +5481,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -5504,7 +5504,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -5537,7 +5537,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -5566,7 +5566,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -5574,7 +5574,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -5609,7 +5609,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM" />
             <Option name="draw_inside_polygon" type="QString" value="0" />
             <Option name="joinstyle" type="QString" value="bevel" />
-            <Option name="line_color" type="QString" value="255,255,255,255,hsv:0.07722222222222222,0,1,1" />
+            <Option name="line_color" type="QString" value="255,201,155,255,hsv:0.07722222222222222,0.39282825970855267,1,1" />
             <Option name="line_style" type="QString" value="solid" />
             <Option name="line_width" type="QString" value="2.0625" />
             <Option name="line_width_unit" type="QString" value="MM" />
@@ -5682,7 +5682,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -5715,7 +5715,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.50000000000000022,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -5744,7 +5744,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -5752,7 +5752,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="4" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />
@@ -5775,7 +5775,7 @@
             <Option name="interval_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="interval_unit" type="QString" value="MM" />
             <Option name="offset" type="QString" value="0" />
-            <Option name="offset_along_line" type="QString" value="4" />
+            <Option name="offset_along_line" type="QString" value="0" />
             <Option name="offset_along_line_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
             <Option name="offset_along_line_unit" type="QString" value="MM" />
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
@@ -5808,7 +5808,7 @@
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
                 <Option name="joinstyle" type="QString" value="bevel" />
                 <Option name="name" type="QString" value="circle" />
-                <Option name="offset" type="QString" value="-1.33333333333333393,0" />
+                <Option name="offset" type="QString" value="0,0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1" />
@@ -5837,7 +5837,7 @@
               <Option name="font" type="QString" value="Arial" />
               <Option name="color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
                 <Option name="horizontal_anchor_point" type="QString" value="1" />
-                <Option name="offset" type="QString" value="0,0" />
+                <Option name="offset" type="QString" value="0,-1.0" />
                 <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="offset_unit" type="QString" value="MM" />
                 <Option name="outline_color" type="QString" value="255,255,255,255,rgb:1,1,1,1" />
@@ -5845,7 +5845,7 @@
                 <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="outline_width_unit" type="QString" value="MM" />
                 <Option name="scale_method" type="QString" value="diameter" />
-                <Option name="size" type="QString" value="3.55557" />
+                <Option name="size" type="QString" value="6.0" />
                 <Option name="size_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0" />
                 <Option name="size_unit" type="QString" value="MM" />
                 <Option name="vertical_anchor_point" type="QString" value="1" />

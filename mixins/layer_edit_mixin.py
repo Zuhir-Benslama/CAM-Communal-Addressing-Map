@@ -1,5 +1,4 @@
 """Layer editing mixin for adding and updating features via forms."""
-# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -22,7 +21,7 @@ from ..constants import (
     current_locale,
 )
 from ._protocols import (
-    HasTranslation, HasCurrentLayer, HasFeatureState,
+    HasTranslation, HasFeatureState,
     HasDrawContext, HasBasicEditContext, HasFullEditContext,
 )
 
@@ -61,7 +60,7 @@ class LayerEditMixin:
         layer.geometryChanged.connect(self.on_geometry_changed)
         update_layer(self.iface, layer_name)
 
-    def start_editing(self: HasCurrentLayer) -> None:
+    def start_editing(self: HasDrawContext) -> None:
         """Enable geometry editing on the currently selected layer."""
         self._update_handler(self._current_layer_name())
 

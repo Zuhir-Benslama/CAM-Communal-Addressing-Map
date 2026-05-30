@@ -1,5 +1,4 @@
 """Map tool management mixin for measure and identify interactions."""
-# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -13,8 +12,9 @@ from ..gui.measure_tool import MeasureTool
 from ..gui.identify_tool import IdentifyTool
 from ..constants import LAYER_PANELS
 from ._protocols import (
-    HasIface, HasUiWidgets, HasMapToolsContext, HasFullMapToolsContext,
+    HasIface, HasMapToolsContext, HasFullMapToolsContext,
     HasSelectContext, HasRefSelectContext,
+    HasRefWidgets,
 )
 
 
@@ -125,11 +125,11 @@ class MapToolsMixin:
             )
         self.set_default_cursor()
 
-    def select_ref_handler(self: HasUiWidgets) -> None:
+    def select_ref_handler(self: HasRefWidgets) -> None:
         """Activate reference selection for the first reference combo."""
         self._select_ref(self.road_ref)
 
-    def select_panel_ref_handler(self: HasUiWidgets) -> None:
+    def select_panel_ref_handler(self: HasRefWidgets) -> None:
         """Activate reference selection for the panel reference combo."""
         self._select_ref(self.panel_ref)
 

@@ -1,5 +1,4 @@
 """Drawing mixin for activating edit mode on map layers."""
-# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -9,7 +8,7 @@ from qgis.PyQt.QtCore import Qt
 from qgis.core import QgsProject
 
 from ..layer.editing import start_editing_layer
-from ._protocols import HasCurrentLayer, HasDrawContext
+from ._protocols import HasDrawContext
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +37,6 @@ class LayerDrawMixin:
         self.iface.mapCanvas().setContextMenuPolicy(Qt.DefaultContextMenu)
         start_editing_layer(self.iface, layer_name)
 
-    def start_drawing(self: HasCurrentLayer) -> None:
+    def start_drawing(self: HasDrawContext) -> None:
         """Start drawing on the currently selected layer."""
         self._draw_handler(self._current_layer_name())

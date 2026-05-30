@@ -147,6 +147,7 @@ def refresh_layer_from_db(_iface, layer_name, model_name) -> None:
         if new_fields:
             provider.addAttributes(new_fields)
             layer.updateFields()
+            field_names = [f.name() for f in layer.fields()]
 
         for result, geom_wkt in results:
             feature = _build_feature(result, geom_wkt, field_names, all_fields)
@@ -242,7 +243,8 @@ def refresh_all_layers(iface) -> None:
         layers = QgsProject.instance().mapLayersByName(layer_cfg.get('label'))
         if layers:
             filename = os.path.join(DEFAULT_STYLE_DIR, layer_cfg.get('style'))
-            layers[0].loadNamedStyle(filename)
+            result = layers[0].loadNamedStyle(filename)
+            logger.info("loadNamedStyle('%s') for '%s': %s", filename, layer_cfg.get('label'), result)
 
 
 def apply_all_categorized_styles(iface) -> None:

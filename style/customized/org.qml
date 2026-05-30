@@ -43,7 +43,7 @@
             <Option name="joinstyle" type="QString" value="bevel"/>
             <Option name="line_color" type="QString" value="164,113,88,255,rgb:0.64313725490196083,0.44313725490196076,0.34509803921568627,1"/>
             <Option name="line_style" type="QString" value="solid"/>
-            <Option name="line_width" type="QString" value="0.6"/>
+            <Option name="line_width" type="QString" value="1.0"/>
             <Option name="line_width_unit" type="QString" value="MM"/>
             <Option name="offset" type="QString" value="0"/>
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
@@ -88,7 +88,7 @@
             <Option name="offset_unit" type="QString" value="MM"/>
             <Option name="outline_color" type="QString" value="117,81,63,255,rgb:0.45882352941176469,0.31764705882352939,0.24705882352941178,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
-            <Option name="outline_width" type="QString" value="0.2"/>
+            <Option name="outline_width" type="QString" value="1.0"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="style" type="QString" value="solid"/>
           </Option>
@@ -124,7 +124,7 @@
             <Option name="offset_unit" type="QString" value="MM"/>
             <Option name="outline_color" type="QString" value="117,81,63,255,rgb:0.45882352941176469,0.31764705882352939,0.24705882352941178,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
-            <Option name="outline_width" type="QString" value="0.2"/>
+            <Option name="outline_width" type="QString" value="1.0"/>
             <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="scale_method" type="QString" value="diameter"/>
@@ -146,15 +146,15 @@
   </elevation>
   <renderer-v2 enableorderby="0" type="categorizedSymbol" symbollevels="0" referencescale="-1" forceraster="0" attr="Cat">
     <categories>
-      <category label="Health Bodies & Facilities" type="string" symbol="0" uuid="{bbc56ace-b1a4-4e4c-a8eb-d25a8c31b33a}" value="الهيئات و المرافق الصحية" render="true"/>
+      <category label="Health Bodies &amp; Facilities" type="string" symbol="0" uuid="{bbc56ace-b1a4-4e4c-a8eb-d25a8c31b33a}" value="الهيئات و المرافق الصحية" render="true"/>
       <category label="Transport Facilities" type="string" symbol="1" uuid="{0e881361-c5de-41ad-a65e-e4280039ca5e}" value="مرافق النقل و المواصلات" render="true"/>
-      <category label="Financial & Tourism Bodies" type="string" symbol="2" uuid="{4e93dc9f-71cc-44e2-81d3-9e192f6d08df}" value="الهيئات و المرافق المالية و السياحية" render="true"/>
-      <category label="Religious Bodies & Facilities" type="string" symbol="3" uuid="{af4d1894-7ead-4c64-bfba-90727bc7e752}" value="الهيئات و المرافق الدينية" render="true"/>
-      <category label="Educational & Training Bodies" type="string" symbol="4" uuid="{39b60345-7123-49bd-9b7e-64f418336ed5}" value="الهيئات و المرافق التربوية والجامعية و التكوينية" render="true"/>
+      <category label="Financial &amp; Tourism Bodies" type="string" symbol="2" uuid="{4dc93c9f-71cc-44e2-81d3-9e192f6d08df}" value="الهيئات و المرافق المالية و السياحية" render="true"/>
+      <category label="Religious Bodies &amp; Facilities" type="string" symbol="3" uuid="{af4d1894-7ead-4c64-bfba-90727bc7e752}" value="الهيئات و المرافق الدينية" render="true"/>
+      <category label="Educational &amp; Training Bodies" type="string" symbol="4" uuid="{39b60345-7123-49bd-9b7e-64f418336ed5}" value="الهيئات و المرافق التربوية والجامعية و التكوينية" render="true"/>
       <category label="Residential Facilities" type="string" symbol="5" uuid="{01e4943f-ca9d-4f4a-8618-0f3b8d1d49d0}" value="المرافق الإقامية" render="true"/>
-      <category label="Sports & Cultural Bodies" type="string" symbol="6" uuid="{d8ec317e-a010-40aa-b726-a05696ee8f90}" value="الهيئات و المرافق الرياضية و الثقافية" render="true"/>
-      <category label="Sectoral Bodies & Facilities" type="string" symbol="7" uuid="{041311b1-7c45-4d42-b647-5529aeb627f7}" value="الهيئات و المرافق القطاعية" render="true"/>
-      <category label="Security Bodies & Facilities" type="string" symbol="8" uuid="{b48139f0-5bc8-4aea-99d5-9c436e87ed76}" value="الهيئات و المرافق الأمنية" render="true"/>
+      <category label="Sports &amp; Cultural Bodies" type="string" symbol="6" uuid="{d8ec317e-a010-40aa-b726-a05696ee8f90}" value="الهيئات و المرافق الرياضية و الثقافية" render="true"/>
+      <category label="Sectoral Bodies &amp; Facilities" type="string" symbol="7" uuid="{041311b1-7c45-4d42-b647-5529aeb627f7}" value="الهيئات و المرافق القطاعية" render="true"/>
+      <category label="Security Bodies &amp; Facilities" type="string" symbol="8" uuid="{b48139f0-5bc8-4aea-99d5-9c436e87ed76}" value="الهيئات و المرافق الأمنية" render="true"/>
       <category label="Other" type="string" symbol="9" uuid="{b48139f0-5bc8-4aea-99d5-9c436e87ed76}" value="" render="true"/>
     </categories>
     <symbols>
@@ -176,7 +176,7 @@
             <Option name="offset_unit" type="QString" value="MM"/>
             <Option name="outline_color" type="QString" value="164,113,88,255,rgb:0.64313725490196083,0.44313725490196076,0.34509803921568627,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
-            <Option name="outline_width" type="QString" value="0.6"/>
+            <Option name="outline_width" type="QString" value="1.0"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="style" type="QString" value="dense7"/>
           </Option>
@@ -207,7 +207,7 @@
             <Option name="offset_unit" type="QString" value="MM"/>
             <Option name="outline_color" type="QString" value="133,182,111,255,rgb:0.52156862745098043,0.71372549019607845,0.43529411764705883,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
-            <Option name="outline_width" type="QString" value="0.6"/>
+            <Option name="outline_width" type="QString" value="1.0"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="style" type="QString" value="dense7"/>
           </Option>
@@ -238,7 +238,7 @@
             <Option name="offset_unit" type="QString" value="MM"/>
             <Option name="outline_color" type="QString" value="125,139,143,255,rgb:0.49019607843137253,0.54509803921568623,0.5607843137254902,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
-            <Option name="outline_width" type="QString" value="0.6"/>
+            <Option name="outline_width" type="QString" value="1.0"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="style" type="QString" value="dense7"/>
           </Option>
@@ -269,7 +269,7 @@
             <Option name="offset_unit" type="QString" value="MM"/>
             <Option name="outline_color" type="QString" value="145,82,45,255,rgb:0.56862745098039214,0.32156862745098042,0.17647058823529413,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
-            <Option name="outline_width" type="QString" value="0.6"/>
+            <Option name="outline_width" type="QString" value="1.0"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="style" type="QString" value="dense7"/>
           </Option>
@@ -300,7 +300,7 @@
             <Option name="offset_unit" type="QString" value="MM"/>
             <Option name="outline_color" type="QString" value="190,178,151,255,rgb:0.74509803921568629,0.69803921568627447,0.59215686274509804,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
-            <Option name="outline_width" type="QString" value="0.6"/>
+            <Option name="outline_width" type="QString" value="1.0"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="style" type="QString" value="dense7"/>
           </Option>
@@ -331,7 +331,7 @@
             <Option name="offset_unit" type="QString" value="MM"/>
             <Option name="outline_color" type="QString" value="196,60,57,255,rgb:0.7686274509803922,0.23529411764705882,0.22352941176470589,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
-            <Option name="outline_width" type="QString" value="0.6"/>
+            <Option name="outline_width" type="QString" value="1.0"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="style" type="QString" value="dense7"/>
           </Option>
@@ -362,7 +362,7 @@
             <Option name="offset_unit" type="QString" value="MM"/>
             <Option name="outline_color" type="QString" value="229,182,54,255,rgb:0.89803921568627454,0.71372549019607845,0.21176470588235294,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
-            <Option name="outline_width" type="QString" value="0.6"/>
+            <Option name="outline_width" type="QString" value="1.0"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="style" type="QString" value="dense7"/>
           </Option>
@@ -393,7 +393,7 @@
             <Option name="offset_unit" type="QString" value="MM"/>
             <Option name="outline_color" type="QString" value="225,89,137,255,rgb:0.88235294117647056,0.34901960784313724,0.53725490196078429,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
-            <Option name="outline_width" type="QString" value="0.6"/>
+            <Option name="outline_width" type="QString" value="1.0"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="style" type="QString" value="dense7"/>
           </Option>
@@ -424,7 +424,7 @@
             <Option name="offset_unit" type="QString" value="MM"/>
             <Option name="outline_color" type="QString" value="190,207,80,255,rgb:0.74509803921568629,0.81176470588235294,0.31372549019607843,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
-            <Option name="outline_width" type="QString" value="0.6"/>
+            <Option name="outline_width" type="QString" value="1.0"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="style" type="QString" value="dense7"/>
           </Option>
@@ -455,7 +455,7 @@
             <Option name="offset_unit" type="QString" value="MM"/>
             <Option name="outline_color" type="QString" value="0,0,0,255,hsv:0.79322222222222227,0,0,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
-            <Option name="outline_width" type="QString" value="0.6"/>
+            <Option name="outline_width" type="QString" value="1.0"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="style" type="QString" value="dense7"/>
           </Option>
@@ -492,7 +492,7 @@
             <Option name="joinstyle" type="QString" value="round"/>
             <Option name="line_color" type="QString" value="212,179,25,255,rgb:0.83137254901960789,0.70196078431372544,0.09803921568627451,1"/>
             <Option name="line_style" type="QString" value="solid"/>
-            <Option name="line_width" type="QString" value="0.5"/>
+            <Option name="line_width" type="QString" value="1.0"/>
             <Option name="line_width_unit" type="QString" value="MM"/>
             <Option name="offset" type="QString" value="0"/>
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
@@ -571,7 +571,7 @@
             <Option name="offset_unit" type="QString" value="MM"/>
             <Option name="outline_color" type="QString" value="35,35,35,255,rgb:0.13725490196078433,0.13725490196078433,0.13725490196078433,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
-            <Option name="outline_width" type="QString" value="0.26"/>
+            <Option name="outline_width" type="QString" value="1.0"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
             <Option name="style" type="QString" value="solid"/>
           </Option>

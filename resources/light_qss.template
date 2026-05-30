@@ -106,6 +106,9 @@
         border: none;
         background-color: transparent;
     }}
+    #scrollAreaWidgetContents_2 {{
+        background-color: {{LIGHT_BG}};
+    }}
     QScrollBar:vertical {{
         background-color: {{LIGHT_BG}};
         width: 10px;

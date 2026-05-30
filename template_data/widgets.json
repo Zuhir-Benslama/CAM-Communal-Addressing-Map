@@ -530,9 +530,9 @@
     "en": "Study Area"
   },
   "_settings_group": {
-    "ar": "الإعدادات",
-    "fr": "Paramètres",
-    "en": "Settings"
+    "ar": "المظهر واللغة",
+    "fr": "Thème et Langue",
+    "en": "Theme and Language"
   },
   "_theme_label": {
     "ar": "المظهر:",

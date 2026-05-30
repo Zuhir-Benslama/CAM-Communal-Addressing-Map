@@ -1,5 +1,4 @@
 """Reporting mixin for generating statistical reports and purchase orders."""
-# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -20,7 +19,7 @@ from ..app.orders.repository import (
     count_numberings, count_panels,
     query_missing_pan, query_missing_num, query_missing_rep,
 )
-from ._protocols import HasTranslation
+from ._protocols import HasTranslation, HasReportContext
 
 logger = logging.getLogger(__name__)
 
@@ -80,7 +79,7 @@ class ReportMixin:
             msg.exec_()
             return False
 
-    def gen_report(self: HasTranslation) -> bool:
+    def gen_report(self: HasReportContext) -> bool:
         """Generate a statistical report via the external reporting script."""
         report_data = {
             'prog': count_numberings(NUM_PLANNED),
@@ -106,7 +105,7 @@ class ReportMixin:
         }
         return self._run_report('2', report_data, label="report")
 
-    def bon_commande(self: HasTranslation) -> bool:
+    def bon_commande(self: HasReportContext) -> bool:
         """Generate a purchase order via the external reporting script."""
         order_data = {
             'date': datetime.now().date().strftime('%Y/%m/%d'),

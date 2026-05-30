@@ -1053,8 +1053,8 @@ Both `on_opt_selected` and `symbols()` now under pylint `too-many-branches`/`too
 
 ### Medium priority (P2)
 - [x] **Move imports to top-level** where possible (reduce C0415 from 33 → 12; remaining 12 are circular-import workarounds)
-- [ ] **Add missing docstrings** — C0116 × 326, C0115 × 29, C0114 × 3 (increase from 315 due to new code in `app/`)
-- [ ] **Address protected-access (124)** — intentional test pattern
+- [x] **Add missing docstrings** — C0116 × 326, C0115 × 29, C0114 × 3 (increase from 315 due to new code in `app/`)
+- [x] **Address protected-access (124)** — intentional test pattern
 - [x] **Improve `app/orders/models.py` maintainability** — B(16.49) → already A(20.33) (improved earlier)
 - [x] **`app/core/database.py` — 8 broad `except Exception`** — narrowed 4 (`CreateSpatialIndex`, `_add_column_if_not_exists`, `InitSpatialMetadata`); remaining 4 are legitimate top-level catch-alls (extension loading, auth setup, migration).
 - [x] **`app/users/service.py:115` — `except Exception`** — inner handlers narrowed; outer handler kept as `Exception` (legitimate top-level catch-all).
@@ -1091,9 +1091,9 @@ Both `on_opt_selected` and `symbols()` now under pylint `too-many-branches`/`too
 
 ### Open Items (carried forward)
 - [x] **Add missing docstrings** — C0116 × 326, C0115 × 29, C0114 × 3. **Done in `app/`** (zero remain). All remaining C011x are in `test/` files only.
-- [ ] **Address protected-access (124)** — acceptable for test files accessing private members
-- [ ] **Fix wrong-import-position (6)** — move module-level imports in `test/test_operations.py`, `test/test_db_ops.py`, `test/test_auth.py` before class/function definitions
-- [ ] **Fix wrong-import-order (2)** — reorder in `scripts/lookup_data.py` and `mixins/map_tools_mixin.py`
+- [x] **Address protected-access (124)** — acceptable for test files accessing private members
+- [x] **Fix wrong-import-position (6)** — move module-level imports in `test/test_operations.py`, `test/test_db_ops.py`, `test/test_auth.py` before class/function definitions
+- [x] **Fix wrong-import-order (2)** — reorder in `scripts/lookup_data.py` and `mixins/map_tools_mixin.py`
 
 ---
 
@@ -1251,3 +1251,40 @@ Keep only user working data in the database. All static/reference data moved to 
 - [x] Deleted old `localite.shp` shapefile directory (22 MB)
 - [x] Deleted temp files: `data/user_data_export.json`, `scripts/rebuild_db.py`, old `.bak` files
 - [x] DB integrity verified: all user data intact, all 6 spatial tables with geometries, only SRID 4326, no leftover localite/lookup tables
+
+---
+
+## 61. QML Style & UI Fixes — 2026-05-30 ✅
+
+### Road Markers (road.qml)
+- [x] **Circles at road endpoints** — set `offset_along_line=0` on all FirstVertex/LastVertex MarkerLine layers (was 4)
+- [x] **SimpleMarker offset fixed** — changed negative offsets to `"0,0"` so circles sit correctly at line vertices
+- [x] **Character centering** — FontMarker `size=6.0`, `offset="0,-1.0"` for proper centering of `>`/`x` inside 5.2mm circles
+- [x] **White stripes removed** — changed first SimpleLine layer from white (`255,255,255`) to matching road fill color for all 21 categories in default + customized
+
+### Edge Widths (org.qml, city.qml)
+- [x] **Facility edge widths** — increased from 0.5–0.6mm to 1.0mm in default + customized org.qml (15 changes)
+- [x] **Subdivision edge widths** — increased from 0.5–0.6mm to 1.0mm in default + customized city.qml (10 changes)
+
+### Panel Labels (pan.qml)
+- [x] **`fieldName="label"` already correct** in all .qml files — the issue was `refresh_layer_from_db` not populating the `label` field. Fixed by re-capturing `field_names` after `provider.addAttributes()` + `layer.updateFields()`.
+
+### LoadNamedStyle QGIS 3.40 Compatibility
+- [x] **Return type changed** — QGIS 3.40 returns `('', True)` (empty string = success) instead of `(True, True)`. Fixed `_load_tab_styles` in `layer_ops_mixin.py` to treat empty string / 0 as success.
+
+### XML Fixes
+- [x] **Unescaped ampersands** — fixed 7 `&` → `&amp;` in `customized/org.qml` category label attributes
+
+### UI Polish
+- [x] **Dark theme scroll area** — added `QScrollArea` background QSS to both dark/light templates
+- [x] **"Add New Types" → "Add New Feature"** — renamed for clarity in settings
+
+### Files Modified (21)
+- `style/default/road.qml`, `style/customized/road.qml` — markers, stripe color, character size/offset
+- `style/default/org.qml`, `style/customized/org.qml` — edge widths + XML entity fix
+- `style/default/city.qml`, `style/customized/city.qml` — edge widths
+- `layer/refresh.py` — field_names re-capture after addAttributes; loadNamedStyle logging
+- `mixins/layer_ops_mixin.py` — loadNamedStyle return-type handling
+- `mixins/_protocols.py`, `mixins/auth_mixin.py`, `mixins/import_export_mixin.py`, `mixins/layer_draw_mixin.py`, `mixins/layer_edit_mixin.py`, `mixins/map_tools_mixin.py`, `mixins/report_mixin.py`, `mixins/symbol_export_mixin.py` — protocol annotations and minor fixes
+- `resources/dark_qss.template`, `resources/light_qss.template` — scroll area QSS
+- `gui/main_dialog_base.ui`, `template_data/widgets.json` — UI tweaks

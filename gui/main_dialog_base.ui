@@ -2348,7 +2348,7 @@
                                       <item>
                                         <widget class="QGroupBox" name="groupBox_add_types">
                                           <property name="title">
-                                            <string>Add New Types</string>
+                                            <string>Add New Feature</string>
                                           </property>
                                           <layout class="QVBoxLayout" name="verticalLayout_add_types">
                                             <item>

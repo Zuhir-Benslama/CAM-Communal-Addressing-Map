@@ -1,5 +1,4 @@
 """Authentication and login flow mixin for user management."""
-# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -19,7 +18,8 @@ from ..gui.ui_fillers import (
 )
 from ._protocols import (
     HasTranslation, HasUiWidgets,
-    HasAuthContext, HasAuthMapContext, HasLoginContext, HasCloseContext,
+    HasAuthContext, HasFullAuthContext,
+    HasMapOptionWidgets, HasLocationWidgets, HasCategoryWidgets,
 )
 
 logger = logging.getLogger(__name__)
@@ -56,7 +56,7 @@ class AuthMixin:
             self._show_error("\n".join(errors))
 
     def login_user(
-        self: HasLoginContext,
+        self: HasFullAuthContext,
     ) -> None:
         """Authenticate the user and initialize the map session on success."""
         ok, username, error = sign_in(
@@ -80,14 +80,14 @@ class AuthMixin:
         elif error:
             self._show_error(error)
 
-    def fill_map_options(self: HasUiWidgets) -> None:
+    def fill_map_options(self: HasMapOptionWidgets) -> None:
         """Populate the map options combo box from QGIS config."""
         maps = qgis_config().get('map_layers') or []
         self.map_options.clear()
         for cfg in maps:
             self.map_options.addItem(cfg.get('label'), cfg.get('url'))
 
-    def add_map_layer(self: HasAuthMapContext) -> bool:
+    def add_map_layer(self: HasFullAuthContext) -> bool:
         """Add the selected raster or WMS map layer to the project."""
         selected_label = self.map_options.currentText()
         selected_value = self.map_options.currentData()
@@ -104,7 +104,7 @@ class AuthMixin:
                     if not existing_layers:
                         QgsProject.instance().addMapLayer(osm_layer)
                         self.sat_view = selected_label
-                        self.rest = None
+                        self.rast = None
                         return True
 
             if selected_label == 'Raster':
@@ -140,20 +140,20 @@ class AuthMixin:
             )
         return False
 
-    def private_route(self: HasUiWidgets, page_index) -> None:
+    def private_route(self: HasNavWidgets, page_index) -> None:
         """Navigate to a private (authenticated) page in the stacked widget."""
         page = self.router.findChild(QWidget, page_index)
         if page:
             self.router.setCurrentWidget(page)
 
-    def public_route(self: HasUiWidgets, page_index) -> None:
+    def public_route(self: HasNavWidgets, page_index) -> None:
         """Navigate to a public (login/register) page in the stacked widget."""
         page = self.router.findChild(QWidget, page_index)
         if page:
             self.router.setCurrentWidget(page)
 
     def closeEvent(
-        self: HasCloseContext, event,
+        self: HasFullAuthContext, event,
     ) -> None:
         """Clean up tools and logout on dialog close."""
         self.stop()
@@ -171,19 +171,19 @@ class AuthMixin:
             self.router.setCurrentWidget(page)
         event.accept()
 
-    def on_select_wilaya(self: HasUiWidgets, _index) -> None:
+    def on_select_wilaya(self: HasLocationWidgets, _index) -> None:
         """Populate the commune combo when the wilaya selection changes."""
         selected_value = self.wilaya_list.itemData(
             self.wilaya_list.currentIndex(),
         )
         fill_commune_of_wilaya(self.commune_of_wilaya, selected_value)
 
-    def on_select_org_cat(self: HasUiWidgets, _index) -> None:
+    def on_select_org_cat(self: HasCategoryWidgets, _index) -> None:
         """Populate the organization type combo when the category changes."""
         selected_value = self.org_cat.itemData(self.org_cat.currentIndex())
         fill_org_type(self.org_type, selected_value)
 
-    def on_select_activity_cat(self: HasUiWidgets, _index) -> None:
+    def on_select_activity_cat(self: HasCategoryWidgets, _index) -> None:
         """Populate the activity type combo when the category changes."""
         selected_value = self.activity_cat.itemData(self.activity_cat.currentIndex())
         fill_activity_type(self.activity_type, selected_value)
