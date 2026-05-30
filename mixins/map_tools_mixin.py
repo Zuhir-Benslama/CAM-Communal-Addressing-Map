@@ -137,7 +137,7 @@ class MapToolsMixin:
         """Handle panel reference selection event."""
         if not self.ref_identify_tool:
             return
-        ref_data = self.ref_identify_tool.get_pkuid()
+        ref_data = self.ref_identify_tool.get_id()
         if not ref_data:
             QMessageBox.critical(
                 self,

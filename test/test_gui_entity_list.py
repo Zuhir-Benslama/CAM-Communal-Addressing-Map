@@ -92,10 +92,10 @@ class TestEntityListDialogWithData(unittest.TestCase):
     def setUpClass(cls):
         cls.app, cls.mod = _make_dialog_class()
 
-    def _make_record(self, valeur='A1', etat='active'):
+    def _make_record(self, value='A1', state='active'):
         record = MagicMock()
-        record.valeur = valeur
-        record.etat = etat
+        record.value = value
+        record.state = state
         return record
 
     def _make_dialog(self, records, total_count=None):
@@ -158,8 +158,8 @@ class TestEntityListDialogWithData(unittest.TestCase):
 
     def test_populate_table_na_fallback_on_none_value(self):
         record = MagicMock()
-        del record.valeur
-        del record.etat
+        del record.value
+        del record.state
         dialog = self._make_dialog([record], total_count=1)
         item = dialog.table.item(0, 0)
         self.assertIsNotNone(item)
@@ -185,20 +185,20 @@ class TestEntityListDialogWithData(unittest.TestCase):
         mock_session.close.assert_called_once()
 
     def test_pagination_next_page_with_data(self):
-        records = [self._make_record(valeur=str(i)) for i in range(60)]
+        records = [self._make_record(value=str(i)) for i in range(60)]
         dialog = self._make_dialog(records, total_count=60)
         dialog._next_page()
         self.assertEqual(dialog._page, 1)
 
     def test_pagination_does_not_overflow(self):
-        records = [self._make_record(valeur=str(i)) for i in range(60)]
+        records = [self._make_record(value=str(i)) for i in range(60)]
         dialog = self._make_dialog(records, total_count=60)
         dialog._page = 1
         dialog._next_page()
         self.assertEqual(dialog._page, 1)
 
     def test_pagination_prev_page_with_data(self):
-        records = [self._make_record(valeur=str(i)) for i in range(60)]
+        records = [self._make_record(value=str(i)) for i in range(60)]
         dialog = self._make_dialog(records, total_count=60)
         dialog._page = 1
         dialog._prev_page()

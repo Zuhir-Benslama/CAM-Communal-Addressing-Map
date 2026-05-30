@@ -18,7 +18,7 @@ from ..core.database import get_session
 from ..users.models import User
 from ..users.schemas import AuthSchema, SignupSchema
 from ..users.repository import create_cookie
-from ..shared.constants import COOKIE_FILE, LOCALITES_JSON
+from ..shared.constants import COOKIE_FILE, COMMUNES_JSON, DAIRA_JSON
 
 logger = logging.getLogger(__name__)
 
@@ -40,13 +40,21 @@ def sign_up(
     schema = SignupSchema()
     try:
         schema.load(signup_data)
-        # Look up wilaya_code from localites.json
+        # Look up wilaya_code from communes.json + daira.json
         wilaya_code = None
         try:
-            with open(LOCALITES_JSON, 'r', encoding='utf-8') as f:
-                for c in json.load(f):
-                    if c.get('commune_code') == commune_code:
-                        wilaya_code = c.get('wilaya_code')
+            with open(COMMUNES_JSON, 'r', encoding='utf-8') as f:
+                communes = json.load(f)
+            with open(DAIRA_JSON, 'r', encoding='utf-8') as f:
+                dairas = json.load(f)
+            code = int(commune_code) if commune_code else None
+            if code is not None:
+                for c in communes.values():
+                    v = c.get('commune_code')
+                    if v is not None and int(v) == code:
+                        daira = dairas.get(str(c.get('daira_id')))
+                        if daira:
+                            wilaya_code = int(daira.get('wilaya_id', 0))
                         break
         except (FileNotFoundError, json.JSONDecodeError):
             pass

@@ -33,7 +33,7 @@ class LayerEditMixin:
 
     Cross-mixin protocol (attributes set by map_tools_mixin or owning dialog):
         _last_feature_wkt (str | None) — WKT geometry of last created feature
-        _last_feature_pkuid (str | None) — PK of last created feature
+        _last_feature_id (str | None) — PK of last created feature
         _geometry_ready (str | None) — layer name of last drawn geometry
         ref_identify_tool (IdentifyTool | None) — ref selection tool
         measure_tool (MeasureTool | None) — measurement line tool
@@ -64,16 +64,16 @@ class LayerEditMixin:
         """Enable geometry editing on the currently selected layer."""
         self._update_handler(self._current_layer_name())
 
-    def _get_geometry_and_pkuid(self: HasFeatureState, entity_name: str):
+    def _get_geometry_and_id(self: HasFeatureState, entity_name: str):
         """Retrieve the captured geometry WKT and feature PK."""
         geometry_wkt = getattr(self, '_last_feature_wkt', None)
-        pkuid = getattr(self, '_last_feature_pkuid', None)
-        if not geometry_wkt or not pkuid:
+        feature_id = getattr(self, '_last_feature_id', None)
+        if not geometry_wkt or not feature_id:
             logger.warning(
-                "No geometry or pkuid available for %s", entity_name,
+                "No geometry or id available for %s", entity_name,
             )
             return None, None
-        return geometry_wkt, pkuid
+        return geometry_wkt, feature_id
 
     def _show_success(self: HasTranslation, message: str) -> None:
         """Show a success information dialog."""
@@ -101,18 +101,18 @@ class LayerEditMixin:
             return
         if self.update_object:
             return
-        ref_data = self.ref_identify_tool.get_pkuid()
+        ref_data = self.ref_identify_tool.get_id()
         if ref_data is None:
             logger.warning("No object selected for panel reference")
             return
-        geometry_wkt, pkuid = self._get_geometry_and_pkuid('panel')
-        if not geometry_wkt or not pkuid:
+        geometry_wkt, feature_id = self._get_geometry_and_id('panel')
+        if not geometry_wkt or not feature_id:
             return
         try:
             layer = ref_data.get('layer_name')
-            ref = ref_data.get('pkuid')
+            ref = ref_data.get('id')
             kwargs = {
-                'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
+                'geometry_wkt': geometry_wkt, 'id': feature_id,
                 'mount_status': self.mount_status.currentData(),
             }
             if layer == LAYER_FACILITIES:
@@ -149,18 +149,18 @@ class LayerEditMixin:
         """Add a new organization through the form."""
         if self._geometry_ready != LAYER_FACILITIES:
             return
-        geometry_wkt, pkuid = self._get_geometry_and_pkuid('organization')
-        if not geometry_wkt or not pkuid:
+        geometry_wkt, feature_id = self._get_geometry_and_id('organization')
+        if not geometry_wkt or not feature_id:
             return
         try:
-            nom = validate_text(self.org_name.text())
+            name_val = validate_text(self.org_name.text())
             kwargs = {
-                'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
+                'geometry_wkt': geometry_wkt, 'id': feature_id,
                 'org_cat': self.org_cat.currentData(),
-                'org_name': nom,
+                'org_name': name_val,
                 'org_type': self.org_type.currentData(),
             }
-            kwargs.update(self._make_locale_kwargs('org_name', nom))
+            kwargs.update(self._make_locale_kwargs('org_name', name_val))
             add_organization(**kwargs)
             self._show_success("Facility added successfully")
         except SQLAlchemyError as e:
@@ -173,18 +173,18 @@ class LayerEditMixin:
         """Add a new road through the form."""
         if self._geometry_ready != LAYER_ROADS:
             return
-        geometry_wkt, pkuid = self._get_geometry_and_pkuid('road')
-        if not geometry_wkt or not pkuid:
+        geometry_wkt, feature_id = self._get_geometry_and_id('road')
+        if not geometry_wkt or not feature_id:
             return
         try:
-            nom = validate_text(self.road_name.text())
+            name_val = validate_text(self.road_name.text())
             kwargs = {
-                'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
+                'geometry_wkt': geometry_wkt, 'id': feature_id,
                 'road_decision': None,
-                'road_name': nom,
+                'road_name': name_val,
                 'type_road': self.type_road.currentData(),
             }
-            kwargs.update(self._make_locale_kwargs('road_name', nom))
+            kwargs.update(self._make_locale_kwargs('road_name', name_val))
             add_road(**kwargs)
             self._show_success("Road added successfully")
         except SQLAlchemyError as e:
@@ -228,32 +228,32 @@ class LayerEditMixin:
         """Add a new numbering linked to a selected road or subdivision."""
         if self._geometry_ready != LAYER_NUMBERING:
             return
-        geometry_wkt, pkuid = self._get_geometry_and_pkuid('numbering')
-        if not geometry_wkt or not pkuid:
+        geometry_wkt, feature_id = self._get_geometry_and_id('numbering')
+        if not geometry_wkt or not feature_id:
             return
         try:
-            ref_data = self.ref_identify_tool.get_pkuid()
+            ref_data = self.ref_identify_tool.get_id()
         except (TypeError, AttributeError) as e:
-            logger.warning("Failed to get pkuid from identify tool: %s", e)
+            logger.warning("Failed to get id from identify tool: %s", e)
             ref_data = None
         try:
             common = {
-                'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
+                'geometry_wkt': geometry_wkt, 'id': feature_id,
                 'repetition': validate_text(self.repetition.text()),
-                'valeur': validate_text(self.num_val.text()),
-                'etat': self.num_state.currentData(),
+                'value': validate_text(self.num_val.text()),
+                'state': self.num_state.currentData(),
                 'activity_cat': self.activity_cat.currentData(),
                 'activity_type': self.activity_type.currentData(),
             }
             if ref_data and ref_data.get('layer_name') == LAYER_ROADS:
                 add_numbering(
                     **common,
-                    road_id=ref_data.get('pkuid'), subdivision_id=None,
+                    road_id=ref_data.get('id'), subdivision_id=None,
                 )
             elif ref_data and ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
                 add_numbering(
                     **common,
-                    road_id=None, subdivision_id=ref_data.get('pkuid'),
+                    road_id=None, subdivision_id=ref_data.get('id'),
                 )
 
             if self.measure_tool:
@@ -281,17 +281,17 @@ class LayerEditMixin:
         """Add a new subdivision through the form."""
         if self._geometry_ready != LAYER_SUBDIVISIONS:
             return
-        geometry_wkt, pkuid = self._get_geometry_and_pkuid('subdivision')
-        if not geometry_wkt or not pkuid:
+        geometry_wkt, feature_id = self._get_geometry_and_id('subdivision')
+        if not geometry_wkt or not feature_id:
             return
         try:
-            name = validate_text(self.subd_name.text())
+            name_val = validate_text(self.subd_name.text())
             kwargs = {
-                'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
-                'name': name,
+                'geometry_wkt': geometry_wkt, 'id': feature_id,
+                'name': name_val,
                 'subdivision_type': self.subd_type.currentData(),
             }
-            kwargs.update(self._make_locale_kwargs('name', name))
+            kwargs.update(self._make_locale_kwargs('name', name_val))
             add_subdivision(**kwargs)
             self._show_success("Subdivision added successfully")
         except SQLAlchemyError as e:
@@ -306,17 +306,17 @@ class LayerEditMixin:
             return
         if self.update_object:
             return
-        geometry_wkt, pkuid = self._get_geometry_and_pkuid('zone')
-        if not geometry_wkt or not pkuid:
+        geometry_wkt, feature_id = self._get_geometry_and_id('zone')
+        if not geometry_wkt or not feature_id:
             return
         try:
-            name = validate_text(self.nom_zone.text())
+            name_val = validate_text(self.nom_zone.text())
             kwargs = {
-                'geometry_wkt': geometry_wkt, 'pkuid': pkuid,
-                'name': name,
+                'geometry_wkt': geometry_wkt, 'id': feature_id,
+                'name': name_val,
                 'zone_type': self.zone_type.currentData(),
             }
-            kwargs.update(self._make_locale_kwargs('name', name))
+            kwargs.update(self._make_locale_kwargs('name', name_val))
             add_zone(**kwargs)
             self._show_success("Zone added successfully")
         except SQLAlchemyError as e:

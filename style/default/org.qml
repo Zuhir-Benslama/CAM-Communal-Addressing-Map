@@ -264,7 +264,7 @@
   </selection>
   <labeling type="simple">
     <settings calloutType="simple">
-      <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textOrientation="horizontal" fontWordSpacing="0" blendMode="0" legendString="Aa" namedStyle="Normal" forcedBold="0" textOpacity="1" fontStrikeout="0" textColor="90,143,107,255,rgb:0.35294117647058826,0.5607843137254902,0.41960784313725491,1" fieldName="coalesce(&quot;Type&quot;, '') || ' ' || coalesce(&quot;Nom&quot;, '')" fontUnderline="0" tabStopDistance="80" capitalization="0" tabStopDistanceUnit="Point" useSubstitutions="0" multilineHeight="1" isExpression="1" fontSizeUnit="MM" multilineHeightUnit="Percentage" fontKerning="1" forcedItalic="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" allowHtml="0" fontItalic="0" fontWeight="50" fontLetterSpacing="0" fontSize="3.5" fontFamily="Arial" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0">
+      <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textOrientation="horizontal" fontWordSpacing="0" blendMode="0" legendString="Aa" namedStyle="Normal" forcedBold="0" textOpacity="1" fontStrikeout="0" textColor="90,143,107,255,rgb:0.35294117647058826,0.5607843137254902,0.41960784313725491,1" fieldName="coalesce(&quot;type&quot;, '') || ' ' || coalesce(&quot;name&quot;, '')" fontUnderline="0" tabStopDistance="80" capitalization="0" tabStopDistanceUnit="Point" useSubstitutions="0" multilineHeight="1" isExpression="1" fontSizeUnit="MM" multilineHeightUnit="Percentage" fontKerning="1" forcedItalic="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" allowHtml="0" fontItalic="0" fontWeight="50" fontLetterSpacing="0" fontSize="3.5" fontFamily="Arial" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0">
         <families/>
         <text-buffer bufferSizeUnits="MM" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferOpacity="1" bufferDraw="1" bufferSize="1.7" bufferNoFill="1" bufferColor="250,250,250,255,rgb:0.98039215686274506,0.98039215686274506,0.98039215686274506,1" bufferBlendMode="0" bufferJoinStyle="128"/>
         <text-mask maskOpacity="1" maskSizeUnits="RenderMetersInMapUnits" maskedSymbolLayers="" maskType="0" maskSize="1" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskEnabled="1" maskJoinStyle="128" maskSize2="1"/>
@@ -725,7 +725,7 @@
   <attributeactions>
     <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
   </attributeactions>
-  <attributetableconfig sortExpression="&quot;Nom&quot;" actionWidgetStyle="dropDown" sortOrder="0">
+  <attributetableconfig sortExpression="&quot;name&quot;" actionWidgetStyle="dropDown" sortOrder="0">
     <columns>
       <column width="-1" type="field" name="pkuid" hidden="1"/>
       <column width="-1" type="field" name="id" hidden="1"/>

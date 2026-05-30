@@ -45,25 +45,25 @@ def subdivision_types() -> list[dict[str, Any]]:
 
 def mounting_statuses() -> list[dict[str, Any]]:
     """Return mounting status lookup data."""
-    return _load('situation_Montage.json')
+    return _load('mounting_status.json')
 
 
 def numbering_states() -> list[dict[str, Any]]:
     """Return numbering state lookup data."""
-    return _load('Etat_Numerotation.json')
+    return _load('State_Numbering.json')
 
 
 # ---------------------------------------------------------------------------
-# Organization types: {TypeAr, TypeFr?, categorie, categorie_fr?,
-#                     categorie_en?, ...}
-#   - TypeAr = Arabic PK
-#   - TypeFr -> pk_fr equivalent
-#   - categorie = category (Arabic)
+# Organization types: {type_ar, type_fr?, category, category_fr?,
+#                     category_en?, ...}
+#   - type_ar = Arabic PK
+#   - type_fr -> pk_fr equivalent
+#   - category = category (Arabic)
 # ---------------------------------------------------------------------------
 
 def organization_types() -> list[dict[str, Any]]:
     """Return organization type lookup data."""
-    return _load('type_organisme.json')
+    return _load('organization_type.json')
 
 
 def org_categories(locale: str = 'ar') -> list[tuple[str, str]]:
@@ -71,28 +71,28 @@ def org_categories(locale: str = 'ar') -> list[tuple[str, str]]:
     seen: set[str] = set()
     result: list[tuple[str, str]] = []
     for entry in organization_types():
-        cat = entry.get('categorie', '')
-        if cat and cat not in seen:
-            seen.add(cat)
+        category = entry.get('category', '')
+        if category and category not in seen:
+            seen.add(category)
             if locale != 'ar':
-                val = entry.get(f'categorie_{locale}', '') or cat
+                val = entry.get(f'category_{locale}', '') or category
             else:
-                val = cat
-            result.append((val, cat))
+                val = category
+            result.append((val, category))
     result.sort(key=lambda x: x[1])
     return result
 
 
 def org_types_for_category(
-    cat: str, locale: str = 'ar',
+    category: str, locale: str = 'ar',
 ) -> list[tuple[str, str]]:
     """Return organization types for a category -> (display, pk)."""
     result: list[tuple[str, str]] = []
     for entry in organization_types():
-        if entry.get('categorie', '') == cat:
-            pk = entry.get('TypeAr', '')
+        if entry.get('category', '') == category:
+            pk = entry.get('type_ar', '')
             if locale != 'ar':
-                display = entry.get('TypeFr', '') or pk
+                display = entry.get('type_fr', '') or pk
             else:
                 display = pk
             if pk:
@@ -100,16 +100,16 @@ def org_types_for_category(
     return result
 
 
-def org_subcategories(cat: str) -> list[str]:
+def org_subcategories(category: str) -> list[str]:
     """Return distinct subcategories for an org category."""
     seen: set[str] = set()
     result: list[str] = []
     for entry in organization_types():
-        if entry.get('categorie', '') == cat:
-            sub = entry.get('subcat', '')
-            if sub and sub not in seen:
-                seen.add(sub)
-                result.append(sub)
+        if entry.get('category', '') == category:
+            subcategory = entry.get('subcat', '')
+            if subcategory and subcategory not in seen:
+                seen.add(subcategory)
+                result.append(subcategory)
     return result
 
 
@@ -127,14 +127,14 @@ def activity_categories(locale: str = 'ar') -> list[tuple[str, str]]:
     seen: set[str] = set()
     result: list[tuple[str, str]] = []
     for entry in activity_types():
-        cat = entry.get('القطاع', '')
-        if cat and cat not in seen:
-            seen.add(cat)
+        category = entry.get('sector', '')
+        if category and category not in seen:
+            seen.add(category)
             if locale != 'ar':
-                val = entry.get(f'cat_{locale}', '') or cat
+                val = entry.get(f'cat_{locale}', '') or category
             else:
-                val = cat
-            result.append((val, cat))
+                val = category
+            result.append((val, category))
     result.sort(key=lambda x: x[1])
     return result
 
@@ -145,14 +145,14 @@ def activity_types_for_category(
     """Return activity types for a category -> (display, value)."""
     result: list[tuple[str, str]] = []
     for entry in activity_types():
-        if entry.get('القطاع', '') == cat:
-            typ = entry.get('النوع', '')
+        if entry.get('sector', '') == cat:
+            type_val = entry.get('type', '')
             if locale != 'ar':
-                display = entry.get(f'type_{locale}', '') or typ
+                display = entry.get(f'type_{locale}', '') or type_val
             else:
-                display = typ
-            if typ:
-                result.append((display, typ))
+                display = type_val
+            if type_val:
+                result.append((display, type_val))
     return result
 
 
@@ -161,12 +161,56 @@ def activity_subcategories(cat: str) -> list[str]:
     seen: set[str] = set()
     result: list[str] = []
     for entry in activity_types():
-        if entry.get('القطاع', '') == cat:
-            sub = entry.get('subcat', '')
-            if sub and sub not in seen:
-                seen.add(sub)
-                result.append(sub)
+        if entry.get('sector', '') == cat:
+            subcategory = entry.get('subcat', '')
+            if subcategory and subcategory not in seen:
+                seen.add(subcategory)
+                result.append(subcategory)
     return result
+
+
+# ---------------------------------------------------------------------------
+# Administrative geography — communes, dairas, wilayas
+# ---------------------------------------------------------------------------
+
+def communes_data() -> dict[str, dict[str, Any]]:
+    """Return all communes as a dict keyed by commune_id (str)."""
+    return _load('communes.json')
+
+
+def communes_list() -> list[dict[str, Any]]:
+    """Return all communes as a list."""
+    return list(communes_data().values())
+
+
+def wilayas_data() -> dict[str, dict[str, Any]]:
+    """Return all wilayas as a dict keyed by wilaya_id (str)."""
+    return _load('wilayas.json')
+
+
+def dairas_data() -> dict[str, dict[str, Any]]:
+    """Return all dairas as a dict keyed by daira_id (str)."""
+    return _load('daira.json')
+
+
+def _commune_code_key(c: dict[str, Any]) -> int:
+    """Return the commune_code as int (handles both int and str storage)."""
+    v = c.get('commune_code', 0)
+    return int(v) if v is not None else 0
+
+
+def _lookup_wilaya_for_commune_code(commune_code: str) -> int | None:
+    """Resolve a commune_code (str) to a wilaya_id via the daira."""
+    code = int(commune_code) if commune_code else None
+    if code is None:
+        return None
+    for c in communes_list():
+        if _commune_code_key(c) == code:
+            daira = dairas_data().get(str(c['daira_id']))
+            if daira:
+                return int(daira['wilaya_id'])
+            return None
+    return None
 
 
 # ---------------------------------------------------------------------------

@@ -27,7 +27,7 @@ class TestCountQueries(unittest.TestCase):
         result = count_numberings('test_state')
         self.assertEqual(result, 5)
         call_args = self.mock_session.execute.call_args
-        self.assertIn('etat', str(call_args))
+        self.assertIn('state', str(call_args))
 
     def test_count_numberings_no_result_returns_zero(self):
         self.mock_session.execute.return_value.fetchone.return_value = None
@@ -61,7 +61,7 @@ class TestCountQueries(unittest.TestCase):
         ]
         result = query_missing_num('planned')
         self.assertEqual(len(result), 2)
-        self.assertEqual(result[1]['valeur'], 'B2')
+        self.assertEqual(result[1]['value'], 'B2')
 
     def test_query_missing_rep_returns_list(self):
         self.mock_session.execute.return_value.fetchall.return_value = [
@@ -69,7 +69,7 @@ class TestCountQueries(unittest.TestCase):
         ]
         result = query_missing_rep('planned')
         self.assertEqual(len(result), 1)
-        self.assertEqual(result[0]['valeur'], 'R1')
+        self.assertEqual(result[0]['value'], 'R1')
 
 
 class TestGetZoneDistribution(unittest.TestCase):

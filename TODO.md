@@ -1288,3 +1288,32 @@ Keep only user working data in the database. All static/reference data moved to 
 - `mixins/_protocols.py`, `mixins/auth_mixin.py`, `mixins/import_export_mixin.py`, `mixins/layer_draw_mixin.py`, `mixins/layer_edit_mixin.py`, `mixins/map_tools_mixin.py`, `mixins/report_mixin.py`, `mixins/symbol_export_mixin.py` — protocol annotations and minor fixes
 - `resources/dark_qss.template`, `resources/light_qss.template` — scroll area QSS
 - `gui/main_dialog_base.ui`, `template_data/widgets.json` — UI tweaks
+
+## 62. Database Rename Fix & QML Labels — 2026-05-30 ✅
+
+### Problem
+After sections 58–61 renamed DB columns and tables to match Python models, layer features disappeared from QGIS. Two root causes:
+1. **Table name mismatch** — DB tables still used old names (`refpoly`, `refpolychild`, `RefLine`, `reforg`, `Numerotation`, `Pannautage`) while SQLAlchemy models expected new names (`zone`, `subdivision`, `road`, `organization`, `numbering`, `panel_sign`)
+2. **Column name mismatch** — DB columns still used old French names (`Type`, `Nom`, `Nom_fr`, `Nom_en`, `valeur`, `etat`, `situation`) while models expected lowercase English names (`type`, `name`, `name_fr`, `name_en`, `value`, `state`, `status`)
+
+### DB Rename Fix
+- [x] **Table rename** — renamed 6 tables via SpatiaLite `DiscardGeometryColumn + ALTER TABLE + RecoverGeometryColumn` preserving all data (zone=1, subdivision=14, road=404, organization=41, numbering=653, panel_sign=931 rows) and geometry columns (SRID=4326)
+- [x] **Column rename** — renamed 20 columns from old French to new English names across all 6 tables
+- [x] **Dropped empty `name_fr`/`name_en` columns** — removed empty columns mistakenly added by `_migrate_missing_columns` so populated `Nom_fr`/`Nom_en` could be renamed without conflict
+- [x] **`_OLD_COLUMN_RENAMES` updated** — added 13 missing column renames in `app/core/database.py`
+- [x] **`_MISSING_COLUMNS` cleared** — removed `name_fr`/`name_en` entries (now handled by rename migration)
+- [x] **Migration order fixed** — `_migrate_old_columns` runs **before** `_migrate_missing_columns` so renames happen before new column additions
+
+### QML Label & Filter Fix
+- [x] **Label fieldName expressions** — changed `fieldName="&quot;Type&quot;||' '||&quot;Nom&quot;"` to `&quot;type&quot;||' '||&quot;name&quot;` in all 8 QML files (default + customized for road/zone/org/city)
+- [x] **Rule-based renderer filters** — changed 22 filter expressions (`filter="&quot;Type&quot;='جادة'"` → `&quot;type&quot;='جادة'`) in `customized/road.qml` for categorized road styling
+- [x] **Preview/sort expressions** — changed `&quot;Nom&quot;` → `&quot;name&quot;` in previewExpressions and sortExpressions across all 8 files
+
+### Files Modified
+- `app/core/database.py` — `_OLD_COLUMN_RENAMES` expanded, `_MISSING_COLUMNS` emptied, migration order swapped
+- `data/database.sqlite` — tables and columns renamed (data preserved)
+- `style/default/{road,zone,org,city}.qml` — label fieldName, preview/sort expressions fixed
+- `style/customized/{road,zone,org,city}.qml` — label fieldName, rule filters, preview/sort expressions fixed
+
+### Tests
+- [x] **224/224 pass**, 3 skipped (QGIS env)

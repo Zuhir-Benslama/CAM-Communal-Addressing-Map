@@ -92,10 +92,13 @@ class TestLayerUtils(unittest.TestCase):
         }
         mock_qgis_config.return_value = {'other_layers': [], 'mapper': []}
         mock_project.instance.return_value.mapLayersByName.return_value = []
-        # Mock GeoJSON loading to return empty (no geometry found)
+        # Mock commune lookup + GeoJSON loading (no geometry found)
         with patch('plans_adressage.layer.utils.open') as mock_open, \
              patch('plans_adressage.layer.utils.json.load') as mock_json_load:
-            mock_json_load.return_value = {"type": "FeatureCollection", "features": []}
+            mock_json_load.side_effect = [
+                {'1': {'commune_code': 4112, 'commune_id': 1}},
+                {"type": "FeatureCollection", "features": []},
+            ]
             self.mod.init_allowed_zone(self.iface)
 
     @patch('plans_adressage.layer.utils.get_current_user')

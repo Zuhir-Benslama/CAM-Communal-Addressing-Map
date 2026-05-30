@@ -57,7 +57,7 @@ class HasPlanState(Protocol):
 class HasFeatureState(Protocol):
     """Mixin host provides feature tracking state."""
     _last_feature_wkt: Optional[str]
-    _last_feature_pkuid: Optional[str]
+    _last_feature_id: Optional[str]
     _geometry_ready: Optional[str]
     update_object: Dict[str, Any]
 

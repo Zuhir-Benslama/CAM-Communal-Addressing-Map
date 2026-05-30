@@ -1,0 +1,22 @@
+[
+  {
+    "pk": "planned",
+    "label_fr": "Programmé",
+    "label_en": "Programmed"
+  },
+  {
+    "pk": "installed",
+    "label_fr": "Installé",
+    "label_en": "Installed"
+  },
+  {
+    "pk": "to_fix",
+    "label_fr": "À corriger",
+    "label_en": "To Be Corrected"
+  },
+  {
+    "pk": "to_move",
+    "label_fr": "À déplacer",
+    "label_en": "To Be Moved"
+  }
+]

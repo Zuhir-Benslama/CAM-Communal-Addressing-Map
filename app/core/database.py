@@ -78,8 +78,8 @@ class ConnectionPool:
             Base.metadata.create_all(self._engine)
             _migrate_users_from_auth(self._engine)
             _migrate_timestamp_columns(self._engine)
-            _migrate_missing_columns(self._engine)
             _migrate_old_columns(self._engine)
+            _migrate_missing_columns(self._engine)
             _create_views(self._engine)
             _create_spatial_indexes(self._engine)
         return self._engine
@@ -132,12 +132,12 @@ def _add_column_if_not_exists(
 
 
 _SPATIAL_INDEXES = (
-    ('refpoly', 'geometry'),
-    ('refpolychild', 'geometry'),
-    ('RefLine', 'geometry'),
-    ('reforg', 'geometry'),
-    ('Numerotation', 'geometry'),
-    ('Pannautage', 'geometry'),
+    ('zone', 'geometry'),
+    ('subdivision', 'geometry'),
+    ('road', 'geometry'),
+    ('organization', 'geometry'),
+    ('numbering', 'geometry'),
+    ('panel_sign', 'geometry'),
 )
 
 
@@ -155,16 +155,7 @@ def _spatial_index_exists(conn: Any, table: str, column: str) -> bool:
     return row is not None and row[0] == 1
 
 
-_MISSING_COLUMNS = (
-    ("refpoly", "Nom_fr", "TEXT"),
-    ("refpoly", "Nom_en", "TEXT"),
-    ("refpolychild", "Nom_fr", "TEXT"),
-    ("refpolychild", "Nom_en", "TEXT"),
-    ("RefLine", "Nom_fr", "TEXT"),
-    ("RefLine", "Nom_en", "TEXT"),
-    ("reforg", "Nom_fr", "TEXT"),
-    ("reforg", "Nom_en", "TEXT"),
-)
+_MISSING_COLUMNS: tuple[tuple[str, str, str], ...] = ()
 
 
 def _migrate_missing_columns(engine: Any) -> None:
@@ -197,49 +188,69 @@ def _create_spatial_indexes(engine: Any) -> None:
 
 
 _TIMESTAMP_TABLES = (
-    'user', 'refpoly', 'refpolychild',
-    'RefLine', 'reforg', 'Numerotation', 'Pannautage',
+    'user', 'zone', 'subdivision',
+    'road', 'organization', 'numbering', 'panel_sign',
 )
 
 _OLD_COLUMN_RENAMES: dict[str, dict[str, str]] = {
-    "refpoly": {
+    "zone": {
         "pkuid": "id",
         "idLoc": "locality_id",
         "uid": "user_id",
+        "Type": "type",
+        "Nom": "name",
+        "Nom_fr": "name_fr",
+        "Nom_en": "name_en",
     },
-    "refpolychild": {
+    "subdivision": {
         "pkuid": "id",
         "idLoc": "locality_id",
         "uid": "user_id",
+        "Type": "type",
+        "Nom": "name",
+        "Nom_fr": "name_fr",
+        "Nom_en": "name_en",
     },
-    "RefLine": {
+    "road": {
         "pkuid": "id",
         "num_decision": "decision_number",
         "idLoc": "locality_id",
         "pkuid_poly": "zone_id",
         "uid": "user_id",
+        "Type": "type",
+        "Nom": "name",
+        "Nom_fr": "name_fr",
+        "Nom_en": "name_en",
     },
-    "reforg": {
+    "organization": {
         "pkuid": "id",
         "idLoc": "locality_id",
         "Cat": "category",
         "uid": "user_id",
         "pkuid_poly": "zone_id",
+        "Type": "type",
+        "Nom": "name",
+        "Nom_fr": "name_fr",
+        "Nom_en": "name_en",
     },
-    "Numerotation": {
+    "numbering": {
         "pkuid": "id",
         "idLine": "road_id",
         "idPoly": "subdivision_id",
         "uid": "user_id",
+        "valeur": "value",
+        "etat": "state",
     },
-    "Pannautage": {
+    "panel_sign": {
         "pkuid": "id",
         "dim": "dimensions",
-        "Stituation": "situation",
+        "Stituation": "status",
+        "situation": "status",
         "idLine": "road_id",
         "idPoly": "subdivision_id",
         "idOrg": "organization_id",
         "uid": "user_id",
+        "Type": "type",
     },
 }
 

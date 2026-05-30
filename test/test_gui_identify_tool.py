@@ -40,9 +40,9 @@ class TestIdentifyTool(unittest.TestCase):
     def test_ref_mode_initializes_ref_attrs(self):
         tool = self.mod.IdentifyTool(
             self.canvas, mode=self.mod.IdentifyTool.MODE_REF)
-        self.assertIsNone(tool.pkuid)
-        self.assertIsNone(tool.type)
-        self.assertIsNone(tool.nom)
+        self.assertIsNone(tool.feature_id)
+        self.assertIsNone(tool.feature_type)
+        self.assertIsNone(tool.feature_name)
         self.assertIsNone(tool.ref_name)
 
     def test_form_mode_does_not_init_ref_attrs(self):
@@ -73,13 +73,13 @@ class TestIdentifyTool(unittest.TestCase):
         self.tool.set_ref_name(ref)
         self.assertEqual(self.tool.ref_name, ref)
 
-    def test_get_pkuid_returns_dict_with_layer_name(self):
+    def test_get_id_returns_dict_with_layer_name(self):
         layer = MagicMock()
         layer.name.return_value = 'Roads'
-        self.tool.pkuid = 'abc-123'
+        self.tool.feature_id = 'abc-123'
         self.tool.set_active_layer(layer)
-        result = self.tool.get_pkuid()
-        self.assertEqual(result, {'pkuid': 'abc-123', 'layer_name': 'Roads'})
+        result = self.tool.get_id()
+        self.assertEqual(result, {'id': 'abc-123', 'layer_name': 'Roads'})
 
     def test_canvas_identify_not_called_without_layer(self):
         self.tool._active_layer = None
@@ -95,11 +95,11 @@ class TestIdentifyTool(unittest.TestCase):
             self.canvas, mode=self.mod.IdentifyTool.MODE_REF)
         tool.ref_name = MagicMock()
         tool.feature_as_ref('pk-1', 'Route', 'Main St')
-        self.assertEqual(tool.pkuid, 'pk-1')
-        self.assertEqual(tool.type, 'Route')
-        self.assertEqual(tool.nom, 'Main St')
+        self.assertEqual(tool.feature_id, 'pk-1')
+        self.assertEqual(tool.feature_type, 'Route')
+        self.assertEqual(tool.feature_name, 'Main St')
 
-    def test_feature_as_ref_skips_unset_when_pkuid_none(self):
+    def test_feature_as_ref_skips_unset_when_id_none(self):
         tool = self.mod.IdentifyTool(
             self.canvas, mode=self.mod.IdentifyTool.MODE_REF)
         tool.ref_name = MagicMock()
@@ -108,19 +108,19 @@ class TestIdentifyTool(unittest.TestCase):
 
     def test_locale_feature_attr_arabic_default(self):
         feature = MagicMock()
-        feature.__getitem__.return_value = 'شارع'
+        feature.__getitem__.return_value = 'Street'
         with patch('plans_adressage.gui.identify_tool.current_locale',
                    return_value='ar'):
-            result = self.tool._locale_feature_attr(feature, 'Nom')
-        self.assertEqual(result, 'شارع')
+            result = self.tool._locale_feature_attr(feature, 'name')
+        self.assertEqual(result, 'Street')
 
     def test_locale_feature_attr_french_fallback(self):
         feature = MagicMock()
-        feature.__getitem__.side_effect = lambda k: 'Rue' if k == 'Nom' else ''
-        feature.fields.return_value.names.return_value = ['Nom_fr', 'Nom']
+        feature.__getitem__.side_effect = lambda k: 'Rue' if k == 'name' else ''
+        feature.fields.return_value.names.return_value = ['name_fr', 'name']
         with patch('plans_adressage.gui.identify_tool.current_locale',
                    return_value='fr'):
-            result = self.tool._locale_feature_attr(feature, 'Nom')
+            result = self.tool._locale_feature_attr(feature, 'name')
         self.assertEqual(result, 'Rue')
 
     def test_locale_feature_attr_returns_empty_on_missing(self):
@@ -128,7 +128,7 @@ class TestIdentifyTool(unittest.TestCase):
         feature.__getitem__.return_value = None
         with patch('plans_adressage.gui.identify_tool.current_locale',
                    return_value='ar'):
-            result = self.tool._locale_feature_attr(feature, 'Nom')
+            result = self.tool._locale_feature_attr(feature, 'name')
         self.assertEqual(result, '')
 
     @patch('plans_adressage.gui.identify_tool.get_session')

@@ -104,7 +104,7 @@ def setup_mocks():
 
     _shared_utils = MagicMock()
     _shared_utils.get_all_fields_and_labels = MagicMock(return_value=(
-        ['valeur', 'etat'], {'valeur': 'Value', 'etat': 'State'},
+        ['value', 'state'], {'value': 'Value', 'state': 'State'},
     ))
     sys.modules['plans_adressage.app.shared.utils'] = _shared_utils
 
@@ -349,7 +349,7 @@ def _setup_gui_domain_mocks():
 
     _shared_utils = MagicMock()
     _shared_utils.get_all_fields_and_labels = MagicMock(return_value=(
-        ['valeur', 'etat'], {'valeur': 'Value', 'etat': 'State'},
+        ['value', 'state'], {'value': 'Value', 'state': 'State'},
     ))
     sys.modules['plans_adressage.app.shared.utils'] = _shared_utils
 

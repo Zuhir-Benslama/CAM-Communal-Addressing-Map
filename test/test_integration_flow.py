@@ -62,7 +62,7 @@ class IntegrationFlowTest(unittest.TestCase):
         host.popup_dialog = None
 
         host._last_feature_wkt = None
-        host._last_feature_pkuid = None
+        host._last_feature_id = None
         host.measure_tool = None
         host.sat_view = None
         host.rast = None
@@ -145,7 +145,7 @@ class IntegrationFlowTest(unittest.TestCase):
             host.label_username.setText.assert_called_once_with('admin_user')
 
     def test_add_road_uses_last_feature_wkt_and_calls_writer(self):
-        """add_road passes _last_feature_wkt/pkuid to the db writer."""
+        """add_road passes _last_feature_wkt/id to the db writer."""
         host, mods = self._make_host()
         self._setup_widgets(host)
 

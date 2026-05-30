@@ -198,50 +198,50 @@ class PopupDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
 
     def _populate_road(self, query, loc):
         """Populate road form fields from a DB query result."""
-        self.road_name.setText(locale_value(query, 'Nom', loc))
-        index = self.type_road.findData(query.Type)
+        self.road_name.setText(locale_value(query, 'name', loc))
+        index = self.type_road.findData(query.type)
         if index != -1:
             self.type_road.setCurrentIndex(index)
 
     def _populate_facility(self, query, loc):
         """Populate facility form fields from a DB query result."""
-        self.org_name.setText(locale_value(query, 'Nom', loc))
-        index = self.org_cat.findData(query.cat)
+        self.org_name.setText(locale_value(query, 'name', loc))
+        index = self.org_cat.findData(query.category)
         if index != -1:
-            fill_org_type(self.org_type, query.cat)
+            fill_org_type(self.org_type, query.category)
             self.org_cat.setCurrentIndex(index)
-        index = self.org_type.findData(query.Type)
+        index = self.org_type.findData(query.type)
         if index != -1:
             self.org_type.setCurrentIndex(index)
 
     def _populate_subdivision(self, query, loc):
         """Populate subdivision form fields from a DB query result."""
-        self.subd_name.setText(locale_value(query, 'Nom', loc))
-        index = self.subd_type.findData(query.Type)
+        self.subd_name.setText(locale_value(query, 'name', loc))
+        index = self.subd_type.findData(query.type)
         if index != -1:
             self.subd_type.setCurrentIndex(index)
 
     def _populate_zone(self, query, loc):
         """Populate zone form fields from a DB query result."""
-        self.nom_zone.setText(locale_value(query, 'Nom', loc))
-        index = self.zone_type.findData(query.Type)
+        self.nom_zone.setText(locale_value(query, 'name', loc))
+        index = self.zone_type.findData(query.type)
         if index != -1:
             self.zone_type.setCurrentIndex(index)
 
     def _populate_numbering(self, query, loc):
         """Populate numbering form fields from a DB query result."""
-        self.num_val.setText(query.valeur)
+        self.num_val.setText(query.value)
         self.repetition.setText(query.repetition)
         if query.road_id:
             self._set_combo_value(self.dyn_ref3, LAYER_ROADS)
             self.ref_name3.setText(
-                locale_value(query.road, 'Type', loc) +
-                ' ' + locale_value(query.road, 'Nom', loc))
+                locale_value(query.road, 'type', loc) +
+                ' ' + locale_value(query.road, 'name', loc))
         elif query.subdivision_id:
             self._set_combo_value(self.dyn_ref3, LAYER_SUBDIVISIONS)
             self.ref_name3.setText(
-                locale_value(query.subdivision, 'Nom', loc))
-        index = self.num_state.findData(query.etat)
+                locale_value(query.subdivision, 'name', loc))
+        index = self.num_state.findData(query.state)
         if index != -1:
             self.num_state.setCurrentIndex(index)
         index = self.cat_act_3.findData(query.activity_cat)
@@ -257,17 +257,17 @@ class PopupDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
         if query.road_id:
             self._set_combo_value(self.dyn_ref4, LAYER_ROADS)
             self.ref_name4.setText(
-                locale_value(query.road, 'Type', loc) +
-                ' ' + locale_value(query.road, 'Nom', loc))
+                locale_value(query.road, 'type', loc) +
+                ' ' + locale_value(query.road, 'name', loc))
         elif query.organization_id:
             self._set_combo_value(self.dyn_ref4, LAYER_FACILITIES)
             self.ref_name4.setText(
-                locale_value(query.organization, 'Type', loc) +
-                ' ' + locale_value(query.organization, 'Nom', loc))
+                locale_value(query.organization, 'type', loc) +
+                ' ' + locale_value(query.organization, 'name', loc))
         elif query.subdivision_id:
             self._set_combo_value(self.dyn_ref4, LAYER_SUBDIVISIONS)
-            self.ref_name4.setText(locale_value(query.subdivision, 'Nom', loc))
-        index = self.mount_status.findData(query.situation)
+            self.ref_name4.setText(locale_value(query.subdivision, 'name', loc))
+        index = self.mount_status.findData(query.status)
         if index != -1:
             self.mount_status.setCurrentIndex(index)
 
@@ -309,9 +309,9 @@ class PopupDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
         session = get_session()
         try:
             Road.update(
-                session, pkuid=self.attribute,
-                Nom=validate_text(self.road_name.text()),
-                Type=self.type_road.currentData(),
+                session, id=self.attribute,
+                name=validate_text(self.road_name.text()),
+                type=self.type_road.currentData(),
             )
             QMessageBox.information(
                 self,
@@ -337,10 +337,10 @@ class PopupDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
         session = get_session()
         try:
             Organization.update(
-                session, pkuid=self.attribute,
+                session, id=self.attribute,
                 category=self.org_cat.currentData(),
-                Nom=validate_text(self.org_name.text()),
-                Type=self.org_type.currentData(),
+                name=validate_text(self.org_name.text()),
+                type=self.org_type.currentData(),
             )
             QMessageBox.information(
                 self,
@@ -367,9 +367,9 @@ class PopupDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
         session = get_session()
         try:
             Subdivision.update(
-                session, pkuid=self.attribute,
-                Nom=validate_text(self.subd_name.text()),
-                Type=self.subd_type.currentData()
+                session, id=self.attribute,
+                name=validate_text(self.subd_name.text()),
+                type=self.subd_type.currentData()
             )
             QMessageBox.information(
                 self,
@@ -396,9 +396,9 @@ class PopupDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
         session = get_session()
         try:
             Zone.update(
-                session, pkuid=self.attribute,
-                Nom=validate_text(self.nom_zone.text()),
-                Type=self.zone_type.currentData()
+                session, id=self.attribute,
+                name=validate_text(self.nom_zone.text()),
+                type=self.zone_type.currentData()
             )
             QMessageBox.information(
                 self,
@@ -483,37 +483,37 @@ class PopupDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
         try:
             ref_data = None
             if self.ref_identify_tool:
-                ref_data = self.ref_identify_tool.get_pkuid()
+                ref_data = self.ref_identify_tool.get_id()
 
             if ref_data:
                 if ref_data.get('layer_name') == LAYER_FACILITIES:
                     PanelSign.update(
-                        session, pkuid=self.attribute,
+                        session, id=self.attribute,
                         road_id=None, subdivision_id=None,
-                        organization_id=ref_data.get('pkuid'),
-                        situation=self.mount_status.currentData(),
+                        organization_id=ref_data.get('id'),
+                        status=self.mount_status.currentData(),
                     )
 
                 if ref_data.get('layer_name') == LAYER_ROADS:
                     PanelSign.update(
-                        session, pkuid=self.attribute,
-                        road_id=ref_data.get('pkuid'),
+                        session, id=self.attribute,
+                        road_id=ref_data.get('id'),
                         subdivision_id=None, organization_id=None,
-                        situation=self.mount_status.currentData(),
+                        status=self.mount_status.currentData(),
                     )
 
                 if ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
                     PanelSign.update(
-                        session, pkuid=self.attribute,
+                        session, id=self.attribute,
                         road_id=None,
-                        subdivision_id=ref_data.get('pkuid'),
+                        subdivision_id=ref_data.get('id'),
                         organization_id=None,
-                        situation=self.mount_status.currentData(),
+                        status=self.mount_status.currentData(),
                     )
             else:
                 PanelSign.update(
-                    session, pkuid=self.attribute,
-                    situation=self.mount_status.currentData(),
+                    session, id=self.attribute,
+                    status=self.mount_status.currentData(),
                 )
 
             QMessageBox.information(
@@ -540,29 +540,29 @@ class PopupDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
         try:
             ref_data = None
             if self.ref_identify_tool:
-                ref_data = self.ref_identify_tool.get_pkuid()
+                ref_data = self.ref_identify_tool.get_id()
 
             if ref_data:
                 if ref_data.get('layer_name') == LAYER_FACILITIES:
                     Numbering.update(
-                        session, pkuid=self.attribute,
+                        session, id=self.attribute,
                         repetition=validate_text(self.repetition.text()),
-                        valeur=validate_text(self.num_val.text()),
-                        etat=self.num_state.currentData(),
+                        value=validate_text(self.num_val.text()),
+                        state=self.num_state.currentData(),
                         road_id=None,
                         subdivision_id=None,
                         activity_cat=self.cat_act_3.currentData(),
                         activity_type=self.activity_type_3.currentData(),
-                        organization_id=ref_data.get('pkuid')
+                        organization_id=ref_data.get('id')
                     )
 
                 if ref_data.get('layer_name') == LAYER_ROADS:
                     Numbering.update(
-                        session, pkuid=self.attribute,
+                        session, id=self.attribute,
                         repetition=validate_text(self.repetition.text()),
-                        valeur=validate_text(self.num_val.text()),
-                        etat=self.num_state.currentData(),
-                        road_id=ref_data.get('pkuid'),
+                        value=validate_text(self.num_val.text()),
+                        state=self.num_state.currentData(),
+                        road_id=ref_data.get('id'),
                         subdivision_id=None,
                         activity_cat=self.cat_act_3.currentData(),
                         activity_type=self.activity_type_3.currentData(),
@@ -571,24 +571,24 @@ class PopupDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
 
                 if ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
                     Numbering.update(
-                        session, pkuid=self.attribute,
+                        session, id=self.attribute,
                         repetition=validate_text(self.repetition.text()),
-                        valeur=validate_text(self.num_val.text()),
-                        etat=self.num_state.currentData(),
+                        value=validate_text(self.num_val.text()),
+                        state=self.num_state.currentData(),
                         road_id=None,
                         activity_cat=self.cat_act_3.currentData(),
                         activity_type=self.activity_type_3.currentData(),
-                        subdivision_id=ref_data.get('pkuid'),
+                        subdivision_id=ref_data.get('id'),
                         organization_id=None
                     )
             else:
                 Numbering.update(
-                    session, pkuid=self.attribute,
+                    session, id=self.attribute,
                     repetition=validate_text(self.repetition.text()),
-                    valeur=validate_text(self.num_val.text()),
+                    value=validate_text(self.num_val.text()),
                     activity_cat=self.cat_act_3.currentData(),
                     activity_type=self.activity_type_3.currentData(),
-                    etat=self.num_state.currentData()
+                    state=self.num_state.currentData()
                 )
 
             QMessageBox.information(

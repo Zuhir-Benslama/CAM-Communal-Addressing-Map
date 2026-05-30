@@ -6,12 +6,13 @@ import os
 
 from qgis.PyQt.QtWidgets import QCompleter, QComboBox
 
-from ..app.shared.constants import LOCALITES_JSON
 from ..scripts.lookup_data import (
     road_types, zone_types, subdivision_types, mounting_statuses,
     numbering_states, org_categories, org_types_for_category,
     org_subcategories, activity_categories, activity_types,
     activity_types_for_category, activity_subcategories, locale_label,
+    communes_list, communes_data, wilayas_data, dairas_data,
+    _commune_code_key,
 )
 from ..app.users.repository import qgis_config
 from ..constants import (
@@ -32,24 +33,19 @@ def _locale() -> str:
 
 def _load_localites() -> list[dict]:
     """Load commune metadata from JSON file."""
-    try:
-        with open(LOCALITES_JSON, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
+    return communes_list()
 
 
 def fill_wilayas_list(combobox: QComboBox) -> None:
     """Populate a combobox with distinct wilaya names from JSON."""
     loc = _locale()
     combobox.clear()
-    seen: set[int] = set()
     wilayas: list[tuple[str, int]] = []
-    for entry in _load_localites():
-        code = entry.get('wilaya_code')
-        if code is not None and code not in seen:
-            seen.add(code)
-            wilayas.append((entry.get('wilaya', ''), code))
+    for entry in wilayas_data().values():
+        code = entry.get('wilaya_id')
+        name = entry.get('wilaya_ar', '')
+        if code is not None:
+            wilayas.append((name, code))
     wilayas.sort(key=lambda x: x[1])
     for name, code in wilayas:
         combobox.addItem(_i18n_tr(name, loc), code)
@@ -95,8 +91,11 @@ def fill_commune_of_wilaya(combobox: QComboBox, code_w: int) -> None:
     """Populate a combobox with communes for a given wilaya code."""
     loc = _locale()
     combobox.clear()
-    for entry in _load_localites():
-        if entry.get('wilaya_code') == code_w:
+    dairas = dairas_data()
+    daira_ids = {int(did) for did, d in dairas.items()
+                 if int(d['wilaya_id']) == code_w}
+    for entry in communes_list():
+        if entry.get('daira_id') in daira_ids:
             if loc == 'ar':
                 name = entry.get('commune_ar', '')
             else:
@@ -281,7 +280,7 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
 
     if main_type == _ACTIVITY_KEY:
         filepath = os.path.join(_DATA_DIR, 'activity.json')
-        entry = {"القطاع": category, "النوع": type_name}
+        entry = {"sector": category, "type": type_name}
     else:
         _JSON_FILES = {
             LAYER_ZONES: 'zone_type.json',

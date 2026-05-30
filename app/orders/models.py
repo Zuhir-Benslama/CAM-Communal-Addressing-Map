@@ -83,10 +83,10 @@ class _BaseSpatialModel(Base, TimestampMixin):
 
 
 class Zone(_BaseSpatialModel):
-    """Spatial zone (polygon) model — refpoly in the DB."""
+    """Spatial zone (polygon) model."""
 
-    __tablename__ = 'refpoly'
-    _list_columns = ['Type', 'Nom']
+    __tablename__ = 'zone'
+    _list_columns = ['type', 'name']
 
     id = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
@@ -96,16 +96,16 @@ class Zone(_BaseSpatialModel):
         String, index=True,
         info={'label': 'Location'},
     )
-    Type = Column(
+    type = Column(
         String, nullable=False,
         info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'},
     )
-    Nom = Column(
+    name = Column(
         String,
         info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'},
     )
-    Nom_fr = Column(String, nullable=True)
-    Nom_en = Column(String, nullable=True)
+    name_fr = Column(String, nullable=True)
+    name_en = Column(String, nullable=True)
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=False,
                       info={'label': 'Geometry'})
     has_child = Column(Boolean, default=False, nullable=False)
@@ -114,11 +114,11 @@ class Zone(_BaseSpatialModel):
     user = relationship("User", backref="user_poly", foreign_keys=[user_id])
 
     @classmethod
-    def update(cls, session: Session, pkuid: str,
+    def update(cls, session: Session, id: str,
                **kwargs: Any) -> Optional['Zone']:
         """Update zone attributes and recalc has_child."""
 
-        instance = session.query(cls).filter_by(id=pkuid).first()
+        instance = session.query(cls).filter_by(id=id).first()
         user_data = _get_current_user()
         if not user_data or not instance:
             raise ValueError("Zone not found or no authenticated user")
@@ -132,9 +132,9 @@ class Zone(_BaseSpatialModel):
 
     @classmethod
     def _recalc_has_child(cls, session: Session,
-                          zone_pkuid: str) -> None:
+                          zone_id: str) -> None:
         """Recalculate has_child for a zone based on actual spatial data."""
-        zone = session.query(cls).filter_by(id=zone_pkuid).first()
+        zone = session.query(cls).filter_by(id=zone_id).first()
         if not zone:
             return
         zone.has_child = _has_child_entities(session, zone.geometry)
@@ -153,28 +153,28 @@ class Zone(_BaseSpatialModel):
 
 
 class Subdivision(_BaseSpatialModel):
-    """Subdivision (referred to as refpolychild in the DB)."""
+    """Subdivision spatial model."""
 
-    __tablename__ = 'refpolychild'
-    _list_columns = ['Type', 'Nom']
+    __tablename__ = 'subdivision'
+    _list_columns = ['type', 'name']
 
     id = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
     locality_id = Column(String, index=True)
-    Type = Column(
+    type = Column(
         String, nullable=False,
         info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'},
     )
-    Nom = Column(
+    name = Column(
         String,
         info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'},
     )
-    Nom_fr = Column(String, nullable=True)
-    Nom_en = Column(String, nullable=True)
+    name_fr = Column(String, nullable=True)
+    name_en = Column(String, nullable=True)
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=True)
-    parent = Column(Text, ForeignKey('refpoly.id'), nullable=True, index=True)
+    parent = Column(Text, ForeignKey('zone.id'), nullable=True, index=True)
     user_id = Column(
         Text, ForeignKey('user.id'), nullable=True, index=True,
         info={'label': 'User'},
@@ -184,10 +184,10 @@ class Subdivision(_BaseSpatialModel):
     )
 
     @classmethod
-    def update(cls, session: Session, pkuid: str,
+    def update(cls, session: Session, id: str,
                **kwargs: Any) -> Optional['Subdivision']:
         """Update subdivision attributes and recalc parent zone."""
-        instance = session.query(cls).filter_by(id=pkuid).first()
+        instance = session.query(cls).filter_by(id=id).first()
         user_data = _get_current_user()
         if not user_data or not instance:
             raise ValueError("Subdivision not found or no authenticated user")
@@ -212,18 +212,18 @@ class Subdivision(_BaseSpatialModel):
 
     def delete(self, session: Session) -> None:
         """Delete subdivision and recalc parent zone has_child."""
-        zone_pkuid = self.parent
+        zone_id = self.parent
         session.delete(self)
         session.commit()
-        if zone_pkuid:
-            Zone._recalc_has_child(session, zone_pkuid)
+        if zone_id:
+            Zone._recalc_has_child(session, zone_id)
 
 
 class Road(_BaseSpatialModel):
-    """Road spatial model (RefLine in the DB)."""
+    """Road spatial model."""
 
-    __tablename__ = 'RefLine'
-    _list_columns = ['Type', 'Nom', 'decision_number']
+    __tablename__ = 'road'
+    _list_columns = ['type', 'name', 'decision_number']
 
     id = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
@@ -237,29 +237,29 @@ class Road(_BaseSpatialModel):
             'label_en': 'Decision No.',
         },
     )
-    Type = Column(
+    type = Column(
         String, nullable=False,
         info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'},
     )
-    Nom = Column(
+    name = Column(
         String,
         info={'label': 'Name', 'label_fr': 'Nom', 'label_en': 'Name'},
     )
-    Nom_fr = Column(String, nullable=True)
-    Nom_en = Column(String, nullable=True)
+    name_fr = Column(String, nullable=True)
+    name_en = Column(String, nullable=True)
     locality_id = Column(
         String, nullable=False, index=True,
     )
     geometry = Column(Geometry('LINESTRING', srid=SRID), nullable=True)
-    zone_id = Column(Text, ForeignKey('refpoly.id'), nullable=True, index=True)
+    zone_id = Column(Text, ForeignKey('zone.id'), nullable=True, index=True)
     user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
     user = relationship("User", backref="user_line", foreign_keys=[user_id])
 
     @classmethod
-    def update(cls, session: Session, pkuid: str,
+    def update(cls, session: Session, id: str,
                **kwargs: Any) -> Optional['Zone']:
         """Update zone attributes and recalc has_child."""
-        instance = session.query(cls).filter_by(id=pkuid).first()
+        instance = session.query(cls).filter_by(id=id).first()
         user_data = _get_current_user()
         if not user_data or not instance:
             raise ValueError("Zone not found or no authenticated user")
@@ -273,9 +273,9 @@ class Road(_BaseSpatialModel):
 
     @classmethod
     def _recalc_has_child(cls, session: Session,
-                          zone_pkuid: str) -> None:
+                          zone_id: str) -> None:
         """Recalculate has_child flag for a road's parent zone."""
-        instance = session.query(cls).filter_by(id=zone_pkuid).first()
+        instance = session.query(cls).filter_by(id=zone_id).first()
         if not instance:
             return
         instance.has_child = _has_child_entities(session, instance.geometry)
@@ -294,29 +294,29 @@ class Road(_BaseSpatialModel):
 
     def delete(self, session: Session) -> None:
         """Delete road and recalc parent zone has_child."""
-        zone_pkuid = self.zone_id
+        zone_id = self.zone_id
         session.delete(self)
         session.commit()
-        if zone_pkuid:
-            Zone._recalc_has_child(session, zone_pkuid)
+        if zone_id:
+            Zone._recalc_has_child(session, zone_id)
 
 
 class Organization(_BaseSpatialModel):
-    """Organization / facility spatial model (reforg in the DB)."""
+    """Organization / facility spatial model."""
 
-    __tablename__ = 'reforg'
-    _list_columns = ['category', 'Type', 'Nom']
+    __tablename__ = 'organization'
+    _list_columns = ['category', 'type', 'name']
 
     id = Column(Text, primary_key=True, default=lambda: str(uuid.uuid4()))
     locality_id = Column(String, index=True)
-    Type = Column(String, nullable=True)
+    type = Column(String, nullable=True)
     category = Column(String, nullable=True)
-    Nom = Column(String)
-    Nom_fr = Column(String, nullable=True)
-    Nom_en = Column(String, nullable=True)
+    name = Column(String)
+    name_fr = Column(String, nullable=True)
+    name_en = Column(String, nullable=True)
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=True)
     user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
-    zone_id = Column(Text, ForeignKey('refpoly.id'), nullable=True, index=True)
+    zone_id = Column(Text, ForeignKey('zone.id'), nullable=True, index=True)
     user = relationship("User", backref="user_org", foreign_keys=[user_id])
 
     @property
@@ -325,10 +325,10 @@ class Organization(_BaseSpatialModel):
         return self.category
 
     @classmethod
-    def update(cls, session: Session, pkuid: str,
+    def update(cls, session: Session, id: str,
                **kwargs: Any) -> Optional['Organization']:
         """Update organization attributes and recalc parent zone."""
-        instance = session.query(cls).filter_by(id=pkuid).first()
+        instance = session.query(cls).filter_by(id=id).first()
         user_data = _get_current_user()
         if not user_data or not instance:
             raise ValueError("Organization not found or no authenticated user")
@@ -353,32 +353,32 @@ class Organization(_BaseSpatialModel):
 
     def delete(self, session: Session) -> None:
         """Delete organization and recalc parent zone has_child."""
-        zone_pkuid = self.zone_id
+        zone_id = self.zone_id
         session.delete(self)
         session.commit()
-        if zone_pkuid:
-            Zone._recalc_has_child(session, zone_pkuid)
+        if zone_id:
+            Zone._recalc_has_child(session, zone_id)
 
 
 class Numbering(_BaseSpatialModel):
-    """Numbering attribute model (Numerotation in the DB)."""
+    """Numbering attribute model."""
 
-    __tablename__ = 'Numerotation'
-    _list_columns = ['valeur', 'repetition', 'etat']
+    __tablename__ = 'numbering'
+    _list_columns = ['value', 'repetition', 'state']
     id = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
-    valeur = Column(Text, nullable=False, info={'label': 'Number'})
-    road_id = Column(Text, ForeignKey('RefLine.id'), nullable=True, index=True,
+    value = Column(Text, nullable=False, info={'label': 'Number'})
+    road_id = Column(Text, ForeignKey('road.id'), nullable=True, index=True,
                      info={'label': 'Road'})
     subdivision_id = Column(
-        Text, ForeignKey('refpolychild.id'), nullable=True, index=True,
+        Text, ForeignKey('subdivision.id'), nullable=True, index=True,
         info={'label': 'Subdivision'},
     )
     repetition = Column(String, info={'label': 'Duplicated'})
-    etat = Column(String, nullable=True,
-                  info={'label': 'State'})
+    state = Column(String, nullable=True,
+                   info={'label': 'State'})
     geometry = Column(Geometry('POINT', srid=SRID), nullable=True,
                       info={'label': 'Geometry'})
     user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
@@ -394,10 +394,10 @@ class Numbering(_BaseSpatialModel):
     activity_type = Column(String, nullable=True)
 
     @classmethod
-    def update(cls, session: Session, pkuid: str,
+    def update(cls, session: Session, id: str,
                **kwargs: Any) -> Optional['Numbering']:
         """Update numbering attributes."""
-        instance = session.query(cls).filter_by(id=pkuid).first()
+        instance = session.query(cls).filter_by(id=id).first()
         user_data = _get_current_user()
         if not user_data or not instance:
             raise ValueError("Numbering not found or no authenticated user")
@@ -419,9 +419,9 @@ class Numbering(_BaseSpatialModel):
 
 
 class PanelSign(_BaseSpatialModel):
-    """Panel sign model (Pannautage in the DB)."""
+    """Panel sign model."""
 
-    __tablename__ = 'Pannautage'
+    __tablename__ = 'panel_sign'
 
     id = Column(
         Text, primary_key=True, default=lambda: str(uuid.uuid4()),
@@ -429,19 +429,19 @@ class PanelSign(_BaseSpatialModel):
     )
     dimensions = Column(String, nullable=False,
                         info={'label': 'Dimensions'})
-    Type = Column(Text, nullable=True, info={'label': 'Reference Type'})
-    situation = Column(
+    type = Column(Text, nullable=True, info={'label': 'Reference Type'})
+    status = Column(
         String, nullable=True,
         info={'label': 'Status'},
     )
-    road_id = Column(Text, ForeignKey('RefLine.id'), nullable=True, index=True,
+    road_id = Column(Text, ForeignKey('road.id'), nullable=True, index=True,
                      info={'label': 'Road'})
     subdivision_id = Column(
-        Text, ForeignKey('refpolychild.id'), nullable=True, index=True,
+        Text, ForeignKey('subdivision.id'), nullable=True, index=True,
         info={'label': 'Subdivision'},
     )
     organization_id = Column(
-        Text, ForeignKey('reforg.id'), nullable=True, index=True,
+        Text, ForeignKey('organization.id'), nullable=True, index=True,
         info={'label': 'Facility'},
     )
     geometry = Column(Geometry('POINT', srid=SRID), nullable=True,
@@ -468,23 +468,23 @@ class PanelSign(_BaseSpatialModel):
         loc = current_locale()
         if self.road_id is not None and self.subdivision_id is None \
                 and self.organization_id is None:
-            return ('\u200F' + locale_value(self.road, 'Type', loc) +
-                    ' ' + locale_value(self.road, 'Nom', loc))
+            return ('\u200F' + locale_value(self.road, 'type', loc) +
+                    ' ' + locale_value(self.road, 'name', loc))
         if self.road_id is None and self.subdivision_id is not None \
                 and self.organization_id is None:
-            return ('\u200F' + locale_value(self.subdivision, 'Type', loc) +
-                    ' ' + locale_value(self.subdivision, 'Nom', loc))
+            return ('\u200F' + locale_value(self.subdivision, 'type', loc) +
+                    ' ' + locale_value(self.subdivision, 'name', loc))
         if self.road_id is None and self.subdivision_id is None \
                 and self.organization_id is not None:
-            return ('\u200F' + locale_value(self.organization, 'Type', loc) +
-                    ' ' + locale_value(self.organization, 'Nom', loc))
+            return ('\u200F' + locale_value(self.organization, 'type', loc) +
+                    ' ' + locale_value(self.organization, 'name', loc))
         return None
 
     @classmethod
-    def update(cls, session: Session, pkuid: str,
+    def update(cls, session: Session, id: str,
                **kwargs: Any) -> Optional['PanelSign']:
         """Update panel sign attributes."""
-        instance = session.query(cls).filter_by(id=pkuid).first()
+        instance = session.query(cls).filter_by(id=id).first()
         user_data = _get_current_user()
         if not user_data or not instance:
             raise ValueError("PanelSign not found or no authenticated user")
@@ -507,9 +507,9 @@ class PanelSign(_BaseSpatialModel):
                 )
                 if not road:
                     raise ValueError(
-                        f"Road with pkuid {self.road_id} not found"
+                        f"Road with id {self.road_id} not found"
                     )
-                self.Type = LAYER_ROADS
+                self.type = LAYER_ROADS
             if self.organization_id:
                 org = (
                     session.query(Organization)
@@ -520,7 +520,7 @@ class PanelSign(_BaseSpatialModel):
                     raise ValueError(
                         f"Organization {self.organization_id} not found"
                     )
-                self.Type = LAYER_FACILITIES
+                self.type = LAYER_FACILITIES
             if self.subdivision_id:
                 sub = (
                     session.query(Subdivision)
@@ -531,7 +531,7 @@ class PanelSign(_BaseSpatialModel):
                     raise ValueError(
                         f"Subdivision {self.subdivision_id} not found"
                     )
-                self.Type = LAYER_SUBDIVISIONS
+                self.type = LAYER_SUBDIVISIONS
             session.add(self)
             session.commit()
         else:

@@ -33,7 +33,7 @@ def _activate_add_feature(iface, layer) -> None:
         )
     else:
         iface.messageBar().pushMessage(
-            get_string("Erreur", loc),
+            get_string("Error", loc),
             get_string("Unsupported geometry type.", loc),
             level=Qgis.Critical, duration=NOTIFY_DURATION
         )
@@ -48,7 +48,7 @@ def edit_line_layer(iface) -> None:
     else:
         loc = current_locale()
         iface.messageBar().pushMessage(
-            get_string("Erreur", loc),
+            get_string("Error", loc),
             get_string("No active vector layer.", loc),
             level=Qgis.Critical, duration=NOTIFY_DURATION
         )
@@ -60,7 +60,7 @@ def save_changes(iface) -> None:
     layer = iface.activeLayer()
     if not layer or layer.type() != QgsMapLayer.VectorLayer:
         iface.messageBar().pushMessage(
-            get_string("Erreur", loc),
+            get_string("Error", loc),
             get_string("No active vector layer to save changes.", loc),
             level=Qgis.Critical, duration=NOTIFY_DURATION
         )
@@ -82,7 +82,7 @@ def save_changes(iface) -> None:
         )
     else:
         iface.messageBar().pushMessage(
-            get_string("Erreur", loc),
+            get_string("Error", loc),
             get_string("Failed to save changes.", loc),
             level=Qgis.Critical, duration=NOTIFY_DURATION
         )
@@ -94,7 +94,7 @@ def start_editing_layer(iface, layer_name) -> None:
     layers = QgsProject.instance().mapLayersByName(layer_name)
     if not layers:
         iface.messageBar().pushMessage(
-            get_string("Erreur", loc),
+            get_string("Error", loc),
             get_string("No layer found with the name", loc) + f" '{layer_name}'.",
             level=Qgis.Critical, duration=NOTIFY_DURATION
         )
@@ -106,7 +106,7 @@ def start_editing_layer(iface, layer_name) -> None:
         _activate_add_feature(iface, layer)
     else:
         iface.messageBar().pushMessage(
-            get_string("Erreur", loc),
+            get_string("Error", loc),
             get_string("Unsupported geometry type.", loc),
             level=Qgis.Critical, duration=NOTIFY_DURATION
         )
@@ -118,7 +118,7 @@ def stop_editing_layer(iface, layer_name) -> None:
     layers = QgsProject.instance().mapLayersByName(layer_name)
     if not layers:
         iface.messageBar().pushMessage(
-            get_string("Erreur", loc),
+            get_string("Error", loc),
             get_string("No layer found with the name", loc) + f" '{layer_name}'.",
             level=Qgis.Critical, duration=NOTIFY_DURATION
         )
@@ -136,7 +136,7 @@ def stop_editing_layer(iface, layer_name) -> None:
                 )
             else:
                 iface.messageBar().pushMessage(
-                    get_string("Erreur", loc),
+                    get_string("Error", loc),
                     get_string("Cannot stop editing for layer", loc) +
                     f" {layer.name()}.",
                     level=Qgis.Critical, duration=NOTIFY_DURATION
@@ -149,7 +149,7 @@ def stop_editing_layer(iface, layer_name) -> None:
             )
     else:
         iface.messageBar().pushMessage(
-            get_string("Erreur", loc),
+            get_string("Error", loc),
             get_string("No active vector layer.", loc),
             level=Qgis.Critical, duration=NOTIFY_DURATION
         )

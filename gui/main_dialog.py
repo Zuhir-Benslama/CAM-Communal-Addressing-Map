@@ -271,9 +271,9 @@ class MainDialog(
         self._output_dir = directory
         action = self._action_combo.currentData()
         if action == 'report':
-            self.gen_report()
+            self.generate_report()
         elif action == 'order':
-            self.bon_commande()
+            self.purchase_order()
         elif action == 'panels_map':
             self.panel_chart()
             self.export_to_image()

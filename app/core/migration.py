@@ -26,8 +26,8 @@ COLUMN_MAP = {
     "refpoly": {
         "pkuid": "id",
         "idLoc": "locality_id",
-        "Type": "Type",
-        "Nom": "Nom",
+        "Type": "type",
+        "Nom": "name",
         "geometry": "geometry",
         "has_child": "has_child",
         "uid": "user_id",
@@ -35,8 +35,8 @@ COLUMN_MAP = {
     "refpolychild": {
         "pkuid": "id",
         "idLoc": "locality_id",
-        "Type": "Type",
-        "Nom": "Nom",
+        "Type": "type",
+        "Nom": "name",
         "geometry": "geometry",
         "parent": "parent",
         "uid": "user_id",
@@ -44,8 +44,8 @@ COLUMN_MAP = {
     "RefLine": {
         "pkuid": "id",
         "num_decision": "decision_number",
-        "Type": "Type",
-        "Nom": "Nom",
+        "Type": "type",
+        "Nom": "name",
         "idLoc": "locality_id",
         "geometry": "geometry",
         "pkuid_poly": "zone_id",
@@ -54,20 +54,20 @@ COLUMN_MAP = {
     "reforg": {
         "pkuid": "id",
         "idLoc": "locality_id",
-        "Type": "Type",
+        "Type": "type",
         "Cat": "category",
-        "Nom": "Nom",
+        "Nom": "name",
         "geometry": "geometry",
         "uid": "user_id",
         "pkuid_poly": "zone_id",
     },
     "Numerotation": {
         "pkuid": "id",
-        "valeur": "valeur",
+        "valeur": "value",
         "idLine": "road_id",
         "idPoly": "subdivision_id",
         "repetition": "repetition",
-        "etat": "etat",
+        "etat": "state",
         "geometry": "geometry",
         "uid": "user_id",
         "activity_cat": "activity_cat",
@@ -76,8 +76,8 @@ COLUMN_MAP = {
     "Pannautage": {
         "pkuid": "id",
         "dim": "dimensions",
-        "Type": "Type",
-        "Stituation": "situation",
+        "Type": "type",
+        "Stituation": "status",
         "idLine": "road_id",
         "idPoly": "subdivision_id",
         "idOrg": "organization_id",
@@ -108,14 +108,14 @@ NEW_TABLES = {
             UNIQUE (username)
         )
     """,
-    "refpoly": """
-        CREATE TABLE refpoly (
+    "zone": """
+        CREATE TABLE zone (
             id TEXT NOT NULL,
             locality_id VARCHAR,
-            Type VARCHAR NOT NULL,
-            Nom VARCHAR,
-            Nom_fr TEXT,
-            Nom_en TEXT,
+            type VARCHAR NOT NULL,
+            name VARCHAR,
+            name_fr TEXT,
+            name_en TEXT,
             has_child BOOLEAN NOT NULL DEFAULT 0,
             user_id TEXT,
             created_at DATETIME,
@@ -124,84 +124,84 @@ NEW_TABLES = {
             FOREIGN KEY (user_id) REFERENCES user(id)
         )
     """,
-    "refpolychild": """
-        CREATE TABLE refpolychild (
+    "subdivision": """
+        CREATE TABLE subdivision (
             id TEXT NOT NULL,
             locality_id VARCHAR,
-            Type VARCHAR NOT NULL,
-            Nom VARCHAR,
-            Nom_fr TEXT,
-            Nom_en TEXT,
+            type VARCHAR NOT NULL,
+            name VARCHAR,
+            name_fr TEXT,
+            name_en TEXT,
             parent TEXT,
             user_id TEXT,
             created_at DATETIME,
             updated_at DATETIME,
             PRIMARY KEY (id),
-            FOREIGN KEY (parent) REFERENCES refpoly(id),
+            FOREIGN KEY (parent) REFERENCES zone(id),
             FOREIGN KEY (user_id) REFERENCES user(id)
         )
     """,
-    "RefLine": """
-        CREATE TABLE RefLine (
+    "road": """
+        CREATE TABLE road (
             id TEXT NOT NULL,
             decision_number TEXT,
-            Type VARCHAR NOT NULL,
-            Nom VARCHAR,
-            Nom_fr TEXT,
-            Nom_en TEXT,
+            type VARCHAR NOT NULL,
+            name VARCHAR,
+            name_fr TEXT,
+            name_en TEXT,
             locality_id VARCHAR NOT NULL,
             zone_id TEXT,
             user_id TEXT,
             created_at DATETIME,
             updated_at DATETIME,
             PRIMARY KEY (id),
-            FOREIGN KEY (zone_id) REFERENCES refpoly(id),
+            FOREIGN KEY (zone_id) REFERENCES zone(id),
             FOREIGN KEY (user_id) REFERENCES user(id)
         )
     """,
-    "reforg": """
-        CREATE TABLE reforg (
+    "organization": """
+        CREATE TABLE organization (
             id TEXT NOT NULL,
             locality_id VARCHAR,
-            Type VARCHAR,
+            type VARCHAR,
             category VARCHAR,
-            Nom VARCHAR,
-            Nom_fr TEXT,
-            Nom_en TEXT,
+            name VARCHAR,
+            name_fr TEXT,
+            name_en TEXT,
             user_id TEXT,
             zone_id TEXT,
             created_at DATETIME,
             updated_at DATETIME,
             PRIMARY KEY (id),
             FOREIGN KEY (user_id) REFERENCES user(id),
-            FOREIGN KEY (zone_id) REFERENCES refpoly(id)
+            FOREIGN KEY (zone_id) REFERENCES zone(id)
         )
     """,
-    "Numerotation": """
-        CREATE TABLE Numerotation (
+    "numbering": """
+        CREATE TABLE numbering (
             id TEXT NOT NULL,
-            valeur TEXT NOT NULL,
+            value TEXT NOT NULL,
             road_id TEXT,
             subdivision_id TEXT,
             repetition VARCHAR,
-            etat VARCHAR,
+            state VARCHAR,
             user_id TEXT,
             activity_cat VARCHAR,
             activity_type VARCHAR,
             created_at DATETIME,
             updated_at DATETIME,
             PRIMARY KEY (id),
-            FOREIGN KEY (road_id) REFERENCES RefLine(id),
-            FOREIGN KEY (subdivision_id) REFERENCES refpolychild(id),
+            FOREIGN KEY (road_id) REFERENCES road(id),
+            FOREIGN KEY (subdivision_id) REFERENCES subdivision(id),
             FOREIGN KEY (user_id) REFERENCES user(id)
         )
     """,
-    "Pannautage": """
-        CREATE TABLE Pannautage (
+    "panel_sign": """
+        CREATE TABLE panel_sign (
             id TEXT NOT NULL,
             dimensions VARCHAR NOT NULL,
-            Type TEXT,
-            situation VARCHAR,
+            type TEXT,
+            status VARCHAR,
             road_id TEXT,
             subdivision_id TEXT,
             organization_id TEXT,
@@ -209,9 +209,9 @@ NEW_TABLES = {
             created_at DATETIME,
             updated_at DATETIME,
             PRIMARY KEY (id),
-            FOREIGN KEY (road_id) REFERENCES RefLine(id),
-            FOREIGN KEY (subdivision_id) REFERENCES refpolychild(id),
-            FOREIGN KEY (organization_id) REFERENCES reforg(id),
+            FOREIGN KEY (road_id) REFERENCES road(id),
+            FOREIGN KEY (subdivision_id) REFERENCES subdivision(id),
+            FOREIGN KEY (organization_id) REFERENCES organization(id),
             FOREIGN KEY (user_id) REFERENCES user(id)
         )
     """,
@@ -223,12 +223,12 @@ SPATIALITE_LIB = os.environ.get(
 )
 
 GEOMETRY_TYPES = {
-    "refpoly": ("POLYGON", 4326, 2, 3),
-    "refpolychild": ("POLYGON", 4326, 2, 3),
-    "RefLine": ("LINESTRING", 4326, 2, 2),
-    "reforg": ("POLYGON", 4326, 2, 3),
-    "Numerotation": ("POINT", 4326, 2, 1),
-    "Pannautage": ("POINT", 4326, 2, 1),
+    "zone": ("POLYGON", 4326, 2, 3),
+    "subdivision": ("POLYGON", 4326, 2, 3),
+    "road": ("LINESTRING", 4326, 2, 2),
+    "organization": ("POLYGON", 4326, 2, 3),
+    "numbering": ("POINT", 4326, 2, 1),
+    "panel_sign": ("POINT", 4326, 2, 1),
 }
 
 

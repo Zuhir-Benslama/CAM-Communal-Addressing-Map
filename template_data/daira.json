@@ -1,0 +1,5015 @@
+{
+  "1": {
+    "daira_id": 1,
+    "wilaya_id": 1,
+    "daira_ar": "أدرار",
+    "daira_fr": "Adrar",
+    "daira_name": "دائرة أدرار, أدرار, الجزائر",
+    "daira_latitude": 27.9324975,
+    "daira_longitude": -1.423011
+  },
+  "3": {
+    "daira_id": 3,
+    "wilaya_id": 1,
+    "daira_ar": "رقان",
+    "daira_fr": "Reggane",
+    "daira_name": "دائرة رقان, أدرار, 01200, الجزائر",
+    "daira_latitude": 25.531637,
+    "daira_longitude": -2.0991725
+  },
+  "4": {
+    "daira_id": 4,
+    "wilaya_id": 1,
+    "daira_ar": "تسابيت",
+    "daira_fr": "Tsabit",
+    "daira_name": "دائرة تسابيت, أدرار, 01015, الجزائر",
+    "daira_latitude": 28.498805,
+    "daira_longitude": -1.1266723
+  },
+  "6": {
+    "daira_id": 6,
+    "wilaya_id": 1,
+    "daira_ar": "زاوية كنتة",
+    "daira_fr": "Zaouiat Kounta",
+    "daira_name": "دائرة زاوية كنتة, أدرار, 01030, الجزائر",
+    "daira_latitude": 27.169876,
+    "daira_longitude": -1.2954415
+  },
+  "7": {
+    "daira_id": 7,
+    "wilaya_id": 1,
+    "daira_ar": "أولف",
+    "daira_fr": "Aoulef",
+    "daira_name": "دائرة اولف, أدرار, 01003, الجزائر",
+    "daira_latitude": 27.4162788,
+    "daira_longitude": 1.1090215
+  },
+  "8": {
+    "daira_id": 8,
+    "wilaya_id": 1,
+    "daira_ar": "فنوغيل",
+    "daira_fr": "Fenoughil",
+    "daira_name": "دائرة فنوغيل, أدرار, الجزائر",
+    "daira_latitude": 27.894138,
+    "daira_longitude": 0.3728227
+  },
+  "14": {
+    "daira_id": 14,
+    "wilaya_id": 2,
+    "daira_ar": "الشلف",
+    "daira_fr": "Chlef",
+    "daira_name": "دائرة الشلف, الشلف, الجزائر",
+    "daira_latitude": 36.095845,
+    "daira_longitude": 1.372285
+  },
+  "15": {
+    "daira_id": 15,
+    "wilaya_id": 2,
+    "daira_ar": "تنس",
+    "daira_fr": "Tenes",
+    "daira_name": "دائرة تنس, الشلف, الجزائر",
+    "daira_latitude": 36.4676923,
+    "daira_longitude": 1.2898896
+  },
+  "16": {
+    "daira_id": 16,
+    "wilaya_id": 2,
+    "daira_ar": "الكريمية",
+    "daira_fr": "El Karimia",
+    "daira_name": "دائرة الكريمية, الشلف, 02008, الجزائر",
+    "daira_latitude": 36.0433196,
+    "daira_longitude": 1.5921056
+  },
+  "17": {
+    "daira_id": 17,
+    "wilaya_id": 2,
+    "daira_ar": "تاوقريت",
+    "daira_fr": "Taougrit",
+    "daira_name": "دائرة تاوقريت, الشلف, الجزائر",
+    "daira_latitude": 36.2796744,
+    "daira_longitude": 0.8655982
+  },
+  "18": {
+    "daira_id": 18,
+    "wilaya_id": 2,
+    "daira_ar": "بني حواء",
+    "daira_fr": "Beni Haoua",
+    "daira_name": "دائرة بني حواء, الشلف, 02017, الجزائر",
+    "daira_latitude": 36.4761114,
+    "daira_longitude": 1.5354487
+  },
+  "19": {
+    "daira_id": 19,
+    "wilaya_id": 2,
+    "daira_ar": "أولاد فارس",
+    "daira_fr": "Ouled Fares",
+    "daira_name": "دائرة أولاد فارس, الشلف, الجزائر",
+    "daira_latitude": 36.2289304,
+    "daira_longitude": 1.2096561
+  },
+  "20": {
+    "daira_id": 20,
+    "wilaya_id": 2,
+    "daira_ar": "بوقادير",
+    "daira_fr": "Boukadir",
+    "daira_name": "دائرة بوقادير, الشلف, الجزائر",
+    "daira_latitude": 36.063252,
+    "daira_longitude": 1.097299
+  },
+  "21": {
+    "daira_id": 21,
+    "wilaya_id": 2,
+    "daira_ar": "الزبوجة",
+    "daira_fr": "Zeboudja",
+    "daira_name": "دائرة الزبوجة, الشلف, الجزائر",
+    "daira_latitude": 36.3854909,
+    "daira_longitude": 1.4348674
+  },
+  "22": {
+    "daira_id": 22,
+    "wilaya_id": 2,
+    "daira_ar": "أبو الحسن",
+    "daira_fr": "Abou El Hassane",
+    "daira_name": "دائرة أبو الحسن, الشلف, الجزائر",
+    "daira_latitude": 36.362058,
+    "daira_longitude": 1.1215169
+  },
+  "23": {
+    "daira_id": 23,
+    "wilaya_id": 2,
+    "daira_ar": "المرسى",
+    "daira_fr": "El Marsa",
+    "daira_name": "دائرة المرسى, الشلف, الجزائر",
+    "daira_latitude": 36.3837949,
+    "daira_longitude": 0.968834
+  },
+  "24": {
+    "daira_id": 24,
+    "wilaya_id": 2,
+    "daira_ar": "وادي الفضة",
+    "daira_fr": "Oued Fodda",
+    "daira_name": "دائرة وادي الفضة, الشلف, الجزائر",
+    "daira_latitude": 36.2565732,
+    "daira_longitude": 1.5219576
+  },
+  "25": {
+    "daira_id": 25,
+    "wilaya_id": 2,
+    "daira_ar": "أولاد بن عبد القادر",
+    "daira_fr": "Ouled Ben Abdelkader",
+    "daira_name": "دائرة أولاد بن عبد القادر, الشلف, الجزائر",
+    "daira_latitude": 35.9681195,
+    "daira_longitude": 1.391059
+  },
+  "26": {
+    "daira_id": 26,
+    "wilaya_id": 2,
+    "daira_ar": "عين مران",
+    "daira_fr": "Ain Merane",
+    "daira_name": "دائرة عين مران, الشلف, الجزائر",
+    "daira_latitude": 36.2162695,
+    "daira_longitude": 1.0288994
+  },
+  "27": {
+    "daira_id": 27,
+    "wilaya_id": 3,
+    "daira_ar": "الأغواط",
+    "daira_fr": "Laghouat",
+    "daira_name": "دائرة الأغواط, الأغواط, الجزائر",
+    "daira_latitude": 33.8425798,
+    "daira_longitude": 2.8423727
+  },
+  "28": {
+    "daira_id": 28,
+    "wilaya_id": 3,
+    "daira_ar": "قصر الحيران",
+    "daira_fr": "Ksar El Hirane",
+    "daira_name": "دائرة قصر الحيران, الأغواط, 03100, الجزائر",
+    "daira_latitude": 33.5291537,
+    "daira_longitude": 3.0421425
+  },
+  "29": {
+    "daira_id": 29,
+    "wilaya_id": 3,
+    "daira_ar": "سيدي مخلوف",
+    "daira_fr": "Sidi Makhlouf",
+    "daira_name": "دائرة سيدي مخلوف, الأغواط, الجزائر",
+    "daira_latitude": 34.046571,
+    "daira_longitude": 2.8749804
+  },
+  "30": {
+    "daira_id": 30,
+    "wilaya_id": 3,
+    "daira_ar": "حاسي الرمل",
+    "daira_fr": "Hassi R'mel",
+    "daira_name": "دائرة حاسي الرمل, الأغواط, الجزائر",
+    "daira_latitude": 33.307776,
+    "daira_longitude": 3.8168612
+  },
+  "31": {
+    "daira_id": 31,
+    "wilaya_id": 3,
+    "daira_ar": "عين ماضي",
+    "daira_fr": "Ain Madhi",
+    "daira_name": "دائرة عين ماضي, الأغواط, الجزائر",
+    "daira_latitude": 33.7171891,
+    "daira_longitude": 2.5318515
+  },
+  "32": {
+    "daira_id": 32,
+    "wilaya_id": 3,
+    "daira_ar": "قتلة سيدي سعيد",
+    "daira_fr": "Gueltat Sidi Saad",
+    "daira_name": "دائرة قلتة سيدي سعد, الأغواط, 03013, الجزائر",
+    "daira_latitude": 34.3701844,
+    "daira_longitude": 1.9095807
+  },
+  "33": {
+    "daira_id": 33,
+    "wilaya_id": 3,
+    "daira_ar": "بريدة",
+    "daira_fr": "Brida",
+    "daira_name": "دائرة بريدة, الأغواط, الجزائر",
+    "daira_latitude": 33.956751,
+    "daira_longitude": 1.6351982
+  },
+  "34": {
+    "daira_id": 34,
+    "wilaya_id": 3,
+    "daira_ar": "الغيشة",
+    "daira_fr": "El Ghicha",
+    "daira_name": "دائرةالغيشة, الأغواط, الجزائر",
+    "daira_latitude": 33.8750888,
+    "daira_longitude": 2.1395264
+  },
+  "35": {
+    "daira_id": 35,
+    "wilaya_id": 3,
+    "daira_ar": "أفلو",
+    "daira_fr": "Aflou",
+    "daira_name": "دائرة آفلو, الأغواط, 03400, الجزائر",
+    "daira_latitude": 34.1526188,
+    "daira_longitude": 2.0496633
+  },
+  "36": {
+    "daira_id": 36,
+    "wilaya_id": 3,
+    "daira_ar": "وادي مرة",
+    "daira_fr": "Oued Morra",
+    "daira_name": "دائرة وادي مرة, الأغواط, الجزائر",
+    "daira_latitude": 34.1171561,
+    "daira_longitude": 2.318211
+  },
+  "37": {
+    "daira_id": 37,
+    "wilaya_id": 4,
+    "daira_ar": "أم البواقي",
+    "daira_fr": "Oum El Bouaghi",
+    "daira_name": "دائرة أم البواقي, أم البواقي, الجزائر",
+    "daira_latitude": 35.7525703,
+    "daira_longitude": 7.0748459
+  },
+  "38": {
+    "daira_id": 38,
+    "wilaya_id": 4,
+    "daira_ar": "عين البيضاء",
+    "daira_fr": "Ain Beida",
+    "daira_name": "دائرة عين البيضاء, أم البواقي, الجزائر",
+    "daira_latitude": 35.880591,
+    "daira_longitude": 7.3824519
+  },
+  "39": {
+    "daira_id": 39,
+    "wilaya_id": 4,
+    "daira_ar": "عين مليلة",
+    "daira_fr": "Ain M'lila",
+    "daira_name": "دائرة عين مليلة, أم البواقي, الجزائر",
+    "daira_latitude": 36.0484805,
+    "daira_longitude": 6.5700453
+  },
+  "40": {
+    "daira_id": 40,
+    "wilaya_id": 4,
+    "daira_ar": "سيقوس",
+    "daira_fr": "Sigus",
+    "daira_name": "دائرة سيقوس, أم البواقي, الجزائر",
+    "daira_latitude": 36.0967,
+    "daira_longitude": 6.8361696
+  },
+  "41": {
+    "daira_id": 41,
+    "wilaya_id": 4,
+    "daira_ar": "عين ببوش",
+    "daira_fr": "Ain Babouche",
+    "daira_name": "دائرة عين بابوش, أم البواقي, الجزائر",
+    "daira_latitude": 35.9969954,
+    "daira_longitude": 7.1005567
+  },
+  "42": {
+    "daira_id": 42,
+    "wilaya_id": 4,
+    "daira_ar": "الضلعة",
+    "daira_fr": "Dhalaa",
+    "daira_name": "دائرة دهالة, أم البواقي, الجزائر",
+    "daira_latitude": 35.587189,
+    "daira_longitude": 7.5525326
+  },
+  "43": {
+    "daira_id": 43,
+    "wilaya_id": 4,
+    "daira_ar": "عين كرشة",
+    "daira_fr": "Ain Kercha",
+    "daira_name": "دائرة عين كرشة, أم البواقي, 04006, الجزائر",
+    "daira_latitude": 35.8959742,
+    "daira_longitude": 6.6672585
+  },
+  "44": {
+    "daira_id": 44,
+    "wilaya_id": 4,
+    "daira_ar": "فكيرينة",
+    "daira_fr": "F'kirina",
+    "daira_name": "دائرة فكرينة, أم البواقي, الجزائر",
+    "daira_latitude": 35.6529375,
+    "daira_longitude": 7.3525414
+  },
+  "45": {
+    "daira_id": 45,
+    "wilaya_id": 4,
+    "daira_ar": "سوق نعمان",
+    "daira_fr": "Souk Naamane",
+    "daira_name": "دائرة سوق نعمان, أم البواقي, الجزائر",
+    "daira_latitude": 35.895078,
+    "daira_longitude": 6.3482734
+  },
+  "46": {
+    "daira_id": 46,
+    "wilaya_id": 4,
+    "daira_ar": "قصر الصباحي",
+    "daira_fr": "Ksar Sbahi",
+    "daira_name": "دائرة قصر صباحي, أم البواقي, 04018, الجزائر",
+    "daira_latitude": 36.0614655,
+    "daira_longitude": 7.2530315
+  },
+  "47": {
+    "daira_id": 47,
+    "wilaya_id": 4,
+    "daira_ar": "مسكيانة",
+    "daira_fr": "Meskiana",
+    "daira_name": "دائرة مسكيانة, أم البواقي, الجزائر",
+    "daira_latitude": 35.6972555,
+    "daira_longitude": 7.6966612
+  },
+  "48": {
+    "daira_id": 48,
+    "wilaya_id": 4,
+    "daira_ar": "عين فكرون",
+    "daira_fr": "Ain Fekroun",
+    "daira_name": "دائرة عين فكرون, أم البواقي, الجزائر",
+    "daira_latitude": 35.8608627,
+    "daira_longitude": 6.8700198
+  },
+  "49": {
+    "daira_id": 49,
+    "wilaya_id": 5,
+    "daira_ar": "باتنة",
+    "daira_fr": "Batna",
+    "daira_name": "دائرة باتنة, باتنة, الجزائر",
+    "daira_latitude": 35.5492346,
+    "daira_longitude": 6.1160382
+  },
+  "50": {
+    "daira_id": 50,
+    "wilaya_id": 5,
+    "daira_ar": "مروانة",
+    "daira_fr": "Merouana",
+    "daira_name": "دائرة مروانة, باتنة, الجزائر",
+    "daira_latitude": 35.6139266,
+    "daira_longitude": 5.9912696
+  },
+  "51": {
+    "daira_id": 51,
+    "wilaya_id": 5,
+    "daira_ar": "سريانة",
+    "daira_fr": "Seriana",
+    "daira_name": "دائرة سريانة, باتنة, الجزائر",
+    "daira_latitude": 35.7612701,
+    "daira_longitude": 6.1786513
+  },
+  "52": {
+    "daira_id": 52,
+    "wilaya_id": 5,
+    "daira_ar": "منعة",
+    "daira_fr": "Menaa",
+    "daira_name": "دائرة منعة, باتنة, الجزائر",
+    "daira_latitude": 35.0926941,
+    "daira_longitude": 6.013753
+  },
+  "53": {
+    "daira_id": 53,
+    "wilaya_id": 5,
+    "daira_ar": "المعذر",
+    "daira_fr": "El Madher",
+    "daira_name": "دائرة المعذر, باتنة, 05015, الجزائر",
+    "daira_latitude": 35.7326804,
+    "daira_longitude": 6.4286648
+  },
+  "54": {
+    "daira_id": 54,
+    "wilaya_id": 5,
+    "daira_ar": "تازولت",
+    "daira_fr": "Tazoult",
+    "daira_name": "دائرة تازولت, باتنة, 05011, الجزائر",
+    "daira_latitude": 35.4999607,
+    "daira_longitude": 6.3065991
+  },
+  "55": {
+    "daira_id": 55,
+    "wilaya_id": 5,
+    "daira_ar": "نقاوس",
+    "daira_fr": "N'gaous",
+    "daira_name": "دائرة نقاوس, باتنة, الجزائر",
+    "daira_latitude": 35.4893963,
+    "daira_longitude": 5.5686692
+  },
+  "56": {
+    "daira_id": 56,
+    "wilaya_id": 5,
+    "daira_ar": "أريس",
+    "daira_fr": "Arris",
+    "daira_name": "دائرة أريس, باتنة, الجزائر",
+    "daira_latitude": 35.2642867,
+    "daira_longitude": 6.3300231
+  },
+  "57": {
+    "daira_id": 57,
+    "wilaya_id": 5,
+    "daira_ar": "عين جاسر",
+    "daira_fr": "Ain Djasser",
+    "daira_name": "دائرة عين جاسر, باتنة, الجزائر",
+    "daira_latitude": 35.815384,
+    "daira_longitude": 5.9671049
+  },
+  "58": {
+    "daira_id": 58,
+    "wilaya_id": 5,
+    "daira_ar": "سقانة",
+    "daira_fr": "Seggana",
+    "daira_name": "دائرة سقانة, باتنة, الجزائر",
+    "daira_latitude": 35.3133717,
+    "daira_longitude": 5.6294881
+  },
+  "59": {
+    "daira_id": 59,
+    "wilaya_id": 5,
+    "daira_ar": "إشمول",
+    "daira_fr": "Ichemoul",
+    "daira_name": "دائرة اشمول, باتنة, الجزائر",
+    "daira_latitude": 35.3359979,
+    "daira_longitude": 6.5101798
+  },
+  "60": {
+    "daira_id": 60,
+    "wilaya_id": 5,
+    "daira_ar": "بوزينة",
+    "daira_fr": "Bouzina",
+    "daira_name": "دائرة بوزينة, باتنة, 05041, الجزائر",
+    "daira_latitude": 35.2962402,
+    "daira_longitude": 6.1255154
+  },
+  "61": {
+    "daira_id": 61,
+    "wilaya_id": 5,
+    "daira_ar": "الشمرة",
+    "daira_fr": "Chemora",
+    "daira_name": "دائرة الشمرة, باتنة, الجزائر",
+    "daira_latitude": 35.6789667,
+    "daira_longitude": 6.6679525
+  },
+  "62": {
+    "daira_id": 62,
+    "wilaya_id": 5,
+    "daira_ar": "بريكة",
+    "daira_fr": "Barika",
+    "daira_name": "دائرة بريكة, باتنة, الجزائر",
+    "daira_latitude": 35.237667,
+    "daira_longitude": 5.266017
+  },
+  "63": {
+    "daira_id": 63,
+    "wilaya_id": 5,
+    "daira_ar": "الجزار",
+    "daira_fr": "Djezzar",
+    "daira_name": "دائرة الجزار, باتنة, الجزائر",
+    "daira_latitude": 35.3706718,
+    "daira_longitude": 5.0309871
+  },
+  "64": {
+    "daira_id": 64,
+    "wilaya_id": 5,
+    "daira_ar": "تكوت",
+    "daira_fr": "Tkout",
+    "daira_name": "دائرة تكوت, باتنة, الجزائر",
+    "daira_latitude": 35.0006385,
+    "daira_longitude": 6.490104
+  },
+  "65": {
+    "daira_id": 65,
+    "wilaya_id": 5,
+    "daira_ar": "عين التوتة",
+    "daira_fr": "Ain Touta",
+    "daira_name": "دائرة عين التوتة, باتنة, الجزائر",
+    "daira_latitude": 35.3773022,
+    "daira_longitude": 5.9790395
+  },
+  "66": {
+    "daira_id": 66,
+    "wilaya_id": 5,
+    "daira_ar": "ثنية العابد",
+    "daira_fr": "Theniet El Abed",
+    "daira_name": "دائرة ثنية العابد, باتنة, 05108, الجزائر",
+    "daira_latitude": 35.3334048,
+    "daira_longitude": 6.317364
+  },
+  "67": {
+    "daira_id": 67,
+    "wilaya_id": 5,
+    "daira_ar": "تيمقاد",
+    "daira_fr": "Timgad",
+    "daira_name": "دائرة تيمقاد, باتنة, 05023, الجزائر",
+    "daira_latitude": 35.5421069,
+    "daira_longitude": 6.6049122
+  },
+  "68": {
+    "daira_id": 68,
+    "wilaya_id": 5,
+    "daira_ar": "رأس العيون",
+    "daira_fr": "Ras El Aioun",
+    "daira_name": "دائرة راس لعيون, باتنة, الجزائر",
+    "daira_latitude": 35.6952131,
+    "daira_longitude": 5.6256922
+  },
+  "69": {
+    "daira_id": 69,
+    "wilaya_id": 5,
+    "daira_ar": "أولاد سي سليمان",
+    "daira_fr": "Ouled Si Slimane",
+    "daira_name": "دائرة اولاد سي سليمان, باتنة, 05066, الجزائر",
+    "daira_latitude": 35.5692966,
+    "daira_longitude": 5.7614618
+  },
+  "70": {
+    "daira_id": 70,
+    "wilaya_id": 6,
+    "daira_ar": "بجاية",
+    "daira_fr": "Bejaia",
+    "daira_name": "دائرة بجاية, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.7568604,
+    "daira_longitude": 5.0216572
+  },
+  "71": {
+    "daira_id": 71,
+    "wilaya_id": 6,
+    "daira_ar": "أميزور",
+    "daira_fr": "Amizour",
+    "daira_name": "دائرة أميزور, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.6143069,
+    "daira_longitude": 4.8626178
+  },
+  "72": {
+    "daira_id": 72,
+    "wilaya_id": 6,
+    "daira_ar": "تيمزريت",
+    "daira_fr": "Timezrit",
+    "daira_name": "دائرة تيمزريت, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.6155736,
+    "daira_longitude": 4.7683245
+  },
+  "73": {
+    "daira_id": 73,
+    "wilaya_id": 6,
+    "daira_ar": "سوق الإثنين",
+    "daira_fr": "Souk El Tenine",
+    "daira_name": "دائرة سوق الإثنين, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.5986538,
+    "daira_longitude": 5.4070431
+  },
+  "74": {
+    "daira_id": 74,
+    "wilaya_id": 6,
+    "daira_ar": "تيشي",
+    "daira_fr": "Tichy",
+    "daira_name": "دائرة تيشي, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.6476406,
+    "daira_longitude": 5.1065496
+  },
+  "75": {
+    "daira_id": 75,
+    "wilaya_id": 6,
+    "daira_ar": "إغيل علي",
+    "daira_fr": "Ighil Ali",
+    "daira_name": "دائرة إغيل علي, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.3238011,
+    "daira_longitude": 4.5313559
+  },
+  "76": {
+    "daira_id": 76,
+    "wilaya_id": 6,
+    "daira_ar": "درقينة",
+    "daira_fr": "Darguina",
+    "daira_name": "دائرة درقينة, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.551274,
+    "daira_longitude": 5.315835
+  },
+  "77": {
+    "daira_id": 77,
+    "wilaya_id": 6,
+    "daira_ar": "أوقاس",
+    "daira_fr": "Aokas",
+    "daira_name": "دائرة أوقاس, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.5961802,
+    "daira_longitude": 5.2278578
+  },
+  "78": {
+    "daira_id": 78,
+    "wilaya_id": 6,
+    "daira_ar": "أدكار",
+    "daira_fr": "Adekar",
+    "daira_name": "دائرة آدكار, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.7856316,
+    "daira_longitude": 4.7083208
+  },
+  "79": {
+    "daira_id": 79,
+    "wilaya_id": 6,
+    "daira_ar": "أقبو",
+    "daira_fr": "Akbou",
+    "daira_name": "دائرة آقبو, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.4727606,
+    "daira_longitude": 4.4987583
+  },
+  "80": {
+    "daira_id": 80,
+    "wilaya_id": 6,
+    "daira_ar": "صدوق",
+    "daira_fr": "Seddouk",
+    "daira_name": "دائرة صدوق, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.4976826,
+    "daira_longitude": 4.6585242
+  },
+  "81": {
+    "daira_id": 81,
+    "wilaya_id": 6,
+    "daira_ar": "تازملت",
+    "daira_fr": "Tazmalt",
+    "daira_name": "دائرة ثازمالت, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.3671572,
+    "daira_longitude": 4.4325466
+  },
+  "82": {
+    "daira_id": 82,
+    "wilaya_id": 6,
+    "daira_ar": "شميني",
+    "daira_fr": "Chemini",
+    "daira_name": "دائرة شميني, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.6254537,
+    "daira_longitude": 4.6039391
+  },
+  "83": {
+    "daira_id": 83,
+    "wilaya_id": 6,
+    "daira_ar": "برباشة",
+    "daira_fr": "Barbacha",
+    "daira_name": "دائرة برباشة, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.5638848,
+    "daira_longitude": 4.9909684
+  },
+  "84": {
+    "daira_id": 84,
+    "wilaya_id": 6,
+    "daira_ar": "إفري أوزلاقن",
+    "daira_fr": "Ifri Ouzellaguene",
+    "daira_name": "إفري, أوزلاقن, دائرة أوزلاقن, بجاية, 06010, الجزائر",
+    "daira_latitude": 36.5503357,
+    "daira_longitude": 4.5527421
+  },
+  "85": {
+    "daira_id": 85,
+    "wilaya_id": 6,
+    "daira_ar": "سيدي عيش",
+    "daira_fr": "Sidi Aich",
+    "daira_name": "دائرة سيدي عيش, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.635692,
+    "daira_longitude": 4.6981202
+  },
+  "86": {
+    "daira_id": 86,
+    "wilaya_id": 6,
+    "daira_ar": "القصر",
+    "daira_fr": "El Kseur",
+    "daira_name": "دائرة القصر, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.756047,
+    "daira_longitude": 4.8604519
+  },
+  "87": {
+    "daira_id": 87,
+    "wilaya_id": 6,
+    "daira_ar": "خراطة",
+    "daira_fr": "Kherrata",
+    "daira_name": "دائرة خراطة, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.44549,
+    "daira_longitude": 5.2543799
+  },
+  "88": {
+    "daira_id": 88,
+    "wilaya_id": 6,
+    "daira_ar": "بني معوش",
+    "daira_fr": "Beni Maouche",
+    "daira_name": "دائرة بني معوش, بجاية, 06000, الجزائر",
+    "daira_latitude": 36.4878512,
+    "daira_longitude": 4.787552
+  },
+  "89": {
+    "daira_id": 89,
+    "wilaya_id": 7,
+    "daira_ar": "بسكرة",
+    "daira_fr": "Biskra",
+    "daira_name": "دائرة بسكرة, بسكرة, الجزائر",
+    "daira_latitude": 34.809602,
+    "daira_longitude": 5.6865144
+  },
+  "92": {
+    "daira_id": 92,
+    "wilaya_id": 7,
+    "daira_ar": "سيدي عقبة",
+    "daira_fr": "Sidi Okba",
+    "daira_name": "دائرة سيدي عقبة, بسكرة, الجزائر",
+    "daira_latitude": 34.6598134,
+    "daira_longitude": 6.0922343
+  },
+  "93": {
+    "daira_id": 93,
+    "wilaya_id": 7,
+    "daira_ar": "مشونش",
+    "daira_fr": "Mechouneche",
+    "daira_name": "دائرة مشونش, بسكرة, الجزائر",
+    "daira_latitude": 34.9069849,
+    "daira_longitude": 6.0033889
+  },
+  "94": {
+    "daira_id": 94,
+    "wilaya_id": 7,
+    "daira_ar": "زريبة الوادي",
+    "daira_fr": "Zeribet El Oued",
+    "daira_name": "دائرة زريبة الوادي, بسكرة, الجزائر",
+    "daira_latitude": 34.6821741,
+    "daira_longitude": 6.5479674
+  },
+  "95": {
+    "daira_id": 95,
+    "wilaya_id": 7,
+    "daira_ar": "القنطرة",
+    "daira_fr": "El Kantara",
+    "daira_name": "دائرة القنطرة, بسكرة, الجزائر",
+    "daira_latitude": 35.187214,
+    "daira_longitude": 5.7124197
+  },
+  "96": {
+    "daira_id": 96,
+    "wilaya_id": 7,
+    "daira_ar": "الوطاية",
+    "daira_fr": "El Outaya",
+    "daira_name": "دائرة لوطاية, بسكرة, الجزائر",
+    "daira_latitude": 34.9803702,
+    "daira_longitude": 5.5539311
+  },
+  "97": {
+    "daira_id": 97,
+    "wilaya_id": 7,
+    "daira_ar": "جمورة",
+    "daira_fr": "Djemorah",
+    "daira_name": "دائرة جمورة, بسكرة, 07008, الجزائر",
+    "daira_latitude": 35.0330776,
+    "daira_longitude": 5.7407906
+  },
+  "98": {
+    "daira_id": 98,
+    "wilaya_id": 7,
+    "daira_ar": "طولقة",
+    "daira_fr": "Tolga",
+    "daira_name": "دائرة طولقة, بسكرة, الجزائر",
+    "daira_latitude": 34.888308,
+    "daira_longitude": 5.2458229
+  },
+  "99": {
+    "daira_id": 99,
+    "wilaya_id": 7,
+    "daira_ar": "أورلال",
+    "daira_fr": "Ourlal",
+    "daira_name": "دائرة أورلال, بسكرة, الجزائر",
+    "daira_latitude": 34.586717,
+    "daira_longitude": 5.6071113
+  },
+  "100": {
+    "daira_id": 100,
+    "wilaya_id": 7,
+    "daira_ar": "فوغالة",
+    "daira_fr": "Foughala",
+    "daira_name": "دائرة فوغالة, بسكرة, 07027, الجزائر",
+    "daira_latitude": 34.7183818,
+    "daira_longitude": 5.263117
+  },
+  "102": {
+    "daira_id": 102,
+    "wilaya_id": 8,
+    "daira_ar": "بشار",
+    "daira_fr": "Bechar",
+    "daira_name": "دائرة بشار, بشار, 08000, الجزائر",
+    "daira_latitude": 31.622981,
+    "daira_longitude": -1.914199
+  },
+  "104": {
+    "daira_id": 104,
+    "wilaya_id": 8,
+    "daira_ar": "لحمر",
+    "daira_fr": "Lahmar",
+    "daira_name": "دائرة الأحمر, بشار, الجزائر",
+    "daira_latitude": 31.9388923,
+    "daira_longitude": -2.4585431
+  },
+  "106": {
+    "daira_id": 106,
+    "wilaya_id": 8,
+    "daira_ar": "القنادسة",
+    "daira_fr": "Kenadsa",
+    "daira_name": "دائرة القنادسة, بشار, 08011, الجزائر",
+    "daira_latitude": 31.4893171,
+    "daira_longitude": -2.9902171
+  },
+  "109": {
+    "daira_id": 109,
+    "wilaya_id": 8,
+    "daira_ar": "تاغيت",
+    "daira_fr": "Taghit",
+    "daira_name": "دائرة تاغيت, بشار, 08030, الجزائر",
+    "daira_latitude": 31.0739148,
+    "daira_longitude": -1.6640932
+  },
+  "111": {
+    "daira_id": 111,
+    "wilaya_id": 8,
+    "daira_ar": "العبادلة",
+    "daira_fr": "Abadla",
+    "daira_name": "دائرة العبادلة, بشار, 08027, الجزائر",
+    "daira_latitude": 30.8953795,
+    "daira_longitude": -2.9850034
+  },
+  "113": {
+    "daira_id": 113,
+    "wilaya_id": 8,
+    "daira_ar": "بني ونيف",
+    "daira_fr": "Beni Ounif",
+    "daira_name": "دائرة بني ونيف, بشار, 08100, الجزائر",
+    "daira_latitude": 31.561312,
+    "daira_longitude": -0.8942721
+  },
+  "115": {
+    "daira_id": 115,
+    "wilaya_id": 9,
+    "daira_ar": "البليدة",
+    "daira_fr": "Blida",
+    "daira_name": "دائرة البليدة, البليدة, 09000, الجزائر",
+    "daira_latitude": 36.4399731,
+    "daira_longitude": 2.7972312
+  },
+  "116": {
+    "daira_id": 116,
+    "wilaya_id": 9,
+    "daira_ar": "بوعينان",
+    "daira_fr": "Bouinan",
+    "daira_name": "دائرة بوينان, البليدة, 09450, الجزائر",
+    "daira_latitude": 36.5462479,
+    "daira_longitude": 3.0058182
+  },
+  "117": {
+    "daira_id": 117,
+    "wilaya_id": 9,
+    "daira_ar": "وادي العلايق",
+    "daira_fr": "Oued El Alleug",
+    "daira_name": "دائرة وادي العلايق, البليدة, الجزائر",
+    "daira_latitude": 36.5728343,
+    "daira_longitude": 2.8026584
+  },
+  "118": {
+    "daira_id": 118,
+    "wilaya_id": 9,
+    "daira_ar": "أولاد يعيش",
+    "daira_fr": "Ouled Yaich",
+    "daira_name": "دائرة أولاد يعيش, البليدة, الجزائر",
+    "daira_latitude": 36.4700515,
+    "daira_longitude": 2.9475493
+  },
+  "119": {
+    "daira_id": 119,
+    "wilaya_id": 9,
+    "daira_ar": "العفرون",
+    "daira_fr": "El Affroun",
+    "daira_name": "دائرة العفرون, البليدة, الجزائر",
+    "daira_latitude": 36.4458113,
+    "daira_longitude": 2.5818026
+  },
+  "120": {
+    "daira_id": 120,
+    "wilaya_id": 9,
+    "daira_ar": "موزاية",
+    "daira_fr": "Mouzaia",
+    "daira_name": "دائرة موزاية, البليدة, الجزائر",
+    "daira_latitude": 36.4570051,
+    "daira_longitude": 2.6999007
+  },
+  "121": {
+    "daira_id": 121,
+    "wilaya_id": 9,
+    "daira_ar": "مفتاح",
+    "daira_fr": "Meftah",
+    "daira_name": "دائرة مفتاح, البليدة, الجزائر",
+    "daira_latitude": 36.6091701,
+    "daira_longitude": 3.2316018
+  },
+  "122": {
+    "daira_id": 122,
+    "wilaya_id": 9,
+    "daira_ar": "بوفاريك",
+    "daira_fr": "Boufarik",
+    "daira_name": "دائرة بوفاريك, البليدة, الجزائر",
+    "daira_latitude": 36.5354413,
+    "daira_longitude": 2.9107359
+  },
+  "123": {
+    "daira_id": 123,
+    "wilaya_id": 9,
+    "daira_ar": "الأربعاء",
+    "daira_fr": "Larbaa",
+    "daira_name": "الاربعاء, دائرة الأربعاء, البليدة, 09300, الجزائر",
+    "daira_latitude": 36.5596677,
+    "daira_longitude": 3.154512
+  },
+  "124": {
+    "daira_id": 124,
+    "wilaya_id": 9,
+    "daira_ar": "بوقرة",
+    "daira_fr": "Bougara",
+    "daira_name": "دائرة بوقرة, البليدة, الجزائر",
+    "daira_latitude": 36.4715533,
+    "daira_longitude": 3.0750194
+  },
+  "125": {
+    "daira_id": 125,
+    "wilaya_id": 10,
+    "daira_ar": "البويرة",
+    "daira_fr": "Bouira",
+    "daira_name": "دائرة البويرة, البويرة, الجزائر",
+    "daira_latitude": 36.390165,
+    "daira_longitude": 3.8722194
+  },
+  "126": {
+    "daira_id": 126,
+    "wilaya_id": 10,
+    "daira_ar": "سوق الخميس",
+    "daira_fr": "Souk El Khemis",
+    "daira_name": "دائرة سوق الخميس, البويرة, 10420, الجزائر",
+    "daira_latitude": 36.4075795,
+    "daira_longitude": 3.6213248
+  },
+  "127": {
+    "daira_id": 127,
+    "wilaya_id": 10,
+    "daira_ar": "القادرية",
+    "daira_fr": "Kadiria",
+    "daira_name": "دائرة قادرية, البويرة, 10006, الجزائر",
+    "daira_latitude": 36.504034,
+    "daira_longitude": 3.7169558
+  },
+  "128": {
+    "daira_id": 128,
+    "wilaya_id": 10,
+    "daira_ar": "الحيزر",
+    "daira_fr": "Haizer",
+    "daira_name": "دائرة حيزر, البويرة, الجزائر",
+    "daira_latitude": 36.4075465,
+    "daira_longitude": 4.0065795
+  },
+  "129": {
+    "daira_id": 129,
+    "wilaya_id": 10,
+    "daira_ar": "الأخضرية",
+    "daira_fr": "Lakhdaria",
+    "daira_name": "دائرة الأخضرية, البويرة, 10002, الجزائر",
+    "daira_latitude": 36.507499,
+    "daira_longitude": 3.4581464
+  },
+  "130": {
+    "daira_id": 130,
+    "wilaya_id": 10,
+    "daira_ar": "الهاشمية",
+    "daira_fr": "El Hachimia",
+    "daira_name": "دائرة الهاشمية, البويرة, الجزائر",
+    "daira_latitude": 36.2269075,
+    "daira_longitude": 3.8483464
+  },
+  "131": {
+    "daira_id": 131,
+    "wilaya_id": 10,
+    "daira_ar": "برج أوخريص",
+    "daira_fr": "Bordj Okhriss",
+    "daira_name": "دائرة برج أوخريص, البويرة, الجزائر",
+    "daira_latitude": 36.0051456,
+    "daira_longitude": 3.9383982
+  },
+  "132": {
+    "daira_id": 132,
+    "wilaya_id": 10,
+    "daira_ar": "بشلول",
+    "daira_fr": "Bechloul",
+    "daira_name": "دائرة بشلول, البويرة, الجزائر",
+    "daira_latitude": 36.293068,
+    "daira_longitude": 4.0483004
+  },
+  "133": {
+    "daira_id": 133,
+    "wilaya_id": 10,
+    "daira_ar": "عين بسام",
+    "daira_fr": "Ain Bessem",
+    "daira_name": "دائرة عين بسام, البويرة, الجزائر",
+    "daira_latitude": 36.3363168,
+    "daira_longitude": 3.7353614
+  },
+  "134": {
+    "daira_id": 134,
+    "wilaya_id": 10,
+    "daira_ar": "بئر غبالو",
+    "daira_fr": "Bir Ghbalou",
+    "daira_name": "دائرة بئر غبالو, البويرة, الجزائر",
+    "daira_latitude": 36.2533661,
+    "daira_longitude": 3.6161053
+  },
+  "135": {
+    "daira_id": 135,
+    "wilaya_id": 10,
+    "daira_ar": "مشد الله",
+    "daira_fr": "M'chedallah",
+    "daira_name": "دائرة مشدا الله, البويرة, الجزائر",
+    "daira_latitude": 36.327971,
+    "daira_longitude": 4.2641212
+  },
+  "136": {
+    "daira_id": 136,
+    "wilaya_id": 10,
+    "daira_ar": "سور الغزلان",
+    "daira_fr": "Sour El Ghozlane",
+    "daira_name": "دائرة سور الغزلان, البويرة, الجزائر",
+    "daira_latitude": 36.0802648,
+    "daira_longitude": 3.6384224
+  },
+  "137": {
+    "daira_id": 137,
+    "wilaya_id": 11,
+    "daira_ar": "تمنراست",
+    "daira_fr": "Tamanrasset",
+    "daira_name": "دائرة تمنراست, تمنراست, الجزائر",
+    "daira_latitude": 23.7343525,
+    "daira_longitude": 3.4371685
+  },
+  "138": {
+    "daira_id": 138,
+    "wilaya_id": 11,
+    "daira_ar": "سيلت",
+    "daira_fr": "Silet",
+    "daira_name": "سيلت, أبلسة, دائرة أبلسة, تمنراست, الجزائر",
+    "daira_latitude": 22.657237,
+    "daira_longitude": 4.569521
+  },
+  "141": {
+    "daira_id": 141,
+    "wilaya_id": 11,
+    "daira_ar": "تاظروك",
+    "daira_fr": "Tazrouk",
+    "daira_name": "دائرة تاظروك, تمنراست, الجزائر",
+    "daira_latitude": 24.2264705,
+    "daira_longitude": 6.4976577
+  },
+  "146": {
+    "daira_id": 146,
+    "wilaya_id": 12,
+    "daira_ar": "تبسة",
+    "daira_fr": "Tebessa",
+    "daira_name": "دائرة تبسة, تبسة, 12000, الجزائر",
+    "daira_latitude": 35.3983243,
+    "daira_longitude": 8.0885005
+  },
+  "147": {
+    "daira_id": 147,
+    "wilaya_id": 12,
+    "daira_ar": "بئر العاتر",
+    "daira_fr": "Bir El Ater",
+    "daira_name": "دائرة بئر العاتر, تبسة, الجزائر",
+    "daira_latitude": 34.8740648,
+    "daira_longitude": 7.994285
+  },
+  "148": {
+    "daira_id": 148,
+    "wilaya_id": 12,
+    "daira_ar": "الشريعة",
+    "daira_fr": "Cheria",
+    "daira_name": "دائرة الشريعة, تبسة, الجزائر",
+    "daira_latitude": 34.9133935,
+    "daira_longitude": 7.7865755
+  },
+  "149": {
+    "daira_id": 149,
+    "wilaya_id": 12,
+    "daira_ar": "العوينات",
+    "daira_fr": "El Aouinet",
+    "daira_name": "دائرة العوينات, تبسة, الجزائر",
+    "daira_latitude": 35.837995,
+    "daira_longitude": 7.9500012
+  },
+  "150": {
+    "daira_id": 150,
+    "wilaya_id": 12,
+    "daira_ar": "نقرين",
+    "daira_fr": "Negrine",
+    "daira_name": "دائرة نقرين, تبسة, 12024, الجزائر",
+    "daira_latitude": 34.4662635,
+    "daira_longitude": 7.4658857
+  },
+  "151": {
+    "daira_id": 151,
+    "wilaya_id": 12,
+    "daira_ar": "بئر مقدم",
+    "daira_fr": "Bir Mokadem",
+    "daira_name": "دائرة بئر مقدم, تبسة, الجزائر",
+    "daira_latitude": 35.4438693,
+    "daira_longitude": 7.7944173
+  },
+  "152": {
+    "daira_id": 152,
+    "wilaya_id": 12,
+    "daira_ar": "الكويف",
+    "daira_fr": "El Kouif",
+    "daira_name": "دائرة الكويف, تبسة, الجزائر",
+    "daira_latitude": 35.4746663,
+    "daira_longitude": 8.2139831
+  },
+  "153": {
+    "daira_id": 153,
+    "wilaya_id": 12,
+    "daira_ar": "مرسط",
+    "daira_fr": "Morsott",
+    "daira_name": "دائرة مرسط, تبسة, الجزائر",
+    "daira_latitude": 35.6216535,
+    "daira_longitude": 7.9758922
+  },
+  "154": {
+    "daira_id": 154,
+    "wilaya_id": 12,
+    "daira_ar": "العقلة",
+    "daira_fr": "El Ogla",
+    "daira_name": "دائرة العقلة, تبسة, الجزائر",
+    "daira_latitude": 34.954677,
+    "daira_longitude": 7.4864813
+  },
+  "155": {
+    "daira_id": 155,
+    "wilaya_id": 12,
+    "daira_ar": "الونزة",
+    "daira_fr": "Ouenza",
+    "daira_name": "دائرة الونزة, تبسة, 12003, الجزائر",
+    "daira_latitude": 35.7612511,
+    "daira_longitude": 8.2013326
+  },
+  "156": {
+    "daira_id": 156,
+    "wilaya_id": 12,
+    "daira_ar": "الماء الابيض",
+    "daira_fr": "El Malabiod",
+    "daira_name": "دائرة الماء الأبيض, تبسة, الجزائر",
+    "daira_latitude": 35.2498575,
+    "daira_longitude": 8.2349532
+  },
+  "157": {
+    "daira_id": 157,
+    "wilaya_id": 12,
+    "daira_ar": "أم علي",
+    "daira_fr": "Oum Ali",
+    "daira_name": "دائرة أم على, تبسة, الجزائر",
+    "daira_latitude": 34.9746524,
+    "daira_longitude": 8.2051019
+  },
+  "158": {
+    "daira_id": 158,
+    "wilaya_id": 13,
+    "daira_ar": "تلمسان",
+    "daira_fr": "Tlemcen",
+    "daira_name": "دائرة تلمسان, تلمسان, 13000, الجزائر",
+    "daira_latitude": 34.8962002,
+    "daira_longitude": -1.3154008
+  },
+  "159": {
+    "daira_id": 159,
+    "wilaya_id": 13,
+    "daira_ar": "عين تالوت",
+    "daira_fr": "Ain Tellout",
+    "daira_name": "دائرة عين تالوت, تلمسان, 13012, الجزائر",
+    "daira_latitude": 34.8181296,
+    "daira_longitude": -0.936015
+  },
+  "160": {
+    "daira_id": 160,
+    "wilaya_id": 13,
+    "daira_ar": "الرمشي",
+    "daira_fr": "Remchi",
+    "daira_name": "دائرة الرمشي, تلمسان, الجزائر",
+    "daira_latitude": 35.1140087,
+    "daira_longitude": -1.4366186
+  },
+  "161": {
+    "daira_id": 161,
+    "wilaya_id": 13,
+    "daira_ar": "صبرة",
+    "daira_fr": "Sabra",
+    "daira_name": "دائرة صبرة, تلمسان, الجزائر",
+    "daira_latitude": 34.8356861,
+    "daira_longitude": -1.5656402
+  },
+  "162": {
+    "daira_id": 162,
+    "wilaya_id": 13,
+    "daira_ar": "الغزوات",
+    "daira_fr": "Ghazaouet",
+    "daira_name": "دائرة الغزوات, تلمسان, الجزائر",
+    "daira_latitude": 35.0590813,
+    "daira_longitude": -1.885509
+  },
+  "163": {
+    "daira_id": 163,
+    "wilaya_id": 13,
+    "daira_ar": "أولاد ميمون",
+    "daira_fr": "Ouled Mimoun",
+    "daira_name": "دائرة أولاد ميمون, تلمسان, 13010, الجزائر",
+    "daira_latitude": 34.8273153,
+    "daira_longitude": -1.1049524
+  },
+  "164": {
+    "daira_id": 164,
+    "wilaya_id": 13,
+    "daira_ar": "بني سنوس",
+    "daira_fr": "Beni Snous",
+    "daira_name": "دائرة بني سنوس, تلمسان, الجزائر",
+    "daira_latitude": 34.6250566,
+    "daira_longitude": -1.5009988
+  },
+  "165": {
+    "daira_id": 165,
+    "wilaya_id": 13,
+    "daira_ar": "باب العسة",
+    "daira_fr": "Bab El Assa",
+    "daira_name": "دائرة باب العسة, تلمسان, الجزائر",
+    "daira_latitude": 34.9801266,
+    "daira_longitude": -1.9819739
+  },
+  "166": {
+    "daira_id": 166,
+    "wilaya_id": 13,
+    "daira_ar": "فلاوسن",
+    "daira_fr": "Fellaoucene",
+    "daira_name": "دائرة فلاوسن, تلمسان, الجزائر",
+    "daira_latitude": 35.0070341,
+    "daira_longitude": -1.6242393
+  },
+  "167": {
+    "daira_id": 167,
+    "wilaya_id": 13,
+    "daira_ar": "بن سكران",
+    "daira_fr": "Bensekrane",
+    "daira_name": "دائرة بن سكران, تلمسان, الجزائر",
+    "daira_latitude": 35.0524585,
+    "daira_longitude": -1.1117785
+  },
+  "168": {
+    "daira_id": 168,
+    "wilaya_id": 13,
+    "daira_ar": "الحناية",
+    "daira_fr": "Hennaya",
+    "daira_name": "دائرة الحناية, تلمسان, 13009, الجزائر",
+    "daira_latitude": 34.9685441,
+    "daira_longitude": -1.4480305
+  },
+  "169": {
+    "daira_id": 169,
+    "wilaya_id": 13,
+    "daira_ar": "مغنية",
+    "daira_fr": "Maghnia",
+    "daira_name": "دائرة مغنية, تلمسان, الجزائر",
+    "daira_latitude": 34.8721863,
+    "daira_longitude": -1.8023183
+  },
+  "170": {
+    "daira_id": 170,
+    "wilaya_id": 13,
+    "daira_ar": "سبدو",
+    "daira_fr": "Sebdou",
+    "daira_name": "دائرة سبدو, تلمسان, الجزائر",
+    "daira_latitude": 34.4677753,
+    "daira_longitude": -1.1256164
+  },
+  "171": {
+    "daira_id": 171,
+    "wilaya_id": 13,
+    "daira_ar": "بني بوسعيد",
+    "daira_fr": "Beni Boussaid",
+    "daira_name": "دائرة بني بوسعيد, تلمسان, الجزائر",
+    "daira_latitude": 34.652333,
+    "daira_longitude": -1.7259973
+  },
+  "172": {
+    "daira_id": 172,
+    "wilaya_id": 13,
+    "daira_ar": "مرسى بن مهيدي",
+    "daira_fr": "Marsa Ben Mehdi",
+    "daira_name": "دائرة مرسى بن مهيدي, تلمسان, الجزائر",
+    "daira_latitude": 35.0301174,
+    "daira_longitude": -2.1133662
+  },
+  "173": {
+    "daira_id": 173,
+    "wilaya_id": 13,
+    "daira_ar": "ندرومة",
+    "daira_fr": "Nedroma",
+    "daira_name": "دائرة ندرومة, تلمسان, الجزائر",
+    "daira_latitude": 35.0052256,
+    "daira_longitude": -1.7804644
+  },
+  "174": {
+    "daira_id": 174,
+    "wilaya_id": 13,
+    "daira_ar": "سيدي الجيلالي",
+    "daira_fr": "Sidi Djillali",
+    "daira_name": "دائرة سيدي جيلالي, تلمسان, الجزائر",
+    "daira_latitude": 34.3473587,
+    "daira_longitude": -1.537928
+  },
+  "175": {
+    "daira_id": 175,
+    "wilaya_id": 13,
+    "daira_ar": "هنين",
+    "daira_fr": "Honnaine",
+    "daira_name": "دائرة هنين, تلمسان, الجزائر",
+    "daira_latitude": 35.1729562,
+    "daira_longitude": -1.6183012
+  },
+  "176": {
+    "daira_id": 176,
+    "wilaya_id": 13,
+    "daira_ar": "شتوان",
+    "daira_fr": "Chetouane",
+    "daira_name": "دائرة شتوان, تلمسان, الجزائر",
+    "daira_latitude": 34.9515497,
+    "daira_longitude": -1.2462615
+  },
+  "177": {
+    "daira_id": 177,
+    "wilaya_id": 13,
+    "daira_ar": "منصورة",
+    "daira_fr": "Mansourah",
+    "daira_name": "دائرة منصورة, تلمسان, 13061, الجزائر",
+    "daira_latitude": 34.8123516,
+    "daira_longitude": -1.3391476
+  },
+  "178": {
+    "daira_id": 178,
+    "wilaya_id": 14,
+    "daira_ar": "تيارت",
+    "daira_fr": "Tiaret",
+    "daira_name": "دائرة تيارت, تيارت, الجزائر",
+    "daira_latitude": 35.3468431,
+    "daira_longitude": 1.3351707
+  },
+  "179": {
+    "daira_id": 179,
+    "wilaya_id": 14,
+    "daira_ar": "مدروسة",
+    "daira_fr": "Medroussa",
+    "daira_name": "دائرة مدروسة, تيارت, الجزائر",
+    "daira_latitude": 35.204433,
+    "daira_longitude": 1.092302
+  },
+  "180": {
+    "daira_id": 180,
+    "wilaya_id": 14,
+    "daira_ar": "عين الذهب",
+    "daira_fr": "Ain Deheb",
+    "daira_name": "دائرة عين الذهب, تيارت, الجزائر",
+    "daira_latitude": 34.6139599,
+    "daira_longitude": 1.6541736
+  },
+  "181": {
+    "daira_id": 181,
+    "wilaya_id": 14,
+    "daira_ar": "دحموني",
+    "daira_fr": "Dahmouni",
+    "daira_name": "دائرة الدحموني, تيارت, 14040, الجزائر",
+    "daira_latitude": 35.3979774,
+    "daira_longitude": 1.461084
+  },
+  "182": {
+    "daira_id": 182,
+    "wilaya_id": 14,
+    "daira_ar": "رحوية",
+    "daira_fr": "Rahouia",
+    "daira_name": "دائرة رحوية, تيارت, الجزائر",
+    "daira_latitude": 35.493047,
+    "daira_longitude": 1.040172
+  },
+  "183": {
+    "daira_id": 183,
+    "wilaya_id": 14,
+    "daira_ar": "مهدية",
+    "daira_fr": "Mahdia",
+    "daira_name": "دائرة المهدية, تيارت, الجزائر",
+    "daira_latitude": 35.3121189,
+    "daira_longitude": 1.8188386
+  },
+  "184": {
+    "daira_id": 184,
+    "wilaya_id": 14,
+    "daira_ar": "السوقر",
+    "daira_fr": "Sougueur",
+    "daira_name": "دائرة السوقر, تيارت, الجزائر",
+    "daira_latitude": 34.9651795,
+    "daira_longitude": 1.921502
+  },
+  "185": {
+    "daira_id": 185,
+    "wilaya_id": 14,
+    "daira_ar": "مغيلة",
+    "daira_fr": "Meghila",
+    "daira_name": "دائرة مغيلة, تيارت, الجزائر",
+    "daira_latitude": 35.578525,
+    "daira_longitude": 1.4948605
+  },
+  "186": {
+    "daira_id": 186,
+    "wilaya_id": 14,
+    "daira_ar": "فرندة",
+    "daira_fr": "Frenda",
+    "daira_name": "دائرة فرندة, تيارت, الجزائر",
+    "daira_latitude": 35.1190225,
+    "daira_longitude": 0.8203587
+  },
+  "187": {
+    "daira_id": 187,
+    "wilaya_id": 14,
+    "daira_ar": "عين كرمس",
+    "daira_fr": "Ain Kermes",
+    "daira_name": "دائرة عين كرمس, تيارت, 14013, الجزائر",
+    "daira_latitude": 34.6104509,
+    "daira_longitude": 0.9987252
+  },
+  "188": {
+    "daira_id": 188,
+    "wilaya_id": 14,
+    "daira_ar": "قصر الشلالة",
+    "daira_fr": "Ksar Chellala",
+    "daira_name": "دائرة قصر الشلالة, تيارت, الجزائر",
+    "daira_latitude": 35.06186,
+    "daira_longitude": 2.3750879
+  },
+  "189": {
+    "daira_id": 189,
+    "wilaya_id": 14,
+    "daira_ar": "وادي ليلي",
+    "daira_fr": "Oued Lili",
+    "daira_name": "دائرة وادى ليلى, تيارت, الجزائر",
+    "daira_latitude": 35.5418145,
+    "daira_longitude": 1.25997
+  },
+  "190": {
+    "daira_id": 190,
+    "wilaya_id": 14,
+    "daira_ar": "مشرع الصفا",
+    "daira_fr": "Mechraa Sfa",
+    "daira_name": "دائرة مشرع الصفاء, تيارت, 14145, الجزائر",
+    "daira_latitude": 35.3532769,
+    "daira_longitude": 1.0727312
+  },
+  "191": {
+    "daira_id": 191,
+    "wilaya_id": 14,
+    "daira_ar": "حمادية",
+    "daira_fr": "Hamadia",
+    "daira_name": "دائرة الحمادية, تيارت, الجزائر",
+    "daira_latitude": 35.3689805,
+    "daira_longitude": 2.0755466
+  },
+  "192": {
+    "daira_id": 192,
+    "wilaya_id": 15,
+    "daira_ar": "تيزي وزو",
+    "daira_fr": "Tizi Ouzou",
+    "daira_name": "دائرة تيزي وزو, تيزي وزو, الجزائر",
+    "daira_latitude": 36.6997906,
+    "daira_longitude": 4.0551053
+  },
+  "193": {
+    "daira_id": 193,
+    "wilaya_id": 15,
+    "daira_ar": "عين الحمام",
+    "daira_fr": "Ain El Hammam",
+    "daira_name": "عین الحمام, تيزي وزو, الجزائر",
+    "daira_latitude": 36.5523717,
+    "daira_longitude": 4.3032016
+  },
+  "194": {
+    "daira_id": 194,
+    "wilaya_id": 15,
+    "daira_ar": "ماكودة",
+    "daira_fr": "Makouda",
+    "daira_name": "ماكودة, تيزي وزو, الجزائر",
+    "daira_latitude": 36.7945077,
+    "daira_longitude": 4.0956555
+  },
+  "195": {
+    "daira_id": 195,
+    "wilaya_id": 15,
+    "daira_ar": "ذراع الميزان",
+    "daira_fr": "Draa El Mizan",
+    "daira_name": "ذراع الميزان, تيزي وزو, 15056, الجزائر",
+    "daira_latitude": 36.5741345,
+    "daira_longitude": 3.8724324
+  },
+  "196": {
+    "daira_id": 196,
+    "wilaya_id": 15,
+    "daira_ar": "تيزي غنيف",
+    "daira_fr": "Tizi-Ghenif",
+    "daira_name": "تيزي غنيف, تيزي وزو, 15020, الجزائر",
+    "daira_latitude": 36.607605,
+    "daira_longitude": 3.7879506
+  },
+  "197": {
+    "daira_id": 197,
+    "wilaya_id": 15,
+    "daira_ar": "إفرحونان",
+    "daira_fr": "Iferhounene",
+    "daira_name": "إيفرحونن, تيزي وزو, الجزائر",
+    "daira_latitude": 36.539074,
+    "daira_longitude": 4.3828093
+  },
+  "198": {
+    "daira_id": 198,
+    "wilaya_id": 15,
+    "daira_ar": "عزازقة",
+    "daira_fr": "Azazga",
+    "daira_name": "دائرة عزازڨة, تيزي وزو, الجزائر",
+    "daira_latitude": 36.7399825,
+    "daira_longitude": 4.4125744
+  },
+  "199": {
+    "daira_id": 199,
+    "wilaya_id": 15,
+    "daira_ar": "الأربعاء ناث إيراثن",
+    "daira_fr": "Larbaa Nath Iraten",
+    "daira_name": "الأربعاء نايث إيراثن, تيزي وزو, 15002, الجزائر",
+    "daira_latitude": 36.6374918,
+    "daira_longitude": 4.2028466
+  },
+  "200": {
+    "daira_id": 200,
+    "wilaya_id": 15,
+    "daira_ar": "تيزي راشد",
+    "daira_fr": "Tizi Rached",
+    "daira_name": "تيزي راشد, تيزي وزو, الجزائر",
+    "daira_latitude": 36.6684396,
+    "daira_longitude": 4.2082486
+  },
+  "201": {
+    "daira_id": 201,
+    "wilaya_id": 15,
+    "daira_ar": "واقنون",
+    "daira_fr": "Ouaguenoun",
+    "daira_name": "واقنون, تيزي وزو, الجزائر",
+    "daira_latitude": 36.7831077,
+    "daira_longitude": 4.2349478
+  },
+  "202": {
+    "daira_id": 202,
+    "wilaya_id": 15,
+    "daira_ar": "معاتقة",
+    "daira_fr": "Maatkas",
+    "daira_name": "المعاتقة, تيزي وزو, الجزائر",
+    "daira_latitude": 36.6059613,
+    "daira_longitude": 3.9812946
+  },
+  "203": {
+    "daira_id": 203,
+    "wilaya_id": 15,
+    "daira_ar": "بني دوالة",
+    "daira_fr": "Beni Douala",
+    "daira_name": "بني دوالة, تيزي وزو, الجزائر",
+    "daira_latitude": 36.6335991,
+    "daira_longitude": 4.0850524
+  },
+  "204": {
+    "daira_id": 204,
+    "wilaya_id": 15,
+    "daira_ar": "بوزقن",
+    "daira_fr": "Bouzeguene",
+    "daira_name": "بوزغن, تيزي وزو, 15327, الجزائر",
+    "daira_latitude": 36.6170412,
+    "daira_longitude": 4.477024
+  },
+  "205": {
+    "daira_id": 205,
+    "wilaya_id": 15,
+    "daira_ar": "واضية",
+    "daira_fr": "Ouadhias",
+    "daira_name": "واضية, تيزي وزو, 15058, الجزائر",
+    "daira_latitude": 36.5262715,
+    "daira_longitude": 4.0806292
+  },
+  "206": {
+    "daira_id": 206,
+    "wilaya_id": 15,
+    "daira_ar": "أزفون",
+    "daira_fr": "Azeffoun",
+    "daira_name": "أزفون, تيزي وزو, الجزائر",
+    "daira_latitude": 36.8380544,
+    "daira_longitude": 4.4239397
+  },
+  "207": {
+    "daira_id": 207,
+    "wilaya_id": 15,
+    "daira_ar": "تيقزيرت",
+    "daira_fr": "Tigzirt",
+    "daira_name": "تيقزيرت, تيزي وزو, الجزائر",
+    "daira_latitude": 36.8657436,
+    "daira_longitude": 4.1567067
+  },
+  "208": {
+    "daira_id": 208,
+    "wilaya_id": 15,
+    "daira_ar": "بوغني",
+    "daira_fr": "Boghni",
+    "daira_name": "دائرة بوغني, تيزي وزو, الجزائر",
+    "daira_latitude": 36.5142355,
+    "daira_longitude": 3.9723516
+  },
+  "209": {
+    "daira_id": 209,
+    "wilaya_id": 15,
+    "daira_ar": "ذراع بن خدة",
+    "daira_fr": "Draa Ben Khedda",
+    "daira_name": "ذراع بن خدة, تيزي وزو, الجزائر",
+    "daira_latitude": 36.7209806,
+    "daira_longitude": 3.9223308
+  },
+  "210": {
+    "daira_id": 210,
+    "wilaya_id": 15,
+    "daira_ar": "واسيف",
+    "daira_fr": "Ouacif",
+    "daira_name": "واسيف, تيزي وزو, 15015, الجزائر",
+    "daira_latitude": 36.5141609,
+    "daira_longitude": 4.1856564
+  },
+  "211": {
+    "daira_id": 211,
+    "wilaya_id": 15,
+    "daira_ar": "مقلع",
+    "daira_fr": "Mekla",
+    "daira_name": "مقلع, تيزي وزو, الجزائر",
+    "daira_latitude": 36.6767519,
+    "daira_longitude": 4.3053549
+  },
+  "212": {
+    "daira_id": 212,
+    "wilaya_id": 15,
+    "daira_ar": "بني يني",
+    "daira_fr": "Benni Yenni",
+    "daira_name": "بني يني, تيزي وزو, الجزائر",
+    "daira_latitude": 36.5326627,
+    "daira_longitude": 4.2645955
+  },
+  "213": {
+    "daira_id": 213,
+    "wilaya_id": 16,
+    "daira_ar": "سيدي امحمد",
+    "daira_fr": "Sidi M'hamed",
+    "daira_name": "دائرة سيدي امحمد, الجزائر",
+    "daira_latitude": 36.7585625,
+    "daira_longitude": 3.0563069
+  },
+  "214": {
+    "daira_id": 214,
+    "wilaya_id": 16,
+    "daira_ar": "باب الوادي",
+    "daira_fr": "Bab El Oued",
+    "daira_name": "دائرة باب الوادي, الجزائر",
+    "daira_latitude": 36.7970835,
+    "daira_longitude": 3.0445088
+  },
+  "215": {
+    "daira_id": 215,
+    "wilaya_id": 16,
+    "daira_ar": "بئر مراد رايس",
+    "daira_fr": "Bir Mourad Rais",
+    "daira_name": "دائرة بئر مراد رايس, الجزائر",
+    "daira_latitude": 36.707037,
+    "daira_longitude": 3.0407515
+  },
+  "216": {
+    "daira_id": 216,
+    "wilaya_id": 16,
+    "daira_ar": "بوزريعة",
+    "daira_fr": "Bouzareah",
+    "daira_name": "دائرة بوزريعة, الجزائر",
+    "daira_latitude": 36.7775203,
+    "daira_longitude": 2.9970653
+  },
+  "217": {
+    "daira_id": 217,
+    "wilaya_id": 16,
+    "daira_ar": "الحراش",
+    "daira_fr": "El Harrach",
+    "daira_name": "دائرة الحراش, الجزائر",
+    "daira_latitude": 36.7212307,
+    "daira_longitude": 3.1374104
+  },
+  "218": {
+    "daira_id": 218,
+    "wilaya_id": 16,
+    "daira_ar": "براقي",
+    "daira_fr": "Baraki",
+    "daira_name": "دائرة براقي, الجزائر",
+    "daira_latitude": 36.6420653,
+    "daira_longitude": 3.1084322
+  },
+  "219": {
+    "daira_id": 219,
+    "wilaya_id": 16,
+    "daira_ar": "حسين داي",
+    "daira_fr": "Hussein Dey",
+    "daira_name": "دائرة حسين داي, الجزائر",
+    "daira_latitude": 36.7304133,
+    "daira_longitude": 3.087835
+  },
+  "220": {
+    "daira_id": 220,
+    "wilaya_id": 16,
+    "daira_ar": "الدار البيضاء",
+    "daira_fr": "Dar El Beida",
+    "daira_name": "دائرة الدار البيضاء, الجزائر",
+    "daira_latitude": 36.7410334,
+    "daira_longitude": 3.1876652
+  },
+  "221": {
+    "daira_id": 221,
+    "wilaya_id": 16,
+    "daira_ar": "بئر توتة",
+    "daira_fr": "Birtouta",
+    "daira_name": "دائرة بئر توتة, الجزائر, 16118, الجزائر",
+    "daira_latitude": 36.6239334,
+    "daira_longitude": 2.9728456
+  },
+  "222": {
+    "daira_id": 222,
+    "wilaya_id": 16,
+    "daira_ar": "الرويبة",
+    "daira_fr": "Rouiba",
+    "daira_name": "دائرة الرويبة, الجزائر",
+    "daira_latitude": 36.7426507,
+    "daira_longitude": 3.3106214
+  },
+  "223": {
+    "daira_id": 223,
+    "wilaya_id": 16,
+    "daira_ar": "زرالدة",
+    "daira_fr": "Zeralda",
+    "daira_name": "دائرة زرالدة, الجزائر",
+    "daira_latitude": 36.6992818,
+    "daira_longitude": 2.8672842
+  },
+  "224": {
+    "daira_id": 224,
+    "wilaya_id": 16,
+    "daira_ar": "الدرارية",
+    "daira_fr": "Draria",
+    "daira_name": "دائرة درارية, الجزائر",
+    "daira_latitude": 36.6895704,
+    "daira_longitude": 2.9735389
+  },
+  "225": {
+    "daira_id": 225,
+    "wilaya_id": 16,
+    "daira_ar": "الشراقة",
+    "daira_fr": "Cheraga",
+    "daira_name": "دائرة شراقة, الجزائر",
+    "daira_latitude": 36.7589451,
+    "daira_longitude": 2.9454588
+  },
+  "226": {
+    "daira_id": 226,
+    "wilaya_id": 17,
+    "daira_ar": "الجلفة",
+    "daira_fr": "Djelfa",
+    "daira_name": "دائرة الجلفة, الجلفة, الجزائر",
+    "daira_latitude": 34.6659265,
+    "daira_longitude": 3.2103769
+  },
+  "227": {
+    "daira_id": 227,
+    "wilaya_id": 17,
+    "daira_ar": "حاسي بحبح",
+    "daira_fr": "Hassi Bahbah",
+    "daira_name": "دائرة حاسي بحبح, الجلفة, الجزائر",
+    "daira_latitude": 34.8699921,
+    "daira_longitude": 3.0253197
+  },
+  "228": {
+    "daira_id": 228,
+    "wilaya_id": 17,
+    "daira_ar": "فيض البطمة",
+    "daira_fr": "Faidh El Botma",
+    "daira_name": "دائرة فيض البطمة, الجلفة, الجزائر",
+    "daira_latitude": 33.919874,
+    "daira_longitude": 4.0920806
+  },
+  "229": {
+    "daira_id": 229,
+    "wilaya_id": 17,
+    "daira_ar": "بيرين",
+    "daira_fr": "Birine",
+    "daira_name": "دائرة البيرين, الجلفة, 17014, الجزائر",
+    "daira_latitude": 35.5309204,
+    "daira_longitude": 3.1636632
+  },
+  "230": {
+    "daira_id": 230,
+    "wilaya_id": 17,
+    "daira_ar": "الادريسية",
+    "daira_fr": "El Idrissia",
+    "daira_name": "دائرة الادريسية, الجلفة, 17020, الجزائر",
+    "daira_latitude": 34.3203516,
+    "daira_longitude": 2.61448
+  },
+  "231": {
+    "daira_id": 231,
+    "wilaya_id": 17,
+    "daira_ar": "مسعد",
+    "daira_fr": "Messaad",
+    "daira_name": "مسعد, دائرة مسعد, الجلفة, 17400, الجزائر",
+    "daira_latitude": 34.1515242,
+    "daira_longitude": 3.491664
+  },
+  "232": {
+    "daira_id": 232,
+    "wilaya_id": 17,
+    "daira_ar": "سيدي لعجال",
+    "daira_fr": "Sidi Laadjel",
+    "daira_name": "دائرة سيدي لعجال, الجلفة, 17215, الجزائر",
+    "daira_latitude": 35.4048325,
+    "daira_longitude": 2.4987844
+  },
+  "233": {
+    "daira_id": 233,
+    "wilaya_id": 17,
+    "daira_ar": "حد الصحاري",
+    "daira_fr": "Had Sahary",
+    "daira_name": "دائرة حد الصحارى, الجلفة, 17001, الجزائر",
+    "daira_latitude": 35.341257,
+    "daira_longitude": 3.4294373
+  },
+  "234": {
+    "daira_id": 234,
+    "wilaya_id": 17,
+    "daira_ar": "دار الشيوخ",
+    "daira_fr": "Dar Chioukh",
+    "daira_name": "دائرة دار الشيوخ, الجلفة, 17006, الجزائر",
+    "daira_latitude": 34.873586,
+    "daira_longitude": 3.4349708
+  },
+  "235": {
+    "daira_id": 235,
+    "wilaya_id": 17,
+    "daira_ar": "الشارف",
+    "daira_fr": "Charef",
+    "daira_name": "دائرة الشارف, الجلفة, 17015, الجزائر",
+    "daira_latitude": 34.6386995,
+    "daira_longitude": 2.6176778
+  },
+  "236": {
+    "daira_id": 236,
+    "wilaya_id": 17,
+    "daira_ar": "عين الإبل",
+    "daira_fr": "Ain El Ibel",
+    "daira_name": "دائرة عين الإبل, الجلفة, الجزائر",
+    "daira_latitude": 34.37955,
+    "daira_longitude": 3.0635186
+  },
+  "237": {
+    "daira_id": 237,
+    "wilaya_id": 17,
+    "daira_ar": "عين وسارة",
+    "daira_fr": "Ain Oussera",
+    "daira_name": "دائرة عين وسارة, الجلفة, الجزائر",
+    "daira_latitude": 35.4322271,
+    "daira_longitude": 2.8991312
+  },
+  "238": {
+    "daira_id": 238,
+    "wilaya_id": 18,
+    "daira_ar": "جيجل",
+    "daira_fr": "Jijel",
+    "daira_name": "دائرة جيجل, جيجل, الجزائر",
+    "daira_latitude": 36.7952003,
+    "daira_longitude": 5.7416087
+  },
+  "239": {
+    "daira_id": 239,
+    "wilaya_id": 18,
+    "daira_ar": "العوانة",
+    "daira_fr": "El Aouana",
+    "daira_name": "دائرة العوانة, جيجل, الجزائر",
+    "daira_latitude": 36.6950874,
+    "daira_longitude": 5.6369784
+  },
+  "240": {
+    "daira_id": 240,
+    "wilaya_id": 18,
+    "daira_ar": "زيامة منصورية",
+    "daira_fr": "Ziamah Mansouriah",
+    "daira_name": "دائرة زيامة منصورية, جيجل, الجزائر",
+    "daira_latitude": 36.6151346,
+    "daira_longitude": 5.5122066
+  },
+  "241": {
+    "daira_id": 241,
+    "wilaya_id": 18,
+    "daira_ar": "الطاهير",
+    "daira_fr": "Taher",
+    "daira_name": "دائرة الطاهير, جيجل, الجزائر",
+    "daira_latitude": 36.712611,
+    "daira_longitude": 5.9040524
+  },
+  "242": {
+    "daira_id": 242,
+    "wilaya_id": 18,
+    "daira_ar": "الشقفة",
+    "daira_fr": "Chekfa",
+    "daira_name": "دائرة الشقفة, جيجل, الجزائر",
+    "daira_latitude": 36.783823,
+    "daira_longitude": 5.9854174
+  },
+  "243": {
+    "daira_id": 243,
+    "wilaya_id": 18,
+    "daira_ar": "الميلية",
+    "daira_fr": "El Milia",
+    "daira_name": "دائرة الميلية, جيجل, الجزائر",
+    "daira_latitude": 36.7902981,
+    "daira_longitude": 6.291339
+  },
+  "244": {
+    "daira_id": 244,
+    "wilaya_id": 18,
+    "daira_ar": "سيدي معروف",
+    "daira_fr": "Sidi Marouf",
+    "daira_name": "دائرة سيدي معروف, جيجل, 18018, الجزائر",
+    "daira_latitude": 36.6294205,
+    "daira_longitude": 6.2226507
+  },
+  "245": {
+    "daira_id": 245,
+    "wilaya_id": 18,
+    "daira_ar": "السطارة",
+    "daira_fr": "Settara",
+    "daira_name": "دائرة السطارة, جيجل, 18113, الجزائر",
+    "daira_latitude": 36.663388,
+    "daira_longitude": 6.4227471
+  },
+  "246": {
+    "daira_id": 246,
+    "wilaya_id": 18,
+    "daira_ar": "العنصر",
+    "daira_fr": "El Ancer",
+    "daira_name": "دائرة العنصر, جيجل, 18029, الجزائر",
+    "daira_latitude": 36.7772902,
+    "daira_longitude": 6.1550375
+  },
+  "247": {
+    "daira_id": 247,
+    "wilaya_id": 18,
+    "daira_ar": "جيملة",
+    "daira_fr": "Djimla",
+    "daira_name": "دائرة جيملة, جيجل, الجزائر",
+    "daira_latitude": 36.584693,
+    "daira_longitude": 5.8220091
+  },
+  "248": {
+    "daira_id": 248,
+    "wilaya_id": 18,
+    "daira_ar": "تاكسنة",
+    "daira_fr": "Texenna",
+    "daira_name": "دائرة تاكسنة, جيجل, الجزائر",
+    "daira_latitude": 36.6956642,
+    "daira_longitude": 5.7708896
+  },
+  "249": {
+    "daira_id": 249,
+    "wilaya_id": 19,
+    "daira_ar": "سطيف",
+    "daira_fr": "Setif",
+    "daira_name": "دائرة سطيف, سطيف, 19000, الجزائر",
+    "daira_latitude": 36.1907645,
+    "daira_longitude": 5.4178902
+  },
+  "250": {
+    "daira_id": 250,
+    "wilaya_id": 19,
+    "daira_ar": "عين الكبيرة",
+    "daira_fr": "Ain El Kebira",
+    "daira_name": "دائرة عين الكبيرة, سطيف, الجزائر",
+    "daira_latitude": 36.373048,
+    "daira_longitude": 5.5754552
+  },
+  "251": {
+    "daira_id": 251,
+    "wilaya_id": 19,
+    "daira_ar": "بني عزيز",
+    "daira_fr": "Beni Aziz",
+    "daira_name": "دائرة بني عزيز, سطيف, 19033, الجزائر",
+    "daira_latitude": 36.4307425,
+    "daira_longitude": 5.7050268
+  },
+  "252": {
+    "daira_id": 252,
+    "wilaya_id": 19,
+    "daira_ar": "بئر العرش",
+    "daira_fr": "Bir El Arch",
+    "daira_name": "دائرة بير العرش, سطيف, 19670, الجزائر",
+    "daira_latitude": 36.152718,
+    "daira_longitude": 5.8452003
+  },
+  "253": {
+    "daira_id": 253,
+    "wilaya_id": 19,
+    "daira_ar": "بابور",
+    "daira_fr": "Babor",
+    "daira_name": "دائرة بابور, سطيف, الجزائر",
+    "daira_latitude": 36.4975145,
+    "daira_longitude": 5.5493347
+  },
+  "254": {
+    "daira_id": 254,
+    "wilaya_id": 19,
+    "daira_ar": "قجال",
+    "daira_fr": "Guidjel",
+    "daira_name": "دائرة قجال, سطيف, الجزائر",
+    "daira_latitude": 36.131926,
+    "daira_longitude": 5.5238577
+  },
+  "255": {
+    "daira_id": 255,
+    "wilaya_id": 19,
+    "daira_ar": "العلمة",
+    "daira_fr": "El Eulma",
+    "daira_name": "دائرة العلمة, سطيف, الجزائر",
+    "daira_latitude": 36.135515,
+    "daira_longitude": 5.6950819
+  },
+  "256": {
+    "daira_id": 256,
+    "wilaya_id": 19,
+    "daira_ar": "جميلة",
+    "daira_fr": "Djemila",
+    "daira_name": "دائرة جميلة, سطيف, 19023, الجزائر",
+    "daira_latitude": 36.3230875,
+    "daira_longitude": 5.7774303
+  },
+  "257": {
+    "daira_id": 257,
+    "wilaya_id": 19,
+    "daira_ar": "بني ورتيلان",
+    "daira_fr": "Beni Ourtilane",
+    "daira_name": "دائرة بني ورتيﻻن, سطيف, الجزائر",
+    "daira_latitude": 36.450559,
+    "daira_longitude": 4.857765
+  },
+  "258": {
+    "daira_id": 258,
+    "wilaya_id": 19,
+    "daira_ar": "عين أرنات",
+    "daira_fr": "Ain Arnat",
+    "daira_name": "دائرة عين ارنات, سطيف, الجزائر",
+    "daira_latitude": 36.2167755,
+    "daira_longitude": 5.2502765
+  },
+  "259": {
+    "daira_id": 259,
+    "wilaya_id": 19,
+    "daira_ar": "عموشة",
+    "daira_fr": "Amoucha",
+    "daira_name": "دائرة عموشة, سطيف, 19068, الجزائر",
+    "daira_latitude": 36.427017,
+    "daira_longitude": 5.3782664
+  },
+  "260": {
+    "daira_id": 260,
+    "wilaya_id": 19,
+    "daira_ar": "عين ولمان",
+    "daira_fr": "Ain Oulmene",
+    "daira_name": "دائرة عين ولمان, سطيف, الجزائر",
+    "daira_latitude": 35.9694754,
+    "daira_longitude": 5.2456326
+  },
+  "261": {
+    "daira_id": 261,
+    "wilaya_id": 19,
+    "daira_ar": "بوعنداس",
+    "daira_fr": "Bouandas",
+    "daira_name": "دائرة بوعنداس, سطيف, 19124, الجزائر",
+    "daira_latitude": 36.5190805,
+    "daira_longitude": 5.1195444
+  },
+  "262": {
+    "daira_id": 262,
+    "wilaya_id": 19,
+    "daira_ar": "حمام السخنة",
+    "daira_fr": "Hammam Sokhna",
+    "daira_name": "دائرة حمام السخنة, سطيف, 19066, الجزائر",
+    "daira_latitude": 35.9354985,
+    "daira_longitude": 5.8306743
+  },
+  "263": {
+    "daira_id": 263,
+    "wilaya_id": 19,
+    "daira_ar": "صالح باي",
+    "daira_fr": "Salah Bey",
+    "daira_name": "دائرة صالح باي, سطيف, الجزائر",
+    "daira_latitude": 35.759599,
+    "daira_longitude": 5.2213285
+  },
+  "264": {
+    "daira_id": 264,
+    "wilaya_id": 19,
+    "daira_ar": "عين أزال",
+    "daira_fr": "Ain Azel",
+    "daira_name": "دائرة عين آزال, سطيف, الجزائر",
+    "daira_latitude": 35.896251,
+    "daira_longitude": 5.5815374
+  },
+  "265": {
+    "daira_id": 265,
+    "wilaya_id": 19,
+    "daira_ar": "قنزات",
+    "daira_fr": "Guenzet",
+    "daira_name": "دائرة قنزات, سطيف, الجزائر",
+    "daira_latitude": 36.345226,
+    "daira_longitude": 4.8798443
+  },
+  "266": {
+    "daira_id": 266,
+    "wilaya_id": 19,
+    "daira_ar": "بوقاعة",
+    "daira_fr": "Bougaa",
+    "daira_name": "دائرة بوقاعة, سطيف, الجزائر",
+    "daira_latitude": 36.303059,
+    "daira_longitude": 5.1467851
+  },
+  "267": {
+    "daira_id": 267,
+    "wilaya_id": 19,
+    "daira_ar": "حمام قرقور",
+    "daira_fr": "Hammam Guergour",
+    "daira_name": "دائرة حمام قرقور, سطيف, 19029, الجزائر",
+    "daira_latitude": 36.375821,
+    "daira_longitude": 4.9879952
+  },
+  "268": {
+    "daira_id": 268,
+    "wilaya_id": 19,
+    "daira_ar": "ماوكلان",
+    "daira_fr": "Maoklane",
+    "daira_name": "دائرة موكلان, سطيف, الجزائر",
+    "daira_latitude": 36.424463,
+    "daira_longitude": 5.1138394
+  },
+  "269": {
+    "daira_id": 269,
+    "wilaya_id": 20,
+    "daira_ar": "سعيدة",
+    "daira_fr": "Saida",
+    "daira_name": "دائرة سعيدة, سعيدة, الجزائر",
+    "daira_latitude": 34.8436667,
+    "daira_longitude": 0.128284
+  },
+  "270": {
+    "daira_id": 270,
+    "wilaya_id": 20,
+    "daira_ar": "عين الحجر",
+    "daira_fr": "Ain El Hadjar",
+    "daira_name": "دائرة عين الحجر, سعيدة, الجزائر",
+    "daira_latitude": 34.5933955,
+    "daira_longitude": 0.1726177
+  },
+  "271": {
+    "daira_id": 271,
+    "wilaya_id": 20,
+    "daira_ar": "يوب",
+    "daira_fr": "Youb",
+    "daira_name": "دائرة يوب, سعيدة, الجزائر",
+    "daira_latitude": 34.8856024,
+    "daira_longitude": -0.1325325
+  },
+  "272": {
+    "daira_id": 272,
+    "wilaya_id": 20,
+    "daira_ar": "سيدي بوبكر",
+    "daira_fr": "Sidi Boubekeur",
+    "daira_name": "دائرة سيدي بوبكر, سعيدة, 20004, الجزائر",
+    "daira_latitude": 34.9890487,
+    "daira_longitude": 0.0785656
+  },
+  "273": {
+    "daira_id": 273,
+    "wilaya_id": 20,
+    "daira_ar": "الحساسنة",
+    "daira_fr": "El Hassasna",
+    "daira_name": "دائرة الحساسنة, سعيدة, الجزائر",
+    "daira_latitude": 34.6129565,
+    "daira_longitude": 0.5811997
+  },
+  "274": {
+    "daira_id": 274,
+    "wilaya_id": 20,
+    "daira_ar": "أولاد ابراهيم",
+    "daira_fr": "Ouled Brahim",
+    "daira_name": "أولاد ابراھيم, دائرة أولاد براهيم, سعيدة, 20221, الجزائر",
+    "daira_latitude": 34.9853876,
+    "daira_longitude": 0.4786462
+  },
+  "275": {
+    "daira_id": 275,
+    "wilaya_id": 21,
+    "daira_ar": "سكيكدة",
+    "daira_fr": "Skikda",
+    "daira_name": "دائرة سكيكدة, سكيكدة, الجزائر",
+    "daira_latitude": 36.8604805,
+    "daira_longitude": 6.964892
+  },
+  "276": {
+    "daira_id": 276,
+    "wilaya_id": 21,
+    "daira_ar": "الحدائق",
+    "daira_fr": "El Hadaiek",
+    "daira_name": "دائرة الحدائق, سكيكدة, الجزائر",
+    "daira_latitude": 36.8580032,
+    "daira_longitude": 6.7988041
+  },
+  "277": {
+    "daira_id": 277,
+    "wilaya_id": 21,
+    "daira_ar": "عزابة",
+    "daira_fr": "Azzaba",
+    "daira_name": "دائرة عزابة, سكيكدة, الجزائر",
+    "daira_latitude": 36.7361437,
+    "daira_longitude": 7.1589517
+  },
+  "278": {
+    "daira_id": 278,
+    "wilaya_id": 21,
+    "daira_ar": "بن عزوز",
+    "daira_fr": "Ben Azzouz",
+    "daira_name": "دائرة بن عزوز, سكيكدة, الجزائر",
+    "daira_latitude": 36.8425767,
+    "daira_longitude": 7.29675
+  },
+  "279": {
+    "daira_id": 279,
+    "wilaya_id": 21,
+    "daira_ar": "القل",
+    "daira_fr": "Collo",
+    "daira_name": "دائرة القل, سكيكدة, الجزائر",
+    "daira_latitude": 36.9723552,
+    "daira_longitude": 6.5440995
+  },
+  "280": {
+    "daira_id": 280,
+    "wilaya_id": 21,
+    "daira_ar": "أولاد عطية",
+    "daira_fr": "Ouled Attia",
+    "daira_name": "دائرة أوالد عطية, سكيكدة, 21012, الجزائر",
+    "daira_latitude": 36.9652571,
+    "daira_longitude": 6.3380911
+  },
+  "281": {
+    "daira_id": 281,
+    "wilaya_id": 21,
+    "daira_ar": "الزيتونة",
+    "daira_fr": "Zitouna",
+    "daira_name": "دائرة الزيتونة, سكيكدة, الجزائر",
+    "daira_latitude": 37.0155817,
+    "daira_longitude": 6.4466054
+  },
+  "282": {
+    "daira_id": 282,
+    "wilaya_id": 21,
+    "daira_ar": "الحروش",
+    "daira_fr": "El Harrouch",
+    "daira_name": "دائرة الحروش, سكيكدة, الجزائر",
+    "daira_latitude": 36.5961607,
+    "daira_longitude": 6.8675494
+  },
+  "283": {
+    "daira_id": 283,
+    "wilaya_id": 21,
+    "daira_ar": "سيدي مزغيش",
+    "daira_fr": "Sidi Mezghiche",
+    "daira_name": "دائرة سيدي مزغيش, سكيكدة, الجزائر",
+    "daira_latitude": 36.66909,
+    "daira_longitude": 6.6708892
+  },
+  "284": {
+    "daira_id": 284,
+    "wilaya_id": 21,
+    "daira_ar": "رمضان جمال",
+    "daira_fr": "Ramdane Djamel",
+    "daira_name": "دائرة رمضان جمال, سكيكدة, 21425, الجزائر",
+    "daira_latitude": 36.7684084,
+    "daira_longitude": 6.9061613
+  },
+  "285": {
+    "daira_id": 285,
+    "wilaya_id": 21,
+    "daira_ar": "تمالوس",
+    "daira_fr": "Tamalous",
+    "daira_name": "دائرة تمالوس, سكيكدة, الجزائر",
+    "daira_latitude": 36.8626523,
+    "daira_longitude": 6.6519287
+  },
+  "286": {
+    "daira_id": 286,
+    "wilaya_id": 21,
+    "daira_ar": "عين قشرة",
+    "daira_fr": "Ain Kechra",
+    "daira_name": "دائرة عين كرشة, أم البواقي, 04006, الجزائر",
+    "daira_latitude": 35.8959742,
+    "daira_longitude": 6.6672585
+  },
+  "287": {
+    "daira_id": 287,
+    "wilaya_id": 21,
+    "daira_ar": "أم الطوب",
+    "daira_fr": "Oum Toub",
+    "daira_name": "دائرة أم الطوب, سكيكدة, الجزائر",
+    "daira_latitude": 36.7003588,
+    "daira_longitude": 6.5076167
+  },
+  "288": {
+    "daira_id": 288,
+    "wilaya_id": 22,
+    "daira_ar": "سيدي بلعباس",
+    "daira_fr": "Sidi Bel Abbes",
+    "daira_name": "دائرة سيدي بلعباس, سيدي بلعباس, الجزائر",
+    "daira_latitude": 35.205684,
+    "daira_longitude": -0.62854
+  },
+  "289": {
+    "daira_id": 289,
+    "wilaya_id": 22,
+    "daira_ar": "تسالة",
+    "daira_fr": "Tessala",
+    "daira_name": "دائرة تسالة, سيدي بلعباس, الجزائر",
+    "daira_latitude": 35.2620465,
+    "daira_longitude": -0.7493467
+  },
+  "290": {
+    "daira_id": 290,
+    "wilaya_id": 22,
+    "daira_ar": "مصطفى بن ابراهيم",
+    "daira_fr": "Mostefa Ben Brahim",
+    "daira_name": "دائرة مصطفى بن إبراهيم, سيدي بلعباس, 22068, الجزائر",
+    "daira_latitude": 35.1861523,
+    "daira_longitude": -0.4284265
+  },
+  "291": {
+    "daira_id": 291,
+    "wilaya_id": 22,
+    "daira_ar": "تلاغ",
+    "daira_fr": "Telagh",
+    "daira_name": "دائرة تلاغ, سيدي بلعباس, الجزائر",
+    "daira_latitude": 34.7515998,
+    "daira_longitude": -0.554549
+  },
+  "292": {
+    "daira_id": 292,
+    "wilaya_id": 22,
+    "daira_ar": "سيدي علي بوسيدي",
+    "daira_fr": "Sidi Ali Boussidi",
+    "daira_name": "دائرة سيدي علي بوسيدي, سيدي بلعباس, الجزائر",
+    "daira_latitude": 35.102023,
+    "daira_longitude": -0.8842591
+  },
+  "293": {
+    "daira_id": 293,
+    "wilaya_id": 22,
+    "daira_ar": "مرحوم",
+    "daira_fr": "Marhoum",
+    "daira_name": "دائرة مرحوم, سيدي بلعباس, الجزائر",
+    "daira_latitude": 34.2883425,
+    "daira_longitude": -0.2466109
+  },
+  "294": {
+    "daira_id": 294,
+    "wilaya_id": 22,
+    "daira_ar": "سيدي لحسن",
+    "daira_fr": "Sidi Lahcene",
+    "daira_name": "دائرة سيدي لحسن, سيدي بلعباس, الجزائر",
+    "daira_latitude": 35.1345915,
+    "daira_longitude": -0.6953402
+  },
+  "295": {
+    "daira_id": 295,
+    "wilaya_id": 22,
+    "daira_ar": "تنيرة",
+    "daira_fr": "Tenira",
+    "daira_name": "دائرة تنيرة, سيدي بلعباس, الجزائر",
+    "daira_latitude": 35.0165167,
+    "daira_longitude": -0.4368861
+  },
+  "296": {
+    "daira_id": 296,
+    "wilaya_id": 22,
+    "daira_ar": "مولاي سليسن",
+    "daira_fr": "Moulay Slissen",
+    "daira_name": "دائرة مولاى سليسن, سيدي بلعباس, الجزائر",
+    "daira_latitude": 34.7792051,
+    "daira_longitude": -0.7907443
+  },
+  "297": {
+    "daira_id": 297,
+    "wilaya_id": 22,
+    "daira_ar": "مرين",
+    "daira_fr": "Merine",
+    "daira_name": "دائرة مرين, سيدي بلعباس, الجزائر",
+    "daira_latitude": 34.67029,
+    "daira_longitude": -0.3186243
+  },
+  "298": {
+    "daira_id": 298,
+    "wilaya_id": 22,
+    "daira_ar": "راس الماء",
+    "daira_fr": "Ras El Ma",
+    "daira_name": "دائرة رأس الماء, سيدي بلعباس, 22005, الجزائر",
+    "daira_latitude": 34.4447788,
+    "daira_longitude": -0.7645686
+  },
+  "299": {
+    "daira_id": 299,
+    "wilaya_id": 22,
+    "daira_ar": "عين البرد",
+    "daira_fr": "Ain El Berd",
+    "daira_name": "دائرة عين البرد, سيدي بلعباس, الجزائر",
+    "daira_latitude": 35.3441495,
+    "daira_longitude": -0.5079279
+  },
+  "300": {
+    "daira_id": 300,
+    "wilaya_id": 22,
+    "daira_ar": "سفيزف",
+    "daira_fr": "Sfisef",
+    "daira_name": "دائرة سفيزف, سيدي بلعباس, الجزائر",
+    "daira_latitude": 35.2358879,
+    "daira_longitude": -0.264477
+  },
+  "301": {
+    "daira_id": 301,
+    "wilaya_id": 22,
+    "daira_ar": "بن باديس",
+    "daira_fr": "Ben Badis",
+    "daira_name": "دائرة بن باديس, سيدي بلعباس, الجزائر",
+    "daira_latitude": 34.9695291,
+    "daira_longitude": -0.8724313
+  },
+  "302": {
+    "daira_id": 302,
+    "wilaya_id": 22,
+    "daira_ar": "سيدي علي بن يوب",
+    "daira_fr": "Sidi Ali Ben Youb",
+    "daira_name": "دائرة سيدي على بن يوب, سيدي بلعباس, 22008, الجزائر",
+    "daira_latitude": 34.9976899,
+    "daira_longitude": -0.7166299
+  },
+  "303": {
+    "daira_id": 303,
+    "wilaya_id": 23,
+    "daira_ar": "عنابة",
+    "daira_fr": "Annaba",
+    "daira_name": "دائرة عنابة, عنابة, 23000, الجزائر",
+    "daira_latitude": 36.9388757,
+    "daira_longitude": 7.6638355
+  },
+  "304": {
+    "daira_id": 304,
+    "wilaya_id": 23,
+    "daira_ar": "برحال",
+    "daira_fr": "Berrahal",
+    "daira_name": "برحال, عنابة, 23009, الجزائر",
+    "daira_latitude": 36.8930255,
+    "daira_longitude": 7.4790502
+  },
+  "305": {
+    "daira_id": 305,
+    "wilaya_id": 23,
+    "daira_ar": "الحجار",
+    "daira_fr": "El Hadjar",
+    "daira_name": "دائرة عين الحجر, سعيدة, الجزائر",
+    "daira_latitude": 34.5933955,
+    "daira_longitude": 0.1726177
+  },
+  "306": {
+    "daira_id": 306,
+    "wilaya_id": 23,
+    "daira_ar": "البوني",
+    "daira_fr": "El Bouni",
+    "daira_name": "البوني, عنابة, الجزائر",
+    "daira_latitude": 36.8409039,
+    "daira_longitude": 7.7474307
+  },
+  "307": {
+    "daira_id": 307,
+    "wilaya_id": 23,
+    "daira_ar": "عين الباردة",
+    "daira_fr": "Ain El Berda",
+    "daira_name": "عين الباردة, عنابة, الجزائر",
+    "daira_latitude": 36.6973685,
+    "daira_longitude": 7.517287
+  },
+  "308": {
+    "daira_id": 308,
+    "wilaya_id": 23,
+    "daira_ar": "شطايبي",
+    "daira_fr": "Chetaibi",
+    "daira_name": "شطايبي, عنابة, الجزائر",
+    "daira_latitude": 37.0119395,
+    "daira_longitude": 7.4025879
+  },
+  "309": {
+    "daira_id": 309,
+    "wilaya_id": 24,
+    "daira_ar": "قالمة",
+    "daira_fr": "Guelma",
+    "daira_name": "دائرة قالمة, قالمة, الجزائر",
+    "daira_latitude": 36.4172653,
+    "daira_longitude": 7.3734767
+  },
+  "310": {
+    "daira_id": 310,
+    "wilaya_id": 24,
+    "daira_ar": "وادي الزناتي",
+    "daira_fr": "Oued Zenati",
+    "daira_name": "دائرة وادي الزناتي, قالمة, 24300, الجزائر",
+    "daira_latitude": 36.3426106,
+    "daira_longitude": 7.0971678
+  },
+  "311": {
+    "daira_id": 311,
+    "wilaya_id": 24,
+    "daira_ar": "عين مخلوف",
+    "daira_fr": "Ain Makhlouf",
+    "daira_name": "دائرة عين مخلوف, قالمة, الجزائر",
+    "daira_latitude": 36.1922955,
+    "daira_longitude": 7.1612139
+  },
+  "312": {
+    "daira_id": 312,
+    "wilaya_id": 24,
+    "daira_ar": "خزارة",
+    "daira_fr": "Khezaras",
+    "daira_name": "لخزارة, دائرة لخزارة, قالمة, 24016, الجزائر",
+    "daira_latitude": 36.3681295,
+    "daira_longitude": 7.5278729
+  },
+  "313": {
+    "daira_id": 313,
+    "wilaya_id": 24,
+    "daira_ar": "قلعة بوصبع",
+    "daira_fr": "Guelaat Bousbaa",
+    "daira_name": "دائرة قلعة بوصبع, قالمة, الجزائر",
+    "daira_latitude": 36.5138038,
+    "daira_longitude": 7.5521246
+  },
+  "314": {
+    "daira_id": 314,
+    "wilaya_id": 24,
+    "daira_ar": "حمام دباغ",
+    "daira_fr": "Hammam Debagh",
+    "daira_name": "دائرة حمام دباغ, قالمة, الجزائر",
+    "daira_latitude": 36.5323045,
+    "daira_longitude": 7.1880466
+  },
+  "315": {
+    "daira_id": 315,
+    "wilaya_id": 24,
+    "daira_ar": "حمام النبايل",
+    "daira_fr": "Hammam N'bails",
+    "daira_name": "دائرة حمام النبايل, قالمة, الجزائر",
+    "daira_latitude": 36.3225863,
+    "daira_longitude": 7.7165513
+  },
+  "316": {
+    "daira_id": 316,
+    "wilaya_id": 24,
+    "daira_ar": "بوشقوف",
+    "daira_fr": "Bouchegouf",
+    "daira_name": "دائرة بوشقوف, قالمة, الجزائر",
+    "daira_latitude": 36.5262661,
+    "daira_longitude": 7.7964995
+  },
+  "317": {
+    "daira_id": 317,
+    "wilaya_id": 24,
+    "daira_ar": "هيليوبوليس",
+    "daira_fr": "Heliopolis",
+    "daira_name": "دائرة هيليوبوليس, قالمة, الجزائر",
+    "daira_latitude": 36.5667145,
+    "daira_longitude": 7.3658787
+  },
+  "318": {
+    "daira_id": 318,
+    "wilaya_id": 24,
+    "daira_ar": "هواري بومدين",
+    "daira_fr": "Houari Boumédiène",
+    "daira_name": "دائرة هواري بومدين, قالمة, 24025, الجزائر",
+    "daira_latitude": 36.4080945,
+    "daira_longitude": 7.2495686
+  },
+  "319": {
+    "daira_id": 319,
+    "wilaya_id": 25,
+    "daira_ar": "قسنطينة",
+    "daira_fr": "Constantine",
+    "daira_name": "دائرة قسنطينة, قسنطينة, الجزائر",
+    "daira_latitude": 36.3539864,
+    "daira_longitude": 6.6051127
+  },
+  "320": {
+    "daira_id": 320,
+    "wilaya_id": 25,
+    "daira_ar": "حامة بوزيان",
+    "daira_fr": "Hamma Bouziane",
+    "daira_name": "حامة بوزيان, قسنطينة, الجزائر",
+    "daira_latitude": 36.446551,
+    "daira_longitude": 6.621544
+  },
+  "321": {
+    "daira_id": 321,
+    "wilaya_id": 25,
+    "daira_ar": "زيغود يوسف",
+    "daira_fr": "Zighoud Youcef",
+    "daira_name": "زيغود يوسف, قسنطينة, 25200, الجزائر",
+    "daira_latitude": 36.5290345,
+    "daira_longitude": 6.669693
+  },
+  "322": {
+    "daira_id": 322,
+    "wilaya_id": 25,
+    "daira_ar": "الخروب",
+    "daira_fr": "El Khroub",
+    "daira_name": "الخروب, قسنطينة, الجزائر",
+    "daira_latitude": 36.2546825,
+    "daira_longitude": 6.6115435
+  },
+  "323": {
+    "daira_id": 323,
+    "wilaya_id": 25,
+    "daira_ar": "عين عبيد",
+    "daira_fr": "Ain Abid",
+    "daira_name": "عين عبيد, قسنطينة, 25015, الجزائر",
+    "daira_latitude": 36.2956436,
+    "daira_longitude": 6.9048084
+  },
+  "324": {
+    "daira_id": 324,
+    "wilaya_id": 25,
+    "daira_ar": "ابن زياد",
+    "daira_fr": "Ibn Ziad",
+    "daira_name": "ابن زياد, قسنطينة, الجزائر",
+    "daira_latitude": 36.4047075,
+    "daira_longitude": 6.4396157
+  },
+  "325": {
+    "daira_id": 325,
+    "wilaya_id": 26,
+    "daira_ar": "المدية",
+    "daira_fr": "Medea",
+    "daira_name": "دائرة المدية, المدية, الجزائر",
+    "daira_latitude": 36.3003697,
+    "daira_longitude": 2.7014108
+  },
+  "326": {
+    "daira_id": 326,
+    "wilaya_id": 26,
+    "daira_ar": "وزرة",
+    "daira_fr": "Ouzera",
+    "daira_name": "دائرة وزرة, المدية, 26140, الجزائر",
+    "daira_latitude": 36.2752109,
+    "daira_longitude": 2.886575
+  },
+  "327": {
+    "daira_id": 327,
+    "wilaya_id": 26,
+    "daira_ar": "عين بوسيف",
+    "daira_fr": "Ain Boucif",
+    "daira_name": "دائرة عين بوسيف, المدية, 26500, الجزائر",
+    "daira_latitude": 35.8269355,
+    "daira_longitude": 3.186027
+  },
+  "328": {
+    "daira_id": 328,
+    "wilaya_id": 26,
+    "daira_ar": "العمارية",
+    "daira_fr": "El Omaria",
+    "daira_name": "دائرة العمارية, المدية, الجزائر",
+    "daira_latitude": 36.3062932,
+    "daira_longitude": 3.0086889
+  },
+  "329": {
+    "daira_id": 329,
+    "wilaya_id": 26,
+    "daira_ar": "القلب الكبير",
+    "daira_fr": "Guelb El Kebir",
+    "daira_name": "دائرة القلب الكبير, المدية, الجزائر",
+    "daira_latitude": 36.2359996,
+    "daira_longitude": 3.4671985
+  },
+  "330": {
+    "daira_id": 330,
+    "wilaya_id": 26,
+    "daira_ar": "شلالة العذاورة",
+    "daira_fr": "Chellalat El Adhaoura",
+    "daira_name": "دائرة شلالة العذاورة, المدية, الجزائر",
+    "daira_latitude": 35.8481355,
+    "daira_longitude": 3.4804545
+  },
+  "331": {
+    "daira_id": 331,
+    "wilaya_id": 26,
+    "daira_ar": "سيدي نعمان",
+    "daira_fr": "Sidi Naamane",
+    "daira_name": "دائرة سيدي نعمان, المدية, الجزائر",
+    "daira_latitude": 36.2247317,
+    "daira_longitude": 3.104867
+  },
+  "332": {
+    "daira_id": 332,
+    "wilaya_id": 26,
+    "daira_ar": "عزيز",
+    "daira_fr": "Aziz",
+    "daira_name": "دائرة عزيز, المدية, 26040, الجزائر",
+    "daira_latitude": 35.7692065,
+    "daira_longitude": 2.4679614
+  },
+  "333": {
+    "daira_id": 333,
+    "wilaya_id": 26,
+    "daira_ar": "السواقي",
+    "daira_fr": "Souaghi",
+    "daira_name": "دائرة السواقي, المدية, 26020, الجزائر",
+    "daira_latitude": 36.0695155,
+    "daira_longitude": 3.3086262
+  },
+  "334": {
+    "daira_id": 334,
+    "wilaya_id": 26,
+    "daira_ar": "قصر البخاري",
+    "daira_fr": "Ksar El Boukhari",
+    "daira_name": "دائرة قصر البخاري, المدية, 26300, الجزائر",
+    "daira_latitude": 35.8774648,
+    "daira_longitude": 2.8460591
+  },
+  "335": {
+    "daira_id": 335,
+    "wilaya_id": 26,
+    "daira_ar": "العزيزية",
+    "daira_fr": "El Azizia",
+    "daira_name": "دائرة العزيزية, المدية, 26018, الجزائر",
+    "daira_latitude": 36.3670131,
+    "daira_longitude": 3.4751784
+  },
+  "336": {
+    "daira_id": 336,
+    "wilaya_id": 26,
+    "daira_ar": "الشهبونية",
+    "daira_fr": "Chahbounia",
+    "daira_name": "دائرة الشهبونية, المدية, الجزائر",
+    "daira_latitude": 35.6373505,
+    "daira_longitude": 2.718092
+  },
+  "337": {
+    "daira_id": 337,
+    "wilaya_id": 26,
+    "daira_ar": "عوامري",
+    "daira_fr": "Ouamri",
+    "daira_name": "دائرة وامري, المدية, 26043, الجزائر",
+    "daira_latitude": 36.219671,
+    "daira_longitude": 2.6079296
+  },
+  "338": {
+    "daira_id": 338,
+    "wilaya_id": 26,
+    "daira_ar": "سي المحجوب",
+    "daira_fr": "Si Mahdjoub",
+    "daira_name": "دائرة سي المحجوب, المدية, الجزائر",
+    "daira_latitude": 36.1324366,
+    "daira_longitude": 2.6971521
+  },
+  "339": {
+    "daira_id": 339,
+    "wilaya_id": 26,
+    "daira_ar": "بني سليمان",
+    "daira_fr": "Beni Slimane",
+    "daira_name": "دائرة بني سليمان, المدية, 26001, الجزائر",
+    "daira_latitude": 36.2208771,
+    "daira_longitude": 3.2663293
+  },
+  "340": {
+    "daira_id": 340,
+    "wilaya_id": 26,
+    "daira_ar": "البرواقية",
+    "daira_fr": "Berrouaghia",
+    "daira_name": "دائرة البرواقية, المدية, الجزائر",
+    "daira_latitude": 36.0834816,
+    "daira_longitude": 3.0682653
+  },
+  "341": {
+    "daira_id": 341,
+    "wilaya_id": 26,
+    "daira_ar": "سغوان",
+    "daira_fr": "Seghouane",
+    "daira_name": "دائرة سغوان, المدية, الجزائر",
+    "daira_latitude": 36.0269302,
+    "daira_longitude": 2.9051898
+  },
+  "342": {
+    "daira_id": 342,
+    "wilaya_id": 26,
+    "daira_ar": "تابلاط",
+    "daira_fr": "Tablat",
+    "daira_name": "دائرة تابلاط, المدية, الجزائر",
+    "daira_latitude": 36.4032295,
+    "daira_longitude": 3.2882622
+  },
+  "343": {
+    "daira_id": 343,
+    "wilaya_id": 26,
+    "daira_ar": "أولاد عنتر",
+    "daira_fr": "Ouled Antar",
+    "daira_name": "دائرة أولاد عنتر, المدية, الجزائر",
+    "daira_latitude": 35.9722484,
+    "daira_longitude": 2.6095488
+  },
+  "344": {
+    "daira_id": 344,
+    "wilaya_id": 27,
+    "daira_ar": "مستغانم",
+    "daira_fr": "Mostaganem",
+    "daira_name": "دائرة مستغانم, مستغانم, 27000, الجزائر",
+    "daira_latitude": 35.9746418,
+    "daira_longitude": 0.1082708
+  },
+  "345": {
+    "daira_id": 345,
+    "wilaya_id": 27,
+    "daira_ar": "عين نويسي",
+    "daira_fr": "Ain Nouicy",
+    "daira_name": "دائرة عين نويسي, مستغانم, 27020, الجزائر",
+    "daira_latitude": 35.7593033,
+    "daira_longitude": 0.0198239
+  },
+  "346": {
+    "daira_id": 346,
+    "wilaya_id": 27,
+    "daira_ar": "حاسي ماماش",
+    "daira_fr": "Hassi Mameche",
+    "daira_name": "دائرة حاسي مماش, مستغانم, الجزائر",
+    "daira_latitude": 35.845365,
+    "daira_longitude": 0.0658157
+  },
+  "347": {
+    "daira_id": 347,
+    "wilaya_id": 27,
+    "daira_ar": "عين تادلس",
+    "daira_fr": "Ain Tedeles",
+    "daira_name": "دائرة عين تادلس, مستغانم, الجزائر",
+    "daira_latitude": 35.9808608,
+    "daira_longitude": 0.3423111
+  },
+  "348": {
+    "daira_id": 348,
+    "wilaya_id": 27,
+    "daira_ar": "خير الدين",
+    "daira_fr": "Kheir Eddine",
+    "daira_name": "دائرة خير الدين, مستغانم, الجزائر",
+    "daira_latitude": 35.952711,
+    "daira_longitude": 0.1572338
+  },
+  "349": {
+    "daira_id": 349,
+    "wilaya_id": 27,
+    "daira_ar": "سيدي علي",
+    "daira_fr": "Sidi Ali",
+    "daira_name": "سيدي على, دائرة سيدي علي, مستغانم, 27002, الجزائر",
+    "daira_latitude": 36.0935918,
+    "daira_longitude": 0.4189805
+  },
+  "350": {
+    "daira_id": 350,
+    "wilaya_id": 27,
+    "daira_ar": "سيدي لخضر",
+    "daira_fr": "Sidi Lakhdar",
+    "daira_name": "دائرة سيدي لخضر, مستغانم, الجزائر",
+    "daira_latitude": 36.1318887,
+    "daira_longitude": 0.3232878
+  },
+  "351": {
+    "daira_id": 351,
+    "wilaya_id": 27,
+    "daira_ar": "عشعاشة",
+    "daira_fr": "Achaacha",
+    "daira_name": "دائرة عشعاشة, مستغانم, 27027, الجزائر",
+    "daira_latitude": 36.2326083,
+    "daira_longitude": 0.5945339
+  },
+  "352": {
+    "daira_id": 352,
+    "wilaya_id": 27,
+    "daira_ar": "بوقيراط",
+    "daira_fr": "Bouguirat",
+    "daira_name": "دائرة بوقيراط, مستغانم, الجزائر",
+    "daira_latitude": 35.8014465,
+    "daira_longitude": 0.2925261
+  },
+  "353": {
+    "daira_id": 353,
+    "wilaya_id": 27,
+    "daira_ar": "ماسرة",
+    "daira_fr": "Mesra",
+    "daira_name": "دائرة ماسرى, مستغانم, الجزائر",
+    "daira_latitude": 35.8438773,
+    "daira_longitude": 0.2034498
+  },
+  "354": {
+    "daira_id": 354,
+    "wilaya_id": 28,
+    "daira_ar": "المسيلة",
+    "daira_fr": "M'sila",
+    "daira_name": "دائرة المسيلة, المسيلة, 28000, الجزائر",
+    "daira_latitude": 35.7226139,
+    "daira_longitude": 4.50622
+  },
+  "355": {
+    "daira_id": 355,
+    "wilaya_id": 28,
+    "daira_ar": "حمام الضلعة",
+    "daira_fr": "Hammam Dalaa",
+    "daira_name": "دائرة حمام الضلعة, المسيلة, الجزائر",
+    "daira_latitude": 35.8397499,
+    "daira_longitude": 4.2818023
+  },
+  "356": {
+    "daira_id": 356,
+    "wilaya_id": 28,
+    "daira_ar": "أولاد دراج",
+    "daira_fr": "Ouled Derradj",
+    "daira_name": "دائرة أولاد دراج, المسيلة, الجزائر",
+    "daira_latitude": 35.6216653,
+    "daira_longitude": 4.7400851
+  },
+  "357": {
+    "daira_id": 357,
+    "wilaya_id": 28,
+    "daira_ar": "خبانة",
+    "daira_fr": "Khoubana",
+    "daira_name": "دائرة خبانة, المسيلة, الجزائر",
+    "daira_latitude": 35.2522051,
+    "daira_longitude": 4.5748521
+  },
+  "358": {
+    "daira_id": 358,
+    "wilaya_id": 28,
+    "daira_ar": "شلال",
+    "daira_fr": "Chellal",
+    "daira_name": "دائرة شلال, المسيلة, الجزائر",
+    "daira_latitude": 35.5555777,
+    "daira_longitude": 4.4130881
+  },
+  "359": {
+    "daira_id": 359,
+    "wilaya_id": 28,
+    "daira_ar": "مقرة",
+    "daira_fr": "Magra",
+    "daira_name": "دائرة مقرة, المسيلة, الجزائر",
+    "daira_latitude": 35.6272267,
+    "daira_longitude": 5.1380762
+  },
+  "360": {
+    "daira_id": 360,
+    "wilaya_id": 28,
+    "daira_ar": "سيدي عيسى",
+    "daira_fr": "Sidi Aissa",
+    "daira_name": "دائرة سيدي عيسى, المسيلة, 28003, الجزائر",
+    "daira_latitude": 35.7267446,
+    "daira_longitude": 3.6990687
+  },
+  "361": {
+    "daira_id": 361,
+    "wilaya_id": 28,
+    "daira_ar": "عين الحجل",
+    "daira_fr": "Ain El Hadjel",
+    "daira_name": "دائرة عين الحجل, المسيلة, الجزائر",
+    "daira_latitude": 35.7004463,
+    "daira_longitude": 4.0001918
+  },
+  "362": {
+    "daira_id": 362,
+    "wilaya_id": 28,
+    "daira_ar": "بوسعادة",
+    "daira_fr": "Bousaada",
+    "daira_name": "دائرة بوسعادة, المسيلة, الجزائر",
+    "daira_latitude": 35.1899041,
+    "daira_longitude": 4.1669275
+  },
+  "363": {
+    "daira_id": 363,
+    "wilaya_id": 28,
+    "daira_ar": "أولاد سيدي ابراهيم",
+    "daira_fr": "Ouled Sidi Brahim",
+    "daira_name": "دائرة أولاد سيدي ابراھيم, المسيلة, الجزائر",
+    "daira_latitude": 35.430761,
+    "daira_longitude": 4.0937083
+  },
+  "364": {
+    "daira_id": 364,
+    "wilaya_id": 28,
+    "daira_ar": "سيدي عامر",
+    "daira_fr": "Sidi Ameur",
+    "daira_name": "دائرة سيدي عامر, المسيلة, الجزائر",
+    "daira_latitude": 35.2975285,
+    "daira_longitude": 3.866271
+  },
+  "365": {
+    "daira_id": 365,
+    "wilaya_id": 28,
+    "daira_ar": "بن سرور",
+    "daira_fr": "Ben Srour",
+    "daira_name": "دائرة بن سرور, المسيلة, الجزائر",
+    "daira_latitude": 34.9629595,
+    "daira_longitude": 4.6449641
+  },
+  "366": {
+    "daira_id": 366,
+    "wilaya_id": 28,
+    "daira_ar": "عين الملح",
+    "daira_fr": "Ain El Melh",
+    "daira_name": "دائرة عين الملح, المسيلة, 28066, الجزائر",
+    "daira_latitude": 34.5716748,
+    "daira_longitude": 4.0611957
+  },
+  "367": {
+    "daira_id": 367,
+    "wilaya_id": 28,
+    "daira_ar": "امجدل",
+    "daira_fr": "Medjedel",
+    "daira_name": "دائرة مجدل, المسيلة, 28016, الجزائر",
+    "daira_latitude": 35.0874251,
+    "daira_longitude": 3.6892153
+  },
+  "368": {
+    "daira_id": 368,
+    "wilaya_id": 28,
+    "daira_ar": "جبل مساعد",
+    "daira_fr": "Djebel Messaad",
+    "daira_name": "دائرة جبل مسعد, المسيلة, الجزائر",
+    "daira_latitude": 34.9654047,
+    "daira_longitude": 4.053512
+  },
+  "369": {
+    "daira_id": 369,
+    "wilaya_id": 29,
+    "daira_ar": "معسكر",
+    "daira_fr": "Mascara",
+    "daira_name": "دائرة معسكر, معسكر, الجزائر",
+    "daira_latitude": 35.3828213,
+    "daira_longitude": 0.1535005
+  },
+  "370": {
+    "daira_id": 370,
+    "wilaya_id": 29,
+    "daira_ar": "بوحنيفية",
+    "daira_fr": "Bouhanifia",
+    "daira_name": "دائرة بوحنيفية, معسكر, الجزائر",
+    "daira_latitude": 35.3766731,
+    "daira_longitude": -0.0808919
+  },
+  "371": {
+    "daira_id": 371,
+    "wilaya_id": 29,
+    "daira_ar": "تيزي",
+    "daira_fr": "Tizi",
+    "daira_name": "تيزي, دائرة تيزي, معسكر, الجزائر",
+    "daira_latitude": 35.3115859,
+    "daira_longitude": 0.0742378
+  },
+  "372": {
+    "daira_id": 372,
+    "wilaya_id": 29,
+    "daira_ar": "تيغنيف",
+    "daira_fr": "Tighennif",
+    "daira_name": "دائرة تيغنيف, معسكر, الجزائر",
+    "daira_latitude": 35.3922379,
+    "daira_longitude": 0.341667
+  },
+  "373": {
+    "daira_id": 373,
+    "wilaya_id": 29,
+    "daira_ar": "الحشم",
+    "daira_fr": "Hachem",
+    "daira_name": "دائرة الهاشم, معسكر, الجزائر",
+    "daira_latitude": 35.3046887,
+    "daira_longitude": 0.5256924
+  },
+  "374": {
+    "daira_id": 374,
+    "wilaya_id": 29,
+    "daira_ar": "وادي الأبطال",
+    "daira_fr": "Oued El Abtal",
+    "daira_name": "دائرة وادي الأبطال, معسكر, الجزائر",
+    "daira_latitude": 35.3992681,
+    "daira_longitude": 0.7863922
+  },
+  "375": {
+    "daira_id": 375,
+    "wilaya_id": 29,
+    "daira_ar": "غريس",
+    "daira_fr": "Ghriss",
+    "daira_name": "دائرة غريس, معسكر, 29006, الجزائر",
+    "daira_latitude": 35.2858596,
+    "daira_longitude": 0.2474324
+  },
+  "376": {
+    "daira_id": 376,
+    "wilaya_id": 29,
+    "daira_ar": "البرج",
+    "daira_fr": "El Bordj",
+    "daira_name": "البرج, دائرة البرج, معسكر, الجزائر",
+    "daira_latitude": 35.4981797,
+    "daira_longitude": 0.3344689
+  },
+  "377": {
+    "daira_id": 377,
+    "wilaya_id": 29,
+    "daira_ar": "عين فكان",
+    "daira_fr": "Ain Fekan",
+    "daira_name": "دائرة عين فكان, معسكر, الجزائر",
+    "daira_latitude": 35.179092,
+    "daira_longitude": -0.0729621
+  },
+  "378": {
+    "daira_id": 378,
+    "wilaya_id": 29,
+    "daira_ar": "وادي التاغية",
+    "daira_fr": "Oued Taria",
+    "daira_name": "دائرة وادي التاغية, معسكر, الجزائر",
+    "daira_latitude": 35.1539648,
+    "daira_longitude": 0.1293149
+  },
+  "379": {
+    "daira_id": 379,
+    "wilaya_id": 29,
+    "daira_ar": "عوف",
+    "daira_fr": "Aouf",
+    "daira_name": "دائرة عوف, معسكر, 29021, الجزائر",
+    "daira_latitude": 35.1118064,
+    "daira_longitude": 0.3395349
+  },
+  "380": {
+    "daira_id": 380,
+    "wilaya_id": 29,
+    "daira_ar": "عين فارس",
+    "daira_fr": "Ain Fares",
+    "daira_name": "دائرة عين فارس, معسكر, الجزائر",
+    "daira_latitude": 35.4747089,
+    "daira_longitude": 0.1966172
+  },
+  "381": {
+    "daira_id": 381,
+    "wilaya_id": 29,
+    "daira_ar": "سيق",
+    "daira_fr": "Sig",
+    "daira_name": "دائرة سيق, معسكر, الجزائر",
+    "daira_latitude": 35.48092,
+    "daira_longitude": -0.162281
+  },
+  "382": {
+    "daira_id": 382,
+    "wilaya_id": 29,
+    "daira_ar": "عقاز",
+    "daira_fr": "Oggaz",
+    "daira_name": "دائرة عقاز, معسكر, الجزائر",
+    "daira_latitude": 35.6167613,
+    "daira_longitude": -0.2450417
+  },
+  "383": {
+    "daira_id": 383,
+    "wilaya_id": 29,
+    "daira_ar": "زهانة",
+    "daira_fr": "Zahana",
+    "daira_name": "دائرة زهانة, معسكر, الجزائر",
+    "daira_latitude": 35.4664155,
+    "daira_longitude": -0.3702866
+  },
+  "384": {
+    "daira_id": 384,
+    "wilaya_id": 29,
+    "daira_ar": "المحمدية",
+    "daira_fr": "Mohammadia",
+    "daira_name": "دائرة المحمدية, معسكر, 29002, الجزائر",
+    "daira_latitude": 35.6415385,
+    "daira_longitude": 0.0615856
+  },
+  "385": {
+    "daira_id": 385,
+    "wilaya_id": 30,
+    "daira_ar": "ورقلة",
+    "daira_fr": "Ouargla",
+    "daira_name": "دائرة ورقلة, ورقلة, الجزائر",
+    "daira_latitude": 31.7588075,
+    "daira_longitude": 4.8867005
+  },
+  "386": {
+    "daira_id": 386,
+    "wilaya_id": 30,
+    "daira_ar": "انقوسة",
+    "daira_fr": "N'goussa",
+    "daira_name": "دائرة النقوسة, ورقلة, 30000, الجزائر",
+    "daira_latitude": 32.3433899,
+    "daira_longitude": 5.3404048
+  },
+  "387": {
+    "daira_id": 387,
+    "wilaya_id": 30,
+    "daira_ar": "حاسي مسعود",
+    "daira_fr": "Hassi Messaoud",
+    "daira_name": "دائرة حاسي مسعود, ورقلة, الجزائر",
+    "daira_latitude": 30.5588473,
+    "daira_longitude": 5.4530912
+  },
+  "388": {
+    "daira_id": 388,
+    "wilaya_id": 30,
+    "daira_ar": "سيدي خويلد",
+    "daira_fr": "Sidi Khouiled",
+    "daira_name": "دائرة سيدي خويلد, ورقلة, الجزائر",
+    "daira_latitude": 31.9807462,
+    "daira_longitude": 5.6822798
+  },
+  "390": {
+    "daira_id": 390,
+    "wilaya_id": 55,
+    "daira_ar": "الحجيرة",
+    "daira_fr": "El-Hadjira",
+    "daira_name": "دائرة الحجيرة, ورقلة, 30053, الجزائر",
+    "daira_latitude": 32.948529,
+    "daira_longitude": 5.4640147
+  },
+  "394": {
+    "daira_id": 394,
+    "wilaya_id": 30,
+    "daira_ar": "البرمة",
+    "daira_fr": "El Borma",
+    "daira_name": "دائرة البرمة, ورقلة, الجزائر",
+    "daira_latitude": 31.1770225,
+    "daira_longitude": 7.9951119
+  },
+  "396": {
+    "daira_id": 396,
+    "wilaya_id": 31,
+    "daira_ar": "وهران",
+    "daira_fr": "Oran",
+    "daira_name": "دائرة وهران, وهران, الجزائر",
+    "daira_latitude": 35.7074027,
+    "daira_longitude": -0.6337145
+  },
+  "397": {
+    "daira_id": 397,
+    "wilaya_id": 31,
+    "daira_ar": "قديل",
+    "daira_fr": "Gdyel",
+    "daira_name": "دائرة قديل, وهران, الجزائر",
+    "daira_latitude": 35.7743601,
+    "daira_longitude": -0.4228291
+  },
+  "398": {
+    "daira_id": 398,
+    "wilaya_id": 31,
+    "daira_ar": "بئر الجير",
+    "daira_fr": "Bir El Djir",
+    "daira_name": "دائرة بئر الجير, وهران, الجزائر",
+    "daira_latitude": 35.7255779,
+    "daira_longitude": -0.5173109
+  },
+  "399": {
+    "daira_id": 399,
+    "wilaya_id": 31,
+    "daira_ar": "السانية",
+    "daira_fr": "Es Senia",
+    "daira_name": "دائرة السانية, وهران, الجزائر",
+    "daira_latitude": 35.6106068,
+    "daira_longitude": -0.6145113
+  },
+  "400": {
+    "daira_id": 400,
+    "wilaya_id": 31,
+    "daira_ar": "أرزيو",
+    "daira_fr": "Arzew",
+    "daira_name": "دائرة أرزيو, وهران, 31200, الجزائر",
+    "daira_latitude": 35.8540549,
+    "daira_longitude": -0.381833
+  },
+  "401": {
+    "daira_id": 401,
+    "wilaya_id": 31,
+    "daira_ar": "بطيوة",
+    "daira_fr": "Bethioua",
+    "daira_name": "دائرة بطيوة, وهران, الجزائر",
+    "daira_latitude": 35.742801,
+    "daira_longitude": -0.2245085
+  },
+  "402": {
+    "daira_id": 402,
+    "wilaya_id": 31,
+    "daira_ar": "عين الترك",
+    "daira_fr": "Ain Turk",
+    "daira_name": "دائرة عين الترك, وهران, الجزائر",
+    "daira_latitude": 35.7019967,
+    "daira_longitude": -0.855404
+  },
+  "403": {
+    "daira_id": 403,
+    "wilaya_id": 31,
+    "daira_ar": "وادي تليلات",
+    "daira_fr": "Oued Tlelat",
+    "daira_name": "دائرة وادي تليلات, وهران, 31070, الجزائر",
+    "daira_latitude": 35.522331,
+    "daira_longitude": -0.537262
+  },
+  "404": {
+    "daira_id": 404,
+    "wilaya_id": 31,
+    "daira_ar": "بوتليليس",
+    "daira_fr": "Boutlelis",
+    "daira_name": "دائرة بوتليليس, وهران, الجزائر",
+    "daira_latitude": 35.5746152,
+    "daira_longitude": -0.7972154
+  },
+  "405": {
+    "daira_id": 405,
+    "wilaya_id": 32,
+    "daira_ar": "البيض",
+    "daira_fr": "El Bayadh",
+    "daira_name": "دائرة البيض, البيض, الجزائر",
+    "daira_latitude": 33.6378523,
+    "daira_longitude": 1.0122039
+  },
+  "406": {
+    "daira_id": 406,
+    "wilaya_id": 32,
+    "daira_ar": "رقاصة",
+    "daira_fr": "Rogassa",
+    "daira_name": "دائرة الرقاصة, البيض, الجزائر",
+    "daira_latitude": 34.0220315,
+    "daira_longitude": 0.8846063
+  },
+  "407": {
+    "daira_id": 407,
+    "wilaya_id": 32,
+    "daira_ar": "بريزينة",
+    "daira_fr": "Brezina",
+    "daira_name": "دائرة برزينة, البيض, الجزائر",
+    "daira_latitude": 32.6720105,
+    "daira_longitude": 1.7174419
+  },
+  "408": {
+    "daira_id": 408,
+    "wilaya_id": 32,
+    "daira_ar": "بوعلام",
+    "daira_fr": "Boualem",
+    "daira_name": "دائرة بوعلام, البيض, الجزائر",
+    "daira_latitude": 33.651497,
+    "daira_longitude": 1.4969876
+  },
+  "409": {
+    "daira_id": 409,
+    "wilaya_id": 32,
+    "daira_ar": "الأبيض سيدي الشيخ",
+    "daira_fr": "Labiodh Sidi Cheikh",
+    "daira_name": "دائرة الأبيض سيدي الشيخ, البيض, الجزائر",
+    "daira_latitude": 32.1364055,
+    "daira_longitude": 0.6643316
+  },
+  "410": {
+    "daira_id": 410,
+    "wilaya_id": 32,
+    "daira_ar": "بوقطب",
+    "daira_fr": "Bougtob",
+    "daira_name": "دائرة بوقطب, البيض, 32010, الجزائر",
+    "daira_latitude": 33.9706367,
+    "daira_longitude": 0.2792788
+  },
+  "411": {
+    "daira_id": 411,
+    "wilaya_id": 32,
+    "daira_ar": "بوسمغون",
+    "daira_fr": "Boussemghoun",
+    "daira_name": "دائرة بوسمغون, البيض, 32014, الجزائر",
+    "daira_latitude": 32.8081869,
+    "daira_longitude": 0.0635802
+  },
+  "412": {
+    "daira_id": 412,
+    "wilaya_id": 32,
+    "daira_ar": "شلالة",
+    "daira_fr": "Chellala",
+    "daira_name": "شلالة, دائرة شلالة, البيض, الجزائر",
+    "daira_latitude": 33.0087595,
+    "daira_longitude": 0.0894028
+  },
+  "413": {
+    "daira_id": 413,
+    "wilaya_id": 33,
+    "daira_ar": "إيليزي",
+    "daira_fr": "Illizi",
+    "daira_name": "دائرة إليزي, إليزي, 33000, الجزائر",
+    "daira_latitude": 26.4880835,
+    "daira_longitude": 8.3571492
+  },
+  "415": {
+    "daira_id": 415,
+    "wilaya_id": 33,
+    "daira_ar": "إن أمناس",
+    "daira_fr": "In Amenas",
+    "daira_name": "دائرة عين أمناس, إليزي, الجزائر",
+    "daira_latitude": 28.4114685,
+    "daira_longitude": 7.7865255
+  },
+  "417": {
+    "daira_id": 417,
+    "wilaya_id": 34,
+    "daira_ar": "برج بوعريريج",
+    "daira_fr": "Bordj Bou Arreridj",
+    "daira_name": "دائرة برج بوعريريج, برج بوعريريج, الجزائر",
+    "daira_latitude": 36.0677603,
+    "daira_longitude": 4.7453289
+  },
+  "418": {
+    "daira_id": 418,
+    "wilaya_id": 34,
+    "daira_ar": "رأس الوادي",
+    "daira_fr": "Ras El Oued",
+    "daira_name": "دائرة رأس الوادي, برج بوعريريج, 34001, الجزائر",
+    "daira_latitude": 35.9703362,
+    "daira_longitude": 5.0245131
+  },
+  "419": {
+    "daira_id": 419,
+    "wilaya_id": 34,
+    "daira_ar": "برج زمورة",
+    "daira_fr": "Bordj Zemmoura",
+    "daira_name": "دائرة برج زمورة, برج بوعريريج, الجزائر",
+    "daira_latitude": 36.2544936,
+    "daira_longitude": 4.8466147
+  },
+  "420": {
+    "daira_id": 420,
+    "wilaya_id": 34,
+    "daira_ar": "المنصورة",
+    "daira_fr": "Mansourah",
+    "daira_name": "منصورة, دائرة المنصورة, برج بوعريريج, الجزائر",
+    "daira_latitude": 36.0764868,
+    "daira_longitude": 4.4642629
+  },
+  "421": {
+    "daira_id": 421,
+    "wilaya_id": 34,
+    "daira_ar": "عين تاغروت",
+    "daira_fr": "Ain Taghrout",
+    "daira_name": "دائرة عين تاغروت, برج بوعريريج, الجزائر",
+    "daira_latitude": 36.0941029,
+    "daira_longitude": 5.1137753
+  },
+  "422": {
+    "daira_id": 422,
+    "wilaya_id": 34,
+    "daira_ar": "برج الغدير",
+    "daira_fr": "Bordj Ghedir",
+    "daira_name": "دائرة برج الغدير, برج بوعريريج, الجزائر",
+    "daira_latitude": 35.9194499,
+    "daira_longitude": 4.9184805
+  },
+  "423": {
+    "daira_id": 423,
+    "wilaya_id": 34,
+    "daira_ar": "الحمادية",
+    "daira_fr": "El Hamadia",
+    "daira_name": "دائرة الحمادية, برج بوعريريج, 34050, الجزائر",
+    "daira_latitude": 35.9223341,
+    "daira_longitude": 4.6934349
+  },
+  "424": {
+    "daira_id": 424,
+    "wilaya_id": 34,
+    "daira_ar": "مجانة",
+    "daira_fr": "Medjana",
+    "daira_name": "دائرة مجانة, برج بوعريريج, الجزائر",
+    "daira_latitude": 36.1374901,
+    "daira_longitude": 4.7060543
+  },
+  "425": {
+    "daira_id": 425,
+    "wilaya_id": 34,
+    "daira_ar": "جعافرة",
+    "daira_fr": "Djaafra",
+    "daira_name": "دائرة الجعافرة, برج بوعريريج, 34018, الجزائر",
+    "daira_latitude": 36.3166651,
+    "daira_longitude": 4.6805524
+  },
+  "426": {
+    "daira_id": 426,
+    "wilaya_id": 34,
+    "daira_ar": "بئر قاصد علي",
+    "daira_fr": "Bir Kasdali",
+    "daira_name": "دائرة بئر قصد علي, برج بوعريريج, الجزائر",
+    "daira_latitude": 36.176575,
+    "daira_longitude": 4.9903214
+  },
+  "427": {
+    "daira_id": 427,
+    "wilaya_id": 35,
+    "daira_ar": "بومرداس",
+    "daira_fr": "Boumerdes",
+    "daira_name": "دائرة بومرداس, بومرداس, الجزائر",
+    "daira_latitude": 36.7255762,
+    "daira_longitude": 3.4738909
+  },
+  "428": {
+    "daira_id": 428,
+    "wilaya_id": 35,
+    "daira_ar": "بودواو",
+    "daira_fr": "Boudouaou",
+    "daira_name": "دائرة بودواو, بومرداس, الجزائر",
+    "daira_latitude": 36.665054,
+    "daira_longitude": 3.446206
+  },
+  "429": {
+    "daira_id": 429,
+    "wilaya_id": 35,
+    "daira_ar": "برج منايل",
+    "daira_fr": "Bordj Menaiel",
+    "daira_name": "دائرة برج منايل, بومرداس, الجزائر",
+    "daira_latitude": 36.7881131,
+    "daira_longitude": 3.6725105
+  },
+  "430": {
+    "daira_id": 430,
+    "wilaya_id": 35,
+    "daira_ar": "بغلية",
+    "daira_fr": "Baghlia",
+    "daira_name": "دائرة بغلية, بومرداس, 35055, الجزائر",
+    "daira_latitude": 36.8317993,
+    "daira_longitude": 3.8744318
+  },
+  "431": {
+    "daira_id": 431,
+    "wilaya_id": 35,
+    "daira_ar": "الناصرية",
+    "daira_fr": "Naciria",
+    "daira_name": "دائرة الناصرية, بومرداس, الجزائر",
+    "daira_latitude": 36.755494,
+    "daira_longitude": 3.8180122
+  },
+  "432": {
+    "daira_id": 432,
+    "wilaya_id": 35,
+    "daira_ar": "يسر",
+    "daira_fr": "Isser",
+    "daira_name": "دائرة يسر, بومرداس, الجزائر",
+    "daira_latitude": 36.6705537,
+    "daira_longitude": 3.7334201
+  },
+  "433": {
+    "daira_id": 433,
+    "wilaya_id": 35,
+    "daira_ar": "الثنية",
+    "daira_fr": "Thenia",
+    "daira_name": "دائرة الثنية, بومرداس, 35006, الجزائر",
+    "daira_latitude": 36.68812,
+    "daira_longitude": 3.5777167
+  },
+  "434": {
+    "daira_id": 434,
+    "wilaya_id": 35,
+    "daira_ar": "دلس",
+    "daira_fr": "Dellys",
+    "daira_name": "دائرة دلس, بومرداس, الجزائر",
+    "daira_latitude": 36.865675,
+    "daira_longitude": 3.9531068
+  },
+  "435": {
+    "daira_id": 435,
+    "wilaya_id": 35,
+    "daira_ar": "خميس الخشنة",
+    "daira_fr": "Khemis El Khechna",
+    "daira_name": "دائرة خميس الخشنة, بومرداس, الجزائر",
+    "daira_latitude": 36.6349652,
+    "daira_longitude": 3.3423554
+  },
+  "436": {
+    "daira_id": 436,
+    "wilaya_id": 36,
+    "daira_ar": "الطارف",
+    "daira_fr": "El Tarf",
+    "daira_name": "دائرة الطارف, الطارف, الجزائر",
+    "daira_latitude": 36.6955206,
+    "daira_longitude": 8.3407578
+  },
+  "437": {
+    "daira_id": 437,
+    "wilaya_id": 36,
+    "daira_ar": "بوحجار",
+    "daira_fr": "Bouhadjar",
+    "daira_name": "دائرة بوحجار, الطارف, الجزائر",
+    "daira_latitude": 36.5094512,
+    "daira_longitude": 8.0586867
+  },
+  "438": {
+    "daira_id": 438,
+    "wilaya_id": 36,
+    "daira_ar": "بن مهيدي",
+    "daira_fr": "Ben M'hidi",
+    "daira_name": "دائرة بن مهيدي, الطارف, الجزائر",
+    "daira_latitude": 36.801506,
+    "daira_longitude": 7.9247431
+  },
+  "439": {
+    "daira_id": 439,
+    "wilaya_id": 36,
+    "daira_ar": "القالة",
+    "daira_fr": "El Kala",
+    "daira_name": "دائرة القالة, الطارف, الجزائر",
+    "daira_latitude": 36.8624675,
+    "daira_longitude": 8.4341963
+  },
+  "440": {
+    "daira_id": 440,
+    "wilaya_id": 36,
+    "daira_ar": "بوثلجة",
+    "daira_fr": "Bouteldja",
+    "daira_name": "دائرة بوثلجة, الطارف, الجزائر",
+    "daira_latitude": 36.718572,
+    "daira_longitude": 8.1272982
+  },
+  "441": {
+    "daira_id": 441,
+    "wilaya_id": 36,
+    "daira_ar": "الذرعان",
+    "daira_fr": "Drean",
+    "daira_name": "الذرعان, الطارف, الجزائر",
+    "daira_latitude": 36.655211,
+    "daira_longitude": 7.8218487
+  },
+  "442": {
+    "daira_id": 442,
+    "wilaya_id": 36,
+    "daira_ar": "البسباس",
+    "daira_fr": "Besbes",
+    "daira_name": "البسباس, الطارف, الجزائر",
+    "daira_latitude": 36.6765165,
+    "daira_longitude": 7.9711008
+  },
+  "443": {
+    "daira_id": 443,
+    "wilaya_id": 37,
+    "daira_ar": "تندوف",
+    "daira_fr": "Tindouf",
+    "daira_name": "دائرة تندوف, تندوف, الجزائر",
+    "daira_latitude": 27.543907,
+    "daira_longitude": -6.2399251
+  },
+  "444": {
+    "daira_id": 444,
+    "wilaya_id": 38,
+    "daira_ar": "تيسمسيلت",
+    "daira_fr": "Tissemsilt",
+    "daira_name": "دائرة تسمسيلت, تسمسيلت, 38000, الجزائر",
+    "daira_latitude": 35.6474289,
+    "daira_longitude": 1.8300235
+  },
+  "445": {
+    "daira_id": 445,
+    "wilaya_id": 38,
+    "daira_ar": "برج بونعامة",
+    "daira_fr": "Bordj Bounaama",
+    "daira_name": "دائرة برج بونعامة, تسمسيلت, 38001, الجزائر",
+    "daira_latitude": 35.8244638,
+    "daira_longitude": 1.7280284
+  },
+  "446": {
+    "daira_id": 446,
+    "wilaya_id": 38,
+    "daira_ar": "ثنية الاحد",
+    "daira_fr": "Theniet El Had",
+    "daira_name": "دائرة ثنية الأحد, تسمسيلت, 38200, الجزائر",
+    "daira_latitude": 35.8470198,
+    "daira_longitude": 1.9670612
+  },
+  "447": {
+    "daira_id": 447,
+    "wilaya_id": 38,
+    "daira_ar": "الأزهرية",
+    "daira_fr": "Lazharia",
+    "daira_name": "دائرة الأزهرية, تسمسيلت, 38005, الجزائر",
+    "daira_latitude": 35.9502535,
+    "daira_longitude": 1.5647287
+  },
+  "448": {
+    "daira_id": 448,
+    "wilaya_id": 38,
+    "daira_ar": "لرجام",
+    "daira_fr": "Lardjem",
+    "daira_name": "دائرة لرجام, تسمسيلت, الجزائر",
+    "daira_latitude": 35.760659,
+    "daira_longitude": 1.4502798
+  },
+  "449": {
+    "daira_id": 449,
+    "wilaya_id": 38,
+    "daira_ar": "برج الأمير عبد القادر",
+    "daira_fr": "Bordj Emir Abdelkader",
+    "daira_name": "دائرة برج الأمير عبد القادر, تسمسيلت, الجزائر",
+    "daira_latitude": 35.8412285,
+    "daira_longitude": 2.2167871
+  },
+  "450": {
+    "daira_id": 450,
+    "wilaya_id": 38,
+    "daira_ar": "خميستي",
+    "daira_fr": "Khemisti",
+    "daira_name": "دائرة خميستى, تسمسيلت, 38100, الجزائر",
+    "daira_latitude": 35.6733874,
+    "daira_longitude": 2.0108996
+  },
+  "451": {
+    "daira_id": 451,
+    "wilaya_id": 38,
+    "daira_ar": "عماري",
+    "daira_fr": "Ammari",
+    "daira_name": "دائرة عماري, تسمسيلت, الجزائر",
+    "daira_latitude": 35.6606452,
+    "daira_longitude": 1.6421827
+  },
+  "452": {
+    "daira_id": 452,
+    "wilaya_id": 39,
+    "daira_ar": "الوادي",
+    "daira_fr": "El Oued",
+    "daira_name": "دائرة باب الوادي, الجزائر",
+    "daira_latitude": 36.7970835,
+    "daira_longitude": 3.0445088
+  },
+  "453": {
+    "daira_id": 453,
+    "wilaya_id": 39,
+    "daira_ar": "الرباح",
+    "daira_fr": "Robbah",
+    "daira_name": "الرباح, دائرة الرباح, الوادي, الجزائر",
+    "daira_latitude": 32.9931021,
+    "daira_longitude": 7.1091516
+  },
+  "454": {
+    "daira_id": 454,
+    "wilaya_id": 39,
+    "daira_ar": "البياضة",
+    "daira_fr": "Bayadha",
+    "daira_name": "الرباح, دائرة البياضة, الوادي, 39150, الجزائر",
+    "daira_latitude": 33.3124053,
+    "daira_longitude": 6.8992412
+  },
+  "455": {
+    "daira_id": 455,
+    "wilaya_id": 39,
+    "daira_ar": "قمار",
+    "daira_fr": "Guemar",
+    "daira_name": "دائرة قمار, الوادي, الجزائر",
+    "daira_latitude": 33.7011649,
+    "daira_longitude": 6.7465826
+  },
+  "456": {
+    "daira_id": 456,
+    "wilaya_id": 39,
+    "daira_ar": "الرقيبة",
+    "daira_fr": "Reguiba",
+    "daira_name": "دائرة الرقيبة, الوادي, الجزائر",
+    "daira_latitude": 33.9575465,
+    "daira_longitude": 6.3609636
+  },
+  "457": {
+    "daira_id": 457,
+    "wilaya_id": 39,
+    "daira_ar": "الدبيلة",
+    "daira_fr": "Debila",
+    "daira_name": "دائرة الدبيلة, الوادي, الجزائر",
+    "daira_latitude": 33.4898309,
+    "daira_longitude": 6.9152254
+  },
+  "458": {
+    "daira_id": 458,
+    "wilaya_id": 39,
+    "daira_ar": "حاسي خليفة",
+    "daira_fr": "Hassi Khalifa",
+    "daira_name": "دائرة حاسي خليفة, الوادي, الجزائر",
+    "daira_latitude": 33.5951494,
+    "daira_longitude": 7.0921889
+  },
+  "459": {
+    "daira_id": 459,
+    "wilaya_id": 39,
+    "daira_ar": "الطالب العربي",
+    "daira_fr": "Taleb Larbi",
+    "daira_name": "دائرة الطالب العربي, الوادي, الجزائر",
+    "daira_latitude": 33.171028,
+    "daira_longitude": 7.605877
+  },
+  "460": {
+    "daira_id": 460,
+    "wilaya_id": 39,
+    "daira_ar": "المقرن",
+    "daira_fr": "Magrane",
+    "daira_name": "دائرة المقرن, الوادي, الجزائر",
+    "daira_latitude": 33.8516951,
+    "daira_longitude": 6.862935
+  },
+  "461": {
+    "daira_id": 461,
+    "wilaya_id": 39,
+    "daira_ar": "اميه وانسة",
+    "daira_fr": "Mih Ouensa",
+    "daira_name": "دائرة اميه ونسة, الوادي, الجزائر",
+    "daira_latitude": 33.0130525,
+    "daira_longitude": 6.7203581
+  },
+  "465": {
+    "daira_id": 465,
+    "wilaya_id": 40,
+    "daira_ar": "خنشلة",
+    "daira_fr": "Khenchela",
+    "daira_name": "دائرة خنشلة, خنشلة, الجزائر",
+    "daira_latitude": 35.4362273,
+    "daira_longitude": 7.1400045
+  },
+  "466": {
+    "daira_id": 466,
+    "wilaya_id": 40,
+    "daira_ar": "قايس",
+    "daira_fr": "Kais",
+    "daira_name": "دائرة قايس, خنشلة, الجزائر",
+    "daira_latitude": 35.5160029,
+    "daira_longitude": 6.8831538
+  },
+  "467": {
+    "daira_id": 467,
+    "wilaya_id": 40,
+    "daira_ar": "الحامة",
+    "daira_fr": "El Hamma",
+    "daira_name": "دائرة الحامة, خنشلة, الجزائر",
+    "daira_latitude": 35.3526066,
+    "daira_longitude": 7.0010964
+  },
+  "468": {
+    "daira_id": 468,
+    "wilaya_id": 40,
+    "daira_ar": "عين الطويلة",
+    "daira_fr": "Ain Touila",
+    "daira_name": "دائرة عين الطويلة, خنشلة, الجزائر",
+    "daira_latitude": 35.5086405,
+    "daira_longitude": 7.3701257
+  },
+  "469": {
+    "daira_id": 469,
+    "wilaya_id": 40,
+    "daira_ar": "بوحمامة",
+    "daira_fr": "Bouhmama",
+    "daira_name": "دائرة بوحمامة, خنشلة, 40007, الجزائر",
+    "daira_latitude": 35.2590539,
+    "daira_longitude": 6.7045304
+  },
+  "470": {
+    "daira_id": 470,
+    "wilaya_id": 40,
+    "daira_ar": "ششار",
+    "daira_fr": "Chechar",
+    "daira_name": "دائرة ششار, خنشلة, الجزائر",
+    "daira_latitude": 34.9366055,
+    "daira_longitude": 6.8930011
+  },
+  "471": {
+    "daira_id": 471,
+    "wilaya_id": 40,
+    "daira_ar": "بابار",
+    "daira_fr": "Babar",
+    "daira_name": "دائرة بابار, خنشلة, 40006, الجزائر",
+    "daira_latitude": 34.7635956,
+    "daira_longitude": 7.2845989
+  },
+  "472": {
+    "daira_id": 472,
+    "wilaya_id": 40,
+    "daira_ar": "أولاد رشاش",
+    "daira_fr": "Ouled Rechache",
+    "daira_name": "دائرة اولاد رشاش, خنشلة, الجزائر",
+    "daira_latitude": 35.244524,
+    "daira_longitude": 7.3041995
+  },
+  "473": {
+    "daira_id": 473,
+    "wilaya_id": 41,
+    "daira_ar": "سوق أهراس",
+    "daira_fr": "Souk Ahras",
+    "daira_name": "دائرة سوق أهراس, سوق أهراس, 41000, الجزائر",
+    "daira_latitude": 36.2825665,
+    "daira_longitude": 7.963197
+  },
+  "474": {
+    "daira_id": 474,
+    "wilaya_id": 41,
+    "daira_ar": "سدراتة",
+    "daira_fr": "Sedrata",
+    "daira_name": "دائرة سدراتة, سوق أهراس, 41200, الجزائر",
+    "daira_latitude": 36.1467205,
+    "daira_longitude": 7.546656
+  },
+  "475": {
+    "daira_id": 475,
+    "wilaya_id": 41,
+    "daira_ar": "المشروحة",
+    "daira_fr": "Mechroha",
+    "daira_name": "دائرة المشروحة, سوق أهراس, الجزائر",
+    "daira_latitude": 36.3348865,
+    "daira_longitude": 7.9015494
+  },
+  "476": {
+    "daira_id": 476,
+    "wilaya_id": 41,
+    "daira_ar": "أولاد إدريس",
+    "daira_fr": "Ouled Driss",
+    "daira_name": "دائرة اولاد إدريس, سوق أهراس, الجزائر",
+    "daira_latitude": 36.3793372,
+    "daira_longitude": 8.1283146
+  },
+  "477": {
+    "daira_id": 477,
+    "wilaya_id": 41,
+    "daira_ar": "تاورة",
+    "daira_fr": "Taoura",
+    "daira_name": "دائرة تاورة, سوق أهراس, الجزائر",
+    "daira_latitude": 36.1149684,
+    "daira_longitude": 7.9628931
+  },
+  "478": {
+    "daira_id": 478,
+    "wilaya_id": 41,
+    "daira_ar": "الحدادة",
+    "daira_fr": "Haddada",
+    "daira_name": "المراهنة, دائرة المراهنة, سوق أهراس, 41005, الجزائر",
+    "daira_latitude": 36.2665136,
+    "daira_longitude": 8.249488
+  },
+  "479": {
+    "daira_id": 479,
+    "wilaya_id": 41,
+    "daira_ar": "المراهنة",
+    "daira_fr": "Merahna",
+    "daira_name": "دائرة المراهنة, سوق أهراس, 41005, الجزائر",
+    "daira_latitude": 36.1541226,
+    "daira_longitude": 8.1710709
+  },
+  "480": {
+    "daira_id": 480,
+    "wilaya_id": 41,
+    "daira_ar": "بئر بوحوش",
+    "daira_fr": "Bir Bouhouche",
+    "daira_name": "دائرة بئر بوحوش, سوق أهراس, الجزائر",
+    "daira_latitude": 36.0329191,
+    "daira_longitude": 7.4691075
+  },
+  "481": {
+    "daira_id": 481,
+    "wilaya_id": 41,
+    "daira_ar": "مداوروش",
+    "daira_fr": "M'daourouche",
+    "daira_name": "دائرة مداوروش, سوق أهراس, الجزائر",
+    "daira_latitude": 36.1149684,
+    "daira_longitude": 7.7196545
+  },
+  "482": {
+    "daira_id": 482,
+    "wilaya_id": 41,
+    "daira_ar": "أم العظايم",
+    "daira_fr": "Oum El Adhaim",
+    "daira_name": "دائرة أم الغظائم, سوق أهراس, 41019, الجزائر",
+    "daira_latitude": 35.9502198,
+    "daira_longitude": 7.7517415
+  },
+  "483": {
+    "daira_id": 483,
+    "wilaya_id": 42,
+    "daira_ar": "تيبازة",
+    "daira_fr": "Tipaza",
+    "daira_name": "دائرة تيبازة, تيبازة, 42000, الجزائر",
+    "daira_latitude": 36.5968983,
+    "daira_longitude": 2.3969364
+  },
+  "484": {
+    "daira_id": 484,
+    "wilaya_id": 42,
+    "daira_ar": "حجوط",
+    "daira_fr": "Hadjout",
+    "daira_name": "دائرة حجوط, تيبازة, الجزائر",
+    "daira_latitude": 36.486171,
+    "daira_longitude": 2.3931656
+  },
+  "485": {
+    "daira_id": 485,
+    "wilaya_id": 42,
+    "daira_ar": "سيدي أعمر",
+    "daira_fr": "Sidi Amar",
+    "daira_name": "دائرة سيدي عمار, تيبازة, الجزائر",
+    "daira_latitude": 36.5197291,
+    "daira_longitude": 2.2357214
+  },
+  "486": {
+    "daira_id": 486,
+    "wilaya_id": 42,
+    "daira_ar": "قوراية",
+    "daira_fr": "Gouraya",
+    "daira_name": "دائرة قوراية, تيبازة, 42007, الجزائر",
+    "daira_latitude": 36.4949056,
+    "daira_longitude": 1.9365075
+  },
+  "487": {
+    "daira_id": 487,
+    "wilaya_id": 42,
+    "daira_ar": "شرشال",
+    "daira_fr": "Cherchell",
+    "daira_name": "دائرة شرشال, تيبازة, الجزائر",
+    "daira_latitude": 36.5263623,
+    "daira_longitude": 2.1206488
+  },
+  "488": {
+    "daira_id": 488,
+    "wilaya_id": 42,
+    "daira_ar": "الداموس",
+    "daira_fr": "Damous",
+    "daira_name": "دائرة الداموس, تيبازة, 42014, الجزائر",
+    "daira_latitude": 36.4630203,
+    "daira_longitude": 1.7291255
+  },
+  "489": {
+    "daira_id": 489,
+    "wilaya_id": 42,
+    "daira_ar": "فوكة",
+    "daira_fr": "Fouka",
+    "daira_name": "دائرة فوكة, تيبازة, الجزائر",
+    "daira_latitude": 36.6704983,
+    "daira_longitude": 2.774461
+  },
+  "490": {
+    "daira_id": 490,
+    "wilaya_id": 42,
+    "daira_ar": "بواسماعيل",
+    "daira_fr": "Bou Ismail",
+    "daira_name": "دائرة بو إسماعيل, تيبازة, الجزائر",
+    "daira_latitude": 36.6194458,
+    "daira_longitude": 2.6793707
+  },
+  "491": {
+    "daira_id": 491,
+    "wilaya_id": 42,
+    "daira_ar": "أحمر العين",
+    "daira_fr": "Ahmar El Ain",
+    "daira_name": "دائرة حمر العين, تيبازة, الجزائر",
+    "daira_latitude": 36.4963454,
+    "daira_longitude": 2.5293745
+  },
+  "492": {
+    "daira_id": 492,
+    "wilaya_id": 42,
+    "daira_ar": "القليعة",
+    "daira_fr": "Kolea",
+    "daira_name": "دائرة القليعة, تيبازة, الجزائر",
+    "daira_latitude": 36.5868041,
+    "daira_longitude": 2.7059642
+  },
+  "493": {
+    "daira_id": 493,
+    "wilaya_id": 43,
+    "daira_ar": "ميلة",
+    "daira_fr": "Mila",
+    "daira_name": "دائرة ميلة, ميلة, الجزائر",
+    "daira_latitude": 36.451941,
+    "daira_longitude": 6.262331
+  },
+  "494": {
+    "daira_id": 494,
+    "wilaya_id": 43,
+    "daira_ar": "فرجيوة",
+    "daira_fr": "Ferdjioua",
+    "daira_name": "دائرة فرجيوة, ميلة, الجزائر",
+    "daira_latitude": 36.40473,
+    "daira_longitude": 5.9627452
+  },
+  "495": {
+    "daira_id": 495,
+    "wilaya_id": 43,
+    "daira_ar": "شلغوم العيد",
+    "daira_fr": "Chelghoum Laid",
+    "daira_name": "دائرة شلغوم العيد, ميلة, الجزائر",
+    "daira_latitude": 36.221681,
+    "daira_longitude": 6.2295973
+  },
+  "496": {
+    "daira_id": 496,
+    "wilaya_id": 43,
+    "daira_ar": "التلاغمة",
+    "daira_fr": "Teleghma",
+    "daira_name": "تلاغمة, ميلة, الجزائر",
+    "daira_latitude": 36.0939555,
+    "daira_longitude": 6.3221003
+  },
+  "497": {
+    "daira_id": 497,
+    "wilaya_id": 43,
+    "daira_ar": "تاجنانت",
+    "daira_fr": "Tadjenanet",
+    "daira_name": "دائرة تاجنانت, ميلة, الجزائر",
+    "daira_latitude": 36.0751375,
+    "daira_longitude": 6.0871127
+  },
+  "498": {
+    "daira_id": 498,
+    "wilaya_id": 43,
+    "daira_ar": "وادي النجاء",
+    "daira_fr": "Oued Endja",
+    "daira_name": "دائرة وادي النجاء, ميلة, الجزائر",
+    "daira_latitude": 36.4092595,
+    "daira_longitude": 6.13139
+  },
+  "499": {
+    "daira_id": 499,
+    "wilaya_id": 43,
+    "daira_ar": "بوحاتم",
+    "daira_fr": "Bouhatem",
+    "daira_name": "دائرة بوحاتم, ميلة, 43001, الجزائر",
+    "daira_latitude": 36.308022,
+    "daira_longitude": 5.9829181
+  },
+  "500": {
+    "daira_id": 500,
+    "wilaya_id": 43,
+    "daira_ar": "الرواشد",
+    "daira_fr": "Rouached",
+    "daira_name": "دائرة الرواشد, ميلة, الجزائر",
+    "daira_latitude": 36.439737,
+    "daira_longitude": 6.0249627
+  },
+  "501": {
+    "daira_id": 501,
+    "wilaya_id": 43,
+    "daira_ar": "القرارم قوقة",
+    "daira_fr": "Grarem Gouga",
+    "daira_name": "دائرة القرارم قوقة, ميلة, الجزائر",
+    "daira_latitude": 36.5555585,
+    "daira_longitude": 6.387377
+  },
+  "502": {
+    "daira_id": 502,
+    "wilaya_id": 43,
+    "daira_ar": "سيدي مروان",
+    "daira_fr": "Sidi Merouane",
+    "daira_name": "دائرة سيدي مروان, ميلة, الجزائر",
+    "daira_latitude": 36.5498025,
+    "daira_longitude": 6.2348668
+  },
+  "503": {
+    "daira_id": 503,
+    "wilaya_id": 43,
+    "daira_ar": "تسدان حدادة",
+    "daira_fr": "Tassadane Haddada",
+    "daira_name": "دائرة تسدان حدادة, ميلة, 43036, الجزائر",
+    "daira_latitude": 36.5150072,
+    "daira_longitude": 5.8459182
+  },
+  "504": {
+    "daira_id": 504,
+    "wilaya_id": 43,
+    "daira_ar": "ترعي باينان",
+    "daira_fr": "Terrai Bainen",
+    "daira_name": "دائرة ترعي باينان, ميلة, الجزائر",
+    "daira_latitude": 36.552894,
+    "daira_longitude": 6.0842574
+  },
+  "505": {
+    "daira_id": 505,
+    "wilaya_id": 43,
+    "daira_ar": "عين البيضاء أحريش",
+    "daira_fr": "Ain Beida Harriche",
+    "daira_name": "دائرة عين البيضاء حريش, ميلة, الجزائر",
+    "daira_latitude": 36.414357,
+    "daira_longitude": 5.851766
+  },
+  "506": {
+    "daira_id": 506,
+    "wilaya_id": 44,
+    "daira_ar": "عين الدفلى",
+    "daira_fr": "Ain Defla",
+    "daira_name": "دائرة عين الدفلى, عين الدفلى, 44000, الجزائر",
+    "daira_latitude": 36.2539307,
+    "daira_longitude": 1.9535879
+  },
+  "507": {
+    "daira_id": 507,
+    "wilaya_id": 44,
+    "daira_ar": "مليانة",
+    "daira_fr": "Miliana",
+    "daira_name": "دائرة مليانة, عين الدفلى, الجزائر",
+    "daira_latitude": 36.3503353,
+    "daira_longitude": 2.1702679
+  },
+  "508": {
+    "daira_id": 508,
+    "wilaya_id": 44,
+    "daira_ar": "بومدفع",
+    "daira_fr": "Boumedfaa",
+    "daira_name": "دائرة بومدفع, عين الدفلى, الجزائر",
+    "daira_latitude": 36.3388696,
+    "daira_longitude": 2.5170447
+  },
+  "509": {
+    "daira_id": 509,
+    "wilaya_id": 44,
+    "daira_ar": "خميس",
+    "daira_fr": "Khemis",
+    "daira_name": "دائرة خميس مليانة, عين الدفلى, الجزائر",
+    "daira_latitude": 36.2574793,
+    "daira_longitude": 2.1838657
+  },
+  "510": {
+    "daira_id": 510,
+    "wilaya_id": 44,
+    "daira_ar": "حمام ريغة",
+    "daira_fr": "Hammam Righa",
+    "daira_name": "دائرة حمام ريغة, عين الدفلى, الجزائر",
+    "daira_latitude": 36.3484573,
+    "daira_longitude": 2.3272551
+  },
+  "511": {
+    "daira_id": 511,
+    "wilaya_id": 44,
+    "daira_ar": "جليدة",
+    "daira_fr": "Djelida",
+    "daira_name": "دائرة جليدة, عين الدفلى, الجزائر",
+    "daira_latitude": 36.1221322,
+    "daira_longitude": 2.0099799
+  },
+  "512": {
+    "daira_id": 512,
+    "wilaya_id": 44,
+    "daira_ar": "العامرة",
+    "daira_fr": "El Amra",
+    "daira_name": "دائرة العامرة, عين الدفلى, الجزائر",
+    "daira_latitude": 36.3463709,
+    "daira_longitude": 1.9430469
+  },
+  "513": {
+    "daira_id": 513,
+    "wilaya_id": 44,
+    "daira_ar": "العطاف",
+    "daira_fr": "El Attaf",
+    "daira_name": "دائرة العطاف, عين الدفلى, الجزائر",
+    "daira_latitude": 36.1763753,
+    "daira_longitude": 1.6548415
+  },
+  "514": {
+    "daira_id": 514,
+    "wilaya_id": 44,
+    "daira_ar": "العبادية",
+    "daira_fr": "El Abadia",
+    "daira_name": "دائرة العبادية, عين الدفلى, الجزائر",
+    "daira_latitude": 36.3418875,
+    "daira_longitude": 1.6677104
+  },
+  "515": {
+    "daira_id": 515,
+    "wilaya_id": 44,
+    "daira_ar": "جندل",
+    "daira_fr": "Djendel",
+    "daira_name": "دائرة جندل, عين الدفلى, الجزائر",
+    "daira_latitude": 36.1792058,
+    "daira_longitude": 2.4850058
+  },
+  "516": {
+    "daira_id": 516,
+    "wilaya_id": 44,
+    "daira_ar": "عين الاشياخ",
+    "daira_fr": "Ain Lechiakh",
+    "daira_name": "عين لشياخ, دائرة عين لشياخ, عين الدفلى, الجزائر",
+    "daira_latitude": 36.1220983,
+    "daira_longitude": 2.4054963
+  },
+  "517": {
+    "daira_id": 517,
+    "wilaya_id": 44,
+    "daira_ar": "الروينة",
+    "daira_fr": "Rouina",
+    "daira_name": "دائرة الروينة, عين الدفلى, الجزائر",
+    "daira_latitude": 36.1396387,
+    "daira_longitude": 1.7936128
+  },
+  "518": {
+    "daira_id": 518,
+    "wilaya_id": 44,
+    "daira_ar": "برج الأمير خالد",
+    "daira_fr": "Bordj El Emir Khaled",
+    "daira_name": "برج الأمير خالد, دائرة برج األمير خالد, عين الدفلى, الجزائر",
+    "daira_latitude": 36.1200332,
+    "daira_longitude": 2.2045088
+  },
+  "519": {
+    "daira_id": 519,
+    "wilaya_id": 44,
+    "daira_ar": "بطحية",
+    "daira_fr": "Bathia",
+    "daira_name": "دائرة بطحية, عين الدفلى, 44041, الجزائر",
+    "daira_latitude": 35.9847489,
+    "daira_longitude": 1.857766
+  },
+  "520": {
+    "daira_id": 520,
+    "wilaya_id": 45,
+    "daira_ar": "النعامة",
+    "daira_fr": "Naama",
+    "daira_name": "دائرة النعامة, النعامة, 45000, الجزائر",
+    "daira_latitude": 33.2840315,
+    "daira_longitude": -0.2948217
+  },
+  "521": {
+    "daira_id": 521,
+    "wilaya_id": 45,
+    "daira_ar": "المشرية",
+    "daira_fr": "Mecheria",
+    "daira_name": "دائرة مشرية, النعامة, الجزائر",
+    "daira_latitude": 33.5281384,
+    "daira_longitude": -0.1958471
+  },
+  "522": {
+    "daira_id": 522,
+    "wilaya_id": 45,
+    "daira_ar": "عين الصفراء",
+    "daira_fr": "Ain Sefra",
+    "daira_name": "دائرة عين الصفراء, النعامة, الجزائر",
+    "daira_latitude": 32.8260603,
+    "daira_longitude": -0.4962341
+  },
+  "523": {
+    "daira_id": 523,
+    "wilaya_id": 45,
+    "daira_ar": "سفيسيفة",
+    "daira_fr": "Sfissifa",
+    "daira_name": "دائرة صفيصيفة, النعامة, الجزائر",
+    "daira_latitude": 32.7879643,
+    "daira_longitude": -1.0150328
+  },
+  "524": {
+    "daira_id": 524,
+    "wilaya_id": 45,
+    "daira_ar": "مغرار",
+    "daira_fr": "Moghrar",
+    "daira_name": "دائرة مغرار, النعامة, الجزائر",
+    "daira_latitude": 32.4177727,
+    "daira_longitude": -0.7397488
+  },
+  "525": {
+    "daira_id": 525,
+    "wilaya_id": 45,
+    "daira_ar": "عسلة",
+    "daira_fr": "Asla",
+    "daira_name": "دائرة عسلة, النعامة, الجزائر",
+    "daira_latitude": 32.718689,
+    "daira_longitude": -0.1574112
+  },
+  "526": {
+    "daira_id": 526,
+    "wilaya_id": 45,
+    "daira_ar": "مكمن بن عمار",
+    "daira_fr": "Mekmen Ben Amar",
+    "daira_name": "دائرة مكمن بن عمار, النعامة, الجزائر",
+    "daira_latitude": 33.636514,
+    "daira_longitude": -1.1284987
+  },
+  "527": {
+    "daira_id": 527,
+    "wilaya_id": 46,
+    "daira_ar": "عين تموشنت",
+    "daira_fr": "Ain Temouchent",
+    "daira_name": "دائرة عين تموشنت, عين تموشنت, الجزائر",
+    "daira_latitude": 35.2884551,
+    "daira_longitude": -1.1579737
+  },
+  "528": {
+    "daira_id": 528,
+    "wilaya_id": 46,
+    "daira_ar": "حمام بوحجر",
+    "daira_fr": "Hammam Bou Hadjar",
+    "daira_name": "دائرة حمام بوحجر, عين تموشنت, الجزائر",
+    "daira_latitude": 35.3325666,
+    "daira_longitude": -0.9879773
+  },
+  "529": {
+    "daira_id": 529,
+    "wilaya_id": 46,
+    "daira_ar": "عين الأربعاء",
+    "daira_fr": "Ain Larbaa",
+    "daira_name": "دائرة عين الأربعاء, عين تموشنت, الجزائر",
+    "daira_latitude": 35.4141695,
+    "daira_longitude": -0.7737334
+  },
+  "530": {
+    "daira_id": 530,
+    "wilaya_id": 46,
+    "daira_ar": "المالح",
+    "daira_fr": "El Maleh",
+    "daira_name": "دائرة المالح, عين تموشنت, الجزائر",
+    "daira_latitude": 35.3659979,
+    "daira_longitude": -1.1613897
+  },
+  "531": {
+    "daira_id": 531,
+    "wilaya_id": 46,
+    "daira_ar": "العامرية",
+    "daira_fr": "El Amria",
+    "daira_name": "دائرة العامرية, عين تموشنت, الجزائر",
+    "daira_latitude": 35.5182778,
+    "daira_longitude": -1.0935563
+  },
+  "532": {
+    "daira_id": 532,
+    "wilaya_id": 46,
+    "daira_ar": "عين الكيحل",
+    "daira_fr": "Ain Kihel",
+    "daira_name": "دائرة عين الكيحل, عين تموشنت, 46010, الجزائر",
+    "daira_latitude": 35.192487,
+    "daira_longitude": -1.1147879
+  },
+  "533": {
+    "daira_id": 533,
+    "wilaya_id": 46,
+    "daira_ar": "بني صاف",
+    "daira_fr": "Beni Saf",
+    "daira_name": "دائرة بني صاف, عين تموشنت, الجزائر",
+    "daira_latitude": 35.2774738,
+    "daira_longitude": -1.3656709
+  },
+  "534": {
+    "daira_id": 534,
+    "wilaya_id": 46,
+    "daira_ar": "ولهاصة الغرابة",
+    "daira_fr": "Oulhassa Gheraba",
+    "daira_name": "دائرة ولهاصة, عين تموشنت, 46024, الجزائر",
+    "daira_latitude": 35.2247795,
+    "daira_longitude": -1.4967782
+  },
+  "535": {
+    "daira_id": 535,
+    "wilaya_id": 47,
+    "daira_ar": "غرداية",
+    "daira_fr": "Ghardaia",
+    "daira_name": "دائرة غرداية, غرداية, الجزائر",
+    "daira_latitude": 32.5875526,
+    "daira_longitude": 3.7190912
+  },
+  "537": {
+    "daira_id": 537,
+    "wilaya_id": 47,
+    "daira_ar": "ضاية بن ضحوة",
+    "daira_fr": "Dhayet Ben Dhahoua",
+    "daira_name": "دائرة ضاية بن ضحوة, غرداية, 47026, الجزائر",
+    "daira_latitude": 32.6599066,
+    "daira_longitude": 3.3483649
+  },
+  "538": {
+    "daira_id": 538,
+    "wilaya_id": 47,
+    "daira_ar": "بريان",
+    "daira_fr": "Berriane",
+    "daira_name": "دائرة بريان, غرداية, الجزائر",
+    "daira_latitude": 32.889794,
+    "daira_longitude": 3.7606468
+  },
+  "539": {
+    "daira_id": 539,
+    "wilaya_id": 47,
+    "daira_ar": "متليلي",
+    "daira_fr": "Metlili",
+    "daira_name": "دائرة متليلي الشعانبة, غرداية, الجزائر",
+    "daira_latitude": 32.2748258,
+    "daira_longitude": 3.4498756
+  },
+  "540": {
+    "daira_id": 540,
+    "wilaya_id": 47,
+    "daira_ar": "القرارة",
+    "daira_fr": "El Guerrara",
+    "daira_name": "دائرة القرارة, غرداية, الجزائر",
+    "daira_latitude": 32.7694359,
+    "daira_longitude": 4.5605514
+  },
+  "541": {
+    "daira_id": 541,
+    "wilaya_id": 47,
+    "daira_ar": "زلفانة",
+    "daira_fr": "Zelfana",
+    "daira_name": "دائرة زلفانة, غرداية, 47007, الجزائر",
+    "daira_latitude": 32.4135225,
+    "daira_longitude": 4.3103437
+  },
+  "542": {
+    "daira_id": 542,
+    "wilaya_id": 47,
+    "daira_ar": "بونورة",
+    "daira_fr": "Bounoura",
+    "daira_name": "دائرة بونورة, غرداية, الجزائر",
+    "daira_latitude": 32.5361503,
+    "daira_longitude": 3.9651712
+  },
+  "545": {
+    "daira_id": 545,
+    "wilaya_id": 48,
+    "daira_ar": "غليزان",
+    "daira_fr": "Relizane",
+    "daira_name": "دائرة غليزان, غليزان, الجزائر",
+    "daira_latitude": 35.6811988,
+    "daira_longitude": 0.5425686
+  },
+  "546": {
+    "daira_id": 546,
+    "wilaya_id": 48,
+    "daira_ar": "وادي رهيو",
+    "daira_fr": "Oued Rhiou",
+    "daira_name": "دائرة وادي ارهيو, غليزان, الجزائر",
+    "daira_latitude": 35.9704629,
+    "daira_longitude": 0.9525094
+  },
+  "547": {
+    "daira_id": 547,
+    "wilaya_id": 48,
+    "daira_ar": "الحمادنة",
+    "daira_fr": "El H'madna",
+    "daira_name": "دائرة الحمادنة, غليزان, الجزائر",
+    "daira_latitude": 35.8462255,
+    "daira_longitude": 0.659111
+  },
+  "548": {
+    "daira_id": 548,
+    "wilaya_id": 48,
+    "daira_ar": "سيدي أمحمد بن علي",
+    "daira_fr": "Sidi M'hamed Ben Ali",
+    "daira_name": "دائرة سيدي محمد بن علي, غليزان, الجزائر",
+    "daira_latitude": 36.1260845,
+    "daira_longitude": 0.7360258
+  },
+  "549": {
+    "daira_id": 549,
+    "wilaya_id": 48,
+    "daira_ar": "عمي موسى",
+    "daira_fr": "Ammi Moussa",
+    "daira_name": "دائرة عمي موسى, غليزان, الجزائر",
+    "daira_latitude": 35.826951,
+    "daira_longitude": 0.9667367
+  },
+  "550": {
+    "daira_id": 550,
+    "wilaya_id": 48,
+    "daira_ar": "زمورة",
+    "daira_fr": "Zemmoura",
+    "daira_name": "زمورة, دائرة زمورة, غليزان, 48000, الجزائر",
+    "daira_latitude": 35.7176209,
+    "daira_longitude": 0.7540696
+  },
+  "551": {
+    "daira_id": 551,
+    "wilaya_id": 48,
+    "daira_ar": "جديوية",
+    "daira_fr": "Djidiouia",
+    "daira_name": "دائرة جديوية, غليزان, الجزائر",
+    "daira_latitude": 35.9625886,
+    "daira_longitude": 0.7273952
+  },
+  "552": {
+    "daira_id": 552,
+    "wilaya_id": 48,
+    "daira_ar": "المطمر",
+    "daira_fr": "El Matmar",
+    "daira_name": "دائرة المطمر, غليزان, الجزائر",
+    "daira_latitude": 35.5708259,
+    "daira_longitude": 0.6215484
+  },
+  "553": {
+    "daira_id": 553,
+    "wilaya_id": 48,
+    "daira_ar": "عين طارق",
+    "daira_fr": "Ain Tarek",
+    "daira_name": "دائرة عين طارق, غليزان, 48015, الجزائر",
+    "daira_latitude": 35.7302085,
+    "daira_longitude": 1.1809267
+  },
+  "554": {
+    "daira_id": 554,
+    "wilaya_id": 48,
+    "daira_ar": "مازونة",
+    "daira_fr": "Mazouna",
+    "daira_name": "دائرة مازونة, غليزان, الجزائر",
+    "daira_latitude": 36.1000894,
+    "daira_longitude": 0.8684377
+  },
+  "555": {
+    "daira_id": 555,
+    "wilaya_id": 48,
+    "daira_ar": "يلل",
+    "daira_fr": "Yellel",
+    "daira_name": "دائرة يلل, غليزان, الجزائر",
+    "daira_latitude": 35.6796055,
+    "daira_longitude": 0.3598294
+  },
+  "556": {
+    "daira_id": 556,
+    "wilaya_id": 48,
+    "daira_ar": "الرمكة",
+    "daira_fr": "Ramka",
+    "daira_name": "دائرة الرمكة, غليزان, 48024, الجزائر",
+    "daira_latitude": 35.8761311,
+    "daira_longitude": 1.3062371
+  },
+  "557": {
+    "daira_id": 557,
+    "wilaya_id": 48,
+    "daira_ar": "منداس",
+    "daira_fr": "Mendes",
+    "daira_name": "مندس, دائرة مندس, غليزان, الجزائر",
+    "daira_latitude": 35.6507899,
+    "daira_longitude": 0.8644816
+  },
+  "2": {
+    "daira_id": 2,
+    "wilaya_id": 49,
+    "daira_ar": "شروين",
+    "daira_fr": "Charouine",
+    "daira_name": "دائرة شروين, تيميمون, الجزائر",
+    "daira_latitude": 29.4040975,
+    "daira_longitude": -0.2678003
+  },
+  "5": {
+    "daira_id": 5,
+    "wilaya_id": 49,
+    "daira_ar": "تيميمون",
+    "daira_fr": "Timimoun",
+    "daira_name": "دائرة تيميمون, تيميمون, الجزائر",
+    "daira_latitude": 29.6911885,
+    "daira_longitude": 1.5554457
+  },
+  "9": {
+    "daira_id": 9,
+    "wilaya_id": 49,
+    "daira_ar": "تنركوك",
+    "daira_fr": "Tinerkouk",
+    "daira_name": "دائرة تنيركوك, تيميمون, 01013, الجزائر",
+    "daira_latitude": 30.461939,
+    "daira_longitude": 1.0783846
+  },
+  "10": {
+    "daira_id": 10,
+    "wilaya_id": 49,
+    "daira_ar": "أوقروت",
+    "daira_fr": "Aougrout",
+    "daira_name": "دائرة أوقروت, تيميمون, الجزائر",
+    "daira_latitude": 28.916786,
+    "daira_longitude": 0.9344106
+  },
+  "12": {
+    "daira_id": 12,
+    "wilaya_id": 49,
+    "daira_ar": "تيميمون (ولاية منتدبة)",
+    "daira_fr": "Timimoun (Wilaya Déléguée)",
+    "daira_name": "دائرة تيميمون, تيميمون, الجزائر",
+    "daira_latitude": 29.6911885,
+    "daira_longitude": 1.5554457
+  },
+  "11": {
+    "daira_id": 11,
+    "wilaya_id": 50,
+    "daira_ar": "برج باجي مختار",
+    "daira_fr": "Bordj Badji Mokhtar",
+    "daira_name": "دائرة برج باجي مختار, برج باجي مختار, 01010, الجزائر",
+    "daira_latitude": 22.6261461,
+    "daira_longitude": 0.1275817
+  },
+  "13": {
+    "daira_id": 13,
+    "wilaya_id": 50,
+    "daira_ar": "برج باجي مختار (ولاية منتدبة)",
+    "daira_fr": "Bordj Badji Mokhtar (Wilaya Déléguée)",
+    "daira_name": "دائرة برج باجي مختار, برج باجي مختار, 01010, الجزائر",
+    "daira_latitude": 22.6261461,
+    "daira_longitude": 0.1275817
+  },
+  "103": {
+    "daira_id": 103,
+    "wilaya_id": 51,
+    "daira_ar": "أولاد خضير",
+    "daira_fr": "Ouled Khodeir",
+    "daira_name": "دائرة أولاد خدير, بني عباس, الجزائر",
+    "daira_latitude": 29.2275818,
+    "daira_longitude": -0.945988
+  },
+  "105": {
+    "daira_id": 105,
+    "wilaya_id": 51,
+    "daira_ar": "بني عباس",
+    "daira_fr": "Beni Abbes",
+    "daira_name": "دائرة بني عباس, بني عباس, 08300, الجزائر",
+    "daira_latitude": 30.108921,
+    "daira_longitude": -2.4622548
+  },
+  "107": {
+    "daira_id": 107,
+    "wilaya_id": 51,
+    "daira_ar": "إقلي",
+    "daira_fr": "Igli",
+    "daira_name": "دائرة إقلي, بني عباس, 08021, الجزائر",
+    "daira_latitude": 30.4765448,
+    "daira_longitude": -2.537182
+  },
+  "108": {
+    "daira_id": 108,
+    "wilaya_id": 51,
+    "daira_ar": "تبلبالة",
+    "daira_fr": "Tabelbala",
+    "daira_name": "دائرة تبلبالة, بني عباس, الجزائر",
+    "daira_latitude": 28.9802244,
+    "daira_longitude": -3.4292902
+  },
+  "110": {
+    "daira_id": 110,
+    "wilaya_id": 51,
+    "daira_ar": "الواتة",
+    "daira_fr": "El Ouata",
+    "daira_name": "دائرة الواتة, بني عباس, الجزائر",
+    "daira_latitude": 30.1367103,
+    "daira_longitude": -1.355485
+  },
+  "112": {
+    "daira_id": 112,
+    "wilaya_id": 51,
+    "daira_ar": "كرزاز",
+    "daira_fr": "Kerzaz",
+    "daira_name": "دائرة كرزاز, بني عباس, 08220, الجزائر",
+    "daira_latitude": 29.778764,
+    "daira_longitude": -1.1020856
+  },
+  "114": {
+    "daira_id": 114,
+    "wilaya_id": 51,
+    "daira_ar": "بني عباس (ولاية منتدبة)",
+    "daira_fr": "Beni Abbes (Wilaya Déléguée)",
+    "daira_name": "دائرة بني عباس, بني عباس, 08300, الجزائر",
+    "daira_latitude": 30.108921,
+    "daira_longitude": -2.4622548
+  },
+  "90": {
+    "daira_id": 90,
+    "wilaya_id": 52,
+    "daira_ar": "أولاد جلال",
+    "daira_fr": "Ouled Djellal",
+    "daira_name": "دائرة أولاد جلال, أولاد جلال, الجزائر",
+    "daira_latitude": 34.5917421,
+    "daira_longitude": 4.9445181
+  },
+  "91": {
+    "daira_id": 91,
+    "wilaya_id": 52,
+    "daira_ar": "سيدي خالد",
+    "daira_fr": "Sidi Khaled",
+    "daira_name": "دائرة سيدي خالد, أولاد جلال, الجزائر",
+    "daira_latitude": 34.015154,
+    "daira_longitude": 4.8233346
+  },
+  "101": {
+    "daira_id": 101,
+    "wilaya_id": 52,
+    "daira_ar": "أولاد جلال (ولاية منتدبة)",
+    "daira_fr": "Ouled Djellal (Wilaya Déléguée)",
+    "daira_name": "دائرة أولاد جلال, أولاد جلال, الجزائر",
+    "daira_latitude": 34.5917421,
+    "daira_longitude": 4.9445181
+  },
+  "139": {
+    "daira_id": 139,
+    "wilaya_id": 53,
+    "daira_ar": "إينغر",
+    "daira_fr": "In Ghar",
+    "daira_name": "دائرة إن غار, عين صالح, الجزائر",
+    "daira_latitude": 26.5610025,
+    "daira_longitude": 1.8711775
+  },
+  "143": {
+    "daira_id": 143,
+    "wilaya_id": 53,
+    "daira_ar": "عين صالح",
+    "daira_fr": "In Salah",
+    "daira_name": "دائرة عين صالح, عين صالح, الجزائر",
+    "daira_latitude": 27.5585765,
+    "daira_longitude": 3.945705
+  },
+  "145": {
+    "daira_id": 145,
+    "wilaya_id": 53,
+    "daira_ar": "عين صالح (ولاية منتدبة)",
+    "daira_fr": "In Salah (Wilaya Déléguée)",
+    "daira_name": "دائرة عين صالح, عين صالح, الجزائر",
+    "daira_latitude": 27.5585765,
+    "daira_longitude": 3.945705
+  },
+  "140": {
+    "daira_id": 140,
+    "wilaya_id": 54,
+    "daira_ar": "عين قزام",
+    "daira_fr": "In Guezzam",
+    "daira_name": "دائرة عين قزام, عين قزام, الجزائر",
+    "daira_latitude": 20.390479,
+    "daira_longitude": 5.4831121
+  },
+  "142": {
+    "daira_id": 142,
+    "wilaya_id": 54,
+    "daira_ar": "تين زواتين",
+    "daira_fr": "Tin Zouatine",
+    "daira_name": "دائرة تين ظواتين, عين قزام, 11150, الجزائر",
+    "daira_latitude": 20.4349975,
+    "daira_longitude": 3.2038833
+  },
+  "144": {
+    "daira_id": 144,
+    "wilaya_id": 54,
+    "daira_ar": "عين قزام (ولاية منتدبة)",
+    "daira_fr": "In Guezzam (Wilaya Déléguée)",
+    "daira_name": "دائرة عين قزام, عين قزام, الجزائر",
+    "daira_latitude": 20.390479,
+    "daira_longitude": 5.4831121
+  },
+  "389": {
+    "daira_id": 389,
+    "wilaya_id": 55,
+    "daira_ar": "تقرت",
+    "daira_fr": "Touggourt",
+    "daira_name": "دائرة تقرت, تقرت, الجزائر",
+    "daira_latitude": 33.1035954,
+    "daira_longitude": 5.9537176
+  },
+  "391": {
+    "daira_id": 391,
+    "wilaya_id": 55,
+    "daira_ar": "الطيبات",
+    "daira_fr": "Taibet",
+    "daira_name": "دائرة الطيبات, تقرت, الجزائر",
+    "daira_latitude": 32.9854202,
+    "daira_longitude": 6.3922289
+  },
+  "392": {
+    "daira_id": 392,
+    "wilaya_id": 55,
+    "daira_ar": "تماسين",
+    "daira_fr": "Temacine",
+    "daira_name": "دائرة تماسين, تقرت, الجزائر",
+    "daira_latitude": 32.9525089,
+    "daira_longitude": 6.0785201
+  },
+  "393": {
+    "daira_id": 393,
+    "wilaya_id": 55,
+    "daira_ar": "المقارين",
+    "daira_fr": "Megarine",
+    "daira_name": "دائرة مقارين, تقرت, الجزائر",
+    "daira_latitude": 33.2918236,
+    "daira_longitude": 5.9485865
+  },
+  "395": {
+    "daira_id": 395,
+    "wilaya_id": 55,
+    "daira_ar": "تقرت (ولاية منتدبة)",
+    "daira_fr": "Touggourt (Wilaya Déléguée)",
+    "daira_name": "دائرة تقرت, تقرت, الجزائر",
+    "daira_latitude": 33.1035954,
+    "daira_longitude": 5.9537176
+  },
+  "414": {
+    "daira_id": 414,
+    "wilaya_id": 56,
+    "daira_ar": "جانت",
+    "daira_fr": "Djanet",
+    "daira_name": "دائرة جانت, جانت, 33100, الجزائر",
+    "daira_latitude": 24.071521,
+    "daira_longitude": 9.6155847
+  },
+  "416": {
+    "daira_id": 416,
+    "wilaya_id": 56,
+    "daira_ar": "جانت (ولاية منتدبة)",
+    "daira_fr": "Djanet (Wilaya Déléguée)",
+    "daira_name": "دائرة جانت, جانت, 33100, الجزائر",
+    "daira_latitude": 24.071521,
+    "daira_longitude": 9.6155847
+  },
+  "462": {
+    "daira_id": 462,
+    "wilaya_id": 57,
+    "daira_ar": "المغير",
+    "daira_fr": "El Meghaier",
+    "daira_name": "دائرة المغير, المغير, الجزائر",
+    "daira_latitude": 34.1340925,
+    "daira_longitude": 5.7248157
+  },
+  "463": {
+    "daira_id": 463,
+    "wilaya_id": 57,
+    "daira_ar": "جامعة",
+    "daira_fr": "Djamaa",
+    "daira_name": "دائرة جامعة, المغير, الجزائر",
+    "daira_latitude": 33.6246215,
+    "daira_longitude": 5.6745587
+  },
+  "464": {
+    "daira_id": 464,
+    "wilaya_id": 57,
+    "daira_ar": "المغير (ولاية منتدبة)",
+    "daira_fr": "El Meghaier (Wilaya Déléguée)",
+    "daira_name": "دائرة المغير, المغير, الجزائر",
+    "daira_latitude": 34.1340925,
+    "daira_longitude": 5.7248157
+  },
+  "536": {
+    "daira_id": 536,
+    "wilaya_id": 58,
+    "daira_ar": "المنيعة",
+    "daira_fr": "El Menia",
+    "daira_name": "دائرة المنيعة, المنيعة, الجزائر",
+    "daira_latitude": 30.5437321,
+    "daira_longitude": 3.0185968
+  },
+  "543": {
+    "daira_id": 543,
+    "wilaya_id": 58,
+    "daira_ar": "المنصورة",
+    "daira_fr": "Mansourah",
+    "daira_name": "منصورة, دائرة منصورة, المنيعة, الجزائر",
+    "daira_latitude": 32.0088523,
+    "daira_longitude": 3.2750023
+  },
+  "544": {
+    "daira_id": 544,
+    "wilaya_id": 58,
+    "daira_ar": "المنيعة (ولاية منتدبة)",
+    "daira_fr": "El Menia (Wilaya Déléguée)",
+    "daira_name": "دائرة المنيعة, المنيعة, الجزائر",
+    "daira_latitude": 30.5437321,
+    "daira_longitude": 3.0185968
+  }
+}

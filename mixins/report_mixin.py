@@ -79,13 +79,13 @@ class ReportMixin:
             msg.exec_()
             return False
 
-    def gen_report(self: HasReportContext) -> bool:
+    def generate_report(self: HasReportContext) -> bool:
         """Generate a statistical report via the external reporting script."""
         report_data = {
             'prog': count_numberings(NUM_PLANNED),
-            'wrong': count_numberings('مرقمة وغير مطابقة'),
-            'right': count_numberings('مرقمة ومطابقة'),
-            'booked': count_numberings('محجوز(ة)'),
+            'wrong': count_numberings('numbered_mismatched'),
+            'right': count_numberings('numbered_matched'),
+            'booked': count_numberings('booked'),
             'date': datetime.now().date().strftime('%Y/%m/%d'),
             'pan_city0': count_panels(LAYER_SUBDIVISIONS, PAN_MOUNTED),
             'pan_org0': count_panels(LAYER_FACILITIES, PAN_MOUNTED),
@@ -105,7 +105,7 @@ class ReportMixin:
         }
         return self._run_report('2', report_data, label="report")
 
-    def bon_commande(self: HasReportContext) -> bool:
+    def purchase_order(self: HasReportContext) -> bool:
         """Generate a purchase order via the external reporting script."""
         order_data = {
             'date': datetime.now().date().strftime('%Y/%m/%d'),

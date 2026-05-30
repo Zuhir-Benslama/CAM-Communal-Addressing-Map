@@ -93,7 +93,7 @@ class ChartMixin:
         self.type_plan = LAYER_PANELS
         self.type_to_hide = LAYER_NUMBERING
         self._generate_chart(
-            PanelSign, PanelSign.situation,
+            PanelSign, PanelSign.status,
             'Distribution by Status',
             LAYER_PANELS, LAYER_NUMBERING,
         )
@@ -104,7 +104,7 @@ class ChartMixin:
         self.type_plan = LAYER_NUMBERING
         self.type_to_hide = LAYER_PANELS
         self._generate_chart(
-            Numbering, Numbering.etat,
+            Numbering, Numbering.state,
             'Distribution by Numbering State',
             LAYER_NUMBERING, LAYER_PANELS,
         )

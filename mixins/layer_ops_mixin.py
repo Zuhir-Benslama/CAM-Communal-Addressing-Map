@@ -283,7 +283,7 @@ class LayerOpsMixin:
         layer = self.iface.activeLayer()
         if layer and layer.isEditable():
             obj = layer.getFeature(fid)
-            obj['pkuid'] = str(uuid.uuid4())
+            obj['id'] = str(uuid.uuid4())
             layer.updateFeature(obj)
 
             if obj.isValid():
@@ -295,7 +295,7 @@ class LayerOpsMixin:
                         layer.deleteFeature(fid)
                     self._reconnect_context_menu()
                 else:
-                    self._last_feature_pkuid = obj['pkuid']
+                    self._last_feature_id = obj['id']
                     self._last_feature_wkt = obj.geometry().asWkt()
                     layer.featureAdded.disconnect(self.on_feature_added)
                     layer.commitChanges()
@@ -342,7 +342,7 @@ class LayerOpsMixin:
                         try:
                             model.update(
                                 session,
-                                pkuid=feature['pkuid'],
+                                id=feature['id'],
                                 geometry=WKTElement(
                                     str(geometry_wkt), srid=SRID
                                 ),

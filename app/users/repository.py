@@ -2,12 +2,13 @@
 import json
 import logging
 import os
+import sqlite3
 from typing import Any, Optional
 
 import toml
 
 from geoalchemy2 import WKTElement
-from ..shared.constants import COOKIE_FILE, QGIS_CONFIG_FILE, LOCALITES_JSON, LOCALITE_GEOJSON, SRID
+from ..shared.constants import COOKIE_FILE, QGIS_CONFIG_FILE, COMMUNES_JSON, COMMUNES_DB, WILAYAS_JSON, DAIRA_JSON
 from ..core.database import get_session
 from ..users.models import User
 
@@ -15,37 +16,35 @@ logger = logging.getLogger(__name__)
 
 
 def _load_localites() -> list[dict[str, Any]]:
-    """Load commune metadata from JSON file."""
+    """Load commune metadata from communes.json."""
     try:
-        with open(LOCALITES_JSON, 'r', encoding='utf-8') as f:
-            return json.load(f)
+        with open(COMMUNES_JSON, 'r', encoding='utf-8') as f:
+            return list(json.load(f).values())
     except (FileNotFoundError, json.JSONDecodeError):
-        logger.error("Failed to load %s", LOCALITES_JSON)
+        logger.error("Failed to load %s", COMMUNES_JSON)
         return []
 
 
-def _load_localite_geojson() -> dict[str, Any]:
-    """Load commune geometries from GeoJSON file."""
-    try:
-        with open(LOCALITE_GEOJSON, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        logger.error("Failed to load %s", LOCALITE_GEOJSON)
-        return {"type": "FeatureCollection", "features": []}
-
-
 def _get_commune_by_id(commune_id: int) -> Optional[dict[str, Any]]:
-    """Look up a commune by its old localite.id."""
-    for c in _load_localites():
-        if c["id"] == commune_id:
+    """Look up a commune by its commune_id."""
+    data = _load_localites()
+    for c in data:
+        if int(c.get('commune_id', 0)) == commune_id:
             return c
     return None
 
 
 def _get_commune_by_code(commune_code: str) -> Optional[dict[str, Any]]:
-    """Look up a commune by its commune_code."""
+    """Look up a commune by its commune_code (handles int/str)."""
+    if not commune_code:
+        return None
+    try:
+        code = int(commune_code)
+    except (ValueError, TypeError):
+        return None
     for c in _load_localites():
-        if c["commune_code"] == commune_code:
+        v = c.get('commune_code')
+        if v is not None and int(v) == code:
             return c
     return None
 
@@ -71,11 +70,22 @@ def get_current_user() -> Optional[dict]:
         if not user:
             return None
         commune = _get_commune_by_code(user.commune_code) if user.commune_code else None
+        # Look up wilaya name
+        wilaya_name = ''
+        if user.wilaya_code is not None:
+            try:
+                with open(WILAYAS_JSON, 'r', encoding='utf-8') as f:
+                    wilayas = json.load(f)
+                w = wilayas.get(str(user.wilaya_code))
+                if w:
+                    wilaya_name = w.get('wilaya_ar', '')
+            except (FileNotFoundError, json.JSONDecodeError):
+                pass
         return {
             'id': user.id,
             'commune_code': user.commune_code,
             'wilaya_code': user.wilaya_code,
-            'wilaya': commune['wilaya'] if commune else '',
+            'wilaya': wilaya_name,
             'commune': commune['commune_ar'] if commune else '',
             'first_name': user.first_name,
             'last_name': user.last_name,
@@ -101,51 +111,25 @@ def get_user_location() -> Optional[str]:
     if not commune_code:
         return None
 
-    fc = _load_localite_geojson()
-    for feature in fc.get('features', []):
-        if feature.get('properties', {}).get('commune_code') == commune_code:
-            geom = feature.get('geometry')
-            if geom:
-                # Convert GeoJSON geometry to WKT
-                geom_type = geom.get('type', '')
-                coords = geom.get('coordinates', [])
-                wkt = _geojson_to_wkt(geom_type, coords)
-                return wkt
+    # Find commune_id from commune_code
+    commune_id = None
+    for c in _load_localites():
+        v = c.get('commune_code')
+        if v is not None and int(v) == int(commune_code):
+            commune_id = int(c.get('commune_id', 0))
+            break
+    if commune_id is None:
+        return None
+
+    try:
+        with sqlite3.connect(COMMUNES_DB) as conn:
+            cur = conn.execute('SELECT wkt FROM geometries WHERE commune_id = ?', (commune_id,))
+            row = cur.fetchone()
+            if row:
+                return row[0]
+    except sqlite3.Error:
+        logger.error("Failed to query %s", COMMUNES_DB)
     return None
-
-
-def _geojson_to_wkt(geom_type: str, coords: list) -> str:
-    """Convert a GeoJSON geometry to WKT string."""
-    if geom_type == 'MultiPolygon':
-        parts = []
-        for polygon in coords:
-            rings = []
-            for ring in polygon:
-                pts = ', '.join(f'{p[0]} {p[1]}' for p in ring)
-                rings.append(f'({pts})')
-            parts.append('(' + ', '.join(rings) + ')')
-        return f'MULTIPOLYGON ({", ".join(parts)})'
-    elif geom_type == 'Polygon':
-        rings = []
-        for ring in coords:
-            pts = ', '.join(f'{p[0]} {p[1]}' for p in ring)
-            rings.append(f'({pts})')
-        return f'POLYGON ({", ".join(rings)})'
-    elif geom_type == 'MultiLineString':
-        parts = []
-        for line in coords:
-            pts = ', '.join(f'{p[0]} {p[1]}' for p in line)
-            parts.append(f'({pts})')
-        return f'MULTILINESTRING ({", ".join(parts)})'
-    elif geom_type == 'LineString':
-        pts = ', '.join(f'{p[0]} {p[1]}' for p in coords)
-        return f'LINESTRING ({pts})'
-    elif geom_type == 'MultiPoint':
-        pts = ', '.join(f'{p[0]} {p[1]}' for p in coords)
-        return f'MULTIPOINT ({pts})'
-    elif geom_type == 'Point':
-        return f'POINT ({coords[0]} {coords[1]})'
-    return ''
 
 
 def create_cookie(cookie: str, uid: str) -> None:

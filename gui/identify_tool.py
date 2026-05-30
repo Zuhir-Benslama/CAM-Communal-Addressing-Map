@@ -31,9 +31,9 @@ class IdentifyTool(QgsMapToolIdentify):
 
         self.dlg: Any = None
         if mode == self.MODE_REF:
-            self.pkuid = None
-            self.type = None
-            self.nom = None
+            self.feature_id = None
+            self.feature_type = None
+            self.feature_name = None
             self.ref_name = None
 
     def set_active_layer(self, layer) -> None:
@@ -56,10 +56,10 @@ class IdentifyTool(QgsMapToolIdentify):
         """Set the reference name widget for ref mode."""
         self.ref_name = ref_name
 
-    def get_pkuid(self) -> dict:
+    def get_id(self) -> dict:
         """Return the selected feature's PK and layer name."""
         return {
-            "pkuid": self.pkuid,
+            "id": self.feature_id,
             "layer_name": self.get_active_layer().name()
         }
 
@@ -84,26 +84,30 @@ class IdentifyTool(QgsMapToolIdentify):
                         )
                         form_action.triggered.connect(
                             lambda f=feature: self.display_or_update_form_feature(
-                                f['pkuid'])
+                                f['id'])
+                        )
+
+                        remove_action.triggered.connect(
+                            lambda f=feature: self.delete_feature(f['id'])
                         )
 
                         remove_action = menu.addAction(
                             get_string("Remove Item", current_locale())
                         )
                         remove_action.triggered.connect(
-                            lambda f=feature: self.delete_feature(f['pkuid'])
+                            lambda f=feature: self.delete_feature(f['id'])
                         )
                     else:
-                        nom_locale = self._locale_feature_attr(feature, 'Nom')
-                        type_locale = self._locale_feature_attr(feature, 'Type')
+                        name_locale = self._locale_feature_attr(feature, 'name')
+                        type_locale = self._locale_feature_attr(feature, 'type')
                         ref_action = menu.addAction(
                             get_string("Set Item as Reference", current_locale())
                         )
                         ref_action.triggered.connect(
                             lambda f=feature,
                             t=type_locale,
-                            n=nom_locale: self.feature_as_ref(
-                                f['pkuid'],
+                            n=name_locale: self.feature_as_ref(
+                                f['id'],
                                 t,
                                 n,
                             )
@@ -161,7 +165,7 @@ class IdentifyTool(QgsMapToolIdentify):
                     session.close()
 
                 request = QgsFeatureRequest().setFilterExpression(
-                    f'"pkuid" = {QgsExpression.quotedValue(feature_id)}'
+                    f'"id" = {QgsExpression.quotedValue(feature_id)}'
                 )
                 layer = self.get_active_layer()
                 layer.startEditing()
@@ -185,13 +189,13 @@ class IdentifyTool(QgsMapToolIdentify):
                     return str(locale_val)
         return str(feature[base_name]) if feature[base_name] else ''
 
-    def feature_as_ref(self, feature_pkuid, feature_type, feature_nom) -> None:
+    def feature_as_ref(self, feature_id, feature_type, feature_name) -> None:
         """Store the selected feature as a reference for another entity."""
-        self.pkuid = feature_pkuid
-        self.type = feature_type
-        self.nom = feature_nom
-        if self.pkuid:
+        self.feature_id = feature_id
+        self.feature_type = feature_type
+        self.feature_name = feature_name
+        if self.feature_id:
             self.ref_name.setText(
-                f"\u200F{self.type} \u200F{self.nom}"
+                f"\u200F{self.feature_type} \u200F{self.feature_name}"
             )  # \u200F = RTL mark
             self.canvas.unsetMapTool(self)

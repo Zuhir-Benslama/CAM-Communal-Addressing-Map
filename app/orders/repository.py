@@ -72,12 +72,12 @@ def export_model(model_name: str) -> None:
 def add_panel_sign(
     *, geometry_wkt, mount_status,
     road_id=None, subdivision_id=None, organization_id=None,
-    dimensions=None, pkuid=None,
+    dimensions=None, id=None,
 ):
     """Create and persist a new PanelSign entity."""
     instance = PanelSign(
-        id=pkuid,
-        situation=mount_status,
+        id=id,
+        status=mount_status,
         road_id=road_id, subdivision_id=subdivision_id,
         organization_id=organization_id,
         dimensions=dimensions or DEFAULT_PANEL_DIM,
@@ -87,43 +87,43 @@ def add_panel_sign(
 
 
 def add_organization(
-    *, geometry_wkt, org_name, org_type, org_cat, pkuid=None,
-    nom_org_fr=None, nom_org_en=None,
+    *, geometry_wkt, org_name, org_type, org_cat, id=None,
+    name_fr=None, name_en=None,
 ):
     """Create and persist a new Organization entity."""
     instance = Organization(
-        id=pkuid,
-        Type=org_type, category=org_cat, Nom=org_name,
-        Nom_fr=nom_org_fr, Nom_en=nom_org_en,
+        id=id,
+        type=org_type, category=org_cat, name=org_name,
+        name_fr=name_fr, name_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
     return _add_entity(instance)
 
 
 def add_road(
-    *, geometry_wkt, road_name, type_road, road_decision, pkuid=None,
-    nom_voie_fr=None, nom_voie_en=None,
+    *, geometry_wkt, road_name, type_road, road_decision, id=None,
+    name_fr=None, name_en=None,
 ):
     """Create and persist a new Road entity."""
     instance = Road(
-        id=pkuid,
-        Type=type_road, Nom=road_name, decision_number=road_decision,
-        Nom_fr=nom_voie_fr, Nom_en=nom_voie_en,
+        id=id,
+        type=type_road, name=road_name, decision_number=road_decision,
+        name_fr=name_fr, name_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
     return _add_entity(instance)
 
 
 def add_numbering(
-    *, geometry_wkt, valeur,
-    road_id=None, subdivision_id=None, repetition=None, etat=None,
-    activity_cat=None, activity_type=None, pkuid=None,
+    *, geometry_wkt, value,
+    road_id=None, subdivision_id=None, repetition=None, state=None,
+    activity_cat=None, activity_type=None, id=None,
 ):
     """Create and persist a new Numbering entity."""
     instance = Numbering(
-        id=pkuid,
-        valeur=valeur, road_id=road_id, subdivision_id=subdivision_id,
-        repetition=repetition, etat=etat,
+        id=id,
+        value=value, road_id=road_id, subdivision_id=subdivision_id,
+        repetition=repetition, state=state,
         activity_cat=activity_cat, activity_type=activity_type,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
@@ -131,40 +131,40 @@ def add_numbering(
 
 
 def add_subdivision(
-    *, geometry_wkt, subdivision_type, name, pkuid=None,
+    *, geometry_wkt, subdivision_type, name, id=None,
     name_fr=None, name_en=None,
 ):
     """Create and persist a new Subdivision entity."""
     instance = Subdivision(
-        id=pkuid,
-        Nom=name, Type=subdivision_type,
-        Nom_fr=name_fr, Nom_en=name_en,
+        id=id,
+        name=name, type=subdivision_type,
+        name_fr=name_fr, name_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
     return _add_entity(instance)
 
 
 def add_zone(
-    *, geometry_wkt, zone_type, name, pkuid=None,
+    *, geometry_wkt, zone_type, name, id=None,
     name_fr=None, name_en=None,
 ):
     """Create and persist a new Zone entity."""
     instance = Zone(
-        id=pkuid,
-        Nom=name, Type=zone_type,
-        Nom_fr=name_fr, Nom_en=name_en,
+        id=id,
+        name=name, type=zone_type,
+        name_fr=name_fr, name_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
     return _add_entity(instance)
 
 
-def count_numberings(etat: str) -> int:
+def count_numberings(state: str) -> int:
     """Count numberings by state (query Num view in Views.sql)."""
     session = get_session()
     try:
         result = session.execute(
-            text("select count(*) as cpt from Num where etat = :etat"),
-            {"etat": etat}
+            text("select count(*) as cpt from Num where state = :state"),
+            {"state": state}
         )
         row = result.fetchone()
         return row[0] if row else 0
@@ -172,7 +172,7 @@ def count_numberings(etat: str) -> int:
         session.close()
 
 
-def count_panels(panel_type: str, etat: str) -> int:
+def count_panels(panel_type: str, state: str) -> int:
     """Count panels by type and state (query Pan view in Views.sql)."""
     db_type = PANEL_TYPE_MAP.get(panel_type, panel_type)
     session = get_session()
@@ -180,9 +180,9 @@ def count_panels(panel_type: str, etat: str) -> int:
         result = session.execute(
             text(
                 "select count(*) as cpt from Pan "
-                "where Type = :type and situation = :etat"
+                "where type = :type and status = :state"
             ),
-            {"type": db_type, "etat": etat}
+            {"type": db_type, "state": state}
         )
         row = result.fetchone()
         return row[0] if row else 0
@@ -190,7 +190,7 @@ def count_panels(panel_type: str, etat: str) -> int:
         session.close()
 
 
-def query_missing_pan(etat: str) -> list:
+def query_missing_pan(state: str) -> list:
     """Query missing panels grouped by label/type
     from the Pan2 view (defined in Views.sql)."""
     session = get_session()
@@ -198,9 +198,9 @@ def query_missing_pan(etat: str) -> list:
         result = session.execute(
             text(
                 "SELECT label, type, COUNT(*) AS total "
-                "FROM Pan2 WHERE situation = :etat GROUP BY label, type"
+                "FROM Pan2 WHERE status = :state GROUP BY label, type"
             ),
-            {"etat": etat}
+            {"state": state}
         )
         rows = result.fetchall()
         return [
@@ -211,39 +211,39 @@ def query_missing_pan(etat: str) -> list:
         session.close()
 
 
-def query_missing_num(etat: str) -> list:
-    """Query numberings without repetition grouped by valeur from Num view."""
+def query_missing_num(state: str) -> list:
+    """Query numberings without repetition grouped by value from Num view."""
     session = get_session()
     try:
         result = session.execute(
             text(
-                "SELECT valeur, COUNT(*) AS total FROM Num "
-                "WHERE etat = :etat "
-                "AND (repetition = '' OR repetition IS NULL) GROUP BY valeur"
+                "SELECT value, COUNT(*) AS total FROM Num "
+                "WHERE state = :state "
+                "AND (repetition = '' OR repetition IS NULL) GROUP BY value"
             ),
-            {"etat": etat}
+            {"state": state}
         )
         rows = result.fetchall()
-        return [{'valeur': row[0], 'total': row[1]} for row in rows]
+        return [{'value': row[0], 'total': row[1]} for row in rows]
     finally:
         session.close()
 
 
-def query_missing_rep(etat: str) -> list:
+def query_missing_rep(state: str) -> list:
     """Query numberings WITH repetition grouped by value from Num view."""
     session = get_session()
     try:
         result = session.execute(
             text(
                 "SELECT repetition, COUNT(*) AS total FROM Num "
-                "WHERE etat = :etat "
+                "WHERE state = :state "
                 "AND (repetition != '' OR repetition IS NOT NULL) "
                 "GROUP BY repetition"
             ),
-            {"etat": etat}
+            {"state": state}
         )
         rows = result.fetchall()
-        return [{'valeur': row[0], 'total': row[1]} for row in rows]
+        return [{'value': row[0], 'total': row[1]} for row in rows]
     finally:
         session.close()
 
@@ -259,11 +259,11 @@ def get_zone_distribution(wilaya_number: int) -> list:
     try:
         result = session.execute(
             text(
-                "SELECT z.Type, COUNT(*) AS total "
-                "FROM refpoly z "
+                "SELECT z.type, COUNT(*) AS total "
+                "FROM zone z "
                 "JOIN \"user\" u ON u.id = z.user_id "
                 "WHERE u.wilaya_code = :wilaya "
-                "GROUP BY z.Type "
+                "GROUP BY z.type "
                 "ORDER BY total DESC"
             ),
             {"wilaya": wilaya_number},

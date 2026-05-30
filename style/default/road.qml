@@ -482,7 +482,7 @@
   </selection>
   <labeling type="simple">
     <settings calloutType="simple">
-      <text-style fieldName="&quot;Type&quot;||' '||&quot;Nom&quot;" fontKerning="1" fontItalic="0" fontWeight="50" blendMode="0" allowHtml="0" useSubstitutions="0" tabStopDistance="80" fontWordSpacing="0" fontLetterSpacing="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" isExpression="1" fontSize="5.2000000000000002" fontSizeUnit="MM" legendString="Aa" multilineHeightUnit="Percentage" capitalization="0" fontUnderline="0" namedStyle="Normal" fontStrikeout="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" multilineHeight="1" fontFamily="Arial" textOpacity="1" textOrientation="horizontal" tabStopDistanceUnit="Point" forcedItalic="0" textColor="181,121,74,255,rgb:0.70980392156862747,0.47450980392156861,0.29019607843137257,1">
+      <text-style fieldName="&quot;type&quot;||' '||&quot;name&quot;" fontKerning="1" fontItalic="0" fontWeight="50" blendMode="0" allowHtml="0" useSubstitutions="0" tabStopDistance="80" fontWordSpacing="0" fontLetterSpacing="0" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" isExpression="1" fontSize="5.2000000000000002" fontSizeUnit="MM" legendString="Aa" multilineHeightUnit="Percentage" capitalization="0" fontUnderline="0" namedStyle="Normal" fontStrikeout="0" forcedBold="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" multilineHeight="1" fontFamily="Arial" textOpacity="1" textOrientation="horizontal" tabStopDistanceUnit="Point" forcedItalic="0" textColor="181,121,74,255,rgb:0.70980392156862747,0.47450980392156861,0.29019607843137257,1">
         <families />
         <text-buffer bufferJoinStyle="128" bufferColor="250,250,250,255,rgb:0.98039215686274506,0.98039215686274506,0.98039215686274506,1" bufferDraw="1" bufferSize="1.7" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferNoFill="1" bufferSizeUnits="MM" bufferBlendMode="0" bufferOpacity="1" />
         <text-mask maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskType="0" maskSizeUnits="RenderMetersInMapUnits" maskEnabled="1" maskJoinStyle="128" maskSize="2" maskedSymbolLayers="" maskOpacity="1" maskSize2="2" />
@@ -643,7 +643,7 @@
   <customproperties>
     <Option type="Map">
       <Option type="List" name="dualview/previewExpressions">
-        <Option type="QString" value="&quot;Nom&quot;" />
+        <Option type="QString" value="&quot;name&quot;" />
       </Option>
       <Option type="int" value="0" name="embeddedWidgets/count" />
       <Option name="variableNames" />

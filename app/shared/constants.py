@@ -23,8 +23,11 @@ MAP_PNG = os.path.join(PLUGIN_DIR, "resources", "map.png")
 ICON_PNG = os.path.join(PLUGIN_DIR, "resources", "icon.png")
 VIEWS_SQL = os.path.join(PLUGIN_DIR, "data", "Views.sql")
 TEMPLATE_DATA_DIR = os.path.join(PLUGIN_DIR, "template_data")
-LOCALITES_JSON = os.path.join(TEMPLATE_DATA_DIR, "localites.json")
-LOCALITE_GEOJSON = os.path.join(TEMPLATE_DATA_DIR, "localite.geojson")
+WILAYAS_JSON = os.path.join(TEMPLATE_DATA_DIR, "wilayas.json")
+DAIRA_JSON = os.path.join(TEMPLATE_DATA_DIR, "daira.json")
+COMMUNES_JSON = os.path.join(TEMPLATE_DATA_DIR, "communes.json")
+COMMUNES_GEOJSON = os.path.join(TEMPLATE_DATA_DIR, "communes.geojson")
+COMMUNES_DB = os.path.join(TEMPLATE_DATA_DIR, "communes.db")
 
 MAP_A3_TEMPLATE = os.path.join(PLUGIN_DIR, "templates", "map_a3.odt")
 MAP_A0_TEMPLATE = os.path.join(PLUGIN_DIR, "templates", "map_a0.odt")
@@ -74,19 +77,19 @@ LAYER_MODEL = {
 }
 
 PANEL_TYPE_MAP = {
-    LAYER_ROADS: "الطرق",
-    LAYER_FACILITIES: "المرافق",
-    LAYER_SUBDIVISIONS: "التجزئات",
+    LAYER_ROADS: "roads",
+    LAYER_FACILITIES: "facilities",
+    LAYER_SUBDIVISIONS: "subdivisions",
 }
 
 
 class PanelStatus(str, Enum):
-    """Panel mount statuses (matching DB Arabic values)."""
+    """Panel mount statuses."""
 
-    MOUNTED = "مركبة"
-    PLANNED = "مبرمجة"
-    TO_MOVE = "لنقلها"
-    TO_FIX = "لتصحيحها"
+    MOUNTED = "installed"
+    PLANNED = "planned"
+    TO_MOVE = "to_move"
+    TO_FIX = "to_fix"
 
 
 class ActivityStatus(str, Enum):
@@ -96,7 +99,7 @@ class ActivityStatus(str, Enum):
 
 
 class Theme(str, Enum):
-    """Theme enum (Dark / Light) with backward-compat lookup."""
+    """Theme enum (Dark / Light)."""
 
     DARK = "Dark"
     LIGHT = "Light"
@@ -104,7 +107,7 @@ class Theme(str, Enum):
     @classmethod
     def _missing_(cls, value):
         """Handle backward-compat lookup of old Arabic theme values."""
-        return cls.LIGHT if value in ('فاتح', 'Light') else cls.DARK
+        return cls.LIGHT if value in ('Light', 'فاتح', 'داكن') else cls.DARK
 
 
 PAN_MOUNTED = PanelStatus.MOUNTED
@@ -112,7 +115,7 @@ PAN_PLANNED = PanelStatus.PLANNED
 PAN_TO_MOVE = PanelStatus.TO_MOVE
 PAN_TO_FIX = PanelStatus.TO_FIX
 
-NUM_PLANNED = "مبرمجة"
+NUM_PLANNED = "planned"
 
 NO_ACTIVITY = ActivityStatus.NONE
 DEFAULT_PANEL_DIM = "30X40"
