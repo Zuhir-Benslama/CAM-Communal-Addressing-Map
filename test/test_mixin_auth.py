@@ -4,10 +4,10 @@ import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
-from test.helpers import setup_gui_mocks, get_qapp
+from test.helpers import get_qapp, setup_gui_mocks
 
 
-@unittest.skipIf(get_qapp() is None, 'PyQt5 not available')
+@unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
 class TestAuthMixin(unittest.TestCase):
     """Test auth_mixin login/logout/signup flow."""
 

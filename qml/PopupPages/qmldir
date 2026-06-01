@@ -1,0 +1,7 @@
+module PopupPages
+ZonePage 1.0 ZonePage.qml
+RoadsPage 1.0 RoadsPage.qml
+OrgPage 1.0 OrgPage.qml
+CityPage 1.0 CityPage.qml
+NumPage 1.0 NumPage.qml
+PanPage 1.0 PanPage.qml

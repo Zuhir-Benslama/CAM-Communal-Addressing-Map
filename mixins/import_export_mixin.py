@@ -1,6 +1,4 @@
 """Import/export mixin for rendering maps to PNG."""
-# mypy: disable-error-code="func-returns-value"
-
 from __future__ import annotations
 
 import json
@@ -8,17 +6,22 @@ import logging
 import subprocess
 from datetime import datetime
 
+from qgis.core import QgsMapRendererSequentialJob, QgsMapSettings
 from qgis.PyQt.QtCore import QSize
 from qgis.PyQt.QtWidgets import QApplication, QMessageBox
-from qgis.core import QgsMapSettings, QgsMapRendererSequentialJob
 
 from ..constants import (
-    MAP_PNG, TMP_JSON, REPORTING_SCRIPT, validate_text,
-    get_qgis_python, _SUBPROCESS_FLAGS,
+    _SUBPROCESS_FLAGS,
+    MAP_PNG,
+    REPORTING_SCRIPT,
+    TMP_JSON,
+    get_qgis_python,
+    validate_text,
 )
 from ..layer.refresh import refresh_all_layers
 from ._protocols import (
-    HasFormWidgets, HasExportContext,
+    HasExportContext,
+    HasFormWidgets,
 )
 
 logger = logging.getLogger(__name__)

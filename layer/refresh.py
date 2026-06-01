@@ -1,21 +1,37 @@
 """Layer refresh and categorized style management."""
 import logging
 import os
-from typing import Any, List, Optional, Tuple
+from typing import Any
 
-from sqlalchemy import func
 from geoalchemy2 import Geometry
-
-from qgis.PyQt.QtCore import QVariant
 from qgis.core import (
-    QgsProject, QgsField, QgsFeature, QgsGeometry, QgsVectorLayer,
-    QgsSymbol, QgsExpression, QgsExpressionContext,
-    QgsCategorizedSymbolRenderer, QgsSingleSymbolRenderer, QgsRendererCategory,
+    QgsCategorizedSymbolRenderer,
+    QgsExpression,
+    QgsExpressionContext,
+    QgsFeature,
+    QgsField,
+    QgsGeometry,
+    QgsProject,
+    QgsRendererCategory,
+    QgsSingleSymbolRenderer,
+    QgsSymbol,
+    QgsVectorLayer,
 )
+try:
+    from qgis.core import QVariant
+except ImportError:
+    from enum import IntEnum
 
-from ..app.users.repository import qgis_config
-from ..app.orders import models as _models
+    class QVariant(IntEnum):  # type: ignore[no-redef]
+        Bool = 1
+        Int = 2
+        Double = 6
+        String = 10
+from sqlalchemy import func
+
 from ..app.core.database import get_session
+from ..app.orders import models as _models
+from ..app.users.repository import qgis_config
 from ..constants import DEFAULT_STYLE_DIR, STYLE_QML
 
 logger = logging.getLogger(__name__)
@@ -29,7 +45,7 @@ def _get_model_class(model_name: str):
     return model_class
 
 
-def _get_geometry_column(model_class) -> Optional[Any]:
+def _get_geometry_column(model_class) -> Any | None:
     """Find the geometry column on a model, or None."""
     for col in model_class.__table__.columns:
         if isinstance(col.type, Geometry):
@@ -37,7 +53,7 @@ def _get_geometry_column(model_class) -> Optional[Any]:
     return None
 
 
-def _get_all_model_fields(model_class) -> List[str]:
+def _get_all_model_fields(model_class) -> list[str]:
     """Return list of non-geometry DB columns plus Python properties."""
     db_fields = [
         col.name for col in model_class.__table__.columns
@@ -50,15 +66,15 @@ def _get_all_model_fields(model_class) -> List[str]:
     return db_fields + properties
 
 
-def _get_layer(layer_name: str) -> Optional[QgsVectorLayer]:
+def _get_layer(layer_name: str) -> QgsVectorLayer | None:
     """Return the first map layer matching name, or None."""
     layers = QgsProject.instance().mapLayersByName(layer_name)
     return layers[0] if layers else None
 
 
 def _get_new_layer_fields(
-    layer: QgsVectorLayer, all_fields: List[str],
-) -> List[QgsField]:
+    layer: QgsVectorLayer, all_fields: list[str],
+) -> list[QgsField]:
     """Return QgsField objects for any fields not yet on the layer."""
     existing = {field.name() for field in layer.fields()}
     return [
@@ -69,7 +85,7 @@ def _get_new_layer_fields(
 
 def _query_all_records(
     session, model_class, geometry_col,
-) -> List[Tuple[Any, Optional[str]]]:
+) -> list[tuple[Any, str | None]]:
     """Query all model records, eagerly loading geometry WKT if available."""
     if geometry_col is not None:
         rows = session.query(
@@ -81,7 +97,7 @@ def _query_all_records(
     return [(row, None) for row in rows]
 
 
-def _build_feature(result, geom_wkt, field_names, all_fields) -> Optional[QgsFeature]:
+def _build_feature(result, geom_wkt, field_names, all_fields) -> QgsFeature | None:
     """Build a QgsFeature from a model instance and geometry WKT."""
     if not geom_wkt:
         return None
@@ -197,7 +213,7 @@ def remove_categorized_style(_iface, layer_name) -> None:
     layer.setRenderer(renderer)
 
 
-def _resolve_wkt(model_instance, geometry=None) -> Optional[str]:
+def _resolve_wkt(model_instance, geometry=None) -> str | None:
     """Resolve geometry WKT from model geometry attribute or explicit value."""
     if geometry is not None:
         return geometry
@@ -244,7 +260,10 @@ def refresh_all_layers(iface) -> None:
         if layers:
             filename = os.path.join(DEFAULT_STYLE_DIR, layer_cfg.get('style'))
             result = layers[0].loadNamedStyle(filename)
-            logger.info("loadNamedStyle('%s') for '%s': %s", filename, layer_cfg.get('label'), result)
+            logger.info(
+                "loadNamedStyle('%s') for '%s': %s",
+                filename, layer_cfg.get('label'), result,
+            )
 
 
 def apply_all_categorized_styles(iface) -> None:

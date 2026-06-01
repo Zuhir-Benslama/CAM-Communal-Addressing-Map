@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import logging
 
-from qgis.PyQt.QtCore import Qt
 from qgis.core import QgsProject
+from qgis.PyQt.QtCore import Qt
 
 from ..layer.editing import start_editing_layer
 from ._protocols import HasDrawContext
@@ -34,7 +34,9 @@ class LayerDrawMixin:
             )
         except TypeError:
             pass
-        self.iface.mapCanvas().setContextMenuPolicy(Qt.DefaultContextMenu)
+        self.iface.mapCanvas().setContextMenuPolicy(
+            Qt.ContextMenuPolicy.DefaultContextMenu,
+        )
         start_editing_layer(self.iface, layer_name)
 
     def start_drawing(self: HasDrawContext) -> None:

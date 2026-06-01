@@ -1,15 +1,18 @@
-import os
 import json
+import os
 import sys
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from app.core.config import find_mod_spatialite_dll  # noqa: E402
 from app.core.security import hash_password, verify_password  # noqa: E402
-from app.users.repository import create_cookie, qgis_config, _get_authenticated_user  # noqa: E402
-
+from app.users.repository import (  # noqa: E402
+    _get_authenticated_user,
+    create_cookie,
+    qgis_config,
+)
 
 TMPDIR = os.path.join(os.path.dirname(__file__), '__testtmp__')
 
@@ -85,7 +88,7 @@ class TestCreateCookie(unittest.TestCase):
         with patch('app.users.repository.COOKIE_FILE', cookie_path):
             create_cookie('test_cookie', 'test_uid')
         self.assertTrue(os.path.exists(cookie_path))
-        with open(cookie_path, 'r', encoding='utf-8') as f:
+        with open(cookie_path, encoding='utf-8') as f:
             data = f.read()
         self.assertIn('test_cookie', data)
         self.assertIn('test_uid', data)

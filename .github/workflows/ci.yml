@@ -33,15 +33,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pycodestyle mypy pyqt5 2>/dev/null || true
+          pip install pytest ruff mypy pyqt6 2>/dev/null || true
 
-      - name: Lint with pycodestyle
+      - name: Lint with ruff
         run: |
-          pycodestyle --max-line-length=88 --select=E501,W291 app/ --exclude=app/orders/models.py || true
+          ruff check --select=E,W,F,I,UP app/ gui/ layer/ mixins/
 
       - name: Type check with mypy
         run: |
-          mypy app/ --ignore-missing-imports --follow-imports=skip 2>/dev/null || true
+          mypy app/ gui/ layer/ mixins/ 2>/dev/null || true
 
       - name: Run tests
         env:

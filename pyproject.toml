@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "UP"]
+ignore = [
+    "E501",  # line-length — covered by formatter
+    "E741",  # ambiguous variable name
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401", "F403"]
+"test/*" = ["UP006", "UP007", "E501"]
+"scripts/*" = ["UP006", "UP007", "E501"]
+"resources.py" = ["E501"]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.coverage.run]
+source = ["app", "gui", "layer", "mixins"]
+omit = ["*/__pycache__/*", "*/tests/*"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 60
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+markers = [
+    "qgis: marks tests requiring a QGIS environment",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+follow_imports = "skip"
+
+[[tool.mypy.overrides]]
+module = [
+    "app.orders.models",
+    "app.users.service",
+    "gui.ui_fillers",
+    "mixins.auth_mixin",
+    "mixins.backup_mixin",
+    "mixins.import_export_mixin",
+    "mixins.layer_edit_mixin",
+    "mixins.layer_ops_mixin",
+    "mixins.report_mixin",
+    "mixins.symbol_export_mixin",
+]
+disable_error_code = [
+    "assignment",
+    "union-attr",
+    "arg-type",
+    "return-value",
+    "attr-defined",
+    "func-returns-value",
+]
+
+[[tool.mypy.overrides]]
+module = "resources"
+ignore_errors = true

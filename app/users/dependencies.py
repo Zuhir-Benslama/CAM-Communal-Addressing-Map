@@ -1,11 +1,13 @@
 """Routing decorators: login_required for authenticated access."""
-from typing import Any, Callable
+from collections.abc import Callable
 from functools import wraps
+from typing import Any
+
 import toml
 
 from ..core.database import get_session
-from ..users.models import User
 from ..shared.constants import COOKIE_FILE
+from ..users.models import User
 
 
 def _navigate_to_login(self) -> None:
@@ -23,7 +25,7 @@ def login_required(func) -> Callable:
     def wrapper(self, *args, **kwargs) -> Any:
         filename = COOKIE_FILE
         try:
-            with open(filename, 'r', encoding='utf-8') as f:
+            with open(filename, encoding='utf-8') as f:
                 data = toml.load(f)
         except (FileNotFoundError, toml.TomlDecodeError):
             data = {}

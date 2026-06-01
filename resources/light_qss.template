@@ -12,6 +12,8 @@
     }}
     QGroupBox::title {{
         subcontrol-origin: margin;
+        subcontrol-position: top left;
+        left: 8px;
         padding: 2px 10px;
         color: {{LIGHT_ACCENT}};
     }}
@@ -206,9 +208,10 @@
         padding: 4px 8px;
     }}
     QFrame[surfaceRole="header"],
+    QFrame[surfaceRole="toolbar"],
     QGroupBox[surfaceRole="toolbar"] {{
         background-color: {{LIGHT_SURFACE}};
-        border: 1px solid #1a1b26;
+        border: 1px solid {{LIGHT_BORDER}};
         border-radius: 10px;
     }}
     QFrame[surfaceRole="footer"] {{

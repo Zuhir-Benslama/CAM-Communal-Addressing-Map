@@ -1,0 +1,5 @@
+module maindialog
+MainDialog 1.0 MainDialog.qml
+LoginPage 1.0 LoginPage.qml
+AddUserPage 1.0 AddUserPage.qml
+MainPage 1.0 MainPage.qml

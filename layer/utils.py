@@ -2,21 +2,37 @@
 import json
 import logging
 import sqlite3
-import toml
-from sqlalchemy import Integer, SmallInteger, Float, String, Text, Boolean, func
-from geoalchemy2 import Geometry
 
-from qgis.PyQt.QtCore import QVariant
+from geoalchemy2 import Geometry
 from qgis.core import (
-    QgsProject, QgsVectorLayer, QgsField, QgsFeature,
-    QgsGeometry, QgsFillSymbol,
+    QgsFeature,
+    QgsField,
+    QgsFillSymbol,
+    QgsGeometry,
+    QgsProject,
+    QgsVectorLayer,
 )
+try:
+    from qgis.core import QVariant
+except ImportError:
+    from enum import IntEnum
+
+    class QVariant(IntEnum):  # type: ignore[no-redef]
+        Bool = 1
+        Int = 2
+        Double = 6
+        String = 10
+from sqlalchemy import Boolean, Float, Integer, SmallInteger, String, Text
 
 from ..app.orders import models as _models
-from ..app.users.repository import qgis_config, get_current_user
-from ..app.core.database import get_session
-from ..app.users.models import User
-from ..constants import CRS, COOKIE_FILE, LAYER_MUNICIPALITY, MEMORY_PROVIDER, COMMUNES_DB, COMMUNES_JSON
+from ..app.users.repository import get_current_user, qgis_config
+from ..constants import (
+    COMMUNES_DB,
+    COMMUNES_JSON,
+    CRS,
+    LAYER_MUNICIPALITY,
+    MEMORY_PROVIDER,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -73,42 +89,52 @@ def create_other_layers(_iface) -> None:
                 layer.triggerRepaint()
 
 
+def _commune_id_from_code(commune_code: str) -> int | None:
+    """Resolve commune_id from commune_code using communes.json."""
+    try:
+        with open(COMMUNES_JSON, encoding='utf-8') as f:
+            data = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        logger.warning("could not load %s: %s", COMMUNES_JSON, e)
+        return None
+    for c in data.values():
+        v = c.get('commune_code')
+        if v is not None and int(v) == int(commune_code):
+            commune_id = int(c.get('commune_id', 0))
+            logger.info(
+                "matched commune_code=%s -> commune_id=%s", v, commune_id,
+            )
+            return commune_id
+    logger.warning("commune_code=%s not found in communes.json", commune_code)
+    return None
+
+
+def _wkt_from_commune_id(commune_id: int) -> str | None:
+    """Read geometry WKT from communes.db for a given commune_id."""
+    try:
+        with sqlite3.connect(COMMUNES_DB) as conn:
+            sql = 'SELECT wkt FROM geometries WHERE commune_id = ?'
+            row = conn.execute(sql, (commune_id,)).fetchone()
+    except sqlite3.Error as e:
+        logger.warning("could not query %s: %s", COMMUNES_DB, e)
+        return None
+    if row:
+        logger.info("WKT from DB, len=%s", len(row[0]))
+        return row[0]
+    logger.warning("commune_id=%s not found in communes.db", commune_id)
+    return None
+
+
 def init_allowed_zone(iface) -> None:
     """Create the municipality boundary layer from the authenticated user."""
     user_data = get_current_user()
-    logger.info("init_allowed_zone: user_data=%s", user_data)
     commune_code = user_data.get('commune_code') if user_data else None
-    logger.info("init_allowed_zone: commune_code=%s", commune_code)
 
     wkt = None
     if commune_code:
-        commune_id = None
-        try:
-            with open(COMMUNES_JSON, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-            logger.info("init_allowed_zone: communes.json has %d entries", len(data))
-            for c in data.values():
-                v = c.get('commune_code')
-                if v is not None and int(v) == int(commune_code):
-                    commune_id = int(c.get('commune_id', 0))
-                    logger.info("init_allowed_zone: matched commune_code=%s -> commune_id=%s", v, commune_id)
-                    break
-            if commune_id is None:
-                logger.warning("init_allowed_zone: commune_code=%s not found in communes.json", commune_code)
-        except (FileNotFoundError, json.JSONDecodeError) as e:
-            logger.warning("init_allowed_zone: could not load %s: %s", COMMUNES_JSON, e)
-        if commune_id:
-            try:
-                with sqlite3.connect(COMMUNES_DB) as conn:
-                    cur = conn.execute('SELECT wkt FROM geometries WHERE commune_id = ?', (commune_id,))
-                    row = cur.fetchone()
-                if row:
-                    wkt = row[0]
-                    logger.info("init_allowed_zone: WKT from DB, len=%s", len(wkt))
-                else:
-                    logger.warning("init_allowed_zone: commune_id=%s not found in communes.db", commune_id)
-            except sqlite3.Error as e:
-                logger.warning("init_allowed_zone: could not query %s: %s", COMMUNES_DB, e)
+        commune_id = _commune_id_from_code(commune_code)
+        if commune_id is not None:
+            wkt = _wkt_from_commune_id(commune_id)
     else:
         logger.info("init_allowed_zone: no commune_code, skipping geometry lookup")
 

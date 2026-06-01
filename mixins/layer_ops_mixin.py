@@ -7,29 +7,43 @@ import logging
 import os
 import uuid
 
+from geoalchemy2.elements import WKTElement
+from qgis.core import QgsLayerTreeLayer, QgsProject
+from qgis.PyQt.QtWidgets import (
+    QCheckBox,
+    QComboBox,
+    QFormLayout,
+    QLineEdit,
+    QMessageBox,
+    QSpinBox,
+)
+from shapely import wkt
+from shapely.geometry import LineString, Point, Polygon
 from sqlalchemy.exc import SQLAlchemyError
 
-from qgis.PyQt.QtWidgets import (
-    QMessageBox, QFormLayout, QLineEdit, QComboBox, QSpinBox, QCheckBox,
-)
-from qgis.core import QgsLayerTreeLayer, QgsProject
-from shapely import wkt
-from shapely.geometry import Point, Polygon, LineString
-from geoalchemy2.elements import WKTElement
-
-from ..app.users.repository import qgis_config, get_user_location
-from ..app.orders import models as _models
 from ..app.core.database import get_session
+from ..app.orders import models as _models
+from ..app.users.repository import get_user_location, qgis_config
 from ..constants import (
-    LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
-    LAYER_NUMBERING, LAYER_PANELS, SRID,
-    LAYER_MUNICIPALITY, DEFAULT_STYLE_DIR, CUSTOM_STYLE_DIR,
+    CUSTOM_STYLE_DIR,
+    DEFAULT_STYLE_DIR,
+    LAYER_FACILITIES,
+    LAYER_MUNICIPALITY,
+    LAYER_NUMBERING,
+    LAYER_PANELS,
+    LAYER_ROADS,
+    LAYER_SUBDIVISIONS,
+    SRID,
 )
 from ..gui.entity_list_dialog import EntityListDialog
 from ._protocols import (
-    HasAuthState, HasCurrentLayer, HasLayerTools,
-    HasLayerOpsContext, HasTabSwitchContext, HasGeometryChangedContext,
     HasAuthIfaceContext,
+    HasAuthState,
+    HasCurrentLayer,
+    HasGeometryChangedContext,
+    HasLayerOpsContext,
+    HasLayerTools,
+    HasTabSwitchContext,
 )
 
 logger = logging.getLogger(__name__)
@@ -227,31 +241,31 @@ class LayerOpsMixin:
     def list_road_entries(self) -> None:
         """Open an entity list dialog for roads."""
         dlg = EntityListDialog(model_name="Road", list_of=LAYER_ROADS)
-        dlg.exec_()
+        dlg.exec()
 
     def list_organizations(self) -> None:
         """Open an entity list dialog for organizations."""
         dlg = EntityListDialog(
             model_name="Organization", list_of=LAYER_FACILITIES,
         )
-        dlg.exec_()
+        dlg.exec()
 
     def list_subdivisions(self) -> None:
         """Open an entity list dialog for subdivisions."""
         dlg = EntityListDialog(
             model_name="Subdivision", list_of=LAYER_SUBDIVISIONS,
         )
-        dlg.exec_()
+        dlg.exec()
 
     def list_numberings(self) -> None:
         """Open an entity list dialog for numberings."""
         dlg = EntityListDialog(model_name="Numbering", list_of='Numberings')
-        dlg.exec_()
+        dlg.exec()
 
     def list_panel_signs(self) -> None:
         """Open an entity list dialog for panel signs."""
         dlg = EntityListDialog(model_name="PanelSign", list_of='Panels')
-        dlg.exec_()
+        dlg.exec()
 
     def _check_geometry_in_zone(self, geometry_wkt: str) -> int:
         """Check if geometry is within the user's allowed zone.

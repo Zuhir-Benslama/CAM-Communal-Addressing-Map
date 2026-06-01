@@ -1,6 +1,7 @@
 """Password hashing and JWT secret management."""
 import logging
 import os
+
 import bcrypt
 
 logger = logging.getLogger(__name__)

@@ -1,7 +1,7 @@
 """Vector layer editing and update operations."""
 import logging
 
-from qgis.core import QgsProject, QgsMapLayer, QgsWkbTypes, Qgis
+from qgis.core import Qgis, QgsMapLayer, QgsProject, QgsWkbTypes
 
 from ..constants import NOTIFY_DURATION, current_locale
 from ..scripts.lookup_data import get_string

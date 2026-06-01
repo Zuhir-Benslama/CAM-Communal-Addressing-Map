@@ -1,219 +1,189 @@
-"""Paginated dialog for browsing entity records."""
+"""Paginated dialog for browsing entity records — QML version."""
 from __future__ import annotations
+
+import json
 import logging
 import os
-from typing import TYPE_CHECKING
 
-from PyQt5 import uic
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (
-    QAbstractItemView, QDialog, QHBoxLayout, QLabel, QPushButton,
-    QSizePolicy, QTableWidgetItem, QVBoxLayout, QWidget,
-)
+from qgis.PyQt.QtCore import QObject, QUrl, pyqtSlot
+from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout
 
-from ..app.orders import models as _models
+try:
+    from qgis.PyQt.QtQuickWidgets import QQuickWidget
+    _HAS_QML = True
+except ImportError:
+    QQuickWidget = None
+    _HAS_QML = False
+
+from ..app.core.config import get_theme_qss
 from ..app.core.database import get_session
+from ..app.orders import models as _models
 from ..app.shared.utils import get_all_fields_and_labels
-from ..constants import (
-    current_theme, get_theme_qss,
-    current_locale, locale_value,
-)
-from ..scripts.lookup_data import get_string, apply_widget_texts
-from ..mixins._protocols import UiForm
+from ..constants import current_locale, current_theme
+from ..scripts.lookup_data import apply_widget_texts, get_string
 
 logger = logging.getLogger(__name__)
 
-if TYPE_CHECKING:
-    FORM_CLASS = UiForm
-else:
-    FORM_CLASS, _ = uic.loadUiType(os.path.join(
-        os.path.dirname(__file__), 'liste.ui'))
+PLUGIN_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+QML_DIR = os.path.join(PLUGIN_DIR, 'qml')
 
 
-class EntityListDialog(QDialog, FORM_CLASS):  # type: ignore[misc,valid-type]
-    """Paginated dialog displaying a table of entity records."""
+class EntityListBridge(QObject):
+    """Bridge object exposed to QML for Python <-> QML communication."""
+
+    def __init__(self, dialog: 'EntityListDialog') -> None:
+        super().__init__()
+        self.dialog = dialog
+        self._page = 0
+        self._page_size = 50
+        self._total_records = 0
+
+    @pyqtSlot(int)
+    def loadPage(self, page: int) -> None:
+        self.dialog.populate_table(page)
+
+    @pyqtSlot()
+    def nextPage(self) -> None:
+        if (self._page + 1) * self._page_size < self._total_records:
+            self._page += 1
+            self.loadPage(self._page)
+
+    @pyqtSlot()
+    def prevPage(self) -> None:
+        if self._page > 0:
+            self._page -= 1
+            self.loadPage(self._page)
+
+    def set_page_state(self, page: int, total: int) -> None:
+        self._page = page
+        self._total_records = total
+
+
+class EntityListDialog(QDialog):
+    """Paginated dialog displaying a table of entity records (QML-backed)."""
+
     PAGE_SIZE = 50
 
     def __init__(self, model_name: str, list_of: str,
-                 parent: QWidget | None = None) -> None:
-        """Initialize the list dialog with paginated table."""
+                 parent=None) -> None:
+        super().__init__(parent)
 
         self.model_name = model_name
+        self._list_of = list_of
         self._page = 0
         self._total_records = 0
-
         self._tr_locale = current_locale()
 
-        super().__init__(parent)
-        self.setupUi(self)
-        self._apply_ui_polish()
-        apply_widget_texts(self, self._tr_locale)
+        self._init_qml()
         self.setStyleSheet(get_theme_qss(current_theme()))
 
-        self.list_title.setText(
-            "\u200f " + get_string("List", self._tr_locale) +
-            "\u200f " + get_string(list_of, self._tr_locale)
-        )
+        apply_widget_texts(self, self._tr_locale)
+        title = get_string('List', self._tr_locale) + ' ' + get_string(list_of, self._tr_locale)
+        self.setWindowTitle(title)
+        self._populate_table(0)
 
-        self._prev_btn = QPushButton(get_string("Previous", self._tr_locale))
-        self._next_btn = QPushButton(get_string("Next", self._tr_locale))
-        self._page_label = QLabel()
-        self._total_label = QLabel()
-
-        self._prev_btn.clicked.connect(self._prev_page)
-        self._next_btn.clicked.connect(self._next_page)
-
-        self._prev_btn.setProperty('role', 'ghost')
-        self._next_btn.setProperty('role', 'ghost')
-        self._prev_btn.setMinimumHeight(34)
-        self._next_btn.setMinimumHeight(34)
-        self._prev_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self._next_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self._page_label.setProperty('uiHint', 'page')
-        self._total_label.setProperty('uiHint', 'muted')
-
-        button_layout = QHBoxLayout()
-        button_layout.setContentsMargins(0, 0, 0, 0)
-        button_layout.setSpacing(8)
-        button_layout.addWidget(self._prev_btn)
-        button_layout.addWidget(self._page_label)
-        button_layout.addWidget(self._next_btn)
-
-        info_layout = QHBoxLayout()
-        info_layout.setContentsMargins(0, 0, 0, 0)
-        info_layout.addWidget(self._total_label)
-        info_layout.addStretch(1)
-
-        container = QWidget()
-        container.setLayout(button_layout)
-
-        info_container = QWidget()
-        info_container.setLayout(info_layout)
-
-        main_layout = QVBoxLayout()
-        main_layout.setContentsMargins(0, 0, 0, 0)
-        main_layout.setSpacing(8)
-        main_layout.addWidget(info_container)
-        main_layout.addWidget(container)
-        _layout = self.layout()
-        if _layout is None:
-            return
-        _layout.addLayout(main_layout)  # type: ignore[attr-defined]
-
-        self.populate_table()
-
-    def _apply_ui_polish(self) -> None:
-        """Apply consistent sizing, spacing, and styling to the dialog."""
+    def _init_qml(self) -> None:
+        if not _HAS_QML or QQuickWidget is None:
+            raise ImportError(
+                'Qt Quick Widgets (QtQml) is not available.\n'
+                'Please install the Qt Quick / QML package for your system\n'
+                '(e.g., python3-pyqt6.qml or qml6 on Debian/Ubuntu).'
+            )
         self.setObjectName('rnaEntityListDialog')
-        self.setWindowTitle(get_string("List", self._tr_locale))
-        self.setSizeGripEnabled(True)
         self.setMinimumSize(700, 520)
-        self.setMaximumSize(16777215, 16777215)
-        if self.width() < 760:
-            self.resize(760, 560)
+        self.resize(760, 560)
+        self.setSizeGripEnabled(True)
 
-        self.frame_2.setProperty('surfaceRole', 'header')
-        self.frame_10.setProperty('surfaceRole', 'toolbar')
-        self.frame_9.setProperty('surfaceRole', 'footer')
-        self.frame_2.setMaximumWidth(16777215)
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.list_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label_24.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label_24.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
 
-        footer_layout = self.frame_9.layout()
-        if footer_layout is not None:
-            for index in range(footer_layout.count() - 1, -1, -1):
-                item = footer_layout.itemAt(index)
-                if item is not None and item.spacerItem() is not None:
-                    footer_layout.takeAt(index)
+        self._quick_widget = QQuickWidget()
+        self._quick_widget.setResizeMode(QQuickWidget.SizeRootObjectToView)
 
-        self.table.setAlternatingRowColors(True)
-        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.table.setSelectionMode(QAbstractItemView.SingleSelection)
-        self.table.verticalHeader().setVisible(False)
-        self.table.setSortingEnabled(True)
+        engine = self._quick_widget.engine()
+        engine.addImportPath(QML_DIR)
+        for p in ('/usr/lib64/qt5/qml', '/usr/lib/qt5/qml',
+                  '/usr/local/lib/python3.14/site-packages/PyQt5/Qt5/qml'):
+            if os.path.isdir(p):
+                engine.addImportPath(p)
 
-    def _prev_page(self) -> None:
-        """Go to the previous page of results."""
-        if self._page > 0:
-            self._page -= 1
-            self.populate_table()
+        self._bridge = EntityListBridge(self)
+        context = self._quick_widget.rootContext()
+        context.setContextProperty('pluginBridge', self._bridge)
+        context.setContextProperty('listTitle', get_string(self._list_of, self._tr_locale))
 
-    def _next_page(self) -> None:
-        """Go to the next page of results."""
-        if (self._page + 1) * self.PAGE_SIZE < self._total_records:
-            self._page += 1
-            self.populate_table()
+        qml_path = os.path.join(QML_DIR, 'entitylist', 'EntityListDialog.qml')
+        self._quick_widget.setSource(QUrl.fromLocalFile(qml_path))
 
-    def populate_table(self) -> None:
-        """Populate the table with the current page of records."""
+        layout.addWidget(self._quick_widget)
+
+        self._qml_root = self._quick_widget.rootObject()
+
+    def _populate_table(self, page: int) -> None:
+        """Query DB for the given page and push data to QML."""
         session = get_session()
         try:
             model_class = getattr(_models, self.model_name, None)
             if model_class is None:
+                self._total_records = 0
+                self._bridge.set_page_state(page, 0)
+                self._qml_root.setPageData({
+                    'fields': [], 'labels': [], 'rows': [],
+                    'total': 0, 'page': 0, 'pageSize': self.PAGE_SIZE,
+                })
                 return
-            sorting_enabled = self.table.isSortingEnabled()
-            self.table.setSortingEnabled(False)
-            try:
-                self._total_records = session.query(model_class).count()
-                total_pages = max(
-                    1, (self._total_records + self.PAGE_SIZE - 1) // self.PAGE_SIZE)
-                self._page_label.setText(
-                    get_string("Page", self._tr_locale) +
-                    f" {self._page + 1} / {total_pages}"
-                )
-                self._total_label.setText(
-                    get_string("Total", self._tr_locale) +
-                    f": {self._total_records}"
-                )
 
-                offset = self._page * self.PAGE_SIZE
-                results = (
-                    session.query(model_class)
-                    .offset(offset).limit(self.PAGE_SIZE).all()
-                )
+            self._total_records = session.query(model_class).count()
 
-                PROPERTY_LABELS = {
-                    'pan_label': 'Label',
-                    'username': 'User',
-                }
+            offset = page * self.PAGE_SIZE
+            results = (
+                session.query(model_class)
+                .offset(offset).limit(self.PAGE_SIZE).all()
+            )
 
-                fields, labels = get_all_fields_and_labels(
-                    model_class, PROPERTY_LABELS, locale=self._tr_locale)
+            PROPERTY_LABELS = {
+                'pan_label': 'Label',
+                'username': 'User',
+            }
 
-                labels = [
-                    get_string(label, self._tr_locale)
-                    if any('\u0600' <= c <= '\u06FF' for c in label)
-                    else label
-                    for label in labels
-                ]
+            fields, labels = get_all_fields_and_labels(
+                model_class, PROPERTY_LABELS, locale=self._tr_locale)
 
-                self.table.setRowCount(len(results))
-                self.table.setColumnCount(len(fields))
-                self.table.setHorizontalHeaderLabels(labels)
+            labels = [
+                get_string(label, self._tr_locale)
+                if any('\u0600' <= c <= '\u06FF' for c in label)
+                else label
+                for label in labels
+            ]
 
-                for row_index, record in enumerate(results):
-                    for col_index, field in enumerate(fields):
-                        try:
-                            value = locale_value(record, field, self._tr_locale)
-                        except AttributeError:
-                            try:
-                                value = getattr(record, field)
-                            except AttributeError:
-                                logger.debug(
-                                    "Field %s not found on record %s",
-                                    field, record, exc_info=True
-                                )
-                                value = 'N/A'
-                        value = value if value not in [None, ""] else "N/A"
-                        item = QTableWidgetItem(str(value))
-                        self.table.setItem(row_index, col_index, item)
+            rows = []
+            for record in results:
+                row = []
+                for field in fields:
+                    try:
+                        from ..app.shared.utils import locale_value
+                        value = locale_value(record, field, self._tr_locale)
+                    except AttributeError:
+                        value = getattr(record, field, None)
+                    value = value if value not in (None, '') else 'N/A'
+                    row.append(value)
+                rows.append(row)
 
-                self._prev_btn.setEnabled(self._page > 0)
-                self._next_btn.setEnabled(
-                    (self._page + 1) * self.PAGE_SIZE < self._total_records)
-            finally:
-                self.table.setSortingEnabled(sorting_enabled)
+            self._bridge.set_page_state(page, self._total_records)
+
+            self._qml_root.setPageData({
+                'fields': fields,
+                'labels': labels,
+                'rows': rows,
+                'total': self._total_records,
+                'page': page,
+                'pageSize': self.PAGE_SIZE,
+            })
         finally:
             session.close()
+
+    def populate_table(self, page: int | None = None) -> None:
+        """Public API: populate the table (compat wrapper)."""
+        if page is None:
+            page = self._page
+        self._populate_table(page)

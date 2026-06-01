@@ -1,4 +1,3 @@
-# coding=utf-8
 """QGIS plugin implementation.
 
 .. note:: This program is free software; you can redistribute it and/or modify
@@ -24,9 +23,11 @@ __copyright__ = (
 )
 
 import logging
-from qgis.PyQt.QtCore import QObject, pyqtSlot, pyqtSignal
+
 from qgis.core import QgsMapLayerRegistry
 from qgis.gui import QgsMapCanvasLayer
+from qgis.PyQt.QtCore import QObject, pyqtSignal, pyqtSlot
+
 LOGGER = logging.getLogger('QGIS')
 
 
@@ -58,7 +59,7 @@ class QgisInterface(QObject):
         # For processing module
         self.destCrs = None
 
-    @pyqtSlot('QStringList')
+    @pyqtSlot(list)
     def addLayers(self, layers):
         """Handle layers being added to the registry so they show up in canvas.
 
@@ -80,7 +81,7 @@ class QgisInterface(QObject):
         self.canvas.setLayerSet(final_layers)
         #LOGGER.debug('Layer Count After: %s' % len(self.canvas.layers()))
 
-    @pyqtSlot('QgsMapLayer')
+    @pyqtSlot(object)
     def addLayer(self, layer):
         """Handle a layer being added to the registry so it shows up in canvas.
 

@@ -1,15 +1,16 @@
 """Map measure tool for distance measurement on canvas."""
 
-from typing import List
-
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor, QCursor, QFont
-from PyQt5.QtWidgets import (
-    QToolTip, QGraphicsSimpleTextItem, QGraphicsTextItem, QGraphicsItemGroup,
-    QGraphicsDropShadowEffect,
-)
+from qgis.core import QgsDistanceArea, QgsPointXY, QgsWkbTypes
 from qgis.gui import QgsMapToolEmitPoint, QgsRubberBand, QgsVertexMarker
-from qgis.core import QgsPointXY, QgsDistanceArea, QgsWkbTypes
+from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtGui import QColor, QCursor, QFont
+from qgis.PyQt.QtWidgets import (
+    QGraphicsDropShadowEffect,
+    QGraphicsItemGroup,
+    QGraphicsSimpleTextItem,
+    QGraphicsTextItem,
+    QToolTip,
+)
 
 from ..constants import current_locale
 from ..i18n import tr as _i18n_tr
@@ -22,7 +23,7 @@ class MeasureTool(QgsMapToolEmitPoint):
         super().__init__(canvas)
         self.canvas = canvas
         self.iface = iface
-        self.points: List[QgsPointXY] = []
+        self.points: list[QgsPointXY] = []
         self.da = QgsDistanceArea()
         self.da.setEllipsoid('WGS84')
 
@@ -30,8 +31,8 @@ class MeasureTool(QgsMapToolEmitPoint):
         self.rubber_band.setColor(QColor(255, 0, 0, 180))
         self.rubber_band.setWidth(2)
 
-        self.markers: List[QgsVertexMarker] = []
-        self.labels: List[QGraphicsItemGroup] = []
+        self.markers: list[QgsVertexMarker] = []
+        self.labels: list[QGraphicsItemGroup] = []
         self.paused = False
 
         # Connect to both signals to ensure labels update on any canvas change

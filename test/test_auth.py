@@ -1,7 +1,7 @@
 import os
 import sys
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
@@ -20,8 +20,8 @@ sys.modules['qgis.PyQt.QtCore'] = qgis.PyQt.QtCore
 sys.modules['qgis.PyQt.QtWidgets'] = qgis.PyQt.QtWidgets
 sys.modules['qgis.core'] = qgis.core
 
-from app.users.service import sign_up, sign_in, logout  # noqa: E402
 from app.core.security import get_jwt_secret  # noqa: E402
+from app.users.service import logout, sign_in, sign_up  # noqa: E402
 
 
 class TestJWTSecret(unittest.TestCase):

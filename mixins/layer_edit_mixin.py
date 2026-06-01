@@ -4,25 +4,36 @@ from __future__ import annotations
 
 import logging
 
-from sqlalchemy.exc import SQLAlchemyError
-
+from qgis.core import QgsProject
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import QMessageBox
-from qgis.core import QgsProject
+from sqlalchemy.exc import SQLAlchemyError
 
-from ..layer.editing import update_layer
 from ..app.orders.repository import (
-    add_panel_sign, add_organization, add_road,
-    add_numbering, add_subdivision, add_zone,
+    add_numbering,
+    add_organization,
+    add_panel_sign,
+    add_road,
+    add_subdivision,
+    add_zone,
 )
 from ..constants import (
-    LAYER_ROADS, LAYER_FACILITIES, LAYER_SUBDIVISIONS,
-    LAYER_NUMBERING, LAYER_PANELS, LAYER_ZONES, validate_text,
+    LAYER_FACILITIES,
+    LAYER_NUMBERING,
+    LAYER_PANELS,
+    LAYER_ROADS,
+    LAYER_SUBDIVISIONS,
+    LAYER_ZONES,
     current_locale,
+    validate_text,
 )
+from ..layer.editing import update_layer
 from ._protocols import (
-    HasTranslation, HasFeatureState,
-    HasDrawContext, HasBasicEditContext, HasFullEditContext,
+    HasBasicEditContext,
+    HasDrawContext,
+    HasFeatureState,
+    HasFullEditContext,
+    HasTranslation,
 )
 
 logger = logging.getLogger(__name__)
@@ -112,7 +123,7 @@ class LayerEditMixin:
             layer = ref_data.get('layer_name')
             ref = ref_data.get('id')
             kwargs = {
-                'geometry_wkt': geometry_wkt, 'id': feature_id,
+                'geometry_wkt': geometry_wkt, 'record_id': feature_id,
                 'mount_status': self.mount_status.currentData(),
             }
             if layer == LAYER_FACILITIES:
@@ -155,7 +166,7 @@ class LayerEditMixin:
         try:
             name_val = validate_text(self.org_name.text())
             kwargs = {
-                'geometry_wkt': geometry_wkt, 'id': feature_id,
+                'geometry_wkt': geometry_wkt, 'record_id': feature_id,
                 'org_cat': self.org_cat.currentData(),
                 'org_name': name_val,
                 'org_type': self.org_type.currentData(),
@@ -179,7 +190,7 @@ class LayerEditMixin:
         try:
             name_val = validate_text(self.road_name.text())
             kwargs = {
-                'geometry_wkt': geometry_wkt, 'id': feature_id,
+                'geometry_wkt': geometry_wkt, 'record_id': feature_id,
                 'road_decision': None,
                 'road_name': name_val,
                 'type_road': self.type_road.currentData(),
@@ -193,7 +204,7 @@ class LayerEditMixin:
 
     def key_press_event(self, event, action: str = 'add_numbering') -> None:
         """Handle Enter key press to trigger the given action."""
-        if event.key() == Qt.Key_Return:
+        if event.key() == Qt.Key.Key_Return:
             getattr(self, action)()
 
     def show_confirm_dialog(
@@ -212,7 +223,7 @@ class LayerEditMixin:
         yes_button.setText(self._tr("Yes"))
         no_button.setText(self._tr("No"))
 
-        result = msg_box.exec_()
+        result = msg_box.exec()
 
         if result == QMessageBox.Yes:
             if yes_callback:
@@ -238,7 +249,7 @@ class LayerEditMixin:
             ref_data = None
         try:
             common = {
-                'geometry_wkt': geometry_wkt, 'id': feature_id,
+                'geometry_wkt': geometry_wkt, 'record_id': feature_id,
                 'repetition': validate_text(self.repetition.text()),
                 'value': validate_text(self.num_val.text()),
                 'state': self.num_state.currentData(),
@@ -287,7 +298,7 @@ class LayerEditMixin:
         try:
             name_val = validate_text(self.subd_name.text())
             kwargs = {
-                'geometry_wkt': geometry_wkt, 'id': feature_id,
+                'geometry_wkt': geometry_wkt, 'record_id': feature_id,
                 'name': name_val,
                 'subdivision_type': self.subd_type.currentData(),
             }
@@ -312,7 +323,7 @@ class LayerEditMixin:
         try:
             name_val = validate_text(self.nom_zone.text())
             kwargs = {
-                'geometry_wkt': geometry_wkt, 'id': feature_id,
+                'geometry_wkt': geometry_wkt, 'record_id': feature_id,
                 'name': name_val,
                 'zone_type': self.zone_type.currentData(),
             }

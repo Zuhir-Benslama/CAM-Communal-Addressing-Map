@@ -4,7 +4,7 @@ import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
-from .helpers import setup_mocks, wire_module_attributes, make_mock_iface
+from .helpers import make_mock_iface, setup_mocks, wire_module_attributes
 
 
 class TestLayerUtils(unittest.TestCase):
@@ -93,7 +93,7 @@ class TestLayerUtils(unittest.TestCase):
         mock_qgis_config.return_value = {'other_layers': [], 'mapper': []}
         mock_project.instance.return_value.mapLayersByName.return_value = []
         # Mock commune lookup + GeoJSON loading (no geometry found)
-        with patch('plans_adressage.layer.utils.open') as mock_open, \
+        with patch('plans_adressage.layer.utils.open'), \
              patch('plans_adressage.layer.utils.json.load') as mock_json_load:
             mock_json_load.side_effect = [
                 {'1': {'commune_code': 4112, 'commune_id': 1}},

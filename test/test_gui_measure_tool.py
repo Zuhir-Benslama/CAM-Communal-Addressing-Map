@@ -4,10 +4,10 @@ import sys
 import unittest
 from unittest.mock import MagicMock
 
-from .helpers import setup_gui_mocks, get_qapp
+from .helpers import get_qapp, setup_gui_mocks
 
 
-@unittest.skipIf(get_qapp() is None, 'PyQt5 not available')
+@unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
 class TestMeasureTool(unittest.TestCase):
     """Test MeasureTool creation and measurement functionality."""
 

@@ -4,10 +4,10 @@ import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
-from .helpers import setup_gui_mocks, get_qapp
+from .helpers import get_qapp, setup_gui_mocks
 
 
-@unittest.skipIf(get_qapp() is None, 'PyQt5 not available')
+@unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
 class TestIdentifyTool(unittest.TestCase):
     """Test IdentifyTool creation and signal handling."""
 
@@ -93,11 +93,15 @@ class TestIdentifyTool(unittest.TestCase):
     def test_feature_as_ref_sets_attrs_and_unset(self):
         tool = self.mod.IdentifyTool(
             self.canvas, mode=self.mod.IdentifyTool.MODE_REF)
+        layer = MagicMock()
+        layer.name.return_value = 'Roads'
+        tool.set_active_layer(layer)
         tool.ref_name = MagicMock()
         tool.feature_as_ref('pk-1', 'Route', 'Main St')
         self.assertEqual(tool.feature_id, 'pk-1')
         self.assertEqual(tool.feature_type, 'Route')
         self.assertEqual(tool.feature_name, 'Main St')
+        self.canvas.unsetMapTool.assert_called_once_with(tool)
 
     def test_feature_as_ref_skips_unset_when_id_none(self):
         tool = self.mod.IdentifyTool(

@@ -1319,3 +1319,23 @@ After sections 58–61 renamed DB columns and tables to match Python models, lay
 
 ### Tests
 - [x] **224/224 pass**, 3 skipped (QGIS env)
+
+---
+
+## 63. QML Login Combo Fix — 2026-06-01 ✅
+
+**Tests: 230/230 pass** (3 QGIS-dependent skipped)
+
+### Problem
+Login failed with "Please select a map layer option" — `add_map_layer()` received empty `currentText()`/`currentData()` even though `map_options` combo was populated.
+
+### Root Cause
+`QComboBox` auto-selects index 0 on first `addItem` after `clear()`, but neither `_ComboProxy` nor QML's ListModel+append pattern replicated this — leaving `currentIndex = -1` after population.
+
+### Fixes
+- [x] **`_ComboProxy.addItem`** (`gui/main_dialog.py:112-113`) — now sets `_index = 0` when first item is added after `clear()`, matching real `QComboBox` behavior.
+- [x] **QML `setComboOptions`** (`qml/maindialog/MainDialog.qml:56-58`) — after populating model items, sets `currentIndex = 0` if combo has items and no selection exists.
+
+### Files Changed
+- `gui/main_dialog.py` — 3 lines added to `_ComboProxy.addItem`
+- `qml/maindialog/MainDialog.qml` — 3 lines added to `setComboOptions`

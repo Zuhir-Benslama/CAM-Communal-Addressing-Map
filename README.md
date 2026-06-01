@@ -133,15 +133,33 @@ plans_adressage/
 │   ├── lookup.py                # Lookup tables
 │   └── spatial.py               # Spatial models (Road, Zone, etc.)
 │
-├── gui/                         # GUI components & UI definitions
-│   ├── RNA_dialog_base.ui       # Main dialog UI (Qt Designer)
-│   ├── PopupDialog.ui           # Popup editor UI
-│   ├── liste.ui                 # Entity list UI
-│   ├── popup_dialog.py          # Feature attribute editor
-│   ├── entity_list_dialog.py    # Paginated entity list browser
+├── gui/                         # GUI components & Python-QML bridge code
+│   ├── main_dialog.py           # Main dialog (QML-backed)
+│   ├── popup_dialog.py          # Feature attribute editor (QML-backed)
+│   ├── entity_list_dialog.py    # Paginated entity list (QML-backed)
 │   ├── identify_tool.py         # Map identify tool
 │   ├── measure_tool.py          # Distance measurement tool
 │   └── ui_fillers.py            # ComboBox population functions
+│
+├── qml/                         # Qt Quick / QML UI definitions
+│   ├── qmldir                   # QML module directory
+│   ├── theme/
+│   │   └── Theme.qml            # Theme colour singleton
+│   ├── maindialog/
+│   │   ├── MainDialog.qml       # Main dialog shell
+│   │   ├── LoginPage.qml        # Login screen
+│   │   ├── AddUserPage.qml      # User registration
+│   │   └── MainPage.qml         # Main operational UI + 6 form pages
+│   ├── popup/
+│   │   └── PopupDialog.qml      # Feature attribute editor
+│   ├── entitylist/
+│   │   └── EntityListDialog.qml # Paginated entity list
+│   └── components/
+│       ├── StyledButton.qml     # Reusable styled button
+│       ├── StyledComboBox.qml   # QML combo with theme integration
+│       ├── StyledGroupBox.qml   # Themed group box
+│       ├── StyledLabel.qml      # Themed label
+│       └── StyledTextField.qml  # Themed text input
 │
 ├── mixins/                      # MainDialog mixin classes
 │   ├── auth_mixin.py            # Authentication UI

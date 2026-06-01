@@ -1,6 +1,6 @@
 """Type protocols for mixin host contracts."""
 # pylint: disable=too-few-public-methods
-from typing import Protocol, runtime_checkable, Any, Optional, Dict
+from typing import Any, Protocol, runtime_checkable
 
 from qgis.gui import QgisInterface
 
@@ -38,9 +38,9 @@ class HasLayerTools(Protocol):
 @runtime_checkable
 class HasAuthState(Protocol):
     """Mixin host provides authentication and dialog state."""
-    current_user: Optional[Dict[str, Any]]
-    sat_view: Optional[str]
-    rast: Optional[str]
+    current_user: dict[str, Any] | None
+    sat_view: str | None
+    rast: str | None
     popup_dialog: Any
 
 
@@ -56,10 +56,10 @@ class HasPlanState(Protocol):
 @runtime_checkable
 class HasFeatureState(Protocol):
     """Mixin host provides feature tracking state."""
-    _last_feature_wkt: Optional[str]
-    _last_feature_id: Optional[str]
-    _geometry_ready: Optional[str]
-    update_object: Dict[str, Any]
+    _last_feature_wkt: str | None
+    _last_feature_id: str | None
+    _geometry_ready: str | None
+    update_object: dict[str, Any]
 
 
 @runtime_checkable
@@ -278,7 +278,7 @@ class HasTabSwitchContext(
     def _show_always_shown_layers(self, root: Any) -> None:
         """Ensure core layers are visible."""
 
-    _last_loaded_tab: Optional[str]
+    _last_loaded_tab: str | None
 
 
 @runtime_checkable

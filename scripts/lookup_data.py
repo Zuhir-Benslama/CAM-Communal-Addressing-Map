@@ -5,7 +5,13 @@ import os
 from typing import Any
 
 from qgis.PyQt.QtWidgets import (
-    QCheckBox, QGroupBox, QLabel, QLineEdit, QPushButton, QTabWidget, QWidget,
+    QCheckBox,
+    QGroupBox,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QTabWidget,
+    QWidget,
 )
 
 _DATA_DIR = os.path.join(
@@ -19,7 +25,7 @@ def _load(filename: str) -> list[dict[str, Any]]:
     """Load and cache JSON data from a template data file."""
     if filename not in _cache:
         path = os.path.join(_DATA_DIR, filename)
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path, encoding='utf-8') as f:
             _cache[filename] = json.load(f)
     return _cache[filename]
 
@@ -240,7 +246,7 @@ def _get_string(source: str, locale: str) -> str:
     """Look up a source string in strings.json for the given locale."""
     if 'strings' not in _str_cache:
         path = os.path.join(_DATA_DIR, 'strings.json')
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path, encoding='utf-8') as f:
             _str_cache['strings'] = json.load(f)
     data = _str_cache['strings'].get(source)
     if isinstance(data, dict):
@@ -256,7 +262,7 @@ def _load_widgets() -> dict[str, dict[str, str]]:
     global _widgets_data  # pylint: disable=global-statement
     if _widgets_data is None:
         path = os.path.join(_DATA_DIR, 'widgets.json')
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path, encoding='utf-8') as f:
             _widgets_data = json.load(f)
     return _widgets_data
 

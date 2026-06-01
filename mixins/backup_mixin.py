@@ -7,13 +7,15 @@ import os
 import shutil
 import tempfile
 
-from qgis.PyQt.QtWidgets import QMessageBox, QFileDialog
+from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
 
 from ..app.core.database import reset_connection_pool
 from ..app.core.migration import migrate_database
 from ..constants import (
-    PLUGIN_DIR, DATABASE_FILE,
-    current_theme, get_dialog_qss,
+    DATABASE_FILE,
+    PLUGIN_DIR,
+    current_theme,
+    get_dialog_qss,
 )
 from ._protocols import HasTranslation
 
@@ -30,7 +32,7 @@ class BackupMixin:
         try:
             shutil.copy2(source, temp)
             os.replace(temp, destination)
-        except (IOError, OSError, shutil.Error):
+        except (OSError, shutil.Error):
             if os.path.exists(temp):
                 os.remove(temp)
             raise
@@ -50,7 +52,7 @@ class BackupMixin:
 
         file_dialog_open.setStyleSheet(get_dialog_qss(current_theme()))
 
-        if file_dialog_open.exec_():
+        if file_dialog_open.exec():
             source_path = file_dialog_open.selectedFiles()[0]
         else:
             QMessageBox.warning(self, self._tr("Warning"), self._tr("No file selected"))
@@ -87,7 +89,7 @@ class BackupMixin:
 
         file_dialog_save.setStyleSheet(get_dialog_qss(current_theme()))
 
-        if file_dialog_save.exec_():
+        if file_dialog_save.exec():
             destination_path = file_dialog_save.selectedFiles()[0]
         else:
             QMessageBox.warning(self, self._tr("Warning"), self._tr("No file selected"))
@@ -98,7 +100,7 @@ class BackupMixin:
             QMessageBox.information(
                 self, self._tr("Success"), self._tr("File copied successfully"),
             )
-        except (IOError, OSError, shutil.Error) as e:
+        except (OSError, shutil.Error) as e:
             logger.exception("Failed to backup database: %s", e)
             QMessageBox.critical(
                 self, self._tr("Error"), self._tr("Failed to copy file")
@@ -118,7 +120,7 @@ class BackupMixin:
             "SQLite/SpatiaLite Files (*.sqlite *.db *.sqlite3);;All Files (*)")
         file_dialog.setStyleSheet(get_dialog_qss(current_theme()))
 
-        if file_dialog.exec_():
+        if file_dialog.exec():
             old_path = file_dialog.selectedFiles()[0]
         else:
             QMessageBox.warning(self, self._tr("Warning"), self._tr("No file selected"))
@@ -151,7 +153,7 @@ class BackupMixin:
             auth_dialog.setWindowTitle(self._tr("Select auth.sqlite"))
             auth_dialog.setNameFilter("SQLite Files (*.sqlite *.db);;All Files (*)")
             auth_dialog.setStyleSheet(get_dialog_qss(current_theme()))
-            if auth_dialog.exec_():
+            if auth_dialog.exec():
                 auth_path = auth_dialog.selectedFiles()[0]
                 with open(auth_path, 'rb') as f:
                     header = f.read(16)
@@ -183,7 +185,7 @@ class BackupMixin:
 
         try:
             self._replace_db_file(temp_path, DATABASE_FILE)
-        except (IOError, OSError, shutil.Error) as e:
+        except (OSError, shutil.Error) as e:
             logger.exception("Failed to replace database")
             QMessageBox.critical(
                 self, self._tr("Error"),

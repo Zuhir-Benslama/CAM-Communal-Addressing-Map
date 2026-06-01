@@ -1,5 +1,5 @@
 """Marshmallow schemas for user authentication and signup validation."""
-from marshmallow import Schema, fields, pre_load, validates, ValidationError
+from marshmallow import Schema, ValidationError, fields, pre_load, validates
 
 from ..core.database import get_session
 from ..users.models import User

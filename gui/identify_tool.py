@@ -1,26 +1,34 @@
 """Map identify tool for feature selection and editing."""
+import enum
 import logging
 from typing import Any
 
-from qgis.PyQt.QtCore import Qt
-from qgis.gui import QgsMapToolIdentify
 from qgis.core import QgsExpression, QgsFeatureRequest
+from qgis.gui import QgsMapToolIdentify
+from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtWidgets import QMenu
 
-from ..app.orders import models as _models
-from ..constants import LAYER_KEY, current_locale
-from ..app.users.repository import qgis_config
 from ..app.core.database import get_session
+from ..app.orders import models as _models
+from ..app.users.repository import qgis_config
+from ..constants import LAYER_KEY, current_locale
 from ..scripts.lookup_data import get_string
 
 logger = logging.getLogger(__name__)
 
 
+class IdentifyMode(enum.Enum):
+    FORM = 'form'
+    REF = 'ref'
+
+
 class IdentifyTool(QgsMapToolIdentify):
     """Map tool for identifying features and editing/deleting them."""
 
-    MODE_FORM = "form"
-    MODE_REF = "ref"
+    MODE_FORM = IdentifyMode.FORM
+    MODE_REF = IdentifyMode.REF
+
+    ref_selected = pyqtSignal(object, str)
 
     def __init__(self, canvas, mode=MODE_FORM) -> None:
         super().__init__(canvas)
@@ -65,7 +73,7 @@ class IdentifyTool(QgsMapToolIdentify):
 
     def canvasReleaseEvent(self, event) -> None:
         """Handle map canvas click: identify feature under the cursor."""
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             _ = self.toMapCoordinates(event.pos())
 
             results = self.identify(
@@ -85,10 +93,6 @@ class IdentifyTool(QgsMapToolIdentify):
                         form_action.triggered.connect(
                             lambda f=feature: self.display_or_update_form_feature(
                                 f['id'])
-                        )
-
-                        remove_action.triggered.connect(
-                            lambda f=feature: self.delete_feature(f['id'])
                         )
 
                         remove_action = menu.addAction(
@@ -118,7 +122,7 @@ class IdentifyTool(QgsMapToolIdentify):
             else:
                 logger.info("No features identified at this location.")
 
-        elif event.button() == Qt.RightButton:
+        elif event.button() == Qt.MouseButton.RightButton:
             self.canvas.unsetMapTool(self)
 
     def unset_map_tool(self) -> None:
@@ -139,7 +143,7 @@ class IdentifyTool(QgsMapToolIdentify):
             layer_name_key=layer_name, attribute=feature_id
         )
         self.dlg.show()
-        self.dlg.exec_()
+        self.dlg.exec()
 
     def delete_feature(self, feature_id) -> None:
         """Delete the identified feature from DB and map layer."""
@@ -195,7 +199,7 @@ class IdentifyTool(QgsMapToolIdentify):
         self.feature_type = feature_type
         self.feature_name = feature_name
         if self.feature_id:
-            self.ref_name.setText(
-                f"\u200F{self.feature_type} \u200F{self.feature_name}"
-            )  # \u200F = RTL mark
+            layer = self.get_active_layer()
+            layer_name = layer.name() if layer else ''
+            self.ref_selected.emit(self.feature_id, layer_name)
             self.canvas.unsetMapTool(self)

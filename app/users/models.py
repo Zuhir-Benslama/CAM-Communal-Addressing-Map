@@ -1,6 +1,8 @@
 """User model for authentication and session management."""
+from datetime import datetime
 import uuid
-from sqlalchemy import Column, Integer, String, Boolean, Text
+
+from sqlalchemy import Boolean, Column, Integer, String, Text
 from sqlalchemy.orm import Session
 
 from ..core.base import Base, TimestampMixin
@@ -25,7 +27,9 @@ class User(Base, TimestampMixin):
     def to_dict(self) -> dict:
         """Serialize user columns to a plain dict for JWT encoding."""
         return {
-            column.name: getattr(self, column.name)
+            column.name: str(getattr(self, column.name))
+            if isinstance(getattr(self, column.name), datetime)
+            else getattr(self, column.name)
             for column in self.__table__.columns
         }
 

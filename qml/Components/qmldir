@@ -1,0 +1,6 @@
+module Components
+StyledGroupBox 1.0 StyledGroupBox.qml
+StyledComboBox 1.0 StyledComboBox.qml
+StyledTextField 1.0 StyledTextField.qml
+StyledButton 1.0 StyledButton.qml
+StyledLabel 1.0 StyledLabel.qml

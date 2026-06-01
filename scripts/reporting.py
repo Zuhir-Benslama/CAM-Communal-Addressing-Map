@@ -14,9 +14,17 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from py3o.template import Template
 
 from app.shared.constants import (
-    TEMPLATE_REP, TEMPLATE_CMD, TMP_JSON, MAP_PNG,
-    MAP_A3_TEMPLATE, MAP_A0_TEMPLATE, NORTH_ARROW_SVG, SYMBOLS_SVG,
-    SCALE_BAR_SVG, CHART_SVG, SITUATION_PNG,
+    CHART_SVG,
+    MAP_A0_TEMPLATE,
+    MAP_A3_TEMPLATE,
+    MAP_PNG,
+    NORTH_ARROW_SVG,
+    SCALE_BAR_SVG,
+    SITUATION_PNG,
+    SYMBOLS_SVG,
+    TEMPLATE_CMD,
+    TEMPLATE_REP,
+    TMP_JSON,
 )
 
 logger = logging.getLogger(__name__)
@@ -33,7 +41,7 @@ def generate_report() -> None:
     """Generate a report ODT from template."""
     template_path = TEMPLATE_REP
 
-    with open(TMP_JSON, 'r', encoding='utf-8') as file:
+    with open(TMP_JSON, encoding='utf-8') as file:
         data_dict = json.load(file)
         t = Template(
             template_path,
@@ -49,7 +57,7 @@ def generate_order_form() -> None:
     """Generate an order form ODT from template."""
     template_path = TEMPLATE_CMD
 
-    with open(TMP_JSON, 'r', encoding='utf-8') as file:
+    with open(TMP_JSON, encoding='utf-8') as file:
         data_dict = json.load(file)
         t = Template(
             template_path,
@@ -83,7 +91,7 @@ def map_a3() -> None:
     """Generate A3 map and convert to PDF."""
     template_path = MAP_A3_TEMPLATE
 
-    with open(TMP_JSON, 'r', encoding='utf-8') as file:
+    with open(TMP_JSON, encoding='utf-8') as file:
         data_dict = json.load(file)
         output_dir = data_dict.get('output_dir', '.')
         num_plan = data_dict.get('num_plan', 'map')
@@ -141,7 +149,7 @@ def map_a4() -> None:
     """Generate A4 map and convert to PDF."""
     template_path = MAP_A0_TEMPLATE
 
-    with open(TMP_JSON, 'r', encoding='utf-8') as file:
+    with open(TMP_JSON, encoding='utf-8') as file:
         data_dict = json.load(file)
         output_dir = data_dict.get('output_dir', '.')
         num_plan = data_dict.get('num_plan', 'map')

@@ -4,19 +4,18 @@ from __future__ import annotations
 
 import logging
 
-import matplotlib.pyplot as plt
 import arabic_reshaper
+import matplotlib.pyplot as plt
 from bidi.algorithm import get_display
 from matplotlib.ticker import MaxNLocator
+from qgis.core import QgsProject
 from sqlalchemy import func
 
-from qgis.core import QgsProject
-
 from ..app.core.database import get_session
-from ..app.orders.models import PanelSign, Numbering
-from ..constants import LAYER_PANELS, LAYER_NUMBERING, CHART_SVG
+from ..app.orders.models import Numbering, PanelSign
+from ..constants import CHART_SVG, LAYER_NUMBERING, LAYER_PANELS
 from ..layer.refresh import refresh_all_layers
-from ._protocols import HasTranslation, HasChartContext
+from ._protocols import HasChartContext, HasTranslation
 
 logger = logging.getLogger(__name__)
 
@@ -112,7 +111,9 @@ class ChartMixin:
 
     def get_zone_chart(self: HasTranslation, wilaya_number: int) -> None:
         """Generate a chart for zone type distribution in a wilaya."""
-        from ..app.orders.repository import get_zone_distribution  # pylint: disable=import-outside-toplevel
+        from ..app.orders.repository import (
+            get_zone_distribution,  # pylint: disable=import-outside-toplevel
+        )
         results = get_zone_distribution(wilaya_number)
         if not results:
             logger.warning(

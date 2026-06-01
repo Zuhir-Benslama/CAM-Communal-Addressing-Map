@@ -5,21 +5,34 @@ from __future__ import annotations
 import json
 import logging
 import subprocess
-
 from datetime import datetime
+
 from qgis.PyQt.QtWidgets import QMessageBox
 
-from ..constants import (
-    get_qgis_python, _SUBPROCESS_FLAGS, get_theme_qss, current_theme,
-    REPORTING_SCRIPT, TMP_JSON,
-    NUM_PLANNED, PAN_MOUNTED, PAN_PLANNED, PAN_TO_MOVE, PAN_TO_FIX,
-    LAYER_SUBDIVISIONS, LAYER_FACILITIES, LAYER_ROADS,
-)
 from ..app.orders.repository import (
-    count_numberings, count_panels,
-    query_missing_pan, query_missing_num, query_missing_rep,
+    count_numberings,
+    count_panels,
+    query_missing_num,
+    query_missing_pan,
+    query_missing_rep,
 )
-from ._protocols import HasTranslation, HasReportContext
+from ..constants import (
+    _SUBPROCESS_FLAGS,
+    LAYER_FACILITIES,
+    LAYER_ROADS,
+    LAYER_SUBDIVISIONS,
+    NUM_PLANNED,
+    PAN_MOUNTED,
+    PAN_PLANNED,
+    PAN_TO_FIX,
+    PAN_TO_MOVE,
+    REPORTING_SCRIPT,
+    TMP_JSON,
+    current_theme,
+    get_qgis_python,
+    get_theme_qss,
+)
+from ._protocols import HasReportContext, HasTranslation
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +48,7 @@ class ReportMixin:
         try:
             with open(TMP_JSON, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
-        except Exception:
+        except OSError:
             logger.exception("Error saving JSON file")
             return False
 
@@ -57,7 +70,7 @@ class ReportMixin:
             msg.setWindowTitle(self._tr("Success"))
             msg.setStyleSheet(get_theme_qss(current_theme()))
             msg.setInformativeText(success_msg)
-            msg.exec_()
+            msg.exec()
             return True
         except subprocess.CalledProcessError as e:
             logger.error("Subprocess failed with error: %s", e)
@@ -67,16 +80,16 @@ class ReportMixin:
             msg.setStyleSheet(get_theme_qss(current_theme()))
             msg.setText(fail_msg)
             msg.setInformativeText(str(e))
-            msg.exec_()
+            msg.exec()
             return False
-        except Exception:
+        except OSError:
             logger.exception("Unexpected error")
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
             msg.setWindowTitle(self._tr("Error"))
             msg.setStyleSheet(get_theme_qss(current_theme()))
             msg.setText(fail_msg)
-            msg.exec_()
+            msg.exec()
             return False
 
     def generate_report(self: HasReportContext) -> bool:

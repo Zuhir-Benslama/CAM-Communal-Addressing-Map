@@ -110,10 +110,21 @@
     "en": "Activity practiced"
   },
   "groupBox_8_entrance": {
-    "ar": "النشاط المرافق بالمدخل",
-    "fr": "Activité accompagnant l'entrée",
-    "en": "Activity accompanying entrance"
+    "ar": "النشاط",
+    "fr": "Activité",
+    "en": "Activity"
   },
+  "groupBox_reference": {
+    "ar": "المرجع",
+    "fr": "Référence",
+    "en": "Reference"
+  },
+  "groupBox_number": {
+    "ar": "الرقم",
+    "fr": "Numéro",
+    "en": "Number"
+  },
+
   "groupBox_add_types": {
     "ar": "إضافة أنواع جديدة",
     "fr": "Ajouter de nouveaux types",

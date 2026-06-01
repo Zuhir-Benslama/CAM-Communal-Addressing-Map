@@ -1,6 +1,6 @@
 """Shared constants: paths, layer names, enums, and settings keys."""
-from enum import Enum
 import os
+from enum import Enum
 
 PLUGIN_DIR = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -106,8 +106,12 @@ class Theme(str, Enum):
 
     @classmethod
     def _missing_(cls, value):
-        """Handle backward-compat lookup of old Arabic theme values."""
-        return cls.LIGHT if value in ('Light', 'فاتح', 'داكن') else cls.DARK
+        """Handle backward-compat lookup of legacy theme values."""
+        if value in ('Light', 'light', 'فاتح'):
+            return cls.LIGHT
+        if value in ('Dark', 'dark', 'داكن'):
+            return cls.DARK
+        return None
 
 
 PAN_MOUNTED = PanelStatus.MOUNTED

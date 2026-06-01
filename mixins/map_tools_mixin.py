@@ -2,19 +2,20 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
-from qgis.PyQt.QtWidgets import QMessageBox
-from qgis.PyQt.QtCore import Qt
 from qgis.core import QgsProject
+from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtWidgets import QMessageBox
 
-from ..gui.measure_tool import MeasureTool
-from ..gui.identify_tool import IdentifyTool
 from ..constants import LAYER_PANELS
+from ..gui.identify_tool import IdentifyTool
+from ..gui.measure_tool import MeasureTool
 from ._protocols import (
-    HasIface, HasMapToolsContext, HasFullMapToolsContext,
-    HasSelectContext, HasRefSelectContext,
+    HasFullMapToolsContext,
+    HasIface,
+    HasMapToolsContext,
+    HasRefSelectContext,
     HasRefWidgets,
+    HasSelectContext,
 )
 
 
@@ -22,9 +23,9 @@ class MapToolsMixin:
     """Mixin providing map tool activation for measurement and feature
     selection."""
 
-    identify_tool: Optional[IdentifyTool]
-    ref_identify_tool: Optional[IdentifyTool]
-    measure_tool: Optional[MeasureTool]
+    identify_tool: IdentifyTool | None
+    ref_identify_tool: IdentifyTool | None
+    measure_tool: MeasureTool | None
 
     def _selection_handler(self: HasMapToolsContext, layer=None) -> None:
         """Activate identify tool for feature selection on the active layer."""

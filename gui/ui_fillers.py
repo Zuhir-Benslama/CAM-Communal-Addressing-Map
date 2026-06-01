@@ -1,27 +1,36 @@
 """ComboBox population functions for reference data."""
-# mypy: disable-error-code="assignment,union-attr"
 import json
 import logging
 import os
 
-from qgis.PyQt.QtWidgets import QCompleter, QComboBox
+from qgis.PyQt.QtWidgets import QComboBox, QCompleter
 
-from ..scripts.lookup_data import (
-    road_types, zone_types, subdivision_types, mounting_statuses,
-    numbering_states, org_categories, org_types_for_category,
-    org_subcategories, activity_categories, activity_types,
-    activity_types_for_category, activity_subcategories, locale_label,
-    communes_list, communes_data, wilayas_data, dairas_data,
-    _commune_code_key,
-)
+from ..app.shared.constants import LAYER_ROADS, LAYER_SUBDIVISIONS, LAYER_ZONES
 from ..app.users.repository import qgis_config
 from ..constants import (
     NO_ACTIVITY,
     current_locale,
 )
 from ..i18n import tr as _i18n_tr
-from ..scripts.lookup_data import clear_cache
-from ..app.shared.constants import LAYER_ZONES, LAYER_ROADS, LAYER_SUBDIVISIONS
+from ..scripts.lookup_data import (
+    activity_categories,
+    activity_subcategories,
+    activity_types,
+    activity_types_for_category,
+    clear_cache,
+    communes_list,
+    dairas_data,
+    locale_label,
+    mounting_statuses,
+    numbering_states,
+    org_categories,
+    org_subcategories,
+    org_types_for_category,
+    road_types,
+    subdivision_types,
+    wilayas_data,
+    zone_types,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -294,7 +303,7 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
         entry = {"pk": type_name}
 
     try:
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, encoding='utf-8') as f:
             data = json.load(f)
         data.append(entry)
         with open(filepath, 'w', encoding='utf-8') as f:
@@ -304,3 +313,85 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
     except (OSError, json.JSONDecodeError):
         logger.exception("Failed to save new type to %s", filepath)
         return False
+
+
+# ---------------------------------------------------------------------------
+# QML option getters (return [{text, value}, ...] lists)
+# ---------------------------------------------------------------------------
+
+def _json_to_options(data: list, loc: str) -> list[dict]:
+    """Convert a list of JSON entries to QML-friendly option list."""
+    return [
+        {'text': locale_label(entry, loc), 'value': entry.get('pk', '')}
+        for entry in data
+    ]
+
+
+def get_zone_type_options(loc: str) -> list[dict]:
+    return _json_to_options(zone_types(), loc)
+
+
+def get_road_type_options(loc: str) -> list[dict]:
+    return _json_to_options(road_types(), loc)
+
+
+def get_subdivision_type_options(loc: str) -> list[dict]:
+    return _json_to_options(subdivision_types(), loc)
+
+
+def get_numbering_state_options(loc: str) -> list[dict]:
+    return _json_to_options(numbering_states(), loc)
+
+
+def get_mounting_status_options(loc: str) -> list[dict]:
+    return _json_to_options(mounting_statuses(), loc)
+
+
+def get_org_category_options(loc: str) -> list[dict]:
+    return [
+        {'text': display, 'value': value}
+        for display, value in org_categories(loc)
+    ]
+
+
+def get_org_type_options(loc: str, cat_value: str = '') -> list[dict]:
+    if not cat_value:
+        return []
+    return [
+        {'text': display, 'value': value}
+        for display, value in org_types_for_category(cat_value, loc)
+    ]
+
+
+def get_activity_category_options(loc: str) -> list[dict]:
+    options = [{'text': _i18n_tr(NO_ACTIVITY, loc), 'value': NO_ACTIVITY}]
+    options += [
+        {'text': display, 'value': value}
+        for display, value in activity_categories(loc)
+    ]
+    return options
+
+
+def get_activity_type_options(loc: str, cat_value: str = '') -> list[dict]:
+    if not cat_value or cat_value == NO_ACTIVITY:
+        return [{'text': _i18n_tr(NO_ACTIVITY, loc), 'value': NO_ACTIVITY}]
+    return [
+        {'text': display, 'value': value}
+        for display, value in activity_types_for_category(cat_value, loc)
+    ]
+
+
+def get_road_reference_options(loc: str) -> list[dict]:
+    data_list = qgis_config().get('refs')
+    return [
+        {'text': _i18n_tr(cfg.get('label', ''), loc), 'value': cfg.get('label', '')}
+        for cfg in data_list
+    ]
+
+
+def get_panel_reference_options(loc: str) -> list[dict]:
+    data_list = qgis_config().get('refs2')
+    return [
+        {'text': _i18n_tr(cfg.get('label', ''), loc), 'value': cfg.get('label', '')}
+        for cfg in data_list
+    ]

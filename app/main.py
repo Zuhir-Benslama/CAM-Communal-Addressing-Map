@@ -1,20 +1,23 @@
 """Main plugin entry point for the RNA QGIS plugin."""
-import os
 import logging
-from typing import Any, List, Optional
+import os
+from typing import Any
 
-from qgis.PyQt.QtCore import QSettings, QCoreApplication, Qt, QTimer
-from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QDockWidget, QMessageBox
 from qgis.core import QgsApplication
 from qgis.gui import QgisInterface
+from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTimer
+from qgis.PyQt.QtGui import QAction, QIcon
+from qgis.PyQt.QtWidgets import QDockWidget, QMessageBox
 
 from ..gui.main_dialog import MainDialog
+from ..scripts.lookup_data import get_string
 from .shared.constants import (
-    ICON_PNG, SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
+    ICON_PNG,
+    SETTINGS_APP,
+    SETTINGS_KEY_LOCALE,
+    SETTINGS_ORG,
 )
 from .shared.utils import current_locale
-from ..scripts.lookup_data import get_string
 
 logger = logging.getLogger(__name__)
 
@@ -45,9 +48,9 @@ class RNA:
             locale_val = QSettings().value('locale/userLocale')
             self._locale_code = locale_val[0:2] if locale_val else 'en'
 
-        self.actions: List[QAction] = []
+        self.actions: list[QAction] = []
         self.menu: str = self.tr('&RNA')
-        self.first_start: Optional[bool] = None
+        self.first_start: bool | None = None
 
     def tr(self, message) -> str:
         """Translate *message* via Qt's internationalisation framework."""

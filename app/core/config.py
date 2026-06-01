@@ -1,9 +1,9 @@
 """QSS theme configuration and mod_spatialite library discovery."""
+import logging
 import os
 import subprocess
-import logging
 
-from ..shared.constants import THEME_DARK, THEME_LIGHT, PLUGIN_DIR
+from ..shared.constants import PLUGIN_DIR, THEME_DARK, THEME_LIGHT, Theme
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +39,7 @@ def _load_qss_template(filename: str) -> str:
     """Load a QSS template and replace {{VAR}} with color values."""
     path = os.path.join(_TEMPLATE_DIR, filename)
     try:
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path, encoding='utf-8') as f:
             template = f.read()
         for key, value in _COLORS.items():
             template = template.replace('{{' + key + '}}', value)
@@ -64,14 +64,38 @@ THEMES = {
 DEFAULT_THEME = THEME_DARK
 
 
-def get_theme_qss(theme_name: str) -> str:
+def normalize_theme(theme_name: Theme | str | None) -> Theme:
+    """Map persisted or legacy theme values to a :class:`Theme` enum."""
+    if isinstance(theme_name, Theme):
+        return theme_name
+    if theme_name is None:
+        return DEFAULT_THEME
+    if isinstance(theme_name, str):
+        key = theme_name.strip()
+        if not key:
+            return DEFAULT_THEME
+        lowered = key.lower()
+        if lowered in ('light', 'فاتح'):
+            return THEME_LIGHT
+        if lowered in ('dark', 'داكن'):
+            return THEME_DARK
+        try:
+            return Theme(key)
+        except ValueError:
+            pass
+    return DEFAULT_THEME
+
+
+def get_theme_qss(theme_name: Theme | str | None) -> str:
     """Return the main QSS stylesheet for *theme_name*."""
-    return THEMES.get(theme_name, THEMES[DEFAULT_THEME])[0]  # type: ignore
+    theme = normalize_theme(theme_name)
+    return THEMES.get(theme, THEMES[DEFAULT_THEME])[0]  # type: ignore
 
 
-def get_dialog_qss(theme_name: str) -> str:
+def get_dialog_qss(theme_name: Theme | str | None) -> str:
     """Return the dialog QSS stylesheet for *theme_name*."""
-    return THEMES.get(theme_name, THEMES[DEFAULT_THEME])[1]  # type: ignore
+    theme = normalize_theme(theme_name)
+    return THEMES.get(theme, THEMES[DEFAULT_THEME])[1]  # type: ignore
 
 
 def _find_in_candidate_paths(candidates: list[str]) -> str | None:

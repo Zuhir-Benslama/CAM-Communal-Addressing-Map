@@ -1,15 +1,16 @@
 """Database engine and session management for SQLite/SpatiaLite."""
 import logging
 import os
+from collections.abc import Iterator
 from contextlib import contextmanager
-from typing import Any, Iterator
+from typing import Any
 
 from sqlalchemy import create_engine, event, text
-from sqlalchemy.exc import SQLAlchemyError, OperationalError
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.exc import OperationalError, SQLAlchemyError
+from sqlalchemy.orm import Session, sessionmaker
 
-from ..shared.constants import DATABASE_FILE, VIEWS_SQL
 from ..core.config import find_mod_spatialite_dll
+from ..shared.constants import DATABASE_FILE, VIEWS_SQL
 from .base import Base
 
 logger = logging.getLogger(__name__)
@@ -42,7 +43,7 @@ class ConnectionPool:
                 dbapi_conn.enable_load_extension(True)
                 try:
                     dbapi_conn.load_extension(dll)
-                except Exception as exc:
+                except Exception as exc:  # pylint: disable=W0718
                     logger.debug(
                         "SpatiaLite load_extension failed, trying SQL fallback",
                         exc_info=True,
@@ -299,7 +300,7 @@ def _create_views(engine: Any) -> None:
         return
     with engine.connect() as conn:
         try:
-            with open(VIEWS_SQL, 'r', encoding='utf-8') as f:
+            with open(VIEWS_SQL, encoding='utf-8') as f:
                 sql = f.read()
             for statement in sql.split(';'):
                 stmt = statement.strip()
@@ -375,9 +376,10 @@ def _migrate_users_from_auth(engine: Any) -> None:
                         "(id, username, password, active, wilaya_code, commune_code, "
                         "api_key, email, phone, first_name, last_name, "
                         "created_at, updated_at) "
-                        "SELECT id, username, password, active, wilaya_code, commune_code, "
-                        "api_key, email, phone, first_name, last_name, "
-                        "created_at, updated_at FROM auth_db.user"
+                        "SELECT id, username, password, active, "
+                        "wilaya_code, commune_code, api_key, email, phone, "
+                        "first_name, last_name, created_at, updated_at "
+                        "FROM auth_db.user"
                     )
                 )
                 conn.commit()
@@ -386,7 +388,7 @@ def _migrate_users_from_auth(engine: Any) -> None:
                     missing,
                 )
             conn.execute(text("DETACH DATABASE auth_db"))
-    except Exception:
+    except (SQLAlchemyError, OSError):
         logger.warning(
             "Failed to merge users from auth.sqlite", exc_info=True,
         )

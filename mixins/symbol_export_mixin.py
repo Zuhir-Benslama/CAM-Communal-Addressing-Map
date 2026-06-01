@@ -4,22 +4,42 @@ from __future__ import annotations
 
 import logging
 
-from qgis.PyQt.QtCore import QRectF, Qt
-from qgis.PyQt.QtGui import QFont, QColor
 from qgis.core import (
-    QgsProject, QgsPrintLayout, QgsLayoutItemMap, QgsLayoutItemLegend,
-    QgsLayoutExporter, QgsLayoutSize, QgsUnitTypes, QgsLegendStyle,
-    QgsTextFormat, QgsLayout, QgsLayoutItemPicture, QgsLayoutItemPage,
-    QgsLayoutPoint, QgsLayoutItemScaleBar, QgsApplication,
-    QgsBasicNumericFormat, QgsScaleBarSettings, QgsFillSymbol,
+    QgsApplication,
+    QgsBasicNumericFormat,
+    QgsFillSymbol,
+    QgsLayout,
+    QgsLayoutExporter,
+    QgsLayoutItemLegend,
+    QgsLayoutItemMap,
+    QgsLayoutItemPage,
+    QgsLayoutItemPicture,
+    QgsLayoutItemScaleBar,
+    QgsLayoutPoint,
+    QgsLayoutSize,
+    QgsLegendStyle,
+    QgsPrintLayout,
+    QgsProject,
+    QgsScaleBarSettings,
+    QgsTextFormat,
+    QgsUnitTypes,
 )
+from qgis.PyQt.QtCore import QRectF, Qt
+from qgis.PyQt.QtGui import QColor, QFont
+
 from ..constants import (
-    LAYER_MUNICIPALITY, LAYER_NAMES, SYMBOLS_SVG, SITUATION_PNG,
-    NORTH_ARROW_SVG, SCALE_BAR_SVG,
+    LAYER_MUNICIPALITY,
+    LAYER_NAMES,
+    NORTH_ARROW_SVG,
+    SCALE_BAR_SVG,
+    SITUATION_PNG,
+    SYMBOLS_SVG,
 )
 from ._protocols import (
     HasIface,
-    HasSymbolPlanContext, HasSymbolMapContext, HasScaleContext,
+    HasScaleContext,
+    HasSymbolMapContext,
+    HasSymbolPlanContext,
 )
 
 logger = logging.getLogger(__name__)
@@ -55,7 +75,7 @@ class SymbolExportMixin:
             s.setTextFormat(text_format)
             s.setMargin(QgsLegendStyle.Top, 4)
             s.setMargin(QgsLegendStyle.Bottom, 4)
-            s.setAlignment(Qt.AlignHCenter)
+            s.setAlignment(Qt.AlignmentFlag.AlignHCenter)
             legend.setStyle(style, s)
 
         symbol_style = legend.style(QgsLegendStyle.Symbol)

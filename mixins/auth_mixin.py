@@ -4,22 +4,27 @@ from __future__ import annotations
 
 import logging
 
-from qgis.PyQt.QtWidgets import QMessageBox, QFileDialog, QWidget
 from qgis.core import QgsProject, QgsRasterLayer
+from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox, QWidget
 
-from ..app.users.service import sign_up, sign_in, logout
-from ..app.users.repository import get_current_user
-from ..layer.utils import init_allowed_zone
-from ..layer.refresh import refresh_all_layers
-from ..app.users.repository import qgis_config
-from ..constants import validate_text, current_theme, get_dialog_qss
+from ..app.users.repository import get_current_user, qgis_config
+from ..app.users.service import logout, sign_in, sign_up
+from ..constants import current_theme, get_dialog_qss, validate_text
 from ..gui.ui_fillers import (
-    fill_commune_of_wilaya, fill_org_type, fill_activity_type,
+    fill_activity_type,
+    fill_commune_of_wilaya,
+    fill_org_type,
 )
+from ..layer.refresh import refresh_all_layers
+from ..layer.utils import init_allowed_zone
 from ._protocols import (
-    HasTranslation, HasUiWidgets,
-    HasAuthContext, HasFullAuthContext,
-    HasMapOptionWidgets, HasLocationWidgets, HasCategoryWidgets,
+    HasAuthContext,
+    HasCategoryWidgets,
+    HasFullAuthContext,
+    HasLocationWidgets,
+    HasMapOptionWidgets,
+    HasNavWidgets,
+    HasTranslation,
 )
 
 logger = logging.getLogger(__name__)
@@ -102,6 +107,9 @@ class AuthMixin:
         """Add the selected raster or WMS map layer to the project."""
         selected_label = self.map_options.currentText()
         selected_value = self.map_options.currentData()
+        logger.info("add_map_layer: label=%r value=%r items=%d index=%d",
+                     selected_label, selected_value,
+                     self.map_options.count(), self.map_options.currentIndex())
 
         if selected_value and selected_label:
             if selected_label.startswith('Satellite View '):
@@ -130,7 +138,7 @@ class AuthMixin:
                 self.rast = selected_label
                 dialog.setStyleSheet(get_dialog_qss(current_theme()))
 
-                if dialog.exec_():
+                if dialog.exec():
                     selected_file = dialog.selectedFiles()[0]
                     logger.info("Selected file: %s", selected_file)
                     if selected_file:

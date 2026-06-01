@@ -1,5 +1,4 @@
 """Authentication service: sign-up, sign-in, logout, and session management."""
-# mypy: disable-error-code="assignment,union-attr,arg-type,return-value"
 import json
 import logging
 import os
@@ -8,19 +7,38 @@ import tempfile
 import jwt
 import toml
 from marshmallow import ValidationError
+from qgis.core import QgsMessageLog, QgsProject
 
-from qgis.core import QgsProject, QgsMessageLog
-
-from sqlalchemy.exc import SQLAlchemyError
-
-from ..core.security import get_jwt_secret, hash_password, verify_password
 from ..core.database import get_session
+from ..core.security import get_jwt_secret, hash_password, verify_password
+from ..shared.constants import COMMUNES_JSON, COOKIE_FILE, DAIRA_JSON
 from ..users.models import User
-from ..users.schemas import AuthSchema, SignupSchema
 from ..users.repository import create_cookie
-from ..shared.constants import COOKIE_FILE, COMMUNES_JSON, DAIRA_JSON
+from ..users.schemas import AuthSchema, SignupSchema
 
 logger = logging.getLogger(__name__)
+
+
+def _lookup_wilaya_code(commune_code: str) -> int | None:
+    """Resolve wilaya_code from commune_code using communes/daira JSON."""
+    try:
+        with open(COMMUNES_JSON, encoding='utf-8') as f:
+            communes = json.load(f)
+        with open(DAIRA_JSON, encoding='utf-8') as f:
+            dairas = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+    code = int(commune_code) if commune_code else None
+    if code is None:
+        return None
+    for c in communes.values():
+        v = c.get('commune_code')
+        if v is not None and int(v) == code:
+            daira = dairas.get(str(c.get('daira_id')))
+            if daira:
+                return int(daira.get('wilaya_id', 0))
+            break
+    return None
 
 
 def sign_up(
@@ -40,24 +58,7 @@ def sign_up(
     schema = SignupSchema()
     try:
         schema.load(signup_data)
-        # Look up wilaya_code from communes.json + daira.json
-        wilaya_code = None
-        try:
-            with open(COMMUNES_JSON, 'r', encoding='utf-8') as f:
-                communes = json.load(f)
-            with open(DAIRA_JSON, 'r', encoding='utf-8') as f:
-                dairas = json.load(f)
-            code = int(commune_code) if commune_code else None
-            if code is not None:
-                for c in communes.values():
-                    v = c.get('commune_code')
-                    if v is not None and int(v) == code:
-                        daira = dairas.get(str(c.get('daira_id')))
-                        if daira:
-                            wilaya_code = int(daira.get('wilaya_id', 0))
-                        break
-        except (FileNotFoundError, json.JSONDecodeError):
-            pass
+        wilaya_code = _lookup_wilaya_code(commune_code)
 
         session = get_session()
         try:
@@ -69,7 +70,7 @@ def sign_up(
             )
             session.add(user)
             session.commit()
-        except Exception:
+        except Exception:  # pylint: disable=W0718
             session.rollback()
             raise
         finally:
@@ -107,7 +108,7 @@ def sign_in(
             session.commit()
             create_cookie(token, user.id)
             return True, user.username, None
-        except Exception as e:
+        except Exception as e:  # pylint: disable=W0718
             session.rollback()
             QgsMessageLog.logMessage(
                 f"sign_in error: {e}", 'RNA', level=2
@@ -137,7 +138,7 @@ def logout(iface, dlg) -> None:
     """Clear session cookie, revoke API key, remove layers, and close dialog."""
     filename = COOKIE_FILE
 
-    with open(filename, 'r', encoding='utf-8') as f:
+    with open(filename, encoding='utf-8') as f:
         cookie_data = toml.load(f)
     cookie = cookie_data.get('Session', {}).get('cookie', None)
     uid = cookie_data.get('Session', {}).get('uid', None)

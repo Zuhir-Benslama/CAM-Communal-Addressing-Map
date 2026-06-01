@@ -3,16 +3,21 @@ import logging
 from typing import Any
 
 import geopandas as gpd
-from sqlalchemy import text
 from geoalchemy2 import Geometry
 from geoalchemy2.elements import WKTElement
 from geoalchemy2.shape import to_shape
+from sqlalchemy import text
 
 from ..core.database import get_session
 from ..orders.models import (
-    Road, Organization, Subdivision, Zone, PanelSign, Numbering,
+    Numbering,
+    Organization,
+    PanelSign,
+    Road,
+    Subdivision,
+    Zone,
 )
-from ..shared.constants import SRID, DEFAULT_PANEL_DIM, PANEL_TYPE_MAP
+from ..shared.constants import DEFAULT_PANEL_DIM, PANEL_TYPE_MAP, SRID
 
 logger = logging.getLogger(__name__)
 
@@ -72,11 +77,11 @@ def export_model(model_name: str) -> None:
 def add_panel_sign(
     *, geometry_wkt, mount_status,
     road_id=None, subdivision_id=None, organization_id=None,
-    dimensions=None, id=None,
+    dimensions=None, record_id=None,
 ):
     """Create and persist a new PanelSign entity."""
     instance = PanelSign(
-        id=id,
+        id=record_id,
         status=mount_status,
         road_id=road_id, subdivision_id=subdivision_id,
         organization_id=organization_id,
@@ -87,12 +92,12 @@ def add_panel_sign(
 
 
 def add_organization(
-    *, geometry_wkt, org_name, org_type, org_cat, id=None,
+    *, geometry_wkt, org_name, org_type, org_cat, record_id=None,
     name_fr=None, name_en=None,
 ):
     """Create and persist a new Organization entity."""
     instance = Organization(
-        id=id,
+        id=record_id,
         type=org_type, category=org_cat, name=org_name,
         name_fr=name_fr, name_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
@@ -101,12 +106,12 @@ def add_organization(
 
 
 def add_road(
-    *, geometry_wkt, road_name, type_road, road_decision, id=None,
+    *, geometry_wkt, road_name, type_road, road_decision, record_id=None,
     name_fr=None, name_en=None,
 ):
     """Create and persist a new Road entity."""
     instance = Road(
-        id=id,
+        id=record_id,
         type=type_road, name=road_name, decision_number=road_decision,
         name_fr=name_fr, name_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
@@ -117,11 +122,11 @@ def add_road(
 def add_numbering(
     *, geometry_wkt, value,
     road_id=None, subdivision_id=None, repetition=None, state=None,
-    activity_cat=None, activity_type=None, id=None,
+    activity_cat=None, activity_type=None, record_id=None,
 ):
     """Create and persist a new Numbering entity."""
     instance = Numbering(
-        id=id,
+        id=record_id,
         value=value, road_id=road_id, subdivision_id=subdivision_id,
         repetition=repetition, state=state,
         activity_cat=activity_cat, activity_type=activity_type,
@@ -131,12 +136,12 @@ def add_numbering(
 
 
 def add_subdivision(
-    *, geometry_wkt, subdivision_type, name, id=None,
+    *, geometry_wkt, subdivision_type, name, record_id=None,
     name_fr=None, name_en=None,
 ):
     """Create and persist a new Subdivision entity."""
     instance = Subdivision(
-        id=id,
+        id=record_id,
         name=name, type=subdivision_type,
         name_fr=name_fr, name_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
@@ -145,12 +150,12 @@ def add_subdivision(
 
 
 def add_zone(
-    *, geometry_wkt, zone_type, name, id=None,
+    *, geometry_wkt, zone_type, name, record_id=None,
     name_fr=None, name_en=None,
 ):
     """Create and persist a new Zone entity."""
     instance = Zone(
-        id=id,
+        id=record_id,
         name=name, type=zone_type,
         name_fr=name_fr, name_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
@@ -254,7 +259,6 @@ def get_zone_distribution(wilaya_number: int) -> list:
     Filters zones by users whose wilaya_code matches. Returns list of
     (type_name, count) tuples for chart rendering.
     """
-    from ..users.models import User
     session = get_session()
     try:
         result = session.execute(

@@ -1,4 +1,3 @@
-# coding=utf-8
 """Tests QGIS plugin init."""
 
 __author__ = 'Tim Sutton <tim@linfiniti.com>'
@@ -8,10 +7,10 @@ __license__ = "GPL"
 __copyright__ = 'Copyright 2012, Australia Indonesia Facility for '
 __copyright__ += 'Disaster Reduction'
 
+import configparser  # noqa: E402
+import logging  # noqa: E402
 import os  # noqa: E402
 import unittest  # noqa: E402
-import logging  # noqa: E402
-import configparser  # noqa: E402
 
 LOGGER = logging.getLogger('QGIS')
 

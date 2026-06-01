@@ -8,7 +8,7 @@ from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
 
-class TimestampMixin:
+class TimestampMixin:  # pylint: disable=too-few-public-methods
     """Mixin that adds ``created_at`` / ``updated_at`` datetime columns."""
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(

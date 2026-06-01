@@ -48,7 +48,7 @@ UI_FILES =
 
 EXTRAS = metadata.txt
 
-EXTRA_DIRS = mixins gui layer scripts resources templates data icons i18n style template_data app
+EXTRA_DIRS = mixins gui layer scripts resources templates data icons i18n style template_data app qml
 
 COMPILED_RESOURCE_FILES = resources.py
 

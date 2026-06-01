@@ -3,15 +3,21 @@ import logging
 import os
 import shutil
 import subprocess
+from collections.abc import Mapping
 from types import MappingProxyType
-from typing import List, Mapping, Optional, Tuple, TypeVar
+from typing import TypeVar
 
 from qgis.PyQt.QtCore import QSettings
 from sqlalchemy import inspect
 
 from ..shared.constants import (
-    SETTINGS_ORG, SETTINGS_APP, SETTINGS_KEY_LOCALE,
-    SETTINGS_KEY_THEME, THEME_DARK, THEME_LIGHT,
+    SETTINGS_APP,
+    SETTINGS_KEY_LOCALE,
+    SETTINGS_KEY_THEME,
+    SETTINGS_ORG,
+    THEME_DARK,
+    THEME_LIGHT,
+    Theme,
 )
 
 logger = logging.getLogger(__name__)
@@ -19,7 +25,7 @@ logger = logging.getLogger(__name__)
 T = TypeVar('T')
 
 
-def ensure(value: Optional[T], message: str = "") -> T:
+def ensure(value: T | None, message: str = "") -> T:
     """Assert value is not None, returning it or raising ValueError."""
     if value is None:
         raise ValueError(message or "Expected non-None value")
@@ -55,20 +61,19 @@ def locale_value(instance, field_base: str, locale: str = '') -> str:
     return value if value else (getattr(instance, field_base, '') or '')
 
 
-def current_theme() -> str:
-    """Return the current theme name ('dark' or 'light')."""
+def current_theme() -> Theme:
+    """Return the current theme (:data:`THEME_DARK` or :data:`THEME_LIGHT`)."""
+    from ..core.config import normalize_theme
+
     settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
     value = settings.value(SETTINGS_KEY_THEME, THEME_DARK)
-    # Backward compat: old Arabic values were changed to English
-    theme_map = {'فاتح': THEME_LIGHT, 'داكن': THEME_DARK}
-    migrated = theme_map.get(value)
-    if migrated is not None:
-        settings.setValue(SETTINGS_KEY_THEME, migrated)
-        return migrated
-    return value
+    theme = normalize_theme(value)
+    if theme is not value:
+        settings.setValue(SETTINGS_KEY_THEME, theme)
+    return theme
 
 
-def get_qgis_python() -> Optional[str]:
+def get_qgis_python() -> str | None:
     """Return the path to a suitable QGIS Python interpreter."""
     python = os.getenv('PYTHON_QGIS_BAT')
     if python:
@@ -88,7 +93,7 @@ def get_qgis_python() -> Optional[str]:
 
 def get_all_fields_and_labels(
     model_class, property_labels=None, locale=''
-) -> Tuple[List[str], List[str]]:
+) -> tuple[list[str], list[str]]:
     """Return column names and their locale-aware labels for a model class."""
     if not locale:
         locale = current_locale()

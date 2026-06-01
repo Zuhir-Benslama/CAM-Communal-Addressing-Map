@@ -3,13 +3,18 @@ import json
 import logging
 import os
 import sqlite3
-from typing import Any, Optional
+from typing import Any
 
 import toml
 
-from geoalchemy2 import WKTElement
-from ..shared.constants import COOKIE_FILE, QGIS_CONFIG_FILE, COMMUNES_JSON, COMMUNES_DB, WILAYAS_JSON, DAIRA_JSON
 from ..core.database import get_session
+from ..shared.constants import (
+    COMMUNES_DB,
+    COMMUNES_JSON,
+    COOKIE_FILE,
+    QGIS_CONFIG_FILE,
+    WILAYAS_JSON,
+)
 from ..users.models import User
 
 logger = logging.getLogger(__name__)
@@ -18,14 +23,14 @@ logger = logging.getLogger(__name__)
 def _load_localites() -> list[dict[str, Any]]:
     """Load commune metadata from communes.json."""
     try:
-        with open(COMMUNES_JSON, 'r', encoding='utf-8') as f:
+        with open(COMMUNES_JSON, encoding='utf-8') as f:
             return list(json.load(f).values())
     except (FileNotFoundError, json.JSONDecodeError):
         logger.error("Failed to load %s", COMMUNES_JSON)
         return []
 
 
-def _get_commune_by_id(commune_id: int) -> Optional[dict[str, Any]]:
+def _get_commune_by_id(commune_id: int) -> dict[str, Any] | None:
     """Look up a commune by its commune_id."""
     data = _load_localites()
     for c in data:
@@ -34,7 +39,7 @@ def _get_commune_by_id(commune_id: int) -> Optional[dict[str, Any]]:
     return None
 
 
-def _get_commune_by_code(commune_code: str) -> Optional[dict[str, Any]]:
+def _get_commune_by_code(commune_code: str) -> dict[str, Any] | None:
     """Look up a commune by its commune_code (handles int/str)."""
     if not commune_code:
         return None
@@ -49,11 +54,11 @@ def _get_commune_by_code(commune_code: str) -> Optional[dict[str, Any]]:
     return None
 
 
-def get_current_user() -> Optional[dict]:
+def get_current_user() -> dict | None:
     """Return authenticated user info from cookie, or None."""
     filename = COOKIE_FILE
     try:
-        with open(filename, 'r', encoding='utf-8') as f:
+        with open(filename, encoding='utf-8') as f:
             data = toml.load(f)
     except (FileNotFoundError, toml.TomlDecodeError):
         return None
@@ -74,7 +79,7 @@ def get_current_user() -> Optional[dict]:
         wilaya_name = ''
         if user.wilaya_code is not None:
             try:
-                with open(WILAYAS_JSON, 'r', encoding='utf-8') as f:
+                with open(WILAYAS_JSON, encoding='utf-8') as f:
                     wilayas = json.load(f)
                 w = wilayas.get(str(user.wilaya_code))
                 if w:
@@ -94,7 +99,7 @@ def get_current_user() -> Optional[dict]:
         session.close()
 
 
-def _get_authenticated_user() -> Optional[dict[str, Any]]:
+def _get_authenticated_user() -> dict[str, Any] | None:
     """Return commune info for the currently authenticated user."""
     user_data = get_current_user()
     if not user_data:
@@ -102,7 +107,7 @@ def _get_authenticated_user() -> Optional[dict[str, Any]]:
     return _get_commune_by_code(user_data.get('commune_code') or '')
 
 
-def get_user_location() -> Optional[str]:
+def get_user_location() -> str | None:
     """Return the WKT geometry of the authenticated user's municipality."""
     user_data = get_current_user()
     if not user_data:
@@ -123,7 +128,8 @@ def get_user_location() -> Optional[str]:
 
     try:
         with sqlite3.connect(COMMUNES_DB) as conn:
-            cur = conn.execute('SELECT wkt FROM geometries WHERE commune_id = ?', (commune_id,))
+            sql = 'SELECT wkt FROM geometries WHERE commune_id = ?'
+            cur = conn.execute(sql, (commune_id,))
             row = cur.fetchone()
             if row:
                 return row[0]
@@ -155,7 +161,7 @@ def qgis_config() -> dict:
         return _qgis_config_cache
     filename = QGIS_CONFIG_FILE
     try:
-        with open(filename, 'r', encoding='utf-8') as file:
+        with open(filename, encoding='utf-8') as file:
             _qgis_config_cache = json.load(file)
             return _qgis_config_cache
     except FileNotFoundError:

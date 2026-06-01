@@ -1,14 +1,17 @@
 import os
 import sys
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from app.orders.repository import (  # noqa: E402
-    count_numberings, count_panels,
-    query_missing_pan, query_missing_num, query_missing_rep,
+    count_numberings,
+    count_panels,
     get_zone_distribution,
+    query_missing_num,
+    query_missing_pan,
+    query_missing_rep,
 )
 
 
