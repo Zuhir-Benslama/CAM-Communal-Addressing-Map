@@ -1,4 +1,5 @@
 """Layer refresh and categorized style management."""
+
 import logging
 import os
 from typing import Any
@@ -17,6 +18,7 @@ from qgis.core import (
     QgsSymbol,
     QgsVectorLayer,
 )
+
 try:
     from qgis.core import QVariant
 except ImportError:
@@ -27,6 +29,8 @@ except ImportError:
         Int = 2
         Double = 6
         String = 10
+
+
 from sqlalchemy import func
 
 from ..app.core.database import get_session
@@ -41,7 +45,7 @@ def _get_model_class(model_name: str):
     """Look up a model class by name, returning None if not found."""
     model_class = getattr(_models, model_name, None)
     if model_class is None:
-        logger.warning("Unknown model: %s", model_name)
+        logger.warning('Unknown model: %s', model_name)
     return model_class
 
 
@@ -56,11 +60,13 @@ def _get_geometry_column(model_class) -> Any | None:
 def _get_all_model_fields(model_class) -> list[str]:
     """Return list of non-geometry DB columns plus Python properties."""
     db_fields = [
-        col.name for col in model_class.__table__.columns
+        col.name
+        for col in model_class.__table__.columns
         if not isinstance(col.type, Geometry)
     ]
     properties = [
-        attr for attr in dir(model_class)
+        attr
+        for attr in dir(model_class)
         if isinstance(getattr(model_class, attr), property)
     ]
     return db_fields + properties
@@ -73,18 +79,20 @@ def _get_layer(layer_name: str) -> QgsVectorLayer | None:
 
 
 def _get_new_layer_fields(
-    layer: QgsVectorLayer, all_fields: list[str],
+    layer: QgsVectorLayer,
+    all_fields: list[str],
 ) -> list[QgsField]:
     """Return QgsField objects for any fields not yet on the layer."""
     existing = {field.name() for field in layer.fields()}
     return [
-        QgsField(name, QVariant.String)
-        for name in all_fields if name not in existing
+        QgsField(name, QVariant.String) for name in all_fields if name not in existing
     ]
 
 
 def _query_all_records(
-    session, model_class, geometry_col,
+    session,
+    model_class,
+    geometry_col,
 ) -> list[tuple[Any, str | None]]:
     """Query all model records, eagerly loading geometry WKT if available."""
     if geometry_col is not None:
@@ -111,8 +119,7 @@ def _build_feature(result, geom_wkt, field_names, all_fields) -> QgsFeature | No
                 value = getattr(result, name)
             except AttributeError:
                 logger.debug(
-                    "Attribute %s not found on model instance",
-                    name, exc_info=True
+                    'Attribute %s not found on model instance', name, exc_info=True
                 )
                 value = None
         else:
@@ -250,9 +257,9 @@ def refresh_all_layers(iface) -> None:
     data_list = qgis_config().get('mapper') or []
     for cfg in data_list:
         try:
-            refresh_layer_from_db(iface, cfg.get("layer"), cfg.get("model"))
+            refresh_layer_from_db(iface, cfg.get('layer'), cfg.get('model'))
         except Exception as e:  # pylint: disable=W0718
-            logger.error("Error occurred: %s", e)
+            logger.error('Error occurred: %s', e)
 
     data_list = qgis_config().get('other_layers') or []
     for layer_cfg in data_list:
@@ -262,7 +269,9 @@ def refresh_all_layers(iface) -> None:
             result = layers[0].loadNamedStyle(filename)
             logger.info(
                 "loadNamedStyle('%s') for '%s': %s",
-                filename, layer_cfg.get('label'), result,
+                filename,
+                layer_cfg.get('label'),
+                result,
             )
 
 
@@ -271,9 +280,9 @@ def apply_all_categorized_styles(iface) -> None:
     data_list = qgis_config().get('categorize') or []
     for cfg in data_list:
         try:
-            apply_categorized_style(iface, cfg.get("layer"), cfg.get("by"))
+            apply_categorized_style(iface, cfg.get('layer'), cfg.get('by'))
         except Exception as e:  # pylint: disable=W0718
-            logger.error("Error occurred: %s", e)
+            logger.error('Error occurred: %s', e)
 
 
 def remove_all_categorized_styles(iface) -> None:
@@ -281,9 +290,9 @@ def remove_all_categorized_styles(iface) -> None:
     data_list = qgis_config().get('other_layers') or []
     for cfg in data_list:
         try:
-            remove_categorized_style(iface, cfg.get("label"))
+            remove_categorized_style(iface, cfg.get('label'))
         except Exception as e:  # pylint: disable=W0718
-            logger.error("Error occurred: %s", e)
+            logger.error('Error occurred: %s', e)
 
     filename = STYLE_QML
     for layer in QgsProject.instance().mapLayers().values():

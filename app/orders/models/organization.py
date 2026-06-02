@@ -1,4 +1,5 @@
 """Organization / facility spatial model."""
+
 import uuid
 from typing import Any, Optional
 
@@ -26,7 +27,7 @@ class Organization(_BaseSpatialModel):
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=True)
     user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
     zone_id = Column(Text, ForeignKey('zone.id'), nullable=True, index=True)
-    user = relationship("User", backref="user_org", foreign_keys=[user_id])
+    user = relationship('User', backref='user_org', foreign_keys=[user_id])
 
     @property
     def cat(self) -> str | None:
@@ -34,14 +35,16 @@ class Organization(_BaseSpatialModel):
         return self.category
 
     @classmethod
-    def update(cls, session: Session, record_id: str,
-               **kwargs: Any) -> Optional['Organization']:
+    def update(
+        cls, session: Session, record_id: str, **kwargs: Any
+    ) -> Optional['Organization']:
         """Update organization attributes and recalc parent zone."""
         from ...core.base import _allowlist_columns
+
         instance = session.query(cls).filter_by(id=record_id).first()
         user_data = _get_current_user()
         if not user_data or not instance:
-            raise ValueError("Organization not found or no authenticated user")
+            raise ValueError('Organization not found or no authenticated user')
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
         instance.user_id = user_data.get('id')
@@ -54,7 +57,7 @@ class Organization(_BaseSpatialModel):
         """Persist organization, linking to user and parent zone."""
         user_data = _get_current_user()
         if not user_data:
-            raise ValueError("No user found")
+            raise ValueError('No user found')
         self.user_id = user_data.get('id')
         self.locality_id = user_data.get('commune_code')
         self.zone_id = _parent_zone_id(session, self.geometry)
@@ -64,6 +67,7 @@ class Organization(_BaseSpatialModel):
     def delete(self, session: Session) -> None:
         """Delete organization and recalc parent zone has_child."""
         from .zone import Zone
+
         zone_id = self.zone_id
         session.delete(self)
         session.commit()

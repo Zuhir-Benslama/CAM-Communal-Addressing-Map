@@ -1,4 +1,5 @@
 """Subdivision spatial model."""
+
 import uuid
 from typing import Any, Optional
 
@@ -17,12 +18,15 @@ class Subdivision(_BaseSpatialModel):
     _list_columns = ['type', 'name']
 
     id = Column(
-        Text, primary_key=True, default=lambda: str(uuid.uuid4()),
+        Text,
+        primary_key=True,
+        default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
     locality_id = Column(String, index=True)
     type = Column(
-        String, nullable=False,
+        String,
+        nullable=False,
         info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'},
     )
     name = Column(
@@ -34,22 +38,29 @@ class Subdivision(_BaseSpatialModel):
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=True)
     parent = Column(Text, ForeignKey('zone.id'), nullable=True, index=True)
     user_id = Column(
-        Text, ForeignKey('user.id'), nullable=True, index=True,
+        Text,
+        ForeignKey('user.id'),
+        nullable=True,
+        index=True,
         info={'label': 'User'},
     )
     user = relationship(
-        "User", backref="user_poly_child", foreign_keys=[user_id],
+        'User',
+        backref='user_poly_child',
+        foreign_keys=[user_id],
     )
 
     @classmethod
-    def update(cls, session: Session, record_id: str,
-               **kwargs: Any) -> Optional['Subdivision']:
+    def update(
+        cls, session: Session, record_id: str, **kwargs: Any
+    ) -> Optional['Subdivision']:
         """Update subdivision attributes and recalc parent zone."""
         from ...core.base import _allowlist_columns
+
         instance = session.query(cls).filter_by(id=record_id).first()
         user_data = _get_current_user()
         if not user_data or not instance:
-            raise ValueError("Subdivision not found or no authenticated user")
+            raise ValueError('Subdivision not found or no authenticated user')
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
         instance.user_id = user_data.get('id')
@@ -62,7 +73,7 @@ class Subdivision(_BaseSpatialModel):
         """Persist subdivision, linking to user and parent zone."""
         user_data = _get_current_user()
         if not user_data:
-            raise ValueError("No user found")
+            raise ValueError('No user found')
         self.user_id = user_data.get('id')
         self.locality_id = user_data.get('commune_code')
         self.parent = _parent_zone_id(session, self.geometry)
@@ -72,6 +83,7 @@ class Subdivision(_BaseSpatialModel):
     def delete(self, session: Session) -> None:
         """Delete subdivision and recalc parent zone has_child."""
         from .zone import Zone
+
         zone_id = self.parent
         session.delete(self)
         session.commit()

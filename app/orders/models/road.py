@@ -1,4 +1,5 @@
 """Road spatial model."""
+
 import uuid
 from typing import Any, Optional
 
@@ -22,11 +23,14 @@ class Road(_BaseSpatialModel):
     _list_columns = ['type', 'name', 'decision_number']
 
     id = Column(
-        Text, primary_key=True, default=lambda: str(uuid.uuid4()),
+        Text,
+        primary_key=True,
+        default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
     decision_number = Column(
-        Text, nullable=True,
+        Text,
+        nullable=True,
         info={
             'label': 'Decision No.',
             'label_fr': 'N° décision',
@@ -34,7 +38,8 @@ class Road(_BaseSpatialModel):
         },
     )
     type = Column(
-        String, nullable=False,
+        String,
+        nullable=False,
         info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'},
     )
     name = Column(
@@ -44,22 +49,26 @@ class Road(_BaseSpatialModel):
     name_fr = Column(String, nullable=True)
     name_en = Column(String, nullable=True)
     locality_id = Column(
-        String, nullable=False, index=True,
+        String,
+        nullable=False,
+        index=True,
     )
     geometry = Column(Geometry('LINESTRING', srid=SRID), nullable=True)
     zone_id = Column(Text, ForeignKey('zone.id'), nullable=True, index=True)
     user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
-    user = relationship("User", backref="user_line", foreign_keys=[user_id])
+    user = relationship('User', backref='user_line', foreign_keys=[user_id])
 
     @classmethod
-    def update(cls, session: Session, record_id: str,
-               **kwargs: Any) -> Optional['Road']:
+    def update(
+        cls, session: Session, record_id: str, **kwargs: Any
+    ) -> Optional['Road']:
         """Update zone attributes and recalc has_child."""
         from ...core.base import _allowlist_columns
+
         instance = session.query(cls).filter_by(id=record_id).first()
         user_data = _get_current_user()
         if not user_data or not instance:
-            raise ValueError("Road not found or no authenticated user")
+            raise ValueError('Road not found or no authenticated user')
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
         instance.user_id = user_data.get('id')
@@ -69,8 +78,7 @@ class Road(_BaseSpatialModel):
         return instance
 
     @classmethod
-    def _recalc_has_child(cls, session: Session,
-                          zone_id: str) -> None:
+    def _recalc_has_child(cls, session: Session, zone_id: str) -> None:
         """Recalculate has_child flag for a road's parent zone."""
         instance = session.query(cls).filter_by(id=zone_id).first()
         if not instance:
@@ -82,7 +90,7 @@ class Road(_BaseSpatialModel):
         """Persist road, linking to user and parent zone."""
         user_data = _get_current_user()
         if not user_data:
-            raise ValueError("No user found")
+            raise ValueError('No user found')
         self.user_id = user_data.get('id')
         self.locality_id = user_data.get('commune_code')
         self.zone_id = _parent_zone_id(session, self.geometry)
@@ -92,6 +100,7 @@ class Road(_BaseSpatialModel):
     def delete(self, session: Session) -> None:
         """Delete road and recalc parent zone has_child."""
         from .zone import Zone
+
         zone_id = self.zone_id
         session.delete(self)
         session.commit()

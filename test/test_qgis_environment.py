@@ -6,6 +6,7 @@
      (at your option) any later version.
 
 """
+
 import os
 import unittest
 
@@ -34,7 +35,8 @@ class QGISTest(unittest.TestCase):
             'GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",'
             'SPHEROID["WGS_1984",6378137.0,298.257223563]],'
             'PRIMEM["Greenwich",0.0],UNIT["Degree",'
-            '0.0174532925199433]]')
+            '0.0174532925199433]]'
+        )
         crs.createFromWkt(wkt)
         auth_id = crs.authid()
         expected_auth_id = 'EPSG:4326'

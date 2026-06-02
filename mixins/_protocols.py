@@ -1,4 +1,5 @@
 """Type protocols for mixin host contracts."""
+
 # pylint: disable=too-few-public-methods
 from typing import Any, Protocol, runtime_checkable
 
@@ -8,6 +9,7 @@ from qgis.gui import QgisInterface
 @runtime_checkable
 class HasTranslation(Protocol):
     """Mixin host provides translation method."""
+
     def _tr(self, source: str) -> str:
         """Translate *source* string for the current locale."""
 
@@ -15,12 +17,14 @@ class HasTranslation(Protocol):
 @runtime_checkable
 class HasIface(Protocol):
     """Mixin host provides QGIS interface."""
+
     iface: QgisInterface
 
 
 @runtime_checkable
 class HasCurrentLayer(Protocol):
     """Mixin host provides current layer name."""
+
     def _current_layer_name(self) -> str:
         """Return the name of the currently active layer."""
 
@@ -28,9 +32,11 @@ class HasCurrentLayer(Protocol):
 @runtime_checkable
 class HasLayerTools(Protocol):
     """Mixin host provides map tool references."""
+
     identify_tool: Any
     ref_identify_tool: Any
     measure_tool: Any
+
     def set_default_cursor(self) -> None:
         """Reset the cursor to the default arrow cursor."""
 
@@ -38,6 +44,7 @@ class HasLayerTools(Protocol):
 @runtime_checkable
 class HasAuthState(Protocol):
     """Mixin host provides authentication and dialog state."""
+
     current_user: dict[str, Any] | None
     sat_view: str | None
     rast: str | None
@@ -47,8 +54,10 @@ class HasAuthState(Protocol):
 @runtime_checkable
 class HasPlanState(Protocol):
     """Mixin host provides plan export state."""
+
     type_plan: str
     type_to_hide: str
+
     def _generate_chart(self, *args: Any, **kwargs: Any) -> None:
         """Generate a chart for the current plan data."""
 
@@ -56,6 +65,7 @@ class HasPlanState(Protocol):
 @runtime_checkable
 class HasFeatureState(Protocol):
     """Mixin host provides feature tracking state."""
+
     _last_feature_wkt: str | None
     _last_feature_id: str | None
     _geometry_ready: str | None
@@ -65,14 +75,17 @@ class HasFeatureState(Protocol):
 @runtime_checkable
 class HasOutputDir(Protocol):
     """Mixin host provides an output directory path."""
+
     _output_dir: str
 
 
 # --- Domain-specific widget protocols ---
 
+
 @runtime_checkable
 class HasNavWidgets(Protocol):
     """Mixin host provides navigation widgets (menu, router)."""
+
     menu: Any
     router: Any
 
@@ -80,12 +93,14 @@ class HasNavWidgets(Protocol):
 @runtime_checkable
 class HasMapOptionWidgets(Protocol):
     """Mixin host provides map option selector widget."""
+
     map_options: Any
 
 
 @runtime_checkable
 class HasLocationWidgets(Protocol):
     """Mixin host provides wilaya/commune location selector widgets."""
+
     wilaya_list: Any
     commune_of_wilaya: Any
 
@@ -93,6 +108,7 @@ class HasLocationWidgets(Protocol):
 @runtime_checkable
 class HasCategoryWidgets(Protocol):
     """Mixin host provides category/type selector widgets."""
+
     org_cat: Any
     org_type: Any
     activity_cat: Any
@@ -102,6 +118,7 @@ class HasCategoryWidgets(Protocol):
 @runtime_checkable
 class HasRefWidgets(Protocol):
     """Mixin host provides reference selector widgets."""
+
     road_ref: Any
     panel_ref: Any
     ref_name: Any
@@ -110,6 +127,7 @@ class HasRefWidgets(Protocol):
 @runtime_checkable
 class HasFormWidgets(Protocol):
     """Mixin host provides form input and combo widgets."""
+
     num_val: Any
     paper: Any
     mount_status: Any
@@ -127,6 +145,7 @@ class HasFormWidgets(Protocol):
 @runtime_checkable
 class HasAuthFormWidgets(Protocol):
     """Mixin host provides authentication form input widgets."""
+
     uname: Any
     pwd: Any
     email: Any
@@ -140,11 +159,17 @@ class HasAuthFormWidgets(Protocol):
 
 @runtime_checkable
 class HasUiWidgets(
-    HasNavWidgets, HasMapOptionWidgets, HasLocationWidgets,
-    HasCategoryWidgets, HasRefWidgets, HasFormWidgets,
-    HasAuthFormWidgets, Protocol,
+    HasNavWidgets,
+    HasMapOptionWidgets,
+    HasLocationWidgets,
+    HasCategoryWidgets,
+    HasRefWidgets,
+    HasFormWidgets,
+    HasAuthFormWidgets,
+    Protocol,
 ):
     """Backward-compatible union of all domain-specific widget protocols."""
+
     def _select_ref(self, *args: Any, **kwargs: Any) -> None:
         """Open reference selection tool for a combo box."""
 
@@ -152,6 +177,7 @@ class HasUiWidgets(
 @runtime_checkable
 class HasDrawSignals(Protocol):
     """Mixin host provides drawing signal handlers."""
+
     def on_feature_added(self, *args: Any, **kwargs: Any) -> None:
         """Handle the feature-added signal from a layer."""
 
@@ -174,6 +200,7 @@ class HasDrawSignals(Protocol):
 @runtime_checkable
 class HasExportMethods(Protocol):
     """Mixin host provides export-related methods."""
+
     def north(self) -> None:
         """Render a north arrow on the layout."""
 
@@ -193,11 +220,13 @@ class HasExportMethods(Protocol):
 @runtime_checkable
 class UiForm(Protocol):
     """Type stub for dynamically loaded Qt UI forms (setupUi)."""
+
     def setupUi(self, obj: object) -> None:
         """Set up the UI on the given parent object."""
 
 
 # --- Combined protocols ---
+
 
 @runtime_checkable
 class HasDrawContext(HasIface, HasDrawSignals, HasCurrentLayer, Protocol):
@@ -206,14 +235,20 @@ class HasDrawContext(HasIface, HasDrawSignals, HasCurrentLayer, Protocol):
 
 @runtime_checkable
 class HasBasicEditContext(
-    HasUiWidgets, HasFeatureState, HasTranslation, Protocol,
+    HasUiWidgets,
+    HasFeatureState,
+    HasTranslation,
+    Protocol,
 ):
     """Mixin host needed for basic entity editing."""
 
 
 @runtime_checkable
 class HasFullEditContext(
-    HasBasicEditContext, HasLayerTools, HasDrawSignals, Protocol,
+    HasBasicEditContext,
+    HasLayerTools,
+    HasDrawSignals,
+    Protocol,
 ):
     """Mixin host needed for full entity editing with ref tools."""
 
@@ -225,8 +260,14 @@ class HasChartContext(HasTranslation, HasIface, HasPlanState, Protocol):
 
 @runtime_checkable
 class HasExportContext(
-    HasTranslation, HasPlanState, HasIface, HasAuthState,
-    HasExportMethods, HasUiWidgets, HasOutputDir, Protocol,
+    HasTranslation,
+    HasPlanState,
+    HasIface,
+    HasAuthState,
+    HasExportMethods,
+    HasUiWidgets,
+    HasOutputDir,
+    Protocol,
 ):
     """Mixin host needed for export operations."""
 
@@ -238,10 +279,15 @@ class HasReportContext(HasAuthState, HasTranslation, HasOutputDir, Protocol):
 
 @runtime_checkable
 class HasLayerOpsContext(
-    HasIface, HasDrawSignals, HasFeatureState,
-    HasUiWidgets, HasCurrentLayer, Protocol,
+    HasIface,
+    HasDrawSignals,
+    HasFeatureState,
+    HasUiWidgets,
+    HasCurrentLayer,
+    Protocol,
 ):
     """Mixin host for layer ops feature-add signal."""
+
     def _current_ops_layer(self) -> str:
         """Return the currently selected layer name."""
 
@@ -251,10 +297,15 @@ class HasLayerOpsContext(
 
 @runtime_checkable
 class HasTabSwitchContext(
-    HasPlanState, HasUiWidgets, HasIface,
-    HasLayerTools, HasAuthState, Protocol,
+    HasPlanState,
+    HasUiWidgets,
+    HasIface,
+    HasLayerTools,
+    HasAuthState,
+    Protocol,
 ):
     """Mixin host for tab switching operations."""
+
     def _reset_tools(self) -> None:
         """Deactivate all active map tools and clear measurements."""
 
@@ -262,7 +313,9 @@ class HasTabSwitchContext(
         """Return the currently selected operation layer name."""
 
     def _show_layers_for_label(
-        self, root: Any, layer_label: str,
+        self,
+        root: Any,
+        layer_label: str,
     ) -> None:
         """Show the selected operation layer and dependencies."""
 
@@ -284,6 +337,7 @@ class HasTabSwitchContext(
 @runtime_checkable
 class HasGeometryChangedContext(HasIface, HasTranslation, Protocol):
     """Mixin host for geometry change handling."""
+
     def _check_geometry_in_zone(self, geometry_wkt: str) -> int:
         """Check if geometry is within the user's allowed zone."""
 
@@ -315,14 +369,21 @@ class HasMapToolsContext(HasIface, HasLayerTools, Protocol):
 
 @runtime_checkable
 class HasFullMapToolsContext(
-    HasIface, HasLayerTools, HasTranslation, HasUiWidgets, Protocol,
+    HasIface,
+    HasLayerTools,
+    HasTranslation,
+    HasUiWidgets,
+    Protocol,
 ):
     """Mixin host for full map tool operations with ref selection."""
 
 
 @runtime_checkable
 class HasSelectContext(
-    HasCurrentLayer, HasIface, HasTranslation, Protocol,
+    HasCurrentLayer,
+    HasIface,
+    HasTranslation,
+    Protocol,
 ):
     """Mixin host for layer selection operations."""
 
@@ -330,15 +391,22 @@ class HasSelectContext(
 @runtime_checkable
 class HasAuthContext(HasUiWidgets, HasTranslation, Protocol):
     """Mixin host for basic auth UI operations (signup form)."""
+
     def public_route(self, page_index: Any) -> None:
         """Navigate to a public (login/register) page."""
 
 
 @runtime_checkable
 class HasFullAuthContext(
-    HasIface, HasAuthState, HasLayerTools, HasUiWidgets, HasTranslation, Protocol,
+    HasIface,
+    HasAuthState,
+    HasLayerTools,
+    HasUiWidgets,
+    HasTranslation,
+    Protocol,
 ):
     """Mixin host for full auth operations (login, map layer, close)."""
+
     def add_map_layer(self) -> bool:
         """Add the selected raster or WMS map layer to the project."""
 
@@ -357,6 +425,9 @@ class HasFullAuthContext(
 
 @runtime_checkable
 class HasRefSelectContext(
-    HasIface, HasLayerTools, HasTranslation, Protocol,
+    HasIface,
+    HasLayerTools,
+    HasTranslation,
+    Protocol,
 ):
     """Mixin host for reference selection operations."""

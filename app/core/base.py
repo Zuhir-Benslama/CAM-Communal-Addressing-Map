@@ -1,4 +1,5 @@
 """SQLAlchemy declarative base and shared ORM utilities."""
+
 from datetime import datetime
 from typing import Any
 
@@ -10,9 +11,12 @@ Base = declarative_base()
 
 class TimestampMixin:  # pylint: disable=too-few-public-methods
     """Mixin that adds ``created_at`` / ``updated_at`` datetime columns."""
+
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow,
+        DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow,
     )
 
 
@@ -30,7 +34,7 @@ def _allowlist_columns(model_class: type, **kwargs: Any) -> dict:
     try:
         mapper = model_class.__mapper__  # type: ignore[attr-defined]
         for attr in mapper.attrs:
-            if hasattr(attr, "columns"):
+            if hasattr(attr, 'columns'):
                 for col in attr.columns:
                     col_map[col.name] = attr.key
                     col_map[attr.key] = attr.key

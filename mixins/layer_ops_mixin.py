@@ -63,7 +63,9 @@ class LayerOpsMixin:
             self.measure_tool.clear()
 
     def _show_layers_for_label(
-        self: HasAuthIfaceContext, root, layer_label: str,
+        self: HasAuthIfaceContext,
+        root,
+        layer_label: str,
     ) -> None:
         """Show the selected operation layer plus configured dependencies."""
         visible_names = {LAYER_MUNICIPALITY}
@@ -76,10 +78,7 @@ class LayerOpsMixin:
 
         data_list = qgis_config().get('other_layers') or []
         for layer_cfg in data_list:
-            if (
-                layer_cfg.get('label') == layer_label and
-                layer_cfg.get('show_with')
-            ):
+            if layer_cfg.get('label') == layer_label and layer_cfg.get('show_with'):
                 visible_names.update(layer_cfg.get('show_with'))
                 break
 
@@ -128,9 +127,7 @@ class LayerOpsMixin:
     def _load_tab_styles(data_list, style_dir: str) -> None:
         """Load named styles for each layer in the config list."""
         for layer_cfg in data_list:
-            tmpl_list = QgsProject.instance().mapLayersByName(
-                layer_cfg.get('label')
-            )
+            tmpl_list = QgsProject.instance().mapLayersByName(layer_cfg.get('label'))
             if not tmpl_list:
                 continue
             filename = os.path.join(style_dir, layer_cfg.get('style'))
@@ -138,18 +135,19 @@ class LayerOpsMixin:
             if isinstance(result, tuple):
                 success_val, default_loaded = result
                 is_success = (
-                    (isinstance(success_val, str) and len(success_val) == 0)
-                    or (isinstance(success_val, (int, bool)) and success_val == 0)
-                )
+                    isinstance(success_val, str) and len(success_val) == 0
+                ) or (isinstance(success_val, (int, bool)) and success_val == 0)
                 if not is_success:
                     logger.warning(
                         "Failed to load style for '%s' from %s",
-                        layer_cfg.get('label'), filename,
+                        layer_cfg.get('label'),
+                        filename,
                     )
             else:
                 logger.warning(
                     "Unexpected loadNamedStyle result for '%s': %s",
-                    layer_cfg.get('label'), result,
+                    layer_cfg.get('label'),
+                    result,
                 )
 
     def _show_always_shown_layers(self, root) -> None:
@@ -163,15 +161,16 @@ class LayerOpsMixin:
 
     def _current_ops_layer(self: HasCurrentLayer) -> str:
         """Return the currently selected layer name via the mixin protocol."""
-        if hasattr(self, "_current_layer_name"):
+        if hasattr(self, '_current_layer_name'):
             return self._current_layer_name()
-        return ""
+        return ''
 
     def on_opt_selected(
-        self: HasTabSwitchContext, index,
+        self: HasTabSwitchContext,
+        index,
     ) -> None:
         """Handle tab selection: toggle layer visibility and load styles."""
-        self.type_plan = ""
+        self.type_plan = ''
         if hasattr(self.menu, '_rna_tab_src'):
             tab_name = self.menu._rna_tab_src[index]
         else:
@@ -179,7 +178,7 @@ class LayerOpsMixin:
         root = QgsProject.instance().layerTreeRoot()
         self._reset_tools()
 
-        selected_layer = ""
+        selected_layer = ''
         if tab_name == 'Operations':
             selected_layer = self._current_ops_layer()
         elif tab_name not in ['Report', 'Settings']:
@@ -190,18 +189,17 @@ class LayerOpsMixin:
             data_list = qgis_config().get('other_layers')
             last_tab = getattr(self, '_last_loaded_tab', None)
             selected_key = (
-                f"ops:{selected_layer}" if tab_name == 'Operations'
-                else selected_layer
+                f'ops:{selected_layer}' if tab_name == 'Operations' else selected_layer
             )
             if selected_key != last_tab:
                 self._load_tab_styles(data_list, DEFAULT_STYLE_DIR)
                 self._last_loaded_tab = selected_key
 
-        elif tab_name == "Settings":
+        elif tab_name == 'Settings':
             self._hide_all_tab_layers(root)
             self._show_base_layers(root)
 
-        elif tab_name == "Report":
+        elif tab_name == 'Report':
             self._hide_all_tab_layers(root)
             self._show_base_layers(root)
             data_list = qgis_config().get('other_layers')
@@ -240,31 +238,33 @@ class LayerOpsMixin:
 
     def list_road_entries(self) -> None:
         """Open an entity list dialog for roads."""
-        dlg = EntityListDialog(model_name="Road", list_of=LAYER_ROADS)
+        dlg = EntityListDialog(model_name='Road', list_of=LAYER_ROADS)
         dlg.exec()
 
     def list_organizations(self) -> None:
         """Open an entity list dialog for organizations."""
         dlg = EntityListDialog(
-            model_name="Organization", list_of=LAYER_FACILITIES,
+            model_name='Organization',
+            list_of=LAYER_FACILITIES,
         )
         dlg.exec()
 
     def list_subdivisions(self) -> None:
         """Open an entity list dialog for subdivisions."""
         dlg = EntityListDialog(
-            model_name="Subdivision", list_of=LAYER_SUBDIVISIONS,
+            model_name='Subdivision',
+            list_of=LAYER_SUBDIVISIONS,
         )
         dlg.exec()
 
     def list_numberings(self) -> None:
         """Open an entity list dialog for numberings."""
-        dlg = EntityListDialog(model_name="Numbering", list_of='Numberings')
+        dlg = EntityListDialog(model_name='Numbering', list_of='Numberings')
         dlg.exec()
 
     def list_panel_signs(self) -> None:
         """Open an entity list dialog for panel signs."""
-        dlg = EntityListDialog(model_name="PanelSign", list_of='Panels')
+        dlg = EntityListDialog(model_name='PanelSign', list_of='Panels')
         dlg.exec()
 
     def _check_geometry_in_zone(self, geometry_wkt: str) -> int:
@@ -283,15 +283,13 @@ class LayerOpsMixin:
             return 1
         if isinstance(current_obj, Polygon) and current_obj.intersects(uloc):
             return 2
-        if (
-            isinstance(current_obj, LineString) and
-            current_obj.intersects(uloc)
-        ):
+        if isinstance(current_obj, LineString) and current_obj.intersects(uloc):
             return 3
         return 0
 
     def on_feature_added(
-        self: HasLayerOpsContext, fid,
+        self: HasLayerOpsContext,
+        fid,
     ) -> None:
         """Validate added feature geometry against the user's allowed zone."""
         layer = self.iface.activeLayer()
@@ -340,8 +338,9 @@ class LayerOpsMixin:
             if case == 0:
                 layer.rollBack()
                 QMessageBox.warning(
-                    self, self._tr("Modification cancelled"),
-                    self._tr("Geometry outside your allowed area."),
+                    self,
+                    self._tr('Modification cancelled'),
+                    self._tr('Geometry outside your allowed area.'),
                 )
                 return
 
@@ -357,13 +356,10 @@ class LayerOpsMixin:
                             model.update(
                                 session,
                                 id=feature['id'],
-                                geometry=WKTElement(
-                                    str(geometry_wkt), srid=SRID
-                                ),
+                                geometry=WKTElement(str(geometry_wkt), srid=SRID),
                             )
                         except SQLAlchemyError as e:
-                            logger.exception("Failed to save feature: %s", e)
-                            QMessageBox.critical(
-                                self, self._tr("Erreur"), str(e))
+                            logger.exception('Failed to save feature: %s', e)
+                            QMessageBox.critical(self, self._tr('Erreur'), str(e))
                         finally:
                             session.close()

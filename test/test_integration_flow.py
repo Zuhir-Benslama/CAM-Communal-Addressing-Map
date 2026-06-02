@@ -1,4 +1,5 @@
 """Integration test: login → load layers → add feature flow."""
+
 import importlib
 import sys
 import unittest
@@ -24,7 +25,8 @@ class IntegrationFlowTest(unittest.TestCase):
             ('map_tools_mixin', 'mixins/map_tools_mixin.py'),
         ]:
             spec = importlib.util.spec_from_file_location(
-                f'plans_adressage.mixins.{name}', path,
+                f'plans_adressage.mixins.{name}',
+                path,
             )
             mod = importlib.util.module_from_spec(spec)
             sys.modules[f'plans_adressage.mixins.{name}'] = mod
@@ -34,10 +36,12 @@ class IntegrationFlowTest(unittest.TestCase):
     def _make_host(self):
         """Create a test host combining AuthMixin, LayerEditMixin, etc."""
         mods = self.modules
-        bases = (mods['auth_mixin'].AuthMixin,
-                 mods['layer_edit_mixin'].LayerEditMixin,
-                 mods['layer_ops_mixin'].LayerOpsMixin,
-                 mods['map_tools_mixin'].MapToolsMixin)
+        bases = (
+            mods['auth_mixin'].AuthMixin,
+            mods['layer_edit_mixin'].LayerEditMixin,
+            mods['layer_ops_mixin'].LayerOpsMixin,
+            mods['map_tools_mixin'].MapToolsMixin,
+        )
         host = type('Host', bases, {'_tr': lambda self, s: s})()
         # Override validate_text to accept single arg and return just text
         mods['auth_mixin'].validate_text = lambda t: t  # noqa: E731
@@ -99,20 +103,19 @@ class IntegrationFlowTest(unittest.TestCase):
         sign_in = MagicMock(return_value=(True, 'user1', None))
         get_current_user = MagicMock(return_value={'uid': 1})
 
-        with patch.object(mods['auth_mixin'], 'sign_in', sign_in), \
-             patch.object(mods['auth_mixin'], 'get_current_user',
-                          get_current_user), \
-             patch.object(mods['auth_mixin'],
-                          'init_allowed_zone') as mock_init, \
-             patch.object(mods['auth_mixin'],
-                          'refresh_all_layers') as mock_refresh, \
-             patch.object(host, 'add_map_layer', return_value=True), \
-             patch.object(host, 'private_route') as mock_route:
+        with (
+            patch.object(mods['auth_mixin'], 'sign_in', sign_in),
+            patch.object(mods['auth_mixin'], 'get_current_user', get_current_user),
+            patch.object(mods['auth_mixin'], 'init_allowed_zone') as mock_init,
+            patch.object(mods['auth_mixin'], 'refresh_all_layers') as mock_refresh,
+            patch.object(host, 'add_map_layer', return_value=True),
+            patch.object(host, 'private_route') as mock_route,
+        ):
             host.login_user()
 
             sign_in.assert_called_once_with(
-                username=host.username.text(),
-                password=host.password.text())
+                username=host.username.text(), password=host.password.text()
+            )
             mock_init.assert_called_once()
             mock_refresh.assert_called_once()
             mock_route.assert_called_once_with('main')
@@ -123,25 +126,39 @@ class IntegrationFlowTest(unittest.TestCase):
         self._setup_widgets(host)
 
         sign_in = MagicMock(return_value=(True, 'admin_user', None))
-        get_current_user = MagicMock(return_value={
-            'id': 'u1', 'loc': 'loc1', 'wilaya': '16', 'commune': 'Alger',
-            'first_name': 'Admin', 'last_name': 'User',
-        })
+        get_current_user = MagicMock(
+            return_value={
+                'id': 'u1',
+                'loc': 'loc1',
+                'wilaya': '16',
+                'commune': 'Alger',
+                'first_name': 'Admin',
+                'last_name': 'User',
+            }
+        )
 
-        with patch.object(mods['auth_mixin'], 'sign_in', sign_in), \
-             patch.object(mods['auth_mixin'], 'get_current_user',
-                          get_current_user), \
-             patch.object(mods['auth_mixin'], 'init_allowed_zone'), \
-             patch.object(mods['auth_mixin'], 'refresh_all_layers'), \
-             patch.object(host, 'add_map_layer', return_value=True), \
-             patch.object(host, 'private_route'), \
-             patch.object(host, 'on_opt_selected'):
+        with (
+            patch.object(mods['auth_mixin'], 'sign_in', sign_in),
+            patch.object(mods['auth_mixin'], 'get_current_user', get_current_user),
+            patch.object(mods['auth_mixin'], 'init_allowed_zone'),
+            patch.object(mods['auth_mixin'], 'refresh_all_layers'),
+            patch.object(host, 'add_map_layer', return_value=True),
+            patch.object(host, 'private_route'),
+            patch.object(host, 'on_opt_selected'),
+        ):
             host.login_user()
 
-            self.assertEqual(host.current_user, {
-                'id': 'u1', 'loc': 'loc1', 'wilaya': '16', 'commune': 'Alger',
-                'first_name': 'Admin', 'last_name': 'User',
-            })
+            self.assertEqual(
+                host.current_user,
+                {
+                    'id': 'u1',
+                    'loc': 'loc1',
+                    'wilaya': '16',
+                    'commune': 'Alger',
+                    'first_name': 'Admin',
+                    'last_name': 'User',
+                },
+            )
             host.label_username.setText.assert_called_once_with('admin_user')
 
     def test_add_road_uses_last_feature_wkt_and_calls_writer(self):
@@ -151,11 +168,13 @@ class IntegrationFlowTest(unittest.TestCase):
 
         writer = MagicMock(return_value=MagicMock())
 
-        with patch.object(mods['layer_edit_mixin'],
-                          'add_road_impl', writer) if hasattr(
-                              mods['layer_edit_mixin'], 'add_road_impl') \
-             else patch.object(mods['layer_edit_mixin'], 'add_road') as _:
+        with (
+            patch.object(mods['layer_edit_mixin'], 'add_road_impl', writer)
+            if hasattr(mods['layer_edit_mixin'], 'add_road_impl')
+            else patch.object(mods['layer_edit_mixin'], 'add_road') as _
+        ):
             pass
+
 
 if __name__ == '__main__':
     unittest.main()

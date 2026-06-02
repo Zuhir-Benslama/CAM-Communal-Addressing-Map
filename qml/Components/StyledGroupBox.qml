@@ -11,23 +11,23 @@ Pane {
         color: "transparent"
         border.color: Theme.activeBorder()
         border.width: 1
-        radius: Theme.borderRadius
+        radius: Theme.radiusLg
     }
 
     contentItem: ColumnLayout {
-        spacing: 4
+        spacing: Theme.spacingSm
 
         Label {
             text: root.title
             visible: root.title !== ""
             color: Theme.activeAccent()
             font.bold: true
-            font.pixelSize: 12
+            font.pixelSize: Theme.fontHeadline
             leftPadding: 2
             bottomMargin: 4
         }
     }
 
-    padding: Theme.padding
-    topPadding: title !== "" ? Theme.padding : Theme.padding
+    padding: Theme.paddingMd
+    topPadding: title !== "" ? Theme.paddingLg : 0
 }

@@ -33,7 +33,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: Theme.surface
+        color: Theme.activeSurface()
 
         Flickable {
             anchors.fill: parent
@@ -43,56 +43,57 @@ Item {
             Rectangle {
                 id: loginBox
                 width: Math.min(parent.width - 40, 500)
-                height: childrenRect.height + 40
+                height: childrenRect.height + (Theme.paddingLg * 2)
                 anchors.centerIn: parent
-                radius: 8
-                color: Theme.background
-                border.color: Theme.border
+                radius: Theme.radiusLg
+                color: Theme.activeBg()
+                border.color: Theme.activeBorder()
 
                 ColumnLayout {
-                    x: 20; y: 20
-                    width: parent.width - 40
-                    spacing: 16
+                    x: Theme.paddingLg
+                    y: Theme.paddingLg
+                    width: parent.width - (Theme.paddingLg * 2)
+                    spacing: Theme.spacingMd
 
                     Text {
                         text: "Login"
-                        font.pixelSize: 22
+                        font.pixelSize: Theme.fontTitle
                         font.bold: true
-                        color: Theme.text
+                        color: Theme.activeAccent()
                         Layout.alignment: Qt.AlignHCenter
                     }
 
-                    Rectangle { height: 1; color: Theme.border; Layout.fillWidth: true }
+                    Rectangle { height: 1; color: Theme.activeBorder(); Layout.fillWidth: true }
 
                     GridLayout {
                         columns: 2
-                        columnSpacing: 10
-                        rowSpacing: 10
+                        columnSpacing: Theme.spacingSm
+                        rowSpacing: Theme.spacingSm
                         Layout.fillWidth: true
 
-                        Text { text: "Username:"; font.bold: true; color: Theme.text; Layout.minimumWidth: 100 }
+                        Text { text: "Username:"; font.bold: true; color: Theme.activeText(); Layout.minimumWidth: 100 }
                         TextField {
                             id: usernameField
                             objectName: "username"
                             Layout.fillWidth: true
                             Layout.maximumWidth: 400
                             placeholderText: "Username"
-                            color: Theme.text
+                            color: Theme.activeText()
                             background: Rectangle {
-                                color: Theme.surface
-                                border.color: Theme.border
-                                radius: 4
+                                color: Theme.activeSurface()
+                                border.color: Theme.activeBorder()
+                                radius: Theme.radiusMd
                             }
                         }
                     }
 
                     GridLayout {
                         columns: 2
-                        columnSpacing: 10
-                        rowSpacing: 10
+                        columnSpacing: Theme.spacingSm
+                        rowSpacing: Theme.spacingSm
                         Layout.fillWidth: true
 
-                        Text { text: "Password:"; font.bold: true; color: Theme.text; Layout.minimumWidth: 100 }
+                        Text { text: "Password:"; font.bold: true; color: Theme.activeText(); Layout.minimumWidth: 100 }
                         TextField {
                             id: passwordField
                             objectName: "password"
@@ -100,24 +101,24 @@ Item {
                             Layout.maximumWidth: 400
                             placeholderText: "Password"
                             echoMode: TextInput.Password
-                            color: Theme.text
+                            color: Theme.activeText()
                             background: Rectangle {
-                                color: Theme.surface
-                                border.color: Theme.border
-                                radius: 4
+                                color: Theme.activeSurface()
+                                border.color: Theme.activeBorder()
+                                radius: Theme.radiusMd
                             }
                         }
                     }
 
-                    Rectangle { height: 1; color: Theme.border; Layout.fillWidth: true }
+                    Rectangle { height: 1; color: Theme.activeBorder(); Layout.fillWidth: true }
 
                     GridLayout {
                         columns: 2
-                        columnSpacing: 10
-                        rowSpacing: 10
+                        columnSpacing: Theme.spacingSm
+                        rowSpacing: Theme.spacingSm
                         Layout.fillWidth: true
 
-                        Text { text: "Select Map:"; font.bold: true; color: Theme.text; Layout.minimumWidth: 100 }
+                        Text { text: "Select Map:"; font.bold: true; color: Theme.activeText(); Layout.minimumWidth: 100 }
                         ComboBox {
                             id: mapOptionsCombo
                             objectName: "map_options"
@@ -130,19 +131,19 @@ Item {
                                 root.comboChanged("map_options", currentIndex, currentValue)
                             }
                             background: Rectangle {
-                                color: Theme.surface
-                                border.color: Theme.border
-                                radius: 4
+                                color: Theme.activeSurface()
+                                border.color: Theme.activeBorder()
+                                radius: Theme.radiusMd
                             }
                             contentItem: Text {
                                 text: parent.displayText
-                                color: Theme.text
+                                color: Theme.activeText()
                                 verticalAlignment: Text.AlignVCenter
                             }
                         }
                     }
 
-                    Rectangle { height: 1; color: Theme.border; Layout.fillWidth: true }
+                    Rectangle { height: 1; color: Theme.activeBorder(); Layout.fillWidth: true }
 
                     Button {
                         text: "Sign In"
@@ -151,8 +152,8 @@ Item {
                         Layout.minimumWidth: 200
                         onClicked: root.signInClicked()
                         background: Rectangle {
-                            color: Theme.primary
-                            radius: 4
+                            color: Theme.activeAccent()
+                            radius: Theme.radiusMd
                         }
                         contentItem: Text {
                             text: parent.text
@@ -162,24 +163,24 @@ Item {
                         }
                     }
 
-                    Rectangle { height: 1; color: Theme.border; Layout.fillWidth: true }
+                    Rectangle { height: 1; color: Theme.activeBorder(); Layout.fillWidth: true }
 
                     RowLayout {
                         Layout.fillWidth: true
-                        spacing: 10
+                        spacing: Theme.spacingSm
 
                         Button {
                             text: "Add User"
                             Layout.minimumWidth: 150
                             onClicked: root.addUserClicked()
                             background: Rectangle {
-                                color: Theme.surface
-                                border.color: Theme.border
-                                radius: 4
+                                color: Theme.activeSurface()
+                                border.color: Theme.activeBorder()
+                                radius: Theme.radiusMd
                             }
                             contentItem: Text {
                                 text: parent.text
-                                color: Theme.text
+                                color: Theme.activeText()
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
                             }
@@ -190,13 +191,13 @@ Item {
                             Layout.minimumWidth: 150
                             onClicked: root.restoreDbClicked()
                             background: Rectangle {
-                                color: Theme.surface
-                                border.color: Theme.border
-                                radius: 4
+                                color: Theme.activeSurface()
+                                border.color: Theme.activeBorder()
+                                radius: Theme.radiusMd
                             }
                             contentItem: Text {
                                 text: parent.text
-                                color: Theme.text
+                                color: Theme.activeText()
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
                             }

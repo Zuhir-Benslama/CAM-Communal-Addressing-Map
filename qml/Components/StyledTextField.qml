@@ -18,7 +18,7 @@ TextField {
         color: Theme.activeSurface()
         border.color: control.activeFocus ? Theme.activeAccent() : Theme.activeBorder()
         border.width: control.activeFocus ? 2 : 1
-        radius: Theme.borderRadius
+        radius: Theme.radiusMd
     }
 
     leftPadding: 8

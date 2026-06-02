@@ -1,4 +1,5 @@
 """Tests for gui/measure_tool.py."""
+
 import importlib
 import sys
 import unittest
@@ -16,7 +17,8 @@ class TestMeasureTool(unittest.TestCase):
         cls.app = get_qapp()
         setup_gui_mocks()
         spec = importlib.util.spec_from_file_location(
-            'plans_adressage.gui.measure_tool', 'gui/measure_tool.py',
+            'plans_adressage.gui.measure_tool',
+            'gui/measure_tool.py',
         )
         cls.mod = importlib.util.module_from_spec(spec)
         sys.modules['plans_adressage.gui.measure_tool'] = cls.mod

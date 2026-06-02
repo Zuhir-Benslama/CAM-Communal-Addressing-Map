@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 """Authentication and login flow mixin for user management."""
 
 from __future__ import annotations
@@ -34,13 +35,17 @@ class AuthMixin:
     """Mixin handling user authentication, registration, and session
     management."""
 
+    current_user: dict | None
+    sat_view: str | None
+    rast: str | None
+
     def _show_error(self: HasTranslation, text: str) -> None:
         """Show a critical error message dialog."""
-        QMessageBox.critical(self, self._tr("Error"), text)
+        QMessageBox.critical(self, self._tr('Error'), text)
 
     def _show_info(self: HasTranslation, text: str) -> None:
         """Show an informational success message dialog."""
-        QMessageBox.information(self, self._tr("Success"), text)
+        QMessageBox.information(self, self._tr('Success'), text)
 
     def submit_add_usr(self: HasAuthContext) -> None:
         """Register a new user via the sign-up API."""
@@ -58,7 +63,7 @@ class AuthMixin:
         if ok:
             self.public_route('login')
         elif errors:
-            self._show_error("\n".join(errors))
+            self._show_error('\n'.join(errors))
 
     def login_user(
         self: HasFullAuthContext,
@@ -80,7 +85,7 @@ class AuthMixin:
                 self.on_opt_selected(0)
             else:
                 self._show_error(
-                    self._tr("Unable to log in to server or image not found"),
+                    self._tr('Unable to log in to server or image not found'),
                 )
         elif error:
             self._show_error(error)
@@ -92,8 +97,8 @@ class AuthMixin:
             refresh_all_layers(self.iface)
             return True
         except Exception as e:  # pylint: disable=W0718
-            logger.error("Error loading map data after login: %s", e)
-            self._show_error(self._tr(f"Error loading map: {e}"))
+            logger.error('Error loading map data after login: %s', e)
+            self._show_error(self._tr(f'Error loading map: {e}'))
             return False
 
     def fill_map_options(self: HasMapOptionWidgets) -> None:
@@ -107,18 +112,24 @@ class AuthMixin:
         """Add the selected raster or WMS map layer to the project."""
         selected_label = self.map_options.currentText()
         selected_value = self.map_options.currentData()
-        logger.info("add_map_layer: label=%r value=%r items=%d index=%d",
-                     selected_label, selected_value,
-                     self.map_options.count(), self.map_options.currentIndex())
+        logger.info(
+            'add_map_layer: label=%r value=%r items=%d index=%d',
+            selected_label,
+            selected_value,
+            self.map_options.count(),
+            self.map_options.currentIndex(),
+        )
 
         if selected_value and selected_label:
             if selected_label.startswith('Satellite View '):
                 osm_layer = QgsRasterLayer(
-                    selected_value, selected_label, "wms",
+                    selected_value,
+                    selected_label,
+                    'wms',
                 )
                 if osm_layer.isValid():
-                    existing_layers = (
-                        QgsProject.instance().mapLayersByName(selected_label)
+                    existing_layers = QgsProject.instance().mapLayersByName(
+                        selected_label
                     )
                     if existing_layers:
                         self.sat_view = selected_label
@@ -130,9 +141,9 @@ class AuthMixin:
                     return True
 
             if selected_label == 'Raster':
-                dialog = QFileDialog(self, self._tr("Select a file"))
+                dialog = QFileDialog(self, self._tr('Select a file'))
                 dialog.setOption(QFileDialog.DontUseNativeDialog, True)
-                dialog.setNameFilter("TIFF Files (*.tif *.tiff)")
+                dialog.setNameFilter('TIFF Files (*.tif *.tiff)')
                 dialog.setFileMode(QFileDialog.ExistingFile)
                 self.sat_view = None
                 self.rast = selected_label
@@ -140,10 +151,11 @@ class AuthMixin:
 
                 if dialog.exec():
                     selected_file = dialog.selectedFiles()[0]
-                    logger.info("Selected file: %s", selected_file)
+                    logger.info('Selected file: %s', selected_file)
                     if selected_file:
                         raster_layer = QgsRasterLayer(
-                            selected_file, selected_label,
+                            selected_file,
+                            selected_label,
                         )
                         if raster_layer.isValid():
                             QgsProject.instance().addMapLayer(raster_layer)
@@ -152,13 +164,13 @@ class AuthMixin:
                     return False
                 return False
             QMessageBox.critical(
-                self, self._tr("Error"), self._tr("Failed to Map layer.")
+                self, self._tr('Error'), self._tr('Failed to Map layer.')
             )
         else:
             QMessageBox.warning(
                 self,
-                self._tr("No Selection"),
-                self._tr("Please select a map layer option."),
+                self._tr('No Selection'),
+                self._tr('Please select a map layer option.'),
             )
         return False
 
@@ -175,7 +187,8 @@ class AuthMixin:
             self.router.setCurrentWidget(page)
 
     def closeEvent(
-        self: HasFullAuthContext, event,
+        self: HasFullAuthContext,
+        event,
     ) -> None:
         """Clean up tools and logout on dialog close."""
         self.stop()
@@ -188,7 +201,7 @@ class AuthMixin:
 
         if self.popup_dialog:
             self.popup_dialog.close()
-        page = self.router.findChild(QWidget, "login")
+        page = self.router.findChild(QWidget, 'login')
         if page:
             self.router.setCurrentWidget(page)
         event.accept()

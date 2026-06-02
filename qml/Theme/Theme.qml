@@ -20,6 +20,28 @@ QtObject {
     readonly property int spacing: 12
     readonly property int padding: 12
 
+    // Apple HIG design tokens — 8pt spacing grid
+    readonly property int spacingXs: 4
+    readonly property int spacingSm: 8
+    readonly property int spacingMd: 12
+    readonly property int spacingLg: 16
+    readonly property int spacingXl: 24
+
+    readonly property int paddingSm: 8
+    readonly property int paddingMd: 12
+    readonly property int paddingLg: 16
+
+    readonly property int radiusSm: 4
+    readonly property int radiusMd: 6
+    readonly property int radiusLg: 8
+
+    readonly property int fontCaption: 10
+    readonly property int fontCaption2: 11
+    readonly property int fontBody: 12
+    readonly property int fontSubhead: 13
+    readonly property int fontHeadline: 14
+    readonly property int fontTitle: 20
+
     readonly property color lightBg: "#f6f8fa"
     readonly property color lightSurface: "#ffffff"
     readonly property color lightOverlay: "#eaeef2"

@@ -1,6 +1,7 @@
 """User model for authentication and session management."""
-from datetime import datetime
+
 import uuid
+from datetime import datetime
 
 from sqlalchemy import Boolean, Column, Integer, String, Text
 from sqlalchemy.orm import Session
@@ -20,7 +21,7 @@ class User(Base, TimestampMixin):
     active = Column(Boolean, default=True, nullable=False)
     wilaya_code = Column(Integer, nullable=True)
     commune_code = Column(String(255), nullable=True)
-    api_key = Column(Text, default="", nullable=True)
+    api_key = Column(Text, default='', nullable=True)
     email = Column(String(255), nullable=True)
     phone = Column(String(255), nullable=True)
 

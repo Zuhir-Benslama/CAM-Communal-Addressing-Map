@@ -1,4 +1,3 @@
-
 """
 /***************************************************************************
  RNA
@@ -22,6 +21,7 @@
  ***************************************************************************/
  This script initializes the plugin, making it known to QGIS.
 """
+
 import logging
 import os
 import sys
@@ -52,7 +52,8 @@ def classFactory(iface: Any) -> Any:  # pylint: disable=invalid-name
 
     try:
         from .app.main import RNA
+
         return RNA(iface)
     except ImportError:
-        logger.error("ImportError in classFactory:\n%s", traceback.format_exc())
+        logger.error('ImportError in classFactory:\n%s', traceback.format_exc())
         raise

@@ -1,4 +1,5 @@
 """Tests for mixins/backup_mixin.py."""
+
 import importlib
 import os
 import sys
@@ -44,12 +45,16 @@ class TestBackupMixin(unittest.TestCase):
 
         self._mock_qfiledialog = MagicMock(return_value=fake_dialog)
         self._mock_qfiledialog_cls = patch.object(
-            self.mod, 'QFileDialog', self._mock_qfiledialog,
+            self.mod,
+            'QFileDialog',
+            self._mock_qfiledialog,
         )
         self._mock_qfiledialog_cls.start()
 
         self._mock_qmessagebox = patch.object(
-            self.mod, 'QMessageBox', autospec=False,
+            self.mod,
+            'QMessageBox',
+            autospec=False,
         )
         mock_qmb = self._mock_qmessagebox.start()
         mock_qmb.critical = MagicMock(side_effect=lambda p, t, m: None)
@@ -64,6 +69,7 @@ class TestBackupMixin(unittest.TestCase):
         self._mock_qfiledialog_cls.stop()
         self._mock_qmessagebox.stop()
         import shutil
+
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
     def test_restore_database_valid_file(self):

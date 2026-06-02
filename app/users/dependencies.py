@@ -1,4 +1,5 @@
 """Routing decorators: login_required for authenticated access."""
+
 from collections.abc import Callable
 from functools import wraps
 from typing import Any
@@ -21,6 +22,7 @@ def _navigate_to_login(self) -> None:
 
 def login_required(func) -> Callable:
     """Decorator: redirect to login page if no valid session cookie exists."""
+
     @wraps(func)
     def wrapper(self, *args, **kwargs) -> Any:
         filename = COOKIE_FILE
@@ -39,9 +41,11 @@ def login_required(func) -> Callable:
 
         session = get_session()
         try:
-            user = session.query(User).filter(
-                User.id == uid, User.api_key == cookie, User.active.is_(True)
-            ).first()
+            user = (
+                session.query(User)
+                .filter(User.id == uid, User.api_key == cookie, User.active.is_(True))
+                .first()
+            )
         finally:
             session.close()
 

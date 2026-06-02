@@ -48,13 +48,6 @@ module = [
     "app.orders.models",
     "app.users.service",
     "gui.ui_fillers",
-    "mixins.auth_mixin",
-    "mixins.backup_mixin",
-    "mixins.import_export_mixin",
-    "mixins.layer_edit_mixin",
-    "mixins.layer_ops_mixin",
-    "mixins.report_mixin",
-    "mixins.symbol_export_mixin",
 ]
 disable_error_code = [
     "assignment",

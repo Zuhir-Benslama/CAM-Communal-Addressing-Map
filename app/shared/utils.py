@@ -1,4 +1,5 @@
 """Utility functions: locale, validation, theme, and subprocess helpers."""
+
 import logging
 import os
 import shutil
@@ -16,7 +17,6 @@ from ..shared.constants import (
     SETTINGS_KEY_THEME,
     SETTINGS_ORG,
     THEME_DARK,
-    THEME_LIGHT,
     Theme,
 )
 
@@ -25,10 +25,10 @@ logger = logging.getLogger(__name__)
 T = TypeVar('T')
 
 
-def ensure(value: T | None, message: str = "") -> T:
+def ensure(value: T | None, message: str = '') -> T:
     """Assert value is not None, returning it or raising ValueError."""
     if value is None:
-        raise ValueError(message or "Expected non-None value")
+        raise ValueError(message or 'Expected non-None value')
     return value
 
 
@@ -79,7 +79,7 @@ def get_qgis_python() -> str | None:
     if python:
         if not os.path.isfile(python) or not os.access(python, os.X_OK):
             logger.warning(
-                "PYTHON_QGIS_BAT path is not executable: %s, falling back",
+                'PYTHON_QGIS_BAT path is not executable: %s, falling back',
                 python,
             )
         else:
@@ -105,8 +105,12 @@ def get_all_fields_and_labels(
         if hasattr(attr, 'columns'):
             column = attr.columns[0]
             if column.name not in [
-                'geometry', 'user_id', 'locality_id',
-                'has_child', 'parent', 'zone_id',
+                'geometry',
+                'user_id',
+                'locality_id',
+                'has_child',
+                'parent',
+                'zone_id',
             ]:
                 fields.append(column.name)
                 if locale != 'ar':

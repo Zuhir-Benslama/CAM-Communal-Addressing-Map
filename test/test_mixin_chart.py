@@ -1,4 +1,5 @@
 """Tests for mixins/chart_mixin.py."""
+
 import importlib
 import os
 import sys
@@ -36,19 +37,21 @@ class TestChartMixin(unittest.TestCase):
         self.mixin.iface = MagicMock()
 
         self.session_mock = MagicMock()
-        self.session_mock.query.return_value.group_by.return_value\
-            .all.return_value = [
-            ('installed', 5), ('planned', 3),
+        self.session_mock.query.return_value.group_by.return_value.all.return_value = [
+            ('installed', 5),
+            ('planned', 3),
         ]
         self.session_mock.close = MagicMock()
 
         session_patch = patch.object(
-            self.mod, 'get_session', return_value=self.session_mock)
+            self.mod, 'get_session', return_value=self.session_mock
+        )
         self._session_patch = session_patch.start()
 
     def tearDown(self):
         self._session_patch.stop()
         import shutil
+
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
     def test_panel_chart_queries_and_renders(self):
@@ -96,10 +99,10 @@ class TestChartMixin(unittest.TestCase):
         mock_node = MagicMock()
 
         qgis_project = MagicMock()
-        (qgis_project.instance.return_value
-         .mapLayersByName.return_value) = [mock_layer]
-        (qgis_project.instance.return_value.layerTreeRoot.return_value
-         .findLayer.return_value) = mock_node
+        (qgis_project.instance.return_value.mapLayersByName.return_value) = [mock_layer]
+        (
+            qgis_project.instance.return_value.layerTreeRoot.return_value.findLayer.return_value
+        ) = mock_node
 
         with patch.object(self.mod, 'QgsProject', qgis_project):
             self.mod._toggle_layer_visibility('test_layer', False)
@@ -111,10 +114,10 @@ class TestChartMixin(unittest.TestCase):
         mock_node = MagicMock()
 
         qgis_project = MagicMock()
-        (qgis_project.instance.return_value
-         .mapLayersByName.return_value) = [mock_layer]
-        (qgis_project.instance.return_value.layerTreeRoot.return_value
-         .findLayer.return_value) = mock_node
+        (qgis_project.instance.return_value.mapLayersByName.return_value) = [mock_layer]
+        (
+            qgis_project.instance.return_value.layerTreeRoot.return_value.findLayer.return_value
+        ) = mock_node
 
         with patch.object(self.mod, 'QgsProject', qgis_project):
             self.mod._toggle_layer_visibility('test_layer', True)

@@ -1,4 +1,5 @@
 """Tests for layer/refresh.py."""
+
 import importlib
 import sys
 import unittest
@@ -19,7 +20,8 @@ class TestLayerRefresh(unittest.TestCase):
     def setUpClass(cls):
         setup_mocks()
         spec = importlib.util.spec_from_file_location(
-            'plans_adressage.layer.refresh', 'layer/refresh.py',
+            'plans_adressage.layer.refresh',
+            'layer/refresh.py',
         )
         cls.mod = importlib.util.module_from_spec(spec)
         sys.modules['plans_adressage.layer.refresh'] = cls.mod
@@ -32,8 +34,7 @@ class TestLayerRefresh(unittest.TestCase):
 
     @patch('plans_adressage.layer.refresh.QgsProject')
     def test_apply_categorized_style(self, mock_project):
-        (mock_project.instance.return_value
-    .mapLayersByName.return_value) = [self.layer]
+        (mock_project.instance.return_value.mapLayersByName.return_value) = [self.layer]
         feature = MagicMock()
         self.layer.getFeatures.return_value = [feature]
         self.mod.apply_categorized_style(self.iface, 'test_layer', ['type'])
@@ -47,8 +48,7 @@ class TestLayerRefresh(unittest.TestCase):
 
     @patch('plans_adressage.layer.refresh.QgsProject')
     def test_remove_categorized_style(self, mock_project):
-        (mock_project.instance.return_value
-    .mapLayersByName.return_value) = [self.layer]
+        (mock_project.instance.return_value.mapLayersByName.return_value) = [self.layer]
         self.mod.remove_categorized_style(self.iface, 'test_layer')
         self.layer.setRenderer.assert_called_once()
 
@@ -101,12 +101,13 @@ class TestLayerRefresh(unittest.TestCase):
     @patch('plans_adressage.layer.refresh.get_session')
     @patch('plans_adressage.layer.refresh.QgsProject')
     def test_refresh_from_db_unknown_model(
-        self, _mock_project, mock_get_session,
+        self,
+        _mock_project,
+        mock_get_session,
     ):
         mock_session = MagicMock()
         mock_get_session.return_value = mock_session
-        self.mod.refresh_layer_from_db(
-            self.iface, 'test_layer', 'NonExistentModel')
+        self.mod.refresh_layer_from_db(self.iface, 'test_layer', 'NonExistentModel')
         mock_session.close.assert_called_once()
 
     def _make_mock_model(self, columns=None):
@@ -120,7 +121,10 @@ class TestLayerRefresh(unittest.TestCase):
     @patch('plans_adressage.layer.refresh.get_session')
     @patch('plans_adressage.layer.refresh.QgsProject')
     def test_refresh_from_db_no_results(
-        self, _mock_project, mock_get_session, mock_models,
+        self,
+        _mock_project,
+        mock_get_session,
+        mock_models,
     ):
         mock_session = MagicMock()
         mock_get_session.return_value = mock_session
@@ -134,13 +138,15 @@ class TestLayerRefresh(unittest.TestCase):
     @patch('plans_adressage.layer.refresh.get_session')
     @patch('plans_adressage.layer.refresh.QgsProject')
     def test_refresh_from_db_layer_not_found(
-        self, mock_project, mock_get_session, mock_models,
+        self,
+        mock_project,
+        mock_get_session,
+        mock_models,
     ):
         mock_project.instance.return_value.mapLayersByName.return_value = []
         mock_session = MagicMock()
         mock_get_session.return_value = mock_session
-        mock_session.query.return_value.all.return_value = [
-            (MagicMock(), 'POINT(1 2)')]
+        mock_session.query.return_value.all.return_value = [(MagicMock(), 'POINT(1 2)')]
         model = self._make_mock_model()
         mock_models.Road = model
         self.mod.refresh_layer_from_db(self.iface, 'nonexistent', 'Road')
@@ -150,10 +156,12 @@ class TestLayerRefresh(unittest.TestCase):
     @patch('plans_adressage.layer.refresh.get_session')
     @patch('plans_adressage.layer.refresh.QgsProject')
     def test_refresh_from_db_with_geometry(
-        self, mock_project, mock_get_session, mock_models,
+        self,
+        mock_project,
+        mock_get_session,
+        mock_models,
     ):
-        (mock_project.instance.return_value
-    .mapLayersByName.return_value) = [self.layer]
+        (mock_project.instance.return_value.mapLayersByName.return_value) = [self.layer]
         self.layer.fields.return_value = []
         mock_session = MagicMock()
         mock_get_session.return_value = mock_session
@@ -168,7 +176,8 @@ class TestLayerRefresh(unittest.TestCase):
         result_row = MagicMock()
         result_row.name = 'Test Road'
         mock_session.query.return_value.all.return_value = [
-            (result_row, 'LINESTRING(0 0, 1 1)')]
+            (result_row, 'LINESTRING(0 0, 1 1)')
+        ]
         self.mod.refresh_layer_from_db(self.iface, 'test_layer', 'Road')
         self.layer.dataProvider().deleteFeatures.assert_called_once()
         self.layer.commitChanges.assert_called_once()
@@ -178,15 +187,16 @@ class TestLayerRefresh(unittest.TestCase):
     @patch('plans_adressage.layer.refresh.get_session')
     @patch('plans_adressage.layer.refresh.QgsProject')
     def test_refresh_from_db_no_geometry_column(
-        self, mock_project, mock_get_session, mock_models,
+        self,
+        mock_project,
+        mock_get_session,
+        mock_models,
     ):
-        (mock_project.instance.return_value
-    .mapLayersByName.return_value) = [self.layer]
+        (mock_project.instance.return_value.mapLayersByName.return_value) = [self.layer]
         self.layer.fields.return_value = []
         mock_session = MagicMock()
         mock_get_session.return_value = mock_session
-        mock_session.query.return_value.all.return_value = [
-            (MagicMock(), None)]
+        mock_session.query.return_value.all.return_value = [(MagicMock(), None)]
         mock_text_col = MagicMock()
         mock_text_col.name = 'name'
         mock_text_col.type = object()

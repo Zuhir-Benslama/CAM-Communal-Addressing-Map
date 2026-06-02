@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 """Map tool management mixin for measure and identify interactions."""
 
 from __future__ import annotations
@@ -49,8 +50,9 @@ class MapToolsMixin:
         layers = QgsProject.instance().mapLayersByName(layer_name)
         if not layers:
             QMessageBox.critical(
-                self, self._tr("Error"),
-                self._tr("No active vector layer."),
+                self,
+                self._tr('Error'),
+                self._tr('No active vector layer.'),
             )
             return
         self.iface.setActiveLayer(layers[0])
@@ -76,8 +78,7 @@ class MapToolsMixin:
         """Reconnect the custom context menu to ensure it stays active."""
         canvas = self.iface.mapCanvas()
         try:
-            canvas.customContextMenuRequested.disconnect(
-                self.on_edition_release)
+            canvas.customContextMenuRequested.disconnect(self.on_edition_release)
         except TypeError:
             pass
         try:
@@ -99,7 +100,8 @@ class MapToolsMixin:
         self.iface.mapCanvas().setCursor(Qt.CursorShape.ArrowCursor)
 
     def _select_ref(
-        self: HasFullMapToolsContext, combo,
+        self: HasFullMapToolsContext,
+        combo,
     ) -> None:
         """Activate identify tool in reference mode for selecting a
         reference feature."""
@@ -112,7 +114,8 @@ class MapToolsMixin:
                 self.iface.setActiveLayer(layer[0])
                 canvas = self.iface.mapCanvas()
                 self.ref_identify_tool = IdentifyTool(
-                    canvas, mode=IdentifyTool.MODE_REF,
+                    canvas,
+                    mode=IdentifyTool.MODE_REF,
                 )
                 self.ref_identify_tool.set_iface(self.iface)
                 self.ref_identify_tool.set_ref_name(self.ref_name)
@@ -121,8 +124,8 @@ class MapToolsMixin:
         else:
             QMessageBox.critical(
                 self,
-                self._tr("Error"),
-                self._tr("Reference type not specified"),
+                self._tr('Error'),
+                self._tr('Reference type not specified'),
             )
         self.set_default_cursor()
 
@@ -142,8 +145,8 @@ class MapToolsMixin:
         if not ref_data:
             QMessageBox.critical(
                 self,
-                self._tr("Error"),
-                self._tr("Reference type not specified"),
+                self._tr('Error'),
+                self._tr('Reference type not specified'),
             )
             return
 

@@ -20,15 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 import logging
 import os
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
-from qgis.PyQt.QtCore import QObject, QSettings, QUrl, Qt, pyqtSlot
+from qgis.PyQt.QtCore import QObject, QSettings, Qt, QUrl, pyqtSlot
 from qgis.PyQt.QtWidgets import QApplication, QDialog, QFileDialog, QVBoxLayout
 
 try:
     from qgis.PyQt.QtQuickWidgets import QQuickWidget
+
     _HAS_QML = True
 except ImportError:
     QQuickWidget = None
@@ -64,6 +66,15 @@ from ..scripts.lookup_data import (
     clear_i18n_cache,
     get_string,
 )
+from .proxies import (
+    _COMBO_NAMES,
+    _FIELD_NAMES,
+    _ComboProxy,
+    _FieldProxy,
+    _FormStackProxy,
+    _MenuProxy,
+    _RouterProxy,
+)
 from .ui_fillers import (
     _ACTIVITY_KEY,
     fill_activity_category,
@@ -82,197 +93,10 @@ from .ui_fillers import (
     save_new_type,
 )
 
-if TYPE_CHECKING:
-    pass  # FORM_CLASS type not needed in QML mode
-
 logger = logging.getLogger(__name__)
 
 PLUGIN_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 QML_DIR = os.path.join(PLUGIN_DIR, 'qml')
-
-
-class _ComboProxy:
-    """Proxy that mimics a QComboBox for QML-backed combo access.
-
-    Methods match PyQt QComboBox naming so fill_* functions work unchanged.
-    """
-
-    def __init__(self) -> None:
-        self._items: list[dict[str, Any]] = []
-        self._blocked = False
-        self._index = -1
-
-    def clear(self) -> None:
-        self._items = []
-        self._index = -1
-
-    def addItem(self, text: str, value: Any = None) -> None:
-        was_empty = len(self._items) == 0
-        self._items.append({'text': str(text), 'value': value})
-        if was_empty and self._index < 0:
-            self._index = 0
-
-    def count(self) -> int:
-        return len(self._items)
-
-    def currentIndex(self) -> int:
-        return self._index
-
-    def setCurrentIndex(self, index: int) -> None:
-        self._index = index
-
-    def currentText(self) -> str:
-        if 0 <= self._index < len(self._items):
-            return str(self._items[self._index].get('text', ''))
-        return ''
-
-    def currentData(self) -> Any:
-        if 0 <= self._index < len(self._items):
-            return self._items[self._index].get('value')
-        return None
-
-    def itemData(self, index: int) -> Any:
-        if 0 <= index < len(self._items):
-            return self._items[index].get('value')
-        return None
-
-    def itemText(self, index: int) -> str:
-        if 0 <= index < len(self._items):
-            return str(self._items[index].get('text', ''))
-        return ''
-
-    def setItemText(self, index: int, text: str) -> None:
-        if 0 <= index < len(self._items):
-            self._items[index]['text'] = str(text)
-
-    def findData(self, value: Any) -> int:
-        for i, item in enumerate(self._items):
-            if item.get('value') == value:
-                return i
-        return -1
-
-    def blockSignals(self, blocked: bool) -> bool:
-        old = self._blocked
-        self._blocked = blocked
-        return old
-
-    def setVisible(self, visible: bool) -> None:
-        pass
-
-    def completer(self) -> None:
-        return None
-
-    def setInsertPolicy(self, policy: object) -> None:
-        pass
-
-
-class _FieldProxy:
-    """Proxy that mimics a QLineEdit / QLabel for QML access."""
-
-    def __init__(self) -> None:
-        self._text = ''
-
-    def text(self) -> str:
-        return self._text
-
-    def setText(self, text: str) -> None:
-        self._text = str(text)
-
-    def clear(self) -> None:
-        self._text = ''
-
-    def setAlignment(self, *args: Any) -> None:
-        pass
-
-    def setSizePolicy(self, *args: Any) -> None:
-        pass
-
-    def setMinimumWidth(self, *args: Any) -> None:
-        pass
-
-    def setMinimumHeight(self, *args: Any) -> None:
-        pass
-
-    def setMaximumWidth(self, *args: Any) -> None:
-        pass
-
-    def setVisible(self, visible: bool) -> None:
-        pass
-
-    def setProperty(self, name: str, value: Any) -> None:
-        pass
-
-    def height(self) -> int:
-        return 34
-
-
-class _RouterProxy:
-    """Proxy that mimics a QStackedWidget for router navigation."""
-
-    def __init__(self, bridge: 'MainDialogBridge') -> None:
-        self._bridge = bridge
-
-    @staticmethod
-    def findChild(cls: type, name: str) -> object:
-        from types import SimpleNamespace
-        return SimpleNamespace(objectName=lambda: str(name))
-
-    def setCurrentWidget(self, page: object) -> None:
-        name = page.objectName() if hasattr(page, 'objectName') else str(page)
-        self._bridge._switch_page(str(name))
-
-
-class _MenuProxy:
-    """Proxy that mimics a QTabWidget for menu tab access."""
-
-    def __init__(self, bridge: 'MainDialogBridge') -> None:
-        self._bridge = bridge
-
-    def setCurrentIndex(self, index: int) -> None:
-        self._bridge._set_tab_index(index)
-
-    def currentIndex(self) -> int:
-        return self._bridge._get_tab_index()
-
-    def currentWidget(self) -> object:
-        idx = self.currentIndex()
-        from types import SimpleNamespace
-        return SimpleNamespace(
-            objectName=lambda: 'tab_ops' if idx == 0 else 'tab',
-        )
-
-    def setDocumentMode(self, val: bool) -> None:
-        pass
-
-    def setUsesScrollButtons(self, val: bool) -> None:
-        pass
-
-    def setStyleSheet(self, ss: str) -> None:
-        pass
-
-    def tabText(self, index: int) -> str:
-        names = {0: 'Operations', 1: 'Report', 2: 'Settings'}
-        return names.get(index, '')
-
-    def tabBar(self) -> object:
-        class _TabBar:
-            @staticmethod
-            def hide() -> None:
-                pass
-        return _TabBar()
-
-
-class _FormStackProxy:
-    """Proxy that mimics a QStackedWidget for form stack access."""
-
-    def __init__(self, bridge: 'MainDialogBridge') -> None:
-        self._bridge = bridge
-
-    def setCurrentIndex(self, index: int) -> None:
-        self._bridge._set_form_stack_index(index)
-
-    def currentIndex(self) -> int:
-        return self._bridge._get_form_stack_index()
 
 
 class MainDialogBridge(QObject):
@@ -322,8 +146,7 @@ class MainDialogBridge(QObject):
             handler()
 
     @pyqtSlot(str, int, str)
-    def onComboChanged(self, objectName: str, index: int,
-                       currentData: str) -> None:
+    def onComboChanged(self, objectName: str, index: int, currentData: str) -> None:
         d = self.dialog
         if objectName == 'wilaya_list':
             d.on_select_wilaya(index)
@@ -339,8 +162,12 @@ class MainDialogBridge(QObject):
             proxy = d._combo_proxies.get('map_options')
             if proxy:
                 proxy.setCurrentIndex(index)
-                logger.info("onComboChanged map_options: index=%d, text=%s, data=%s",
-                             index, proxy.currentText(), proxy.currentData())
+                logger.info(
+                    'onComboChanged map_options: index=%d, text=%s, data=%s',
+                    index,
+                    proxy.currentText(),
+                    proxy.currentData(),
+                )
         elif objectName == '_action_combo':
             d._on_action_changed(index)
         elif objectName == 'menu':
@@ -394,10 +221,13 @@ class MainDialogBridge(QObject):
         proxy = self.dialog._combo_proxies.get(name)
         if not proxy:
             return
-        items = [{'text': str(v.get('text', '')), 'value': str(v.get('value', ''))}
-                 for v in proxy._items]
-        logger.info("_push_combo %s: %d items, proxy._index=%d",
-                     name, len(items), proxy._index)
+        items = [
+            {'text': str(v.get('text', '')), 'value': str(v.get('value', ''))}
+            for v in proxy._items
+        ]
+        logger.info(
+            '_push_combo %s: %d items, proxy._index=%d', name, len(items), proxy._index
+        )
         root = self._qml_root()
         if root:
             root.setComboOptions(name, items)
@@ -411,29 +241,18 @@ class MainDialogBridge(QObject):
             root.setFieldText(name, proxy._text)
 
 
-# Mapping of widget names for proxied attributes
-_COMBO_NAMES = frozenset({
-    'wilaya_list', 'commune_of_wilaya', 'map_options', 'org_cat', 'org_type',
-    'activity_cat', 'activity_type', 'road_ref', 'panel_ref', 'paper',
-    'mount_status', 'num_state', 'subd_type', 'type_road', 'zone_type',
-    'layer_selector', 'feature_combo', 'subtype_combo', '_theme_combo',
-    '_locale_combo', '_action_combo',
-})
-
-_FIELD_NAMES = frozenset({
-    'username', 'password', 'uname', 'pwd', 'email', 'fname', 'lname', 'pnum',
-    'nom_zone', 'road_name', 'org_name', 'subd_name', 'num_val', 'repetition',
-    'ref_name', 'ref_name2', 'label_username', 'new_type', 'label_feature',
-    'label_type', 'label_subtype',
-    'lineEdit_type', 'lineEdit_by', 'lineEdit_nummokh', 'dateEdit',
-})
-
-
 class MainDialog(
     QDialog,
-    ChartMixin, MapToolsMixin,
-    AuthMixin, LayerOpsMixin, LayerDrawMixin, LayerEditMixin,
-    BackupMixin, SymbolExportMixin, ImportExportMixin, ReportMixin,
+    ChartMixin,
+    MapToolsMixin,
+    AuthMixin,
+    LayerOpsMixin,
+    LayerDrawMixin,
+    LayerEditMixin,
+    BackupMixin,
+    SymbolExportMixin,
+    ImportExportMixin,
+    ReportMixin,
 ):
     """Main dialog for the RNA QGIS plugin — QML-backed."""
 
@@ -457,18 +276,21 @@ class MainDialog(
         self.fill_map_options()
         mo = self._combo_proxies.get('map_options')
         if mo:
-            logger.info("map_options after fill: items=%d, index=%d, first_item=%s",
-                         len(mo._items), mo._index,
-                         mo._items[0] if mo._items else 'NONE')
+            logger.info(
+                'map_options after fill: items=%d, index=%d, first_item=%s',
+                len(mo._items),
+                mo._index,
+                mo._items[0] if mo._items else 'NONE',
+            )
         self._bridge._push_combos()
 
         self.iface.mapCanvas().setContextMenuPolicy(
-            Qt.ContextMenuPolicy.CustomContextMenu)
+            Qt.ContextMenuPolicy.CustomContextMenu
+        )
         self.iface.mapCanvas().customContextMenuRequested.connect(
             self.on_edition_release
         )
         self.iface.mapCanvas().mapToolSet.connect(self._on_map_tool_changed)
-
 
         self._init_theme_locale()
         self._bridge._push_combos()
@@ -493,12 +315,12 @@ class MainDialog(
         self.menu = _MenuProxy(self._bridge)
         self.form_stack = _FormStackProxy(self._bridge)
 
-    def _init_qml(self) -> None:
+    def _init_qml(self) -> None:  # pylint: disable=duplicate-code
         if not _HAS_QML or QQuickWidget is None:
             raise ImportError(
-                "Qt Quick Widgets (QtQml) is not available.\n"
-                "Please install the Qt Quick / QML package for your system\n"
-                "(e.g., python3-pyqt6.qml or qml6 on Debian/Ubuntu)."
+                'Qt Quick Widgets (QtQml) is not available.\n'
+                'Please install the Qt Quick / QML package for your system\n'
+                '(e.g., python3-pyqt6.qml or qml6 on Debian/Ubuntu).'
             )
         self.setObjectName('rnaMainDialog')
         self.setMinimumSize(640, 680)
@@ -513,15 +335,17 @@ class MainDialog(
 
         engine = self._quick_widget.engine()
         engine.addImportPath(QML_DIR)
-        for p in ('/usr/lib64/qt5/qml', '/usr/lib/qt5/qml',
-                  '/usr/local/lib/python3.14/site-packages/PyQt5/Qt5/qml'):
+        for p in (
+            '/usr/lib64/qt5/qml',
+            '/usr/lib/qt5/qml',
+        ):
             if os.path.isdir(p):
                 engine.addImportPath(p)
 
         context = self._quick_widget.rootContext()
         context.setContextProperty('pluginBridge', self._bridge)
-        context.setContextProperty('isDark',
-                                    self._current_theme == 'dark')
+        context.setContextProperty('isDark', self._current_theme == 'dark')
+        context.setContextProperty('isRTL', self._tr_locale == 'ar')
 
         qml_path = os.path.join(QML_DIR, 'maindialog', 'MainDialog.qml')
         self._quick_widget.setSource(QUrl.fromLocalFile(qml_path))
@@ -532,7 +356,8 @@ class MainDialog(
         root = self._quick_widget.rootObject()
         if root is None:
             raise RuntimeError(
-                "QML root object is None — check QML syntax and imports.")
+                'QML root object is None — check QML syntax and imports.'
+            )
         root.submitForm.connect(self._bridge.onPageSubmit)
         root.comboChanged.connect(self._bridge.onComboChanged)
         root.selectRef.connect(self._bridge.onSelectRef)
@@ -546,7 +371,8 @@ class MainDialog(
         if name in _FIELD_NAMES:
             return self._field_proxies.get(name)
         raise AttributeError(
-            f"'{type(self).__name__}' object has no attribute '{name}'")
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
 
     # ------------------------------------------------------------------
     # State
@@ -555,8 +381,8 @@ class MainDialog(
         self.sat_view: str | None = None
         self.rast: str | None = None
         self.ln: str | None = None
-        self.type_plan: str = ""
-        self.type_to_hide: str = ""
+        self.type_plan: str = ''
+        self.type_to_hide: str = ''
         self.measure_tool: MeasureTool | None = None
         self.identify_tool: IdentifyTool | None = None
         self.ref_identify_tool: IdentifyTool | None = None
@@ -570,7 +396,9 @@ class MainDialog(
     # Toggle settings
     # ------------------------------------------------------------------
     def _toggle_settings(self) -> None:
-        pass  # Tab switching is handled in QML
+        root = self._bridge._qml_root()
+        if root:
+            root.toggleSettingsTab()
 
     # ------------------------------------------------------------------
     # Action combo (Maps, Reports and Backup section)
@@ -589,7 +417,9 @@ class MainDialog(
 
     def _on_save_action(self) -> None:
         directory = QFileDialog.getExistingDirectory(
-            self, self._tr("Choose output directory"), self._output_dir,
+            self,
+            self._tr('Choose output directory'),
+            self._output_dir,
         )
         if not directory:
             return
@@ -614,7 +444,11 @@ class MainDialog(
     # ------------------------------------------------------------------
     def _on_feature_changed(self, index: int) -> None:
         feature_combo = self._combo_proxies.get('feature_combo')
-        main_type = feature_combo.itemData(index) if feature_combo else None
+        if not feature_combo:
+            return
+        main_type = feature_combo.itemData(index)
+        if not isinstance(main_type, str):
+            return
         is_activity = main_type == _ACTIVITY_KEY
         label_subtype = self._field_proxies.get('label_subtype')
         new_type = self._field_proxies.get('new_type')
@@ -657,14 +491,22 @@ class MainDialog(
     # ------------------------------------------------------------------
     def _on_layer_changed(self, index: int) -> None:
         self.form_stack.setCurrentIndex(index)
-        if (hasattr(self.menu, 'currentWidget')
-                and self.menu.currentWidget()
-                and self.menu.currentWidget().objectName() == 'tab_ops'):
+        proxy = self._combo_proxies.get('layer_selector')
+        if proxy:
+            proxy.setCurrentIndex(index)
+        widget = (
+            self.menu.currentWidget() if hasattr(self.menu, 'currentWidget') else None
+        )
+        if widget is not None and widget.objectName() == 'tab_ops':
             self.on_opt_selected(self.menu.currentIndex())
 
     LAYER_INDEX_MAP = [
-        "Zones", "Roads", "Facilities",
-        "Subdivisions", "Numbering", "Panels",
+        'Zones',
+        'Roads',
+        'Facilities',
+        'Subdivisions',
+        'Numbering',
+        'Panels',
     ]
 
     def _current_layer_name(self) -> str:
@@ -678,6 +520,10 @@ class MainDialog(
     # Combo population
     # ------------------------------------------------------------------
     def _populate_combos(self) -> None:
+        layer_selector = self._combo_proxies.get('layer_selector')
+        if layer_selector:
+            for name in self.LAYER_INDEX_MAP:
+                layer_selector.addItem(name, name)
         fill_paper(self._combo_proxies.get('paper'))
         fill_wilayas_list(self._combo_proxies.get('wilaya_list'))
         fill_road_type(self._combo_proxies.get('type_road'))
@@ -688,8 +534,7 @@ class MainDialog(
         fill_road_reference(self._combo_proxies.get('road_ref'))
         fill_panel_reference(self._combo_proxies.get('panel_ref'))
         fill_feature_combo(self._combo_proxies.get('feature_combo'))
-        self._on_feature_changed(
-            self._combo_proxies['feature_combo'].currentIndex())
+        self._on_feature_changed(self._combo_proxies['feature_combo'].currentIndex())
 
     # ------------------------------------------------------------------
     # Translation helpers
@@ -733,7 +578,7 @@ class MainDialog(
         if locale_combo:
             for code, label in AVAILABLE_LOCALES:
                 locale_combo.addItem(label, code)
-            saved_locale = settings.value(SETTINGS_KEY_LOCALE, "")
+            saved_locale = settings.value(SETTINGS_KEY_LOCALE, '')
             if saved_locale:
                 li = locale_combo.findData(saved_locale)
                 if li >= 0:
@@ -775,8 +620,21 @@ class MainDialog(
             QApplication.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         else:
             QApplication.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        try:
+            root = self._quick_widget.rootObject()
+            if root:
+                root.updateLayoutDirection(code == 'ar')
+        except Exception:
+            pass
 
     def apply_theme(self) -> None:
         theme = self._current_theme
         qss = get_theme_qss(theme)
         self.setStyleSheet(qss)
+        is_dark = theme == 'dark'
+        try:
+            root = self._quick_widget.rootObject()
+            if root:
+                root.updateTheme(is_dark)
+        except Exception:
+            pass

@@ -1,4 +1,5 @@
 """Tests for gui/entity_list_dialog.py (QML-backed version)."""
+
 import importlib
 import sys
 import unittest
@@ -107,12 +108,12 @@ class TestEntityListDialogWithData(unittest.TestCase):
             mock_session.query.return_value.count.return_value = total_count
         else:
             mock_session.query.return_value.count.return_value = len(records)
-        mock_all = (mock_session.query.return_value.offset
-                    .return_value.limit.return_value.all)
+        mock_all = (
+            mock_session.query.return_value.offset.return_value.limit.return_value.all
+        )
         mock_all.return_value = records
 
-        patcher = patch.object(self.mod, 'get_session',
-                               return_value=mock_session)
+        patcher = patch.object(self.mod, 'get_session', return_value=mock_session)
         patcher.start()
         self.addCleanup(patcher.stop)
 
@@ -137,8 +138,7 @@ class TestEntityListDialogWithData(unittest.TestCase):
         self.assertEqual(len(data['rows']), 3)
 
     def test_set_page_data_total_matches(self):
-        dialog = self._make_dialog([MagicMock() for _ in range(5)],
-                                   total_count=42)
+        dialog = self._make_dialog([MagicMock() for _ in range(5)], total_count=42)
         data = dialog._qml_root.setPageData.call_args[0][0]
         self.assertEqual(data['total'], 42)
 
@@ -164,8 +164,7 @@ class TestEntityListDialogWithData(unittest.TestCase):
         with patch.object(self.mod, 'get_session') as mock_gs:
             mock_session = MagicMock()
             mock_gs.return_value = mock_session
-            dialog = self.mod.EntityListDialog(
-                'NonExistent', 'test', parent=None)
+            dialog = self.mod.EntityListDialog('NonExistent', 'test', parent=None)
             data = dialog._qml_root.setPageData.call_args[0][0]
             self.assertEqual(data['total'], 0)
             self.assertEqual(len(data['rows']), 0)
@@ -176,20 +175,19 @@ class TestEntityListDialogWithData(unittest.TestCase):
         self.assertEqual(data['page'], 0)
 
     def test_bridge_next_enabled_with_more_pages(self):
-        dialog = self._make_dialog(
-            [MagicMock() for _ in range(50)], total_count=100)
+        dialog = self._make_dialog([MagicMock() for _ in range(50)], total_count=100)
         data = dialog._qml_root.setPageData.call_args[0][0]
         self.assertEqual(data['page'], 0)
 
     def test_session_closed_after_init(self):
         mock_session = MagicMock()
         mock_session.query.return_value.count.return_value = 0
-        mock_all = (mock_session.query.return_value.offset
-                    .return_value.limit.return_value.all)
+        mock_all = (
+            mock_session.query.return_value.offset.return_value.limit.return_value.all
+        )
         mock_all.return_value = []
 
-        patcher = patch.object(self.mod, 'get_session',
-                               return_value=mock_session)
+        patcher = patch.object(self.mod, 'get_session', return_value=mock_session)
         patcher.start()
         self.addCleanup(patcher.stop)
 
@@ -197,21 +195,18 @@ class TestEntityListDialogWithData(unittest.TestCase):
         mock_session.close.assert_called_once()
 
     def test_pagination_next_page_with_data(self):
-        dialog = self._make_dialog(
-            [MagicMock() for _ in range(60)], total_count=60)
+        dialog = self._make_dialog([MagicMock() for _ in range(60)], total_count=60)
         dialog._bridge.nextPage()
         self.assertEqual(dialog._bridge._page, 1)
 
     def test_pagination_does_not_overflow(self):
-        dialog = self._make_dialog(
-            [MagicMock() for _ in range(60)], total_count=60)
+        dialog = self._make_dialog([MagicMock() for _ in range(60)], total_count=60)
         dialog._bridge._page = 1
         dialog._bridge.nextPage()
         self.assertEqual(dialog._bridge._page, 1)
 
     def test_pagination_prev_page_with_data(self):
-        dialog = self._make_dialog(
-            [MagicMock() for _ in range(60)], total_count=60)
+        dialog = self._make_dialog([MagicMock() for _ in range(60)], total_count=60)
         dialog._bridge._page = 1
         dialog._bridge.prevPage()
         self.assertEqual(dialog._bridge._page, 0)

@@ -1,4 +1,5 @@
 """Map identify tool for feature selection and editing."""
+
 import enum
 import logging
 from typing import Any
@@ -66,10 +67,7 @@ class IdentifyTool(QgsMapToolIdentify):
 
     def get_id(self) -> dict:
         """Return the selected feature's PK and layer name."""
-        return {
-            "id": self.feature_id,
-            "layer_name": self.get_active_layer().name()
-        }
+        return {'id': self.feature_id, 'layer_name': self.get_active_layer().name()}
 
     def canvasReleaseEvent(self, event) -> None:
         """Handle map canvas click: identify feature under the cursor."""
@@ -77,8 +75,10 @@ class IdentifyTool(QgsMapToolIdentify):
             _ = self.toMapCoordinates(event.pos())
 
             results = self.identify(
-                event.x(), event.y(), [self.get_active_layer()],
-                QgsMapToolIdentify.TopDownAll
+                event.x(),
+                event.y(),
+                [self.get_active_layer()],
+                QgsMapToolIdentify.TopDownAll,
             )
 
             if results:
@@ -88,15 +88,16 @@ class IdentifyTool(QgsMapToolIdentify):
                     menu = QMenu()
                     if self.mode == self.MODE_FORM:
                         form_action = menu.addAction(
-                            get_string("View or Update Form", current_locale())
+                            get_string('View or Update Form', current_locale())
                         )
                         form_action.triggered.connect(
                             lambda f=feature: self.display_or_update_form_feature(
-                                f['id'])
+                                f['id']
+                            )
                         )
 
                         remove_action = menu.addAction(
-                            get_string("Remove Item", current_locale())
+                            get_string('Remove Item', current_locale())
                         )
                         remove_action.triggered.connect(
                             lambda f=feature: self.delete_feature(f['id'])
@@ -105,22 +106,22 @@ class IdentifyTool(QgsMapToolIdentify):
                         name_locale = self._locale_feature_attr(feature, 'name')
                         type_locale = self._locale_feature_attr(feature, 'type')
                         ref_action = menu.addAction(
-                            get_string("Set Item as Reference", current_locale())
+                            get_string('Set Item as Reference', current_locale())
                         )
                         ref_action.triggered.connect(
-                            lambda f=feature,
-                            t=type_locale,
-                            n=name_locale: self.feature_as_ref(
-                                f['id'],
-                                t,
-                                n,
+                            lambda f=feature, t=type_locale, n=name_locale: (
+                                self.feature_as_ref(
+                                    f['id'],
+                                    t,
+                                    n,
+                                )
                             )
                         )
 
                     menu.exec_(event.globalPos())
                     break
             else:
-                logger.info("No features identified at this location.")
+                logger.info('No features identified at this location.')
 
         elif event.button() == Qt.MouseButton.RightButton:
             self.canvas.unsetMapTool(self)
@@ -132,6 +133,7 @@ class IdentifyTool(QgsMapToolIdentify):
     def display_or_update_form_feature(self, feature_id) -> None:
         """Open the popup dialog for the identified feature."""
         from .popup_dialog import PopupDialog  # pylint: disable=import-outside-toplevel
+
         layer_name = self.get_active_layer().name()
         layer_map = LAYER_KEY
         if self.dlg:
@@ -139,8 +141,10 @@ class IdentifyTool(QgsMapToolIdentify):
             self.dlg = None
 
         self.dlg = PopupDialog(
-            layer_name_value=layer_map.get(layer_name), iface=self.get_iface(),
-            layer_name_key=layer_name, attribute=feature_id
+            layer_name_value=layer_map.get(layer_name),
+            iface=self.get_iface(),
+            layer_name_key=layer_name,
+            attribute=feature_id,
         )
         self.dlg.show()
         self.dlg.exec()
@@ -156,12 +160,10 @@ class IdentifyTool(QgsMapToolIdentify):
                     model_name = data.get('model')
                     model = getattr(_models, model_name, None)
                     if model is None:
-                        logger.warning("Unknown model: %s", model_name)
+                        logger.warning('Unknown model: %s', model_name)
                         return
 
-                    query = session.query(model).filter(
-                        model.id == feature_id
-                    ).first()
+                    query = session.query(model).filter(model.id == feature_id).first()
 
                     if query:
                         query.delete(session)

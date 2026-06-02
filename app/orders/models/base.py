@@ -1,4 +1,5 @@
 """Base class and shared helpers for spatial models."""
+
 import logging
 from typing import Any, ClassVar
 
@@ -13,19 +14,19 @@ logger = logging.getLogger(__name__)
 def _get_current_user():
     """Return the currently authenticated user dict, or None."""
     from ...users.repository import get_current_user
+
     return get_current_user()
 
 
 def _parent_zone_id(session: Session, geometry: Any) -> str | None:
     """Return the ID of the Zone that contains *geometry*, or None."""
     from .zone import Zone
+
     try:
-        zone = session.query(Zone).filter(
-            ST_Within(geometry, Zone.geometry)
-        ).first()
+        zone = session.query(Zone).filter(ST_Within(geometry, Zone.geometry)).first()
         return zone.id if zone else None
     except Exception:  # pylint: disable=W0718
-        logger.warning("parent zone lookup failed", exc_info=True)
+        logger.warning('parent zone lookup failed', exc_info=True)
         return None
 
 
@@ -34,14 +35,17 @@ def _has_child_entities(session: Session, zone_geometry: Any) -> bool:
     from .organization import Organization
     from .road import Road
     from .subdivision import Subdivision
+
     try:
         for cls in (Road, Organization, Subdivision):
-            if session.query(cls).filter(
-                ST_Within(cls.geometry, zone_geometry)
-            ).first():
+            if (
+                session.query(cls)
+                .filter(ST_Within(cls.geometry, zone_geometry))
+                .first()
+            ):
                 return True
     except Exception:  # pylint: disable=W0718
-        logger.warning("has_child check failed", exc_info=True)
+        logger.warning('has_child check failed', exc_info=True)
     return False
 
 
@@ -51,6 +55,7 @@ class _BaseSpatialModel(Base, TimestampMixin):
     Subclasses override :attr:`_list_columns` to control which columns
     appear in :meth:`list_all`.
     """
+
     __abstract__ = True
 
     _list_columns: ClassVar[list[str]] = []
@@ -65,9 +70,12 @@ class _BaseSpatialModel(Base, TimestampMixin):
     @classmethod
     def list_all(cls, session: Session) -> dict:
         """Query all rows, returning only columns listed in _list_columns."""
-        columns = [column for column in cls.__table__.columns
-                   if column.name in cls._list_columns]
-        return {'data': session.query(*columns).all(), "cols": columns}
+        columns = [
+            column
+            for column in cls.__table__.columns
+            if column.name in cls._list_columns
+        ]
+        return {'data': session.query(*columns).all(), 'cols': columns}
 
     def delete(self, session: Session) -> None:
         """Delete this instance via *session* and commit."""

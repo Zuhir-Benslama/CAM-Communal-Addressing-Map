@@ -31,13 +31,14 @@ from qgis.PyQt.QtCore import QObject, pyqtSignal, pyqtSlot
 LOGGER = logging.getLogger('QGIS')
 
 
-#noinspection PyMethodMayBeStatic,PyPep8Naming
+# noinspection PyMethodMayBeStatic,PyPep8Naming
 class QgisInterface(QObject):
     """Class to expose QGIS objects and functions to plugins.
 
     This class is here for enabling us to run unit tests only,
     so most methods are simply stubs.
     """
+
     currentLayerChanged = pyqtSignal(QgsMapCanvasLayer)
 
     def __init__(self, canvas):
@@ -68,9 +69,9 @@ class QgisInterface(QObject):
         .. note:: The QgsInterface api does not include this method,
             it is added here as a helper to facilitate testing.
         """
-        #LOGGER.debug('addLayers called on qgis_interface')
-        #LOGGER.debug('Number of layers being added: %s' % len(layers))
-        #LOGGER.debug('Layer Count Before: %s' % len(self.canvas.layers()))
+        # LOGGER.debug('addLayers called on qgis_interface')
+        # LOGGER.debug('Number of layers being added: %s' % len(layers))
+        # LOGGER.debug('Layer Count Before: %s' % len(self.canvas.layers()))
         current_layers = self.canvas.layers()
         final_layers = []
         for layer in current_layers:
@@ -79,7 +80,7 @@ class QgisInterface(QObject):
             final_layers.append(QgsMapCanvasLayer(layer))
 
         self.canvas.setLayerSet(final_layers)
-        #LOGGER.debug('Layer Count After: %s' % len(self.canvas.layers()))
+        # LOGGER.debug('Layer Count After: %s' % len(self.canvas.layers()))
 
     @pyqtSlot(object)
     def addLayer(self, layer):

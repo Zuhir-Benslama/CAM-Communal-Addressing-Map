@@ -30,7 +30,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: Theme.surface
+        color: Theme.activeSurface()
 
         Flickable {
             anchors.fill: parent
@@ -40,26 +40,27 @@ Item {
             Rectangle {
                 id: formBox
                 width: Math.min(parent.width - 40, 550)
-                height: childrenRect.height + 40
+                height: childrenRect.height + (Theme.paddingLg * 2)
                 anchors.centerIn: parent
-                radius: 8
-                color: Theme.background
-                border.color: Theme.border
+                radius: Theme.radiusLg
+                color: Theme.activeBg()
+                border.color: Theme.activeBorder()
 
                 ColumnLayout {
-                    x: 20; y: 20
-                    width: parent.width - 40
-                    spacing: 12
+                    x: Theme.paddingLg
+                    y: Theme.paddingLg
+                    width: parent.width - (Theme.paddingLg * 2)
+                    spacing: Theme.spacingMd
 
                     Text {
                         text: "Add User"
-                        font.pixelSize: 20
+                        font.pixelSize: Theme.fontTitle
                         font.bold: true
-                        color: Theme.text
+                        color: Theme.activeAccent()
                         Layout.alignment: Qt.AlignHCenter
                     }
 
-                    Rectangle { height: 1; color: Theme.border; Layout.fillWidth: true }
+                    Rectangle { height: 1; color: Theme.activeBorder(); Layout.fillWidth: true }
 
                     Repeater {
                         model: [
@@ -73,14 +74,14 @@ Item {
 
                         GridLayout {
                             columns: 2
-                            columnSpacing: 10
-                            rowSpacing: 8
+                            columnSpacing: Theme.spacingSm
+                            rowSpacing: Theme.spacingSm
                             Layout.fillWidth: true
 
                             Text {
                                 text: modelData.text
                                 font.bold: true
-                                color: Theme.text
+                                color: Theme.activeText()
                                 Layout.minimumWidth: 120
                                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                             }
@@ -90,27 +91,27 @@ Item {
                                 Layout.fillWidth: true
                                 Layout.maximumWidth: 400
                                 echoMode: modelData.label === "pwd" ? TextInput.Password : TextInput.Normal
-                                color: Theme.text
+                                color: Theme.activeText()
                                 placeholderText: modelData.text
                                 background: Rectangle {
-                                    color: Theme.surface
-                                    border.color: Theme.border
-                                    radius: 4
+                                    color: Theme.activeSurface()
+                                    border.color: Theme.activeBorder()
+                                    radius: Theme.radiusMd
                                 }
                                 Component.onCompleted: root.registerField(this)
                             }
                         }
                     }
 
-                    Rectangle { height: 1; color: Theme.border; Layout.fillWidth: true }
+                    Rectangle { height: 1; color: Theme.activeBorder(); Layout.fillWidth: true }
 
                     GridLayout {
                         columns: 2
-                        columnSpacing: 10
-                        rowSpacing: 8
+                        columnSpacing: Theme.spacingSm
+                        rowSpacing: Theme.spacingSm
                         Layout.fillWidth: true
 
-                        Text { text: "State *:"; font.bold: true; color: Theme.text; Layout.minimumWidth: 120; Layout.alignment: Qt.AlignRight | Qt.AlignVCenter }
+                        Text { text: "State *:"; font.bold: true; color: Theme.activeText(); Layout.minimumWidth: 120; Layout.alignment: Qt.AlignRight | Qt.AlignVCenter }
                         ComboBox {
                             id: wilayaCombo
                             objectName: "wilaya_list"
@@ -121,13 +122,13 @@ Item {
                             valueRole: "value"
                             onCurrentIndexChanged: root.wilayaChanged(currentIndex, currentValue)
                             background: Rectangle {
-                                color: Theme.surface
-                                border.color: Theme.border
-                                radius: 4
+                                color: Theme.activeSurface()
+                                border.color: Theme.activeBorder()
+                                radius: Theme.radiusMd
                             }
                             contentItem: Text {
                                 text: parent.displayText
-                                color: Theme.text
+                                color: Theme.activeText()
                                 verticalAlignment: Text.AlignVCenter
                             }
                         }
@@ -135,11 +136,11 @@ Item {
 
                     GridLayout {
                         columns: 2
-                        columnSpacing: 10
-                        rowSpacing: 8
+                        columnSpacing: Theme.spacingSm
+                        rowSpacing: Theme.spacingSm
                         Layout.fillWidth: true
 
-                        Text { text: "Municipality *:"; font.bold: true; color: Theme.text; Layout.minimumWidth: 120; Layout.alignment: Qt.AlignRight | Qt.AlignVCenter }
+                        Text { text: "Municipality *:"; font.bold: true; color: Theme.activeText(); Layout.minimumWidth: 120; Layout.alignment: Qt.AlignRight | Qt.AlignVCenter }
                         ComboBox {
                             id: communeCombo
                             objectName: "commune_of_wilaya"
@@ -149,31 +150,31 @@ Item {
                             textRole: "text"
                             valueRole: "value"
                             background: Rectangle {
-                                color: Theme.surface
-                                border.color: Theme.border
-                                radius: 4
+                                color: Theme.activeSurface()
+                                border.color: Theme.activeBorder()
+                                radius: Theme.radiusMd
                             }
                             contentItem: Text {
                                 text: parent.displayText
-                                color: Theme.text
+                                color: Theme.activeText()
                                 verticalAlignment: Text.AlignVCenter
                             }
                         }
                     }
 
-                    Rectangle { height: 1; color: Theme.border; Layout.fillWidth: true }
+                    Rectangle { height: 1; color: Theme.activeBorder(); Layout.fillWidth: true }
 
                     RowLayout {
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignHCenter
-                        spacing: 20
+                        spacing: Theme.spacingLg
 
                         Button {
                             text: "Cancel"
                             onClicked: root.cancelClicked()
                             background: Rectangle {
-                                color: Theme.danger
-                                radius: 4
+                                color: Theme.activeDanger()
+                                radius: Theme.radiusMd
                             }
                             contentItem: Text {
                                 text: parent.text
@@ -189,8 +190,8 @@ Item {
                             Layout.minimumWidth: 200
                             onClicked: root.saveClicked()
                             background: Rectangle {
-                                color: Theme.primary
-                                radius: 4
+                                color: Theme.activeAccent()
+                                radius: Theme.radiusMd
                             }
                             contentItem: Text {
                                 text: parent.text

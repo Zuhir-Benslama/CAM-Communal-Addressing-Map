@@ -1,4 +1,5 @@
 """QSS theme configuration and mod_spatialite library discovery."""
+
 import logging
 import os
 import subprocess
@@ -10,28 +11,28 @@ logger = logging.getLogger(__name__)
 _TEMPLATE_DIR = os.path.join(PLUGIN_DIR, 'resources')
 
 _COLORS = {
-    'DARK_BG': "#1a1b26",
-    'DARK_SURFACE': "#24253a",
-    'DARK_OVERLAY': "#2f3048",
-    'DARK_BORDER': "#3b3d54",
-    'DARK_TEXT': "#c9d1d9",
-    'DARK_TEXT_SEC': "#8b949e",
-    'DARK_ACCENT': "#58a6ff",
-    'DARK_ACCENT_HOVER': "#79b8ff",
-    'DARK_SUCCESS': "#3fb950",
-    'DARK_DANGER': "#f85149",
-    'DARK_SELECTION': "#264f78",
-    'LIGHT_BG': "#f6f8fa",
-    'LIGHT_SURFACE': "#ffffff",
-    'LIGHT_OVERLAY': "#eaeef2",
-    'LIGHT_BORDER': "#d0d7de",
-    'LIGHT_TEXT': "#1f2328",
-    'LIGHT_TEXT_SEC': "#656d76",
-    'LIGHT_ACCENT': "#0969da",
-    'LIGHT_ACCENT_HOVER': "#0550ae",
-    'LIGHT_SUCCESS': "#1a7f37",
-    'LIGHT_DANGER': "#cf222e",
-    'LIGHT_SELECTION': "#b6d4fe",
+    'DARK_BG': '#1a1b26',
+    'DARK_SURFACE': '#24253a',
+    'DARK_OVERLAY': '#2f3048',
+    'DARK_BORDER': '#3b3d54',
+    'DARK_TEXT': '#c9d1d9',
+    'DARK_TEXT_SEC': '#8b949e',
+    'DARK_ACCENT': '#58a6ff',
+    'DARK_ACCENT_HOVER': '#79b8ff',
+    'DARK_SUCCESS': '#3fb950',
+    'DARK_DANGER': '#f85149',
+    'DARK_SELECTION': '#264f78',
+    'LIGHT_BG': '#f6f8fa',
+    'LIGHT_SURFACE': '#ffffff',
+    'LIGHT_OVERLAY': '#eaeef2',
+    'LIGHT_BORDER': '#d0d7de',
+    'LIGHT_TEXT': '#1f2328',
+    'LIGHT_TEXT_SEC': '#656d76',
+    'LIGHT_ACCENT': '#0969da',
+    'LIGHT_ACCENT_HOVER': '#0550ae',
+    'LIGHT_SUCCESS': '#1a7f37',
+    'LIGHT_DANGER': '#cf222e',
+    'LIGHT_SELECTION': '#b6d4fe',
 }
 
 
@@ -47,8 +48,8 @@ def _load_qss_template(filename: str) -> str:
         template = template.replace('}}', '}')
         return template
     except FileNotFoundError:
-        logger.warning("QSS template not found: %s", path)
-        return ""
+        logger.warning('QSS template not found: %s', path)
+        return ''
 
 
 DARK_QSS = _load_qss_template('dark_qss.template')
@@ -110,7 +111,10 @@ def _find_via_ldconfig() -> str | None:
     """Locate mod_spatialite.so via ``ldconfig -p`` output."""
     try:
         result = subprocess.run(
-            ['ldconfig', '-p'], capture_output=True, text=True, check=True,
+            ['ldconfig', '-p'],
+            capture_output=True,
+            text=True,
+            check=True,
         )
         for line in result.stdout.splitlines():
             if 'mod_spatialite' not in line:
@@ -120,10 +124,10 @@ def _find_via_ldconfig() -> str | None:
                 path = parts[1].strip()
                 if os.path.exists(path):
                     return path
-    except (subprocess.CalledProcessError, FileNotFoundError,
-            PermissionError, OSError):
+    except (subprocess.CalledProcessError, FileNotFoundError, PermissionError, OSError):
         logger.debug(
-            "mod_spatialite not found via ldconfig", exc_info=True,
+            'mod_spatialite not found via ldconfig',
+            exc_info=True,
         )
     return None
 

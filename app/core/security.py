@@ -1,4 +1,5 @@
 """Password hashing and JWT secret management."""
+
 import logging
 import os
 
@@ -16,9 +17,9 @@ def get_jwt_secret() -> str:
         secret = os.getenv('RNA_JWT_SECRET')
         if not secret:
             raise RuntimeError(
-                "RNA_JWT_SECRET environment variable must be set. "
-                "Generate a secret with: "
-                "python3 -c \"import secrets; print(secrets.token_hex(32))\""
+                'RNA_JWT_SECRET environment variable must be set. '
+                'Generate a secret with: '
+                'python3 -c "import secrets; print(secrets.token_hex(32))"'
             )
         _SECRET = secret
     return _SECRET
@@ -32,6 +33,4 @@ def hash_password(password: str) -> str:
 
 def verify_password(password: str, hashed_password: str) -> bool:
     """Return True if *password* matches *hashed_password*."""
-    return bcrypt.checkpw(
-        password.encode('utf-8'), hashed_password.encode('utf-8')
-    )
+    return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))

@@ -65,15 +65,24 @@ class ChartMixin:
     """Mixin providing chart generation for panel and numbering data."""
 
     def _generate_chart(
-        self: HasTranslation, _model_class, column, title_key: str,
-        layer_to_show: str, layer_to_hide: str,
+        self: HasTranslation,
+        _model_class,
+        column,
+        title_key: str,
+        layer_to_show: str,
+        layer_to_hide: str,
     ) -> None:
         """Query, render a bar chart, and toggle layer visibility."""
         session = get_session()
         try:
-            results = session.query(
-                column, func.count(1).label('count')  # pylint: disable=not-callable
-            ).group_by(column).all()
+            results = (
+                session.query(
+                    column,
+                    func.count(1).label('count'),  # pylint: disable=not-callable
+                )
+                .group_by(column)
+                .all()
+            )
         finally:
             session.close()
 
@@ -92,9 +101,11 @@ class ChartMixin:
         self.type_plan = LAYER_PANELS
         self.type_to_hide = LAYER_NUMBERING
         self._generate_chart(
-            PanelSign, PanelSign.status,
+            PanelSign,
+            PanelSign.status,
             'Distribution by Status',
-            LAYER_PANELS, LAYER_NUMBERING,
+            LAYER_PANELS,
+            LAYER_NUMBERING,
         )
         refresh_all_layers(self.iface)
 
@@ -103,9 +114,11 @@ class ChartMixin:
         self.type_plan = LAYER_NUMBERING
         self.type_to_hide = LAYER_PANELS
         self._generate_chart(
-            Numbering, Numbering.state,
+            Numbering,
+            Numbering.state,
             'Distribution by Numbering State',
-            LAYER_NUMBERING, LAYER_PANELS,
+            LAYER_NUMBERING,
+            LAYER_PANELS,
         )
         refresh_all_layers(self.iface)
 
@@ -114,10 +127,12 @@ class ChartMixin:
         from ..app.orders.repository import (
             get_zone_distribution,  # pylint: disable=import-outside-toplevel
         )
+
         results = get_zone_distribution(wilaya_number)
         if not results:
             logger.warning(
-                "No data available for wilaya number: %s", wilaya_number,
+                'No data available for wilaya number: %s',
+                wilaya_number,
             )
             return
 

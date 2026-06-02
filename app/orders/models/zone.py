@@ -1,4 +1,5 @@
 """Zone spatial model."""
+
 import uuid
 from typing import Any, Optional
 
@@ -18,15 +19,19 @@ class Zone(_BaseSpatialModel):
     _list_columns = ['type', 'name']
 
     id = Column(
-        Text, primary_key=True, default=lambda: str(uuid.uuid4()),
+        Text,
+        primary_key=True,
+        default=lambda: str(uuid.uuid4()),
         info={'label': 'Key'},
     )
     locality_id = Column(
-        String, index=True,
+        String,
+        index=True,
         info={'label': 'Location'},
     )
     type = Column(
-        String, nullable=False,
+        String,
+        nullable=False,
         info={'label': 'Type', 'label_fr': 'Type', 'label_en': 'Type'},
     )
     name = Column(
@@ -35,22 +40,25 @@ class Zone(_BaseSpatialModel):
     )
     name_fr = Column(String, nullable=True)
     name_en = Column(String, nullable=True)
-    geometry = Column(Geometry('POLYGON', srid=SRID), nullable=False,
-                      info={'label': 'Geometry'})
+    geometry = Column(
+        Geometry('POLYGON', srid=SRID), nullable=False, info={'label': 'Geometry'}
+    )
     has_child = Column(Boolean, default=False, nullable=False)
-    user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True,
-                     info={'label': 'User'})
-    user = relationship("User", backref="user_poly", foreign_keys=[user_id])
+    user_id = Column(
+        Text, ForeignKey('user.id'), nullable=True, index=True, info={'label': 'User'}
+    )
+    user = relationship('User', backref='user_poly', foreign_keys=[user_id])
 
     @classmethod
-    def update(cls, session: Session, record_id: str,
-               **kwargs: Any) -> Optional['Zone']:
+    def update(
+        cls, session: Session, record_id: str, **kwargs: Any
+    ) -> Optional['Zone']:
         """Update zone attributes and recalc has_child."""
 
         instance = session.query(cls).filter_by(id=record_id).first()
         user_data = _get_current_user()
         if not user_data or not instance:
-            raise ValueError("Zone not found or no authenticated user")
+            raise ValueError('Zone not found or no authenticated user')
         for key, value in _allowlist_columns(cls, **kwargs).items():
             setattr(instance, key, value)
         instance.user_id = user_data.get('id')
@@ -60,8 +68,7 @@ class Zone(_BaseSpatialModel):
         return instance
 
     @classmethod
-    def _recalc_has_child(cls, session: Session,
-                          zone_id: str) -> None:
+    def _recalc_has_child(cls, session: Session, zone_id: str) -> None:
         """Recalculate has_child for a zone based on actual spatial data."""
         zone = session.query(cls).filter_by(id=zone_id).first()
         if not zone:
@@ -73,7 +80,7 @@ class Zone(_BaseSpatialModel):
         """Persist zone, linking to user and locality."""
         user_data = _get_current_user()
         if not user_data:
-            raise ValueError("No user found")
+            raise ValueError('No user found')
         self.user_id = user_data.get('id')
         self.locality_id = user_data.get('commune_code')
         self.has_child = _has_child_entities(session, self.geometry)

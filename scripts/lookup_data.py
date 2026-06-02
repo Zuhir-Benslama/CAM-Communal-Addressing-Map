@@ -15,13 +15,14 @@ from qgis.PyQt.QtWidgets import (
 )
 
 _DATA_DIR = os.path.join(
-    os.path.dirname(os.path.dirname(__file__)), 'template_data',
+    os.path.dirname(os.path.dirname(__file__)),
+    'template_data',
 )
 
-_cache: dict[str, list[dict[str, Any]]] = {}
+_cache: dict[str, Any] = {}
 
 
-def _load(filename: str) -> list[dict[str, Any]]:
+def _load(filename: str) -> Any:
     """Load and cache JSON data from a template data file."""
     if filename not in _cache:
         path = os.path.join(_DATA_DIR, filename)
@@ -33,6 +34,7 @@ def _load(filename: str) -> list[dict[str, Any]]:
 # ---------------------------------------------------------------------------
 # Simple lookups: {pk, label_fr?, label_en?}
 # ---------------------------------------------------------------------------
+
 
 def road_types() -> list[dict[str, Any]]:
     """Return road type lookup data."""
@@ -67,6 +69,7 @@ def numbering_states() -> list[dict[str, Any]]:
 #   - category = category (Arabic)
 # ---------------------------------------------------------------------------
 
+
 def organization_types() -> list[dict[str, Any]]:
     """Return organization type lookup data."""
     return _load('organization_type.json')
@@ -90,7 +93,8 @@ def org_categories(locale: str = 'ar') -> list[tuple[str, str]]:
 
 
 def org_types_for_category(
-    category: str, locale: str = 'ar',
+    category: str,
+    locale: str = 'ar',
 ) -> list[tuple[str, str]]:
     """Return organization types for a category -> (display, pk)."""
     result: list[tuple[str, str]] = []
@@ -123,6 +127,7 @@ def org_subcategories(category: str) -> list[str]:
 # Activity types: {sector, type, cat_fr?, cat_en?, type_fr?, type_en?}
 # ---------------------------------------------------------------------------
 
+
 def activity_types() -> list[dict[str, Any]]:
     """Return activity type lookup data."""
     return _load('activity.json')
@@ -146,7 +151,8 @@ def activity_categories(locale: str = 'ar') -> list[tuple[str, str]]:
 
 
 def activity_types_for_category(
-    cat: str, locale: str = 'ar',
+    cat: str,
+    locale: str = 'ar',
 ) -> list[tuple[str, str]]:
     """Return activity types for a category -> (display, value)."""
     result: list[tuple[str, str]] = []
@@ -178,6 +184,7 @@ def activity_subcategories(cat: str) -> list[str]:
 # ---------------------------------------------------------------------------
 # Administrative geography — communes, dairas, wilayas
 # ---------------------------------------------------------------------------
+
 
 def communes_data() -> dict[str, dict[str, Any]]:
     """Return all communes as a dict keyed by commune_id (str)."""
@@ -222,6 +229,7 @@ def _lookup_wilaya_for_commune_code(commune_code: str) -> int | None:
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def locale_label(entry: dict[str, Any], locale: str) -> str:
     """Return locale-appropriate label for a simple lookup entry."""
@@ -290,8 +298,10 @@ def _src_text(w, attr='text'):
     Uses attr-specific cache attribute (_rna_src, _rna_src_tip, _rna_src_win)
     to avoid clashes when a widget appears in multiple findChildren passes."""
     cache_attr = {
-        'text': '_rna_src', 'title': '_rna_src',
-        'placeholder': '_rna_src', 'tooltip': '_rna_src_tip',
+        'text': '_rna_src',
+        'title': '_rna_src',
+        'placeholder': '_rna_src',
+        'tooltip': '_rna_src_tip',
         'windowtitle': '_rna_src_win',
     }.get(attr, '_rna_src')
     cached = getattr(w, cache_attr, None)
@@ -318,13 +328,15 @@ def _translate_text(src: str, locale: str) -> str:
     return translated if translated != src else ''
 
 
-def _set_from_lookup(w, locale, widgets_data, *, attr='text', setter='setText',
-                     src_attr=None) -> None:
+def _set_from_lookup(
+    w, locale, widgets_data, *, attr='text', setter='setText', src_attr=None
+) -> None:
     """Set a widget attribute from widgets_data or _src_text fallback."""
     name = w.objectName()
     if name in widgets_data:
         value = widgets_data[name].get(
-            locale, widgets_data[name].get('ar', ''),
+            locale,
+            widgets_data[name].get('ar', ''),
         )
         getattr(w, setter)(value)
         return
@@ -344,8 +356,7 @@ def _translate_labels(dialog, locale, widgets_data) -> None:
 def _translate_groupbox(dialog, locale, widgets_data) -> None:
     """Translate QGroupBox titles."""
     for w in dialog.findChildren(QGroupBox):
-        _set_from_lookup(w, locale, widgets_data,
-                         attr='title', setter='setTitle')
+        _set_from_lookup(w, locale, widgets_data, attr='title', setter='setTitle')
 
 
 def _translate_placeholder(dialog, locale) -> None:
@@ -388,9 +399,12 @@ def _translate_tooltips(dialog, locale, widgets_data) -> None:
         if not tip:
             continue
         if name in widgets_data:
-            w.setToolTip(widgets_data[name].get(
-                locale, widgets_data[name].get('ar', ''),
-            ))
+            w.setToolTip(
+                widgets_data[name].get(
+                    locale,
+                    widgets_data[name].get('ar', ''),
+                )
+            )
         else:
             translated = _translate_text(tip, locale)
             if translated:

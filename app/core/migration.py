@@ -2,6 +2,7 @@
 current schema.  Used by both the CLI tool (``scripts/migrate_db.py``)
 and the plugin's Import Database feature.
 """
+
 import logging
 import os
 import sqlite3
@@ -10,86 +11,86 @@ logger = logging.getLogger(__name__)
 
 
 COLUMN_MAP = {
-    "user": {
-        "id": "id",
-        "username": "username",
-        "first_name": "first_name",
-        "last_name": "last_name",
-        "password": "password",
-        "active": "active",
-        "wilaya_code": "wilaya_code",
-        "commune_code": "commune_code",
-        "api_key": "api_key",
-        "email": "email",
-        "phone": "phone",
+    'user': {
+        'id': 'id',
+        'username': 'username',
+        'first_name': 'first_name',
+        'last_name': 'last_name',
+        'password': 'password',
+        'active': 'active',
+        'wilaya_code': 'wilaya_code',
+        'commune_code': 'commune_code',
+        'api_key': 'api_key',
+        'email': 'email',
+        'phone': 'phone',
     },
-    "refpoly": {
-        "pkuid": "id",
-        "idLoc": "locality_id",
-        "Type": "type",
-        "Nom": "name",
-        "geometry": "geometry",
-        "has_child": "has_child",
-        "uid": "user_id",
+    'refpoly': {
+        'pkuid': 'id',
+        'idLoc': 'locality_id',
+        'Type': 'type',
+        'Nom': 'name',
+        'geometry': 'geometry',
+        'has_child': 'has_child',
+        'uid': 'user_id',
     },
-    "refpolychild": {
-        "pkuid": "id",
-        "idLoc": "locality_id",
-        "Type": "type",
-        "Nom": "name",
-        "geometry": "geometry",
-        "parent": "parent",
-        "uid": "user_id",
+    'refpolychild': {
+        'pkuid': 'id',
+        'idLoc': 'locality_id',
+        'Type': 'type',
+        'Nom': 'name',
+        'geometry': 'geometry',
+        'parent': 'parent',
+        'uid': 'user_id',
     },
-    "RefLine": {
-        "pkuid": "id",
-        "num_decision": "decision_number",
-        "Type": "type",
-        "Nom": "name",
-        "idLoc": "locality_id",
-        "geometry": "geometry",
-        "pkuid_poly": "zone_id",
-        "uid": "user_id",
+    'RefLine': {
+        'pkuid': 'id',
+        'num_decision': 'decision_number',
+        'Type': 'type',
+        'Nom': 'name',
+        'idLoc': 'locality_id',
+        'geometry': 'geometry',
+        'pkuid_poly': 'zone_id',
+        'uid': 'user_id',
     },
-    "reforg": {
-        "pkuid": "id",
-        "idLoc": "locality_id",
-        "Type": "type",
-        "Cat": "category",
-        "Nom": "name",
-        "geometry": "geometry",
-        "uid": "user_id",
-        "pkuid_poly": "zone_id",
+    'reforg': {
+        'pkuid': 'id',
+        'idLoc': 'locality_id',
+        'Type': 'type',
+        'Cat': 'category',
+        'Nom': 'name',
+        'geometry': 'geometry',
+        'uid': 'user_id',
+        'pkuid_poly': 'zone_id',
     },
-    "Numerotation": {
-        "pkuid": "id",
-        "valeur": "value",
-        "idLine": "road_id",
-        "idPoly": "subdivision_id",
-        "repetition": "repetition",
-        "etat": "state",
-        "geometry": "geometry",
-        "uid": "user_id",
-        "activity_cat": "activity_cat",
-        "activity_type": "activity_type",
+    'Numerotation': {
+        'pkuid': 'id',
+        'valeur': 'value',
+        'idLine': 'road_id',
+        'idPoly': 'subdivision_id',
+        'repetition': 'repetition',
+        'etat': 'state',
+        'geometry': 'geometry',
+        'uid': 'user_id',
+        'activity_cat': 'activity_cat',
+        'activity_type': 'activity_type',
     },
-    "Pannautage": {
-        "pkuid": "id",
-        "dim": "dimensions",
-        "Type": "type",
-        "Stituation": "status",
-        "idLine": "road_id",
-        "idPoly": "subdivision_id",
-        "idOrg": "organization_id",
-        "geometry": "geometry",
-        "uid": "user_id",
+    'Pannautage': {
+        'pkuid': 'id',
+        'dim': 'dimensions',
+        'Type': 'type',
+        'Stituation': 'status',
+        'idLine': 'road_id',
+        'idPoly': 'subdivision_id',
+        'idOrg': 'organization_id',
+        'geometry': 'geometry',
+        'uid': 'user_id',
     },
 }
 
 LOOKUP_TABLE_DDL: dict[str, str] = {}
 
 NEW_TABLES = {
-    "user": """
+    'user': """
         CREATE TABLE user (
             id TEXT NOT NULL,
             username VARCHAR(255) NOT NULL,
@@ -108,7 +109,7 @@ NEW_TABLES = {
             UNIQUE (username)
         )
     """,
-    "zone": """
+    'zone': """
         CREATE TABLE zone (
             id TEXT NOT NULL,
             locality_id VARCHAR,
@@ -124,7 +125,7 @@ NEW_TABLES = {
             FOREIGN KEY (user_id) REFERENCES user(id)
         )
     """,
-    "subdivision": """
+    'subdivision': """
         CREATE TABLE subdivision (
             id TEXT NOT NULL,
             locality_id VARCHAR,
@@ -141,7 +142,7 @@ NEW_TABLES = {
             FOREIGN KEY (user_id) REFERENCES user(id)
         )
     """,
-    "road": """
+    'road': """
         CREATE TABLE road (
             id TEXT NOT NULL,
             decision_number TEXT,
@@ -159,7 +160,7 @@ NEW_TABLES = {
             FOREIGN KEY (user_id) REFERENCES user(id)
         )
     """,
-    "organization": """
+    'organization': """
         CREATE TABLE organization (
             id TEXT NOT NULL,
             locality_id VARCHAR,
@@ -177,7 +178,7 @@ NEW_TABLES = {
             FOREIGN KEY (zone_id) REFERENCES zone(id)
         )
     """,
-    "numbering": """
+    'numbering': """
         CREATE TABLE numbering (
             id TEXT NOT NULL,
             value TEXT NOT NULL,
@@ -196,7 +197,7 @@ NEW_TABLES = {
             FOREIGN KEY (user_id) REFERENCES user(id)
         )
     """,
-    "panel_sign": """
+    'panel_sign': """
         CREATE TABLE panel_sign (
             id TEXT NOT NULL,
             dimensions VARCHAR NOT NULL,
@@ -218,17 +219,17 @@ NEW_TABLES = {
 }
 
 SPATIALITE_LIB = os.environ.get(
-    "SPATIALITE_LIB",
-    "/usr/libspatialite50/lib/mod_spatialite.so",
+    'SPATIALITE_LIB',
+    '/usr/libspatialite50/lib/mod_spatialite.so',
 )
 
 GEOMETRY_TYPES = {
-    "zone": ("POLYGON", 4326, 2, 3),
-    "subdivision": ("POLYGON", 4326, 2, 3),
-    "road": ("LINESTRING", 4326, 2, 2),
-    "organization": ("POLYGON", 4326, 2, 3),
-    "numbering": ("POINT", 4326, 2, 1),
-    "panel_sign": ("POINT", 4326, 2, 1),
+    'zone': ('POLYGON', 4326, 2, 3),
+    'subdivision': ('POLYGON', 4326, 2, 3),
+    'road': ('LINESTRING', 4326, 2, 2),
+    'organization': ('POLYGON', 4326, 2, 3),
+    'numbering': ('POINT', 4326, 2, 1),
+    'panel_sign': ('POINT', 4326, 2, 1),
 }
 
 
@@ -236,18 +237,19 @@ def init_spatialite(conn: sqlite3.Connection) -> None:
     """Initialize SpatiaLite metadata in the new database."""
     conn.enable_load_extension(True)
     conn.load_extension(SPATIALITE_LIB)
-    conn.execute("SELECT InitSpatialMetadata(1)")
+    conn.execute('SELECT InitSpatialMetadata(1)')
 
 
 def register_geometry(
-    conn: sqlite3.Connection, table: str, col: str,
+    conn: sqlite3.Connection,
+    table: str,
+    col: str,
     geom_config: tuple,
 ) -> None:
     """Register a geometry column using AddGeometryColumn."""
     geom_type, srid, dims = geom_config[:3]
     conn.execute(
-        f"SELECT AddGeometryColumn('{table}', '{col}', {srid}, "
-        f"'{geom_type}', {dims})"
+        f"SELECT AddGeometryColumn('{table}', '{col}', {srid}, '{geom_type}', {dims})"
     )
 
 
@@ -260,30 +262,29 @@ def _migrate_lookup_tables(old: sqlite3.Connection, new: sqlite3.Connection) -> 
     """Copy lookup table data from old to new database."""
     for name, ddl in LOOKUP_TABLE_DDL.items():
         new.execute(ddl)
-        old_cur = old.execute(f"SELECT * FROM \"{name}\"")
+        old_cur = old.execute(f'SELECT * FROM "{name}"')
         old_rows = old_cur.fetchall()
         if old_rows:
             cols = [desc[0] for desc in old_cur.description]
-            placeholders = ",".join("?" for _ in cols)
-            col_list = ",".join(f'"{c}"' for c in cols)
+            placeholders = ','.join('?' for _ in cols)
+            col_list = ','.join(f'"{c}"' for c in cols)
             for row in old_rows:
                 new.execute(
-                    f"INSERT INTO \"{name}\" ({col_list}) "
-                    f"VALUES ({placeholders})",
+                    f'INSERT INTO "{name}" ({col_list}) VALUES ({placeholders})',
                     tuple(row[c] for c in cols),
                 )
-            logger.info("  %s: %d rows", name, len(old_rows))
+            logger.info('  %s: %d rows', name, len(old_rows))
         else:
-            logger.info("  %s: 0 rows (skipped)", name)
+            logger.info('  %s: 0 rows (skipped)', name)
 
 
 def _register_geometry_columns(new: sqlite3.Connection) -> None:
     """Register geometry columns for all spatial tables."""
     for table, geom_config in GEOMETRY_TYPES.items():
         try:
-            register_geometry(new, table, "geometry", geom_config)
+            register_geometry(new, table, 'geometry', geom_config)
         except Exception as e:  # pylint: disable=W0718
-            logger.warning("  %s.geometry: %s", table, e)
+            logger.warning('  %s.geometry: %s', table, e)
 
 
 def _migrate_data(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
@@ -292,42 +293,41 @@ def _migrate_data(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
         old_cols = list(col_map.keys())
         new_cols = list(col_map.values())
 
-        old_rows = old.execute(
-            f"SELECT * FROM \"{table}\""
-        ).fetchall()
+        old_rows = old.execute(f'SELECT * FROM "{table}"').fetchall()
         if not old_rows:
-            logger.info("  %s: 0 rows (skipped)", table)
+            logger.info('  %s: 0 rows (skipped)', table)
             continue
 
-        placeholders = ",".join("?" for _ in new_cols)
-        new_col_list = ",".join(f'"{c}"' for c in new_cols)
+        placeholders = ','.join('?' for _ in new_cols)
+        new_col_list = ','.join(f'"{c}"' for c in new_cols)
 
         migrated = 0
         for row in old_rows:
             try:
                 values = [row[old_c] for old_c in old_cols]
                 new.execute(
-                    f"INSERT INTO \"{table}\" ({new_col_list}) "
-                    f"VALUES ({placeholders})",
+                    f'INSERT INTO "{table}" ({new_col_list}) VALUES ({placeholders})',
                     values,
                 )
                 migrated += 1
             except Exception as e:  # pylint: disable=W0718
                 logger.warning(
-                    "  %s row %s: %s", table,
-                    row.get("pkuid", row.get("id", "?")), e,
+                    '  %s row %s: %s',
+                    table,
+                    row.get('pkuid', row.get('id', '?')),
+                    e,
                 )
-        logger.info("  %s: %d / %d rows migrated", table, migrated, len(old_rows))
+        logger.info('  %s: %d / %d rows migrated', table, migrated, len(old_rows))
 
 
 def _create_spatial_indexes(new: sqlite3.Connection) -> None:
     """Create spatial indexes for all geometry columns."""
     for table in GEOMETRY_TYPES:
         try:
-            create_spatial_index(new, table, "geometry")
-            logger.info("  %s.geometry: index created", table)
+            create_spatial_index(new, table, 'geometry')
+            logger.info('  %s.geometry: index created', table)
         except Exception as e:  # pylint: disable=W0718
-            logger.warning("  %s.geometry index: %s", table, e)
+            logger.warning('  %s.geometry index: %s', table, e)
 
 
 def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
@@ -337,7 +337,7 @@ def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
     whose ``id`` already exists in the target are skipped.
     """
     if not auth_path or not os.path.exists(auth_path):
-        logger.info("  auth file not found: %s (skipped)", auth_path)
+        logger.info('  auth file not found: %s (skipped)', auth_path)
         return
 
     auth = sqlite3.connect(auth_path)
@@ -347,33 +347,33 @@ def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
             "SELECT name FROM sqlite_master WHERE type='table' AND name='user'"
         )
         if not cur.fetchone():
-            logger.info("  auth DB has no user table (skipped)")
+            logger.info('  auth DB has no user table (skipped)')
             return
 
-        users = auth.execute("SELECT * FROM user").fetchall()
+        users = auth.execute('SELECT * FROM user').fetchall()
         if not users:
-            logger.info("  auth DB: 0 users (skipped)")
+            logger.info('  auth DB: 0 users (skipped)')
             return
 
         target = sqlite3.connect(new_path)
         try:
             cols = users[0].keys()
-            placeholders = ",".join("?" for _ in cols)
-            col_list = ",".join(f'"{c}"' for c in cols)
+            placeholders = ','.join('?' for _ in cols)
+            col_list = ','.join(f'"{c}"' for c in cols)
             merged = 0
             for row in users:
                 try:
                     target.execute(
-                        f"INSERT OR IGNORE INTO user ({col_list}) "
-                        f"VALUES ({placeholders})",
+                        f'INSERT OR IGNORE INTO user ({col_list}) '
+                        f'VALUES ({placeholders})',
                         tuple(row[c] for c in cols),
                     )
                     if target.total_changes > 0:
                         merged += 1
                 except Exception as e:  # pylint: disable=W0718
-                    logger.warning("  user %s: %s", row["id"], e)
+                    logger.warning('  user %s: %s', row['id'], e)
             target.commit()
-            logger.info("  Merged %d user(s) from %s", merged, auth_path)
+            logger.info('  Merged %d user(s) from %s', merged, auth_path)
         finally:
             target.close()
     finally:
@@ -381,7 +381,9 @@ def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
 
 
 def migrate_database(
-    old_path: str, new_path: str, auth_path: str | None = None,
+    old_path: str,
+    new_path: str,
+    auth_path: str | None = None,
 ) -> None:
     """Migrate *old_path* (old-format database) to *new_path* (current
     schema).
@@ -392,42 +394,42 @@ def migrate_database(
     Raises ``FileExistsError`` if *new_path* already exists.
     """
     if os.path.exists(new_path):
-        raise FileExistsError(f"Output already exists: {new_path}")
+        raise FileExistsError(f'Output already exists: {new_path}')
 
     old = sqlite3.connect(old_path)
     old.row_factory = sqlite3.Row
     new = sqlite3.connect(new_path)
     try:
-        new.execute("PRAGMA foreign_keys = OFF")
-        new.execute("PRAGMA journal_mode = WAL")
+        new.execute('PRAGMA foreign_keys = OFF')
+        new.execute('PRAGMA journal_mode = WAL')
 
-        logger.info("Initializing SpatiaLite metadata...")
+        logger.info('Initializing SpatiaLite metadata...')
         init_spatialite(new)
 
-        logger.info("Creating lookup tables...")
+        logger.info('Creating lookup tables...')
         _migrate_lookup_tables(old, new)
 
-        logger.info("Creating spatial tables...")
+        logger.info('Creating spatial tables...')
         for table, ddl in NEW_TABLES.items():
             new.execute(ddl)
-            logger.info("  Created %s", table)
+            logger.info('  Created %s', table)
 
-        logger.info("Registering geometry columns...")
+        logger.info('Registering geometry columns...')
         _register_geometry_columns(new)
 
-        logger.info("Copying data...")
+        logger.info('Copying data...')
         _migrate_data(old, new)
 
         new.commit()
 
-        logger.info("Creating spatial indexes...")
+        logger.info('Creating spatial indexes...')
         _create_spatial_indexes(new)
 
         _merge_auth_users(new_path, auth_path)
 
-        new.execute("PRAGMA foreign_keys = ON")
+        new.execute('PRAGMA foreign_keys = ON')
         new.commit()
-        logger.info("Migration complete: %s", new_path)
+        logger.info('Migration complete: %s', new_path)
     finally:
         new.close()
         old.close()

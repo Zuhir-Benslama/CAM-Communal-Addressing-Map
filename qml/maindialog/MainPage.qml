@@ -43,7 +43,7 @@ Item {
         if (name === "lineEdit_nummokh") return settingsTab.getFieldText(name)
         if (name === "new_type") return settingsTab.getFieldText(name)
         if (name.startsWith("_")) {
-            if (name === "_action_combo") return actionCombo.currentValue
+            if (name === "_action_combo") return _safeComboValue(actionCombo)
         }
         return ""
     }
@@ -150,12 +150,20 @@ Item {
         return map[name] || null
     }
 
+    function _safeComboValue(combo) {
+        return combo.currentIndex >= 0 ? combo.currentValue : combo.displayText
+    }
+
     function setFormStackIndex(index) {
         formStack.currentIndex = index
     }
 
     function setSettingsTabIndex(index) {
         mainTabBar.currentIndex = index
+    }
+
+    function toggleSettingsTab() {
+        mainTabBar.currentIndex = mainTabBar.currentIndex === 0 ? 1 : 0
     }
 
     function setCurrentLayerName(name) {
@@ -172,7 +180,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: Theme.surface
+        color: Theme.activeSurface()
 
         ColumnLayout {
             anchors.fill: parent
@@ -182,20 +190,20 @@ Item {
                 id: toolbarFrame
                 Layout.fillWidth: true
                 Layout.minimumHeight: 48
-                color: Theme.surface
-                border.color: Theme.border
+                color: Theme.activeSurface()
+                border.color: Theme.activeBorder()
 
                 RowLayout {
                     anchors.fill: parent
-                    anchors.leftMargin: 5
-                    anchors.rightMargin: 5
-                    spacing: 5
+                    anchors.leftMargin: Theme.paddingMd
+                    anchors.rightMargin: Theme.paddingMd
+                    spacing: Theme.spacingSm
 
                     Text {
                         id: usernameLabel
                         objectName: "label_username"
                         font.bold: true
-                        color: Theme.text
+                        color: Theme.activeText()
                         Layout.fillWidth: true
                         verticalAlignment: Text.AlignVCenter
                     }
@@ -207,12 +215,12 @@ Item {
                         onClicked: root.gearClicked()
                         background: Rectangle {
                             color: "transparent"
-                            border.color: Theme.border
-                            radius: 4
+                            border.color: Theme.activeBorder()
+                            radius: Theme.radiusMd
                         }
                         contentItem: Text {
                             text: parent.text
-                            color: Theme.text
+                            color: Theme.activeText()
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
@@ -220,616 +228,171 @@ Item {
                 }
             }
 
-            TabBar {
-                id: mainTabBar
-                visible: false
-                onCurrentIndexChanged: root.tabChanged(currentIndex)
-            }
-
-            StackLayout {
-                id: mainStack
+            Rectangle {
+                id: formPanel
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                currentIndex: mainTabBar.currentIndex
+                color: Theme.activeSurface()
+                border.color: Theme.activeBorder()
 
-                Item {
-                    id: operationsTab
-                    ColumnLayout {
-                        anchors.fill: parent
-                        spacing: 4
+                ColumnLayout {
+                    anchors.fill: parent
+                    spacing: 0
 
-                        ComboBox {
-                            id: layerSelector
-                            objectName: "layer_selector"
-                            Layout.fillWidth: true
-                            Layout.leftMargin: 4
-                            Layout.rightMargin: 4
-                            textRole: "text"
-                            valueRole: "value"
-                            onCurrentIndexChanged: root.comboChanged("layer_selector", currentIndex, currentValue)
+                    ComboBox {
+                        id: layerSelector
+                        objectName: "layer_selector"
+                        Layout.fillWidth: true
+                        Layout.leftMargin: Theme.paddingMd
+                        Layout.rightMargin: Theme.paddingMd
+                        textRole: "text"
+                        valueRole: "value"
+                        onCurrentIndexChanged: root.comboChanged("layer_selector", currentIndex, currentValue)
+                        background: Rectangle {
+                            color: Theme.activeSurface()
+                            border.color: Theme.activeBorder()
+                            radius: Theme.radiusMd
+                        }
+                        contentItem: Text {
+                            text: parent.displayText
+                            color: Theme.activeText()
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Layout.leftMargin: Theme.paddingMd
+                        Layout.rightMargin: Theme.paddingMd
+                        spacing: Theme.spacingSm
+
+                        Button {
+                            id: drawBtn
+                            text: qsTr("Draw")
+                            font.bold: true
+                            Layout.minimumWidth: 100
+                            onClicked: root.drawClicked()
                             background: Rectangle {
-                                color: Theme.surface
-                                border.color: Theme.border
-                                radius: 4
+                                color: Theme.activeAccent()
+                                radius: Theme.radiusMd
                             }
                             contentItem: Text {
-                                text: parent.displayText
-                                color: Theme.text
+                                text: parent.text
+                                color: "white"
+                                horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
                             }
                         }
-
-                        RowLayout {
-                            Layout.fillWidth: true
-                            Layout.leftMargin: 4
-                            Layout.rightMargin: 4
-                            spacing: 4
-
-                            Button {
-                                id: drawBtn
-                                text: "Draw"
-                                font.bold: true
-                                Layout.minimumWidth: 100
-                                onClicked: root.drawClicked()
-                                background: Rectangle {
-                                    color: Theme.primary
-                                    radius: 4
-                                }
-                                contentItem: Text {
-                                    text: parent.text
-                                    color: "white"
-                                    horizontalAlignment: Text.AlignHCenter
-                                    verticalAlignment: Text.AlignVCenter
-                                }
+                        Button {
+                            id: selectBtn
+                            text: qsTr("Select")
+                            font.bold: true
+                            Layout.minimumWidth: 100
+                            onClicked: root.selectClicked()
+                            background: Rectangle {
+                                color: Theme.activeAccent()
+                                radius: Theme.radiusMd
                             }
-                            Button {
-                                id: selectBtn
-                                text: "Select"
-                                font.bold: true
-                                Layout.minimumWidth: 100
-                                onClicked: root.selectClicked()
-                                background: Rectangle {
-                                    color: Theme.primary
-                                    radius: 4
-                                }
-                                contentItem: Text {
-                                    text: parent.text
-                                    color: "white"
-                                    horizontalAlignment: Text.AlignHCenter
-                                    verticalAlignment: Text.AlignVCenter
-                                }
-                            }
-                            Button {
-                                id: editBtn
-                                text: "Edit"
-                                font.bold: true
-                                Layout.minimumWidth: 100
-                                onClicked: root.editClicked()
-                                background: Rectangle {
-                                    color: Theme.primary
-                                    radius: 4
-                                }
-                                contentItem: Text {
-                                    text: parent.text
-                                    color: "white"
-                                    horizontalAlignment: Text.AlignHCenter
-                                    verticalAlignment: Text.AlignVCenter
-                                }
-                            }
-                            Button {
-                                id: measureBtn
-                                text: "Measure Distance"
-                                Layout.minimumWidth: 100
-                                onClicked: root.measureClicked()
-                                background: Rectangle {
-                                    color: Theme.surface
-                                    border.color: Theme.border
-                                    radius: 4
-                                }
-                                contentItem: Text {
-                                    text: parent.text
-                                    color: Theme.text
-                                    horizontalAlignment: Text.AlignHCenter
-                                    verticalAlignment: Text.AlignVCenter
-                                }
+                            contentItem: Text {
+                                text: parent.text
+                                color: "white"
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
                             }
                         }
-
-                        StackLayout {
-                            id: formStack
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            Layout.leftMargin: 4
-                            Layout.rightMargin: 4
-
-                            // Page 0: Zone
-                            Item {
-                                id: zoneForm
-                                property alias zoneTypeCombo: zoneTypeCombo
-                                function getFieldText(name) {
-                                    if (name === "nom_zone") return zoneNameField.text
-                                    return ""
-                                }
-                                ColumnLayout {
-                                    anchors.fill: parent
-                                    GridLayout {
-                                        columns: 2
-                                        columnSpacing: 10
-                                        rowSpacing: 10
-                                        Layout.fillWidth: true
-                                        Text { text: "Type:"; font.bold: true; color: Theme.text }
-                                        ComboBox {
-                                            id: zoneTypeCombo
-                                            objectName: "zone_type"
-                                            Layout.fillWidth: true
-                                            editable: true
-                                            textRole: "text"
-                                            valueRole: "value"
-                                            onCurrentIndexChanged: root.comboChanged("zone_type", currentIndex, currentValue)
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                        Text { text: "Name:"; font.bold: true; color: Theme.text }
-                                        TextField {
-                                            id: zoneNameField
-                                            objectName: "nom_zone"
-                                            Layout.fillWidth: true
-                                            color: Theme.text
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                        }
-                                    }
-                                    Item { Layout.fillHeight: true }
-                                    Button {
-                                        text: "Save"
-                                        font.bold: true
-                                        Layout.alignment: Qt.AlignHCenter
-                                        Layout.minimumWidth: 200
-                                        onClicked: root.formSubmitted("zone")
-                                        background: Rectangle { color: Theme.primary; radius: 4 }
-                                        contentItem: Text { text: parent.text; color: "white"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                    }
-                                    Item { Layout.fillHeight: true }
-                                }
+                        Button {
+                            id: editBtn
+                            text: qsTr("Edit")
+                            font.bold: true
+                            Layout.minimumWidth: 100
+                            onClicked: root.editClicked()
+                            background: Rectangle {
+                                color: Theme.activeAccent()
+                                radius: Theme.radiusMd
                             }
-
-                            // Page 1: Road
-                            Item {
-                                id: roadForm
-                                property alias roadTypeCombo: roadTypeCombo
-                                function getFieldText(name) {
-                                    if (name === "road_name") return roadNameField.text
-                                    return ""
-                                }
-                                ColumnLayout {
-                                    anchors.fill: parent
-                                    GridLayout {
-                                        columns: 2
-                                        columnSpacing: 10
-                                        rowSpacing: 10
-                                        Layout.fillWidth: true
-                                        Text { text: "Type:"; font.bold: true; color: Theme.text }
-                                        ComboBox {
-                                            id: roadTypeCombo
-                                            objectName: "type_road"
-                                            Layout.fillWidth: true
-                                            editable: true
-                                            textRole: "text"
-                                            valueRole: "value"
-                                            onCurrentIndexChanged: root.comboChanged("type_road", currentIndex, currentValue)
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                        Text { text: "Name:"; font.bold: true; color: Theme.text }
-                                        TextField {
-                                            id: roadNameField
-                                            objectName: "road_name"
-                                            Layout.fillWidth: true
-                                            color: Theme.text
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                        }
-                                    }
-                                    Item { Layout.fillHeight: true }
-                                    RowLayout {
-                                        Layout.alignment: Qt.AlignHCenter
-                                        spacing: 20
-                                        Button {
-                                            text: "Save"
-                                            font.bold: true
-                                            Layout.minimumWidth: 200
-                                            onClicked: root.formSubmitted("road")
-                                            background: Rectangle { color: Theme.primary; radius: 4 }
-                                            contentItem: Text { text: parent.text; color: "white"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                        Button {
-                                            text: "Roads List"
-                                            Layout.minimumWidth: 150
-                                            onClicked: root.listRequested("roads")
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.text; color: Theme.text; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                    }
-                                    Item { Layout.fillHeight: true }
-                                }
-                            }
-
-                            // Page 2: Organization
-                            Item {
-                                id: orgForm
-                                property alias orgCatCombo: orgCatCombo
-                                property alias orgTypeCombo: orgTypeCombo
-                                function getFieldText(name) {
-                                    if (name === "org_name") return orgNameField.text
-                                    return ""
-                                }
-                                ColumnLayout {
-                                    anchors.fill: parent
-                                    GridLayout {
-                                        columns: 2
-                                        columnSpacing: 10
-                                        rowSpacing: 10
-                                        Layout.fillWidth: true
-                                        Text { text: "Category:"; font.bold: true; color: Theme.text }
-                                        ComboBox {
-                                            id: orgCatCombo
-                                            objectName: "org_cat"
-                                            Layout.fillWidth: true
-                                            editable: true
-                                            textRole: "text"
-                                            valueRole: "value"
-                                            onCurrentIndexChanged: root.comboChanged("org_cat", currentIndex, currentValue)
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                        Text { text: "Type:"; font.bold: true; color: Theme.text }
-                                        ComboBox {
-                                            id: orgTypeCombo
-                                            objectName: "org_type"
-                                            Layout.fillWidth: true
-                                            editable: true
-                                            textRole: "text"
-                                            valueRole: "value"
-                                            onCurrentIndexChanged: root.comboChanged("org_type", currentIndex, currentValue)
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                        Text { text: "Name:"; font.bold: true; color: Theme.text }
-                                        TextField {
-                                            id: orgNameField
-                                            objectName: "org_name"
-                                            Layout.fillWidth: true
-                                            color: Theme.text
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                        }
-                                    }
-                                    Item { Layout.fillHeight: true }
-                                    RowLayout {
-                                        Layout.alignment: Qt.AlignHCenter
-                                        spacing: 20
-                                        Button {
-                                            text: "Save"
-                                            font.bold: true
-                                            Layout.minimumWidth: 200
-                                            onClicked: root.formSubmitted("org")
-                                            background: Rectangle { color: Theme.primary; radius: 4 }
-                                            contentItem: Text { text: parent.text; color: "white"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                        Button {
-                                            text: "Facilities List"
-                                            Layout.minimumWidth: 150
-                                            onClicked: root.listRequested("orgs")
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.text; color: Theme.text; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                    }
-                                    Item { Layout.fillHeight: true }
-                                }
-                            }
-
-                            // Page 3: Subdivision / City
-                            Item {
-                                id: subdForm
-                                property alias subdTypeCombo: subdTypeCombo
-                                function getFieldText(name) {
-                                    if (name === "subd_name") return subdNameField.text
-                                    return ""
-                                }
-                                ColumnLayout {
-                                    anchors.fill: parent
-                                    GridLayout {
-                                        columns: 2
-                                        columnSpacing: 10
-                                        rowSpacing: 10
-                                        Layout.fillWidth: true
-                                        Text { text: "Type:"; font.bold: true; color: Theme.text }
-                                        ComboBox {
-                                            id: subdTypeCombo
-                                            objectName: "subd_type"
-                                            Layout.fillWidth: true
-                                            editable: true
-                                            textRole: "text"
-                                            valueRole: "value"
-                                            onCurrentIndexChanged: root.comboChanged("subd_type", currentIndex, currentValue)
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                        Text { text: "Name:"; font.bold: true; color: Theme.text }
-                                        TextField {
-                                            id: subdNameField
-                                            objectName: "subd_name"
-                                            Layout.fillWidth: true
-                                            color: Theme.text
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                        }
-                                    }
-                                    Item { Layout.fillHeight: true }
-                                    RowLayout {
-                                        Layout.alignment: Qt.AlignHCenter
-                                        spacing: 20
-                                        Button {
-                                            text: "Save"
-                                            font.bold: true
-                                            Layout.minimumWidth: 200
-                                            onClicked: root.formSubmitted("city")
-                                            background: Rectangle { color: Theme.primary; radius: 4 }
-                                            contentItem: Text { text: parent.text; color: "white"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                        Button {
-                                            text: "Subdivisions List"
-                                            Layout.minimumWidth: 150
-                                            onClicked: root.listRequested("subds")
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.text; color: Theme.text; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                    }
-                                    Item { Layout.fillHeight: true }
-                                }
-                            }
-
-                            // Page 4: Numbering
-                            Item {
-                                id: numForm
-                                property alias roadRefCombo: roadRefCombo
-                                property alias numStateCombo: numStateCombo
-                                property alias activityCatCombo: activityCatCombo
-                                property alias activityTypeCombo: activityTypeCombo
-                                function getFieldText(name) {
-                                    if (name === "road_ref") return roadRefCombo.currentValue
-                                    if (name === "num_val") return numValField.text
-                                    if (name === "repetition") return repField.text
-                                    if (name === "ref_name") return refNameLabel.text
-                                    return ""
-                                }
-                                function setFieldText(name, text) {
-                                    if (name === "ref_name") refNameLabel.text = text
-                                }
-                                Flickable {
-                                    anchors.fill: parent
-                                    contentHeight: numColumn.height
-                                    clip: true
-                                    ColumnLayout {
-                                        id: numColumn
-                                        width: parent.width
-                                        spacing: 10
-                                        GridLayout {
-                                            columns: 2
-                                            columnSpacing: 10
-                                            rowSpacing: 10
-                                            Layout.fillWidth: true
-                                            Text { text: "Reference Type:"; font.bold: true; color: Theme.text }
-                                            ColumnLayout {
-                                                Layout.fillWidth: true
-                                                ComboBox {
-                                                    id: roadRefCombo
-                                                    objectName: "road_ref"
-                                                    Layout.fillWidth: true
-                                                    editable: true
-                                                    textRole: "text"
-                                                    valueRole: "value"
-                                                    onCurrentIndexChanged: root.comboChanged("road_ref", currentIndex, currentValue)
-                                                    background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                                    contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
-                                                }
-                                                Button {
-                                                    text: "Select Reference"
-                                                    font.bold: true
-                                                    Layout.fillWidth: true
-                                                    onClicked: root.selectRef("road_ref", roadRefCombo.currentValue)
-                                                    background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                                    contentItem: Text { text: parent.text; color: Theme.text; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                                }
-                                                Text {
-                                                    id: refNameLabel
-                                                    objectName: "ref_name"
-                                                    font.bold: true
-                                                    color: Theme.text
-                                                    wrapMode: Text.WordWrap
-                                                }
-                                            }
-                                        }
-                                        GridLayout {
-                                            columns: 2
-                                            columnSpacing: 10
-                                            rowSpacing: 10
-                                            Layout.fillWidth: true
-                                            Text { text: "Number:"; font.bold: true; color: Theme.text }
-                                            TextField {
-                                                id: numValField
-                                                objectName: "num_val"
-                                                Layout.fillWidth: true
-                                                color: Theme.text
-                                                background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            }
-                                            Text { text: "Duplicated:"; font.bold: true; color: Theme.text }
-                                            TextField {
-                                                id: repField
-                                                objectName: "repetition"
-                                                Layout.fillWidth: true
-                                                color: Theme.text
-                                                background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            }
-                                            Text { text: "State:"; font.bold: true; color: Theme.text }
-                                            ComboBox {
-                                                id: numStateCombo
-                                                objectName: "num_state"
-                                                Layout.fillWidth: true
-                                                editable: true
-                                                textRole: "text"
-                                                valueRole: "value"
-                                                background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                                contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
-                                            }
-                                        }
-                                        Rectangle {
-                                            color: Theme.border
-                                            height: 1
-                                            Layout.fillWidth: true
-                                        }
-                                        Text { text: "Activity"; font.bold: true; color: Theme.text }
-                                        GridLayout {
-                                            columns: 2
-                                            columnSpacing: 10
-                                            rowSpacing: 10
-                                            Layout.fillWidth: true
-                                            Text { text: "Category:"; font.bold: true; color: Theme.text }
-                                            ComboBox {
-                                                id: activityCatCombo
-                                                objectName: "activity_cat"
-                                                Layout.fillWidth: true
-                                                editable: true
-                                                textRole: "text"
-                                                valueRole: "value"
-                                                onCurrentIndexChanged: root.comboChanged("activity_cat", currentIndex, currentValue)
-                                                background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                                contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
-                                            }
-                                            Text { text: "Type:"; font.bold: true; color: Theme.text }
-                                            ComboBox {
-                                                id: activityTypeCombo
-                                                objectName: "activity_type"
-                                                Layout.fillWidth: true
-                                                editable: true
-                                                textRole: "text"
-                                                valueRole: "value"
-                                                background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                                contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
-                                            }
-                                        }
-                                        RowLayout {
-                                            Layout.alignment: Qt.AlignHCenter
-                                            spacing: 20
-                                            Button {
-                                                text: "Save"
-                                                font.bold: true
-                                                Layout.minimumWidth: 200
-                                                onClicked: root.formSubmitted("num")
-                                                background: Rectangle { color: Theme.primary; radius: 4 }
-                                                contentItem: Text { text: parent.text; color: "white"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                            }
-                                            Button {
-                                                text: "Entrances List"
-                                                Layout.minimumWidth: 150
-                                                onClicked: root.listRequested("nums")
-                                                background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                                contentItem: Text { text: parent.text; color: Theme.text; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            // Page 5: Panels
-                            Item {
-                                id: panForm
-                                property alias mountStatusCombo: mountStatusCombo
-                                property alias panelRefCombo: panelRefCombo
-                                function getFieldText(name) {
-                                    if (name === "mount_status") return mountStatusCombo.currentValue
-                                    if (name === "panel_ref") return panelRefCombo.currentValue
-                                    if (name === "ref_name2") return refName2Label.text
-                                    return ""
-                                }
-                                function setFieldText(name, text) {
-                                    if (name === "ref_name2") refName2Label.text = text
-                                }
-                                ColumnLayout {
-                                    anchors.fill: parent
-                                    GridLayout {
-                                        columns: 2
-                                        columnSpacing: 10
-                                        rowSpacing: 10
-                                        Layout.fillWidth: true
-                                        Text { text: "Mounting State:"; font.bold: true; color: Theme.text }
-                                        ComboBox {
-                                            id: mountStatusCombo
-                                            objectName: "mount_status"
-                                            Layout.fillWidth: true
-                                            editable: true
-                                            textRole: "text"
-                                            valueRole: "value"
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                        Text { text: "Reference Type:"; font.bold: true; color: Theme.text }
-                                        ColumnLayout {
-                                            Layout.fillWidth: true
-                                            ComboBox {
-                                                id: panelRefCombo
-                                                objectName: "panel_ref"
-                                                Layout.fillWidth: true
-                                                editable: true
-                                                textRole: "text"
-                                                valueRole: "value"
-                                                background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                                contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
-                                            }
-                                            Button {
-                                                text: "Select Reference"
-                                                font.bold: true
-                                                Layout.fillWidth: true
-                                                onClicked: root.selectRef("panel_ref", panelRefCombo.currentValue)
-                                                background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                                contentItem: Text { text: parent.text; color: Theme.text; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                            }
-                                            Text {
-                                                id: refName2Label
-                                                objectName: "ref_name2"
-                                                font.bold: true
-                                                color: Theme.text
-                                                wrapMode: Text.WordWrap
-                                            }
-                                        }
-                                    }
-                                    Item { Layout.fillHeight: true }
-                                    RowLayout {
-                                        Layout.alignment: Qt.AlignHCenter
-                                        spacing: 20
-                                        Button {
-                                            text: "Save"
-                                            font.bold: true
-                                            Layout.minimumWidth: 200
-                                            onClicked: root.formSubmitted("pan")
-                                            background: Rectangle { color: Theme.primary; radius: 4 }
-                                            contentItem: Text { text: parent.text; color: "white"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                        Button {
-                                            text: "Panels List"
-                                            Layout.minimumWidth: 150
-                                            onClicked: root.listRequested("panels")
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.text; color: Theme.text; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                        }
-                                    }
-                                    Item { Layout.fillHeight: true }
-                                }
+                            contentItem: Text {
+                                text: parent.text
+                                color: "white"
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
                             }
                         }
-
-                        Item { Layout.fillHeight: true }
+                        Button {
+                            id: measureBtn
+                            text: qsTr("Measure Distance")
+                            Layout.minimumWidth: 100
+                            onClicked: root.measureClicked()
+                            background: Rectangle {
+                                color: Theme.activeSurface()
+                                border.color: Theme.activeBorder()
+                                radius: Theme.radiusMd
+                            }
+                            contentItem: Text {
+                                text: parent.text
+                                color: Theme.activeText()
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                        }
                     }
-                }
 
-                Item {
-                    id: settingsTab
+                    StackLayout {
+                        id: formStack
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        Layout.leftMargin: Theme.paddingMd
+                        Layout.rightMargin: Theme.paddingMd
+
+                        ZoneForm {
+                            id: zoneForm
+                            onComboChanged: root.comboChanged(objectName, index, currentData)
+                            onFormSubmitted: root.formSubmitted(pageName)
+                        }
+
+                        RoadForm {
+                            id: roadForm
+                            onComboChanged: root.comboChanged(objectName, index, currentData)
+                            onFormSubmitted: root.formSubmitted(pageName)
+                            onListRequested: root.listRequested(type)
+                        }
+
+                        OrgForm {
+                            id: orgForm
+                            onComboChanged: root.comboChanged(objectName, index, currentData)
+                            onFormSubmitted: root.formSubmitted(pageName)
+                            onListRequested: root.listRequested(type)
+                        }
+
+                        CityForm {
+                            id: subdForm
+                            onComboChanged: root.comboChanged(objectName, index, currentData)
+                            onFormSubmitted: root.formSubmitted(pageName)
+                            onListRequested: root.listRequested(type)
+                        }
+
+                        NumForm {
+                            id: numForm
+                            onComboChanged: root.comboChanged(objectName, index, currentData)
+                            onFormSubmitted: root.formSubmitted(pageName)
+                            onListRequested: root.listRequested(type)
+                            onSelectRef: root.selectRef(objectName, layerName)
+                        }
+
+                        PanForm {
+                            id: panForm
+                            onComboChanged: root.comboChanged(objectName, index, currentData)
+                            onFormSubmitted: root.formSubmitted(pageName)
+                            onListRequested: root.listRequested(type)
+                            onSelectRef: root.selectRef(objectName, layerName)
+                        }
+                    }
+
+                    Item { Layout.fillHeight: true }
+                }
+            }
+
+            Item {
+                id: settingsTab
                     function getFieldText(name) {
                         var map = {
                             "lineEdit_type": typeField.text,
@@ -856,24 +419,28 @@ Item {
 
                         ColumnLayout {
                             id: settingsColumn
-                            width: parent.width - 8
+                            width: parent.width - Theme.spacingLg
                             anchors.horizontalCenter: parent.horizontalCenter
-                            spacing: 12
+                            spacing: Theme.spacingMd
 
-                            Rectangle {
-                                color: Theme.background
-                                radius: 6
-                                border.color: Theme.border
+                            Frame {
                                 Layout.fillWidth: true
-                                Layout.leftMargin: 4
-                                Layout.rightMargin: 4
+                                Layout.leftMargin: Theme.paddingSm
+                                Layout.rightMargin: Theme.paddingSm
+                                padding: Theme.paddingMd
+                                topPadding: Theme.paddingLg
+                                background: Rectangle {
+                                    color: Theme.activeBg()
+                                    radius: Theme.radiusLg
+                                    border.color: Theme.activeBorder()
+                                }
 
                                 ColumnLayout {
-                                    x: 10; y: 10
-                                    width: parent.width - 20
-                                    spacing: 8
+                                    anchors.fill: parent
+                                    spacing: Theme.spacingSm
 
-                                    Text { text: "Maps, Reports and Backup"; font.bold: true; color: Theme.text }
+                                    Text { text: "Maps, Reports and Backup"; font.bold: true; font.pixelSize: Theme.fontHeadline; color: Theme.activeAccent() }
+                                    Rectangle { height: 1; color: Theme.activeBorder(); Layout.fillWidth: true; Layout.topMargin: 2; Layout.bottomMargin: 4 }
 
                                     ComboBox {
                                         id: actionCombo
@@ -882,8 +449,8 @@ Item {
                                         textRole: "text"
                                         valueRole: "value"
                                         onCurrentIndexChanged: root.actionChanged(currentIndex, currentValue)
-                                        background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                        contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
+                                        background: Rectangle { color: Theme.activeSurface(); border.color: Theme.activeBorder(); radius: Theme.radiusMd }
+                                        contentItem: Text { text: parent.displayText; color: Theme.activeText(); verticalAlignment: Text.AlignVCenter }
                                     }
 
                                     ComboBox {
@@ -893,8 +460,8 @@ Item {
                                         Layout.fillWidth: true
                                         textRole: "text"
                                         valueRole: "value"
-                                        background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                        contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
+                                        background: Rectangle { color: Theme.activeSurface(); border.color: Theme.activeBorder(); radius: Theme.radiusMd }
+                                        contentItem: Text { text: parent.displayText; color: Theme.activeText(); verticalAlignment: Text.AlignVCenter }
                                     }
 
                                     Button {
@@ -903,76 +470,74 @@ Item {
                                         font.bold: true
                                         Layout.fillWidth: true
                                         onClicked: root.saveAction()
-                                        background: Rectangle { color: Theme.primary; radius: 4 }
+                                        background: Rectangle { color: Theme.activeAccent(); radius: Theme.radiusMd }
                                         contentItem: Text { text: parent.text; color: "white"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
                                     }
                                 }
                             }
 
-                            Rectangle {
-                                color: Theme.background
-                                radius: 6
-                                border.color: Theme.border
+                            Frame {
                                 Layout.fillWidth: true
-                                Layout.leftMargin: 4
-                                Layout.rightMargin: 4
+                                Layout.leftMargin: Theme.paddingSm
+                                Layout.rightMargin: Theme.paddingSm
+                                padding: Theme.paddingMd
+                                topPadding: Theme.paddingLg
+                                background: Rectangle {
+                                    color: Theme.activeBg()
+                                    radius: Theme.radiusLg
+                                    border.color: Theme.activeBorder()
+                                }
 
                                 ColumnLayout {
-                                    x: 10; y: 10
-                                    width: parent.width - 20
-                                    spacing: 8
+                                    anchors.fill: parent
+                                    spacing: Theme.spacingSm
 
-                                    Text { text: "Study Area"; font.bold: true; color: Theme.text }
+                                    Text { text: "Study Area"; font.bold: true; font.pixelSize: Theme.fontHeadline; color: Theme.activeAccent() }
+                                    Rectangle { height: 1; color: Theme.activeBorder(); Layout.fillWidth: true; Layout.topMargin: 2; Layout.bottomMargin: 4 }
+
                                     GridLayout {
                                         columns: 2
-                                        columnSpacing: 10
-                                        rowSpacing: 8
+                                        columnSpacing: Theme.spacingSm
+                                        rowSpacing: Theme.spacingSm
                                         Layout.fillWidth: true
-                                        Text { text: "Study Area:"; color: Theme.text }
-                                        TextField { id: typeField; objectName: "lineEdit_type"; Layout.fillWidth: true; color: Theme.text; background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 } }
-                                        Text { text: "Produced by:"; color: Theme.text }
-                                        TextField { id: byField; objectName: "lineEdit_by"; Layout.fillWidth: true; color: Theme.text; background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 } }
-                                        Text { text: "Plan Number:"; color: Theme.text }
-                                        TextField { id: numMokhField; objectName: "lineEdit_nummokh"; Layout.fillWidth: true; color: Theme.text; background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 } }
-                                        Text { text: "Date:"; color: Theme.text }
-                                        TextField { id: dateField; objectName: "dateEdit"; Layout.fillWidth: true; color: Theme.text; background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 } }
+                                        Text { text: "Study Area:"; color: Theme.activeText() }
+                                        TextField { id: typeField; objectName: "lineEdit_type"; Layout.fillWidth: true; color: Theme.activeText(); background: Rectangle { color: Theme.activeSurface(); border.color: Theme.activeBorder(); radius: Theme.radiusMd } }
+                                        Text { text: "Produced by:"; color: Theme.activeText() }
+                                        TextField { id: byField; objectName: "lineEdit_by"; Layout.fillWidth: true; color: Theme.activeText(); background: Rectangle { color: Theme.activeSurface(); border.color: Theme.activeBorder(); radius: Theme.radiusMd } }
+                                        Text { text: "Plan Number:"; color: Theme.activeText() }
+                                        TextField { id: numMokhField; objectName: "lineEdit_nummokh"; Layout.fillWidth: true; color: Theme.activeText(); background: Rectangle { color: Theme.activeSurface(); border.color: Theme.activeBorder(); radius: Theme.radiusMd } }
+                                        Text { text: "Date:"; color: Theme.activeText() }
+                                        TextField { id: dateField; objectName: "dateEdit"; Layout.fillWidth: true; color: Theme.activeText(); background: Rectangle { color: Theme.activeSurface(); border.color: Theme.activeBorder(); radius: Theme.radiusMd } }
                                     }
-                                    Button {
-                                        text: "Generate Panels Map"
-                                        Layout.fillWidth: true
-                                        background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                        contentItem: Text { text: parent.text; color: Theme.text; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                    }
-                                    Button {
-                                        text: "Generate Numbering Map"
-                                        Layout.fillWidth: true
-                                        background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                        contentItem: Text { text: parent.text; color: Theme.text; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                                    }
+
                                 }
                             }
 
-                            Rectangle {
-                                color: Theme.background
-                                radius: 6
-                                border.color: Theme.border
+                            Frame {
                                 Layout.fillWidth: true
-                                Layout.leftMargin: 4
-                                Layout.rightMargin: 4
+                                Layout.leftMargin: Theme.paddingSm
+                                Layout.rightMargin: Theme.paddingSm
+                                padding: Theme.paddingMd
+                                topPadding: Theme.paddingLg
+                                background: Rectangle {
+                                    color: Theme.activeBg()
+                                    radius: Theme.radiusLg
+                                    border.color: Theme.activeBorder()
+                                }
 
                                 ColumnLayout {
-                                    x: 10; y: 10
-                                    width: parent.width - 20
-                                    spacing: 8
+                                    anchors.fill: parent
+                                    spacing: Theme.spacingSm
 
-                                    Text { text: "Add New Feature"; font.bold: true; color: Theme.text }
+                                    Text { text: "Add New Feature"; font.bold: true; font.pixelSize: Theme.fontHeadline; color: Theme.activeAccent() }
+                                    Rectangle { height: 1; color: Theme.activeBorder(); Layout.fillWidth: true; Layout.topMargin: 2; Layout.bottomMargin: 4 }
 
                                     GridLayout {
                                         columns: 2
-                                        columnSpacing: 10
-                                        rowSpacing: 8
+                                        columnSpacing: Theme.spacingSm
+                                        rowSpacing: Theme.spacingSm
                                         Layout.fillWidth: true
-                                        Text { text: "Category:"; font.bold: true; color: Theme.text; Layout.minimumWidth: 100 }
+                                        Text { text: "Category:"; font.bold: true; color: Theme.activeText(); Layout.minimumWidth: 100 }
                                         ComboBox {
                                             id: featureCombo
                                             objectName: "feature_combo"
@@ -980,10 +545,10 @@ Item {
                                             textRole: "text"
                                             valueRole: "value"
                                             onCurrentIndexChanged: root.featureChanged(currentIndex, currentValue)
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
+                                            background: Rectangle { color: Theme.activeSurface(); border.color: Theme.activeBorder(); radius: Theme.radiusMd }
+                                            contentItem: Text { text: parent.displayText; color: Theme.activeText(); verticalAlignment: Text.AlignVCenter }
                                         }
-                                        Text { text: "Type:"; font.bold: true; color: Theme.text; Layout.minimumWidth: 100 }
+                                        Text { text: "Type:"; font.bold: true; color: Theme.activeText(); Layout.minimumWidth: 100 }
                                         ComboBox {
                                             id: subtypeCombo
                                             objectName: "subtype_combo"
@@ -991,17 +556,17 @@ Item {
                                             editable: true
                                             textRole: "text"
                                             valueRole: "value"
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
+                                            background: Rectangle { color: Theme.activeSurface(); border.color: Theme.activeBorder(); radius: Theme.radiusMd }
+                                            contentItem: Text { text: parent.displayText; color: Theme.activeText(); verticalAlignment: Text.AlignVCenter }
                                         }
-                                        Text { text: "Subtype:"; font.bold: true; color: Theme.text; Layout.minimumWidth: 100 }
+                                        Text { text: "Subtype:"; objectName: "label_subtype"; font.bold: true; color: Theme.activeText(); Layout.minimumWidth: 100 }
                                         TextField {
                                             id: newTypeField
                                             objectName: "new_type"
                                             Layout.fillWidth: true
                                             visible: true
-                                            color: Theme.text
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
+                                            color: Theme.activeText()
+                                            background: Rectangle { color: Theme.activeSurface(); border.color: Theme.activeBorder(); radius: Theme.radiusMd }
                                         }
                                     }
                                     Button {
@@ -1009,33 +574,37 @@ Item {
                                         font.bold: true
                                         Layout.fillWidth: true
                                         onClicked: root.saveNewType()
-                                        background: Rectangle { color: Theme.primary; radius: 4 }
+                                        background: Rectangle { color: Theme.activeAccent(); radius: Theme.radiusMd }
                                         contentItem: Text { text: parent.text; color: "white"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
                                     }
                                 }
                             }
 
-                            Rectangle {
-                                color: Theme.background
-                                radius: 6
-                                border.color: Theme.border
+                            Frame {
                                 Layout.fillWidth: true
-                                Layout.leftMargin: 4
-                                Layout.rightMargin: 4
+                                Layout.leftMargin: Theme.paddingSm
+                                Layout.rightMargin: Theme.paddingSm
+                                padding: Theme.paddingMd
+                                topPadding: Theme.paddingLg
+                                background: Rectangle {
+                                    color: Theme.activeBg()
+                                    radius: Theme.radiusLg
+                                    border.color: Theme.activeBorder()
+                                }
 
                                 ColumnLayout {
-                                    x: 10; y: 10
-                                    width: parent.width - 20
-                                    spacing: 8
+                                    anchors.fill: parent
+                                    spacing: Theme.spacingSm
 
-                                    Text { text: "Theme and Language"; font.bold: true; color: Theme.text }
+                                    Text { text: "Theme and Language"; font.bold: true; font.pixelSize: Theme.fontHeadline; color: Theme.activeAccent() }
+                                    Rectangle { height: 1; color: Theme.activeBorder(); Layout.fillWidth: true; Layout.topMargin: 2; Layout.bottomMargin: 4 }
 
                                     GridLayout {
                                         columns: 2
-                                        columnSpacing: 10
-                                        rowSpacing: 8
+                                        columnSpacing: Theme.spacingSm
+                                        rowSpacing: Theme.spacingSm
                                         Layout.fillWidth: true
-                                        Text { text: "Theme:"; color: Theme.text }
+                                        Text { text: "Theme:"; color: Theme.activeText() }
                                         ComboBox {
                                             id: themeCombo
                                             objectName: "_theme_combo"
@@ -1043,10 +612,10 @@ Item {
                                             textRole: "text"
                                             valueRole: "value"
                                             onCurrentIndexChanged: root.themeChanged(currentIndex, currentValue)
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
+                                            background: Rectangle { color: Theme.activeSurface(); border.color: Theme.activeBorder(); radius: Theme.radiusMd }
+                                            contentItem: Text { text: parent.displayText; color: Theme.activeText(); verticalAlignment: Text.AlignVCenter }
                                         }
-                                        Text { text: "Language:"; color: Theme.text }
+                                        Text { text: "Language:"; color: Theme.activeText() }
                                         ComboBox {
                                             id: localeCombo
                                             objectName: "_locale_combo"
@@ -1054,35 +623,34 @@ Item {
                                             textRole: "text"
                                             valueRole: "value"
                                             onCurrentIndexChanged: root.localeChanged(currentIndex, currentValue)
-                                            background: Rectangle { color: Theme.surface; border.color: Theme.border; radius: 4 }
-                                            contentItem: Text { text: parent.displayText; color: Theme.text; verticalAlignment: Text.AlignVCenter }
+                                            background: Rectangle { color: Theme.activeSurface(); border.color: Theme.activeBorder(); radius: Theme.radiusMd }
+                                            contentItem: Text { text: parent.displayText; color: Theme.activeText(); verticalAlignment: Text.AlignVCenter }
                                         }
                                     }
                                 }
                             }
 
-                            Item { height: 20 }
+                            Item { height: Theme.spacingLg }
                         }
                     }
                 }
-            }
 
             Rectangle {
                 id: footerFrame
                 Layout.fillWidth: true
                 Layout.minimumHeight: 36
                 Layout.maximumHeight: 36
-                color: Theme.surface
-                border.color: Theme.border
+                color: Theme.activeSurface()
+                border.color: Theme.activeBorder()
 
                 Text {
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: Theme.paddingMd
                     anchors.verticalCenter: parent.verticalCenter
                     text: "Space Applications Center 2025 \u00a9"
-                    font.pixelSize: 10
+                    font.pixelSize: Theme.fontCaption
                     font.bold: true
-                    color: Theme.text
+                    color: Theme.activeText()
                 }
             }
         }

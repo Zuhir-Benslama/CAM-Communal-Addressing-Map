@@ -1,14 +1,16 @@
 """Popup dialog for viewing and editing feature attributes — QML version."""
+
 import logging
 import os
 from typing import TYPE_CHECKING
 
+from qgis.core import QgsProject
 from qgis.PyQt.QtCore import QObject, QUrl, pyqtSlot
 from qgis.PyQt.QtWidgets import QDialog, QMessageBox, QVBoxLayout
-from qgis.core import QgsProject
 
 try:
     from qgis.PyQt.QtQuickWidgets import QQuickWidget
+
     _HAS_QML = True
 except ImportError:
     QQuickWidget = None  # type: ignore[assignment]
@@ -19,14 +21,26 @@ from ..app.core.database import get_session
 from ..app.orders import models as _models
 from ..app.users.repository import qgis_config
 from ..constants import current_locale, current_theme
-from ..scripts.lookup_data import get_string, locale_label
+from ..scripts.lookup_data import get_string
 from .popup_handlers import (
     POPULATE_DISPATCH,
+)
+from .popup_handlers import (
     update_numbering as _update_numbering,
+)
+from .popup_handlers import (
     update_organization as _update_organization,
+)
+from .popup_handlers import (
     update_panel as _update_panel,
+)
+from .popup_handlers import (
     update_road as _update_road,
+)
+from .popup_handlers import (
     update_subdivision as _update_subdivision,
+)
+from .popup_handlers import (
     update_zone as _update_zone,
 )
 from .ui_fillers import (
@@ -138,8 +152,9 @@ _COMBO_GETTERS = {
 class PopupDialog(QDialog):
     """Dialog for updating attributes of a selected feature (QML-backed)."""
 
-    def __init__(self, layer_name_value, layer_name_key, attribute, iface, *,
-                 parent=None) -> None:
+    def __init__(
+        self, layer_name_value, layer_name_key, attribute, iface, *, parent=None
+    ) -> None:
         super().__init__(parent)
         self._tr_locale = current_locale()
 
@@ -149,7 +164,7 @@ class PopupDialog(QDialog):
         self.iface = iface
 
         self._current_form_data: dict = {}
-        self.ref_identify_tool: 'IdentifyTool | None' = None
+        self.ref_identify_tool: IdentifyTool | None = None
         self._ref_layer: str = ''
         self._ref_id: str = ''
 
@@ -163,12 +178,12 @@ class PopupDialog(QDialog):
     # ------------------------------------------------------------------
     # QML setup
     # ------------------------------------------------------------------
-    def _init_qml(self) -> None:
+    def _init_qml(self) -> None:  # pylint: disable=duplicate-code
         if not _HAS_QML or QQuickWidget is None:
             raise ImportError(
-                "Qt Quick Widgets (QtQml) is not available.\n"
-                "Please install the Qt Quick / QML package for your system\n"
-                "(e.g., python3-pyqt6.qml or qml6 on Debian/Ubuntu)."
+                'Qt Quick Widgets (QtQml) is not available.\n'
+                'Please install the Qt Quick / QML package for your system\n'
+                '(e.g., python3-pyqt6.qml or qml6 on Debian/Ubuntu).'
             )
         self.setObjectName('rnaPopupDialog')
         self.setMinimumSize(700, 500)
@@ -184,8 +199,10 @@ class PopupDialog(QDialog):
         # Add our QML directory to the import path
         engine = self._quick_widget.engine()
         engine.addImportPath(QML_DIR)
-        for p in ('/usr/lib64/qt5/qml', '/usr/lib/qt5/qml',
-                  '/usr/local/lib/python3.14/site-packages/PyQt5/Qt5/qml'):
+        for p in (
+            '/usr/lib64/qt5/qml',
+            '/usr/lib/qt5/qml',
+        ):
             if os.path.isdir(p):
                 engine.addImportPath(p)
 
@@ -196,9 +213,10 @@ class PopupDialog(QDialog):
         context.setContextProperty('layerNameValue', self.layer_name_value)
         context.setContextProperty('layerNameKey', self.layer_name_key)
         context.setContextProperty('isDark', current_theme() == 'dark')
+        context.setContextProperty('isRTL', self._tr_locale == 'ar')
 
         # Load the main QML file
-        qml_path = os.path.join(QML_DIR, 'popup', 'PopupDialog.qml')
+        qml_path = os.path.join(QML_DIR, 'PopupPages', 'PopupDialog.qml')
         self._quick_widget.setSource(QUrl.fromLocalFile(qml_path))
 
         layout.addWidget(self._quick_widget)
@@ -254,18 +272,20 @@ class PopupDialog(QDialog):
                     model_name = data.get('model')
                     model = getattr(_models, model_name, None)
                     if model is None:
-                        logger.warning("Unknown model: %s", model_name)
+                        logger.warning('Unknown model: %s', model_name)
                         continue
 
-                    query = session.query(model).filter(
-                        model.id == self.attribute,
-                    ).first()
+                    query = (
+                        session.query(model)
+                        .filter(
+                            model.id == self.attribute,
+                        )
+                        .first()
+                    )
                     if query:
-                        handler = POPULATE_DISPATCH.get(
-                            self.layer_name_key)
+                        handler = POPULATE_DISPATCH.get(self.layer_name_key)
                         if handler:
-                            form_data = handler(
-                                self, query, self._tr_locale)
+                            form_data = handler(self, query, self._tr_locale)
                             self._current_form_data.update(form_data)
                             self._qml_root.setFormData(form_data)
                 finally:
@@ -279,6 +299,7 @@ class PopupDialog(QDialog):
         from .identify_tool import (  # pylint: disable=import-outside-toplevel
             IdentifyTool,
         )
+
         self._qml_root.setReferenceName('')
         project = QgsProject.instance()
 
@@ -288,18 +309,18 @@ class PopupDialog(QDialog):
                 self.iface.setActiveLayer(layer[0])
                 canvas = self.iface.mapCanvas()
                 self.ref_identify_tool = IdentifyTool(
-                    canvas, mode=IdentifyTool.MODE_REF,
+                    canvas,
+                    mode=IdentifyTool.MODE_REF,
                 )
                 self.ref_identify_tool.set_iface(self.iface)
-                self.ref_identify_tool.ref_selected.connect(
-                    self._on_reference_selected)
+                self.ref_identify_tool.ref_selected.connect(self._on_reference_selected)
                 self.ref_identify_tool.set_active_layer(layer[0])
                 canvas.setMapTool(self.ref_identify_tool)
         else:
             QMessageBox.critical(
                 self,
-                get_string("Error", self._tr_locale),
-                get_string("Reference type not specified", self._tr_locale),
+                get_string('Error', self._tr_locale),
+                get_string('Reference type not specified', self._tr_locale),
             )
 
         layer = project.mapLayersByName(self.layer_name_key)
@@ -311,6 +332,7 @@ class PopupDialog(QDialog):
         from .identify_tool import (  # pylint: disable=import-outside-toplevel
             IdentifyTool,
         )
+
         self._qml_root.setReferenceName('')
         project = QgsProject.instance()
 
@@ -320,18 +342,18 @@ class PopupDialog(QDialog):
                 self.iface.setActiveLayer(layer[0])
                 canvas = self.iface.mapCanvas()
                 self.ref_identify_tool = IdentifyTool(
-                    canvas, mode=IdentifyTool.MODE_REF,
+                    canvas,
+                    mode=IdentifyTool.MODE_REF,
                 )
                 self.ref_identify_tool.set_iface(self.iface)
-                self.ref_identify_tool.ref_selected.connect(
-                    self._on_reference_selected)
+                self.ref_identify_tool.ref_selected.connect(self._on_reference_selected)
                 self.ref_identify_tool.set_active_layer(layer[0])
                 canvas.setMapTool(self.ref_identify_tool)
         else:
             QMessageBox.critical(
                 self,
-                get_string("Error", self._tr_locale),
-                get_string("Reference type not specified", self._tr_locale),
+                get_string('Error', self._tr_locale),
+                get_string('Reference type not specified', self._tr_locale),
             )
 
         layer = project.mapLayersByName(self.layer_name_key)

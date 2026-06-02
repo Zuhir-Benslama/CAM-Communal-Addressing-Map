@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 """Symbol and layout export mixin for SVG, PNG map generation."""
 
 from __future__ import annotations
@@ -95,10 +96,7 @@ class SymbolExportMixin:
 
         for layer_name in LAYER_NAMES:
             for layer in QgsProject.instance().mapLayers().values():
-                if (
-                    layer.name() == layer_name and
-                    layer.name() not in layers_to_hide
-                ):
+                if layer.name() == layer_name and layer.name() not in layers_to_hide:
                     root.addLayer(layer)
                     break
 
@@ -117,7 +115,8 @@ class SymbolExportMixin:
         page = layout.pageCollection().pages()[0]
         page.setPageSize(
             QgsLayoutSize(
-                total_width, total_height,
+                total_width,
+                total_height,
                 QgsUnitTypes.LayoutMillimeters,
             ),
         )
@@ -137,7 +136,8 @@ class SymbolExportMixin:
 
         layers_to_hide = [self.sat_view, self.rast, self.type_to_hide]
         visible_layers = [
-            layer for layer in project.mapLayers().values()
+            layer
+            for layer in project.mapLayers().values()
             if layer.name() not in layers_to_hide
         ]
 
@@ -160,19 +160,20 @@ class SymbolExportMixin:
 
         if result == QgsLayoutExporter.Success:
             logger.info(
-                "SVG exported with dynamic page size: %s", output_path,
+                'SVG exported with dynamic page size: %s',
+                output_path,
             )
             return output_path
-        logger.error("Export failed!")
+        logger.error('Export failed!')
         return None
 
     def map_situation(self: HasSymbolMapContext) -> None:
         """Export a situation map highlighting the municipality to PNG."""
         project = QgsProject.instance()
 
-        municipality_layer = (
-            QgsProject.instance().mapLayersByName(LAYER_MUNICIPALITY)[0]
-        )
+        municipality_layer = QgsProject.instance().mapLayersByName(LAYER_MUNICIPALITY)[
+            0
+        ]
 
         base_layer = None
         if self.sat_view:
@@ -182,15 +183,13 @@ class SymbolExportMixin:
 
         if base_layer is None:
             logger.warning(
-                "No base map layer (satellite or raster) "
-                "available for situation map")
+                'No base map layer (satellite or raster) available for situation map'
+            )
             return
 
-        red_symbol = QgsFillSymbol.createSimple({
-            'color': '255,0,0,100',
-            'outline_color': '255,0,0',
-            'outline_width': '0.6'
-        })
+        red_symbol = QgsFillSymbol.createSimple(
+            {'color': '255,0,0,100', 'outline_color': '255,0,0', 'outline_width': '0.6'}
+        )
 
         cloned_renderer = municipality_layer.renderer().clone()
         cloned_renderer.setSymbol(red_symbol)
@@ -219,14 +218,14 @@ class SymbolExportMixin:
         output_path = SITUATION_PNG
         exporter.exportToImage(output_path, settings)
 
-        logger.info("Map exported to %s", output_path)
+        logger.info('Map exported to %s', output_path)
 
     def north(self: HasIface) -> None:
         """Export a north arrow SVG aligned with the current map rotation."""
         project = QgsProject.instance()
         layout = QgsPrintLayout(project)
         layout.initializeDefaults()
-        layout.setName("NorthArrowLayout")
+        layout.setName('NorthArrowLayout')
 
         page = QgsLayoutItemPage(layout)
         page.setPageSize(QgsLayoutSize(50, 50, QgsUnitTypes.LayoutMillimeters))
@@ -235,7 +234,7 @@ class SymbolExportMixin:
 
         north_arrow = QgsLayoutItemPicture(layout)
         north_arrow.setPicturePath(
-            QgsApplication.svgPaths()[0] + "/arrows/NorthArrow_11.svg",
+            QgsApplication.svgPaths()[0] + '/arrows/NorthArrow_11.svg',
         )
         north_arrow.attemptResize(
             QgsLayoutSize(40, 40, QgsUnitTypes.LayoutMillimeters),
@@ -266,7 +265,7 @@ class SymbolExportMixin:
         project = QgsProject.instance()
         layout = QgsPrintLayout(project)
         layout.initializeDefaults()
-        layout.setName("ScaleBarLayout")
+        layout.setName('ScaleBarLayout')
 
         page = QgsLayoutItemPage(layout)
         page.setPageSize(QgsLayoutSize(1, 1, QgsUnitTypes.LayoutMillimeters))
@@ -286,7 +285,7 @@ class SymbolExportMixin:
         scale_bar = QgsLayoutItemScaleBar(layout)
         scale_bar.setLinkedMap(map_item)
         scale_bar.setStyle('Double Box')
-        scale_bar.setFont(QFont("Arial", 12))
+        scale_bar.setFont(QFont('Arial', 12))
         scale_bar.attemptMove(
             QgsLayoutPoint(10, 85, QgsUnitTypes.LayoutMillimeters),
         )
@@ -294,11 +293,11 @@ class SymbolExportMixin:
         if total_length_m >= 1000:
             scale_bar.setUnits(QgsUnitTypes.DistanceKilometers)
             scale_bar.setUnitsPerSegment(0.1)
-            scale_bar.setUnitLabel(self._tr("km"))
+            scale_bar.setUnitLabel(self._tr('km'))
         else:
             scale_bar.setUnits(QgsUnitTypes.DistanceMeters)
             scale_bar.setUnitsPerSegment(100)
-            scale_bar.setUnitLabel(self._tr("m"))
+            scale_bar.setUnitLabel(self._tr('m'))
 
         scale_bar.setNumberOfSegments(2)
         scale_bar.setNumberOfSegmentsLeft(0)

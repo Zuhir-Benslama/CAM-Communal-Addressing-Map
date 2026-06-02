@@ -1,4 +1,5 @@
 """Data access layer for user and session persistence."""
+
 import json
 import logging
 import os
@@ -26,7 +27,7 @@ def _load_localites() -> list[dict[str, Any]]:
         with open(COMMUNES_JSON, encoding='utf-8') as f:
             return list(json.load(f).values())
     except (FileNotFoundError, json.JSONDecodeError):
-        logger.error("Failed to load %s", COMMUNES_JSON)
+        logger.error('Failed to load %s', COMMUNES_JSON)
         return []
 
 
@@ -69,9 +70,11 @@ def get_current_user() -> dict | None:
 
     session = get_session()
     try:
-        user = session.query(User).filter(
-            User.id == uid, User.api_key == cookie, User.active.is_(True)
-        ).first()
+        user = (
+            session.query(User)
+            .filter(User.id == uid, User.api_key == cookie, User.active.is_(True))
+            .first()
+        )
         if not user:
             return None
         commune = _get_commune_by_code(user.commune_code) if user.commune_code else None
@@ -134,7 +137,7 @@ def get_user_location() -> str | None:
             if row:
                 return row[0]
     except sqlite3.Error:
-        logger.error("Failed to query %s", COMMUNES_DB)
+        logger.error('Failed to query %s', COMMUNES_DB)
     return None
 
 
@@ -147,7 +150,7 @@ def create_cookie(cookie: str, uid: str) -> None:
             toml.dump(data, f)
         os.chmod(filename, 0o600)
     except (OSError, PermissionError) as e:
-        logger.error("Failed to write cookie file %s: %s", filename, e)
+        logger.error('Failed to write cookie file %s: %s', filename, e)
         raise
 
 
@@ -165,8 +168,8 @@ def qgis_config() -> dict:
             _qgis_config_cache = json.load(file)
             return _qgis_config_cache
     except FileNotFoundError:
-        logger.error("QGIS config file not found: %s", filename)
+        logger.error('QGIS config file not found: %s', filename)
         raise
     except json.JSONDecodeError as e:
-        logger.error("Invalid JSON in config file %s: %s", filename, e)
+        logger.error('Invalid JSON in config file %s: %s', filename, e)
         raise

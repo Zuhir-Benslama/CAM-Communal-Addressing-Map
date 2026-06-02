@@ -46,7 +46,7 @@ ComboBox {
         color: control.editable ? Theme.activeSurface() : Theme.activeOverlay()
         border.color: control.activeFocus ? Theme.activeAccent() : Theme.activeBorder()
         border.width: control.activeFocus ? 2 : 1
-        radius: Theme.borderRadius
+        radius: Theme.radiusMd
     }
 
     popup: Popup {
@@ -67,7 +67,7 @@ ComboBox {
             color: Theme.activeSurface()
             border.color: Theme.activeBorder()
             border.width: 1
-            radius: Theme.borderRadius
+            radius: Theme.radiusMd
         }
     }
 

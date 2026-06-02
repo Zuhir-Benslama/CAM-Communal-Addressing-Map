@@ -9,16 +9,20 @@ Rectangle {
     property var bridge: null
     property string listTitle: ''
 
+    property bool isRTL: false
+
+    Component.onCompleted: Theme.isDark = isDark
+
     color: Theme.activeBg()
 
     function setPageData(data) {
-        tableModel.clear()
-        headerModel.clear()
-
+        var headers = []
         for (var i = 0; i < data.labels.length; i++) {
-            headerModel.append({ columnLabel: data.labels[i], columnIndex: i })
+            headers.push({ columnLabel: data.labels[i], columnIndex: i })
         }
+        headerModel = headers
 
+        var rows = []
         for (var i = 0; i < data.rows.length; i++) {
             var item = {}
             for (var j = 0; j < data.fields.length; j++) {
@@ -27,8 +31,9 @@ Rectangle {
                     ? data.rows[i][j] : 'N/A'
                 )
             }
-            tableModel.append(item)
+            rows.push(item)
         }
+        tableModel = rows
 
         var totalPages = Math.max(1, Math.ceil(data.total / data.pageSize))
         pageLabel.text = (data.page + 1) + ' / ' + totalPages
@@ -40,11 +45,13 @@ Rectangle {
     ColumnLayout {
         anchors.fill: parent
         spacing: 0
+        LayoutMirroring.enabled: isRTL
+        LayoutMirroring.childrenInherit: true
 
         Rectangle {
             color: Theme.activeSurface()
             Layout.fillWidth: true
-            Layout.preferredHeight: 80
+            height: 64
             border.color: Theme.activeBorder()
             border.width: 1
             radius: 8
@@ -68,15 +75,15 @@ Rectangle {
                 id: tableColumn
                 width: parent.width
                 spacing: 0
-                topPadding: 4
-                bottomPadding: 4
+                topPadding: Theme.spacingXs
+                bottomPadding: Theme.spacingXs
 
-                Rectangle {
-                    width: parent.width
-                    height: 32
+                    Rectangle {
+                        width: parent.width
+                        height: 36
                     color: Theme.activeOverlay()
                     radius: 4
-                    visible: headerModel.count > 0
+                    visible: headerModel.length > 0
 
                     Row {
                         anchors.fill: parent
@@ -87,16 +94,16 @@ Rectangle {
                             model: headerModel
 
                             Rectangle {
-                                width: tableColumn.width / Math.max(1, headerModel.count) - 1
+                                width: tableColumn.width / Math.max(1, headerModel.length) - 1
                                 height: parent.height
                                 color: 'transparent'
 
                                 Text {
                                     anchors.centerIn: parent
-                                    text: columnLabel
+                                    text: model.columnLabel
                                     color: Theme.activeText()
                                     font.bold: true
-                                    font.pixelSize: 11
+                                    font.pixelSize: Theme.fontCaption2
                                     elide: Text.ElideRight
                                 }
                             }
@@ -112,7 +119,7 @@ Rectangle {
                         property var rowData: model
 
                         width: tableColumn.width
-                        height: 30
+                        height: 34
 
                         Rectangle {
                             anchors.fill: parent
@@ -127,7 +134,7 @@ Rectangle {
                                     model: headerModel
 
                                     Text {
-                                        width: rowItem.width / Math.max(1, headerModel.count) - 1
+                                        width: rowItem.width / Math.max(1, headerModel.length) - 1
                                         height: parent.height
                                         verticalAlignment: Text.AlignVCenter
                                         leftPadding: 8
@@ -136,7 +143,7 @@ Rectangle {
                                             return val !== undefined ? val : 'N/A'
                                         }
                                         color: Theme.activeText()
-                                        font.pixelSize: 11
+                                        font.pixelSize: Theme.fontBody
                                         elide: Text.ElideRight
                                     }
                                 }
@@ -152,27 +159,27 @@ Rectangle {
         Rectangle {
             color: Theme.activeSurface()
             Layout.fillWidth: true
-            Layout.preferredHeight: 100
+            Layout.preferredHeight: 110
             border.color: Theme.activeBorder()
             border.width: 1
             radius: 8
 
             ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: 8
+                anchors.margins: Theme.paddingSm
                 spacing: 8
 
-                Label {
-                    id: totalLabel
-                    text: qsTr('Total') + ': 0'
-                    color: Theme.activeTextSec()
-                    font.pixelSize: 11
-                }
+                                Label {
+                                    id: totalLabel
+                                    text: qsTr('Total') + ': 0'
+                                    color: Theme.activeTextSec()
+                                    font.pixelSize: Theme.fontCaption2
+                                }
 
                 RowLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter
-                    spacing: 12
+                    spacing: Theme.spacingMd
 
                     Button {
                         id: prevBtn
@@ -243,7 +250,7 @@ Rectangle {
                 Label {
                     text: qsTr('Space Applications Center 2025 (c)')
                     color: Theme.activeTextSec()
-                    font.pixelSize: 10
+                    font.pixelSize: Theme.fontCaption
                     horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
                 }
@@ -251,6 +258,6 @@ Rectangle {
         }
     }
 
-    ListModel { id: tableModel }
-    ListModel { id: headerModel }
+    property var tableModel: []
+    property var headerModel: []
 }

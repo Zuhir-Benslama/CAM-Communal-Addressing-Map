@@ -1,4 +1,5 @@
 """Repository layer for CRUD operations on spatial entities."""
+
 import logging
 from typing import Any
 
@@ -50,14 +51,13 @@ def export_model(model_name: str) -> None:
     try:
         model_class = _WRITER_MODELS.get(model_name)
         if model_class is None:
-            raise ValueError(f"Unknown model: {model_name}")
+            raise ValueError(f'Unknown model: {model_name}')
         query = session.query(model_class).all()
 
         records = []
         for record in query:
             rec = {}
-            for column_name, column_obj in \
-                    model_class.__table__.columns.items():
+            for column_name, column_obj in model_class.__table__.columns.items():
                 if isinstance(column_obj.type, Geometry):
                     wkb = getattr(record, column_name)
                     if wkb is not None:
@@ -69,21 +69,27 @@ def export_model(model_name: str) -> None:
         gdf = gpd.GeoDataFrame(records, geometry='geometry')
         gdf.set_crs('EPSG:4326', inplace=True)
         gdf.to_file(f'{model_name}.shp')
-        logger.info("Shapefile export completed successfully.")
+        logger.info('Shapefile export completed successfully.')
     finally:
         session.close()
 
 
 def add_panel_sign(
-    *, geometry_wkt, mount_status,
-    road_id=None, subdivision_id=None, organization_id=None,
-    dimensions=None, record_id=None,
+    *,
+    geometry_wkt,
+    mount_status,
+    road_id=None,
+    subdivision_id=None,
+    organization_id=None,
+    dimensions=None,
+    record_id=None,
 ):
     """Create and persist a new PanelSign entity."""
     instance = PanelSign(
         id=record_id,
         status=mount_status,
-        road_id=road_id, subdivision_id=subdivision_id,
+        road_id=road_id,
+        subdivision_id=subdivision_id,
         organization_id=organization_id,
         dimensions=dimensions or DEFAULT_PANEL_DIM,
         geometry=WKTElement(geometry_wkt, srid=SRID),
@@ -92,72 +98,115 @@ def add_panel_sign(
 
 
 def add_organization(
-    *, geometry_wkt, org_name, org_type, org_cat, record_id=None,
-    name_fr=None, name_en=None,
+    *,
+    geometry_wkt,
+    org_name,
+    org_type,
+    org_cat,
+    record_id=None,
+    name_fr=None,
+    name_en=None,
 ):
     """Create and persist a new Organization entity."""
     instance = Organization(
         id=record_id,
-        type=org_type, category=org_cat, name=org_name,
-        name_fr=name_fr, name_en=name_en,
+        type=org_type,
+        category=org_cat,
+        name=org_name,
+        name_fr=name_fr,
+        name_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
     return _add_entity(instance)
 
 
 def add_road(
-    *, geometry_wkt, road_name, type_road, road_decision, record_id=None,
-    name_fr=None, name_en=None,
+    *,
+    geometry_wkt,
+    road_name,
+    type_road,
+    road_decision,
+    record_id=None,
+    name_fr=None,
+    name_en=None,
 ):
     """Create and persist a new Road entity."""
     instance = Road(
         id=record_id,
-        type=type_road, name=road_name, decision_number=road_decision,
-        name_fr=name_fr, name_en=name_en,
+        type=type_road,
+        name=road_name,
+        decision_number=road_decision,
+        name_fr=name_fr,
+        name_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
     return _add_entity(instance)
 
 
 def add_numbering(
-    *, geometry_wkt, value,
-    road_id=None, subdivision_id=None, repetition=None, state=None,
-    activity_cat=None, activity_type=None, record_id=None,
+    *,
+    geometry_wkt,
+    value,
+    road_id=None,
+    subdivision_id=None,
+    repetition=None,
+    state=None,
+    activity_cat=None,
+    activity_type=None,
+    record_id=None,
 ):
     """Create and persist a new Numbering entity."""
     instance = Numbering(
         id=record_id,
-        value=value, road_id=road_id, subdivision_id=subdivision_id,
-        repetition=repetition, state=state,
-        activity_cat=activity_cat, activity_type=activity_type,
+        value=value,
+        road_id=road_id,
+        subdivision_id=subdivision_id,
+        repetition=repetition,
+        state=state,
+        activity_cat=activity_cat,
+        activity_type=activity_type,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
     return _add_entity(instance)
 
 
 def add_subdivision(
-    *, geometry_wkt, subdivision_type, name, record_id=None,
-    name_fr=None, name_en=None,
+    *,
+    geometry_wkt,
+    subdivision_type,
+    name,
+    record_id=None,
+    name_fr=None,
+    name_en=None,
 ):
     """Create and persist a new Subdivision entity."""
     instance = Subdivision(
         id=record_id,
-        name=name, type=subdivision_type,
-        name_fr=name_fr, name_en=name_en,
+        name=name,
+        type=subdivision_type,
+        name_fr=name_fr,
+        name_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
     return _add_entity(instance)
 
 
 def add_zone(
-    *, geometry_wkt, zone_type, name, record_id=None,
-    name_fr=None, name_en=None,
+    *,
+    geometry_wkt,
+    zone_type,
+    name,
+    record_id=None,
+    name_fr=None,
+    name_en=None,
 ):
     """Create and persist a new Zone entity."""
     instance = Zone(
         id=record_id,
-        name=name, type=zone_type,
-        name_fr=name_fr, name_en=name_en,
+        name=name,
+        type=zone_type,
+        name_fr=name_fr,
+        name_en=name_en,
         geometry=WKTElement(geometry_wkt, srid=SRID),
     )
     return _add_entity(instance)
@@ -168,8 +217,8 @@ def count_numberings(state: str) -> int:
     session = get_session()
     try:
         result = session.execute(
-            text("select count(*) as cpt from Num where state = :state"),
-            {"state": state}
+            text('select count(*) as cpt from Num where state = :state'),
+            {'state': state},
         )
         row = result.fetchone()
         return row[0] if row else 0
@@ -184,10 +233,9 @@ def count_panels(panel_type: str, state: str) -> int:
     try:
         result = session.execute(
             text(
-                "select count(*) as cpt from Pan "
-                "where type = :type and status = :state"
+                'select count(*) as cpt from Pan where type = :type and status = :state'
             ),
-            {"type": db_type, "state": state}
+            {'type': db_type, 'state': state},
         )
         row = result.fetchone()
         return row[0] if row else 0
@@ -202,16 +250,13 @@ def query_missing_pan(state: str) -> list:
     try:
         result = session.execute(
             text(
-                "SELECT label, type, COUNT(*) AS total "
-                "FROM Pan2 WHERE status = :state GROUP BY label, type"
+                'SELECT label, type, COUNT(*) AS total '
+                'FROM Pan2 WHERE status = :state GROUP BY label, type'
             ),
-            {"state": state}
+            {'state': state},
         )
         rows = result.fetchall()
-        return [
-            {'label': row[0], 'type': row[1], 'total': row[2]}
-            for row in rows
-        ]
+        return [{'label': row[0], 'type': row[1], 'total': row[2]} for row in rows]
     finally:
         session.close()
 
@@ -222,11 +267,11 @@ def query_missing_num(state: str) -> list:
     try:
         result = session.execute(
             text(
-                "SELECT value, COUNT(*) AS total FROM Num "
-                "WHERE state = :state "
+                'SELECT value, COUNT(*) AS total FROM Num '
+                'WHERE state = :state '
                 "AND (repetition = '' OR repetition IS NULL) GROUP BY value"
             ),
-            {"state": state}
+            {'state': state},
         )
         rows = result.fetchall()
         return [{'value': row[0], 'total': row[1]} for row in rows]
@@ -240,12 +285,12 @@ def query_missing_rep(state: str) -> list:
     try:
         result = session.execute(
             text(
-                "SELECT repetition, COUNT(*) AS total FROM Num "
-                "WHERE state = :state "
+                'SELECT repetition, COUNT(*) AS total FROM Num '
+                'WHERE state = :state '
                 "AND (repetition != '' OR repetition IS NOT NULL) "
-                "GROUP BY repetition"
+                'GROUP BY repetition'
             ),
-            {"state": state}
+            {'state': state},
         )
         rows = result.fetchall()
         return [{'value': row[0], 'total': row[1]} for row in rows]
@@ -263,14 +308,14 @@ def get_zone_distribution(wilaya_number: int) -> list:
     try:
         result = session.execute(
             text(
-                "SELECT z.type, COUNT(*) AS total "
-                "FROM zone z "
-                "JOIN \"user\" u ON u.id = z.user_id "
-                "WHERE u.wilaya_code = :wilaya "
-                "GROUP BY z.type "
-                "ORDER BY total DESC"
+                'SELECT z.type, COUNT(*) AS total '
+                'FROM zone z '
+                'JOIN "user" u ON u.id = z.user_id '
+                'WHERE u.wilaya_code = :wilaya '
+                'GROUP BY z.type '
+                'ORDER BY total DESC'
             ),
-            {"wilaya": wilaya_number},
+            {'wilaya': wilaya_number},
         )
         rows = result.fetchall()
         return [(row[0], row[1]) for row in rows]

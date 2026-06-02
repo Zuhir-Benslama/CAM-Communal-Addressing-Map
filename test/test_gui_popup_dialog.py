@@ -1,4 +1,5 @@
 """Tests for gui/popup_dialog.py (QML-backed version)."""
+
 import importlib
 import sys
 import unittest
@@ -16,7 +17,8 @@ class TestPopupDialog(unittest.TestCase):
         cls.app = get_qapp()
         setup_gui_mocks()
         spec = importlib.util.spec_from_file_location(
-            'plans_adressage.gui.popup_dialog', 'gui/popup_dialog.py',
+            'plans_adressage.gui.popup_dialog',
+            'gui/popup_dialog.py',
         )
         cls.mod = importlib.util.module_from_spec(spec)
         sys.modules['plans_adressage.gui.popup_dialog'] = cls.mod
@@ -28,7 +30,10 @@ class TestPopupDialog(unittest.TestCase):
     def setUp(self):
         self.iface = MagicMock()
         self.dialog = self.mod.PopupDialog(
-            'test_road', 'roads', 'pk_uid', self.iface,
+            'test_road',
+            'roads',
+            'pk_uid',
+            self.iface,
         )
 
     def test_dialog_created(self):
@@ -48,19 +53,21 @@ class TestPopupDialog(unittest.TestCase):
 
     def test_set_combo_value_stores_in_data(self):
         self.dialog._set_combo_value('test_combo', 'val_b')
-        self.assertEqual(
-            self.dialog._current_form_data.get('test_combo'), 'val_b')
+        self.assertEqual(self.dialog._current_form_data.get('test_combo'), 'val_b')
 
     def test_set_combo_value_overwrites_previous(self):
         self.dialog._current_form_data = {'test_combo': 'old_val'}
         self.dialog._set_combo_value('test_combo', 'new_val')
-        self.assertEqual(
-            self.dialog._current_form_data.get('test_combo'), 'new_val')
+        self.assertEqual(self.dialog._current_form_data.get('test_combo'), 'new_val')
 
     def test_populate_dispatch_has_all_layers(self):
         expected_layers = [
-            'roads', 'facilities', 'subdivisions',
-            'zones', 'numbering', 'panels',
+            'roads',
+            'facilities',
+            'subdivisions',
+            'zones',
+            'numbering',
+            'panels',
         ]
         dispatch = self.mod.POPULATE_DISPATCH
         for layer in expected_layers:
@@ -70,7 +77,8 @@ class TestPopupDialog(unittest.TestCase):
 
     @patch('plans_adressage.gui.popup_dialog.get_session')
     def test_set_form_unknown_model_warns_and_continues(
-        self, mock_get_session,
+        self,
+        mock_get_session,
     ):
         mock_get_session.return_value = MagicMock()
         with patch('plans_adressage.gui.popup_dialog.qgis_config') as mock_cfg:

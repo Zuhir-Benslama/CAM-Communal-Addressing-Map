@@ -1,4 +1,5 @@
 """ComboBox population functions for reference data."""
+
 import json
 import logging
 import os
@@ -69,8 +70,8 @@ def fill_paper(combobox: QComboBox) -> None:
     """Populate a combobox with paper size options (A3, A0)."""
     loc = _locale()
     combobox.clear()
-    combobox.addItem(_i18n_tr("A3 Sheet for Field Work", loc), 'A3')
-    combobox.addItem(_i18n_tr("A0 Sheet for Administration", loc), 'A0')
+    combobox.addItem(_i18n_tr('A3 Sheet for Field Work', loc), 'A3')
+    combobox.addItem(_i18n_tr('A0 Sheet for Administration', loc), 'A0')
 
 
 def _fill_from_json(combobox, data, loc):
@@ -101,8 +102,7 @@ def fill_commune_of_wilaya(combobox: QComboBox, code_w: int) -> None:
     loc = _locale()
     combobox.clear()
     dairas = dairas_data()
-    daira_ids = {int(did) for did, d in dairas.items()
-                 if int(d['wilaya_id']) == code_w}
+    daira_ids = {int(did) for did, d in dairas.items() if int(d['wilaya_id']) == code_w}
     for entry in communes_list():
         if entry.get('daira_id') in daira_ids:
             if loc == 'ar':
@@ -122,7 +122,7 @@ def fill_commune_of_wilaya(combobox: QComboBox, code_w: int) -> None:
 def fill_road_reference(combobox) -> None:
     """Populate a combobox with road reference types from config."""
     loc = _locale()
-    data_list = qgis_config().get('refs')
+    data_list = qgis_config().get('refs') or []
     combobox.clear()
     for layer_cfg in data_list:
         source = layer_cfg.get('label')
@@ -133,7 +133,7 @@ def fill_road_reference(combobox) -> None:
 def fill_panel_reference(combobox) -> None:
     """Populate a combobox with panel reference types from config."""
     loc = _locale()
-    data_list = qgis_config().get('refs2')
+    data_list = qgis_config().get('refs2') or []
     combobox.clear()
     for layer_cfg in data_list:
         source = layer_cfg.get('label')
@@ -233,7 +233,7 @@ def fill_numbering_state(combobox) -> None:
     _fill_from_json(combobox, numbering_states(), _locale())
 
 
-_ACTIVITY_KEY = "Activities"
+_ACTIVITY_KEY = 'Activities'
 
 _MAIN_TYPE_MAP = {
     LAYER_ZONES: zone_types,
@@ -281,7 +281,8 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
         return False
 
     _DATA_DIR = os.path.join(
-        os.path.dirname(os.path.dirname(__file__)), 'template_data',
+        os.path.dirname(os.path.dirname(__file__)),
+        'template_data',
     )
 
     if main_type == _ACTIVITY_KEY and not category:
@@ -289,7 +290,7 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
 
     if main_type == _ACTIVITY_KEY:
         filepath = os.path.join(_DATA_DIR, 'activity.json')
-        entry = {"sector": category, "type": type_name}
+        entry = {'sector': category, 'type': type_name}
     else:
         _JSON_FILES = {
             LAYER_ZONES: 'zone_type.json',
@@ -300,7 +301,7 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
         if not filename:
             return False
         filepath = os.path.join(_DATA_DIR, filename)
-        entry = {"pk": type_name}
+        entry = {'pk': type_name}
 
     try:
         with open(filepath, encoding='utf-8') as f:
@@ -311,13 +312,14 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
         clear_cache()
         return True
     except (OSError, json.JSONDecodeError):
-        logger.exception("Failed to save new type to %s", filepath)
+        logger.exception('Failed to save new type to %s', filepath)
         return False
 
 
 # ---------------------------------------------------------------------------
 # QML option getters (return [{text, value}, ...] lists)
 # ---------------------------------------------------------------------------
+
 
 def _json_to_options(data: list, loc: str) -> list[dict]:
     """Convert a list of JSON entries to QML-friendly option list."""
@@ -348,10 +350,7 @@ def get_mounting_status_options(loc: str) -> list[dict]:
 
 
 def get_org_category_options(loc: str) -> list[dict]:
-    return [
-        {'text': display, 'value': value}
-        for display, value in org_categories(loc)
-    ]
+    return [{'text': display, 'value': value} for display, value in org_categories(loc)]
 
 
 def get_org_type_options(loc: str, cat_value: str = '') -> list[dict]:
@@ -366,8 +365,7 @@ def get_org_type_options(loc: str, cat_value: str = '') -> list[dict]:
 def get_activity_category_options(loc: str) -> list[dict]:
     options = [{'text': _i18n_tr(NO_ACTIVITY, loc), 'value': NO_ACTIVITY}]
     options += [
-        {'text': display, 'value': value}
-        for display, value in activity_categories(loc)
+        {'text': display, 'value': value} for display, value in activity_categories(loc)
     ]
     return options
 
@@ -382,7 +380,7 @@ def get_activity_type_options(loc: str, cat_value: str = '') -> list[dict]:
 
 
 def get_road_reference_options(loc: str) -> list[dict]:
-    data_list = qgis_config().get('refs')
+    data_list = qgis_config().get('refs') or []
     return [
         {'text': _i18n_tr(cfg.get('label', ''), loc), 'value': cfg.get('label', '')}
         for cfg in data_list
@@ -390,7 +388,7 @@ def get_road_reference_options(loc: str) -> list[dict]:
 
 
 def get_panel_reference_options(loc: str) -> list[dict]:
-    data_list = qgis_config().get('refs2')
+    data_list = qgis_config().get('refs2') or []
     return [
         {'text': _i18n_tr(cfg.get('label', ''), loc), 'value': cfg.get('label', '')}
         for cfg in data_list

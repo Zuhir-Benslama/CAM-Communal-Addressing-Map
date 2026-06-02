@@ -1,4 +1,5 @@
 """Tests for mixins/import_export_mixin.py."""
+
 import importlib
 import sys
 import unittest
@@ -33,8 +34,10 @@ class TestImportExportMixin(unittest.TestCase):
         self.mixin.type_to_hide = 'Panels'
         self.mixin._output_dir = '/tmp/pytest_output'
         self.mixin.current_user = {
-            'wilaya': '16', 'commune': 'Alger Centre',
-            'first_name': 'Admin', 'last_name': 'User',
+            'wilaya': '16',
+            'commune': 'Alger Centre',
+            'first_name': 'Admin',
+            'last_name': 'User',
         }
         self._subprocess_run = self.mod.subprocess.run
         self.mod.subprocess.run = MagicMock(return_value=MagicMock())
@@ -46,8 +49,7 @@ class TestImportExportMixin(unittest.TestCase):
         canvas = MagicMock()
         canvas.extent.return_value.scale = MagicMock()
         canvas.layers.return_value = []
-        (canvas.mapSettings.return_value
-         .destinationCrs.return_value) = MagicMock()
+        (canvas.mapSettings.return_value.destinationCrs.return_value) = MagicMock()
         canvas.scale.return_value = scale_value
         self.mixin.iface.mapCanvas = MagicMock(return_value=canvas)
         return canvas
@@ -74,20 +76,21 @@ class TestImportExportMixin(unittest.TestCase):
         mock_job.renderedImage.return_value = mock_image
         mock_job.waitForFinished = MagicMock()
 
-        with patch.object(self.mod, 'QgsMapRendererSequentialJob',
-                          return_value=mock_job), \
-             patch.object(self.mod, 'validate_text',
-                          return_value='valid'), \
-             patch.object(self.mod, 'json') as mock_json, \
-             patch.object(self.mod, 'QMessageBox') as mock_mb:
+        with (
+            patch.object(
+                self.mod, 'QgsMapRendererSequentialJob', return_value=mock_job
+            ),
+            patch.object(self.mod, 'validate_text', return_value='valid'),
+            patch.object(self.mod, 'json') as mock_json,
+            patch.object(self.mod, 'QMessageBox') as mock_mb,
+        ):
             self.mixin._render_and_export('3')
 
             self.mixin.north.assert_called_once()
             self.mixin.scale.assert_called_once()
             self.mixin.map_situation.assert_not_called()
             ms.setExtent.assert_called_once()
-            ms.setOutputSize.assert_called_once_with(
-                self.mod.EXPORT_MAP_SIZE)
+            ms.setOutputSize.assert_called_once_with(self.mod.EXPORT_MAP_SIZE)
             ms.setFlag.assert_called_once()
             mock_job.start.assert_called_once()
             mock_job.waitForFinished.assert_called_once()
@@ -102,12 +105,15 @@ class TestImportExportMixin(unittest.TestCase):
         mock_job.renderedImage.return_value.save = MagicMock(return_value=True)
         mock_job.waitForFinished = MagicMock()
 
-        with patch.object(self.mod, 'QgsMapRendererSequentialJob',
-                          return_value=mock_job), \
-             patch.object(self.mod, 'QgsMapSettings'), \
-             patch.object(self.mod, 'validate_text', return_value='valid'), \
-             patch.object(self.mod, 'json'), \
-             patch.object(self.mod, 'QMessageBox'):
+        with (
+            patch.object(
+                self.mod, 'QgsMapRendererSequentialJob', return_value=mock_job
+            ),
+            patch.object(self.mod, 'QgsMapSettings'),
+            patch.object(self.mod, 'validate_text', return_value='valid'),
+            patch.object(self.mod, 'json'),
+            patch.object(self.mod, 'QMessageBox'),
+        ):
             self.mixin._render_and_export('4', include_situation=True)
             self.mixin.map_situation.assert_called_once()
 
@@ -120,9 +126,12 @@ class TestImportExportMixin(unittest.TestCase):
         mock_job.renderedImage.return_value = mock_image
         mock_job.waitForFinished = MagicMock()
 
-        with patch.object(self.mod, 'QgsMapRendererSequentialJob',
-                          return_value=mock_job), \
-             patch.object(self.mod, 'QgsMapSettings'):
+        with (
+            patch.object(
+                self.mod, 'QgsMapRendererSequentialJob', return_value=mock_job
+            ),
+            patch.object(self.mod, 'QgsMapSettings'),
+        ):
             self.mixin._render_and_export('3')
             mock_image.save.assert_called_once()
 
@@ -134,10 +143,13 @@ class TestImportExportMixin(unittest.TestCase):
         mock_job.renderedImage.return_value.save = MagicMock(return_value=True)
         mock_job.waitForFinished = MagicMock()
 
-        with patch.object(self.mod, 'QgsMapRendererSequentialJob',
-                          return_value=mock_job), \
-             patch.object(self.mod, 'QgsMapSettings'), \
-             patch.object(self.mod, 'json') as mock_json:
+        with (
+            patch.object(
+                self.mod, 'QgsMapRendererSequentialJob', return_value=mock_job
+            ),
+            patch.object(self.mod, 'QgsMapSettings'),
+            patch.object(self.mod, 'json') as mock_json,
+        ):
             self.mixin._render_and_export('3')
             mock_json.dump.assert_not_called()
 
@@ -148,11 +160,14 @@ class TestImportExportMixin(unittest.TestCase):
         mock_job.renderedImage.return_value.save = MagicMock(return_value=True)
         mock_job.waitForFinished = MagicMock()
 
-        with patch.object(self.mod, 'QgsMapRendererSequentialJob',
-                          return_value=mock_job), \
-             patch.object(self.mod, 'QgsMapSettings'), \
-             patch.object(self.mod, 'validate_text', return_value='valid'), \
-             patch.object(self.mod, 'json') as mock_json:
+        with (
+            patch.object(
+                self.mod, 'QgsMapRendererSequentialJob', return_value=mock_job
+            ),
+            patch.object(self.mod, 'QgsMapSettings'),
+            patch.object(self.mod, 'validate_text', return_value='valid'),
+            patch.object(self.mod, 'json') as mock_json,
+        ):
             mock_json.dump = MagicMock(side_effect=OSError('write error'))
             # Should not raise despite JSON write failure
             self.mixin._render_and_export('3')

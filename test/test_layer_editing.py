@@ -1,4 +1,5 @@
 """Tests for layer/editing.py."""
+
 import importlib
 import sys
 import unittest
@@ -19,7 +20,8 @@ class TestEditing(unittest.TestCase):
     def setUpClass(cls):
         setup_mocks()
         spec = importlib.util.spec_from_file_location(
-            'plans_adressage.layer.editing', 'layer/editing.py',
+            'plans_adressage.layer.editing',
+            'layer/editing.py',
         )
         cls.mod = importlib.util.module_from_spec(spec)
         sys.modules['plans_adressage.layer.editing'] = cls.mod
@@ -85,8 +87,7 @@ class TestEditing(unittest.TestCase):
 
     @patch('plans_adressage.layer.editing.QgsProject')
     def test_start_editing_layer_found(self, mock_project):
-        (mock_project.instance.return_value
-    .mapLayersByName.return_value) = [self.layer]
+        (mock_project.instance.return_value.mapLayersByName.return_value) = [self.layer]
         self.mod.start_editing_layer(self.iface, 'test_layer')
         self.iface.setActiveLayer.assert_called_once_with(self.layer)
         self.layer.startEditing.assert_called_once()
@@ -100,8 +101,7 @@ class TestEditing(unittest.TestCase):
 
     @patch('plans_adressage.layer.editing.QgsProject')
     def test_stop_editing_layer_success(self, mock_project):
-        (mock_project.instance.return_value
-    .mapLayersByName.return_value) = [self.layer]
+        (mock_project.instance.return_value.mapLayersByName.return_value) = [self.layer]
         self.layer.isEditable.return_value = True
         self.mod.stop_editing_layer(self.iface, 'test_layer')
         self.layer.commitChanges.assert_called_once()
@@ -114,16 +114,14 @@ class TestEditing(unittest.TestCase):
 
     @patch('plans_adressage.layer.editing.QgsProject')
     def test_stop_editing_layer_not_editable(self, mock_project):
-        (mock_project.instance.return_value
-    .mapLayersByName.return_value) = [self.layer]
+        (mock_project.instance.return_value.mapLayersByName.return_value) = [self.layer]
         self.layer.isEditable.return_value = False
         self.mod.stop_editing_layer(self.iface, 'test_layer')
         self.layer.commitChanges.assert_not_called()
 
     @patch('plans_adressage.layer.editing.QgsProject')
     def test_update_layer_enables_vertex_tool(self, mock_project):
-        (mock_project.instance.return_value
-    .mapLayersByName.return_value) = [self.layer]
+        (mock_project.instance.return_value.mapLayersByName.return_value) = [self.layer]
         self.mod.update_layer(self.iface, 'test_layer')
         self.iface.setActiveLayer.assert_called_once_with(self.layer)
         self.iface.actionVertexTool().trigger.assert_called_once()

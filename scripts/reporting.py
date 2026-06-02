@@ -1,4 +1,5 @@
 """Report and map generation using ODT templates."""
+
 # pylint: disable=import-error,wrong-import-position
 import json
 import logging
@@ -47,7 +48,7 @@ def generate_report() -> None:
             template_path,
             _output_path(
                 data_dict,
-                f"rapport_{datetime.now().date().strftime('%Y-%m-%d')}.odt",
+                f'rapport_{datetime.now().date().strftime("%Y-%m-%d")}.odt',
             ),
         )
         t.render(data_dict)
@@ -63,7 +64,7 @@ def generate_order_form() -> None:
             template_path,
             _output_path(
                 data_dict,
-                f"commande_{datetime.now().date().strftime('%Y-%m-%d')}.odt",
+                f'commande_{datetime.now().date().strftime("%Y-%m-%d")}.odt',
             ),
         )
         t.render(data_dict)
@@ -74,16 +75,14 @@ def _find_soffice() -> str:
     path = os.getenv('SOFFICE_EXE')
     if path:
         if not os.path.isfile(path) or not os.access(path, os.X_OK):
-            raise OSError(
-                f"SOFFICE_EXE path is not executable: {path}"
-            )
+            raise OSError(f'SOFFICE_EXE path is not executable: {path}')
         return path
     path = shutil.which('soffice')
     if path:
         return path
     raise OSError(
-        "LibreOffice (soffice) not found. "
-        "Set SOFFICE_EXE env var or install LibreOffice."
+        'LibreOffice (soffice) not found. '
+        'Set SOFFICE_EXE env var or install LibreOffice.'
     )
 
 
@@ -100,7 +99,7 @@ def map_a3() -> None:
             template_path,
             _output_path(
                 data_dict,
-                f"map_{num_plan}.odt",
+                f'map_{num_plan}.odt',
             ),
         )
         t.set_image_path('staticimage.map', MAP_PNG)
@@ -111,38 +110,41 @@ def map_a3() -> None:
         t.render(data_dict)
 
         soffice_path = _find_soffice()
-        input_filename = _output_path(data_dict, f"map_{num_plan}.odt")
-        pdf_filename = f"map_{num_plan}.pdf"
+        input_filename = _output_path(data_dict, f'map_{num_plan}.odt')
+        pdf_filename = f'map_{num_plan}.pdf'
 
         os.makedirs(output_dir, exist_ok=True)
 
         command = [
             soffice_path,
-            "--headless",
-            "--convert-to", "pdf",
-            "--outdir", output_dir,
+            '--headless',
+            '--convert-to',
+            'pdf',
+            '--outdir',
+            output_dir,
             input_filename,
         ]
 
         try:
             subprocess.run(command, check=True)
             logger.info(
-                "Converted to PDF successfully: %s",
+                'Converted to PDF successfully: %s',
                 os.path.join(output_dir, pdf_filename),
             )
             try:
                 os.remove(input_filename)
-                logger.info("Deleted file: %s", input_filename)
+                logger.info('Deleted file: %s', input_filename)
             except FileNotFoundError:
-                logger.warning("File not found: %s", input_filename)
+                logger.warning('File not found: %s', input_filename)
             except PermissionError:
                 logger.warning(
-                    "No permission to delete: %s", input_filename,
+                    'No permission to delete: %s',
+                    input_filename,
                 )
             except Exception as e:
-                logger.error("Error deleting file: %s", e)
+                logger.error('Error deleting file: %s', e)
         except subprocess.CalledProcessError as e:
-            logger.error("Conversion failed: %s", e)
+            logger.error('Conversion failed: %s', e)
 
 
 def map_a4() -> None:
@@ -158,7 +160,7 @@ def map_a4() -> None:
             template_path,
             _output_path(
                 data_dict,
-                f"map_{num_plan}.odt",
+                f'map_{num_plan}.odt',
             ),
         )
         t.set_image_path('staticimage.map', MAP_PNG)
@@ -170,42 +172,49 @@ def map_a4() -> None:
         t.render(data_dict)
         soffice_path = _find_soffice()
 
-        input_filename = _output_path(data_dict, f"map_{num_plan}.odt")
+        input_filename = _output_path(data_dict, f'map_{num_plan}.odt')
 
         command = [
             soffice_path,
-            "--headless",
-            "--convert-to", "pdf",
-            "--outdir", output_dir,
+            '--headless',
+            '--convert-to',
+            'pdf',
+            '--outdir',
+            output_dir,
             input_filename,
         ]
 
         try:
             subprocess.run(command, check=True)
             logger.info(
-                "Converted to PDF successfully: %s",
+                'Converted to PDF successfully: %s',
                 os.path.join(output_dir, f'map_{num_plan}.pdf'),
             )
             try:
                 os.remove(input_filename)
-                logger.info("Deleted file: %s", input_filename)
+                logger.info('Deleted file: %s', input_filename)
             except FileNotFoundError:
-                logger.warning("File not found: %s", input_filename)
+                logger.warning('File not found: %s', input_filename)
             except PermissionError:
                 logger.warning(
-                    "No permission to delete: %s", input_filename,
+                    'No permission to delete: %s',
+                    input_filename,
                 )
             except Exception as e:
-                logger.error("Error deleting file: %s", e)
+                logger.error('Error deleting file: %s', e)
         except subprocess.CalledProcessError as e:
-            logger.error("Conversion failed: %s", e)
+            logger.error('Conversion failed: %s', e)
 
 
 if __name__ == '__main__':
     import argparse
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--method', type=int, required=True, help='Method number to run',
+        '--method',
+        type=int,
+        required=True,
+        help='Method number to run',
     )
 
     args = parser.parse_args()
@@ -219,4 +228,4 @@ if __name__ == '__main__':
     elif args.method == 4:
         map_a4()
     else:
-        logger.warning("Method %s not recognized.", args.method)
+        logger.warning('Method %s not recognized.', args.method)

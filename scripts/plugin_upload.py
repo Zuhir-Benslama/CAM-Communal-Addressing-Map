@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """This script uploads a plugin package to the plugin repository.
-        Authors: A. Pasotti, V. Picavet
-        git sha              : $TemplateVCSFormat
+Authors: A. Pasotti, V. Picavet
+git sha              : $TemplateVCSFormat
 """
 
 import getpass
@@ -24,29 +24,30 @@ def main(parameters, arguments):
     :param arguments: Command line arguments.
     """
     address = (
-        f"{PROTOCOL}://{parameters.username}:{parameters.password}"
-        f"@{parameters.server}:{parameters.port}{ENDPOINT}"
+        f'{PROTOCOL}://{parameters.username}:{parameters.password}'
+        f'@{parameters.server}:{parameters.port}{ENDPOINT}'
     )
-    print(f"Connecting to: {hide_password(address)}")
+    print(f'Connecting to: {hide_password(address)}')
 
     server = xmlrpc.client.ServerProxy(address, verbose=VERBOSE)
 
     try:
         with open(arguments[0], 'rb') as handle:
             plugin_id, version_id = server.plugin.upload(
-                xmlrpc.client.Binary(handle.read()))
-        print(f"Plugin ID: {plugin_id}")
-        print(f"Version ID: {version_id}")
+                xmlrpc.client.Binary(handle.read())
+            )
+        print(f'Plugin ID: {plugin_id}')
+        print(f'Version ID: {version_id}')
     except xmlrpc.client.ProtocolError as err:
-        print("A protocol error occurred")
-        print(f"URL: {hide_password(err.url, 0)}")
-        print(f"HTTP/HTTPS headers: {err.headers}")
-        print(f"Error code: {err.errcode}")
-        print(f"Error message: {err.errmsg}")
+        print('A protocol error occurred')
+        print(f'URL: {hide_password(err.url, 0)}')
+        print(f'HTTP/HTTPS headers: {err.headers}')
+        print(f'Error code: {err.errcode}')
+        print(f'Error message: {err.errmsg}')
     except xmlrpc.client.Fault as err:
-        print("A fault occurred")
-        print(f"Fault code: {err.faultCode}")
-        print(f"Fault string: {err.faultString}")
+        print('A fault occurred')
+        print(f'Fault code: {err.faultCode}')
+        print(f'Fault string: {err.faultString}')
 
 
 def hide_password(url, start=6):
@@ -61,29 +62,41 @@ def hide_password(url, start=6):
     start_position = url.find(':', start) + 1
     end_position = url.find('@')
     return (
-        f"{url[:start_position]}"
-        f"{'*' * (end_position - start_position)}"
-        f"{url[end_position:]}"
+        f'{url[:start_position]}'
+        f'{"*" * (end_position - start_position)}'
+        f'{url[end_position:]}'
     )
 
 
-if __name__ == "__main__":
-    parser = OptionParser(usage="%prog [options] plugin.zip")
+if __name__ == '__main__':
+    parser = OptionParser(usage='%prog [options] plugin.zip')
     parser.add_option(
-        "-w", "--password", dest="password",
-        help="Password for plugin site", metavar="******")
+        '-w',
+        '--password',
+        dest='password',
+        help='Password for plugin site',
+        metavar='******',
+    )
     parser.add_option(
-        "-u", "--username", dest="username",
-        help="Username of plugin site", metavar="user")
+        '-u',
+        '--username',
+        dest='username',
+        help='Username of plugin site',
+        metavar='user',
+    )
     parser.add_option(
-        "-p", "--port", dest="port",
-        help="Server port to connect to", metavar="80")
+        '-p', '--port', dest='port', help='Server port to connect to', metavar='80'
+    )
     parser.add_option(
-        "-s", "--server", dest="server",
-        help="Specify server name", metavar="plugins.qgis.org")
+        '-s',
+        '--server',
+        dest='server',
+        help='Specify server name',
+        metavar='plugins.qgis.org',
+    )
     options, args = parser.parse_args()
     if len(args) != 1:
-        print("Please specify zip file.\n")
+        print('Please specify zip file.\n')
         parser.print_help()
         sys.exit(1)
     if not options.server:
@@ -93,10 +106,10 @@ if __name__ == "__main__":
     if not options.username:
         # interactive mode
         username = getpass.getuser()
-        print(f"Please enter user name [{username}] :", end=' ')
+        print(f'Please enter user name [{username}] :', end=' ')
 
         res = input()
-        if res != "":
+        if res != '':
             options.username = res
         else:
             options.username = username

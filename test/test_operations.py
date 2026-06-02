@@ -89,7 +89,9 @@ class TestGetZoneDistribution(unittest.TestCase):
 
     def test_returns_type_count_pairs(self):
         self.mock_session.execute.return_value.fetchall.return_value = [
-            ('industrial', 8), ('residential', 12), ('commercial', 5),
+            ('industrial', 8),
+            ('residential', 12),
+            ('commercial', 5),
         ]
         result = get_zone_distribution(16)
         self.assertEqual(len(result), 3)
@@ -106,7 +108,8 @@ class TestGetZoneDistribution(unittest.TestCase):
 
     def test_orders_by_total_descending(self):
         self.mock_session.execute.return_value.fetchall.return_value = [
-            ('commercial', 20), ('residential', 10),
+            ('commercial', 20),
+            ('residential', 10),
         ]
         result = get_zone_distribution(16)
         self.assertEqual(result[0][1], 20)

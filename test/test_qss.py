@@ -1,4 +1,5 @@
 """Tests for generated QSS theme stylesheets."""
+
 # ruff: noqa: E402, I001
 import os
 import re
@@ -56,9 +57,7 @@ def test_qss_templates_render_without_placeholders() -> None:
 
 
 def test_light_qss_does_not_leak_dark_palette_colors() -> None:
-    light_colors = set(
-        re.findall(r'#[0-9a-fA-F]{6}', LIGHT_QSS + LIGHT_QSS_DIALOG)
-    )
+    light_colors = set(re.findall(r'#[0-9a-fA-F]{6}', LIGHT_QSS + LIGHT_QSS_DIALOG))
     assert not (DARK_PALETTE_COLORS & light_colors)
 
 
@@ -84,7 +83,8 @@ def test_light_header_toolbar_uses_light_border() -> None:
     ],
 )
 def test_theme_lookup_returns_matching_stylesheet(
-    theme_name: str, expected: str,
+    theme_name: str,
+    expected: str,
 ) -> None:
     assert get_theme_qss(theme_name) is expected
     assert get_dialog_qss(theme_name) is (

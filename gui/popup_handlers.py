@@ -3,6 +3,7 @@
 Populate functions return data dicts for QML forms.
 Update functions read from ``dialog._current_form_data`` dict.
 """
+
 import logging
 from typing import TYPE_CHECKING
 
@@ -40,6 +41,7 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Populate helpers (read from DB → return data dict for QML)
 # ---------------------------------------------------------------------------
+
 
 def populate_road(dialog: 'PopupDialog', query, loc) -> dict:
     return {
@@ -79,8 +81,9 @@ def populate_numbering(dialog: 'PopupDialog', query, loc) -> dict:
     if query.road_id:
         data['refType'] = LAYER_ROADS
         data['refName'] = (
-            locale_value(query.road, 'type', loc) + ' ' +
-            locale_value(query.road, 'name', loc)
+            locale_value(query.road, 'type', loc)
+            + ' '
+            + locale_value(query.road, 'name', loc)
         )
     elif query.subdivision_id:
         data['refType'] = LAYER_SUBDIVISIONS
@@ -97,14 +100,16 @@ def populate_panel(dialog: 'PopupDialog', query, loc) -> dict:
     if query.road_id:
         data['refType'] = LAYER_ROADS
         data['refName'] = (
-            locale_value(query.road, 'type', loc) + ' ' +
-            locale_value(query.road, 'name', loc)
+            locale_value(query.road, 'type', loc)
+            + ' '
+            + locale_value(query.road, 'name', loc)
         )
     elif query.organization_id:
         data['refType'] = LAYER_FACILITIES
         data['refName'] = (
-            locale_value(query.organization, 'type', loc) + ' ' +
-            locale_value(query.organization, 'name', loc)
+            locale_value(query.organization, 'type', loc)
+            + ' '
+            + locale_value(query.organization, 'name', loc)
         )
     elif query.subdivision_id:
         data['refType'] = LAYER_SUBDIVISIONS
@@ -125,6 +130,7 @@ POPULATE_DISPATCH = {
 # ---------------------------------------------------------------------------
 # Update helpers (read dialog._current_form_data → write DB → notify)
 # ---------------------------------------------------------------------------
+
 
 def _notify_success(dialog: 'PopupDialog', msg_key: str) -> None:
     QMessageBox.information(
@@ -157,7 +163,8 @@ def update_road(dialog: 'PopupDialog') -> None:
     session = get_session()
     try:
         Road.update(
-            session, record_id=dialog.attribute,
+            session,
+            record_id=dialog.attribute,
             name=validate_text(data.get('name', '')),
             type=data.get('type', ''),
         )
@@ -174,7 +181,8 @@ def update_organization(dialog: 'PopupDialog') -> None:
     session = get_session()
     try:
         Organization.update(
-            session, record_id=dialog.attribute,
+            session,
+            record_id=dialog.attribute,
             category=data.get('category', ''),
             name=validate_text(data.get('name', '')),
             type=data.get('type', ''),
@@ -192,7 +200,8 @@ def update_subdivision(dialog: 'PopupDialog') -> None:
     session = get_session()
     try:
         Subdivision.update(
-            session, record_id=dialog.attribute,
+            session,
+            record_id=dialog.attribute,
             name=validate_text(data.get('name', '')),
             type=data.get('type', ''),
         )
@@ -209,7 +218,8 @@ def update_zone(dialog: 'PopupDialog') -> None:
     session = get_session()
     try:
         Zone.update(
-            session, record_id=dialog.attribute,
+            session,
+            record_id=dialog.attribute,
             name=validate_text(data.get('name', '')),
             type=data.get('type', ''),
         )
@@ -247,7 +257,9 @@ def update_panel(dialog: 'PopupDialog') -> None:
                 kwargs['organization_id'] = None
 
         PanelSign.update(
-            session, record_id=dialog.attribute, **kwargs,
+            session,
+            record_id=dialog.attribute,
+            **kwargs,
         )
         _notify_success(dialog, 'This panel has been updated successfully')
     except (ValueError, SQLAlchemyError) as e:
@@ -289,7 +301,9 @@ def update_numbering(dialog: 'PopupDialog') -> None:
     except (ValueError, SQLAlchemyError) as e:
         logger.exception('Failed to update numbering: %s', e)
         QMessageBox.critical(
-            dialog, get_string('Error', dialog._tr_locale), f'{e}',
+            dialog,
+            get_string('Error', dialog._tr_locale),
+            f'{e}',
         )
     finally:
         session.close()

@@ -1,15 +1,17 @@
 """Paginated dialog for browsing entity records — QML version."""
+
 from __future__ import annotations
 
-import json
 import logging
 import os
+from typing import Any
 
 from qgis.PyQt.QtCore import QObject, QUrl, pyqtSlot
 from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout
 
 try:
     from qgis.PyQt.QtQuickWidgets import QQuickWidget
+
     _HAS_QML = True
 except ImportError:
     QQuickWidget = None
@@ -31,7 +33,7 @@ QML_DIR = os.path.join(PLUGIN_DIR, 'qml')
 class EntityListBridge(QObject):
     """Bridge object exposed to QML for Python <-> QML communication."""
 
-    def __init__(self, dialog: 'EntityListDialog') -> None:
+    def __init__(self, dialog: EntityListDialog) -> None:
         super().__init__()
         self.dialog = dialog
         self._page = 0
@@ -64,8 +66,7 @@ class EntityListDialog(QDialog):
 
     PAGE_SIZE = 50
 
-    def __init__(self, model_name: str, list_of: str,
-                 parent=None) -> None:
+    def __init__(self, model_name: str, list_of: str, parent=None) -> None:
         super().__init__(parent)
 
         self.model_name = model_name
@@ -78,11 +79,15 @@ class EntityListDialog(QDialog):
         self.setStyleSheet(get_theme_qss(current_theme()))
 
         apply_widget_texts(self, self._tr_locale)
-        title = get_string('List', self._tr_locale) + ' ' + get_string(list_of, self._tr_locale)
+        title = (
+            get_string('List', self._tr_locale)
+            + ' '
+            + get_string(list_of, self._tr_locale)
+        )
         self.setWindowTitle(title)
         self._populate_table(0)
 
-    def _init_qml(self) -> None:
+    def _init_qml(self) -> None:  # pylint: disable=duplicate-code
         if not _HAS_QML or QQuickWidget is None:
             raise ImportError(
                 'Qt Quick Widgets (QtQml) is not available.\n'
@@ -102,15 +107,21 @@ class EntityListDialog(QDialog):
 
         engine = self._quick_widget.engine()
         engine.addImportPath(QML_DIR)
-        for p in ('/usr/lib64/qt5/qml', '/usr/lib/qt5/qml',
-                  '/usr/local/lib/python3.14/site-packages/PyQt5/Qt5/qml'):
+        for p in (
+            '/usr/lib64/qt5/qml',
+            '/usr/lib/qt5/qml',
+        ):
             if os.path.isdir(p):
                 engine.addImportPath(p)
 
         self._bridge = EntityListBridge(self)
         context = self._quick_widget.rootContext()
         context.setContextProperty('pluginBridge', self._bridge)
-        context.setContextProperty('listTitle', get_string(self._list_of, self._tr_locale))
+        context.setContextProperty(
+            'listTitle', get_string(self._list_of, self._tr_locale)
+        )
+        context.setContextProperty('isDark', current_theme() == 'dark')
+        context.setContextProperty('isRTL', self._tr_locale == 'ar')
 
         qml_path = os.path.join(QML_DIR, 'entitylist', 'EntityListDialog.qml')
         self._quick_widget.setSource(QUrl.fromLocalFile(qml_path))
@@ -127,18 +138,23 @@ class EntityListDialog(QDialog):
             if model_class is None:
                 self._total_records = 0
                 self._bridge.set_page_state(page, 0)
-                self._qml_root.setPageData({
-                    'fields': [], 'labels': [], 'rows': [],
-                    'total': 0, 'page': 0, 'pageSize': self.PAGE_SIZE,
-                })
+                self._qml_root.setPageData(
+                    {
+                        'fields': [],
+                        'labels': [],
+                        'rows': [],
+                        'total': 0,
+                        'page': 0,
+                        'pageSize': self.PAGE_SIZE,
+                    }
+                )
                 return
 
             self._total_records = session.query(model_class).count()
 
             offset = page * self.PAGE_SIZE
             results = (
-                session.query(model_class)
-                .offset(offset).limit(self.PAGE_SIZE).all()
+                session.query(model_class).offset(offset).limit(self.PAGE_SIZE).all()
             )
 
             PROPERTY_LABELS = {
@@ -147,11 +163,12 @@ class EntityListDialog(QDialog):
             }
 
             fields, labels = get_all_fields_and_labels(
-                model_class, PROPERTY_LABELS, locale=self._tr_locale)
+                model_class, PROPERTY_LABELS, locale=self._tr_locale
+            )
 
             labels = [
                 get_string(label, self._tr_locale)
-                if any('\u0600' <= c <= '\u06FF' for c in label)
+                if any('\u0600' <= c <= '\u06ff' for c in label)
                 else label
                 for label in labels
             ]
@@ -162,7 +179,8 @@ class EntityListDialog(QDialog):
                 for field in fields:
                     try:
                         from ..app.shared.utils import locale_value
-                        value = locale_value(record, field, self._tr_locale)
+
+                        value: Any = locale_value(record, field, self._tr_locale)
                     except AttributeError:
                         value = getattr(record, field, None)
                     value = value if value not in (None, '') else 'N/A'
@@ -171,14 +189,16 @@ class EntityListDialog(QDialog):
 
             self._bridge.set_page_state(page, self._total_records)
 
-            self._qml_root.setPageData({
-                'fields': fields,
-                'labels': labels,
-                'rows': rows,
-                'total': self._total_records,
-                'page': page,
-                'pageSize': self.PAGE_SIZE,
-            })
+            self._qml_root.setPageData(
+                {
+                    'fields': fields,
+                    'labels': labels,
+                    'rows': rows,
+                    'total': self._total_records,
+                    'page': page,
+                    'pageSize': self.PAGE_SIZE,
+                }
+            )
         finally:
             session.close()
 

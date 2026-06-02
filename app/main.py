@@ -1,4 +1,5 @@
 """Main plugin entry point for the RNA QGIS plugin."""
+
 import logging
 import os
 from typing import Any
@@ -29,8 +30,7 @@ class RNA:
         QgsApplication.setPrefixPath(os.getenv('QGIS_BASE_PATH', '/usr'), True)
 
         svg_path = os.path.join(
-            os.getenv('QGIS_BASE_PATH', '/usr'),
-            'apps', 'qgis', 'svg'
+            os.getenv('QGIS_BASE_PATH', '/usr'), 'apps', 'qgis', 'svg'
         )
         QgsApplication.setDefaultSvgPaths([svg_path])
         QgsApplication.instance().setSvgPaths([svg_path])
@@ -43,7 +43,8 @@ class RNA:
         settings.endGroup()
 
         self._locale_code: str = QSettings(SETTINGS_ORG, SETTINGS_APP).value(
-            SETTINGS_KEY_LOCALE, '')
+            SETTINGS_KEY_LOCALE, ''
+        )
         if not self._locale_code:
             locale_val = QSettings().value('locale/userLocale')
             self._locale_code = locale_val[0:2] if locale_val else 'en'
@@ -105,30 +106,33 @@ class RNA:
 
     def run(self) -> None:
         """Launch (or raise) the plugin dock widget."""
-        logger.info("run() called, first_start=%s", self.first_start)
+        logger.info('run() called, first_start=%s', self.first_start)
 
         if self.first_start is True:
             self.first_start = False
             try:
                 self.dlg = MainDialog(self.iface)
-                logger.info("MainDialog created successfully")
+                logger.info('MainDialog created successfully')
             except Exception as e:  # pylint: disable=W0718
-                logger.exception("Failed to create MainDialog: %s", e)
+                logger.exception('Failed to create MainDialog: %s', e)
                 loc = current_locale()
                 QMessageBox.critical(
-                    None, get_string("RNA Plugin Error", loc),
-                    get_string("Failed to create dialog", loc) + "\n\n" +
-                    get_string("Check the QGIS log for details.", loc),
+                    None,
+                    get_string('RNA Plugin Error', loc),
+                    get_string('Failed to create dialog', loc)
+                    + '\n\n'
+                    + get_string('Check the QGIS log for details.', loc),
                 )
                 return
 
             loc = current_locale()
             self.dock_widget: QDockWidget = QDockWidget(
-                get_string("RNA Plugin", loc), self.iface.mainWindow()
+                get_string('RNA Plugin', loc), self.iface.mainWindow()
             )
             self.dock_widget.setWidget(self.dlg)
             self.iface.addDockWidget(
-                Qt.DockWidgetArea.LeftDockWidgetArea, self.dock_widget,
+                Qt.DockWidgetArea.LeftDockWidgetArea,
+                self.dock_widget,
             )
             self.dock_widget.show()
             QTimer.singleShot(0, self._normalize_dock_width)
@@ -148,6 +152,5 @@ class RNA:
         min_width = 580
 
         self.dock_widget.setMinimumWidth(min_width)
-        if (self.dock_widget.width() > 760 or
-                self.dock_widget.width() < min_width):
+        if self.dock_widget.width() > 760 or self.dock_widget.width() < min_width:
             self.dock_widget.resize(default_width, self.dock_widget.height())

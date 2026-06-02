@@ -18,6 +18,7 @@ from ..i18n import tr as _i18n_tr
 
 class MeasureTool(QgsMapToolEmitPoint):
     """Map tool for measuring distances on the canvas."""
+
     def __init__(self, canvas, iface) -> None:
         """Initialize the measurement tool with canvas and interface."""
         super().__init__(canvas)
@@ -70,9 +71,10 @@ class MeasureTool(QgsMapToolEmitPoint):
                 self.da.measureLine(self.points[i - 1], self.points[i])
                 for i in range(1, len(self.points))
             )
-            msg = f"{total_dist:.2f} {_i18n_tr('m', current_locale())}"
+            msg = f'{total_dist:.2f} {_i18n_tr("m", current_locale())}'
             self.iface.messageBar().pushMessage(
-                _i18n_tr("Total Distance", current_locale()), msg, level=0, duration=10)
+                _i18n_tr('Total Distance', current_locale()), msg, level=0, duration=10
+            )
 
     def canvasMoveEvent(self, event) -> None:
         """Show temporary distance on mouse move."""
@@ -88,7 +90,7 @@ class MeasureTool(QgsMapToolEmitPoint):
             self.da.measureLine(self.points[i - 1], self.points[i])
             for i in range(1, len(self.points))
         )
-        dist_msg = f"{temp_distance + total_dist:.2f} {_i18n_tr('m', current_locale())}"
+        dist_msg = f'{temp_distance + total_dist:.2f} {_i18n_tr("m", current_locale())}'
         QToolTip.showText(QCursor.pos(), dist_msg)
 
     def keyPressEvent(self, event) -> None:
@@ -96,28 +98,33 @@ class MeasureTool(QgsMapToolEmitPoint):
         if event.key() == Qt.Key.Key_R:
             self.clear()
             self.iface.messageBar().pushMessage(
-                _i18n_tr("Update", current_locale()),
-                _i18n_tr("Restart Measurement", current_locale()),
-                level=1, duration=10
+                _i18n_tr('Update', current_locale()),
+                _i18n_tr('Restart Measurement', current_locale()),
+                level=1,
+                duration=10,
             )
 
         elif event.key() == Qt.Key.Key_E:
             self.clear()
             self.canvas.unsetMapTool(self)
             self.iface.messageBar().pushMessage(
-                _i18n_tr("Finish", current_locale()),
-                _i18n_tr("Measurement tool terminated", current_locale()),
-                level=0, duration=10
+                _i18n_tr('Finish', current_locale()),
+                _i18n_tr('Measurement tool terminated', current_locale()),
+                level=0,
+                duration=10,
             )
 
         elif event.key() == Qt.Key.Key_P:
             self.paused = not self.paused
-            state = (_i18n_tr("Paused", current_locale())
-                     if self.paused
-                     else _i18n_tr("Resumed", current_locale()))
+            state = (
+                _i18n_tr('Paused', current_locale())
+                if self.paused
+                else _i18n_tr('Resumed', current_locale())
+            )
             level = 1 if self.paused else 0
             self.iface.messageBar().pushMessage(
-                _i18n_tr("Status", current_locale()), state, level=level, duration=10)
+                _i18n_tr('Status', current_locale()), state, level=level, duration=10
+            )
 
     def addDistanceLabel(self, point1, point2) -> None:
         """Add a distance label between two points on canvas."""
@@ -131,19 +138,19 @@ class MeasureTool(QgsMapToolEmitPoint):
             for i in range(1, len(self.points))
         )
 
-        rle = "\u202B"
-        pdf = "\u202C"
+        rle = '\u202b'
+        pdf = '\u202c'
 
         label_text = (
-            f" {rle}{segment_distance:.2f} {_i18n_tr('m', current_locale())}\n"
-            f" {total_distance:.2f} {_i18n_tr('m', current_locale())}{pdf} "
+            f' {rle}{segment_distance:.2f} {_i18n_tr("m", current_locale())}\n'
+            f' {total_distance:.2f} {_i18n_tr("m", current_locale())}{pdf} '
         )
 
         # Create a group to hold the text with outline effect
         group = QGraphicsItemGroup()
         group.mid_point = mid_point  # type: ignore[attr-defined]
 
-        font = QFont("Arial", 11)
+        font = QFont('Arial', 11)
         text_item = QGraphicsSimpleTextItem(label_text)
         text_item.setFont(font)
         text_rect = text_item.boundingRect()
@@ -158,8 +165,10 @@ class MeasureTool(QgsMapToolEmitPoint):
 
         # Position the group at the correct screen coordinates
         screen_pos = self.canvas.getCoordinateTransform().transform(mid_point)
-        group.setPos(screen_pos.x() - text_rect.width() / 2,
-                     screen_pos.y() - text_rect.height() / 2)
+        group.setPos(
+            screen_pos.x() - text_rect.width() / 2,
+            screen_pos.y() - text_rect.height() / 2,
+        )
         group.setZValue(1000)  # Ensure labels stay on top
 
         self.canvas.scene().addItem(group)
@@ -182,7 +191,7 @@ class MeasureTool(QgsMapToolEmitPoint):
                             text_rect = item.boundingRect()
                             label.setPos(
                                 screen_pos.x() - text_rect.width() / 2,
-                                screen_pos.y() - text_rect.height() / 2
+                                screen_pos.y() - text_rect.height() / 2,
                             )
                             break
                 else:
@@ -192,9 +201,7 @@ class MeasureTool(QgsMapToolEmitPoint):
                 current_scale = self.canvas.scale()
                 font_size = max(8, min(14, int(10000 / current_scale)))
                 for item in label.childItems():
-                    if isinstance(
-                        item, (QGraphicsSimpleTextItem, QGraphicsTextItem)
-                    ):
+                    if isinstance(item, (QGraphicsSimpleTextItem, QGraphicsTextItem)):
                         font = item.font()
                         font.setPointSize(font_size)
                         item.setFont(font)

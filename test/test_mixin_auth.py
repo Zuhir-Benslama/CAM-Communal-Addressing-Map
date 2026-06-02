@@ -1,4 +1,5 @@
 """Tests for mixins/auth_mixin.py."""
+
 import importlib
 import sys
 import unittest
@@ -26,18 +27,38 @@ class TestAuthMixin(unittest.TestCase):
     def setUp(self):
         self.mixin = self.mod.AuthMixin()
         self.mixin._tr = lambda s: s
-        for attr in ('commune_of_wilaya', 'uname', 'pwd', 'email',
-                     'fname', 'lname', 'pnum', 'username', 'password',
-                     'label_username', 'wilaya_list', 'org_cat',
-                     'org_type', 'activity_cat', 'activity_type'):
+        for attr in (
+            'commune_of_wilaya',
+            'uname',
+            'pwd',
+            'email',
+            'fname',
+            'lname',
+            'pnum',
+            'username',
+            'password',
+            'label_username',
+            'wilaya_list',
+            'org_cat',
+            'org_type',
+            'activity_cat',
+            'activity_type',
+        ):
             setattr(self.mixin, attr, MagicMock())
         self.mixin.map_options = MagicMock()
         self.mixin.router = MagicMock()
         self.mixin.router.findChild = MagicMock(return_value=MagicMock())
         self.mixin.menu = MagicMock()
         self.mixin.menu.currentIndex = MagicMock(return_value=0)
-        for attr in ('identify_tool', 'popup_dialog', 'sat_view', 'rest',
-                     'rast', 'iface', 'current_user'):
+        for attr in (
+            'identify_tool',
+            'popup_dialog',
+            'sat_view',
+            'rest',
+            'rast',
+            'iface',
+            'current_user',
+        ):
             setattr(self.mixin, attr, None)
         self.mixin.stop = MagicMock()
         self.mixin.on_opt_selected = MagicMock()
@@ -57,8 +78,10 @@ class TestAuthMixin(unittest.TestCase):
 
     def test_submit_add_usr_success(self):
         sign_up = MagicMock(return_value=(True, []))
-        with patch.object(self.mod, 'sign_up', sign_up), \
-             patch.object(self.mixin, 'public_route') as mock_route:
+        with (
+            patch.object(self.mod, 'sign_up', sign_up),
+            patch.object(self.mixin, 'public_route') as mock_route,
+        ):
             self.mixin.submit_add_usr()
             sign_up.assert_called_once()
             mock_route.assert_called_once_with('login')
@@ -73,12 +96,14 @@ class TestAuthMixin(unittest.TestCase):
     def test_login_user_success(self):
         sign_in = MagicMock(return_value=(True, 'user1', None))
         get_current_user = MagicMock(return_value={'uid': 1})
-        with patch.object(self.mod, 'sign_in', sign_in), \
-             patch.object(self.mod, 'get_current_user', get_current_user), \
-             patch.object(self.mod, 'init_allowed_zone'), \
-             patch.object(self.mod, 'refresh_all_layers'), \
-             patch.object(self.mixin, 'add_map_layer', return_value=True), \
-             patch.object(self.mixin, 'private_route') as mock_route:
+        with (
+            patch.object(self.mod, 'sign_in', sign_in),
+            patch.object(self.mod, 'get_current_user', get_current_user),
+            patch.object(self.mod, 'init_allowed_zone'),
+            patch.object(self.mod, 'refresh_all_layers'),
+            patch.object(self.mixin, 'add_map_layer', return_value=True),
+            patch.object(self.mixin, 'private_route') as mock_route,
+        ):
             self.mixin.login_user()
             sign_in.assert_called_once()
             mock_route.assert_called_once_with('main')
@@ -86,22 +111,27 @@ class TestAuthMixin(unittest.TestCase):
 
     def test_login_user_auth_ok_map_fails(self):
         sign_in = MagicMock(return_value=(True, 'user1', None))
-        with patch.object(self.mod, 'sign_in', sign_in), \
-             patch.object(self.mixin, 'add_map_layer', return_value=False), \
-             patch.object(self.mixin, '_show_error') as mock_err:
+        with (
+            patch.object(self.mod, 'sign_in', sign_in),
+            patch.object(self.mixin, 'add_map_layer', return_value=False),
+            patch.object(self.mixin, '_show_error') as mock_err,
+        ):
             self.mixin.login_user()
             mock_err.assert_called_once()
 
     def test_login_user_map_load_failure_does_not_route(self):
         sign_in = MagicMock(return_value=(True, 'user1', None))
         get_current_user = MagicMock(return_value={'uid': 1})
-        with patch.object(self.mod, 'sign_in', sign_in), \
-             patch.object(self.mod, 'get_current_user', get_current_user), \
-             patch.object(self.mod, 'init_allowed_zone',
-                          side_effect=RuntimeError('load failed')), \
-             patch.object(self.mixin, 'add_map_layer', return_value=True), \
-             patch.object(self.mixin, 'private_route') as mock_route, \
-             patch.object(self.mixin, '_show_error') as mock_err:
+        with (
+            patch.object(self.mod, 'sign_in', sign_in),
+            patch.object(self.mod, 'get_current_user', get_current_user),
+            patch.object(
+                self.mod, 'init_allowed_zone', side_effect=RuntimeError('load failed')
+            ),
+            patch.object(self.mixin, 'add_map_layer', return_value=True),
+            patch.object(self.mixin, 'private_route') as mock_route,
+            patch.object(self.mixin, '_show_error') as mock_err,
+        ):
             self.mixin.login_user()
             mock_route.assert_not_called()
             self.mixin.menu.setCurrentIndex.assert_not_called()
@@ -110,18 +140,22 @@ class TestAuthMixin(unittest.TestCase):
 
     def test_login_user_wrong_password(self):
         sign_in = MagicMock(return_value=(False, None, 'wrong password'))
-        with patch.object(self.mod, 'sign_in', sign_in), \
-             patch.object(self.mixin, '_show_error') as mock_err:
+        with (
+            patch.object(self.mod, 'sign_in', sign_in),
+            patch.object(self.mixin, '_show_error') as mock_err,
+        ):
             self.mixin.login_user()
             mock_err.assert_called_once_with('wrong password')
 
     def test_fill_map_options(self):
-        qgis_config = MagicMock(return_value={
-            'map_layers': [
-                {'label': 'Satellite', 'url': 'url1'},
-                {'label': 'OSM', 'url': 'url2'},
-            ],
-        })
+        qgis_config = MagicMock(
+            return_value={
+                'map_layers': [
+                    {'label': 'Satellite', 'url': 'url1'},
+                    {'label': 'OSM', 'url': 'url2'},
+                ],
+            }
+        )
         with patch.object(self.mod, 'qgis_config', qgis_config):
             self.mixin.fill_map_options()
             self.mixin.map_options.clear.assert_called_once()
@@ -129,17 +163,15 @@ class TestAuthMixin(unittest.TestCase):
 
     def test_add_map_layer_wms(self):
         self.mixin.map_options = MagicMock()
-        self.mixin.map_options.currentText = MagicMock(
-            return_value='Satellite View 1')
-        self.mixin.map_options.currentData = MagicMock(
-            return_value='url_value')
+        self.mixin.map_options.currentText = MagicMock(return_value='Satellite View 1')
+        self.mixin.map_options.currentData = MagicMock(return_value='url_value')
         osm_layer = MagicMock()
         osm_layer.isValid = MagicMock(return_value=True)
-        with patch.object(self.mod, 'QgsRasterLayer',
-                          return_value=osm_layer), \
-             patch.object(self.mod, 'QgsProject') as mock_project:
-            (mock_project.instance.return_value
-             .mapLayersByName.return_value) = []
+        with (
+            patch.object(self.mod, 'QgsRasterLayer', return_value=osm_layer),
+            patch.object(self.mod, 'QgsProject') as mock_project,
+        ):
+            (mock_project.instance.return_value.mapLayersByName.return_value) = []
             result = self.mixin.add_map_layer()
             self.assertTrue(result)
             self.assertEqual(self.mixin.sat_view, 'Satellite View 1')
@@ -147,17 +179,17 @@ class TestAuthMixin(unittest.TestCase):
 
     def test_add_map_layer_wms_already_exists(self):
         self.mixin.map_options = MagicMock()
-        self.mixin.map_options.currentText = MagicMock(
-            return_value='Satellite View 1')
-        self.mixin.map_options.currentData = MagicMock(
-            return_value='url_value')
+        self.mixin.map_options.currentText = MagicMock(return_value='Satellite View 1')
+        self.mixin.map_options.currentData = MagicMock(return_value='url_value')
         osm_layer = MagicMock()
         osm_layer.isValid = MagicMock(return_value=True)
-        with patch.object(self.mod, 'QgsRasterLayer',
-                          return_value=osm_layer), \
-             patch.object(self.mod, 'QgsProject') as mock_project:
+        with (
+            patch.object(self.mod, 'QgsRasterLayer', return_value=osm_layer),
+            patch.object(self.mod, 'QgsProject') as mock_project,
+        ):
             mock_project.instance.return_value.mapLayersByName.return_value = [
-                'existing']
+                'existing'
+            ]
             result = self.mixin.add_map_layer()
             self.assertTrue(result)
             self.assertEqual(self.mixin.sat_view, 'Satellite View 1')
@@ -166,10 +198,8 @@ class TestAuthMixin(unittest.TestCase):
 
     def test_add_map_layer_wms_invalid(self):
         self.mixin.map_options = MagicMock()
-        self.mixin.map_options.currentText = MagicMock(
-            return_value='Satellite View 1')
-        self.mixin.map_options.currentData = MagicMock(
-            return_value='url_value')
+        self.mixin.map_options.currentText = MagicMock(return_value='Satellite View 1')
+        self.mixin.map_options.currentData = MagicMock(return_value='url_value')
         osm_layer = MagicMock()
         osm_layer.isValid = MagicMock(return_value=False)
         with patch.object(self.mod, 'QgsRasterLayer', return_value=osm_layer):
@@ -215,14 +245,11 @@ class TestAuthMixin(unittest.TestCase):
         self.mixin.router.findChild = MagicMock(return_value=MagicMock())
         with patch.object(self.mod, 'logout') as mock_logout:
             self.mixin.closeEvent(event)
-            mock_logout.assert_called_once_with(
-                iface=self.mixin.iface, dlg=None)
+            mock_logout.assert_called_once_with(iface=self.mixin.iface, dlg=None)
             event.accept.assert_called_once()
 
     def test_on_select_wilaya(self):
-        with patch.object(
-            self.mod, 'fill_commune_of_wilaya'
-        ) as mock_fill:
+        with patch.object(self.mod, 'fill_commune_of_wilaya') as mock_fill:
             self.mixin.on_select_wilaya(0)
             mock_fill.assert_called_once()
 
@@ -232,9 +259,7 @@ class TestAuthMixin(unittest.TestCase):
             mock_fill.assert_called_once()
 
     def test_on_select_catAct(self):
-        with patch.object(
-            self.mod, 'fill_activity_type'
-        ) as mock_fill:
+        with patch.object(self.mod, 'fill_activity_type') as mock_fill:
             self.mixin.on_select_activity_cat(0)
             mock_fill.assert_called_once()
 

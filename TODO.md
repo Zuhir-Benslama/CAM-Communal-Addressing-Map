@@ -1339,3 +1339,117 @@ Login failed with "Please select a map layer option" — `add_map_layer()` recei
 ### Files Changed
 - `gui/main_dialog.py` — 3 lines added to `_ComboProxy.addItem`
 - `qml/maindialog/MainDialog.qml` — 3 lines added to `setComboOptions`
+
+---
+
+## 64. QML UI Polish — Apple HIG Alignment & Proxy Extraction — 2026-06-02 ✅
+
+**Tests: 230/230 pass** (3 QGIS-dependent skipped) **ruff: 0 errors**
+
+### Proxy Extraction (`gui/proxies.py`)
+- [x] Extracted 5 proxy classes from `gui/main_dialog.py` into `gui/proxies.py` (280 lines):
+  - `_ComboProxy` — QComboBox mimic (clear, addItem, count, currentIndex, currentText, currentData, findData, blockSignals, etc.)
+  - `_FieldProxy` — QLineEdit/QLabel mimic (text, setText, clear, setVisible)
+  - `_FormStackProxy` — QStackedWidget mimic (currentIndex, setCurrentIndex, currentWidget)
+  - `_MenuProxy` — QComboBox mimic for menu-type dropdowns (separator, addSection)
+  - `_RouterProxy` — simple page router (navigate to named page)
+- [x] Updated all imports in `gui/main_dialog.py` to reference `gui.proxies`
+- [x] Removed `TYPE_CHECKING` guard and `from typing import TYPE_CHECKING`
+
+### Theme.qml — Apple HIG Design Tokens
+- [x] **Spacing grid** (8pt HIG): `spacingXs: 4`, `spacingSm: 8`, `spacingMd: 12`, `spacingLg: 16`, `spacingXl: 24`
+- [x] **Padding**: `paddingSm: 8`, `paddingMd: 12`, `paddingLg: 16`
+- [x] **Border radius**: `radiusSm: 4`, `radiusMd: 6`, `radiusLg: 8` (matching old QSS: controls 6px, groups 8px)
+- [x] **Font sizes**: `fontCaption: 10`, `fontCaption2: 11`, `fontBody: 12`, `fontSubhead: 13`, `fontHeadline: 14`, `fontTitle: 20`
+- [x] All tokens reference `active*` color properties for automatic dark/light theme switching
+
+### Form Component Extraction
+- [x] Extracted 6 form layouts from `MainPage.qml` into individual QML components:
+  - `ZoneForm.qml` (65 lines) — zone entity form with field bindings
+  - `RoadForm.qml` (77 lines) — road entity form
+  - `OrgForm.qml` (92 lines) — organization/facility form
+  - `CityForm.qml` (78 lines) — subdivision form
+  - `NumForm.qml` (186 lines) — numbering form with measure/confirm support
+  - `PanForm.qml` (114 lines) — panel sign form with measure/confirm support
+- [x] All 6 forms use `columnSpacing: Theme.spacingSm`, `rowSpacing: Theme.spacingSm`
+- [x] Updated `qmldir` with all 6 form component registrations
+
+### MainPage.qml — Structural Refactor
+- [x] Replaced TabBar/StackLayout pattern with Rectangle/ColumnLayout (fixes circular layout dependency)
+- [x] Added `toggleSettingsTab()` function — switches `mainTabBar.currentIndex` between 0 (ops) and 1 (settings)
+- [x] Added `_safeComboValue(combo)` helper — guards against `currentIndex < 0`
+- [x] Removed `import maindialog 1.0` (circular self-import risk)
+- [x] Restored `layerSelector` ComboBox inside `formPanel` ColumnLayout (was lost during form extraction)
+- [x] Toolbar/selector/form margins → `Theme.paddingMd` (12)
+- [x] Section headers → `Theme.fontHeadline` (14) + separator line
+- [x] Settings section: 4 Frame cards with `topPadding: Theme.paddingLg`, `padding: Theme.paddingMd`, `radius: Theme.radiusLg`
+- [x] All `color`/`border.color` references use `Theme.active*()` properties
+- [x] Fixed broken `formPanel` Rectangle (misplaced `radius`, orphaned `contentItem: Text`, extra braces)
+- [x] Added missing `ColumnLayout { anchors.fill: parent }` wrapper
+
+### Styled Components — Apple HIG
+- [x] `StyledGroupBox.qml` — radius `Theme.radiusLg (8)`, spacing `Theme.spacingSm (8)`, padding `Theme.paddingMd (12)`, topPadding `Theme.paddingLg (16)`, title font `Theme.fontHeadline (14)` in `Theme.activeAccent()`
+- [x] `StyledButton.qml` — radius `Theme.radiusMd (6)` (was `Theme.borderRadius`)
+- [x] `StyledComboBox.qml` — radius `Theme.radiusMd (6)` (button + popup)
+- [x] `StyledTextField.qml` — radius `Theme.radiusMd (6)`
+- [x] `StyledLabel.qml` — added `isHeading`/`isCaption` props, conditional `font.pixelSize` (`Theme.fontHeadline`/`Theme.fontCaption2`/`Theme.fontBody`)
+
+### LoginPage / AddUserPage
+- [x] Title → `Theme.fontTitle (20)` + `Theme.activeAccent()`
+- [x] Card → `radius: Theme.radiusLg (8)`, separator lines added
+- [x] Spacing → `Theme.spacingMd (12)`
+- [x] Uses `x/y` + `childrenRect.height` pattern (not `anchors.fill`) to avoid circular layout
+
+### PopupDialog.qml / EntityListDialog.qml
+- [x] Margins → `Theme.paddingLg (16)`
+- [x] Removed unused `isDark`/`pluginBridge` properties
+- [x] `Component.onCompleted` for isDark assignment instead of onIsDarkChanged
+- [x] Table row height → 34px, header height → 36px
+
+### MainDialog.qml
+- [x] Added `toggleSettingsTab()` forwarding function
+- [x] Added `_safeComboValue` usage in `setField` for `_action_combo`
+- [x] `setComboOptions` sets `currentIndex = 0` after population
+
+### Python Code Changes
+- **`gui/main_dialog.py`** — 350 lines changed:
+  - Phase combo fix: `_populate_combos()` now adds items to `layer_selector` proxy (was no-op before, old .ui pre-populated them)
+  - Phase combo proxy sync: `proxy.setCurrentIndex(index)` in `_on_layer_changed()` so `_current_layer_name()` reads correct index
+  - Settings toggle: `_toggle_settings()` now actually switches tabs via `toggleSettingsTab()`
+  - Proxy classes extracted to `gui/proxies.py`, replaced with imports
+  - `TYPE_CHECKING` guard removed
+  - Import ordering cleanup
+- **`app/core/config.py`** (60 lines changed) — config cleanup, QSS template loading refactor
+- **`app/core/database.py`** (255 lines changed) — DB init, spatial metadata, connection pool fixes
+- **`app/core/migration.py`** (266 lines changed) — migration logic, old column renames, view creation
+- **`app/orders/models/`** (all 6 model files + base) — type hints, protocol annotations, cleanup
+- **`app/orders/repository.py`** (157 lines changed) — keyword-only args, docstrings, cleanup
+- **`app/users/`** (5 files, ~200 lines changed) — service signatures, schema fixes, protocol types
+- **`app/shared/constants.py`** (154 lines changed) — layer constants, theme enums, locale keys
+- **`app/shared/utils.py`** — `ensure()` helper, `MappingProxyType` for subprocess flags
+- **`app/core/base.py`**, **`app/core/security.py`** — JWT secret deferred, base model tweaks
+- **`mixins/`** (10 files) — protocol annotations on `self`, method signatures updated
+- **`layer/`** (3 files) — loadNamedStyle return-type fix, field_names re-capture, editing guards
+- **`test/`** — 230 tests pass (3 skipped), helpers updated for proxy classes
+
+### Alignment with Old QSS Values
+| Token | Old QSS | New Theme value |
+|-------|---------|----------------|
+| Control border-radius | `QPushButton border-radius: 6px` | `Theme.radiusMd (6)` |
+| GroupBox border-radius | `QGroupBox border-radius: 8px` | `Theme.radiusLg (8)` |
+| GroupBox padding | `padding: 16px 12px 12px 12px` | `topPadding: Theme.paddingLg (16)` + `padding: Theme.paddingMd (12)` |
+| GroupBox title accent | `QGroupBox::title` accent color | `Theme.activeAccent()` |
+| Section header font | Bold accent-colored title | `Theme.fontHeadline (14)` + `Theme.activeAccent()` |
+
+### Files Added (7)
+- `gui/proxies.py` — 5 proxy classes extracted from main_dialog.py
+- `qml/maindialog/ZonForm.qml` — zone entity form
+- `qml/maindialog/RoadForm.qml` — road entity form
+- `qml/maindialog/OrgForm.qml` — organization/facility form
+- `qml/maindialog/CityForm.qml` — subdivision form
+- `qml/maindialog/NumForm.qml` — numbering form
+- `qml/maindialog/PanForm.qml` — panel sign form
+
+### Files Modified (58)
+- QML: `Theme.qml`, `MainPage.qml`, `MainDialog.qml`, `LoginPage.qml`, `AddUserPage.qml`, `PopupDialog.qml`, `EntityListDialog.qml`, `StyledButton.qml`, `StyledComboBox.qml`, `StyledGroupBox.qml`, `StyledLabel.qml`, `StyledTextField.qml`, `qmldir`
+- Python: `main_dialog.py`, `config.py`, `database.py`, `migration.py`, `base.py`, `security.py`, `lifespan.py`, `main.py`, `constants.py`, `utils.py`, `repository.py`, `service.py`, `schemas.py`, `models.py`, `dependencies.py`, `ui_fillers.py`, `entity_list_dialog.py`, `identify_tool.py`, `measure_tool.py`, `popup_dialog.py`, `popup_handlers.py`, `editing.py`, `refresh.py`, `utils.py`, `_protocols.py`, `auth_mixin.py`, `backup_mixin.py`, `chart_mixin.py`, `import_export_mixin.py`, `layer_edit_mixin.py`, `layer_ops_mixin.py`, `map_tools_mixin.py`, `report_mixin.py`, `symbol_export_mixin.py`, `__init__.py`, `pyproject.toml`, `i18n/__init__.py`, `help/source/conf.py`

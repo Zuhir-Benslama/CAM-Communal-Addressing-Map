@@ -23,11 +23,13 @@ def setUpModule():
 
 def tearDownModule():
     import shutil
+
     shutil.rmtree(TMPDIR, ignore_errors=True)
 
 
 def _clean_tmpdir():
     import shutil
+
     if os.path.exists(TMPDIR):
         shutil.rmtree(TMPDIR)
     os.makedirs(TMPDIR, exist_ok=True)
@@ -63,17 +65,17 @@ class TestFindModSpatialiteDLL(unittest.TestCase):
 
 class TestPasswordFunctions(unittest.TestCase):
     def test_hash_and_verify_roundtrip(self):
-        password = "test_password_123"
+        password = 'test_password_123'
         hashed = hash_password(password)
         self.assertTrue(verify_password(password, hashed))
 
     def test_verify_wrong_password(self):
-        password = "correct_password"
+        password = 'correct_password'
         hashed = hash_password(password)
-        self.assertFalse(verify_password("wrong_password", hashed))
+        self.assertFalse(verify_password('wrong_password', hashed))
 
     def test_hash_is_different_each_time(self):
-        password = "same_password"
+        password = 'same_password'
         hash1 = hash_password(password)
         hash2 = hash_password(password)
         self.assertNotEqual(hash1, hash2)
@@ -84,7 +86,7 @@ class TestCreateCookie(unittest.TestCase):
         _clean_tmpdir()
 
     def test_create_cookie_writes_file(self):
-        cookie_path = os.path.join(TMPDIR, "cookie.toml")
+        cookie_path = os.path.join(TMPDIR, 'cookie.toml')
         with patch('app.users.repository.COOKIE_FILE', cookie_path):
             create_cookie('test_cookie', 'test_uid')
         self.assertTrue(os.path.exists(cookie_path))
@@ -99,7 +101,7 @@ class TestQgisConfig(unittest.TestCase):
         _clean_tmpdir()
 
     def test_qgis_config_reads_json(self):
-        expected = {"other_layers": [], "mapper": {}}
+        expected = {'other_layers': [], 'mapper': {}}
         config_path = os.path.join(TMPDIR, 'qgis_config.json')
         with open(config_path, 'w', encoding='utf-8') as f:
             json.dump(expected, f)
@@ -114,8 +116,10 @@ class TestGetAuthenticatedUser(unittest.TestCase):
 
     def test_no_cookie_file_returns_none(self):
         cookie_path = os.path.join(TMPDIR, 'cookie.toml')
-        with patch('app.users.repository.COOKIE_FILE', cookie_path), \
-             patch('app.users.repository.get_session') as mock_session:
+        with (
+            patch('app.users.repository.COOKIE_FILE', cookie_path),
+            patch('app.users.repository.get_session') as mock_session,
+        ):
             result = _get_authenticated_user()
             self.assertIsNone(result)
             mock_session.assert_not_called()
@@ -124,8 +128,10 @@ class TestGetAuthenticatedUser(unittest.TestCase):
         cookie_path = os.path.join(TMPDIR, 'cookie.toml')
         with open(cookie_path, 'w', encoding='utf-8') as f:
             f.write('[Session]\ncookie = "ck"\nuid = "ui"\n')
-        with patch('app.users.repository.COOKIE_FILE', cookie_path), \
-             patch('app.users.repository.get_session') as mock_session:
+        with (
+            patch('app.users.repository.COOKIE_FILE', cookie_path),
+            patch('app.users.repository.get_session') as mock_session,
+        ):
             mock_session_instance = MagicMock()
             mock_session.return_value = mock_session_instance
             mock_query = mock_session_instance.query.return_value
@@ -138,17 +144,20 @@ class TestGetAuthenticatedUser(unittest.TestCase):
         cookie_path = os.path.join(TMPDIR, 'cookie.toml')
         with open(cookie_path, 'w', encoding='utf-8') as f:
             f.write('[Session]\ncookie = "ck"\nuid = "ui"\n')
-        with patch('app.users.repository.COOKIE_FILE', cookie_path), \
-             patch('app.users.repository.get_session') as mock_session, \
-             patch('app.users.repository._load_localites', return_value=[]):
+        with (
+            patch('app.users.repository.COOKIE_FILE', cookie_path),
+            patch('app.users.repository.get_session') as mock_session,
+            patch('app.users.repository._load_localites', return_value=[]),
+        ):
             mock_session_instance = MagicMock()
             mock_session.return_value = mock_session_instance
-            mock_session_instance.query.return_value \
-                .filter.return_value.first.return_value = MagicMock(
-                    id='u1', api_key='ck',
-                    active=True, commune_code='unknown',
-                    wilaya_code=None,
-                )
+            mock_session_instance.query.return_value.filter.return_value.first.return_value = MagicMock(
+                id='u1',
+                api_key='ck',
+                active=True,
+                commune_code='unknown',
+                wilaya_code=None,
+            )
             result = _get_authenticated_user()
             self.assertIsNone(result)
 

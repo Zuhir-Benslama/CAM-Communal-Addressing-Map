@@ -8,6 +8,7 @@ Item {
     id: root
 
     property string currentPage: "login"
+    property bool isRTL: false
 
     signal switchToPage(string pageName)
     signal comboChanged(string objectName, int index, string currentData)
@@ -37,6 +38,18 @@ Item {
             obj.currentIndex = index
     }
 
+    function updateTheme(dark) {
+        Theme.isDark = dark
+    }
+
+    function updateLayoutDirection(rtl) {
+        root.isRTL = rtl
+    }
+
+    function toggleSettingsTab() {
+        mainPage.toggleSettingsTab()
+    }
+
     function _ensureModel(obj) {
         if (obj.model !== undefined && obj.model !== null) return obj.model
         var lm = Qt.createQmlObject("import QtQuick 2.15; ListModel {}", obj)
@@ -46,8 +59,7 @@ Item {
 
     function setComboOptions(objectName, options) {
         var obj = findField(objectName)
-        if (!obj) { console.warn("setComboOptions: field not found:", objectName); return }
-        console.warn("setComboOptions:", objectName, "type:", obj.toString(), "model:", obj.model, "options.length:", options.length)
+        if (!obj) return
         var model = _ensureModel(obj)
         model.clear()
         for (var i = 0; i < options.length; i++) {
@@ -56,7 +68,6 @@ Item {
         if (obj.currentIndex < 0 && model.count > 0) {
             obj.currentIndex = 0
         }
-        console.warn("setComboOptions DONE:", objectName, "model.count:", model.count, "combo.currentIndex:", obj.currentIndex)
     }
 
     function clearCombo(objectName) {
@@ -139,7 +150,6 @@ Item {
 
     function findItem(parent, name) {
         if (parent.objectName === name) {
-            console.warn("findItem FOUND:", name, "type:", parent.toString())
             return parent
         }
         if (parent.children) {
@@ -153,6 +163,8 @@ Item {
 
     StackLayout {
         anchors.fill: parent
+        LayoutMirroring.enabled: root.isRTL
+        LayoutMirroring.childrenInherit: true
         currentIndex: {
             if (currentPage === "login") return 0
             if (currentPage === "add_usr") return 1

@@ -32,6 +32,6 @@ Button {
         }
         border.color: control.isPrimary ? "transparent" : Theme.activeBorder()
         border.width: 1
-        radius: Theme.borderRadius
+        radius: Theme.radiusMd
     }
 }

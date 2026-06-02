@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 """Reporting mixin for generating statistical reports and purchase orders."""
 
 from __future__ import annotations
@@ -41,52 +42,63 @@ class ReportMixin:
     """Mixin for generating statistical reports and purchase order documents."""
 
     def _run_report(
-        self: HasTranslation, method: str, data: dict,
-        label: str = "report",
+        self: HasTranslation,
+        method: str,
+        data: dict,
+        label: str = 'report',
     ) -> bool:
         """Run the external reporting script and display result dialogs."""
         try:
             with open(TMP_JSON, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
         except OSError:
-            logger.exception("Error saving JSON file")
+            logger.exception('Error saving JSON file')
             return False
 
         script_path = REPORTING_SCRIPT
-        command = [f"{get_qgis_python()}", script_path, '--method', method]
+        command = [f'{get_qgis_python()}', script_path, '--method', method]
 
-        success_msg = self._tr("Report saved to your documents") if label == "report" \
-            else self._tr("Order saved to your documents")
-        fail_msg = self._tr("Failed to generate report") if label == "report" \
-            else self._tr("Failed to generate order")
+        success_msg = (
+            self._tr('Report saved to your documents')
+            if label == 'report'
+            else self._tr('Order saved to your documents')
+        )
+        fail_msg = (
+            self._tr('Failed to generate report')
+            if label == 'report'
+            else self._tr('Failed to generate order')
+        )
 
         try:
             subprocess.run(
-                command, capture_output=True, text=True,
-                check=True, **_SUBPROCESS_FLAGS,
+                command,
+                capture_output=True,
+                text=True,
+                check=True,
+                **_SUBPROCESS_FLAGS,
             )
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Information)
-            msg.setWindowTitle(self._tr("Success"))
+            msg.setWindowTitle(self._tr('Success'))
             msg.setStyleSheet(get_theme_qss(current_theme()))
             msg.setInformativeText(success_msg)
             msg.exec()
             return True
         except subprocess.CalledProcessError as e:
-            logger.error("Subprocess failed with error: %s", e)
+            logger.error('Subprocess failed with error: %s', e)
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
-            msg.setWindowTitle(self._tr("Error"))
+            msg.setWindowTitle(self._tr('Error'))
             msg.setStyleSheet(get_theme_qss(current_theme()))
             msg.setText(fail_msg)
             msg.setInformativeText(str(e))
             msg.exec()
             return False
         except OSError:
-            logger.exception("Unexpected error")
+            logger.exception('Unexpected error')
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
-            msg.setWindowTitle(self._tr("Error"))
+            msg.setWindowTitle(self._tr('Error'))
             msg.setStyleSheet(get_theme_qss(current_theme()))
             msg.setText(fail_msg)
             msg.exec()
@@ -116,7 +128,7 @@ class ReportMixin:
             'commune': self.current_user.get('commune'),
             'output_dir': self._output_dir,
         }
-        return self._run_report('2', report_data, label="report")
+        return self._run_report('2', report_data, label='report')
 
     def purchase_order(self: HasReportContext) -> bool:
         """Generate a purchase order via the external reporting script."""
@@ -130,4 +142,4 @@ class ReportMixin:
             'items4': query_missing_rep(NUM_PLANNED),
             'output_dir': self._output_dir,
         }
-        return self._run_report('1', order_data, label="order")
+        return self._run_report('1', order_data, label='order')

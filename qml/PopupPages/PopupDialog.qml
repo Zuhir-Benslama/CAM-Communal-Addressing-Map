@@ -9,13 +9,11 @@ Rectangle {
 
     property string layerNameValue: ""
     property string layerNameKey: ""
-    property bool isDark: true
-
-    property var pluginBridge: null
-
     color: Theme.activeBg()
 
-    onIsDarkChanged: Theme.isDark = isDark
+    property bool isRTL: false
+
+    Component.onCompleted: Theme.isDark = isDark
 
     onLayerNameValueChanged: {
         switchToPage(layerNameValue)
@@ -48,14 +46,16 @@ Rectangle {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: Theme.padding
+        anchors.margins: Theme.paddingLg
         spacing: Theme.spacing
+        LayoutMirroring.enabled: isRTL
+        LayoutMirroring.childrenInherit: true
 
         Label {
             text: layerNameKey
             color: Theme.activeText()
             font.bold: true
-            font.pixelSize: 14
+            font.pixelSize: Theme.fontHeadline
             Layout.fillWidth: true
         }
 
