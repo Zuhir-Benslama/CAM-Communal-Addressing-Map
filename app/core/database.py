@@ -11,7 +11,7 @@ from sqlalchemy.exc import OperationalError, SQLAlchemyError
 from sqlalchemy.orm import Session, sessionmaker
 
 from ..core.config import find_mod_spatialite_dll
-from ..shared.constants import DATABASE_FILE, VIEWS_SQL
+from ..shared.constants import AUTH_DATABASE_FILE, DATABASE_FILE, VIEWS_SQL
 from .base import Base
 
 logger = logging.getLogger(__name__)
@@ -363,8 +363,6 @@ def _migrate_users_from_auth(engine: Any) -> None:
     the old file to ``auth.sqlite.migrated`` so the migration runs at
     most once.
     """
-    from ..shared.constants import AUTH_DATABASE_FILE
-
     auth_path = AUTH_DATABASE_FILE
     if not os.path.exists(auth_path):
         return

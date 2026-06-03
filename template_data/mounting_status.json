@@ -1,21 +1,25 @@
 [
   {
     "pk": "planned",
+    "label_ar": "مخطط",
     "label_fr": "Programmé",
     "label_en": "Programmed"
   },
   {
     "pk": "installed",
+    "label_ar": "مثبت",
     "label_fr": "Installé",
     "label_en": "Installed"
   },
   {
     "pk": "to_fix",
+    "label_ar": "للتعديل",
     "label_fr": "À corriger",
     "label_en": "To Be Corrected"
   },
   {
     "pk": "to_move",
+    "label_ar": "للنقل",
     "label_fr": "À déplacer",
     "label_en": "To Be Moved"
   }

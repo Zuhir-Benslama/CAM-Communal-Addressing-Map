@@ -48,7 +48,7 @@ UI_FILES =
 
 EXTRAS = metadata.txt
 
-EXTRA_DIRS = mixins gui layer scripts resources templates data icons i18n style template_data app qml
+EXTRA_DIRS = mixins gui layer scripts resources templates data icons i18n style template_data app
 
 COMPILED_RESOURCE_FILES = resources.py
 
@@ -97,6 +97,7 @@ compile: $(COMPILED_RESOURCE_FILES)
 
 %.py : %.qrc $(RESOURCES_SRC)
 	pyrcc5 -o $*.py  $< || pyside2-rcc -o $*.py $<
+	sed -i 's/^from PyQt5 import QtCore/from qgis.PyQt import QtCore/' $*.py
 
 %.qm : %.ts
 	$(LRELEASE) $<

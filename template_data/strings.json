@@ -1908,5 +1908,70 @@
     "ar": "المنيعة",
     "fr": "El Meniaa",
     "en": "El Meniaa"
+  },
+  "A3 Sheet for Field Work": {
+    "ar": "ورقة A3 للعمل الميداني",
+    "fr": "Feuille A3 pour le travail sur le terrain",
+    "en": "A3 Sheet for Field Work"
+  },
+  "A0 Sheet for Administration": {
+    "ar": "ورقة A0 للإدارة",
+    "fr": "Feuille A0 pour l'administration",
+    "en": "A0 Sheet for Administration"
+  },
+  "No Activity": {
+    "ar": "لا يوجد نشاط",
+    "fr": "Aucune activité",
+    "en": "No Activity"
+  },
+  "Roads": {
+    "ar": "الطرق",
+    "fr": "Routes",
+    "en": "Roads"
+  },
+  "Subdivisions": {
+    "ar": "التجزئات",
+    "fr": "Lotissements",
+    "en": "Subdivisions"
+  },
+  "Facilities": {
+    "ar": "المرافق",
+    "fr": "Équipements",
+    "en": "Facilities"
+  },
+  "Zones": {
+    "ar": "المناطق",
+    "fr": "Zones",
+    "en": "Zones"
+  },
+  "Activities": {
+    "ar": "الأنشطة",
+    "fr": "Activités",
+    "en": "Activities"
+  },
+  "report": {
+    "ar": "تقرير",
+    "fr": "Rapport",
+    "en": "Report"
+  },
+  "order": {
+    "ar": "نموذج طلبية",
+    "fr": "Bon de commande",
+    "en": "Order Form"
+  },
+  "panels_map": {
+    "ar": "إنشاء خريطة اللوحات",
+    "fr": "Carte des panneaux",
+    "en": "Generate Panels Map"
+  },
+  "num_map": {
+    "ar": "إنشاء خريطة الترقيم",
+    "fr": "Carte de numérotation",
+    "en": "Generate Numbering Map"
+  },
+  "backup": {
+    "ar": "إنشاء نسخة احتياطية لقاعدة البيانات",
+    "fr": "Créer une sauvegarde BD",
+    "en": "Create Database Backup"
   }
 }

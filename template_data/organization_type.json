@@ -4,391 +4,447 @@
     "type_ar": "المؤسسة الإستشفائية الجامعية",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "University Hospital",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Etablissement Hospitalier",
     "type_ar": "المؤسسة الإستشفائية",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "Hospital",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Etablissement Public Hospitalier",
     "type_ar": "المؤسسة العمومية الإستشفائية",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "Public Hospital",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Etablissement Public de Santé de Proximité",
     "type_ar": "المؤسسة العمومية للصحة الجوارية",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "Local Public Health Institution",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Etablissement Hospitalier Spécialisés",
     "type_ar": "المؤسسة الإستشفائية المتخصصة",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "Specialized Hospital",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Centre Hospitalo-Universitaire",
     "type_ar": "المركز الإستشفائي الجامعي",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "University Hospital Center",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Centre médical social",
     "type_ar": "المركز الطبي الإجتماعي",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "Medical-Social Center",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Centre de santé",
     "type_ar": "المركز الصحي",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "Health Center",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Clinique",
     "type_ar": "عيادة",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "Clinic",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Dispensaire",
     "type_ar": "مستوصف",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "Dispensary",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Hopital",
     "type_ar": "مستشفى",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "Hospital",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Polyclinique",
     "type_ar": "عيادة متعددة الخدمات",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "Polyclinic",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Salle de soin",
     "type_ar": "غرفة علاج",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "Treatment Room",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Unité dépistage Scolaire",
     "type_ar": "وحدة الكشف المدرسي",
     "category": "الهيئات و المرافق الصحية",
     "type_en": "School Screening Unit",
-    "category_en": "Health Bodies & Facilities"
+    "category_en": "Health Bodies & Facilities",
+    "category_fr": "Organismes & Établissements de Santé"
   },
   {
     "type_fr": "Gare",
     "type_ar": "محطة",
     "category": "مرافق النقل و المواصلات",
     "type_en": "Station",
-    "category_en": "Transport Facilities"
+    "category_en": "Transport Facilities",
+    "category_fr": "Établissements de Transport"
   },
   {
     "type_fr": "Port",
     "type_ar": "ميناء",
     "category": "مرافق النقل و المواصلات",
     "type_en": "Port",
-    "category_en": "Transport Facilities"
+    "category_en": "Transport Facilities",
+    "category_fr": "Établissements de Transport"
   },
   {
     "type_fr": "Aéroport",
     "type_ar": "مطار",
     "category": "مرافق النقل و المواصلات",
     "type_en": "Airport",
-    "category_en": "Transport Facilities"
+    "category_en": "Transport Facilities",
+    "category_fr": "Établissements de Transport"
   },
   {
     "type_fr": "Bureau de poste",
     "type_ar": "مكتب البريد",
     "category": "الهيئات و المرافق المالية و السياحية",
     "type_en": "Post Office",
-    "category_en": "Financial & Tourism Bodies"
+    "category_en": "Financial & Tourism Bodies",
+    "category_fr": "Organismes Financiers & Touristiques"
   },
   {
     "type_fr": "Centre commercial",
     "type_ar": "مركز تجاري",
     "category": "الهيئات و المرافق المالية و السياحية",
     "type_en": "Shopping Center",
-    "category_en": "Financial & Tourism Bodies"
+    "category_en": "Financial & Tourism Bodies",
+    "category_fr": "Organismes Financiers & Touristiques"
   },
   {
     "type_fr": "Agence bancaire",
     "type_ar": "وكالة بنكية",
     "category": "الهيئات و المرافق المالية و السياحية",
     "type_en": "Bank Agency",
-    "category_en": "Financial & Tourism Bodies"
+    "category_en": "Financial & Tourism Bodies",
+    "category_fr": "Organismes Financiers & Touristiques"
   },
   {
     "type_fr": "Centre des chèques postaux",
     "type_ar": "مركز الصكوك البريدية",
     "category": "الهيئات و المرافق المالية و السياحية",
     "type_en": "Postal Check Center",
-    "category_en": "Financial & Tourism Bodies"
+    "category_en": "Financial & Tourism Bodies",
+    "category_fr": "Organismes Financiers & Touristiques"
   },
   {
     "type_fr": "Centre postal",
     "type_ar": "مركز بريدي",
     "category": "الهيئات و المرافق المالية و السياحية",
     "type_en": "Postal Center",
-    "category_en": "Financial & Tourism Bodies"
+    "category_en": "Financial & Tourism Bodies",
+    "category_fr": "Organismes Financiers & Touristiques"
   },
   {
     "type_fr": "Hotel",
     "type_ar": "فندق",
     "category": "الهيئات و المرافق المالية و السياحية",
     "type_en": "Hotel",
-    "category_en": "Financial & Tourism Bodies"
+    "category_en": "Financial & Tourism Bodies",
+    "category_fr": "Organismes Financiers & Touristiques"
   },
   {
     "type_fr": "Salle des fetes",
     "type_ar": "قاعة حفلات",
     "category": "الهيئات و المرافق المالية و السياحية",
     "type_en": "Event Hall",
-    "category_en": "Financial & Tourism Bodies"
+    "category_en": "Financial & Tourism Bodies",
+    "category_fr": "Organismes Financiers & Touristiques"
   },
   {
     "type_fr": "Mosquée",
     "type_ar": "مسجد",
     "category": "الهيئات و المرافق الدينية",
     "type_en": "Mosque",
-    "category_en": "Religious Bodies & Facilities"
+    "category_en": "Religious Bodies & Facilities",
+    "category_fr": "Organismes Religieux"
   },
   {
     "type_fr": "Cimetière",
     "type_ar": "مقبرة",
     "category": "الهيئات و المرافق الدينية",
     "type_en": "Cemetery",
-    "category_en": "Religious Bodies & Facilities"
+    "category_en": "Religious Bodies & Facilities",
+    "category_fr": "Organismes Religieux"
   },
   {
     "type_fr": "Ecole Primaire",
     "type_ar": "مدرسة إبتدائية",
     "category": "الهيئات و المرافق التربوية والجامعية و التكوينية",
     "type_en": "Primary School",
-    "category_en": "Educational & Training Bodies"
+    "category_en": "Educational & Training Bodies",
+    "category_fr": "Organismes Éducatifs & de Formation"
   },
   {
     "type_fr": "Collège d\"Enseignement Moyen",
     "type_ar": "إكمالية التعليم المتوسط",
     "category": "الهيئات و المرافق التربوية والجامعية و التكوينية",
     "type_en": "Middle School",
-    "category_en": "Educational & Training Bodies"
+    "category_en": "Educational & Training Bodies",
+    "category_fr": "Organismes Éducatifs & de Formation"
   },
   {
     "type_fr": "Lycée",
     "type_ar": "ثانوية",
     "category": "الهيئات و المرافق التربوية والجامعية و التكوينية",
     "type_en": "High School",
-    "category_en": "Educational & Training Bodies"
+    "category_en": "Educational & Training Bodies",
+    "category_fr": "Organismes Éducatifs & de Formation"
   },
   {
     "type_fr": "Crèche",
     "type_ar": "حضانة",
     "category": "الهيئات و المرافق التربوية والجامعية و التكوينية",
     "type_en": "Kindergarten",
-    "category_en": "Educational & Training Bodies"
+    "category_en": "Educational & Training Bodies",
+    "category_fr": "Organismes Éducatifs & de Formation"
   },
   {
     "type_fr": "Faculté",
     "type_ar": "كلية",
     "category": "الهيئات و المرافق التربوية والجامعية و التكوينية",
     "type_en": "Faculty",
-    "category_en": "Educational & Training Bodies"
+    "category_en": "Educational & Training Bodies",
+    "category_fr": "Organismes Éducatifs & de Formation"
   },
   {
     "type_fr": "Université",
     "type_ar": "جامعة",
     "category": "الهيئات و المرافق التربوية والجامعية و التكوينية",
     "type_en": "University",
-    "category_en": "Educational & Training Bodies"
+    "category_en": "Educational & Training Bodies",
+    "category_fr": "Organismes Éducatifs & de Formation"
   },
   {
     "type_fr": "Institut",
     "type_ar": "معهد",
     "category": "الهيئات و المرافق التربوية والجامعية و التكوينية",
     "type_en": "Institute",
-    "category_en": "Educational & Training Bodies"
+    "category_en": "Educational & Training Bodies",
+    "category_fr": "Organismes Éducatifs & de Formation"
   },
   {
     "type_fr": "Résidance universitaire",
     "type_ar": "إقامة جامعية",
     "category": "الهيئات و المرافق التربوية والجامعية و التكوينية",
     "type_en": "University Residence",
-    "category_en": "Educational & Training Bodies"
+    "category_en": "Educational & Training Bodies",
+    "category_fr": "Organismes Éducatifs & de Formation"
   },
   {
     "type_fr": "Laboratoire de recherche",
     "type_ar": "مخبر أبحاث",
     "category": "الهيئات و المرافق التربوية والجامعية و التكوينية",
     "type_en": "Research Laboratory",
-    "category_en": "Educational & Training Bodies"
+    "category_en": "Educational & Training Bodies",
+    "category_fr": "Organismes Éducatifs & de Formation"
   },
   {
     "type_fr": "Maison d'enfance",
     "type_ar": "دار الطفولة",
     "category": "الهيئات و المرافق التربوية والجامعية و التكوينية",
     "type_en": "Children's Home",
-    "category_en": "Educational & Training Bodies"
+    "category_en": "Educational & Training Bodies",
+    "category_fr": "Organismes Éducatifs & de Formation"
   },
   {
     "type_fr": "Centre de formation",
     "type_ar": "مركز التكوين",
     "category": "الهيئات و المرافق التربوية والجامعية و التكوينية",
     "type_en": "Training Center",
-    "category_en": "Educational & Training Bodies"
+    "category_en": "Educational & Training Bodies",
+    "category_fr": "Organismes Éducatifs & de Formation"
   },
   {
     "type_fr": "Complexe",
     "type_ar": "مركب",
     "category": "المرافق الإقامية",
     "type_en": "Complex",
-    "category_en": "Residential Facilities"
+    "category_en": "Residential Facilities",
+    "category_fr": "Établissements Résidentiels"
   },
   {
     "type_fr": "Résidence",
     "type_ar": "إقامة",
     "category": "المرافق الإقامية",
     "type_en": "Residence",
-    "category_en": "Residential Facilities"
+    "category_en": "Residential Facilities",
+    "category_fr": "Établissements Résidentiels"
   },
   {
     "type_fr": "Coopérative",
     "type_ar": "تعاونية",
     "category": "المرافق الإقامية",
     "type_en": "Cooperative",
-    "category_en": "Residential Facilities"
+    "category_en": "Residential Facilities",
+    "category_fr": "Établissements Résidentiels"
   },
   {
     "type_fr": "Complexe sportif",
     "type_ar": "مركب رياضي",
     "category": "الهيئات و المرافق الرياضية و الثقافية",
     "type_en": "Sports Complex",
-    "category_en": "Sports & Cultural Bodies"
+    "category_en": "Sports & Cultural Bodies",
+    "category_fr": "Organismes Sportifs & Culturels"
   },
   {
     "type_fr": "Complexe sportif de proximité",
     "type_ar": "مركب رياضي جواري",
     "category": "الهيئات و المرافق الرياضية و الثقافية",
     "type_en": "Local Sports Complex",
-    "category_en": "Sports & Cultural Bodies"
+    "category_en": "Sports & Cultural Bodies",
+    "category_fr": "Organismes Sportifs & Culturels"
   },
   {
     "type_fr": "Maison de jeunes",
     "type_ar": "دار الشباب",
     "category": "الهيئات و المرافق الرياضية و الثقافية",
     "type_en": "Youth Center",
-    "category_en": "Sports & Cultural Bodies"
+    "category_en": "Sports & Cultural Bodies",
+    "category_fr": "Organismes Sportifs & Culturels"
   },
   {
     "type_fr": "Piscine",
     "type_ar": "مسبح",
     "category": "الهيئات و المرافق الرياضية و الثقافية",
     "type_en": "Swimming Pool",
-    "category_en": "Sports & Cultural Bodies"
+    "category_en": "Sports & Cultural Bodies",
+    "category_fr": "Organismes Sportifs & Culturels"
   },
   {
     "type_fr": "Salle omnisports",
     "type_ar": "قاعة متعددة الرياضات",
     "category": "الهيئات و المرافق الرياضية و الثقافية",
     "type_en": "Multi-Sports Hall",
-    "category_en": "Sports & Cultural Bodies"
+    "category_en": "Sports & Cultural Bodies",
+    "category_fr": "Organismes Sportifs & Culturels"
   },
   {
     "type_fr": "Stade",
     "type_ar": "ملعب",
     "category": "الهيئات و المرافق الرياضية و الثقافية",
     "type_en": "Stadium",
-    "category_en": "Sports & Cultural Bodies"
+    "category_en": "Sports & Cultural Bodies",
+    "category_fr": "Organismes Sportifs & Culturels"
   },
   {
     "type_fr": "Stade de proximité",
     "type_ar": "ملعب جواري",
     "category": "الهيئات و المرافق الرياضية و الثقافية",
     "type_en": "Local Stadium",
-    "category_en": "Sports & Cultural Bodies"
+    "category_en": "Sports & Cultural Bodies",
+    "category_fr": "Organismes Sportifs & Culturels"
   },
   {
     "type_fr": "Centre culturel",
     "type_ar": "مركز ثقافي",
     "category": "الهيئات و المرافق الرياضية و الثقافية",
     "type_en": "Cultural Center",
-    "category_en": "Sports & Cultural Bodies"
+    "category_en": "Sports & Cultural Bodies",
+    "category_fr": "Organismes Sportifs & Culturels"
   },
   {
     "type_fr": "Bibliothèque municipale",
     "type_ar": "مكتبة بلدية",
     "category": "الهيئات و المرافق الرياضية و الثقافية",
     "type_en": "Municipal Library",
-    "category_en": "Sports & Cultural Bodies"
+    "category_en": "Sports & Cultural Bodies",
+    "category_fr": "Organismes Sportifs & Culturels"
   },
   {
     "type_fr": "Musée",
     "type_ar": "متحف",
     "category": "الهيئات و المرافق الرياضية و الثقافية",
     "type_en": "Museum",
-    "category_en": "Sports & Cultural Bodies"
+    "category_en": "Sports & Cultural Bodies",
+    "category_fr": "Organismes Sportifs & Culturels"
   },
   {
     "type_fr": "Théatre",
     "type_ar": "مسرح",
     "category": "الهيئات و المرافق الرياضية و الثقافية",
     "type_en": "Theater",
-    "category_en": "Sports & Cultural Bodies"
+    "category_en": "Sports & Cultural Bodies",
+    "category_fr": "Organismes Sportifs & Culturels"
   },
   {
     "type_fr": "Annexe municipale",
     "type_ar": "ملحق بلدي",
     "category": "الهيئات و المرافق القطاعية",
     "type_en": "Municipal Annex",
-    "category_en": "Sectoral Bodies & Facilities"
+    "category_en": "Sectoral Bodies & Facilities",
+    "category_fr": "Organismes Sectoriels"
   },
   {
     "type_fr": "Direction des impots",
     "type_ar": "مديرية الضرائب",
     "category": "الهيئات و المرافق القطاعية",
     "type_en": "Tax Directorate",
-    "category_en": "Sectoral Bodies & Facilities"
+    "category_en": "Sectoral Bodies & Facilities",
+    "category_fr": "Organismes Sectoriels"
   },
   {
     "type_fr": "Commissariat",
     "type_ar": "مقر الشرطة",
     "category": "الهيئات و المرافق الأمنية",
     "type_en": "Police Station",
-    "category_en": "Security Bodies & Facilities"
+    "category_en": "Security Bodies & Facilities",
+    "category_fr": "Organismes de Sécurité"
   },
   {
     "type_fr": "Brigade de la gendermerie nationale",
     "type_ar": "فرقة الدرك الوطني",
     "category": "الهيئات و المرافق الأمنية",
     "type_en": "National Gendarmerie",
-    "category_en": "Security Bodies & Facilities"
+    "category_en": "Security Bodies & Facilities",
+    "category_fr": "Organismes de Sécurité"
   },
   {
     "type_fr": "Protection civile",
     "type_ar": "الحماية المدنية",
     "category": "الهيئات و المرافق الأمنية",
     "type_en": "Civil Protection",
-    "category_en": "Security Bodies & Facilities"
+    "category_en": "Security Bodies & Facilities",
+    "category_fr": "Organismes de Sécurité"
   }
 ]

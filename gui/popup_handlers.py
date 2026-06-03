@@ -1,6 +1,6 @@
 """Entity-specific form population and update handlers for PopupDialog.
 
-Populate functions return data dicts for QML forms.
+Populate functions return data dicts for form fields.
 Update functions read from ``dialog._current_form_data`` dict.
 """
 
@@ -39,18 +39,18 @@ logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
-# Populate helpers (read from DB → return data dict for QML)
+# Populate helpers (read from DB → return data dict for form)
 # ---------------------------------------------------------------------------
 
 
-def populate_road(dialog: 'PopupDialog', query, loc) -> dict:
+def populate_road(_dialog: 'PopupDialog', query, loc) -> dict:
     return {
         'name': locale_value(query, 'name', loc),
         'type': query.type,
     }
 
 
-def populate_facility(dialog: 'PopupDialog', query, loc) -> dict:
+def populate_facility(_dialog: 'PopupDialog', query, loc) -> dict:
     return {
         'name': locale_value(query, 'name', loc),
         'category': query.category,
@@ -58,21 +58,21 @@ def populate_facility(dialog: 'PopupDialog', query, loc) -> dict:
     }
 
 
-def populate_subdivision(dialog: 'PopupDialog', query, loc) -> dict:
+def populate_subdivision(_dialog: 'PopupDialog', query, loc) -> dict:
     return {
         'name': locale_value(query, 'name', loc),
         'type': query.type,
     }
 
 
-def populate_zone(dialog: 'PopupDialog', query, loc) -> dict:
+def populate_zone(_dialog: 'PopupDialog', query, loc) -> dict:
     return {
         'name': locale_value(query, 'name', loc),
         'type': query.type,
     }
 
 
-def populate_numbering(dialog: 'PopupDialog', query, loc) -> dict:
+def populate_numbering(_dialog: 'PopupDialog', query, loc) -> dict:
     data: dict = {
         'number': query.value or '',
         'repetition': query.repetition or '',
@@ -93,7 +93,7 @@ def populate_numbering(dialog: 'PopupDialog', query, loc) -> dict:
     return data
 
 
-def populate_panel(dialog: 'PopupDialog', query, loc) -> dict:
+def populate_panel(_dialog: 'PopupDialog', query, loc) -> dict:
     data: dict = {
         'mountStatus': query.status or '',
     }
@@ -299,12 +299,7 @@ def update_numbering(dialog: 'PopupDialog') -> None:
 
         _notify_success(dialog, 'This numbering has been updated successfully')
     except (ValueError, SQLAlchemyError) as e:
-        logger.exception('Failed to update numbering: %s', e)
-        QMessageBox.critical(
-            dialog,
-            get_string('Error', dialog._tr_locale),
-            f'{e}',
-        )
+        _notify_failure(dialog, 'Cannot update numbering', e)
     finally:
         session.close()
     _finish_update(dialog)

@@ -1,7 +1,11 @@
+"""Tests for authentication (JWT, sign-up, sign-in, logout)."""
+
 import os
 import sys
 import unittest
 from unittest.mock import MagicMock, patch
+
+from marshmallow import ValidationError
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
@@ -71,7 +75,6 @@ class TestSignUp(unittest.TestCase):
         self.mock_session.close.assert_called()
 
     def test_sign_up_validation_error_returns_false(self):
-        from marshmallow import ValidationError
 
         with patch(
             'app.users.service.SignupSchema.load',
@@ -150,7 +153,6 @@ class TestSignIn(unittest.TestCase):
         self.assertIsNotNone(error)
 
     def test_sign_in_validation_error(self):
-        from marshmallow import ValidationError
 
         with patch(
             'app.users.service.AuthSchema.load',

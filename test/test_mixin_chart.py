@@ -2,6 +2,7 @@
 
 import importlib
 import os
+import shutil
 import sys
 import tempfile
 import unittest
@@ -50,8 +51,6 @@ class TestChartMixin(unittest.TestCase):
 
     def tearDown(self):
         self._session_patch.stop()
-        import shutil
-
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
     def test_panel_chart_queries_and_renders(self):
@@ -72,8 +71,9 @@ class TestChartMixin(unittest.TestCase):
 
     def test_get_zone_chart_with_data(self):
         dist_mock = MagicMock(return_value=[('type_a', 10), ('type_b', 5)])
-        with patch(
-            'plans_adressage.app.orders.repository.get_zone_distribution',
+        with patch.object(
+            self.mod,
+            'get_zone_distribution',
             dist_mock,
         ):
             self.mixin.get_zone_chart(16)
@@ -81,8 +81,9 @@ class TestChartMixin(unittest.TestCase):
 
     def test_get_zone_chart_no_data(self):
         dist_mock = MagicMock(return_value=[])
-        with patch(
-            'plans_adressage.app.orders.repository.get_zone_distribution',
+        with patch.object(
+            self.mod,
+            'get_zone_distribution',
             dist_mock,
         ):
             self.mixin.get_zone_chart(16)

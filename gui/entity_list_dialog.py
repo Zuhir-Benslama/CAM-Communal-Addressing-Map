@@ -1,68 +1,34 @@
-"""Paginated dialog for browsing entity records — QML version."""
+"""Paginated dialog for browsing entity records — Qt Widgets version."""
 
 from __future__ import annotations
 
 import logging
-import os
 from typing import Any
 
-from qgis.PyQt.QtCore import QObject, QUrl, pyqtSlot
-from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout
-
-try:
-    from qgis.PyQt.QtQuickWidgets import QQuickWidget
-
-    _HAS_QML = True
-except ImportError:
-    QQuickWidget = None
-    _HAS_QML = False
+from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtWidgets import (
+    QDialog,
+    QHBoxLayout,
+    QHeaderView,
+    QLabel,
+    QPushButton,
+    QTableWidget,
+    QTableWidgetItem,
+    QVBoxLayout,
+)
 
 from ..app.core.config import get_theme_qss
 from ..app.core.database import get_session
 from ..app.orders import models as _models
-from ..app.shared.utils import get_all_fields_and_labels
+from ..app.shared.utils import get_all_fields_and_labels, locale_value
 from ..constants import current_locale, current_theme
 from ..scripts.lookup_data import apply_widget_texts, get_string
 
 logger = logging.getLogger(__name__)
 
-PLUGIN_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-QML_DIR = os.path.join(PLUGIN_DIR, 'qml')
-
-
-class EntityListBridge(QObject):
-    """Bridge object exposed to QML for Python <-> QML communication."""
-
-    def __init__(self, dialog: EntityListDialog) -> None:
-        super().__init__()
-        self.dialog = dialog
-        self._page = 0
-        self._page_size = 50
-        self._total_records = 0
-
-    @pyqtSlot(int)
-    def loadPage(self, page: int) -> None:
-        self.dialog.populate_table(page)
-
-    @pyqtSlot()
-    def nextPage(self) -> None:
-        if (self._page + 1) * self._page_size < self._total_records:
-            self._page += 1
-            self.loadPage(self._page)
-
-    @pyqtSlot()
-    def prevPage(self) -> None:
-        if self._page > 0:
-            self._page -= 1
-            self.loadPage(self._page)
-
-    def set_page_state(self, page: int, total: int) -> None:
-        self._page = page
-        self._total_records = total
-
 
 class EntityListDialog(QDialog):
-    """Paginated dialog displaying a table of entity records (QML-backed)."""
+    """Paginated dialog displaying a table of entity records."""
 
     PAGE_SIZE = 50
 
@@ -75,7 +41,7 @@ class EntityListDialog(QDialog):
         self._total_records = 0
         self._tr_locale = current_locale()
 
-        self._init_qml()
+        self._init_ui()
         self.setStyleSheet(get_theme_qss(current_theme()))
 
         apply_widget_texts(self, self._tr_locale)
@@ -87,67 +53,58 @@ class EntityListDialog(QDialog):
         self.setWindowTitle(title)
         self._populate_table(0)
 
-    def _init_qml(self) -> None:  # pylint: disable=duplicate-code
-        if not _HAS_QML or QQuickWidget is None:
-            raise ImportError(
-                'Qt Quick Widgets (QtQml) is not available.\n'
-                'Please install the Qt Quick / QML package for your system\n'
-                '(e.g., python3-pyqt6.qml or qml6 on Debian/Ubuntu).'
-            )
+    def _init_ui(self) -> None:
         self.setObjectName('rnaEntityListDialog')
         self.setMinimumSize(700, 520)
         self.resize(760, 560)
         self.setSizeGripEnabled(True)
 
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(8, 8, 8, 8)
 
-        self._quick_widget = QQuickWidget()
-        self._quick_widget.setResizeMode(QQuickWidget.SizeRootObjectToView)
+        self._table = QTableWidget()
+        self._table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        self._table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self._table.setAlternatingRowColors(True)
+        layout.addWidget(self._table, stretch=1)
 
-        engine = self._quick_widget.engine()
-        engine.addImportPath(QML_DIR)
-        for p in (
-            '/usr/lib64/qt5/qml',
-            '/usr/lib/qt5/qml',
-        ):
-            if os.path.isdir(p):
-                engine.addImportPath(p)
+        pagination = QHBoxLayout()
+        self._btn_prev = QPushButton()
+        self._btn_prev.clicked.connect(self._on_prev)
+        pagination.addWidget(self._btn_prev)
 
-        self._bridge = EntityListBridge(self)
-        context = self._quick_widget.rootContext()
-        context.setContextProperty('pluginBridge', self._bridge)
-        context.setContextProperty(
-            'listTitle', get_string(self._list_of, self._tr_locale)
+        self._label_page = QLabel()
+        self._label_page.setAlignment(
+            Qt.AlignmentFlag.AlignCenter
         )
-        context.setContextProperty('isDark', current_theme() == 'dark')
-        context.setContextProperty('isRTL', self._tr_locale == 'ar')
+        pagination.addWidget(self._label_page, stretch=1)
 
-        qml_path = os.path.join(QML_DIR, 'entitylist', 'EntityListDialog.qml')
-        self._quick_widget.setSource(QUrl.fromLocalFile(qml_path))
+        self._btn_next = QPushButton()
+        self._btn_next.clicked.connect(self._on_next)
+        pagination.addWidget(self._btn_next)
 
-        layout.addWidget(self._quick_widget)
+        layout.addLayout(pagination)
 
-        self._qml_root = self._quick_widget.rootObject()
+    def _on_prev(self) -> None:
+        if self._page > 0:
+            self._page -= 1
+            self._populate_table(self._page)
+
+    def _on_next(self) -> None:
+        if (self._page + 1) * self.PAGE_SIZE < self._total_records:
+            self._page += 1
+            self._populate_table(self._page)
 
     def _populate_table(self, page: int) -> None:
-        """Query DB for the given page and push data to QML."""
+        """Query DB for the given page and populate the table."""
         session = get_session()
         try:
             model_class = getattr(_models, self.model_name, None)
             if model_class is None:
                 self._total_records = 0
-                self._bridge.set_page_state(page, 0)
-                self._qml_root.setPageData(
-                    {
-                        'fields': [],
-                        'labels': [],
-                        'rows': [],
-                        'total': 0,
-                        'page': 0,
-                        'pageSize': self.PAGE_SIZE,
-                    }
-                )
+                self._table.setRowCount(0)
+                self._table.setColumnCount(0)
+                self._update_pagination()
                 return
 
             self._total_records = session.query(model_class).count()
@@ -173,34 +130,37 @@ class EntityListDialog(QDialog):
                 for label in labels
             ]
 
-            rows = []
-            for record in results:
-                row = []
-                for field in fields:
-                    try:
-                        from ..app.shared.utils import locale_value
+            self._table.setColumnCount(len(fields))
+            self._table.setHorizontalHeaderLabels(labels)
+            self._table.setRowCount(len(results))
 
+            for row_idx, record in enumerate(results):
+                for col_idx, field in enumerate(fields):
+                    try:
                         value: Any = locale_value(record, field, self._tr_locale)
                     except AttributeError:
                         value = getattr(record, field, None)
                     value = value if value not in (None, '') else 'N/A'
-                    row.append(value)
-                rows.append(row)
+                    item = QTableWidgetItem(str(value))
+                    self._table.setItem(row_idx, col_idx, item)
 
-            self._bridge.set_page_state(page, self._total_records)
+            self._table.horizontalHeader().setStretchLastSection(True)
+            self._table.resizeColumnsToContents()
 
-            self._qml_root.setPageData(
-                {
-                    'fields': fields,
-                    'labels': labels,
-                    'rows': rows,
-                    'total': self._total_records,
-                    'page': page,
-                    'pageSize': self.PAGE_SIZE,
-                }
-            )
+            self._update_pagination()
         finally:
             session.close()
+
+    def _update_pagination(self) -> None:
+        total_pages = max(
+            1, (self._total_records + self.PAGE_SIZE - 1) // self.PAGE_SIZE
+        )
+        current = self._page + 1
+        self._label_page.setText(f'{current} / {total_pages}')
+        self._btn_prev.setEnabled(self._page > 0)
+        self._btn_next.setEnabled(
+            (self._page + 1) * self.PAGE_SIZE < self._total_records
+        )
 
     def populate_table(self, page: int | None = None) -> None:
         """Public API: populate the table (compat wrapper)."""

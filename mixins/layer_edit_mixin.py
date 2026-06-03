@@ -156,7 +156,7 @@ class LayerEditMixin:
                 )
             else:
                 self._show_success('Panel added successfully')
-        except Exception as e:  # pylint: disable=W0718
+        except (SQLAlchemyError, TypeError, AttributeError, ValueError) as e:
             logger.exception('Failed to add panel: %s', e)
             self._show_error(str(e))
         finally:
@@ -295,7 +295,7 @@ class LayerEditMixin:
                 )
             else:
                 self._show_success('Numbering added successfully')
-        except Exception as e:  # pylint: disable=W0718
+        except (SQLAlchemyError, TypeError, AttributeError, ValueError) as e:
             logger.exception('Failed to add numbering: %s', e)
             self._show_error(str(e))
 

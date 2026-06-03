@@ -1453,3 +1453,94 @@ Login failed with "Please select a map layer option" — `add_map_layer()` recei
 ### Files Modified (58)
 - QML: `Theme.qml`, `MainPage.qml`, `MainDialog.qml`, `LoginPage.qml`, `AddUserPage.qml`, `PopupDialog.qml`, `EntityListDialog.qml`, `StyledButton.qml`, `StyledComboBox.qml`, `StyledGroupBox.qml`, `StyledLabel.qml`, `StyledTextField.qml`, `qmldir`
 - Python: `main_dialog.py`, `config.py`, `database.py`, `migration.py`, `base.py`, `security.py`, `lifespan.py`, `main.py`, `constants.py`, `utils.py`, `repository.py`, `service.py`, `schemas.py`, `models.py`, `dependencies.py`, `ui_fillers.py`, `entity_list_dialog.py`, `identify_tool.py`, `measure_tool.py`, `popup_dialog.py`, `popup_handlers.py`, `editing.py`, `refresh.py`, `utils.py`, `_protocols.py`, `auth_mixin.py`, `backup_mixin.py`, `chart_mixin.py`, `import_export_mixin.py`, `layer_edit_mixin.py`, `layer_ops_mixin.py`, `map_tools_mixin.py`, `report_mixin.py`, `symbol_export_mixin.py`, `__init__.py`, `pyproject.toml`, `i18n/__init__.py`, `help/source/conf.py`
+
+---
+
+## 65. QML → Qt Widgets Migration — 2026-06-03 ✅
+
+**Tests: 228/228 pass** (3 QGIS-dependent skipped)
+
+### Goal
+Replace all QML-based UI components with standard Qt Widgets across the entire plugin, removing the QML bridge layer and proxy classes.
+
+### What changed
+- [x] **`gui/main_dialog.py`** — fully rewritten: QML+bridge+proxy removed, replaced with 3-page QStackedWidget, 6-form sub-pages, settings panel, 20+ signal connections, dispatch table, 29 public widget aliases, `_SimpleTabBar` inline class
+- [x] **`gui/popup_dialog.py`** — rewritten: `PopupBridge` + 6 QML pages removed, replaced with QStackedWidget + QFormLayout pages
+- [x] **`gui/entity_list_dialog.py`** — rewritten: `EntityListBridge` + QML Repeater removed, replaced with QTableWidget + pagination
+- [x] **`gui/proxies.py`** — deleted (all 5 proxy classes replaced by real Qt widgets + `_SimpleTabBar`)
+- [x] **`qml/` directory** — deleted (24 files: Theme, forms, dialogs, components)
+- [x] **`gui/qml_utils.py`** — deleted
+- [x] **`_RouterProxy` → `self._page_stack`** — native QStackedWidget, `findChild(QWidget, 'login')` works
+- [x] **`_MenuProxy` → `_SimpleTabBar`** — 53-line inline class in `main_dialog.py`
+- [x] **`_FormStackProxy` → `self._form_stack`** — real QStackedWidget
+- [x] **`test/helpers.py`** — removed `_FakeQuickWidget` class + `QtQuickWidgets` mock
+- [x] **`Makefile`** — removed `qml` from `EXTRA_DIRS`, `resources.py` auto-fix preserved
+- [x] **19 pre-existing test failures fixed** — 17 in `test_main_dialog.py` + 2 in `test_mixin_chart.py`
+
+### Runtime bugs fixed (10+)
+- [x] **QComboBox GC crash** — `self._held_widgets: list[QWidget]` prevents SIP from deleting C++ widget tree
+- [x] **Layer selector signal loop** — removed redundant `setCurrentIndex` causing re-emission loop
+- [x] **Empty action combo** — populated with 5 items
+- [x] **Missing theme/language section** — added `s_layout.addWidget(section)` call
+- [x] **Gear button clipped** — `padding: 0px` overrides theme QSS
+- [x] **Map layer not updating on phase change** — `_on_layer_changed` calls `on_opt_selected()` after form stack switch
+- [x] **Settings page theming** — moved `#sectionFrame` QSS to templates using `{{DARK_SURFACE}}` / `{{LIGHT_SURFACE}}`; `#settingsContent` rule added
+- [x] **Form labels/widget i18n** — `_add_form_row()` helper creates QLabel with objectName; 20+ button objectNames fixed
+- [x] **Per-layer action button text** — `_update_action_button_texts()` using `widget_text(f'draw_{layer_key}', loc)`
+
+## 66. i18n Combobox Fixes — 2026-06-03 ✅
+
+**Tests: 228/228 pass** (3 QGIS-dependent skipped)
+
+### Round 1 — Combobox item translation
+- [x] **`_translate_internal_combos` rewritten** — layer/action/theme/locale combos use Arabic source-text keys from `strings.json`
+- [x] **`_populate_combos` rewritten** — all combos use Arabic keys via `get_string()` for initial population
+- [x] **`_init_theme_locale` updated** — theme combo populated with translated names via `get_string()`
+- [x] **Per-layer button text added** — `_update_action_button_texts()` called from `_on_layer_changed`, `_populate_combos`, `_on_locale_changed`
+
+### Round 2 — Missing objectNames & signal gaps
+- [x] **Form section titles** — added `objectName` (`groupBox_plan_selection`, `groupBox_actions`, `groupBox_form_data`) + `widgets.json` entries
+- [x] **Locale combo i18n** — `_LOCALE_LABELS` dict with display names in all 3 languages
+- [x] **`fill_feature_combo` not called on locale switch** — added to `_on_locale_changed`
+- [x] **`fill_org_category` / `fill_activity_category` missing from `_populate_combos`** — added
+
+### Round 3 — English keys missing from strings.json
+- [x] **Added 8 English source-text keys** to `template_data/strings.json`: `A3 Sheet for Field Work`, `A0 Sheet for Administration`, `No Activity`, `Roads`, `Subdivisions`, `Facilities`, `Zones`, `Activities`
+- [x] **`fill_feature_combo`** — updated to use `_i18n_tr(key, loc)` with `_locale()` instead of raw English keys
+
+### Round 4 — Action combo store wrong data, theme combo case mismatch
+- [x] **Action combo `addItem` args swapped** — stores English key as `userData` (for `currentData()` handler comparisons), passes Arabic text to `get_string()` for display
+- [x] **Theme combo case mismatch** — `theme_value.lower()` before lookup in `_ARABIC_THEME_NAMES`
+- [x] **Action combo reverse-lookup fixed** — `itemData` returns English key → correctly looks up in `_ARABIC_ACTION_NAMES`
+- [x] **Added 5 English keys** to `strings.json`: `report`, `order`, `panels_map`, `num_map`, `backup`
+
+### Round 5 — locale_label data gaps (mounting_status, numbering_state)
+- [x] **`locale_label()` fixed** — checks `label_ar` first for Arabic locale before falling back to `pk`
+- [x] **`mounting_status.json`** — added `label_ar` fields (مخطط, مثبت, للتعديل, للنقل) to all 4 entries
+- [x] **`State_Numbering.json`** — added `label_ar` fields (مخطط, مرقم ومطابق, مرقم وغير مطابق, محجوز) to all 4 entries
+
+### Round 6 — Missing French translations (activity.json, organization_type.json)
+- [x] **`activity.json`** — added `cat_fr` to all 259 entries (24 distinct sectors) so French locale shows French category names instead of Arabic
+- [x] **`organization_type.json`** — added `category_fr` to all 56 entries (9 distinct categories) so French locale shows French category names
+
+### Files Changed (QML→Widgets + i18n)
+- `gui/main_dialog.py` — rewritten: QML proxies removed, 29 public aliases, `_SimpleTabBar`, all i18n fixes
+- `gui/popup_dialog.py` — rewritten: no QML
+- `gui/entity_list_dialog.py` — rewritten: QTableWidget + pagination
+- `gui/proxies.py` — deleted
+- `gui/popup_handlers.py` — rewritten: form-handler wrappers
+- `gui/ui_fillers.py` — `fill_feature_combo` i18n fix
+- `scripts/lookup_data.py` — `locale_label` checks `label_ar` first
+- `template_data/mounting_status.json` — added `label_ar`
+- `template_data/State_Numbering.json` — added `label_ar`
+- `template_data/activity.json` — added `cat_fr` to all 259 entries
+- `template_data/organization_type.json` — added `category_fr` to all 56 entries
+- `template_data/strings.json` — added 13 English keys
+- `template_data/widgets.json` — added form section title entries
+- `resources/dark_qss.template` — `#sectionFrame`, `#settingsContent` rules
+- `resources/light_qss.template` — same
+- `qml/` — deleted (24 files)
+- `gui/qml_utils.py` — deleted
+- `test/helpers.py` — removed `_FakeQuickWidget` + `QtQuickWidgets` mock
+- `test/test_main_dialog.py` — updated for new widget-based dialog
+- `Makefile` — `qml` removed from `EXTRA_DIRS`

@@ -5,13 +5,7 @@ import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
-from .helpers import get_qapp, make_mock_iface, setup_gui_mocks
-
-
-def _stub_widgets(target, names):
-    """Set MagicMock attributes on the target unconditionally."""
-    for name in names:
-        setattr(target, name, MagicMock())
+from .helpers import get_qapp, get_qt_widget_class, make_mock_iface, setup_gui_mocks
 
 
 @unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
@@ -22,6 +16,8 @@ class TestMainDialogCore(unittest.TestCase):
     def setUpClass(cls):
         cls.app = get_qapp()
         setup_gui_mocks()
+        cls.QComboBox = get_qt_widget_class('QComboBox')
+        cls.QLineEdit = get_qt_widget_class('QLineEdit')
         spec = importlib.util.spec_from_file_location(
             'plans_adressage.gui.main_dialog',
             'gui/main_dialog.py',
@@ -36,67 +32,98 @@ class TestMainDialogCore(unittest.TestCase):
         dialog.iface = make_mock_iface()
         dialog._tr_locale = 'ar'
         dialog._current_theme = 'dark'
-        dialog._combo_proxies = {}
-        dialog._field_proxies = {}
         dialog.router = MagicMock()
         dialog.menu = MagicMock()
         dialog.form_stack = MagicMock()
-        dialog._bridge = MagicMock()
+        dialog._combo_action = self.QComboBox()
         return dialog
 
-    def _real_combo(self):
-        """Return a fresh _ComboProxy from the loaded module."""
-        return self.mod._ComboProxy()
+    def _add_action_btns(self, dialog):
+        dialog._btn_draw = MagicMock()
+        dialog._btn_select = MagicMock()
+        dialog._btn_edit = MagicMock()
+        dialog._btn_measure = MagicMock()
 
-    def _real_field(self):
-        """Return a fresh _FieldProxy from the loaded module."""
-        return self.mod._FieldProxy()
+    # ------------------------------------------------------------------
+    # _current_layer_name
+    # ------------------------------------------------------------------
 
     def test_current_layer_name_returns_first_by_default(self):
         dialog = self._make_raw()
-        layer_sel = self._real_combo()
-        dialog._combo_proxies['layer_selector'] = layer_sel
+        dialog._combo_layer_selector = self.QComboBox()
+        dialog._combo_layer_selector.addItem('Zones', 'Zones')
+        dialog._combo_layer_selector.addItem('Roads', 'Roads')
         self.assertEqual(dialog._current_layer_name(), 'Zones')
 
     def test_current_layer_name_returns_by_index(self):
         dialog = self._make_raw()
-        layer_sel = self._real_combo()
-        dialog._combo_proxies['layer_selector'] = layer_sel
+        dialog._combo_layer_selector = self.QComboBox()
+        for name in ['Zones', 'Roads', 'Facilities', 'Subdivisions', 'Numbering', 'Panels']:
+            dialog._combo_layer_selector.addItem(name, name)
         for idx, expected in enumerate(
             ['Zones', 'Roads', 'Facilities', 'Subdivisions', 'Numbering', 'Panels']
         ):
-            layer_sel.setCurrentIndex(idx)
+            dialog._combo_layer_selector.setCurrentIndex(idx)
             self.assertEqual(dialog._current_layer_name(), expected)
 
     def test_current_layer_name_fallback_on_bad_index(self):
         dialog = self._make_raw()
-        layer_sel = self._real_combo()
-        dialog._combo_proxies['layer_selector'] = layer_sel
-        layer_sel.setCurrentIndex(99)
+        dialog._combo_layer_selector = self.QComboBox()
+        dialog._combo_layer_selector.addItem('Zones', 'Zones')
+        dialog._combo_layer_selector.setCurrentIndex(99)
         self.assertEqual(dialog._current_layer_name(), 'Zones')
+
+    # ------------------------------------------------------------------
+    # _tr
+    # ------------------------------------------------------------------
 
     def test_tr_delegates_to_get_string(self):
         dialog = self._make_raw()
         result = dialog._tr('Hello')
         self.assertEqual(result, 'Hello')
 
+    # ------------------------------------------------------------------
+    # _translate_internal_combos
+    # ------------------------------------------------------------------
+
     def test_translate_internal_combos_sets_item_texts(self):
         dialog = self._make_raw()
-        layer_sel = self._real_combo()
-        theme_combo = self._real_combo()
-        layer_sel.addItem('Zones', 'Zones')
-        layer_sel.addItem('Roads', 'Roads')
-        layer_sel.addItem('Facilities', 'Facilities')
-        layer_sel.addItem('Subdivisions', 'Subdivisions')
-        layer_sel.addItem('Numbering', 'Numbering')
-        layer_sel.addItem('Panels', 'Panels')
-        theme_combo.addItem('dark', 'dark')
-        theme_combo.addItem('light', 'light')
-        dialog._combo_proxies['layer_selector'] = layer_sel
-        dialog._combo_proxies['_theme_combo'] = theme_combo
+        dialog._tr_locale = 'en'
+        dialog._combo_layer_selector = self.QComboBox()
+        for _ in range(6):
+            dialog._combo_layer_selector.addItem('', '')
+        dialog._combo_theme = self.QComboBox()
+        dialog._combo_theme.addItem('', 'dark')
+        dialog._combo_theme.addItem('', 'light')
+        dialog._combo_action = self.QComboBox()
+        dialog._combo_action.addItem('', 'report')
+        dialog._combo_action.addItem('', 'order')
+        dialog._combo_action.addItem('', 'panels_map')
+        dialog._combo_action.addItem('', 'num_map')
+        dialog._combo_action.addItem('', 'backup')
+        dialog._combo_locale = self.QComboBox()
+        dialog._combo_locale.addItem('', 'ar')
+        dialog._combo_locale.addItem('', 'fr')
+        dialog._combo_locale.addItem('', 'en')
         dialog._translate_internal_combos()
-        for i in range(6):
-            self.assertEqual(layer_sel.itemText(i), layer_sel.itemData(i))
+        expected_layers = [
+            'المناطق', 'الطرق', 'المرافق',
+            'التجزئات', 'الترقيم', 'اللوحات',
+        ]
+        for i, expected in enumerate(expected_layers):
+            self.assertEqual(dialog._combo_layer_selector.itemText(i), expected)
+        self.assertEqual(dialog._combo_theme.itemText(0), 'داكن')
+        self.assertEqual(dialog._combo_theme.itemText(1), 'فاتح')
+        expected_actions = [
+            'تقرير', 'نموذج طلبية', 'إنشاء خريطة اللوحات',
+            'إنشاء خريطة الترقيم', 'إنشاء نسخة احتياطية لقاعدة البيانات',
+        ]
+        for i, expected in enumerate(expected_actions):
+            self.assertEqual(dialog._combo_action.itemText(i), expected)
+
+    # ------------------------------------------------------------------
+    # _init_state
+    # ------------------------------------------------------------------
 
     def test_init_state_resets_tool_state(self):
         dialog = self._make_raw()
@@ -114,74 +141,110 @@ class TestMainDialogCore(unittest.TestCase):
         self.assertEqual(dialog.update_object, {})
         self.assertEqual(dialog.update_only_form, {})
 
+    # ------------------------------------------------------------------
+    # apply_theme
+    # ------------------------------------------------------------------
+
     def test_apply_theme_sets_stylesheet(self):
         dialog = self._make_raw()
         dialog.setStyleSheet = MagicMock()
         dialog.apply_theme()
         dialog.setStyleSheet.assert_called_once()
 
-    def test_on_layer_changed_sets_form_stack(self):
+    # ------------------------------------------------------------------
+    # _on_layer_changed
+    # ------------------------------------------------------------------
+
+    def test_on_layer_changed_switches_form_stack_and_updates_map(self):
         dialog = self._make_raw()
-        dialog.form_stack.setCurrentIndex = MagicMock()
-        dialog.menu.currentWidget.return_value.objectName.return_value = 'tab_ops'
-        dialog.menu.currentIndex.return_value = 2
+        dialog._form_stack = MagicMock()
+        dialog.menu = MagicMock()
+        dialog.menu.currentIndex.return_value = 0
         dialog.on_opt_selected = MagicMock()
+        dialog._update_action_button_texts = MagicMock()
+        dialog._combo_layer_selector = self.QComboBox()
+        dialog._combo_layer_selector.addItem('Zones', 'Zones')
+        dialog._combo_layer_selector.addItem('Roads', 'Roads')
+        dialog._combo_layer_selector.addItem('Facilities', 'Facilities')
         dialog._on_layer_changed(2)
-        dialog.form_stack.setCurrentIndex.assert_called_once_with(2)
-        dialog.on_opt_selected.assert_called_once_with(2)
+        dialog._form_stack.setCurrentIndex.assert_called_once_with(2)
+        dialog._update_action_button_texts.assert_called_once_with(2)
+        dialog.on_opt_selected.assert_called_once_with(0)
 
-    def test_on_layer_changed_skips_opt_for_non_ops_tab(self):
+    def test_update_action_button_texts_sets_text_for_each_layer(self):
         dialog = self._make_raw()
-        dialog.form_stack.setCurrentIndex = MagicMock()
-        dialog.menu.currentWidget.return_value.objectName.return_value = 'tab'
-        dialog.on_opt_selected = MagicMock()
-        dialog._on_layer_changed(1)
-        dialog.form_stack.setCurrentIndex.assert_called_once_with(1)
-        dialog.on_opt_selected.assert_not_called()
+        btn_draw = MagicMock()
+        btn_select = MagicMock()
+        btn_edit = MagicMock()
+        btn_measure = MagicMock()
+        dialog._btn_draw = btn_draw
+        dialog._btn_select = btn_select
+        dialog._btn_edit = btn_edit
+        dialog._btn_measure = btn_measure
+        dialog._tr_locale = 'en'
+        for idx, expected_prefix in enumerate(['Draw', 'Select', 'Edit']):
+            dialog._update_action_button_texts(idx)
+            btn_draw.setText.assert_called()
+            btn_select.setText.assert_called()
+            btn_edit.setText.assert_called()
+            btn_measure.setText.assert_called()
 
-    def test_on_layer_changed_handles_no_current_widget(self):
-        dialog = self._make_raw()
-        dialog.form_stack.setCurrentIndex = MagicMock()
-        dialog.menu.currentWidget.return_value = None
-        dialog.on_opt_selected = MagicMock()
-        dialog._on_layer_changed(0)
-        dialog.form_stack.setCurrentIndex.assert_called_once_with(0)
+    # ------------------------------------------------------------------
+    # _init_theme_locale
+    # ------------------------------------------------------------------
 
-    def test_init_theme_locale_creates_theme_combo(self):
+    def test_init_theme_locale_creates_combos(self):
         dialog = self._make_raw()
-        dialog._combo_proxies['_theme_combo'] = self._real_combo()
-        dialog._combo_proxies['_locale_combo'] = self._real_combo()
+        dialog._combo_theme = self.QComboBox()
+        dialog._combo_locale = self.QComboBox()
         with (
             patch.object(self.mod, 'QSettings') as mock_qs,
             patch.object(
                 self.mod,
                 'AVAILABLE_LOCALES',
-                [('ar', 'Arabic'), ('fr', 'Français'), ('en', 'English')],
+                [('ar', 'Arabic'), ('fr', 'Fran\u00e7ais'), ('en', 'English')],
             ),
+            patch.object(self.mod, 'THEME_DARK', 'dark'),
+            patch.object(self.mod, 'THEME_LIGHT', 'light'),
+            patch.object(self.mod, 'DEFAULT_THEME', 'dark'),
         ):
             mock_qs.return_value.value.return_value = ''
             dialog._init_theme_locale()
-        self.assertGreater(dialog._combo_proxies['_theme_combo'].count(), 0)
-        self.assertGreater(dialog._combo_proxies['_locale_combo'].count(), 0)
+        self.assertGreater(dialog._combo_theme.count(), 0)
+        self.assertGreater(dialog._combo_locale.count(), 0)
+
+    # ------------------------------------------------------------------
+    # _on_theme_changed
+    # ------------------------------------------------------------------
 
     def test_on_theme_changed_saves_and_applies(self):
         dialog = self._make_raw()
-        theme_combo = self._real_combo()
-        theme_combo.addItem('dark', 'dark')
-        theme_combo.addItem('light', 'light')
-        theme_combo.setCurrentIndex(0)
-        dialog._combo_proxies['_theme_combo'] = theme_combo
+        dialog._combo_theme = self.QComboBox()
+        dialog._combo_theme.addItem('dark', 'dark')
+        dialog._combo_theme.addItem('light', 'light')
         dialog.apply_theme = MagicMock()
         with patch.object(self.mod, 'QSettings') as mock_qs:
-            theme_combo.setCurrentIndex(1)
+            dialog._combo_theme.setCurrentIndex(1)
             dialog._on_theme_changed(1)
             self.assertEqual(dialog._current_theme, 'light')
             dialog.apply_theme.assert_called_once()
             mock_qs.return_value.setValue.assert_called_once()
 
+    # ------------------------------------------------------------------
+    # _on_locale_changed
+    # ------------------------------------------------------------------
+
     def test_on_locale_changed_skips_empty_code(self):
         dialog = self._make_raw()
+        dialog._combo_locale = self.QComboBox()
+        dialog._combo_locale.addItem('', '')
         dialog._on_locale_changed(0)
+
+    def _make_locale_combo(self, code='fr', label='French'):
+        combo = self.QComboBox()
+        combo.addItem(label, code)
+        combo.setCurrentIndex(0)
+        return combo
 
     @patch('plans_adressage.gui.main_dialog.fill_panel_reference')
     @patch('plans_adressage.gui.main_dialog.fill_road_reference')
@@ -193,10 +256,12 @@ class TestMainDialogCore(unittest.TestCase):
     @patch('plans_adressage.gui.main_dialog.fill_zone_type')
     @patch('plans_adressage.gui.main_dialog.fill_road_type')
     @patch('plans_adressage.gui.main_dialog.fill_wilayas_list')
+    @patch('plans_adressage.gui.main_dialog.fill_feature_combo')
     @patch('plans_adressage.gui.main_dialog.fill_paper')
     def test_on_locale_changed_updates_tr_locale(
         self,
         _fill_paper,
+        _fill_feature,
         _fill_wilayas,
         _fill_road_type,
         _fill_zone_type,
@@ -209,32 +274,34 @@ class TestMainDialogCore(unittest.TestCase):
         _fill_panel_ref,
     ):
         dialog = self._make_raw()
-        locale_combo = self._real_combo()
-        locale_combo.addItem('French', 'fr')
-        locale_combo.setCurrentIndex(0)
-        dialog._combo_proxies['_locale_combo'] = locale_combo
-        for name in (
+        dialog._combo_locale = self._make_locale_combo()
+        for attr in (
             'wilaya_list',
-            'type_road',
-            'zone_type',
-            'subd_type',
-            'mount_status',
-            'num_state',
-            'road_ref',
-            'panel_ref',
-            'org_cat',
-            'activity_cat',
+            '_combo_type_road',
+            '_combo_zone_type',
+            '_combo_subd_type',
+            '_combo_mount_status',
+            '_combo_num_state',
+            '_combo_road_ref',
+            '_combo_panel_ref',
+            '_combo_org_cat',
+            '_combo_activity_cat',
         ):
-            dialog._combo_proxies[name] = self._real_combo()
-        dialog._combo_proxies['paper'] = self._real_combo()
-        dialog._translate_internal_combos = MagicMock()
+            setattr(dialog, attr, self.QComboBox())
+        dialog.feature_combo = self.QComboBox()
+        dialog._combo_paper = self.QComboBox()
+        dialog._combo_layer_selector = self.QComboBox()
+        for name in ['Zones', 'Roads', 'Facilities', 'Subdivisions', 'Numbering', 'Panels']:
+            dialog._combo_layer_selector.addItem(name, name)
+        dialog._combo_theme = self.QComboBox()
+        self._add_action_btns(dialog)
         with (
             patch.object(self.mod, 'QSettings'),
             patch.object(self.mod, 'clear_i18n_cache'),
             patch.object(self.mod, 'apply_widget_texts'),
         ):
             dialog._on_locale_changed(1)
-        self.assertEqual(dialog._tr_locale, 'fr')
+            self.assertEqual(dialog._tr_locale, 'fr')
 
     @patch('plans_adressage.gui.main_dialog.fill_panel_reference')
     @patch('plans_adressage.gui.main_dialog.fill_road_reference')
@@ -246,10 +313,12 @@ class TestMainDialogCore(unittest.TestCase):
     @patch('plans_adressage.gui.main_dialog.fill_zone_type')
     @patch('plans_adressage.gui.main_dialog.fill_road_type')
     @patch('plans_adressage.gui.main_dialog.fill_wilayas_list')
+    @patch('plans_adressage.gui.main_dialog.fill_feature_combo')
     @patch('plans_adressage.gui.main_dialog.fill_paper')
     def test_on_locale_changed_sets_rtl_for_ar(
         self,
         _fill_paper,
+        _fill_feature,
         _fill_wilayas,
         _fill_road_type,
         _fill_zone_type,
@@ -262,10 +331,27 @@ class TestMainDialogCore(unittest.TestCase):
         _fill_panel_ref,
     ):
         dialog = self._make_raw()
-        locale_combo = self._real_combo()
-        locale_combo.addItem('Arabic', 'ar')
-        locale_combo.setCurrentIndex(0)
-        dialog._combo_proxies['_locale_combo'] = locale_combo
+        dialog._combo_locale = self._make_locale_combo(code='ar', label='Arabic')
+        dialog._combo_layer_selector = self.QComboBox()
+        for name in ['Zones', 'Roads', 'Facilities', 'Subdivisions', 'Numbering', 'Panels']:
+            dialog._combo_layer_selector.addItem(name, name)
+        dialog._combo_theme = self.QComboBox()
+        for attr in (
+            'wilaya_list',
+            '_combo_type_road',
+            '_combo_zone_type',
+            '_combo_subd_type',
+            '_combo_mount_status',
+            '_combo_num_state',
+            '_combo_road_ref',
+            '_combo_panel_ref',
+            '_combo_org_cat',
+            '_combo_activity_cat',
+        ):
+            setattr(dialog, attr, self.QComboBox())
+        dialog.feature_combo = self.QComboBox()
+        dialog._combo_paper = self.QComboBox()
+        self._add_action_btns(dialog)
         with (
             patch.object(
                 self.mod.QApplication,
@@ -290,10 +376,12 @@ class TestMainDialogCore(unittest.TestCase):
     @patch('plans_adressage.gui.main_dialog.fill_zone_type')
     @patch('plans_adressage.gui.main_dialog.fill_road_type')
     @patch('plans_adressage.gui.main_dialog.fill_wilayas_list')
+    @patch('plans_adressage.gui.main_dialog.fill_feature_combo')
     @patch('plans_adressage.gui.main_dialog.fill_paper')
     def test_on_locale_changed_sets_ltr_for_fr(
         self,
         _fill_paper,
+        _fill_feature,
         _fill_wilayas,
         _fill_road_type,
         _fill_zone_type,
@@ -306,10 +394,27 @@ class TestMainDialogCore(unittest.TestCase):
         _fill_panel_ref,
     ):
         dialog = self._make_raw()
-        locale_combo = self._real_combo()
-        locale_combo.addItem('French', 'fr')
-        locale_combo.setCurrentIndex(0)
-        dialog._combo_proxies['_locale_combo'] = locale_combo
+        dialog._combo_locale = self._make_locale_combo()
+        dialog._combo_layer_selector = self.QComboBox()
+        for name in ['Zones', 'Roads', 'Facilities', 'Subdivisions', 'Numbering', 'Panels']:
+            dialog._combo_layer_selector.addItem(name, name)
+        dialog._combo_theme = self.QComboBox()
+        for attr in (
+            'wilaya_list',
+            '_combo_type_road',
+            '_combo_zone_type',
+            '_combo_subd_type',
+            '_combo_mount_status',
+            '_combo_num_state',
+            '_combo_road_ref',
+            '_combo_panel_ref',
+            '_combo_org_cat',
+            '_combo_activity_cat',
+        ):
+            setattr(dialog, attr, self.QComboBox())
+        dialog.feature_combo = self.QComboBox()
+        dialog._combo_paper = self.QComboBox()
+        self._add_action_btns(dialog)
         with (
             patch.object(
                 self.mod.QApplication,
@@ -334,10 +439,12 @@ class TestMainDialogCore(unittest.TestCase):
     @patch('plans_adressage.gui.main_dialog.fill_zone_type')
     @patch('plans_adressage.gui.main_dialog.fill_road_type')
     @patch('plans_adressage.gui.main_dialog.fill_wilayas_list')
+    @patch('plans_adressage.gui.main_dialog.fill_feature_combo')
     @patch('plans_adressage.gui.main_dialog.fill_paper')
     def test_on_locale_changed_refills_combos(
         self,
         _fill_paper,
+        _fill_feature,
         _fill_wilayas,
         _fill_road_type,
         _fill_zone_type,
@@ -350,25 +457,27 @@ class TestMainDialogCore(unittest.TestCase):
         _fill_panel_ref,
     ):
         dialog = self._make_raw()
-        locale_combo = self._real_combo()
-        locale_combo.addItem('French', 'fr')
-        locale_combo.setCurrentIndex(0)
-        dialog._combo_proxies['_locale_combo'] = locale_combo
-        for name in (
+        dialog._combo_locale = self._make_locale_combo()
+        for attr in (
             'wilaya_list',
-            'type_road',
-            'zone_type',
-            'subd_type',
-            'mount_status',
-            'num_state',
-            'road_ref',
-            'panel_ref',
-            'org_cat',
-            'activity_cat',
+            '_combo_type_road',
+            '_combo_zone_type',
+            '_combo_subd_type',
+            '_combo_mount_status',
+            '_combo_num_state',
+            '_combo_road_ref',
+            '_combo_panel_ref',
+            '_combo_org_cat',
+            '_combo_activity_cat',
         ):
-            dialog._combo_proxies[name] = self._real_combo()
-        dialog._combo_proxies['paper'] = self._real_combo()
-        dialog._translate_internal_combos = MagicMock()
+            setattr(dialog, attr, self.QComboBox())
+        dialog.feature_combo = self.QComboBox()
+        dialog._combo_paper = self.QComboBox()
+        dialog._combo_layer_selector = self.QComboBox()
+        for name in ['Zones', 'Roads', 'Facilities', 'Subdivisions', 'Numbering', 'Panels']:
+            dialog._combo_layer_selector.addItem(name, name)
+        dialog._combo_theme = self.QComboBox()
+        self._add_action_btns(dialog)
         with (
             patch.object(self.mod, 'QSettings'),
             patch.object(self.mod, 'clear_i18n_cache'),
@@ -387,13 +496,16 @@ class TestMainDialogCore(unittest.TestCase):
             _fill_road_ref.assert_called_once()
             _fill_panel_ref.assert_called_once()
 
+    # ------------------------------------------------------------------
+    # _on_action_changed
+    # ------------------------------------------------------------------
+
     def test_on_action_changed_triggers_chart(self):
         dialog = self._make_raw()
-        action_combo = self._real_combo()
-        action_combo.addItem('Panels Map', 'panels_map')
-        action_combo.setCurrentIndex(0)
-        dialog._combo_proxies['_action_combo'] = action_combo
-        dialog._combo_proxies['paper'] = self._real_combo()
+        dialog._combo_action = self.QComboBox()
+        dialog._combo_action.addItem('Panels Map', 'panels_map')
+        dialog._combo_action.setCurrentIndex(0)
+        dialog._combo_paper = self.QComboBox()
         dialog.panel_chart = MagicMock()
         dialog.numbering_chart = MagicMock()
         dialog._on_action_changed(0)
@@ -401,26 +513,27 @@ class TestMainDialogCore(unittest.TestCase):
 
     def test_on_action_changed_numbering_map(self):
         dialog = self._make_raw()
-        action_combo = self._real_combo()
-        action_combo.addItem('Numbering Map', 'num_map')
-        action_combo.setCurrentIndex(0)
-        dialog._combo_proxies['_action_combo'] = action_combo
-        dialog._combo_proxies['paper'] = self._real_combo()
+        dialog._combo_action = self.QComboBox()
+        dialog._combo_action.addItem('Numbering Map', 'num_map')
+        dialog._combo_action.setCurrentIndex(0)
+        dialog._combo_paper = self.QComboBox()
         dialog.panel_chart = MagicMock()
         dialog.numbering_chart = MagicMock()
         dialog._on_action_changed(0)
         dialog.numbering_chart.assert_called_once()
 
+    # ------------------------------------------------------------------
+    # _save_new_type
+    # ------------------------------------------------------------------
+
     def test_save_new_type_with_activity(self):
         dialog = self._make_raw()
-        feature_combo = self._real_combo()
-        feature_combo.addItem('Activity', '_ACTIVITY')
-        feature_combo.setCurrentIndex(0)
-        subtype_combo = self._real_combo()
-        subtype_combo.addItem('School', 'school')
-        dialog._combo_proxies['feature_combo'] = feature_combo
-        dialog._combo_proxies['subtype_combo'] = subtype_combo
-        dialog._field_proxies['new_type'] = self._real_field()
+        dialog.feature_combo = self.QComboBox()
+        dialog.feature_combo.addItem('Activity', '_ACTIVITY')
+        dialog.feature_combo.setCurrentIndex(0)
+        dialog.subtype_combo = self.QComboBox()
+        dialog.subtype_combo.addItem('School', 'school')
+        dialog._field_new_type = self.QLineEdit()
         self.mod._ACTIVITY_KEY = '_ACTIVITY'
         dialog.clear_i18n_cache = MagicMock()
         with (

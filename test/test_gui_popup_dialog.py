@@ -1,4 +1,4 @@
-"""Tests for gui/popup_dialog.py (QML-backed version)."""
+"""Tests for gui/popup_dialog.py (Qt Widgets version)."""
 
 import importlib
 import sys

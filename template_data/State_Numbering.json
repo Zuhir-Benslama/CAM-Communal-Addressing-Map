@@ -1,21 +1,25 @@
 [
   {
     "pk": "planned",
+    "label_ar": "مخطط",
     "label_fr": "Programmé",
     "label_en": "Programmed"
   },
   {
     "pk": "numbered_matched",
+    "label_ar": "مرقم ومطابق",
     "label_fr": "Numéroté et conforme",
     "label_en": "Numbered and Matching"
   },
   {
     "pk": "numbered_mismatched",
+    "label_ar": "مرقم وغير مطابق",
     "label_fr": "Numéroté et non conforme",
     "label_en": "Numbered and Mismatched"
   },
   {
     "pk": "booked",
+    "label_ar": "محجوز",
     "label_fr": "Réservé",
     "label_en": "Reserved"
   }

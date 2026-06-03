@@ -141,7 +141,7 @@ def map_a3() -> None:
                     'No permission to delete: %s',
                     input_filename,
                 )
-            except Exception as e:
+            except OSError as e:
                 logger.error('Error deleting file: %s', e)
         except subprocess.CalledProcessError as e:
             logger.error('Conversion failed: %s', e)
@@ -200,7 +200,7 @@ def map_a4() -> None:
                     'No permission to delete: %s',
                     input_filename,
                 )
-            except Exception as e:
+            except OSError as e:
                 logger.error('Error deleting file: %s', e)
         except subprocess.CalledProcessError as e:
             logger.error('Conversion failed: %s', e)

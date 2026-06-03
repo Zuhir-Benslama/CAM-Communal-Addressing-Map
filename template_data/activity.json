@@ -3,1554 +3,1813 @@
     "sector": "إعلام وإتصال",
     "type": "محطة إذاعة",
     "cat_en": "Media & Communication",
-    "type_en": "Radio Station"
+    "type_en": "Radio Station",
+    "cat_fr": "Médias & Communication"
   },
   {
     "sector": "إعلام وإتصال",
     "type": "محطة بث",
     "cat_en": "Media & Communication",
-    "type_en": "Broadcast Station"
+    "type_en": "Broadcast Station",
+    "cat_fr": "Médias & Communication"
   },
   {
     "sector": "إعلام وإتصال",
     "type": "محطة تلفزة",
     "cat_en": "Media & Communication",
-    "type_en": "Television Station"
+    "type_en": "Television Station",
+    "cat_fr": "Médias & Communication"
   },
   {
     "sector": "إعلام وإتصال",
     "type": "مقر جريدة",
     "cat_en": "Media & Communication",
-    "type_en": "Newspaper Office"
+    "type_en": "Newspaper Office",
+    "cat_fr": "Médias & Communication"
   },
   {
     "sector": "بريد و مواصلات",
     "type": "شركة إتصالات",
     "cat_en": "Post & Telecommunications",
-    "type_en": "Telecommunications Company"
+    "type_en": "Telecommunications Company",
+    "cat_fr": "Poste & Télécommunications"
   },
   {
     "sector": "بريد و مواصلات",
     "type": "فضاء انترنات",
     "cat_en": "Post & Telecommunications",
-    "type_en": "فضاء انترنات"
+    "type_en": "فضاء انترنات",
+    "cat_fr": "Poste & Télécommunications"
   },
   {
     "sector": "بريد و مواصلات",
     "type": "مديرية بريد وإتصالات",
     "cat_en": "Post & Telecommunications",
-    "type_en": "مديرية بريد وإتصالات"
+    "type_en": "مديرية بريد وإتصالات",
+    "cat_fr": "Poste & Télécommunications"
   },
   {
     "sector": "بريد و مواصلات",
     "type": "مركز بريد",
     "cat_en": "Post & Telecommunications",
-    "type_en": "مركز بريد"
+    "type_en": "مركز بريد",
+    "cat_fr": "Poste & Télécommunications"
   },
   {
     "sector": "بريد و مواصلات",
     "type": "هوائي إتصالات",
     "cat_en": "Post & Telecommunications",
-    "type_en": "هوائي إتصالات"
+    "type_en": "هوائي إتصالات",
+    "cat_fr": "Poste & Télécommunications"
   },
   {
     "sector": "بيئة",
     "type": "ردم تقني",
     "cat_en": "بيئة",
-    "type_en": "ردم تقني"
+    "type_en": "ردم تقني",
+    "cat_fr": "Environnement"
   },
   {
     "sector": "بيئة",
     "type": "رسكلة النفايات",
     "cat_en": "بيئة",
-    "type_en": "رسكلة النفايات"
+    "type_en": "رسكلة النفايات",
+    "cat_fr": "Environnement"
   },
   {
     "sector": "بيئة",
     "type": "شركة - بيئة",
     "cat_en": "بيئة",
-    "type_en": "شركة - بيئة"
+    "type_en": "شركة - بيئة",
+    "cat_fr": "Environnement"
   },
   {
     "sector": "بيئة",
     "type": "مديرية - بيئة",
     "cat_en": "بيئة",
-    "type_en": "مديرية - بيئة"
+    "type_en": "مديرية - بيئة",
+    "cat_fr": "Environnement"
   },
   {
     "sector": "بيئة",
     "type": "معالجة النفايات",
     "cat_en": "بيئة",
-    "type_en": "معالجة النفايات"
+    "type_en": "معالجة النفايات",
+    "cat_fr": "Environnement"
   },
   {
     "sector": "بيئة",
     "type": "مفتشية - بيئة",
     "cat_en": "بيئة",
-    "type_en": "مفتشية - بيئة"
+    "type_en": "مفتشية - بيئة",
+    "cat_fr": "Environnement"
   },
   {
     "sector": "بيئة",
     "type": "مفرغة عمومية",
     "cat_en": "بيئة",
-    "type_en": "مفرغة عمومية"
+    "type_en": "مفرغة عمومية",
+    "cat_fr": "Environnement"
   },
   {
     "sector": "تجارة",
     "type": "سوق ",
     "cat_en": "Trade",
-    "type_en": "سوق "
+    "type_en": "سوق ",
+    "cat_fr": "Commerce"
   },
   {
     "sector": "تجارة",
     "type": "غرفة تبريد",
     "cat_en": "Trade",
-    "type_en": "غرفة تبريد"
+    "type_en": "غرفة تبريد",
+    "cat_fr": "Commerce"
   },
   {
     "sector": "تجارة",
     "type": "مخزن تجارة",
     "cat_en": "Trade",
-    "type_en": "مخزن تجارة"
+    "type_en": "مخزن تجارة",
+    "cat_fr": "Commerce"
   },
   {
     "sector": "تجارة",
     "type": "مديرية التجارة",
     "cat_en": "Trade",
-    "type_en": "مديرية التجارة"
+    "type_en": "مديرية التجارة",
+    "cat_fr": "Commerce"
   },
   {
     "sector": "تجارة",
     "type": "مذبح",
     "cat_en": "Trade",
-    "type_en": "مذبح"
+    "type_en": "مذبح",
+    "cat_fr": "Commerce"
   },
   {
     "sector": "تجارة",
     "type": "مركز تجاري",
     "cat_en": "Trade",
-    "type_en": "مركز تجاري"
+    "type_en": "مركز تجاري",
+    "cat_fr": "Commerce"
   },
   {
     "sector": "تجارة",
     "type": "مفتشية التجارة",
     "cat_en": "Trade",
-    "type_en": "مفتشية التجارة"
+    "type_en": "مفتشية التجارة",
+    "cat_fr": "Commerce"
   },
   {
     "sector": "تجارة",
     "type": "مؤسسة - تجارة",
     "cat_en": "Trade",
-    "type_en": "مؤسسة - تجارة"
+    "type_en": "مؤسسة - تجارة",
+    "cat_fr": "Commerce"
   },
   {
     "sector": "تجارة",
     "type": "نقطة بيع",
     "cat_en": "Trade",
-    "type_en": "نقطة بيع"
+    "type_en": "نقطة بيع",
+    "cat_fr": "Commerce"
   },
   {
     "sector": "تجارة",
     "type": "وكالة عقارية",
     "cat_en": "Trade",
-    "type_en": "Real Estate Agency"
+    "type_en": "Real Estate Agency",
+    "cat_fr": "Commerce"
   },
   {
     "sector": "تشغيل وضمان إجتماعي",
     "type": "إتحاد - نقابة شغل",
     "cat_en": "تشغيل وضمان إجتماعي",
-    "type_en": "إتحاد - نقابة شغل"
+    "type_en": "إتحاد - نقابة شغل",
+    "cat_fr": "Emploi & Sécurité Sociale"
   },
   {
     "sector": "تشغيل وضمان إجتماعي",
     "type": "تأمين",
     "cat_en": "تشغيل وضمان إجتماعي",
-    "type_en": "تأمين"
+    "type_en": "تأمين",
+    "cat_fr": "Emploi & Sécurité Sociale"
   },
   {
     "sector": "تشغيل وضمان إجتماعي",
     "type": "مفتشية التشغيل",
     "cat_en": "تشغيل وضمان إجتماعي",
-    "type_en": "مفتشية التشغيل"
+    "type_en": "مفتشية التشغيل",
+    "cat_fr": "Emploi & Sécurité Sociale"
   },
   {
     "sector": "تشغيل وضمان إجتماعي",
     "type": "وكالة التشغيل",
     "cat_en": "تشغيل وضمان إجتماعي",
-    "type_en": "وكالة التشغيل"
+    "type_en": "وكالة التشغيل",
+    "cat_fr": "Emploi & Sécurité Sociale"
   },
   {
     "sector": "تضامن وطني وأسرة",
     "type": "تأهيل المعوقين",
     "cat_en": "تضامن وطني وأسرة",
-    "type_en": "تأهيل المعوقين"
+    "type_en": "تأهيل المعوقين",
+    "cat_fr": "Solidarité Nationale & Famille"
   },
   {
     "sector": "تضامن وطني وأسرة",
     "type": "خلية للتضامن",
     "cat_en": "تضامن وطني وأسرة",
-    "type_en": "خلية للتضامن"
+    "type_en": "خلية للتضامن",
+    "cat_fr": "Solidarité Nationale & Famille"
   },
   {
     "sector": "تضامن وطني وأسرة",
     "type": "دار الطفولة",
     "cat_en": "تضامن وطني وأسرة",
-    "type_en": "دار الطفولة"
+    "type_en": "دار الطفولة",
+    "cat_fr": "Solidarité Nationale & Famille"
   },
   {
     "sector": "تضامن وطني وأسرة",
     "type": "دار المسنين",
     "cat_en": "تضامن وطني وأسرة",
-    "type_en": "دار المسنين"
+    "type_en": "دار المسنين",
+    "cat_fr": "Solidarité Nationale & Famille"
   },
   {
     "sector": "تضامن وطني وأسرة",
     "type": "مديرية تضامن وطني وأسرة",
     "cat_en": "تضامن وطني وأسرة",
-    "type_en": "مديرية تضامن وطني وأسرة"
+    "type_en": "مديرية تضامن وطني وأسرة",
+    "cat_fr": "Solidarité Nationale & Famille"
   },
   {
     "sector": "تضامن وطني وأسرة",
     "type": "مفتشية تضامن وطني وأسرة",
     "cat_en": "تضامن وطني وأسرة",
-    "type_en": "مفتشية تضامن وطني وأسرة"
+    "type_en": "مفتشية تضامن وطني وأسرة",
+    "cat_fr": "Solidarité Nationale & Famille"
   },
   {
     "sector": "تعليم",
     "type": "إقامة جامعية",
     "cat_en": "تعليم",
-    "type_en": "إقامة جامعية"
+    "type_en": "إقامة جامعية",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "إكمالية",
     "cat_en": "تعليم",
-    "type_en": "إكمالية"
+    "type_en": "إكمالية",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "تعاضدية عمال التربية",
     "cat_en": "تعليم",
-    "type_en": "تعاضدية عمال التربية"
+    "type_en": "تعاضدية عمال التربية",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "ثانوية",
     "cat_en": "تعليم",
-    "type_en": "High School"
+    "type_en": "High School",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "جامعة",
     "cat_en": "تعليم",
-    "type_en": "University"
+    "type_en": "University",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "كلية",
     "cat_en": "تعليم",
-    "type_en": "Faculty"
+    "type_en": "Faculty",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "مجمع مدرسي",
     "cat_en": "تعليم",
-    "type_en": "مجمع مدرسي"
+    "type_en": "مجمع مدرسي",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "مدرسة إبتدائية",
     "cat_en": "تعليم",
-    "type_en": "Primary School"
+    "type_en": "Primary School",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "مدرسة خاصة",
     "cat_en": "تعليم",
-    "type_en": "مدرسة خاصة"
+    "type_en": "مدرسة خاصة",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "مدرسة وطنية",
     "cat_en": "تعليم",
-    "type_en": "مدرسة وطنية"
+    "type_en": "مدرسة وطنية",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "مديرية التربية",
     "cat_en": "تعليم",
-    "type_en": "مديرية التربية"
+    "type_en": "مديرية التربية",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "مديرية التكوين المهني",
     "cat_en": "تعليم",
-    "type_en": "مديرية التكوين المهني"
+    "type_en": "مديرية التكوين المهني",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "مركز بحث و تطوير",
     "cat_en": "تعليم",
-    "type_en": "مركز بحث و تطوير"
+    "type_en": "مركز بحث و تطوير",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "مركز تكوين مهني",
     "cat_en": "تعليم",
-    "type_en": "مركز تكوين مهني"
+    "type_en": "مركز تكوين مهني",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "مركز جامعي",
     "cat_en": "تعليم",
-    "type_en": "مركز جامعي"
+    "type_en": "مركز جامعي",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "مركز ولائي",
     "cat_en": "تعليم",
-    "type_en": "مركز ولائي"
+    "type_en": "مركز ولائي",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "معهد تكوين مهني",
     "cat_en": "تعليم",
-    "type_en": "معهد تكوين مهني"
+    "type_en": "معهد تكوين مهني",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "معهد جامعي",
     "cat_en": "تعليم",
-    "type_en": "معهد جامعي"
+    "type_en": "معهد جامعي",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "مفتشية التعليم",
     "cat_en": "تعليم",
-    "type_en": "مفتشية التعليم"
+    "type_en": "مفتشية التعليم",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "ملحق مدرسة",
     "cat_en": "تعليم",
-    "type_en": "ملحق مدرسة"
+    "type_en": "ملحق مدرسة",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "ملحق مركز تكوين مهني",
     "cat_en": "تعليم",
-    "type_en": "ملحق مركز تكوين مهني"
+    "type_en": "ملحق مركز تكوين مهني",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "تعليم",
     "type": "ملحقة جامعية",
     "cat_en": "تعليم",
-    "type_en": "ملحقة جامعية"
+    "type_en": "ملحقة جامعية",
+    "cat_fr": "Éducation"
   },
   {
     "sector": "ثقافة",
     "type": "تكوين - ثقافة",
     "cat_en": "Culture",
-    "type_en": "تكوين - ثقافة"
+    "type_en": "تكوين - ثقافة",
+    "cat_fr": "Culture"
   },
   {
     "sector": "ثقافة",
     "type": "دار الثقافة",
     "cat_en": "Culture",
-    "type_en": "Cultural Center"
+    "type_en": "Cultural Center",
+    "cat_fr": "Culture"
   },
   {
     "sector": "ثقافة",
     "type": "سينما",
     "cat_en": "Culture",
-    "type_en": "سينما"
+    "type_en": "سينما",
+    "cat_fr": "Culture"
   },
   {
     "sector": "ثقافة",
     "type": "قاعة حفلات",
     "cat_en": "Culture",
-    "type_en": "Event Hall"
+    "type_en": "Event Hall",
+    "cat_fr": "Culture"
   },
   {
     "sector": "ثقافة",
     "type": "متحف",
     "cat_en": "Culture",
-    "type_en": "Museum"
+    "type_en": "Museum",
+    "cat_fr": "Culture"
   },
   {
     "sector": "ثقافة",
     "type": "مديرية الثقافة",
     "cat_en": "Culture",
-    "type_en": "مديرية الثقافة"
+    "type_en": "مديرية الثقافة",
+    "cat_fr": "Culture"
   },
   {
     "sector": "ثقافة",
     "type": "مركب - مركز ثقافي",
     "cat_en": "Culture",
-    "type_en": "مركب - مركز ثقافي"
+    "type_en": "مركب - مركز ثقافي",
+    "cat_fr": "Culture"
   },
   {
     "sector": "ثقافة",
     "type": "مسرح",
     "cat_en": "Culture",
-    "type_en": "Theater"
+    "type_en": "Theater",
+    "cat_fr": "Culture"
   },
   {
     "sector": "ثقافة",
     "type": "مكتبة",
     "cat_en": "Culture",
-    "type_en": "Bookstore"
+    "type_en": "Bookstore",
+    "cat_fr": "Culture"
   },
   {
     "sector": "ثقافة",
     "type": "موقع أثري",
     "cat_en": "Culture",
-    "type_en": "موقع أثري"
+    "type_en": "موقع أثري",
+    "cat_fr": "Culture"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "إقامة - جماعات محلية",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "إقامة - جماعات محلية"
+    "type_en": "إقامة - جماعات محلية",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "أمن حضري",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "Urban Security"
+    "type_en": "Urban Security",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "أمن دائرة",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "أمن دائرة"
+    "type_en": "أمن دائرة",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "أمن ولاية",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "Provincial Security"
+    "type_en": "Provincial Security",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "حديقة عامة",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "حديقة عامة"
+    "type_en": "حديقة عامة",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "حرس بلدي",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "حرس بلدي"
+    "type_en": "حرس بلدي",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "حماية مدنية",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "حماية مدنية"
+    "type_en": "حماية مدنية",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "ساحة عمومية",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "ساحة عمومية"
+    "type_en": "ساحة عمومية",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "سد - نقطة مراقبة أمن وطني",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "سد - نقطة مراقبة أمن وطني"
+    "type_en": "سد - نقطة مراقبة أمن وطني",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "شاطىء",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "شاطىء"
+    "type_en": "شاطىء",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "شركة حراسة",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "شركة حراسة"
+    "type_en": "شركة حراسة",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "فرع بلدي",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "فرع بلدي"
+    "type_en": "فرع بلدي",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "مدرسة الشرطة",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "مدرسة الشرطة"
+    "type_en": "مدرسة الشرطة",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "مقر البلدية",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "مقر البلدية"
+    "type_en": "مقر البلدية",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "مقر الدائرة",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "مقر الدائرة"
+    "type_en": "مقر الدائرة",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "مقر الولاية",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "مقر الولاية"
+    "type_en": "مقر الولاية",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "وحدة أمن وطني",
     "cat_en": "داخلية وجماعات محلية",
-    "type_en": "وحدة أمن وطني"
+    "type_en": "وحدة أمن وطني",
+    "cat_fr": "Intérieur & Collectivités Locales"
   },
   {
     "sector": "رياضة",
     "type": "تكوين - رياضة",
     "cat_en": "Sports",
-    "type_en": "تكوين - رياضة"
+    "type_en": "تكوين - رياضة",
+    "cat_fr": "Sports"
   },
   {
     "sector": "رياضة",
     "type": "دار الشباب",
     "cat_en": "Sports",
-    "type_en": "دار الشباب"
+    "type_en": "دار الشباب",
+    "cat_fr": "Sports"
   },
   {
     "sector": "رياضة",
     "type": "قاعة متعددة الرياضات",
     "cat_en": "Sports",
-    "type_en": "قاعة متعددة الرياضات"
+    "type_en": "قاعة متعددة الرياضات",
+    "cat_fr": "Sports"
   },
   {
     "sector": "رياضة",
     "type": "مديرية الشباب والرياضة",
     "cat_en": "Sports",
-    "type_en": "مديرية الشباب والرياضة"
+    "type_en": "مديرية الشباب والرياضة",
+    "cat_fr": "Sports"
   },
   {
     "sector": "رياضة",
     "type": "مركب رياضي",
     "cat_en": "Sports",
-    "type_en": "مركب رياضي"
+    "type_en": "مركب رياضي",
+    "cat_fr": "Sports"
   },
   {
     "sector": "رياضة",
     "type": "مسبح ",
     "cat_en": "Sports",
-    "type_en": "مسبح "
+    "type_en": "مسبح ",
+    "cat_fr": "Sports"
   },
   {
     "sector": "رياضة",
     "type": "ملعب",
     "cat_en": "Sports",
-    "type_en": "Stadium"
+    "type_en": "Stadium",
+    "cat_fr": "Sports"
   },
   {
     "sector": "رياضة",
     "type": "نادي الفروسية",
     "cat_en": "Sports",
-    "type_en": "نادي الفروسية"
+    "type_en": "نادي الفروسية",
+    "cat_fr": "Sports"
   },
   {
     "sector": "رياضة",
     "type": "نادي رياضي",
     "cat_en": "Sports",
-    "type_en": "نادي رياضي"
+    "type_en": "نادي رياضي",
+    "cat_fr": "Sports"
   },
   {
     "sector": "سكن وعمران",
     "type": "المراقبة التقنية للبناء",
     "cat_en": "سكن وعمران",
-    "type_en": "المراقبة التقنية للبناء"
+    "type_en": "المراقبة التقنية للبناء",
+    "cat_fr": "Habitat & Urbanisme"
   },
   {
     "sector": "سكن وعمران",
     "type": "ديوان الترقية والتسيير العقاري",
     "cat_en": "سكن وعمران",
-    "type_en": "ديوان الترقية والتسيير العقاري"
+    "type_en": "ديوان الترقية والتسيير العقاري",
+    "cat_fr": "Habitat & Urbanisme"
   },
   {
     "sector": "سكن وعمران",
     "type": "شركة بناء",
     "cat_en": "سكن وعمران",
-    "type_en": "شركة بناء"
+    "type_en": "شركة بناء",
+    "cat_fr": "Habitat & Urbanisme"
   },
   {
     "sector": "سكن وعمران",
     "type": "فرع البناء و التعمير",
     "cat_en": "سكن وعمران",
-    "type_en": "فرع البناء و التعمير"
+    "type_en": "فرع البناء و التعمير",
+    "cat_fr": "Habitat & Urbanisme"
   },
   {
     "sector": "سكن وعمران",
     "type": "قاعدة حياة - سكن",
     "cat_en": "سكن وعمران",
-    "type_en": "قاعدة حياة - سكن"
+    "type_en": "قاعدة حياة - سكن",
+    "cat_fr": "Habitat & Urbanisme"
   },
   {
     "sector": "سكن وعمران",
     "type": "مديرية - سكن",
     "cat_en": "سكن وعمران",
-    "type_en": "مديرية - سكن"
+    "type_en": "مديرية - سكن",
+    "cat_fr": "Habitat & Urbanisme"
   },
   {
     "sector": "سكن وعمران",
     "type": "مكتب الدراسات",
     "cat_en": "سكن وعمران",
-    "type_en": "مكتب الدراسات"
+    "type_en": "مكتب الدراسات",
+    "cat_fr": "Habitat & Urbanisme"
   },
   {
     "sector": "سياحة",
     "type": "إقامة إطعام سياحي",
     "cat_en": "Tourism",
-    "type_en": "إقامة إطعام سياحي"
+    "type_en": "إقامة إطعام سياحي",
+    "cat_fr": "Tourisme"
   },
   {
     "sector": "سياحة",
     "type": "المعهد الوطني المتخصص في الفندقة والسياحة",
     "cat_en": "Tourism",
-    "type_en": "المعهد الوطني المتخصص في الفندقة والسياحة"
+    "type_en": "المعهد الوطني المتخصص في الفندقة والسياحة",
+    "cat_fr": "Tourisme"
   },
   {
     "sector": "سياحة",
     "type": "تكوين - سياحة",
     "cat_en": "Tourism",
-    "type_en": "تكوين - سياحة"
+    "type_en": "تكوين - سياحة",
+    "cat_fr": "Tourisme"
   },
   {
     "sector": "سياحة",
     "type": "مخيم",
     "cat_en": "Tourism",
-    "type_en": "مخيم"
+    "type_en": "مخيم",
+    "cat_fr": "Tourisme"
   },
   {
     "sector": "سياحة",
     "type": "مديرية السياحة",
     "cat_en": "Tourism",
-    "type_en": "مديرية السياحة"
+    "type_en": "مديرية السياحة",
+    "cat_fr": "Tourisme"
   },
   {
     "sector": "سياحة",
     "type": "مرفق سياحي",
     "cat_en": "Tourism",
-    "type_en": "مرفق سياحي"
+    "type_en": "مرفق سياحي",
+    "cat_fr": "Tourisme"
   },
   {
     "sector": "سياحة",
     "type": "مركب سياحي",
     "cat_en": "Tourism",
-    "type_en": "مركب سياحي"
+    "type_en": "مركب سياحي",
+    "cat_fr": "Tourisme"
   },
   {
     "sector": "سياحة",
     "type": "مركز راحة عائلي ",
     "cat_en": "Tourism",
-    "type_en": "مركز راحة عائلي "
+    "type_en": "مركز راحة عائلي ",
+    "cat_fr": "Tourisme"
   },
   {
     "sector": "سياحة",
     "type": "موقع سياحي",
     "cat_en": "Tourism",
-    "type_en": "موقع سياحي"
+    "type_en": "موقع سياحي",
+    "cat_fr": "Tourisme"
   },
   {
     "sector": "سياحة",
     "type": "نزل",
     "cat_en": "Tourism",
-    "type_en": "نزل"
+    "type_en": "نزل",
+    "cat_fr": "Tourisme"
   },
   {
     "sector": "سياحة",
     "type": "وكالة سياحية",
     "cat_en": "Tourism",
-    "type_en": "وكالة سياحية"
+    "type_en": "وكالة سياحية",
+    "cat_fr": "Tourisme"
   },
   {
     "sector": "شؤون خارجية",
     "type": "إقامة سفارة",
     "cat_en": "شؤون خارجية",
-    "type_en": "إقامة سفارة"
+    "type_en": "إقامة سفارة",
+    "cat_fr": "Affaires Étrangères"
   },
   {
     "sector": "شؤون خارجية",
     "type": "سفارة",
     "cat_en": "شؤون خارجية",
-    "type_en": "سفارة"
+    "type_en": "سفارة",
+    "cat_fr": "Affaires Étrangères"
   },
   {
     "sector": "شؤون خارجية",
     "type": "قنصلية",
     "cat_en": "شؤون خارجية",
-    "type_en": "قنصلية"
+    "type_en": "قنصلية",
+    "cat_fr": "Affaires Étrangères"
   },
   {
     "sector": "شؤون خارجية",
     "type": "ملحق عسكري",
     "cat_en": "شؤون خارجية",
-    "type_en": "ملحق عسكري"
+    "type_en": "ملحق عسكري",
+    "cat_fr": "Affaires Étrangères"
   },
   {
     "sector": "شؤون خارجية",
     "type": "هيئة أجنبية",
     "cat_en": "شؤون خارجية",
-    "type_en": "هيئة أجنبية"
+    "type_en": "هيئة أجنبية",
+    "cat_fr": "Affaires Étrangères"
   },
   {
     "sector": "شؤون دينية",
     "type": "زاوية",
     "cat_en": "Religious Affairs",
-    "type_en": "Zawiya"
+    "type_en": "Zawiya",
+    "cat_fr": "Affaires Religieuses"
   },
   {
     "sector": "شؤون دينية",
     "type": "ضريح",
     "cat_en": "Religious Affairs",
-    "type_en": "ضريح"
+    "type_en": "ضريح",
+    "cat_fr": "Affaires Religieuses"
   },
   {
     "sector": "شؤون دينية",
     "type": "كنيسة",
     "cat_en": "Religious Affairs",
-    "type_en": "كنيسة"
+    "type_en": "كنيسة",
+    "cat_fr": "Affaires Religieuses"
   },
   {
     "sector": "شؤون دينية",
     "type": "مدرسة قرآنية",
     "cat_en": "Religious Affairs",
-    "type_en": "مدرسة قرآنية"
+    "type_en": "مدرسة قرآنية",
+    "cat_fr": "Affaires Religieuses"
   },
   {
     "sector": "شؤون دينية",
     "type": "مديرية الشؤون الدينية والأوقاف",
     "cat_en": "Religious Affairs",
-    "type_en": "مديرية الشؤون الدينية والأوقاف"
+    "type_en": "مديرية الشؤون الدينية والأوقاف",
+    "cat_fr": "Affaires Religieuses"
   },
   {
     "sector": "شؤون دينية",
     "type": "مسجد",
     "cat_en": "Religious Affairs",
-    "type_en": "Mosque"
+    "type_en": "Mosque",
+    "cat_fr": "Affaires Religieuses"
   },
   {
     "sector": "شؤون دينية",
     "type": "معهد إسلامي",
     "cat_en": "Religious Affairs",
-    "type_en": "معهد إسلامي"
+    "type_en": "معهد إسلامي",
+    "cat_fr": "Affaires Religieuses"
   },
   {
     "sector": "شؤون دينية",
     "type": "مقبرة",
     "cat_en": "Religious Affairs",
-    "type_en": "Cemetery"
+    "type_en": "Cemetery",
+    "cat_fr": "Affaires Religieuses"
   },
   {
     "sector": "شؤون دينية",
     "type": "موقع ديني",
     "cat_en": "Religious Affairs",
-    "type_en": "موقع ديني"
+    "type_en": "موقع ديني",
+    "cat_fr": "Affaires Religieuses"
   },
   {
     "sector": "صحة",
     "type": "بيطري",
     "cat_en": "Health",
-    "type_en": "بيطري"
+    "type_en": "بيطري",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "صيدلية",
     "cat_en": "Health",
-    "type_en": "Pharmacy"
+    "type_en": "Pharmacy",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "عيادة خاصة",
     "cat_en": "Health",
-    "type_en": "عيادة خاصة"
+    "type_en": "عيادة خاصة",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "عيادة متعددة الخدمات",
     "cat_en": "Health",
-    "type_en": "Polyclinic"
+    "type_en": "Polyclinic",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "قاعة علاج",
     "cat_en": "Health",
-    "type_en": "قاعة علاج"
+    "type_en": "قاعة علاج",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "قطاع صحي",
     "cat_en": "Health",
-    "type_en": "قطاع صحي"
+    "type_en": "قطاع صحي",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "مخبر",
     "cat_en": "Health",
-    "type_en": "مخبر"
+    "type_en": "مخبر",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "مديرية الصحة",
     "cat_en": "Health",
-    "type_en": "مديرية الصحة"
+    "type_en": "مديرية الصحة",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "مركز إستشفائي جامعي",
     "cat_en": "Health",
-    "type_en": "مركز إستشفائي جامعي"
+    "type_en": "مركز إستشفائي جامعي",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "مركز صحي",
     "cat_en": "Health",
-    "type_en": "مركز صحي"
+    "type_en": "مركز صحي",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "مركز طبي",
     "cat_en": "Health",
-    "type_en": "مركز طبي"
+    "type_en": "مركز طبي",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "مركز طبي متخصص",
     "cat_en": "Health",
-    "type_en": "مركز طبي متخصص"
+    "type_en": "مركز طبي متخصص",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "مصنع أدوية",
     "cat_en": "Health",
-    "type_en": "مصنع أدوية"
+    "type_en": "مصنع أدوية",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "معهد",
     "cat_en": "Health",
-    "type_en": "Institute"
+    "type_en": "Institute",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "مؤسسات تكوين",
     "cat_en": "Health",
-    "type_en": "مؤسسات تكوين"
+    "type_en": "مؤسسات تكوين",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "مؤسسة إستشفائية جامعية",
     "cat_en": "Health",
-    "type_en": "مؤسسة إستشفائية جامعية"
+    "type_en": "مؤسسة إستشفائية جامعية",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "مؤسسة استشفائية متخصصة",
     "cat_en": "Health",
-    "type_en": "مؤسسة استشفائية متخصصة"
+    "type_en": "مؤسسة استشفائية متخصصة",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "مؤسسة عمومية استشفائية",
     "cat_en": "Health",
-    "type_en": "مؤسسة عمومية استشفائية"
+    "type_en": "مؤسسة عمومية استشفائية",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صحة",
     "type": "مؤسسة عمومية للصحة الجوارية",
     "cat_en": "Health",
-    "type_en": "مؤسسة عمومية للصحة الجوارية"
+    "type_en": "مؤسسة عمومية للصحة الجوارية",
+    "cat_fr": "Santé"
   },
   {
     "sector": "صناعة",
     "type": "شركة",
     "cat_en": "Industry",
-    "type_en": "Company"
+    "type_en": "Company",
+    "cat_fr": "Industrie"
   },
   {
     "sector": "صناعة",
     "type": "قاعدة حياة صناعية",
     "cat_en": "Industry",
-    "type_en": "قاعدة حياة صناعية"
+    "type_en": "قاعدة حياة صناعية",
+    "cat_fr": "Industrie"
   },
   {
     "sector": "صناعة",
     "type": "محجرة",
     "cat_en": "Industry",
-    "type_en": "محجرة"
+    "type_en": "محجرة",
+    "cat_fr": "Industrie"
   },
   {
     "sector": "صناعة",
     "type": "مديرية الصناعة",
     "cat_en": "Industry",
-    "type_en": "مديرية الصناعة"
+    "type_en": "مديرية الصناعة",
+    "cat_fr": "Industrie"
   },
   {
     "sector": "صناعة",
     "type": "مركب صناعي",
     "cat_en": "Industry",
-    "type_en": "مركب صناعي"
+    "type_en": "مركب صناعي",
+    "cat_fr": "Industrie"
   },
   {
     "sector": "صناعة",
     "type": "مرملة",
     "cat_en": "Industry",
-    "type_en": "مرملة"
+    "type_en": "مرملة",
+    "cat_fr": "Industrie"
   },
   {
     "sector": "صناعة",
     "type": "مستودع",
     "cat_en": "Industry",
-    "type_en": "مستودع"
+    "type_en": "مستودع",
+    "cat_fr": "Industrie"
   },
   {
     "sector": "صناعة",
     "type": "مصنع",
     "cat_en": "Industry",
-    "type_en": "Factory"
+    "type_en": "Factory",
+    "cat_fr": "Industrie"
   },
   {
     "sector": "صناعة",
     "type": "منجم",
     "cat_en": "Industry",
-    "type_en": "منجم"
+    "type_en": "منجم",
+    "cat_fr": "Industrie"
   },
   {
     "sector": "صناعة",
     "type": "منطقة صناعية",
     "cat_en": "Industry",
-    "type_en": "منطقة صناعية"
+    "type_en": "منطقة صناعية",
+    "cat_fr": "Industrie"
   },
   {
     "sector": "صناعة",
     "type": "ورشة",
     "cat_en": "Industry",
-    "type_en": "Workshop"
+    "type_en": "Workshop",
+    "cat_fr": "Industrie"
   },
   {
     "sector": "طاقة",
     "type": "انبوب بترول",
     "cat_en": "طاقة",
-    "type_en": "انبوب بترول"
+    "type_en": "انبوب بترول",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "أنبوب غاز",
     "cat_en": "طاقة",
-    "type_en": "أنبوب غاز"
+    "type_en": "أنبوب غاز",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "بئر بترول",
     "cat_en": "طاقة",
-    "type_en": "بئر بترول"
+    "type_en": "بئر بترول",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "بئر غاز",
     "cat_en": "طاقة",
-    "type_en": "بئر غاز"
+    "type_en": "بئر غاز",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "تخزين و توزيع المحروقات",
     "cat_en": "طاقة",
-    "type_en": "تخزين و توزيع المحروقات"
+    "type_en": "تخزين و توزيع المحروقات",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "تنقيب",
     "cat_en": "طاقة",
-    "type_en": "تنقيب"
+    "type_en": "تنقيب",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "خط كهرباء",
     "cat_en": "طاقة",
-    "type_en": "خط كهرباء"
+    "type_en": "خط كهرباء",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "طاقة متجددة",
     "cat_en": "طاقة",
-    "type_en": "طاقة متجددة"
+    "type_en": "طاقة متجددة",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "قاعدة حياة - طاقة",
     "cat_en": "طاقة",
-    "type_en": "قاعدة حياة - طاقة"
+    "type_en": "قاعدة حياة - طاقة",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "محطة الضغط العالي",
     "cat_en": "طاقة",
-    "type_en": "محطة الضغط العالي"
+    "type_en": "محطة الضغط العالي",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "محطة الطاقة الشمسية",
     "cat_en": "طاقة",
-    "type_en": "محطة الطاقة الشمسية"
+    "type_en": "محطة الطاقة الشمسية",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "محطة الطاقة الكهربائية",
     "cat_en": "طاقة",
-    "type_en": "محطة الطاقة الكهربائية"
+    "type_en": "محطة الطاقة الكهربائية",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "محطة إنطلاق الغاز",
     "cat_en": "طاقة",
-    "type_en": "محطة إنطلاق الغاز"
+    "type_en": "محطة إنطلاق الغاز",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "محطة توزيع الغاز",
     "cat_en": "طاقة",
-    "type_en": "محطة توزيع الغاز"
+    "type_en": "محطة توزيع الغاز",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "محطة ضخ الغاز",
     "cat_en": "طاقة",
-    "type_en": "محطة ضخ الغاز"
+    "type_en": "محطة ضخ الغاز",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "محطة ضغط الغاز",
     "cat_en": "طاقة",
-    "type_en": "محطة ضغط الغاز"
+    "type_en": "محطة ضغط الغاز",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "محطة وصول الغاز",
     "cat_en": "طاقة",
-    "type_en": "محطة وصول الغاز"
+    "type_en": "محطة وصول الغاز",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "محطة وقود",
     "cat_en": "طاقة",
-    "type_en": "محطة وقود"
+    "type_en": "محطة وقود",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "محول كهربائي",
     "cat_en": "طاقة",
-    "type_en": "محول كهربائي"
+    "type_en": "محول كهربائي",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "مديرية - طاقة",
     "cat_en": "طاقة",
-    "type_en": "مديرية - طاقة"
+    "type_en": "مديرية - طاقة",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "مركب بترول",
     "cat_en": "طاقة",
-    "type_en": "مركب بترول"
+    "type_en": "مركب بترول",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "مركب غاز",
     "cat_en": "طاقة",
-    "type_en": "مركب غاز"
+    "type_en": "مركب غاز",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "مركز أخذ عينات الغاز",
     "cat_en": "طاقة",
-    "type_en": "مركز أخذ عينات الغاز"
+    "type_en": "مركز أخذ عينات الغاز",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "مركز الحساب",
     "cat_en": "طاقة",
-    "type_en": "مركز الحساب"
+    "type_en": "مركز الحساب",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "مركز الزبائن",
     "cat_en": "طاقة",
-    "type_en": "مركز الزبائن"
+    "type_en": "مركز الزبائن",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "مركز تعبئة الغاز",
     "cat_en": "طاقة",
-    "type_en": "مركز تعبئة الغاز"
+    "type_en": "مركز تعبئة الغاز",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "مركز تقسيم الغاز",
     "cat_en": "طاقة",
-    "type_en": "مركز تقسيم الغاز"
+    "type_en": "مركز تقسيم الغاز",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "مركز حقن الغاز",
     "cat_en": "طاقة",
-    "type_en": "مركز حقن الغاز"
+    "type_en": "مركز حقن الغاز",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "مركز قطع غاز",
     "cat_en": "طاقة",
-    "type_en": "مركز قطع غاز"
+    "type_en": "مركز قطع غاز",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "معالجة وتصفية الزيوت",
     "cat_en": "طاقة",
-    "type_en": "معالجة وتصفية الزيوت"
+    "type_en": "معالجة وتصفية الزيوت",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "مقر مؤسسة طاقوية",
     "cat_en": "طاقة",
-    "type_en": "مقر مؤسسة طاقوية"
+    "type_en": "مقر مؤسسة طاقوية",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "مواد كيميائية",
     "cat_en": "طاقة",
-    "type_en": "مواد كيميائية"
+    "type_en": "مواد كيميائية",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "طاقة",
     "type": "نقطة منخفضة",
     "cat_en": "طاقة",
-    "type_en": "نقطة منخفضة"
+    "type_en": "نقطة منخفضة",
+    "cat_fr": "Énergie"
   },
   {
     "sector": "عدل",
     "type": "فرع محكمة",
     "cat_en": "Justice",
-    "type_en": "فرع محكمة"
+    "type_en": "فرع محكمة",
+    "cat_fr": "Justice"
   },
   {
     "sector": "عدل",
     "type": "مجلس قضاء",
     "cat_en": "Justice",
-    "type_en": "Judicial Council"
+    "type_en": "Judicial Council",
+    "cat_fr": "Justice"
   },
   {
     "sector": "عدل",
     "type": "محكمة",
     "cat_en": "Justice",
-    "type_en": "Court"
+    "type_en": "Court",
+    "cat_fr": "Justice"
   },
   {
     "sector": "عدل",
     "type": "مدرسة - عدل",
     "cat_en": "Justice",
-    "type_en": "مدرسة - عدل"
+    "type_en": "مدرسة - عدل",
+    "cat_fr": "Justice"
   },
   {
     "sector": "عدل",
     "type": "مدرسة قضاء",
     "cat_en": "Justice",
-    "type_en": "مدرسة قضاء"
+    "type_en": "مدرسة قضاء",
+    "cat_fr": "Justice"
   },
   {
     "sector": "عدل",
     "type": "مركز الاحداث",
     "cat_en": "Justice",
-    "type_en": "مركز الاحداث"
+    "type_en": "مركز الاحداث",
+    "cat_fr": "Justice"
   },
   {
     "sector": "عدل",
     "type": "مؤسسة عقابية",
     "cat_en": "Justice",
-    "type_en": "مؤسسة عقابية"
+    "type_en": "مؤسسة عقابية",
+    "cat_fr": "Justice"
   },
   {
     "sector": "عدل",
     "type": "مؤسسة وقاية",
     "cat_en": "Justice",
-    "type_en": "مؤسسة وقاية"
+    "type_en": "مؤسسة وقاية",
+    "cat_fr": "Justice"
   },
   {
     "sector": "فلاحة",
     "type": "أغذية الأنعام",
     "cat_en": "Agriculture",
-    "type_en": "أغذية الأنعام"
+    "type_en": "أغذية الأنعام",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "الصيد البحري",
     "cat_en": "Agriculture",
-    "type_en": "الصيد البحري"
+    "type_en": "الصيد البحري",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "تربية الدواجن",
     "cat_en": "Agriculture",
-    "type_en": "تربية الدواجن"
+    "type_en": "تربية الدواجن",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "تربية المائيات",
     "cat_en": "Agriculture",
-    "type_en": "تربية المائيات"
+    "type_en": "تربية المائيات",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "تعاونية الحبوب و البقول الجافة",
     "cat_en": "Agriculture",
-    "type_en": "تعاونية الحبوب و البقول الجافة"
+    "type_en": "تعاونية الحبوب و البقول الجافة",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "تعاونية فلاحية",
     "cat_en": "Agriculture",
-    "type_en": "تعاونية فلاحية"
+    "type_en": "تعاونية فلاحية",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "حماية الغابات",
     "cat_en": "Agriculture",
-    "type_en": "حماية الغابات"
+    "type_en": "حماية الغابات",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "مخزن الحبوب و البقول الجافة",
     "cat_en": "Agriculture",
-    "type_en": "مخزن الحبوب و البقول الجافة"
+    "type_en": "مخزن الحبوب و البقول الجافة",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "مدجنة",
     "cat_en": "Agriculture",
-    "type_en": "مدجنة"
+    "type_en": "مدجنة",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "مديرية - فلاحة",
     "cat_en": "Agriculture",
-    "type_en": "مديرية - فلاحة"
+    "type_en": "مديرية - فلاحة",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "مزرعة",
     "cat_en": "Agriculture",
-    "type_en": "Farm"
+    "type_en": "Farm",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "مطحنة",
     "cat_en": "Agriculture",
-    "type_en": "مطحنة"
+    "type_en": "مطحنة",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "معصرة زيت الزيتون",
     "cat_en": "Agriculture",
-    "type_en": "معصرة زيت الزيتون"
+    "type_en": "معصرة زيت الزيتون",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "ملبنة",
     "cat_en": "Agriculture",
-    "type_en": "ملبنة"
+    "type_en": "ملبنة",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "مؤسسة - فلاحة",
     "cat_en": "Agriculture",
-    "type_en": "مؤسسة - فلاحة"
+    "type_en": "مؤسسة - فلاحة",
+    "cat_fr": "Agriculture"
   },
   {
     "sector": "مالية",
     "type": "بنك",
     "cat_en": "مالية",
-    "type_en": "Bank"
+    "type_en": "Bank",
+    "cat_fr": "Finances"
   },
   {
     "sector": "مالية",
     "type": "خزينة",
     "cat_en": "مالية",
-    "type_en": "خزينة"
+    "type_en": "خزينة",
+    "cat_fr": "Finances"
   },
   {
     "sector": "مالية",
     "type": "ضرائب",
     "cat_en": "مالية",
-    "type_en": "ضرائب"
+    "type_en": "ضرائب",
+    "cat_fr": "Finances"
   },
   {
     "sector": "مالية",
     "type": "محافظة عقارية",
     "cat_en": "مالية",
-    "type_en": "محافظة عقارية"
+    "type_en": "محافظة عقارية",
+    "cat_fr": "Finances"
   },
   {
     "sector": "مالية",
     "type": "مديرية المالية",
     "cat_en": "مالية",
-    "type_en": "مديرية المالية"
+    "type_en": "مديرية المالية",
+    "cat_fr": "Finances"
   },
   {
     "sector": "مالية",
     "type": "مفتشية أملاك",
     "cat_en": "مالية",
-    "type_en": "مفتشية أملاك"
+    "type_en": "مفتشية أملاك",
+    "cat_fr": "Finances"
   },
   {
     "sector": "مالية",
     "type": "مؤسسة مالية",
     "cat_en": "مالية",
-    "type_en": "مؤسسة مالية"
+    "type_en": "مؤسسة مالية",
+    "cat_fr": "Finances"
   },
   {
     "sector": "مالية",
     "type": "وحدة جمارك",
     "cat_en": "مالية",
-    "type_en": "وحدة جمارك"
+    "type_en": "وحدة جمارك",
+    "cat_fr": "Finances"
   },
   {
     "sector": "مجاهدين",
     "type": "قسمة المجاهدين",
     "cat_en": "مجاهدين",
-    "type_en": "قسمة المجاهدين"
+    "type_en": "قسمة المجاهدين",
+    "cat_fr": "Moudjahidine"
   },
   {
     "sector": "مجاهدين",
     "type": "متحف المجاهد",
     "cat_en": "مجاهدين",
-    "type_en": "متحف المجاهد"
+    "type_en": "متحف المجاهد",
+    "cat_fr": "Moudjahidine"
   },
   {
     "sector": "مجاهدين",
     "type": "مديرية المجاهدين",
     "cat_en": "مجاهدين",
-    "type_en": "مديرية المجاهدين"
+    "type_en": "مديرية المجاهدين",
+    "cat_fr": "Moudjahidine"
   },
   {
     "sector": "مجاهدين",
     "type": "مقبرة الشهداء",
     "cat_en": "مجاهدين",
-    "type_en": "مقبرة الشهداء"
+    "type_en": "مقبرة الشهداء",
+    "cat_fr": "Moudjahidine"
   },
   {
     "sector": "مجاهدين",
     "type": "منضمة المجاهدين",
     "cat_en": "مجاهدين",
-    "type_en": "منضمة المجاهدين"
+    "type_en": "منضمة المجاهدين",
+    "cat_fr": "Moudjahidine"
   },
   {
     "sector": "مختلفات",
     "type": "مرحاض عمومي",
     "cat_en": "مختلفات",
-    "type_en": "مرحاض عمومي"
+    "type_en": "مرحاض عمومي",
+    "cat_fr": "Divers"
   },
   {
     "sector": "مختلفات",
     "type": "منارة",
     "cat_en": "مختلفات",
-    "type_en": "منارة"
+    "type_en": "منارة",
+    "cat_fr": "Divers"
   },
   {
     "sector": "موارد مائية",
     "type": "برج مائي",
     "cat_en": "موارد مائية",
-    "type_en": "برج مائي"
+    "type_en": "برج مائي",
+    "cat_fr": "Ressources en Eau"
   },
   {
     "sector": "موارد مائية",
     "type": "بئر",
     "cat_en": "موارد مائية",
-    "type_en": "بئر"
+    "type_en": "بئر",
+    "cat_fr": "Ressources en Eau"
   },
   {
     "sector": "موارد مائية",
     "type": "تصفية المياه",
     "cat_en": "موارد مائية",
-    "type_en": "تصفية المياه"
+    "type_en": "تصفية المياه",
+    "cat_fr": "Ressources en Eau"
   },
   {
     "sector": "موارد مائية",
     "type": "تطهير المياه",
     "cat_en": "موارد مائية",
-    "type_en": "تطهير المياه"
+    "type_en": "تطهير المياه",
+    "cat_fr": "Ressources en Eau"
   },
   {
     "sector": "موارد مائية",
     "type": "خزان مياه",
     "cat_en": "موارد مائية",
-    "type_en": "خزان مياه"
+    "type_en": "خزان مياه",
+    "cat_fr": "Ressources en Eau"
   },
   {
     "sector": "موارد مائية",
     "type": "سد مائي",
     "cat_en": "موارد مائية",
-    "type_en": "سد مائي"
+    "type_en": "سد مائي",
+    "cat_fr": "Ressources en Eau"
   },
   {
     "sector": "موارد مائية",
     "type": "شركة الجزائرية للمياه",
     "cat_en": "موارد مائية",
-    "type_en": "شركة الجزائرية للمياه"
+    "type_en": "شركة الجزائرية للمياه",
+    "cat_fr": "Ressources en Eau"
   },
   {
     "sector": "موارد مائية",
     "type": "محطة ضخ المياه",
     "cat_en": "موارد مائية",
-    "type_en": "محطة ضخ المياه"
+    "type_en": "محطة ضخ المياه",
+    "cat_fr": "Ressources en Eau"
   },
   {
     "sector": "موارد مائية",
     "type": "معالجة المياه",
     "cat_en": "موارد مائية",
-    "type_en": "معالجة المياه"
+    "type_en": "معالجة المياه",
+    "cat_fr": "Ressources en Eau"
   },
   {
     "sector": "موارد مائية",
     "type": "منبع مائي",
     "cat_en": "موارد مائية",
-    "type_en": "منبع مائي"
+    "type_en": "منبع مائي",
+    "cat_fr": "Ressources en Eau"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "برج مراقبة",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "برج مراقبة"
+    "type_en": "برج مراقبة",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "تقاطع السكة الحديدية مع الطريق",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "تقاطع السكة الحديدية مع الطريق"
+    "type_en": "تقاطع السكة الحديدية مع الطريق",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "جسر سكك حديدية",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "جسر سكك حديدية"
+    "type_en": "جسر سكك حديدية",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "جسر محول",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "جسر محول"
+    "type_en": "جسر محول",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "حضيرة بلدية",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "حضيرة بلدية"
+    "type_en": "حضيرة بلدية",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "شركة أشغال",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "شركة أشغال"
+    "type_en": "شركة أشغال",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "شركة نقل",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "شركة نقل"
+    "type_en": "شركة نقل",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "فوهة سكك حديدية",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "فوهة سكك حديدية"
+    "type_en": "فوهة سكك حديدية",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "محطة التليفيريك",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "محطة التليفيريك"
+    "type_en": "محطة التليفيريك",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "محطة برية",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "محطة برية"
+    "type_en": "محطة برية",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "محطة سيارات الأجرة",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "محطة سيارات الأجرة"
+    "type_en": "محطة سيارات الأجرة",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "محطة قطار",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "محطة قطار"
+    "type_en": "محطة قطار",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "مدرسة تعليم السياقة",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "مدرسة تعليم السياقة"
+    "type_en": "مدرسة تعليم السياقة",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "مديرية الأشغال العمومية و النقل",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "مديرية الأشغال العمومية و النقل"
+    "type_en": "مديرية الأشغال العمومية و النقل",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "مطار",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "مطار"
+    "type_en": "مطار",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "ممر علوي للراجلين",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "ممر علوي للراجلين"
+    "type_en": "ممر علوي للراجلين",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "منشآت فنية سكك حديدية",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "منشآت فنية سكك حديدية"
+    "type_en": "منشآت فنية سكك حديدية",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "موقف الحافلات",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "موقف الحافلات"
+    "type_en": "موقف الحافلات",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "موقف قطار",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "موقف قطار"
+    "type_en": "موقف قطار",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "ميناء",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "ميناء"
+    "type_en": "ميناء",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "نفق",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "نفق"
+    "type_en": "نفق",
+    "cat_fr": "Transport & Travaux Publics"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "نفق سكك حديدية",
     "cat_en": "نقل و أشغال عمومية",
-    "type_en": "نفق سكك حديدية"
+    "type_en": "نفق سكك حديدية",
+    "cat_fr": "Transport & Travaux Publics"
   }
 ]

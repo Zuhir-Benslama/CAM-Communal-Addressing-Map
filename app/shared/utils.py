@@ -11,6 +11,7 @@ from typing import TypeVar
 from qgis.PyQt.QtCore import QSettings
 from sqlalchemy import inspect
 
+from ..core.config import normalize_theme
 from ..shared.constants import (
     SETTINGS_APP,
     SETTINGS_KEY_LOCALE,
@@ -63,8 +64,6 @@ def locale_value(instance, field_base: str, locale: str = '') -> str:
 
 def current_theme() -> Theme:
     """Return the current theme (:data:`THEME_DARK` or :data:`THEME_LIGHT`)."""
-    from ..core.config import normalize_theme
-
     settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
     value = settings.value(SETTINGS_KEY_THEME, THEME_DARK)
     theme = normalize_theme(value)

@@ -1,5 +1,6 @@
 """Plugin-level re-exports bridging the app package and legacy imports."""
 # ruff: noqa: F401
+# pylint: disable=unused-import
 
 from .app.core.config import (
     DARK_QSS,

@@ -2,6 +2,7 @@
 
 import importlib
 import os
+import shutil
 import sys
 import tempfile
 import unittest
@@ -68,8 +69,6 @@ class TestBackupMixin(unittest.TestCase):
     def tearDown(self):
         self._mock_qfiledialog_cls.stop()
         self._mock_qmessagebox.stop()
-        import shutil
-
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
     def test_restore_database_valid_file(self):

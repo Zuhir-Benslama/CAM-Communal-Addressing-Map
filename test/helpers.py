@@ -493,43 +493,11 @@ def _make_gui_pyqt_mocks():
     _qgis_qtwidgets.QWidget = MagicMock()
     _qgis_qtwidgets.QDialog = _FakeDialog
 
-    class _FakeQuickWidget:
-        def __init__(self, parent=None):
-            self._source = None
-            self._resize_mode = None
-
-        def setResizeMode(self, mode):
-            self._resize_mode = mode
-
-        def setSource(self, url):
-            self._source = url
-
-        def engine(self):
-            return MagicMock()
-
-        def rootContext(self):
-            ctx = MagicMock()
-            ctx.setContextProperty = MagicMock()
-            return ctx
-
-        def rootObject(self):
-            obj = MagicMock()
-            obj.setFormData = MagicMock()
-            obj.setComboOptions = MagicMock()
-            obj.setReferenceName = MagicMock()
-            obj.switchToPage = MagicMock()
-            return obj
-
-    _FakeQuickWidget.SizeRootObjectToView = 0
-    _qgis_qtquick = MagicMock()
-    _qgis_qtquick.QQuickWidget = _FakeQuickWidget
-
     return {
         'qgis.PyQt': _qgis_pyqt,
         'qgis.PyQt.QtCore': _qgis_qtcore,
         'qgis.PyQt.QtGui': _qgis_qtgui,
         'qgis.PyQt.QtWidgets': _qgis_qtwidgets,
-        'qgis.PyQt.QtQuickWidgets': _qgis_qtquick,
         'qgis.PyQt.uic': _qgis_uic,
     }
 

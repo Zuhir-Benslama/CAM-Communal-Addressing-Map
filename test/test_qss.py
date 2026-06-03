@@ -7,6 +7,8 @@ import sys
 
 import pytest
 
+from app.shared.constants import THEME_DARK
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from app.core.config import (  # noqa: E402
@@ -58,7 +60,7 @@ def test_qss_templates_render_without_placeholders() -> None:
 
 def test_light_qss_does_not_leak_dark_palette_colors() -> None:
     light_colors = set(re.findall(r'#[0-9a-fA-F]{6}', LIGHT_QSS + LIGHT_QSS_DIALOG))
-    assert not (DARK_PALETTE_COLORS & light_colors)
+    assert not DARK_PALETTE_COLORS & light_colors
 
 
 def test_light_header_toolbar_uses_light_border() -> None:
@@ -93,7 +95,5 @@ def test_theme_lookup_returns_matching_stylesheet(
 
 
 def test_normalize_theme_defaults_unknown_values_to_dark() -> None:
-    from app.shared.constants import THEME_DARK
-
     assert normalize_theme('unknown') is THEME_DARK
     assert normalize_theme(None) is THEME_DARK

@@ -108,7 +108,7 @@
         border: none;
         background-color: transparent;
     }}
-    #scrollAreaWidgetContents_2 {{
+    #settingsContent {{
         background-color: {{DARK_BG}};
     }}
     QScrollBar:vertical {{
@@ -149,6 +149,12 @@
         background-color: {{DARK_SURFACE}};
         border: 1px solid {{DARK_BORDER}};
         border-radius: 8px;
+    }}
+    #sectionFrame {{
+        background-color: {{DARK_SURFACE}};
+        border: 1px solid {{DARK_BORDER}};
+        border-radius: 6px;
+        padding: 12px;
     }}
     QLabel {{
         color: {{DARK_TEXT}};

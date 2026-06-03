@@ -133,7 +133,7 @@ class LayerOpsMixin:
             filename = os.path.join(style_dir, layer_cfg.get('style'))
             result = tmpl_list[0].loadNamedStyle(filename)
             if isinstance(result, tuple):
-                success_val, default_loaded = result
+                success_val, _ = result
                 is_success = (
                     isinstance(success_val, str) and len(success_val) == 0
                 ) or (isinstance(success_val, (int, bool)) and success_val == 0)

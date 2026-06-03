@@ -13,6 +13,7 @@ from sqlalchemy import func
 
 from ..app.core.database import get_session
 from ..app.orders.models import Numbering, PanelSign
+from ..app.orders.repository import get_zone_distribution
 from ..constants import CHART_SVG, LAYER_NUMBERING, LAYER_PANELS
 from ..layer.refresh import refresh_all_layers
 from ._protocols import HasChartContext, HasTranslation
@@ -124,10 +125,6 @@ class ChartMixin:
 
     def get_zone_chart(self: HasTranslation, wilaya_number: int) -> None:
         """Generate a chart for zone type distribution in a wilaya."""
-        from ..app.orders.repository import (
-            get_zone_distribution,  # pylint: disable=import-outside-toplevel
-        )
-
         results = get_zone_distribution(wilaya_number)
         if not results:
             logger.warning(

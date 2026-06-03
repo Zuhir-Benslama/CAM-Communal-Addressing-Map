@@ -6,7 +6,12 @@ import os
 
 from qgis.PyQt.QtWidgets import QComboBox, QCompleter
 
-from ..app.shared.constants import LAYER_ROADS, LAYER_SUBDIVISIONS, LAYER_ZONES
+from ..app.shared.constants import (
+    LAYER_ROADS,
+    LAYER_SUBDIVISIONS,
+    LAYER_ZONES,
+    TEMPLATE_DATA_DIR,
+)
 from ..app.users.repository import qgis_config
 from ..constants import (
     NO_ACTIVITY,
@@ -141,14 +146,12 @@ def fill_panel_reference(combobox) -> None:
     combobox.setCurrentIndex(0)
 
 
-def fill_org_category(combobox, cat=None) -> None:
+def fill_org_category(combobox) -> None:
     """Populate a combobox with distinct organization categories from JSON."""
     loc = _locale()
-    cat = cat or []
     combobox.clear()
     for display, value in org_categories(loc):
         combobox.addItem(display, value)
-        cat.append(value)
     combobox.setCurrentIndex(0)
     completer = combobox.completer()
     if completer is not None:
@@ -245,9 +248,10 @@ _MAIN_TYPE_MAP = {
 
 def fill_feature_combo(combobox: QComboBox) -> None:
     """Populate the main type combo with layer names."""
+    loc = _locale()
     combobox.clear()
     for key in _MAIN_TYPE_MAP:
-        combobox.addItem(key, key)
+        combobox.addItem(_i18n_tr(key, loc), key)
     combobox.setCurrentIndex(0)
 
 
@@ -280,16 +284,11 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
     if not type_name or not main_type:
         return False
 
-    _DATA_DIR = os.path.join(
-        os.path.dirname(os.path.dirname(__file__)),
-        'template_data',
-    )
-
     if main_type == _ACTIVITY_KEY and not category:
         return False
 
     if main_type == _ACTIVITY_KEY:
-        filepath = os.path.join(_DATA_DIR, 'activity.json')
+        filepath = os.path.join(TEMPLATE_DATA_DIR, 'activity.json')
         entry = {'sector': category, 'type': type_name}
     else:
         _JSON_FILES = {
@@ -300,7 +299,7 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
         filename = _JSON_FILES.get(main_type)
         if not filename:
             return False
-        filepath = os.path.join(_DATA_DIR, filename)
+        filepath = os.path.join(TEMPLATE_DATA_DIR, filename)
         entry = {'pk': type_name}
 
     try:
@@ -317,12 +316,12 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
 
 
 # ---------------------------------------------------------------------------
-# QML option getters (return [{text, value}, ...] lists)
+# Option helpers (return [{text, value}, ...] lists)
 # ---------------------------------------------------------------------------
 
 
 def _json_to_options(data: list, loc: str) -> list[dict]:
-    """Convert a list of JSON entries to QML-friendly option list."""
+    """Convert a list of JSON entries to an option list."""
     return [
         {'text': locale_label(entry, loc), 'value': entry.get('pk', '')}
         for entry in data

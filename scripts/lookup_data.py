@@ -234,7 +234,7 @@ def _lookup_wilaya_for_commune_code(commune_code: str) -> int | None:
 def locale_label(entry: dict[str, Any], locale: str) -> str:
     """Return locale-appropriate label for a simple lookup entry."""
     if locale == 'ar':
-        return entry.get('pk', '') or ''
+        return entry.get('label_ar') or entry.get('pk', '') or ''
     return entry.get(f'label_{locale}', None) or entry.get('pk', '') or ''
 
 

@@ -1,5 +1,8 @@
+"""Tests for database operations (spatialite, auth, config)."""
+
 import json
 import os
+import shutil
 import sys
 import unittest
 from unittest.mock import MagicMock, patch
@@ -22,14 +25,10 @@ def setUpModule():
 
 
 def tearDownModule():
-    import shutil
-
     shutil.rmtree(TMPDIR, ignore_errors=True)
 
 
 def _clean_tmpdir():
-    import shutil
-
     if os.path.exists(TMPDIR):
         shutil.rmtree(TMPDIR)
     os.makedirs(TMPDIR, exist_ok=True)
