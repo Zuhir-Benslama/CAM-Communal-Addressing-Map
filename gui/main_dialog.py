@@ -33,14 +33,11 @@ from qgis.PyQt.QtWidgets import (
     QDialog,
     QFileDialog,
     QFormLayout,
-    QFrame,
     QHBoxLayout,
     QLabel,
     QLineEdit,
     QPushButton,
     QScrollArea,
-    QSizePolicy,
-    QSpacerItem,
     QStackedWidget,
     QVBoxLayout,
     QWidget,
@@ -75,6 +72,7 @@ from ..scripts.lookup_data import (
     apply_widget_texts,
     clear_i18n_cache,
     get_string,
+    widget_text,
 )
 from .ui_fillers import (
     _ACTIVITY_KEY,
@@ -93,7 +91,6 @@ from .ui_fillers import (
     fill_zone_type,
     save_new_type,
 )
-from ..scripts.lookup_data import widget_text
 
 logger = logging.getLogger(__name__)
 
@@ -265,7 +262,7 @@ class MainDialog(
         self.form_stack = self._form_stack
 
         # Public widget aliases for mixin protocol compatibility
-        # (protocols expect bare names; widgets use _combo_ / _field_ / _label_ prefixes)
+        # (protocols expect bare names; widgets use _combo_ / _field_ / _label_)
         self.map_options = self._combo_map_options
         self.username = self._field_username
         self.password = self._field_password
@@ -826,7 +823,9 @@ class MainDialog(
         self._add_form_row(form, 'Activity Cat:', 'label_35', self._combo_activity_cat)
         self._combo_activity_type = QComboBox()
         self._combo_activity_type.setObjectName('activity_type')
-        self._add_form_row(form, 'Activity Type:', 'label_36_act_type', self._combo_activity_type)
+        self._add_form_row(
+            form, 'Activity Type:', 'label_36_act_type', self._combo_activity_type
+        )
         layout.addLayout(form)
 
         btn_row = QHBoxLayout()
@@ -965,7 +964,9 @@ class MainDialog(
         self._btn_save_num.clicked.connect(lambda: self._on_submit('num'))
         self._btn_save_pan.clicked.connect(lambda: self._on_submit('pan'))
         self._btn_save_action.clicked.connect(lambda: self._on_submit('save_action'))
-        self._btn_save_new_type.clicked.connect(lambda: self._on_submit('save_new_type'))
+        self._btn_save_new_type.clicked.connect(
+            lambda: self._on_submit('save_new_type')
+        )
 
         # List buttons
         self._btn_list_roads.clicked.connect(lambda: self._on_submit('list_roads'))
@@ -1130,7 +1131,11 @@ class MainDialog(
 
     def _update_action_button_texts(self, index: int) -> None:
         loc = self._tr_locale
-        layer_key = self.LAYER_KEY_MAP[index] if 0 <= index < len(self.LAYER_KEY_MAP) else 'zone'
+        layer_key = (
+            self.LAYER_KEY_MAP[index]
+            if 0 <= index < len(self.LAYER_KEY_MAP)
+            else 'zone'
+        )
         draw = widget_text(f'draw_{layer_key}', loc) or 'Draw'
         select = widget_text(f'select_{layer_key}', loc) or 'Select'
         edit = widget_text(f'edit_{layer_key}', loc) or 'Edit'
@@ -1253,7 +1258,10 @@ class MainDialog(
         self._combo_theme.addItem(get_string(dark_arabic, loc), THEME_DARK)
         self._combo_theme.addItem(get_string(light_arabic, loc), THEME_LIGHT)
         saved_theme = settings.value(SETTINGS_KEY_THEME, DEFAULT_THEME)
-        theme_map = {'\u0641\u0627\u062a\u062d': THEME_LIGHT, '\u062f\u0627\u0643\u0646': THEME_DARK}
+        theme_map = {
+            '\u0641\u0627\u062a\u062d': THEME_LIGHT,
+            '\u062f\u0627\u0643\u0646': THEME_DARK,
+        }
         saved_theme = theme_map.get(saved_theme, saved_theme)
         try:
             idx = self._combo_theme.findData(saved_theme)

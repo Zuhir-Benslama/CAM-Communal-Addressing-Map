@@ -1544,3 +1544,32 @@ Replace all QML-based UI components with standard Qt Widgets across the entire p
 - `test/helpers.py` — removed `_FakeQuickWidget` + `QtQuickWidgets` mock
 - `test/test_main_dialog.py` — updated for new widget-based dialog
 - `Makefile` — `qml` removed from `EXTRA_DIRS`
+
+---
+
+## Next Step: Runtime Verification in QGIS
+
+Open QGIS, load the plugin, and verify:
+
+### Layer switching
+- [ ] Click each phase/layer selector — form stack switches, action buttons update
+- [ ] Draw/Select/Edit/Measure button text changes per layer
+
+### i18n
+- [ ] Switch locale to العربية — all labels, buttons, combobox items display Arabic
+- [ ] Switch to Français — all labels, buttons, combobox items display French
+- [ ] Back to English — everything reverts to English
+
+### Theme
+- [ ] Toggle to Dark — dark QSS renders correctly (#sectionFrame, #settingsContent, cards)
+- [ ] Toggle back to Light — light QSS renders correctly
+
+### Settings
+- [ ] Gear button opens settings panel
+- [ ] Settings page renders with correct theme (scroll area, sections)
+
+### Forms
+- [ ] Login page renders
+- [ ] Add User page renders
+- [ ] All 6 entity forms (City, Org, Roads, Zone, Pan, Num) render with correct labels
+- [ ] Form data popup dialog renders
