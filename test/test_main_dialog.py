@@ -25,6 +25,8 @@ class TestMainDialogCore(unittest.TestCase):
         cls.mod = importlib.util.module_from_spec(spec)
         sys.modules['plans_adressage.gui.main_dialog'] = cls.mod
         spec.loader.exec_module(cls.mod)
+        import plans_adressage.gui as _gui_mod
+        _gui_mod.main_dialog = cls.mod
 
     def _make_raw(self):
         """Create a raw MainDialog instance without calling __init__."""
