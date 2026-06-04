@@ -21,7 +21,7 @@ from ..app.core.database import get_session
 from ..app.orders import models as _models
 from ..app.shared.utils import get_all_fields_and_labels, locale_value
 from ..constants import current_locale, current_theme
-from ..scripts.lookup_data import apply_widget_texts, get_string
+from ..scripts.widget_texts import apply_widget_texts, get_string
 
 logger = logging.getLogger(__name__)
 
@@ -74,9 +74,7 @@ class EntityListDialog(QDialog):
         pagination.addWidget(self._btn_prev)
 
         self._label_page = QLabel()
-        self._label_page.setAlignment(
-            Qt.AlignmentFlag.AlignCenter
-        )
+        self._label_page.setAlignment(Qt.AlignmentFlag.AlignCenter)
         pagination.addWidget(self._label_page, stretch=1)
 
         self._btn_next = QPushButton()

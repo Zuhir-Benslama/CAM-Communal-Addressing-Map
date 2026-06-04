@@ -257,6 +257,27 @@ _OLD_COLUMN_RENAMES: dict[str, dict[str, str]] = {
 }
 
 
+def _rename_column_if_needed(
+    conn: Any, table: str, old_name: str, new_name: str, existing_cols: set[str]
+) -> None:
+    if old_name not in existing_cols or new_name in existing_cols:
+        return
+    try:
+        conn.execute(
+            text(f'ALTER TABLE {table} RENAME COLUMN {old_name} TO {new_name}')
+        )
+        conn.commit()
+        logger.info('Renamed %s.%s → %s', table, old_name, new_name)
+    except SQLAlchemyError:
+        logger.warning(
+            'Could not rename %s.%s → %s',
+            table,
+            old_name,
+            new_name,
+            exc_info=True,
+        )
+
+
 def _migrate_old_columns(engine: Any) -> None:
     """Rename old-format column names to current model names.
 
@@ -269,31 +290,9 @@ def _migrate_old_columns(engine: Any) -> None:
     with engine.connect() as conn:
         for table, renames in _OLD_COLUMN_RENAMES.items():
             info = conn.execute(text(f"PRAGMA table_info('{table}')")).fetchall()
-            cols = {r[1] for r in info}
+            existing_cols = {r[1] for r in info}
             for old_name, new_name in renames.items():
-                if old_name in cols and new_name not in cols:
-                    try:
-                        conn.execute(
-                            text(
-                                f'ALTER TABLE {table} '
-                                f'RENAME COLUMN {old_name} TO {new_name}'
-                            )
-                        )
-                        conn.commit()
-                        logger.info(
-                            'Renamed %s.%s → %s',
-                            table,
-                            old_name,
-                            new_name,
-                        )
-                    except SQLAlchemyError:
-                        logger.warning(
-                            'Could not rename %s.%s → %s',
-                            table,
-                            old_name,
-                            new_name,
-                            exc_info=True,
-                        )
+                _rename_column_if_needed(conn, table, old_name, new_name, existing_cols)
 
 
 def _create_views(engine: Any) -> None:

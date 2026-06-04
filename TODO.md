@@ -1559,6 +1559,67 @@ Replace all QML-based UI components with standard Qt Widgets across the entire p
 - [x] **Remove unused `QgsApplication` import** — after removing all `QgsApplication.getThemeIcon()` calls.
 - [x] **Remove Study Area section from Settings page** — fields (`_field_type`, `_field_by`, `_field_num_mokh`, `_field_date`) were never read anywhere; translation keys (`type_moj`, `by_`, `num_mokh`, `label_49`) left in `widgets.json` as dead entries (harmless).
 
+---
+
+## 67. File Splits & UI Width Refactoring — 2026-06-04 ✅
+
+**Tests: 228/228 pass** (3 QGIS-dependent skipped) **ruff: 0 errors**
+
+### File Splits
+
+- [x] **`gui/main_dialog.py` split** — 1377→476 lines (-65%). Extracted 7 files:
+  - `gui/dialog_helpers.py` — `make_section_frame()`, `make_form()`, `add_form_row()`, `_SimpleTabBar`
+  - `gui/dialog_state.py` — `_ComboProxy`, `_FieldProxy`, `_FormStackProxy`, `_MenuProxy`, `_RouterProxy` (recreated after proxies.py deletion in §65)
+  - `gui/pages/login_page.py` — login form builder
+  - `gui/pages/add_user_page.py` — add-user form builder
+  - `gui/pages/form_pages.py` — 6 entity form builders (Zone, Road, Org, Subd, Num, Pan)
+  - `gui/pages/settings_page.py` — settings panel builder
+  - `gui/pages/main_page.py` — main page builder (toolbar, form stack, footer)
+- [x] **`gui/popup_dialog.py` split** — 675→451 lines (-33%). Extracted 6 page builders into `gui/popup_pages/`:
+  - `popup_pages/zone_page.py`, `road_page.py`, `org_page.py`, `city_page.py`, `num_page.py`, `pan_page.py`
+- [x] **`test/helpers.py` split** — 801 lines → 3 files in `test/helpers/` package:
+  - `_shared.py`, `_core_mocks.py`, `_gui_mocks.py`
+- [x] **`scripts/lookup_data.py` split** — 422 lines → data stays, i18n moved to `scripts/widget_texts.py`
+
+### Long Function Refactoring (Phase 2)
+
+- [x] **`mixins/import_export_mixin.py`** — extracted 6 helpers: `_render_and_export()`, `_build_legend()`, etc.
+- [x] **`mixins/backup_mixin.py`** — extracted 5 helpers: `_validate_sqlite()`, `_atomic_copy()`, etc.
+- [x] **`gui/popup_dialog.py`** — `set_form` dispatch replaced 95-line `if` chain with `_POPULATE_DISPATCH` dict
+
+### Deep Nesting Simplification (Phase 3)
+
+- [x] **`layer/utils.py`** — replaced if/elif chain with `_TYPE_MAP` dict lookup
+- [x] **`mixins/layer_ops_mixin.py`** — extracted 4 tab handlers: `_hide_all_tab_layers()`, `_load_tab_styles()`, etc.
+- [x] **`app/core/database.py`** — extracted `_rename_column_if_needed()` helper
+
+### UI Element Widths — Flexible Layout
+
+- [x] **Main dialog width reduced** — `setMinimumSize(360,680)`, `resize(360,720)` (was 440×680 / 460×720)
+- [x] **Section frame constraint removed** — `make_section_frame()` default `max_width=None` (was 420). Frames stretch to fill dialog.
+- [x] **All `setMaximumWidth(280)` removed** — from form fields in `form_pages.py`, `login_page.py`, `settings_page.py`, `add_user_page.py`, `main_page.py`
+- [x] **All `setMaximumWidth(200)` removed** — from action buttons across all forms
+- [x] **`setFixedSize(36,36)` removed** — from draw/select/edit/measure toolbar buttons
+- [x] **`AllNonFixedFieldsGrow` added** — to all QFormLayout instances (6 entity forms, login, add-user, 6 popup pages)
+- [x] **Button row stretches removed** — `btn_row.addStretch()` deleted from road/org/city/num/pan forms and add_user_page Cancel/Save row
+- [x] **Toolbar action buttons** — each gets `stretch=1` in action frame HBoxLayout
+- [x] **Reference section re-layout** — reference name label in its own form row, Select Reference button in its own row below — both fill full field column width
+- [x] **Login page wrapped in section frame** — content inside `make_section_frame()` with 8px margins
+
+### Build
+
+- [x] **`make install`** — compiles resources and copies to QGIS profile
+
+### Files Modified
+- `gui/main_dialog.py`, `gui/dialog_helpers.py`, `gui/dialog_state.py`, `gui/pages/*.py`
+- `gui/popup_dialog.py`, `gui/popup_pages/*.py`
+- `test/helpers.py` (deleted), `test/helpers/` (created: `__init__.py`, `_shared.py`, `_core_mocks.py`, `_gui_mocks.py`)
+- `scripts/lookup_data.py`, `scripts/widget_texts.py`
+- `mixins/import_export_mixin.py`, `mixins/backup_mixin.py`, `mixins/layer_ops_mixin.py`
+- `app/core/database.py`, `layer/utils.py`
+- `gui/entity_list_dialog.py`, `gui/identify_tool.py`, `gui/popup_handlers.py`
+- `i18n/__init__.py`, `layer/editing.py`, `app/main.py`, `test/test_main_dialog.py`
+
 ## Next Step: Runtime Verification in QGIS
 
 Open QGIS, load the plugin, and verify:

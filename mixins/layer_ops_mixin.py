@@ -165,11 +165,58 @@ class LayerOpsMixin:
             return self._current_layer_name()
         return ''
 
+    # ------------------------------------------------------------------
+    # Tab handler dispatch helpers
+    # ------------------------------------------------------------------
+
+    def _handle_ops_tab(
+        self: HasTabSwitchContext,
+        root,
+        tab_name: str,
+        selected_layer: str,
+    ) -> None:
+        self._show_layers_for_label(root, selected_layer)
+        data_list = qgis_config().get('other_layers')
+        last_tab = getattr(self, '_last_loaded_tab', None)
+        selected_key = (
+            f'ops:{selected_layer}' if tab_name == 'Operations' else selected_layer
+        )
+        if selected_key != last_tab:
+            self._load_tab_styles(data_list, DEFAULT_STYLE_DIR)
+            self._last_loaded_tab = selected_key
+
+    def _handle_settings_tab(self: HasTabSwitchContext, root) -> None:
+        self._hide_all_tab_layers(root)
+        self._show_base_layers(root)
+
+    def _handle_report_tab(self: HasTabSwitchContext, root) -> None:
+        self._hide_all_tab_layers(root)
+        self._show_base_layers(root)
+        data_list = qgis_config().get('other_layers')
+        self._load_tab_styles(data_list, CUSTOM_STYLE_DIR)
+        self._show_always_shown_layers(root)
+
+    def _handle_default_tab(self: HasTabSwitchContext, root) -> None:
+        self._hide_all_tab_layers(root)
+        for layer_node in root.children():
+            if not isinstance(layer_node, QgsLayerTreeLayer):
+                continue
+            lyr = layer_node.layer()
+            if not lyr:
+                continue
+            if lyr.name() in [LAYER_PANELS, LAYER_NUMBERING]:
+                layer_node.setItemVisibilityChecked(False)
+            else:
+                layer_node.setItemVisibilityChecked(True)
+
+    # ------------------------------------------------------------------
+    # Tab selection entry point
+    # ------------------------------------------------------------------
+
     def on_opt_selected(
         self: HasTabSwitchContext,
         index,
     ) -> None:
-        """Handle tab selection: toggle layer visibility and load styles."""
         self.type_plan = ''
         if hasattr(self.menu, '_rna_tab_src'):
             tab_name = self.menu._rna_tab_src[index]
@@ -181,43 +228,17 @@ class LayerOpsMixin:
         selected_layer = ''
         if tab_name == 'Operations':
             selected_layer = self._current_ops_layer()
-        elif tab_name not in ['Report', 'Settings']:
+        elif tab_name not in ('Settings', 'Report'):
             selected_layer = tab_name
 
         if selected_layer:
-            self._show_layers_for_label(root, selected_layer)
-            data_list = qgis_config().get('other_layers')
-            last_tab = getattr(self, '_last_loaded_tab', None)
-            selected_key = (
-                f'ops:{selected_layer}' if tab_name == 'Operations' else selected_layer
-            )
-            if selected_key != last_tab:
-                self._load_tab_styles(data_list, DEFAULT_STYLE_DIR)
-                self._last_loaded_tab = selected_key
-
+            self._handle_ops_tab(root, tab_name, selected_layer)
         elif tab_name == 'Settings':
-            self._hide_all_tab_layers(root)
-            self._show_base_layers(root)
-
+            self._handle_settings_tab(root)
         elif tab_name == 'Report':
-            self._hide_all_tab_layers(root)
-            self._show_base_layers(root)
-            data_list = qgis_config().get('other_layers')
-            self._load_tab_styles(data_list, CUSTOM_STYLE_DIR)
-            self._show_always_shown_layers(root)
-
+            self._handle_report_tab(root)
         else:
-            self._hide_all_tab_layers(root)
-            for layer_node in root.children():
-                if not isinstance(layer_node, QgsLayerTreeLayer):
-                    continue
-                lyr = layer_node.layer()
-                if not lyr:
-                    continue
-                if lyr.name() in [LAYER_PANELS, LAYER_NUMBERING]:
-                    layer_node.setItemVisibilityChecked(False)
-                else:
-                    layer_node.setItemVisibilityChecked(True)
+            self._handle_default_tab(root)
 
         self.iface.mapCanvas().refresh()
 

@@ -4,19 +4,12 @@ import logging
 from typing import TYPE_CHECKING
 
 from qgis.core import QgsProject
-from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import (
     QComboBox,
     QDialog,
-    QFormLayout,
-    QHBoxLayout,
-    QLabel,
-    QLineEdit,
     QMessageBox,
-    QPushButton,
     QStackedWidget,
     QVBoxLayout,
-    QWidget,
 )
 
 from ..app.core.config import get_theme_qss
@@ -24,7 +17,7 @@ from ..app.core.database import get_session
 from ..app.orders import models as _models
 from ..app.users.repository import qgis_config
 from ..constants import current_locale, current_theme
-from ..scripts.lookup_data import get_string
+from ..scripts.widget_texts import get_string
 from .popup_handlers import (
     POPULATE_DISPATCH,
 )
@@ -45,6 +38,14 @@ from .popup_handlers import (
 )
 from .popup_handlers import (
     update_zone as _update_zone,
+)
+from .popup_pages import (
+    build_city_page,
+    build_num_page,
+    build_org_page,
+    build_pan_page,
+    build_road_page,
+    build_zone_page,
 )
 from .ui_fillers import (
     fill_activity_category,
@@ -72,6 +73,122 @@ _PAGE_MAP = {
     'city': 3,
     'num': 4,
     'pan': 5,
+}
+
+# ---------------------------------------------------------------------------
+# Form-value dispatch helpers (module-level so they stay readable & testable)
+# ---------------------------------------------------------------------------
+
+
+def _set_zone_values(dialog: 'PopupDialog', data: dict) -> None:
+    dialog._set_combo_by_data(dialog._combo_zone_type, data.get('type'))
+    if data.get('name'):
+        dialog._field_zone_name.setText(str(data['name']))
+
+
+def _set_road_values(dialog: 'PopupDialog', data: dict) -> None:
+    dialog._set_combo_by_data(dialog._combo_road_type, data.get('type'))
+    if data.get('name'):
+        dialog._field_road_name.setText(str(data['name']))
+
+
+def _set_org_values(dialog: 'PopupDialog', data: dict) -> None:
+    dialog._set_combo_by_data(dialog._combo_org_cat, data.get('category'))
+    dialog._set_combo_by_data(dialog._combo_org_type, data.get('type'))
+    if data.get('name'):
+        dialog._field_org_name.setText(str(data['name']))
+
+
+def _set_city_values(dialog: 'PopupDialog', data: dict) -> None:
+    dialog._set_combo_by_data(dialog._combo_subd_type, data.get('type'))
+    if data.get('name'):
+        dialog._field_subd_name.setText(str(data['name']))
+
+
+def _set_num_values(dialog: 'PopupDialog', data: dict) -> None:
+    dialog._set_combo_by_data(dialog._combo_road_ref, data.get('refType'))
+    if data.get('refName'):
+        dialog._label_ref_name.setText(str(data['refName']))
+    if data.get('number'):
+        dialog._field_num_val.setText(str(data['number']))
+    if data.get('repetition'):
+        dialog._field_repetition.setText(str(data['repetition']))
+    dialog._set_combo_by_data(dialog._combo_num_state, data.get('state'))
+    dialog._set_combo_by_data(dialog._combo_activity_cat, data.get('activityCat'))
+    dialog._set_combo_by_data(dialog._combo_activity_type, data.get('activityType'))
+
+
+def _set_pan_values(dialog: 'PopupDialog', data: dict) -> None:
+    dialog._set_combo_by_data(dialog._combo_mount_status, data.get('mountStatus'))
+    dialog._set_combo_by_data(dialog._combo_panel_ref, data.get('refType'))
+    if data.get('refName'):
+        dialog._label_ref_name2.setText(str(data['refName']))
+
+
+_SET_FORM_DISPATCH: dict[str, callable] = {
+    'zone': _set_zone_values,
+    'roads': _set_road_values,
+    'org': _set_org_values,
+    'city': _set_city_values,
+    'num': _set_num_values,
+    'pan': _set_pan_values,
+}
+
+
+def _collect_zone_data(dialog: 'PopupDialog') -> dict:
+    return {
+        'type': dialog._combo_zone_type.currentData(),
+        'name': dialog._field_zone_name.text(),
+    }
+
+
+def _collect_road_data(dialog: 'PopupDialog') -> dict:
+    return {
+        'type': dialog._combo_road_type.currentData(),
+        'name': dialog._field_road_name.text(),
+    }
+
+
+def _collect_org_data(dialog: 'PopupDialog') -> dict:
+    return {
+        'category': dialog._combo_org_cat.currentData(),
+        'type': dialog._combo_org_type.currentData(),
+        'name': dialog._field_org_name.text(),
+    }
+
+
+def _collect_city_data(dialog: 'PopupDialog') -> dict:
+    return {
+        'type': dialog._combo_subd_type.currentData(),
+        'name': dialog._field_subd_name.text(),
+    }
+
+
+def _collect_num_data(dialog: 'PopupDialog') -> dict:
+    return {
+        'refType': dialog._combo_road_ref.currentData(),
+        'number': dialog._field_num_val.text(),
+        'repetition': dialog._field_repetition.text(),
+        'state': dialog._combo_num_state.currentData(),
+        'activityCat': dialog._combo_activity_cat.currentData(),
+        'activityType': dialog._combo_activity_type.currentData(),
+    }
+
+
+def _collect_pan_data(dialog: 'PopupDialog') -> dict:
+    return {
+        'mountStatus': dialog._combo_mount_status.currentData(),
+        'refType': dialog._combo_panel_ref.currentData(),
+    }
+
+
+_COLLECT_FORM_DISPATCH: dict[str, callable] = {
+    'zone': _collect_zone_data,
+    'roads': _collect_road_data,
+    'org': _collect_org_data,
+    'city': _collect_city_data,
+    'num': _collect_num_data,
+    'pan': _collect_pan_data,
 }
 
 
@@ -118,12 +235,12 @@ class PopupDialog(QDialog):
         self._stack = QStackedWidget()
         layout.addWidget(self._stack)
 
-        self._build_zone_page()
-        self._build_road_page()
-        self._build_org_page()
-        self._build_city_page()
-        self._build_num_page()
-        self._build_pan_page()
+        build_zone_page(self, self._stack)
+        build_road_page(self, self._stack)
+        build_org_page(self, self._stack)
+        build_city_page(self, self._stack)
+        build_num_page(self, self._stack)
+        build_pan_page(self, self._stack)
 
         # Switch to the correct page
         idx = _PAGE_MAP.get(self.layer_name_value, 0)
@@ -133,231 +250,6 @@ class PopupDialog(QDialog):
         self._populate_combos()
         self._connect_signals()
         self.set_form()
-
-    # ------------------------------------------------------------------
-    # Page builders
-    # ------------------------------------------------------------------
-
-    def _build_zone_page(self) -> None:
-        w = QWidget()
-        w.setObjectName('zonePage')
-        layout = QVBoxLayout(w)
-        layout.setContentsMargins(24, 24, 24, 24)
-        layout.setSpacing(12)
-
-        form = QFormLayout()
-        form.setSpacing(8)
-
-        self._combo_zone_type = QComboBox()
-        self._combo_zone_type.setObjectName('zone_type')
-        self._combo_zone_type.setMaximumWidth(280)
-        form.addRow('Type:', self._combo_zone_type)
-
-        self._field_zone_name = QLineEdit()
-        self._field_zone_name.setObjectName('nom_zone')
-        self._field_zone_name.setMaximumWidth(280)
-        form.addRow('Name:', self._field_zone_name)
-
-        layout.addLayout(form)
-        layout.addStretch()
-
-        btn = QPushButton('Save')
-        btn.setMaximumWidth(200)
-        btn.clicked.connect(lambda: self._on_save('zone'))
-        layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        self._stack.addWidget(w)
-
-    def _build_road_page(self) -> None:
-        w = QWidget()
-        w.setObjectName('roadPage')
-        layout = QVBoxLayout(w)
-        layout.setContentsMargins(24, 24, 24, 24)
-        layout.setSpacing(12)
-
-        form = QFormLayout()
-        form.setSpacing(8)
-
-        self._combo_road_type = QComboBox()
-        self._combo_road_type.setObjectName('type_road')
-        self._combo_road_type.setMaximumWidth(280)
-        form.addRow('Type:', self._combo_road_type)
-
-        self._field_road_name = QLineEdit()
-        self._field_road_name.setObjectName('road_name')
-        self._field_road_name.setMaximumWidth(280)
-        form.addRow('Name:', self._field_road_name)
-
-        layout.addLayout(form)
-        layout.addStretch()
-
-        btn = QPushButton('Save')
-        btn.setMaximumWidth(200)
-        btn.clicked.connect(lambda: self._on_save('roads'))
-        layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        self._stack.addWidget(w)
-
-    def _build_org_page(self) -> None:
-        w = QWidget()
-        w.setObjectName('orgPage')
-        layout = QVBoxLayout(w)
-        layout.setContentsMargins(24, 24, 24, 24)
-        layout.setSpacing(12)
-
-        form = QFormLayout()
-        form.setSpacing(8)
-
-        self._combo_org_cat = QComboBox()
-        self._combo_org_cat.setObjectName('org_cat')
-        self._combo_org_cat.setMaximumWidth(280)
-        form.addRow('Category:', self._combo_org_cat)
-
-        self._combo_org_type = QComboBox()
-        self._combo_org_type.setObjectName('org_type')
-        self._combo_org_type.setMaximumWidth(280)
-        form.addRow('Type:', self._combo_org_type)
-
-        self._field_org_name = QLineEdit()
-        self._field_org_name.setObjectName('org_name')
-        self._field_org_name.setMaximumWidth(280)
-        form.addRow('Name:', self._field_org_name)
-
-        layout.addLayout(form)
-        layout.addStretch()
-
-        btn = QPushButton('Save')
-        btn.setMaximumWidth(200)
-        btn.clicked.connect(lambda: self._on_save('org'))
-        layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        self._stack.addWidget(w)
-
-    def _build_city_page(self) -> None:
-        w = QWidget()
-        w.setObjectName('cityPage')
-        layout = QVBoxLayout(w)
-        layout.setContentsMargins(24, 24, 24, 24)
-        layout.setSpacing(12)
-
-        form = QFormLayout()
-        form.setSpacing(8)
-
-        self._combo_subd_type = QComboBox()
-        self._combo_subd_type.setObjectName('subd_type')
-        self._combo_subd_type.setMaximumWidth(280)
-        form.addRow('Type:', self._combo_subd_type)
-
-        self._field_subd_name = QLineEdit()
-        self._field_subd_name.setObjectName('subd_name')
-        self._field_subd_name.setMaximumWidth(280)
-        form.addRow('Name:', self._field_subd_name)
-
-        layout.addLayout(form)
-        layout.addStretch()
-
-        btn = QPushButton('Save')
-        btn.setMaximumWidth(200)
-        btn.clicked.connect(lambda: self._on_save('city'))
-        layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        self._stack.addWidget(w)
-
-    def _build_num_page(self) -> None:
-        w = QWidget()
-        w.setObjectName('numPage')
-        layout = QVBoxLayout(w)
-        layout.setContentsMargins(24, 24, 24, 24)
-        layout.setSpacing(12)
-
-        form = QFormLayout()
-        form.setSpacing(8)
-
-        self._combo_road_ref = QComboBox()
-        self._combo_road_ref.setObjectName('road_ref')
-        self._combo_road_ref.setMaximumWidth(280)
-        form.addRow('Ref Type:', self._combo_road_ref)
-
-        ref_row = QHBoxLayout()
-        self._label_ref_name = QLabel()
-        ref_row.addWidget(self._label_ref_name, stretch=1)
-        self._btn_select_ref = QPushButton('Select Reference')
-        self._btn_select_ref.setMaximumWidth(200)
-        ref_row.addWidget(self._btn_select_ref)
-        form.addRow('Reference:', ref_row)
-
-        self._field_num_val = QLineEdit()
-        self._field_num_val.setObjectName('num_val')
-        self._field_num_val.setMaximumWidth(280)
-        form.addRow('Number:', self._field_num_val)
-
-        self._field_repetition = QLineEdit()
-        self._field_repetition.setObjectName('repetition')
-        self._field_repetition.setMaximumWidth(280)
-        form.addRow('Duplicated:', self._field_repetition)
-
-        self._combo_num_state = QComboBox()
-        self._combo_num_state.setObjectName('num_state')
-        self._combo_num_state.setMaximumWidth(280)
-        form.addRow('State:', self._combo_num_state)
-
-        self._combo_activity_cat = QComboBox()
-        self._combo_activity_cat.setObjectName('activity_cat')
-        self._combo_activity_cat.setMaximumWidth(280)
-        form.addRow('Activity Cat:', self._combo_activity_cat)
-
-        self._combo_activity_type = QComboBox()
-        self._combo_activity_type.setObjectName('activity_type')
-        self._combo_activity_type.setMaximumWidth(280)
-        form.addRow('Activity Type:', self._combo_activity_type)
-
-        layout.addLayout(form)
-        layout.addStretch()
-
-        btn = QPushButton('Save')
-        btn.setMaximumWidth(200)
-        btn.clicked.connect(lambda: self._on_save('num'))
-        layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        self._stack.addWidget(w)
-
-    def _build_pan_page(self) -> None:
-        w = QWidget()
-        w.setObjectName('panPage')
-        layout = QVBoxLayout(w)
-        layout.setContentsMargins(24, 24, 24, 24)
-        layout.setSpacing(12)
-
-        form = QFormLayout()
-        form.setSpacing(8)
-
-        self._combo_mount_status = QComboBox()
-        self._combo_mount_status.setObjectName('mount_status')
-        self._combo_mount_status.setMaximumWidth(280)
-        form.addRow('Mount Status:', self._combo_mount_status)
-
-        self._combo_panel_ref = QComboBox()
-        self._combo_panel_ref.setObjectName('panel_ref')
-        self._combo_panel_ref.setMaximumWidth(280)
-        form.addRow('Ref Type:', self._combo_panel_ref)
-
-        ref_row = QHBoxLayout()
-        self._label_ref_name2 = QLabel()
-        ref_row.addWidget(self._label_ref_name2, stretch=1)
-        self._btn_select_panel_ref = QPushButton('Select Reference')
-        self._btn_select_panel_ref.setMaximumWidth(200)
-        ref_row.addWidget(self._btn_select_panel_ref)
-        form.addRow('Reference:', ref_row)
-
-        layout.addLayout(form)
-        layout.addStretch()
-
-        btn = QPushButton('Save')
-        btn.setMaximumWidth(200)
-        btn.clicked.connect(lambda: self._on_save('pan'))
-        layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        self._stack.addWidget(w)
 
     # ------------------------------------------------------------------
     # Signal wiring
@@ -450,47 +342,9 @@ class PopupDialog(QDialog):
                     session.close()
 
     def _set_form_values(self, data: dict) -> None:
-        """Populate widgets from a populate_* data dict."""
-        page_key = self.layer_name_value
-        if page_key == 'zone':
-            self._set_combo_by_data(self._combo_zone_type, data.get('type'))
-            if data.get('name'):
-                self._field_zone_name.setText(str(data['name']))
-        elif page_key == 'roads':
-            self._set_combo_by_data(self._combo_road_type, data.get('type'))
-            if data.get('name'):
-                self._field_road_name.setText(str(data['name']))
-        elif page_key == 'org':
-            self._set_combo_by_data(self._combo_org_cat, data.get('category'))
-            self._set_combo_by_data(self._combo_org_type, data.get('type'))
-            if data.get('name'):
-                self._field_org_name.setText(str(data['name']))
-        elif page_key == 'city':
-            self._set_combo_by_data(self._combo_subd_type, data.get('type'))
-            if data.get('name'):
-                self._field_subd_name.setText(str(data['name']))
-        elif page_key == 'num':
-            self._set_combo_by_data(self._combo_road_ref, data.get('refType'))
-            if data.get('refName'):
-                self._label_ref_name.setText(str(data['refName']))
-            if data.get('number'):
-                self._field_num_val.setText(str(data['number']))
-            if data.get('repetition'):
-                self._field_repetition.setText(str(data['repetition']))
-            self._set_combo_by_data(self._combo_num_state, data.get('state'))
-            self._set_combo_by_data(
-                self._combo_activity_cat, data.get('activityCat')
-            )
-            self._set_combo_by_data(
-                self._combo_activity_type, data.get('activityType')
-            )
-        elif page_key == 'pan':
-            self._set_combo_by_data(
-                self._combo_mount_status, data.get('mountStatus')
-            )
-            self._set_combo_by_data(self._combo_panel_ref, data.get('refType'))
-            if data.get('refName'):
-                self._label_ref_name2.setText(str(data['refName']))
+        handler = _SET_FORM_DISPATCH.get(self.layer_name_value)
+        if handler:
+            handler(self, data)
 
     @staticmethod
     def _set_combo_by_data(combo: QComboBox, value) -> None:
@@ -519,41 +373,9 @@ class PopupDialog(QDialog):
             handler(self)
 
     def _collect_form_data(self, page_key: str) -> dict:
-        if page_key == 'zone':
-            return {
-                'type': self._combo_zone_type.currentData(),
-                'name': self._field_zone_name.text(),
-            }
-        if page_key == 'roads':
-            return {
-                'type': self._combo_road_type.currentData(),
-                'name': self._field_road_name.text(),
-            }
-        if page_key == 'org':
-            return {
-                'category': self._combo_org_cat.currentData(),
-                'type': self._combo_org_type.currentData(),
-                'name': self._field_org_name.text(),
-            }
-        if page_key == 'city':
-            return {
-                'type': self._combo_subd_type.currentData(),
-                'name': self._field_subd_name.text(),
-            }
-        if page_key == 'num':
-            return {
-                'refType': self._combo_road_ref.currentData(),
-                'number': self._field_num_val.text(),
-                'repetition': self._field_repetition.text(),
-                'state': self._combo_num_state.currentData(),
-                'activityCat': self._combo_activity_cat.currentData(),
-                'activityType': self._combo_activity_type.currentData(),
-            }
-        if page_key == 'pan':
-            return {
-                'mountStatus': self._combo_mount_status.currentData(),
-                'refType': self._combo_panel_ref.currentData(),
-            }
+        handler = _COLLECT_FORM_DISPATCH.get(page_key)
+        if handler:
+            return handler(self)
         return {}
 
     # ------------------------------------------------------------------
@@ -587,9 +409,7 @@ class PopupDialog(QDialog):
                     mode=IdentifyTool.MODE_REF,
                 )
                 self.ref_identify_tool.set_iface(self.iface)
-                self.ref_identify_tool.ref_selected.connect(
-                    self._on_reference_selected
-                )
+                self.ref_identify_tool.ref_selected.connect(self._on_reference_selected)
                 self.ref_identify_tool.set_active_layer(layer[0])
                 canvas.setMapTool(self.ref_identify_tool)
         else:

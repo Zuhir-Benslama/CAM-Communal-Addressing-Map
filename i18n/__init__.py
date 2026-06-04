@@ -1,4 +1,3 @@
 """i18n helper — delegates to scripts.lookup_data."""
-
-from ..scripts.lookup_data import clear_i18n_cache as clear_cache
-from ..scripts.lookup_data import get_string as tr
+from ..scripts.widget_texts import clear_i18n_cache as clear_cache
+from ..scripts.widget_texts import get_string as tr

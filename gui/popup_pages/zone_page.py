@@ -1,0 +1,45 @@
+"""Zone page builder for PopupDialog."""
+
+from typing import TYPE_CHECKING
+
+from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtWidgets import (
+    QComboBox,
+    QFormLayout,
+    QLineEdit,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
+
+if TYPE_CHECKING:
+    from ..popup_dialog import PopupDialog
+
+
+def build_zone_page(dialog: 'PopupDialog', stack) -> None:
+    w = QWidget()
+    w.setObjectName('zonePage')
+    layout = QVBoxLayout(w)
+    layout.setContentsMargins(24, 24, 24, 24)
+    layout.setSpacing(12)
+
+    form = QFormLayout()
+    form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+    form.setSpacing(8)
+
+    dialog._combo_zone_type = QComboBox()
+    dialog._combo_zone_type.setObjectName('zone_type')
+    form.addRow('Type:', dialog._combo_zone_type)
+
+    dialog._field_zone_name = QLineEdit()
+    dialog._field_zone_name.setObjectName('nom_zone')
+    form.addRow('Name:', dialog._field_zone_name)
+
+    layout.addLayout(form)
+    layout.addStretch()
+
+    btn = QPushButton('Save')
+    btn.clicked.connect(lambda: dialog._on_save('zone'))
+    layout.addWidget(btn)
+
+    stack.addWidget(w)

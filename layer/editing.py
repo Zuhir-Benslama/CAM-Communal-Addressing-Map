@@ -5,7 +5,7 @@ import logging
 from qgis.core import Qgis, QgsMapLayer, QgsProject, QgsWkbTypes
 
 from ..constants import NOTIFY_DURATION, current_locale
-from ..scripts.lookup_data import get_string
+from ..scripts.widget_texts import get_string
 
 logger = logging.getLogger(__name__)
 

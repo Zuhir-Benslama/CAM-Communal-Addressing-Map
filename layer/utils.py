@@ -40,6 +40,24 @@ from ..constants import (
 
 logger = logging.getLogger(__name__)
 
+# ---------------------------------------------------------------------------
+# SQLAlchemy → QVariant type mapping
+# ---------------------------------------------------------------------------
+
+_TYPE_MAP: list[tuple[tuple, object]] = [
+    ((Integer, SmallInteger), QVariant.Int),
+    ((Float,), QVariant.Double),
+    ((String, Text), QVariant.String),
+    ((Boolean,), QVariant.Bool),
+]
+
+
+def _sa_type_to_qvariant(column_type) -> object:
+    for types, qv in _TYPE_MAP:
+        if isinstance(column_type, types):
+            return qv
+    return QVariant.String
+
 
 def create_other_layers(_iface) -> None:
     """Create non-mapper vector layers from QGIS config."""
@@ -67,21 +85,7 @@ def create_other_layers(_iface) -> None:
                     if isinstance(column_obj.type, Geometry):
                         continue
 
-                    column_type = column_obj.type
-
-                    if isinstance(column_type, (Integer, SmallInteger)):
-                        field_type = QVariant.Int
-                    elif isinstance(column_type, Float):
-                        field_type = QVariant.Double
-                    elif isinstance(column_type, String):
-                        field_type = QVariant.String
-                    elif isinstance(column_type, Text):
-                        field_type = QVariant.String
-                    elif isinstance(column_type, Boolean):
-                        field_type = QVariant.Bool
-                    else:
-                        field_type = QVariant.String
-
+                    field_type = _sa_type_to_qvariant(column_obj.type)
                     fields.append(QgsField(column_name, field_type))
 
                 layer.startEditing()

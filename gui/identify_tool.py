@@ -13,7 +13,7 @@ from ..app.core.database import get_session
 from ..app.orders import models as _models
 from ..app.users.repository import qgis_config
 from ..constants import LAYER_KEY, current_locale
-from ..scripts.lookup_data import get_string
+from ..scripts.widget_texts import get_string
 
 logger = logging.getLogger(__name__)
 

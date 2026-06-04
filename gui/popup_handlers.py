@@ -30,7 +30,7 @@ from ..constants import (
     validate_text,
 )
 from ..layer.refresh import refresh_all_layers
-from ..scripts.lookup_data import get_string
+from ..scripts.widget_texts import get_string
 
 if TYPE_CHECKING:
     from .popup_dialog import PopupDialog

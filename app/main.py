@@ -11,7 +11,7 @@ from qgis.PyQt.QtGui import QAction, QIcon
 from qgis.PyQt.QtWidgets import QDockWidget, QMessageBox
 
 from ..gui.main_dialog import MainDialog
-from ..scripts.lookup_data import get_string
+from ..scripts.widget_texts import get_string
 from .shared.constants import (
     ICON_PNG,
     SETTINGS_APP,
