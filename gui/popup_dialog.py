@@ -150,16 +150,19 @@ class PopupDialog(QDialog):
 
         self._combo_zone_type = QComboBox()
         self._combo_zone_type.setObjectName('zone_type')
+        self._combo_zone_type.setMaximumWidth(280)
         form.addRow('Type:', self._combo_zone_type)
 
         self._field_zone_name = QLineEdit()
         self._field_zone_name.setObjectName('nom_zone')
+        self._field_zone_name.setMaximumWidth(280)
         form.addRow('Name:', self._field_zone_name)
 
         layout.addLayout(form)
         layout.addStretch()
 
         btn = QPushButton('Save')
+        btn.setMaximumWidth(200)
         btn.clicked.connect(lambda: self._on_save('zone'))
         layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
 
@@ -177,16 +180,19 @@ class PopupDialog(QDialog):
 
         self._combo_road_type = QComboBox()
         self._combo_road_type.setObjectName('type_road')
+        self._combo_road_type.setMaximumWidth(280)
         form.addRow('Type:', self._combo_road_type)
 
         self._field_road_name = QLineEdit()
         self._field_road_name.setObjectName('road_name')
+        self._field_road_name.setMaximumWidth(280)
         form.addRow('Name:', self._field_road_name)
 
         layout.addLayout(form)
         layout.addStretch()
 
         btn = QPushButton('Save')
+        btn.setMaximumWidth(200)
         btn.clicked.connect(lambda: self._on_save('roads'))
         layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
 
@@ -204,20 +210,24 @@ class PopupDialog(QDialog):
 
         self._combo_org_cat = QComboBox()
         self._combo_org_cat.setObjectName('org_cat')
+        self._combo_org_cat.setMaximumWidth(280)
         form.addRow('Category:', self._combo_org_cat)
 
         self._combo_org_type = QComboBox()
         self._combo_org_type.setObjectName('org_type')
+        self._combo_org_type.setMaximumWidth(280)
         form.addRow('Type:', self._combo_org_type)
 
         self._field_org_name = QLineEdit()
         self._field_org_name.setObjectName('org_name')
+        self._field_org_name.setMaximumWidth(280)
         form.addRow('Name:', self._field_org_name)
 
         layout.addLayout(form)
         layout.addStretch()
 
         btn = QPushButton('Save')
+        btn.setMaximumWidth(200)
         btn.clicked.connect(lambda: self._on_save('org'))
         layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
 
@@ -235,16 +245,19 @@ class PopupDialog(QDialog):
 
         self._combo_subd_type = QComboBox()
         self._combo_subd_type.setObjectName('subd_type')
+        self._combo_subd_type.setMaximumWidth(280)
         form.addRow('Type:', self._combo_subd_type)
 
         self._field_subd_name = QLineEdit()
         self._field_subd_name.setObjectName('subd_name')
+        self._field_subd_name.setMaximumWidth(280)
         form.addRow('Name:', self._field_subd_name)
 
         layout.addLayout(form)
         layout.addStretch()
 
         btn = QPushButton('Save')
+        btn.setMaximumWidth(200)
         btn.clicked.connect(lambda: self._on_save('city'))
         layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
 
@@ -262,39 +275,47 @@ class PopupDialog(QDialog):
 
         self._combo_road_ref = QComboBox()
         self._combo_road_ref.setObjectName('road_ref')
+        self._combo_road_ref.setMaximumWidth(280)
         form.addRow('Ref Type:', self._combo_road_ref)
 
         ref_row = QHBoxLayout()
         self._label_ref_name = QLabel()
         ref_row.addWidget(self._label_ref_name, stretch=1)
         self._btn_select_ref = QPushButton('Select Reference')
+        self._btn_select_ref.setMaximumWidth(200)
         ref_row.addWidget(self._btn_select_ref)
         form.addRow('Reference:', ref_row)
 
         self._field_num_val = QLineEdit()
         self._field_num_val.setObjectName('num_val')
+        self._field_num_val.setMaximumWidth(280)
         form.addRow('Number:', self._field_num_val)
 
         self._field_repetition = QLineEdit()
         self._field_repetition.setObjectName('repetition')
+        self._field_repetition.setMaximumWidth(280)
         form.addRow('Duplicated:', self._field_repetition)
 
         self._combo_num_state = QComboBox()
         self._combo_num_state.setObjectName('num_state')
+        self._combo_num_state.setMaximumWidth(280)
         form.addRow('State:', self._combo_num_state)
 
         self._combo_activity_cat = QComboBox()
         self._combo_activity_cat.setObjectName('activity_cat')
+        self._combo_activity_cat.setMaximumWidth(280)
         form.addRow('Activity Cat:', self._combo_activity_cat)
 
         self._combo_activity_type = QComboBox()
         self._combo_activity_type.setObjectName('activity_type')
+        self._combo_activity_type.setMaximumWidth(280)
         form.addRow('Activity Type:', self._combo_activity_type)
 
         layout.addLayout(form)
         layout.addStretch()
 
         btn = QPushButton('Save')
+        btn.setMaximumWidth(200)
         btn.clicked.connect(lambda: self._on_save('num'))
         layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
 
@@ -312,16 +333,19 @@ class PopupDialog(QDialog):
 
         self._combo_mount_status = QComboBox()
         self._combo_mount_status.setObjectName('mount_status')
+        self._combo_mount_status.setMaximumWidth(280)
         form.addRow('Mount Status:', self._combo_mount_status)
 
         self._combo_panel_ref = QComboBox()
         self._combo_panel_ref.setObjectName('panel_ref')
+        self._combo_panel_ref.setMaximumWidth(280)
         form.addRow('Ref Type:', self._combo_panel_ref)
 
         ref_row = QHBoxLayout()
         self._label_ref_name2 = QLabel()
         ref_row.addWidget(self._label_ref_name2, stretch=1)
         self._btn_select_panel_ref = QPushButton('Select Reference')
+        self._btn_select_panel_ref.setMaximumWidth(200)
         ref_row.addWidget(self._btn_select_panel_ref)
         form.addRow('Reference:', ref_row)
 
@@ -329,6 +353,7 @@ class PopupDialog(QDialog):
         layout.addStretch()
 
         btn = QPushButton('Save')
+        btn.setMaximumWidth(200)
         btn.clicked.connect(lambda: self._on_save('pan'))
         layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignCenter)
 

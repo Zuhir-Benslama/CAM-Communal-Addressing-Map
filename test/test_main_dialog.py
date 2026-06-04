@@ -186,10 +186,10 @@ class TestMainDialogCore(unittest.TestCase):
         dialog._tr_locale = 'en'
         for idx, expected_prefix in enumerate(['Draw', 'Select', 'Edit']):
             dialog._update_action_button_texts(idx)
-            btn_draw.setText.assert_called()
-            btn_select.setText.assert_called()
-            btn_edit.setText.assert_called()
-            btn_measure.setText.assert_called()
+            btn_draw.setToolTip.assert_called()
+            btn_select.setToolTip.assert_called()
+            btn_edit.setToolTip.assert_called()
+            btn_measure.setToolTip.assert_called()
 
     # ------------------------------------------------------------------
     # _init_theme_locale

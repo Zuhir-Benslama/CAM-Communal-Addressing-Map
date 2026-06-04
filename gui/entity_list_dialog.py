@@ -69,6 +69,7 @@ class EntityListDialog(QDialog):
 
         pagination = QHBoxLayout()
         self._btn_prev = QPushButton()
+        self._btn_prev.setMaximumWidth(200)
         self._btn_prev.clicked.connect(self._on_prev)
         pagination.addWidget(self._btn_prev)
 
@@ -79,6 +80,7 @@ class EntityListDialog(QDialog):
         pagination.addWidget(self._label_page, stretch=1)
 
         self._btn_next = QPushButton()
+        self._btn_next.setMaximumWidth(200)
         self._btn_next.clicked.connect(self._on_next)
         pagination.addWidget(self._btn_next)
 

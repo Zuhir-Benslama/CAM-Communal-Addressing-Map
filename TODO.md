@@ -1547,29 +1547,47 @@ Replace all QML-based UI components with standard Qt Widgets across the entire p
 
 ---
 
+## 22. UI Polish — Widget Widths, Icons, Window Size, Study Area Removal ✅
+
+- [x] **Replace QGIS theme icons with bundled custom SVGs** — `QgsApplication.getThemeIcon()` returned invisible/null icons in user's QGIS. Created 4 custom SVGs (`resources/{draw,select,edit,measure}.svg`) loaded via `QIcon(os.path.join(...))`.
+- [x] **Constrain all QLineEdit/QComboBox to 280px max-width** — 25 widgets in `gui/popup_dialog.py` (6 QLineEdit, 11 QComboBox, 8 QPushButton) + 3 missing widgets in `gui/main_dialog.py` (`_combo_layer_selector`, `_field_num_mokh`, `_field_date`) + all login/add-user fields.
+- [x] **Constrain all action buttons to 200px max-width** — Save/Cancel/List/Select-Reference buttons across all entity forms in `main_dialog.py`, `popup_dialog.py`, `entity_list_dialog.py`.
+- [x] **Constrain section frames, toolbar, footer** — `_make_section_frame(max_width=420)`, toolbar QWidget `#toolbarFrame` and footer QLabel `#footer` now capped.
+- [x] **Fix toolbar button text reappearing** — `_translate_labels` in `lookup_data.py` calls `setText()` on all `QPushButton` children via `findChildren`, overriding icon-only state. Fix: call `setText('')` on all 4 toolbar buttons after every `apply_widget_texts()` call (in `__init__`, `_on_locale_changed`, and `_update_action_button_texts`).
+- [x] **Reduce main window size** — `setMinimumSize(440, 680)`, `resize(460, 720)` (was 640/680).
+- [x] **Reduce QDateEdit QSS padding** — from `14px` to `8px` in both `light_qss.template` and `dark_qss.template`.
+- [x] **Remove unused `QgsApplication` import** — after removing all `QgsApplication.getThemeIcon()` calls.
+- [x] **Remove Study Area section from Settings page** — fields (`_field_type`, `_field_by`, `_field_num_mokh`, `_field_date`) were never read anywhere; translation keys (`type_moj`, `by_`, `num_mokh`, `label_49`) left in `widgets.json` as dead entries (harmless).
+
 ## Next Step: Runtime Verification in QGIS
 
 Open QGIS, load the plugin, and verify:
 
-### Layer switching
-- [ ] Click each phase/layer selector — form stack switches, action buttons update
-- [ ] Draw/Select/Edit/Measure button text changes per layer
+### Toolbar icons
+- [ ] All 4 toolbar buttons (Draw/Select/Edit/Measure) show icons (not text) with correct tooltips per layer
+- [ ] Switch locale — toolbar text stays cleared, tooltips update to new locale
+- [ ] Measure button icon renders correctly
 
-### i18n
-- [ ] Switch locale to العربية — all labels, buttons, combobox items display Arabic
-- [ ] Switch to Français — all labels, buttons, combobox items display French
-- [ ] Back to English — everything reverts to English
+### Widget width
+- [ ] All QLineEdit and QComboBox are capped at ~280px in all forms (login, add-user, entity forms, popup dialogs)
+- [ ] All action buttons (Save, Cancel, List, Select Reference) are capped at ~200px
+- [ ] Section frames, toolbar, footer don't stretch beyond ~420px
+
+### Window size
+- [ ] Main dialog opens at 460×720
+- [ ] Section frames fill the width comfortably
+- [ ] No horizontal scrollbar needed
 
 ### Theme
-- [ ] Toggle to Dark — dark QSS renders correctly (#sectionFrame, #settingsContent, cards)
-- [ ] Toggle back to Light — light QSS renders correctly
+- [ ] Toggle to Dark — QDateEdit padding looks consistent with QLineEdit
+- [ ] Toggle back to Light — same
 
 ### Settings
-- [ ] Gear button opens settings panel
-- [ ] Settings page renders with correct theme (scroll area, sections)
+- [ ] Gear button opens settings panel — Study Area groupbox is gone
+- [ ] "Add New Feature", "Theme & Language", "Maps, Reports and Backup" sections remain
 
 ### Forms
 - [ ] Login page renders
 - [ ] Add User page renders
-- [ ] All 6 entity forms (City, Org, Roads, Zone, Pan, Num) render with correct labels
-- [ ] Form data popup dialog renders
+- [ ] All 6 entity forms (City, Org, Roads, Zone, Pan, Num) render with constrained fields
+- [ ] Entity list dialog prev/next buttons are capped at 200px

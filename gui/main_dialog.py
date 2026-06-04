@@ -27,6 +27,7 @@ from types import SimpleNamespace
 from typing import Any
 
 from qgis.PyQt.QtCore import QSettings, Qt
+from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import (
     QApplication,
     QComboBox,
@@ -42,6 +43,8 @@ from qgis.PyQt.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
+_ICON_DIR = os.path.join(os.path.dirname(__file__), '..', 'resources')
 
 from ..constants import (
     AVAILABLE_LOCALES,
@@ -217,6 +220,9 @@ class MainDialog(
             logger.exception('Step 8 apply_widget_texts failed: %s', exc)
             raise
 
+        for b in ('_btn_draw', '_btn_select', '_btn_edit', '_btn_measure'):
+            getattr(self, b, None) and getattr(self, b).setText('')
+
         try:
             self._translate_internal_combos()
         except Exception as exc:
@@ -235,8 +241,8 @@ class MainDialog(
 
     def _init_ui(self) -> None:
         self.setObjectName('rnaMainDialog')
-        self.setMinimumSize(640, 680)
-        self.resize(680, 720)
+        self.setMinimumSize(440, 680)
+        self.resize(460, 720)
         self.setSizeGripEnabled(True)
 
         main_layout = QVBoxLayout(self)
@@ -315,15 +321,18 @@ class MainDialog(
 
         self._field_username = QLineEdit()
         self._field_username.setObjectName('username')
+        self._field_username.setMaximumWidth(280)
         self._add_form_row(form, 'Username:', 'label_10', self._field_username)
 
         self._field_password = QLineEdit()
         self._field_password.setObjectName('password')
         self._field_password.setEchoMode(QLineEdit.EchoMode.Password)
+        self._field_password.setMaximumWidth(280)
         self._add_form_row(form, 'Password:', 'label_11', self._field_password)
 
         self._combo_map_options = QComboBox()
         self._combo_map_options.setObjectName('map_options')
+        self._combo_map_options.setMaximumWidth(280)
         self._add_form_row(form, 'Map:', 'label_14', self._combo_map_options)
 
         layout.addLayout(form)
@@ -331,14 +340,17 @@ class MainDialog(
 
         self._btn_sign_in = QPushButton('Sign In')
         self._btn_sign_in.setObjectName('sign_in_user')
+        self._btn_sign_in.setMaximumWidth(200)
         layout.addWidget(self._btn_sign_in)
 
         self._btn_add_user = QPushButton('Add User')
         self._btn_add_user.setObjectName('add_u')
+        self._btn_add_user.setMaximumWidth(200)
         layout.addWidget(self._btn_add_user)
 
         self._btn_restore_db = QPushButton('Restore Database')
         self._btn_restore_db.setObjectName('restore_db')
+        self._btn_restore_db.setMaximumWidth(200)
         layout.addWidget(self._btn_restore_db)
 
         layout.addStretch()
@@ -367,35 +379,43 @@ class MainDialog(
 
         self._field_fname = QLineEdit()
         self._field_fname.setObjectName('fname')
+        self._field_fname.setMaximumWidth(280)
         self._add_form_row(form, 'First Name:', 'label_3', self._field_fname)
 
         self._field_lname = QLineEdit()
         self._field_lname.setObjectName('lname')
+        self._field_lname.setMaximumWidth(280)
         self._add_form_row(form, 'Last Name:', 'label_7', self._field_lname)
 
         self._field_email = QLineEdit()
         self._field_email.setObjectName('email')
+        self._field_email.setMaximumWidth(280)
         self._add_form_row(form, 'Email:', 'label_8', self._field_email)
 
         self._field_pnum = QLineEdit()
         self._field_pnum.setObjectName('pnum')
+        self._field_pnum.setMaximumWidth(280)
         self._add_form_row(form, 'Phone:', 'label_9', self._field_pnum)
 
         self._field_uname = QLineEdit()
         self._field_uname.setObjectName('uname')
+        self._field_uname.setMaximumWidth(280)
         self._add_form_row(form, 'Username:', 'label_2_username', self._field_uname)
 
         self._field_pwd = QLineEdit()
         self._field_pwd.setObjectName('pwd')
         self._field_pwd.setEchoMode(QLineEdit.EchoMode.Password)
+        self._field_pwd.setMaximumWidth(280)
         self._add_form_row(form, 'Password:', 'label_5', self._field_pwd)
 
         self.wilaya_list = QComboBox()
         self.wilaya_list.setObjectName('wilaya_list')
+        self.wilaya_list.setMaximumWidth(280)
         self._add_form_row(form, 'Wilaya:', 'label_12', self.wilaya_list)
 
         self.commune_of_wilaya = QComboBox()
         self.commune_of_wilaya.setObjectName('commune_of_wilaya')
+        self.commune_of_wilaya.setMaximumWidth(280)
         self._add_form_row(form, 'Commune:', 'label_13', self.commune_of_wilaya)
 
         layout.addLayout(form)
@@ -404,10 +424,12 @@ class MainDialog(
         btn_row = QHBoxLayout()
         self._btn_cancel_add = QPushButton('Cancel')
         self._btn_cancel_add.setObjectName('abort_uc')
+        self._btn_cancel_add.setMaximumWidth(200)
         btn_row.addWidget(self._btn_cancel_add)
         btn_row.addStretch()
         self._btn_save_add = QPushButton('Save')
         self._btn_save_add.setObjectName('submit_usr')
+        self._btn_save_add.setMaximumWidth(200)
         btn_row.addWidget(self._btn_save_add)
         layout.addLayout(btn_row)
 
@@ -431,6 +453,7 @@ class MainDialog(
         toolbar = QWidget()
         toolbar.setObjectName('toolbarFrame')
         toolbar.setFixedHeight(48)
+        toolbar.setMaximumWidth(420)
         t_layout = QHBoxLayout(toolbar)
         t_layout.setContentsMargins(12, 0, 12, 0)
 
@@ -465,6 +488,7 @@ class MainDialog(
         footer = QLabel('Space Applications Center \u00a9')
         footer.setObjectName('footer')
         footer.setFixedHeight(36)
+        footer.setMaximumWidth(420)
         footer.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         footer.setStyleSheet('padding-left: 12px; font-size: 10px;')
         layout.addWidget(footer)
@@ -490,6 +514,7 @@ class MainDialog(
 
         self._combo_layer_selector = QComboBox()
         self._combo_layer_selector.setObjectName('layer_selector')
+        self._combo_layer_selector.setMaximumWidth(280)
         plan_layout.addWidget(self._combo_layer_selector)
 
         layout.addWidget(plan_frame)
@@ -504,17 +529,30 @@ class MainDialog(
         action_layout.addWidget(action_title)
 
         btn_row = QHBoxLayout()
-        self._btn_draw = QPushButton('Draw')
+        btn_row.setSpacing(6)
+        self._btn_draw = QPushButton()
         self._btn_draw.setObjectName('drawBtn')
+        self._btn_draw.setIcon(QIcon(os.path.join(_ICON_DIR, 'draw.svg')))
+        self._btn_draw.setToolTip('Draw')
+        self._btn_draw.setFixedSize(36, 36)
         btn_row.addWidget(self._btn_draw)
-        self._btn_select = QPushButton('Select')
+        self._btn_select = QPushButton()
         self._btn_select.setObjectName('selectBtn')
+        self._btn_select.setIcon(QIcon(os.path.join(_ICON_DIR, 'select.svg')))
+        self._btn_select.setToolTip('Select')
+        self._btn_select.setFixedSize(36, 36)
         btn_row.addWidget(self._btn_select)
-        self._btn_edit = QPushButton('Edit')
+        self._btn_edit = QPushButton()
         self._btn_edit.setObjectName('editBtn')
+        self._btn_edit.setIcon(QIcon(os.path.join(_ICON_DIR, 'edit.svg')))
+        self._btn_edit.setToolTip('Edit')
+        self._btn_edit.setFixedSize(36, 36)
         btn_row.addWidget(self._btn_edit)
-        self._btn_measure = QPushButton('Measure Distance')
+        self._btn_measure = QPushButton()
         self._btn_measure.setObjectName('mesure_dist')
+        self._btn_measure.setIcon(QIcon(os.path.join(_ICON_DIR, 'measure.svg')))
+        self._btn_measure.setToolTip('Measure Distance')
+        self._btn_measure.setFixedSize(36, 36)
         btn_row.addWidget(self._btn_measure)
         action_layout.addLayout(btn_row)
 
@@ -567,43 +605,19 @@ class MainDialog(
 
         self._combo_action = QComboBox()
         self._combo_action.setObjectName('_action_combo')
+        self._combo_action.setMaximumWidth(280)
         sl.addWidget(self._combo_action)
 
         self._combo_paper = QComboBox()
         self._combo_paper.setObjectName('paper')
         self._combo_paper.setVisible(False)
+        self._combo_paper.setMaximumWidth(280)
         sl.addWidget(self._combo_paper)
 
         self._btn_save_action = QPushButton('Save')
         self._btn_save_action.setObjectName('print')
+        self._btn_save_action.setMaximumWidth(200)
         sl.addWidget(self._btn_save_action)
-
-        s_layout.addWidget(section)
-        self._held_widgets.append(section)
-
-        # Study Area
-        section = self._make_section_frame()
-        sl = section.layout()
-        sec_title = QLabel('Study Area')
-        sec_title.setObjectName('type_moj')
-        sec_title.setStyleSheet('font-size: 13px; font-weight: bold;')
-        sl.addWidget(sec_title)
-
-        sa_form = QFormLayout()
-        sa_form.setSpacing(6)
-        self._field_type = QLineEdit()
-        self._field_type.setObjectName('lineEdit_type')
-        self._add_form_row(sa_form, 'Study Area:', 'type_moj', self._field_type)
-        self._field_by = QLineEdit()
-        self._field_by.setObjectName('lineEdit_by')
-        self._add_form_row(sa_form, 'Produced by:', 'by_', self._field_by)
-        self._field_num_mokh = QLineEdit()
-        self._field_num_mokh.setObjectName('lineEdit_nummokh')
-        self._add_form_row(sa_form, 'Plan Number:', 'num_mokh', self._field_num_mokh)
-        self._field_date = QLineEdit()
-        self._field_date.setObjectName('dateEdit')
-        self._add_form_row(sa_form, 'Date:', 'label_49', self._field_date)
-        sl.addLayout(sa_form)
 
         s_layout.addWidget(section)
         self._held_widgets.append(section)
@@ -620,20 +634,24 @@ class MainDialog(
         nf_form.setSpacing(6)
         self.feature_combo = QComboBox()
         self.feature_combo.setObjectName('feature_combo')
+        self.feature_combo.setMaximumWidth(280)
         self._add_form_row(nf_form, 'Category:', 'label_feature', self.feature_combo)
         self.subtype_combo = QComboBox()
         self.subtype_combo.setObjectName('subtype_combo')
         self.subtype_combo.setEditable(True)
+        self.subtype_combo.setMaximumWidth(280)
         self._add_form_row(nf_form, 'Type:', 'label_type', self.subtype_combo)
         self._label_subtype = QLabel('Subtype:')
         self._label_subtype.setObjectName('label_subtype')
         self._field_new_type = QLineEdit()
         self._field_new_type.setObjectName('new_type')
+        self._field_new_type.setMaximumWidth(280)
         nf_form.addRow(self._label_subtype, self._field_new_type)
         sl.addLayout(nf_form)
 
         self._btn_save_new_type = QPushButton('Save')
         self._btn_save_new_type.setObjectName('add_type_btn')
+        self._btn_save_new_type.setMaximumWidth(200)
         sl.addWidget(self._btn_save_new_type)
 
         s_layout.addWidget(section)
@@ -651,9 +669,11 @@ class MainDialog(
         tl_form.setSpacing(6)
         self._combo_theme = QComboBox()
         self._combo_theme.setObjectName('_theme_combo')
+        self._combo_theme.setMaximumWidth(280)
         self._add_form_row(tl_form, 'Theme:', '_theme_label', self._combo_theme)
         self._combo_locale = QComboBox()
         self._combo_locale.setObjectName('_locale_combo')
+        self._combo_locale.setMaximumWidth(280)
         self._add_form_row(tl_form, 'Language:', '_locale_label', self._combo_locale)
         sl.addLayout(tl_form)
 
@@ -679,14 +699,17 @@ class MainDialog(
         form.setSpacing(6)
         self._combo_zone_type = QComboBox()
         self._combo_zone_type.setObjectName('zone_type')
+        self._combo_zone_type.setMaximumWidth(280)
         self._add_form_row(form, 'Type:', 'label_25', self._combo_zone_type)
         self._field_nom_zone = QLineEdit()
         self._field_nom_zone.setObjectName('nom_zone')
+        self._field_nom_zone.setMaximumWidth(280)
         self._add_form_row(form, 'Name:', 'label_28', self._field_nom_zone)
         layout.addLayout(form)
 
         self._btn_save_zone = QPushButton('Save')
         self._btn_save_zone.setObjectName('submit_zone')
+        self._btn_save_zone.setMaximumWidth(200)
         layout.addWidget(self._btn_save_zone)
         layout.addStretch()
 
@@ -703,19 +726,23 @@ class MainDialog(
         form.setSpacing(6)
         self._combo_type_road = QComboBox()
         self._combo_type_road.setObjectName('type_road')
+        self._combo_type_road.setMaximumWidth(280)
         self._add_form_row(form, 'Type:', 'label_25', self._combo_type_road)
         self._field_road_name = QLineEdit()
         self._field_road_name.setObjectName('road_name')
+        self._field_road_name.setMaximumWidth(280)
         self._add_form_row(form, 'Name:', 'label_28', self._field_road_name)
         layout.addLayout(form)
 
         btn_row = QHBoxLayout()
         self._btn_list_roads = QPushButton('Roads List')
         self._btn_list_roads.setObjectName('list_roads')
+        self._btn_list_roads.setMaximumWidth(200)
         btn_row.addWidget(self._btn_list_roads)
         btn_row.addStretch()
         self._btn_save_road = QPushButton('Save')
         self._btn_save_road.setObjectName('submit_road')
+        self._btn_save_road.setMaximumWidth(200)
         btn_row.addWidget(self._btn_save_road)
         layout.addLayout(btn_row)
         layout.addStretch()
@@ -733,22 +760,27 @@ class MainDialog(
         form.setSpacing(6)
         self._combo_org_cat = QComboBox()
         self._combo_org_cat.setObjectName('org_cat')
+        self._combo_org_cat.setMaximumWidth(280)
         self._add_form_row(form, 'Category:', 'label_41', self._combo_org_cat)
         self._combo_org_type = QComboBox()
         self._combo_org_type.setObjectName('org_type')
+        self._combo_org_type.setMaximumWidth(280)
         self._add_form_row(form, 'Type:', 'label_25', self._combo_org_type)
         self._field_org_name = QLineEdit()
         self._field_org_name.setObjectName('org_name')
+        self._field_org_name.setMaximumWidth(280)
         self._add_form_row(form, 'Name:', 'label_28', self._field_org_name)
         layout.addLayout(form)
 
         btn_row = QHBoxLayout()
         self._btn_list_orgs = QPushButton('Facilities List')
         self._btn_list_orgs.setObjectName('list_orgs')
+        self._btn_list_orgs.setMaximumWidth(200)
         btn_row.addWidget(self._btn_list_orgs)
         btn_row.addStretch()
         self._btn_save_org = QPushButton('Save')
         self._btn_save_org.setObjectName('submit_org')
+        self._btn_save_org.setMaximumWidth(200)
         btn_row.addWidget(self._btn_save_org)
         layout.addLayout(btn_row)
         layout.addStretch()
@@ -766,19 +798,23 @@ class MainDialog(
         form.setSpacing(6)
         self._combo_subd_type = QComboBox()
         self._combo_subd_type.setObjectName('subd_type')
+        self._combo_subd_type.setMaximumWidth(280)
         self._add_form_row(form, 'Type:', 'label_25', self._combo_subd_type)
         self._field_subd_name = QLineEdit()
         self._field_subd_name.setObjectName('subd_name')
+        self._field_subd_name.setMaximumWidth(280)
         self._add_form_row(form, 'Name:', 'label_28', self._field_subd_name)
         layout.addLayout(form)
 
         btn_row = QHBoxLayout()
         self._btn_list_cities = QPushButton('Subdivisions List')
         self._btn_list_cities.setObjectName('list_subds')
+        self._btn_list_cities.setMaximumWidth(200)
         btn_row.addWidget(self._btn_list_cities)
         btn_row.addStretch()
         self._btn_save_city = QPushButton('Save')
         self._btn_save_city.setObjectName('submit_subd')
+        self._btn_save_city.setMaximumWidth(200)
         btn_row.addWidget(self._btn_save_city)
         layout.addLayout(btn_row)
         layout.addStretch()
@@ -796,6 +832,7 @@ class MainDialog(
         form.setSpacing(6)
         self._combo_road_ref = QComboBox()
         self._combo_road_ref.setObjectName('road_ref')
+        self._combo_road_ref.setMaximumWidth(280)
         self._add_form_row(form, 'Ref Type:', 'label_36', self._combo_road_ref)
 
         ref_row = QHBoxLayout()
@@ -804,6 +841,7 @@ class MainDialog(
         ref_row.addWidget(self._label_ref_name, stretch=1)
         self._btn_select_road_ref = QPushButton('Select Reference')
         self._btn_select_road_ref.setObjectName('select_road_ref')
+        self._btn_select_road_ref.setMaximumWidth(200)
         ref_row.addWidget(self._btn_select_road_ref)
         ref_label = QLabel('Reference:')
         ref_label.setObjectName('groupBox_reference')
@@ -811,18 +849,23 @@ class MainDialog(
 
         self._field_num_val = QLineEdit()
         self._field_num_val.setObjectName('num_val')
+        self._field_num_val.setMaximumWidth(280)
         self._add_form_row(form, 'Number:', 'label_34', self._field_num_val)
         self._field_repetition = QLineEdit()
         self._field_repetition.setObjectName('repetition')
+        self._field_repetition.setMaximumWidth(280)
         self._add_form_row(form, 'Duplicated:', 'label_38', self._field_repetition)
         self._combo_num_state = QComboBox()
         self._combo_num_state.setObjectName('num_state')
+        self._combo_num_state.setMaximumWidth(280)
         self._add_form_row(form, 'State:', 'label_16', self._combo_num_state)
         self._combo_activity_cat = QComboBox()
         self._combo_activity_cat.setObjectName('activity_cat')
+        self._combo_activity_cat.setMaximumWidth(280)
         self._add_form_row(form, 'Activity Cat:', 'label_35', self._combo_activity_cat)
         self._combo_activity_type = QComboBox()
         self._combo_activity_type.setObjectName('activity_type')
+        self._combo_activity_type.setMaximumWidth(280)
         self._add_form_row(
             form, 'Activity Type:', 'label_36_act_type', self._combo_activity_type
         )
@@ -831,10 +874,12 @@ class MainDialog(
         btn_row = QHBoxLayout()
         self._btn_list_nums = QPushButton('Entrances List')
         self._btn_list_nums.setObjectName('list_nums')
+        self._btn_list_nums.setMaximumWidth(200)
         btn_row.addWidget(self._btn_list_nums)
         btn_row.addStretch()
         self._btn_save_num = QPushButton('Save')
         self._btn_save_num.setObjectName('submit_num')
+        self._btn_save_num.setMaximumWidth(200)
         btn_row.addWidget(self._btn_save_num)
         layout.addLayout(btn_row)
         layout.addStretch()
@@ -852,9 +897,11 @@ class MainDialog(
         form.setSpacing(6)
         self._combo_mount_status = QComboBox()
         self._combo_mount_status.setObjectName('mount_status')
+        self._combo_mount_status.setMaximumWidth(280)
         self._add_form_row(form, 'Mount Status:', 'label_30', self._combo_mount_status)
         self._combo_panel_ref = QComboBox()
         self._combo_panel_ref.setObjectName('panel_ref')
+        self._combo_panel_ref.setMaximumWidth(280)
         self._add_form_row(form, 'Ref Type:', 'label_40', self._combo_panel_ref)
 
         ref_row = QHBoxLayout()
@@ -863,6 +910,7 @@ class MainDialog(
         ref_row.addWidget(self._label_ref_name2, stretch=1)
         self._btn_select_panel_ref = QPushButton('Select Reference')
         self._btn_select_panel_ref.setObjectName('select_panel_ref')
+        self._btn_select_panel_ref.setMaximumWidth(200)
         ref_row.addWidget(self._btn_select_panel_ref)
         ref_label = QLabel('Reference:')
         ref_label.setObjectName('groupBox_reference')
@@ -873,10 +921,12 @@ class MainDialog(
         btn_row = QHBoxLayout()
         self._btn_list_panels = QPushButton('Panels List')
         self._btn_list_panels.setObjectName('list_panels')
+        self._btn_list_panels.setMaximumWidth(200)
         btn_row.addWidget(self._btn_list_panels)
         btn_row.addStretch()
         self._btn_save_pan = QPushButton('Save')
         self._btn_save_pan.setObjectName('submit_pan')
+        self._btn_save_pan.setMaximumWidth(200)
         btn_row.addWidget(self._btn_save_pan)
         layout.addLayout(btn_row)
         layout.addStretch()
@@ -889,9 +939,10 @@ class MainDialog(
     # ------------------------------------------------------------------
 
     @staticmethod
-    def _make_section_frame() -> QWidget:
+    def _make_section_frame(max_width=420) -> QWidget:
         w = QWidget()
         w.setObjectName('sectionFrame')
+        w.setMaximumWidth(max_width)
         layout = QVBoxLayout(w)
         layout.setContentsMargins(12, 12, 12, 12)
         layout.setSpacing(8)
@@ -1140,10 +1191,14 @@ class MainDialog(
         select = widget_text(f'select_{layer_key}', loc) or 'Select'
         edit = widget_text(f'edit_{layer_key}', loc) or 'Edit'
         measure = widget_text('mesure_dist', loc) or 'Measure Distance'
-        self._btn_draw.setText(draw)
-        self._btn_select.setText(select)
-        self._btn_edit.setText(edit)
-        self._btn_measure.setText(measure)
+        self._btn_draw.setText('')
+        self._btn_draw.setToolTip(draw)
+        self._btn_select.setText('')
+        self._btn_select.setToolTip(select)
+        self._btn_edit.setText('')
+        self._btn_edit.setToolTip(edit)
+        self._btn_measure.setText('')
+        self._btn_measure.setToolTip(measure)
 
     LAYER_INDEX_MAP = [
         'Zones',
@@ -1295,6 +1350,8 @@ class MainDialog(
         self._tr_locale = code
         clear_i18n_cache()
         apply_widget_texts(self, code)
+        for b in ('_btn_draw', '_btn_select', '_btn_edit', '_btn_measure'):
+            getattr(self, b, None) and getattr(self, b).setText('')
         self._translate_internal_combos()
         fill_wilayas_list(self.wilaya_list)
         fill_road_type(self._combo_type_road)

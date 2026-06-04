@@ -470,6 +470,9 @@ def _make_gui_pyqt_mocks():
         def setSizePolicy(self, *_args):
             return None
 
+        def setMaximumWidth(self, _width):
+            return None
+
         def click(self):
             for slot in self._slots:
                 slot()
