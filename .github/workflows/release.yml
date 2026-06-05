@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build plugin ZIP
+        run: |
+          mkdir -p dist
+          git archive --prefix=RNA/ -o dist/RNA.zip HEAD
+
+      - name: Compute SHA1
+        run: echo "SHA1=$(sha1sum dist/RNA.zip | cut -d' ' -f1)" >> $GITHUB_ENV
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/RNA.zip
+          body: |
+            ## RNA ${{ github.ref_name }}
+
+            **SHA1:** `${{ env.SHA1 }}`
+
+            ### Install
+            1. Download `RNA.zip`
+            2. Open QGIS → **Plugins** → **Manage and Install Plugins**
+            3. Select **Install from ZIP**
+            4. Choose the downloaded file
+            5. Restart QGIS
+
+            Works on Windows, macOS, and Linux.
+          generate_release_notes: true

@@ -22,9 +22,11 @@ data/*.sqlite
 data/*.toml
 data/*.migrated
 
-# IDE
+# IDE / agents
 .idea/
 .vscode/
+.agents/
+.codex/
 *.swp
 *.swo
 
@@ -36,6 +38,11 @@ Thumbs.db
 .env
 venv/
 .venv/
+
+# Orphaned large data files (removed from git, prevent re-add)
+template_data/communes.geojson
+template_data/communes_wkt.json
+template_data/replacements/*.bak
 
 # Unrelated assets
 liquid-glass/
