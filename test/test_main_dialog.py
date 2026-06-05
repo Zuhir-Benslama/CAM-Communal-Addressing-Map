@@ -471,33 +471,7 @@ class TestMainDialogCore(unittest.TestCase):
             self.main_dialog.Qt.LayoutDirection.LeftToRight,
         )
 
-    @patch('plans_adressage.gui.dialog_state.fill_panel_reference')
-    @patch('plans_adressage.gui.dialog_state.fill_road_reference')
-    @patch('plans_adressage.gui.dialog_state.fill_activity_category')
-    @patch('plans_adressage.gui.dialog_state.fill_org_category')
-    @patch('plans_adressage.gui.dialog_state.fill_numbering_state')
-    @patch('plans_adressage.gui.dialog_state.fill_mounting_status')
-    @patch('plans_adressage.gui.dialog_state.fill_subdivision_type')
-    @patch('plans_adressage.gui.dialog_state.fill_zone_type')
-    @patch('plans_adressage.gui.dialog_state.fill_road_type')
-    @patch('plans_adressage.gui.dialog_state.fill_wilayas_list')
-    @patch('plans_adressage.gui.dialog_state.fill_feature_combo')
-    @patch('plans_adressage.gui.dialog_state.fill_paper')
-    def test_on_locale_changed_refills_combos(
-        self,
-        _fill_paper,
-        _fill_feature,
-        _fill_wilayas,
-        _fill_road_type,
-        _fill_zone_type,
-        _fill_subd_type,
-        _fill_mount,
-        _fill_num,
-        _fill_org_cat,
-        _fill_act_cat,
-        _fill_road_ref,
-        _fill_panel_ref,
-    ):
+    def test_on_locale_changed_refills_combos(self):
         dialog = self._make_raw()
         dialog._combo_locale = self._make_locale_combo()
         for attr in (
@@ -528,22 +502,34 @@ class TestMainDialogCore(unittest.TestCase):
         dialog._combo_theme = self.QComboBox()
         self._add_action_btns(dialog)
         with (
+            patch.object(self.dialog_state, 'fill_paper'),
+            patch.object(self.dialog_state, 'fill_feature_combo'),
+            patch.object(self.dialog_state, 'fill_wilayas_list'),
+            patch.object(self.dialog_state, 'fill_road_type'),
+            patch.object(self.dialog_state, 'fill_zone_type'),
+            patch.object(self.dialog_state, 'fill_subdivision_type'),
+            patch.object(self.dialog_state, 'fill_mounting_status'),
+            patch.object(self.dialog_state, 'fill_numbering_state'),
+            patch.object(self.dialog_state, 'fill_org_category'),
+            patch.object(self.dialog_state, 'fill_activity_category'),
+            patch.object(self.dialog_state, 'fill_road_reference'),
+            patch.object(self.dialog_state, 'fill_panel_reference'),
             patch.object(self.dialog_state, 'QSettings'),
             patch.object(self.dialog_state, 'clear_i18n_cache'),
             patch.object(self.dialog_state, 'apply_widget_texts'),
         ):
             self.dialog_state.on_locale_changed(dialog, 1)
-            _fill_paper.assert_called_once()
-            _fill_wilayas.assert_called_once()
-            _fill_road_type.assert_called_once()
-            _fill_zone_type.assert_called_once()
-            _fill_subd_type.assert_called_once()
-            _fill_mount.assert_called_once()
-            _fill_num.assert_called_once()
-            _fill_org_cat.assert_called_once()
-            _fill_act_cat.assert_called_once()
-            _fill_road_ref.assert_called_once()
-            _fill_panel_ref.assert_called_once()
+            self.dialog_state.fill_paper.assert_called_once()
+            self.dialog_state.fill_wilayas_list.assert_called_once()
+            self.dialog_state.fill_road_type.assert_called_once()
+            self.dialog_state.fill_zone_type.assert_called_once()
+            self.dialog_state.fill_subdivision_type.assert_called_once()
+            self.dialog_state.fill_mounting_status.assert_called_once()
+            self.dialog_state.fill_numbering_state.assert_called_once()
+            self.dialog_state.fill_org_category.assert_called_once()
+            self.dialog_state.fill_activity_category.assert_called_once()
+            self.dialog_state.fill_road_reference.assert_called_once()
+            self.dialog_state.fill_panel_reference.assert_called_once()
 
     # ------------------------------------------------------------------
     # on_action_changed (dialog_state)
