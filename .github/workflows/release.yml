@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
@@ -41,4 +43,4 @@ jobs:
             5. Restart QGIS
 
             Works on Windows, macOS, and Linux.
-          generate_release_notes: true
+          # generate_release_notes: true  # requires GITHUB_TOKEN with release note API access
