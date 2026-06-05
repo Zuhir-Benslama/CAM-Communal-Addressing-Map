@@ -386,7 +386,8 @@ def _migrate_users_from_auth(engine: Any) -> None:
                         'api_key, session_token, email, phone, first_name, last_name, '
                         'created_at, updated_at) '
                         'SELECT id, username, password, active, '
-                        'wilaya_code, commune_code, api_key, session_token, email, phone, '
+                        'wilaya_code, commune_code, api_key, session_token, '
+                        'email, phone, '
                         'first_name, last_name, created_at, updated_at '
                         'FROM auth_db.user'
                     )

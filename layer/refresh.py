@@ -292,7 +292,7 @@ def remove_all_categorized_styles(iface) -> None:
         try:
             remove_categorized_style(iface, cfg.get('label'))
         except Exception:  # pylint: disable=W0718
-            logger.exception('Error removing categorized style from %s', cfg.get('label'))
+            logger.exception('Error removing categorized style: %s', cfg.get('label'))
 
     filename = STYLE_QML
     for layer in QgsProject.instance().mapLayers().values():
