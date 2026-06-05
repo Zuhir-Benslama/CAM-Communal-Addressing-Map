@@ -40,6 +40,13 @@ from ..scripts.lookup_data import (
 
 logger = logging.getLogger(__name__)
 
+def _setup_combo(combobox: QComboBox) -> None:
+    """Configure a combobox with popup completion and no-insert policy."""
+    completer = combobox.completer()
+    if completer is not None:
+        completer.setCompletionMode(QCompleter.PopupCompletion)
+    combobox.setInsertPolicy(QComboBox.NoInsert)
+
 
 def _locale() -> str:
     """Return the current UI locale code."""
@@ -65,10 +72,7 @@ def fill_wilayas_list(combobox: QComboBox) -> None:
     for name, code in wilayas:
         combobox.addItem(_i18n_tr(name, loc), code)
     combobox.setCurrentIndex(0)
-    completer = combobox.completer()
-    if completer is not None:
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-    combobox.setInsertPolicy(QComboBox.NoInsert)
+    _setup_combo(combobox)
 
 
 def fill_paper(combobox: QComboBox) -> None:
@@ -86,10 +90,7 @@ def _fill_from_json(combobox, data, loc):
         display = locale_label(entry, loc)
         combobox.addItem(display, entry.get('pk', ''))
     combobox.setCurrentIndex(0)
-    completer = combobox.completer()
-    if completer is not None:
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-    combobox.setInsertPolicy(QComboBox.NoInsert)
+    _setup_combo(combobox)
 
 
 def fill_subdivision_type(combobox: QComboBox) -> None:
@@ -118,10 +119,7 @@ def fill_commune_of_wilaya(combobox: QComboBox, code_w: int) -> None:
                     name = _i18n_tr(str(entry.get('commune_ar', '')), loc)
             combobox.addItem(name, entry.get('commune_code', ''))
     combobox.setCurrentIndex(0)
-    completer = combobox.completer()
-    if completer is not None:
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-    combobox.setInsertPolicy(QComboBox.NoInsert)
+    _setup_combo(combobox)
 
 
 def fill_road_reference(combobox) -> None:
@@ -153,10 +151,7 @@ def fill_org_category(combobox) -> None:
     for display, value in org_categories(loc):
         combobox.addItem(display, value)
     combobox.setCurrentIndex(0)
-    completer = combobox.completer()
-    if completer is not None:
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-    combobox.setInsertPolicy(QComboBox.NoInsert)
+    _setup_combo(combobox)
 
 
 def fill_activity_category(combobox) -> None:
@@ -167,10 +162,7 @@ def fill_activity_category(combobox) -> None:
     for display, value in activity_categories(loc):
         combobox.addItem(display, value)
     combobox.setCurrentIndex(0)
-    completer = combobox.completer()
-    if completer is not None:
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-    combobox.setInsertPolicy(QComboBox.NoInsert)
+    _setup_combo(combobox)
 
 
 def fill_org_subcategory(combobox, cat) -> None:
@@ -179,10 +171,7 @@ def fill_org_subcategory(combobox, cat) -> None:
     for sub in org_subcategories(cat):
         combobox.addItem(sub, sub)
     combobox.setCurrentIndex(0)
-    completer = combobox.completer()
-    if completer is not None:
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-    combobox.setInsertPolicy(QComboBox.NoInsert)
+    _setup_combo(combobox)
 
 
 def fill_activity_subcategory(combobox, cat) -> None:
@@ -191,10 +180,7 @@ def fill_activity_subcategory(combobox, cat) -> None:
     for sub in activity_subcategories(cat):
         combobox.addItem(sub, sub)
     combobox.setCurrentIndex(0)
-    completer = combobox.completer()
-    if completer is not None:
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-    combobox.setInsertPolicy(QComboBox.NoInsert)
+    _setup_combo(combobox)
 
 
 def fill_activity_type(combobox, cat) -> None:
@@ -215,10 +201,7 @@ def fill_org_type(combobox, cat) -> None:
     for display, value in org_types_for_category(cat, loc):
         combobox.addItem(display, value)
     combobox.setCurrentIndex(0)
-    completer = combobox.completer()
-    if completer is not None:
-        completer.setCompletionMode(QCompleter.PopupCompletion)
-    combobox.setInsertPolicy(QComboBox.NoInsert)
+    _setup_combo(combobox)
 
 
 def fill_road_type(combobox) -> None:
@@ -263,10 +246,7 @@ def fill_subtype_combo(combobox: QComboBox, main_type: str) -> None:
         for display, value in activity_categories(loc):
             combobox.addItem(display, value)
         combobox.setCurrentIndex(0)
-        completer = combobox.completer()
-        if completer is not None:
-            completer.setCompletionMode(QCompleter.PopupCompletion)
-        combobox.setInsertPolicy(QComboBox.NoInsert)
+        _setup_combo(combobox)
         return
     loader = _MAIN_TYPE_MAP.get(main_type)
     if loader:
@@ -362,7 +342,7 @@ def get_org_type_options(loc: str, cat_value: str = '') -> list[dict]:
 
 
 def get_activity_category_options(loc: str) -> list[dict]:
-    options = [{'text': _i18n_tr(NO_ACTIVITY, loc), 'value': NO_ACTIVITY}]
+    options = [{'text': _i18n_tr(NO_ACTIVITY, loc), 'value': str(NO_ACTIVITY)}]
     options += [
         {'text': display, 'value': value} for display, value in activity_categories(loc)
     ]
@@ -371,7 +351,7 @@ def get_activity_category_options(loc: str) -> list[dict]:
 
 def get_activity_type_options(loc: str, cat_value: str = '') -> list[dict]:
     if not cat_value or cat_value == NO_ACTIVITY:
-        return [{'text': _i18n_tr(NO_ACTIVITY, loc), 'value': NO_ACTIVITY}]
+        return [{'text': _i18n_tr(NO_ACTIVITY, loc), 'value': str(NO_ACTIVITY)}]
     return [
         {'text': display, 'value': value}
         for display, value in activity_types_for_category(cat_value, loc)

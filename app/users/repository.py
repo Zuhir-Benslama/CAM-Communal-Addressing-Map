@@ -72,7 +72,7 @@ def get_current_user() -> dict | None:
     try:
         user = (
             session.query(User)
-            .filter(User.id == uid, User.api_key == cookie, User.active.is_(True))
+            .filter(User.id == uid, User.session_token == cookie, User.active.is_(True))
             .first()
         )
         if not user:

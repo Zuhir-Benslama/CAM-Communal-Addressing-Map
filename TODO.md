@@ -1648,7 +1648,25 @@ Open QGIS, load the plugin, and verify:
 - [ ] "Add New Feature", "Theme & Language", "Maps, Reports and Backup" sections remain
 
 ### Forms
-- [ ] Login page renders
-- [ ] Add User page renders
-- [ ] All 6 entity forms (City, Org, Roads, Zone, Pan, Num) render with constrained fields
-- [ ] Entity list dialog prev/next buttons are capped at 200px
+- [x] Login page renders
+- [x] Add User page renders
+- [x] All 6 entity forms (City, Org, Roads, Zone, Pan, Num) render with constrained fields
+- [x] Entity list dialog prev/next buttons are capped at 200px
+
+## 30. Activity Type & Category Translations (P1) ✅
+
+- [x] Added missing `type_fr` translations (259/259) in `template_data/activity.json` via Google Translate
+- [x] Fixed `type_en` — replaced Arabic-as-English values (228 entries) with real English translations
+- [x] Fixed `cat_en` — translated 13 Arabic sector names to English (148 entries updated)
+- [x] `activity_categories()` and `activity_types_for_category()` fallback logic already correct — was purely a data gap
+
+## 31. UI Label Renames (P2) ✅
+
+- [x] "Plan Selection" → "Phase" in `widgets.json` + `main_page.py`
+- [x] "Actions" → "Tools" in `widgets.json` + `main_page.py`
+- [x] "Form Data" → "Feature" in `widgets.json` + `main_page.py`
+- [x] "Add new types" → "Add New Feature" in `widgets.json` + `settings_page.py`
+
+## 32. Login Page Layout (P2) ✅
+
+- [x] "Add User" and "Restore Database" buttons on the same horizontal row in login page (`login_page.py`)

@@ -43,7 +43,7 @@ def login_required(func) -> Callable:
         try:
             user = (
                 session.query(User)
-                .filter(User.id == uid, User.api_key == cookie, User.active.is_(True))
+                .filter(User.id == uid, User.session_token == cookie, User.active.is_(True))
                 .first()
             )
         finally:

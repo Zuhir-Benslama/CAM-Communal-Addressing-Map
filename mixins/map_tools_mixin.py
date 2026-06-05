@@ -1,5 +1,5 @@
-# mypy: ignore-errors
 """Map tool management mixin for measure and identify interactions."""
+# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -105,7 +105,6 @@ class MapToolsMixin:
     ) -> None:
         """Activate identify tool in reference mode for selecting a
         reference feature."""
-        self.ref_name.clear()
         project = QgsProject.instance()
         layer_name = combo.currentData() or combo.currentText()
         if layer_name:
@@ -118,7 +117,6 @@ class MapToolsMixin:
                     mode=IdentifyTool.MODE_REF,
                 )
                 self.ref_identify_tool.set_iface(self.iface)
-                self.ref_identify_tool.set_ref_name(self.ref_name)
                 self.ref_identify_tool.set_active_layer(layer[0])
                 canvas.setMapTool(self.ref_identify_tool)
         else:

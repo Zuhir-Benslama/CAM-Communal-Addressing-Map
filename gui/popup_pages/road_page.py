@@ -2,7 +2,6 @@
 
 from typing import TYPE_CHECKING
 
-from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import (
     QComboBox,
     QFormLayout,

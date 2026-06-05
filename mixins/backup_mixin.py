@@ -1,5 +1,5 @@
-# mypy: ignore-errors
 """Backup, restore, and import mixin for SQLite/SpatiaLite databases."""
+# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 

@@ -121,7 +121,6 @@ class HasRefWidgets(Protocol):
 
     road_ref: Any
     panel_ref: Any
-    ref_name: Any
 
 
 @runtime_checkable
@@ -210,7 +209,7 @@ class HasExportMethods(Protocol):
     def map_situation(self) -> None:
         """Render a situation map on the layout."""
 
-    def symbols(self) -> None:
+    def symbols(self) -> str | None:
         """Render legend symbols on the layout."""
 
     def _render_and_export(self, *args: Any, **kwargs: Any) -> None:

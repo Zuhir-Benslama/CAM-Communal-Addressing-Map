@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 from qgis.PyQt.QtWidgets import (
     QComboBox,
     QFormLayout,
-    QLabel,
     QPushButton,
     QVBoxLayout,
     QWidget,
@@ -34,10 +33,8 @@ def build_pan_page(dialog: 'PopupDialog', stack) -> None:
     dialog._combo_panel_ref.setObjectName('panel_ref')
     form.addRow('Ref Type:', dialog._combo_panel_ref)
 
-    dialog._label_ref_name2 = QLabel()
-    form.addRow('Reference:', dialog._label_ref_name2)
     dialog._btn_select_panel_ref = QPushButton('Select Reference')
-    form.addRow('', dialog._btn_select_panel_ref)
+    form.addRow(dialog._btn_select_panel_ref)
 
     layout.addLayout(form)
     layout.addStretch()

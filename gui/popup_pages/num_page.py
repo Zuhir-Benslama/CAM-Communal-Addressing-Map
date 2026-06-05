@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 from qgis.PyQt.QtWidgets import (
     QComboBox,
     QFormLayout,
-    QLabel,
     QLineEdit,
     QPushButton,
     QVBoxLayout,
@@ -31,10 +30,8 @@ def build_num_page(dialog: 'PopupDialog', stack) -> None:
     dialog._combo_road_ref.setObjectName('road_ref')
     form.addRow('Ref Type:', dialog._combo_road_ref)
 
-    dialog._label_ref_name = QLabel()
-    form.addRow('Reference:', dialog._label_ref_name)
     dialog._btn_select_ref = QPushButton('Select Reference')
-    form.addRow('', dialog._btn_select_ref)
+    form.addRow(dialog._btn_select_ref)
 
     dialog._field_num_val = QLineEdit()
     dialog._field_num_val.setObjectName('num_val')

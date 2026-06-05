@@ -22,6 +22,7 @@ class User(Base, TimestampMixin):
     wilaya_code = Column(Integer, nullable=True)
     commune_code = Column(String(255), nullable=True)
     api_key = Column(Text, default='', nullable=True)
+    session_token = Column(Text, default='', nullable=True)
     email = Column(String(255), nullable=True)
     phone = Column(String(255), nullable=True)
 

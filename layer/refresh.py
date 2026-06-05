@@ -258,8 +258,8 @@ def refresh_all_layers(iface) -> None:
     for cfg in data_list:
         try:
             refresh_layer_from_db(iface, cfg.get('layer'), cfg.get('model'))
-        except Exception as e:  # pylint: disable=W0718
-            logger.error('Error occurred: %s', e)
+        except Exception:  # pylint: disable=W0718
+            logger.exception('Error refreshing layer %s', cfg.get('layer'))
 
     data_list = qgis_config().get('other_layers') or []
     for layer_cfg in data_list:
@@ -281,8 +281,8 @@ def apply_all_categorized_styles(iface) -> None:
     for cfg in data_list:
         try:
             apply_categorized_style(iface, cfg.get('layer'), cfg.get('by'))
-        except Exception as e:  # pylint: disable=W0718
-            logger.error('Error occurred: %s', e)
+        except Exception:  # pylint: disable=W0718
+            logger.exception('Error applying categorized style to %s', cfg.get('layer'))
 
 
 def remove_all_categorized_styles(iface) -> None:
@@ -291,8 +291,8 @@ def remove_all_categorized_styles(iface) -> None:
     for cfg in data_list:
         try:
             remove_categorized_style(iface, cfg.get('label'))
-        except Exception as e:  # pylint: disable=W0718
-            logger.error('Error occurred: %s', e)
+        except Exception:  # pylint: disable=W0718
+            logger.exception('Error removing categorized style from %s', cfg.get('label'))
 
     filename = STYLE_QML
     for layer in QgsProject.instance().mapLayers().values():

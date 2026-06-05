@@ -1,5 +1,5 @@
-# mypy: ignore-errors
 """Import/export mixin for rendering maps to PNG."""
+# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -78,6 +78,7 @@ class ImportExportMixin:
         canvas = self.iface.mapCanvas()
         current_scale = canvas.scale()
         now = datetime.now()
+        assert self.current_user is not None
         first = self.current_user.get('first_name', '') or ''
         last = self.current_user.get('last_name', '') or ''
         return {
@@ -97,7 +98,7 @@ class ImportExportMixin:
             with open(TMP_JSON, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
             return True
-        except Exception:  # pylint: disable=W0718
+        except (OSError, TypeError):
             logger.exception('Error saving JSON data to %s', TMP_JSON)
             QMessageBox.critical(
                 self,
@@ -126,7 +127,7 @@ class ImportExportMixin:
                 capture_output=True,
                 text=True,
                 check=True,
-                **_SUBPROCESS_FLAGS,
+                **_SUBPROCESS_FLAGS,  # type: ignore[call-overload]
             )
             QMessageBox.information(
                 self,
@@ -145,8 +146,8 @@ class ImportExportMixin:
                 self._tr('Error'),
                 f'{self._tr("Failed to generate map PDF")}\n\n{err_msg[:500]}',
             )
-        except Exception:  # pylint: disable=W0718
-            logger.exception('Failed to export map')
+        except OSError:
+            logger.exception('Failed to invoke reporting script')
             QMessageBox.critical(
                 self,
                 self._tr('Error'),

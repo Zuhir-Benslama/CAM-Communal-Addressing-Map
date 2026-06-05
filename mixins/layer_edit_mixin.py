@@ -1,5 +1,5 @@
-# mypy: ignore-errors
 """Layer editing mixin for adding and updating features via forms."""
+# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 

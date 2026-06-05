@@ -2,6 +2,7 @@
 
 import logging
 import os
+import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager
 from typing import Any
@@ -44,15 +45,14 @@ class ConnectionPool:
                 dbapi_conn.enable_load_extension(True)
                 try:
                     dbapi_conn.load_extension(dll)
-                except Exception as exc:  # pylint: disable=W0718
+                except sqlite3.OperationalError as exc:
                     logger.debug(
                         'SpatiaLite load_extension failed, trying SQL fallback',
                         exc_info=True,
                     )
                     if not os.path.exists(dll):
                         raise RuntimeError(f'SpatiaLite DLL not found: {dll}') from exc
-                    safe_dll = dll.replace("'", "''")
-                    dbapi_conn.execute(f"SELECT load_extension('{safe_dll}')")
+                    dbapi_conn.execute("SELECT load_extension(?)", (dll,))
                 try:
                     cursor = dbapi_conn.execute(
                         'SELECT count(*) FROM sqlite_master '
@@ -150,7 +150,9 @@ def _spatial_index_exists(conn: Any, table: str, column: str) -> bool:
     return row is not None and row[0] == 1
 
 
-_MISSING_COLUMNS: tuple[tuple[str, str, str], ...] = ()
+_MISSING_COLUMNS: tuple[tuple[str, str, str], ...] = (
+    ('user', 'session_token', 'TEXT'),
+)
 
 
 def _migrate_missing_columns(engine: Any) -> None:
@@ -381,10 +383,10 @@ def _migrate_users_from_auth(engine: Any) -> None:
                     text(
                         'INSERT OR IGNORE INTO user '
                         '(id, username, password, active, wilaya_code, commune_code, '
-                        'api_key, email, phone, first_name, last_name, '
+                        'api_key, session_token, email, phone, first_name, last_name, '
                         'created_at, updated_at) '
                         'SELECT id, username, password, active, '
-                        'wilaya_code, commune_code, api_key, email, phone, '
+                        'wilaya_code, commune_code, api_key, session_token, email, phone, '
                         'first_name, last_name, created_at, updated_at '
                         'FROM auth_db.user'
                     )

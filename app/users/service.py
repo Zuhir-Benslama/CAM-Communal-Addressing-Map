@@ -3,15 +3,15 @@
 import json
 import logging
 import os
+import secrets
 import tempfile
 
-import jwt
 import toml
 from marshmallow import ValidationError
 from qgis.core import QgsMessageLog, QgsProject
 
 from ..core.database import get_session
-from ..core.security import get_jwt_secret, hash_password, verify_password
+from ..core.security import hash_password, verify_password
 from ..shared.constants import COMMUNES_JSON, COOKIE_FILE, DAIRA_JSON
 from ..users.models import User
 from ..users.repository import create_cookie
@@ -80,6 +80,7 @@ def sign_up(
                 commune_code=commune_code,
                 wilaya_code=wilaya_code,
                 api_key='',
+                session_token='',
             )
             session.add(user)
             session.commit()
@@ -113,10 +114,10 @@ def sign_in(
                 return False, None, "Username doesn't exist"
             if not verify_password(password, user.password):
                 return False, None, 'Wrong password try again !'
-            token = jwt.encode(user.to_dict(), get_jwt_secret(), algorithm='HS256')
-            user.api_key = str(token)
+            session_token = secrets.token_urlsafe(32)
+            user.session_token = session_token
             session.commit()
-            create_cookie(token, user.id)
+            create_cookie(session_token, user.id)
             return True, user.username, None
         except Exception as e:  # pylint: disable=W0718
             session.rollback()
@@ -148,32 +149,32 @@ def logout(iface, dlg) -> None:
 
     with open(filename, encoding='utf-8') as f:
         cookie_data = toml.load(f)
-    cookie = cookie_data.get('Session', {}).get('cookie', None)
-    uid = cookie_data.get('Session', {}).get('uid', None)
-    if cookie and uid:
-        session = get_session()
-        try:
-            user = (
-                session.query(User)
-                .filter(User.id == uid, User.api_key == cookie, User.active.is_(True))
-                .first()
-            )
-            if user:
-                user.api_key = None
-            session.commit()
-            cookie_data['Session']['cookie'] = None
-            cookie_data['Session']['uid'] = None
-
-            fd, tmp_path = tempfile.mkstemp(dir=os.path.dirname(filename) or '.')
+        cookie = cookie_data.get('Session', {}).get('cookie', None)
+        uid = cookie_data.get('Session', {}).get('uid', None)
+        if cookie and uid:
+            session = get_session()
             try:
-                with os.fdopen(fd, 'w', encoding='utf-8') as f:
-                    toml.dump(cookie_data, f)
-                os.replace(tmp_path, filename)
-            except Exception:
-                os.unlink(tmp_path)
-                raise
-        finally:
-            session.close()
+                user = (
+                    session.query(User)
+                    .filter(User.id == uid, User.session_token == cookie, User.active.is_(True))
+                    .first()
+                )
+                if user:
+                    user.session_token = None
+                session.commit()
+                cookie_data['Session']['cookie'] = None
+                cookie_data['Session']['uid'] = None
+
+                fd, tmp_path = tempfile.mkstemp(dir=os.path.dirname(filename) or '.')
+                try:
+                    with os.fdopen(fd, 'w', encoding='utf-8') as f:
+                        toml.dump(cookie_data, f)
+                    os.replace(tmp_path, filename)
+                except Exception:
+                    os.unlink(tmp_path)
+                    raise
+            finally:
+                session.close()
         remove_all_layers(iface)
         if dlg:
             dlg.close()

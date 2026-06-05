@@ -124,26 +124,25 @@
     "fr": "Numéro",
     "en": "Number"
   },
-
   "groupBox_actions": {
     "ar": "الإجراءات",
-    "fr": "Actions",
-    "en": "Actions"
+    "fr": "Outils",
+    "en": "Tools"
   },
   "groupBox_form_data": {
     "ar": "بيانات النموذج",
-    "fr": "Données du formulaire",
-    "en": "Form Data"
+    "fr": "Entité",
+    "en": "Feature"
   },
   "groupBox_plan_selection": {
     "ar": "اختيار الخطة",
-    "fr": "Sélection du plan",
-    "en": "Plan Selection"
+    "fr": "Phase",
+    "en": "Phase"
   },
   "groupBox_add_types": {
-    "ar": "إضافة أنواع جديدة",
-    "fr": "Ajouter de nouveaux types",
-    "en": "Add new types"
+    "ar": "إضافة خصائص جديدة",
+    "fr": "Ajouter une nouvelle entité",
+    "en": "Add New Feature"
   },
   "label": {
     "ar": ": رقم المقرر",

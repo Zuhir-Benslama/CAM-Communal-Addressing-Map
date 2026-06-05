@@ -1,6 +1,7 @@
 """Popup dialog for viewing and editing feature attributes — Qt Widgets version."""
 
 import logging
+from collections.abc import Callable
 from typing import TYPE_CHECKING
 
 from qgis.core import QgsProject
@@ -107,8 +108,6 @@ def _set_city_values(dialog: 'PopupDialog', data: dict) -> None:
 
 def _set_num_values(dialog: 'PopupDialog', data: dict) -> None:
     dialog._set_combo_by_data(dialog._combo_road_ref, data.get('refType'))
-    if data.get('refName'):
-        dialog._label_ref_name.setText(str(data['refName']))
     if data.get('number'):
         dialog._field_num_val.setText(str(data['number']))
     if data.get('repetition'):
@@ -121,11 +120,9 @@ def _set_num_values(dialog: 'PopupDialog', data: dict) -> None:
 def _set_pan_values(dialog: 'PopupDialog', data: dict) -> None:
     dialog._set_combo_by_data(dialog._combo_mount_status, data.get('mountStatus'))
     dialog._set_combo_by_data(dialog._combo_panel_ref, data.get('refType'))
-    if data.get('refName'):
-        dialog._label_ref_name2.setText(str(data['refName']))
 
 
-_SET_FORM_DISPATCH: dict[str, callable] = {
+_SET_FORM_DISPATCH: dict[str, Callable] = {
     'zone': _set_zone_values,
     'roads': _set_road_values,
     'org': _set_org_values,
@@ -182,7 +179,7 @@ def _collect_pan_data(dialog: 'PopupDialog') -> dict:
     }
 
 
-_COLLECT_FORM_DISPATCH: dict[str, callable] = {
+_COLLECT_FORM_DISPATCH: dict[str, Callable] = {
     'zone': _collect_zone_data,
     'roads': _collect_road_data,
     'org': _collect_org_data,
@@ -396,7 +393,6 @@ class PopupDialog(QDialog):
             IdentifyTool,
         )
 
-        self._clear_ref_name()
         project = QgsProject.instance()
 
         if layer_name:
@@ -423,20 +419,10 @@ class PopupDialog(QDialog):
         if layer:
             self.iface.setActiveLayer(layer[0])
 
-    def _clear_ref_name(self) -> None:
-        self._label_ref_name.setText('')
-        self._label_ref_name2.setText('')
-
     def _on_reference_selected(self, feature_id, layer_name) -> None:
         """Called when the user selects a reference feature on the map."""
         self._ref_id = str(feature_id)
         self._ref_layer = layer_name
-        display_name = f'{layer_name} [{feature_id}]'
-        page_key = self.layer_name_value
-        if page_key == 'num':
-            self._label_ref_name.setText(display_name)
-        elif page_key == 'pan':
-            self._label_ref_name2.setText(display_name)
 
     # ------------------------------------------------------------------
     # Public API used by popup_handlers

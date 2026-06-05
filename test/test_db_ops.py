@@ -152,7 +152,8 @@ class TestGetAuthenticatedUser(unittest.TestCase):
             mock_session.return_value = mock_session_instance
             mock_session_instance.query.return_value.filter.return_value.first.return_value = MagicMock(
                 id='u1',
-                api_key='ck',
+                api_key='',
+                session_token='ck',
                 active=True,
                 commune_code='unknown',
                 wilaya_code=None,

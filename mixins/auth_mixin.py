@@ -1,4 +1,3 @@
-# mypy: ignore-errors
 """Authentication and login flow mixin for user management."""
 
 from __future__ import annotations
@@ -63,7 +62,7 @@ class AuthMixin:
         if ok:
             self.public_route('login')
         elif errors:
-            self._show_error('\n'.join(errors))
+            self._show_error('\n'.join(errors))  # type: ignore[attr-defined]
 
     def login_user(
         self: HasFullAuthContext,
@@ -78,7 +77,7 @@ class AuthMixin:
             indicator = self.add_map_layer()
             if indicator:
                 self.current_user = get_current_user()
-                if not self._load_map_data():
+                if not self._load_map_data():  # type: ignore[attr-defined]
                     return
                 self.private_route('main')
                 self.menu.setCurrentIndex(0)
@@ -96,9 +95,9 @@ class AuthMixin:
             init_allowed_zone(self.iface)
             refresh_all_layers(self.iface)
             return True
-        except Exception as e:  # pylint: disable=W0718
-            logger.error('Error loading map data after login: %s', e)
-            self._show_error(self._tr(f'Error loading map: {e}'))
+        except Exception:  # pylint: disable=W0718
+            logger.exception('Error loading map data after login')
+            self._show_error(self._tr('Error loading map data'))
             return False
 
     def fill_map_options(self: HasMapOptionWidgets) -> None:

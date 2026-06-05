@@ -1,5 +1,5 @@
-# mypy: ignore-errors
 """Symbol and layout export mixin for SVG, PNG map generation."""
+# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -125,7 +125,7 @@ class SymbolExportMixin:
             new_y = (total_height - legend_rect.height()) / 2
             legend.setPos(legend.scenePos().x(), new_y)
 
-    def symbols(self: HasSymbolPlanContext):
+    def symbols(self: HasSymbolPlanContext) -> str | None:
         """Export a layout with map and legend to SVG."""
         if not (self.type_plan and self.type_to_hide):
             return None

@@ -227,7 +227,6 @@ class MainDialog(
         self.subd_type = self._combo_subd_type
         self.subd_name = self._field_subd_name
         self.road_ref = self._combo_road_ref
-        self.ref_name = self._label_ref_name
         self.num_val = self._field_num_val
         self.repetition = self._field_repetition
         self.num_state = self._combo_num_state

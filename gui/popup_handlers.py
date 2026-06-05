@@ -158,77 +158,72 @@ def _data(dialog: 'PopupDialog') -> dict:
     return dialog._current_form_data
 
 
-def update_road(dialog: 'PopupDialog') -> None:
-    data = _data(dialog)
+def _update_entity(
+    dialog: 'PopupDialog',
+    model_class,
+    success_msg: str,
+    error_msg: str,
+    **fields,
+) -> None:
+    """Generic update helper: open session, call model.update, notify."""
     session = get_session()
     try:
-        Road.update(
-            session,
-            record_id=dialog.attribute,
-            name=validate_text(data.get('name', '')),
-            type=data.get('type', ''),
-        )
-        _notify_success(dialog, 'This road has been updated successfully')
+        model_class.update(session, record_id=dialog.attribute, **fields)
+        _notify_success(dialog, success_msg)
     except (ValueError, SQLAlchemyError) as e:
-        _notify_failure(dialog, 'Cannot update road', e)
+        _notify_failure(dialog, error_msg, e)
     finally:
         session.close()
     _finish_update(dialog)
+
+
+def update_road(dialog: 'PopupDialog') -> None:
+    data = _data(dialog)
+    _update_entity(
+        dialog,
+        Road,
+        'This road has been updated successfully',
+        'Cannot update road',
+        name=validate_text(data.get('name', '')),
+        type=data.get('type', ''),
+    )
 
 
 def update_organization(dialog: 'PopupDialog') -> None:
     data = _data(dialog)
-    session = get_session()
-    try:
-        Organization.update(
-            session,
-            record_id=dialog.attribute,
-            category=data.get('category', ''),
-            name=validate_text(data.get('name', '')),
-            type=data.get('type', ''),
-        )
-        _notify_success(dialog, 'This facility has been updated successfully')
-    except (ValueError, SQLAlchemyError) as e:
-        _notify_failure(dialog, 'Cannot update facility', e)
-    finally:
-        session.close()
-    _finish_update(dialog)
+    _update_entity(
+        dialog,
+        Organization,
+        'This facility has been updated successfully',
+        'Cannot update facility',
+        category=data.get('category', ''),
+        name=validate_text(data.get('name', '')),
+        type=data.get('type', ''),
+    )
 
 
 def update_subdivision(dialog: 'PopupDialog') -> None:
     data = _data(dialog)
-    session = get_session()
-    try:
-        Subdivision.update(
-            session,
-            record_id=dialog.attribute,
-            name=validate_text(data.get('name', '')),
-            type=data.get('type', ''),
-        )
-        _notify_success(dialog, 'This subdivision has been updated successfully')
-    except (ValueError, SQLAlchemyError) as e:
-        _notify_failure(dialog, 'Cannot update subdivision', e)
-    finally:
-        session.close()
-    _finish_update(dialog)
+    _update_entity(
+        dialog,
+        Subdivision,
+        'This subdivision has been updated successfully',
+        'Cannot update subdivision',
+        name=validate_text(data.get('name', '')),
+        type=data.get('type', ''),
+    )
 
 
 def update_zone(dialog: 'PopupDialog') -> None:
     data = _data(dialog)
-    session = get_session()
-    try:
-        Zone.update(
-            session,
-            record_id=dialog.attribute,
-            name=validate_text(data.get('name', '')),
-            type=data.get('type', ''),
-        )
-        _notify_success(dialog, 'This zone has been updated successfully')
-    except (ValueError, SQLAlchemyError) as e:
-        _notify_failure(dialog, 'Cannot update zone', e)
-    finally:
-        session.close()
-    _finish_update(dialog)
+    _update_entity(
+        dialog,
+        Zone,
+        'This zone has been updated successfully',
+        'Cannot update zone',
+        name=validate_text(data.get('name', '')),
+        type=data.get('type', ''),
+    )
 
 
 def update_panel(dialog: 'PopupDialog') -> None:

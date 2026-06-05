@@ -4,1812 +4,2071 @@
     "type": "محطة إذاعة",
     "cat_en": "Media & Communication",
     "type_en": "Radio Station",
-    "cat_fr": "Médias & Communication"
+    "cat_fr": "Médias & Communication",
+    "type_fr": "Station de radio"
   },
   {
     "sector": "إعلام وإتصال",
     "type": "محطة بث",
     "cat_en": "Media & Communication",
     "type_en": "Broadcast Station",
-    "cat_fr": "Médias & Communication"
+    "cat_fr": "Médias & Communication",
+    "type_fr": "Station de diffusion"
   },
   {
     "sector": "إعلام وإتصال",
     "type": "محطة تلفزة",
     "cat_en": "Media & Communication",
     "type_en": "Television Station",
-    "cat_fr": "Médias & Communication"
+    "cat_fr": "Médias & Communication",
+    "type_fr": "Chaîne de télévision"
   },
   {
     "sector": "إعلام وإتصال",
     "type": "مقر جريدة",
     "cat_en": "Media & Communication",
     "type_en": "Newspaper Office",
-    "cat_fr": "Médias & Communication"
+    "cat_fr": "Médias & Communication",
+    "type_fr": "Siège du journal"
   },
   {
     "sector": "بريد و مواصلات",
     "type": "شركة إتصالات",
     "cat_en": "Post & Telecommunications",
     "type_en": "Telecommunications Company",
-    "cat_fr": "Poste & Télécommunications"
+    "cat_fr": "Poste & Télécommunications",
+    "type_fr": "Entreprise de télécommunications"
   },
   {
     "sector": "بريد و مواصلات",
     "type": "فضاء انترنات",
     "cat_en": "Post & Telecommunications",
-    "type_en": "فضاء انترنات",
-    "cat_fr": "Poste & Télécommunications"
+    "type_en": "Internet space",
+    "cat_fr": "Poste & Télécommunications",
+    "type_fr": "Espace Internet"
   },
   {
     "sector": "بريد و مواصلات",
     "type": "مديرية بريد وإتصالات",
     "cat_en": "Post & Telecommunications",
-    "type_en": "مديرية بريد وإتصالات",
-    "cat_fr": "Poste & Télécommunications"
+    "type_en": "Post and Communications Directorate",
+    "cat_fr": "Poste & Télécommunications",
+    "type_fr": "Direction des Postes et des Communications"
   },
   {
     "sector": "بريد و مواصلات",
     "type": "مركز بريد",
     "cat_en": "Post & Telecommunications",
-    "type_en": "مركز بريد",
-    "cat_fr": "Poste & Télécommunications"
+    "type_en": "Post office",
+    "cat_fr": "Poste & Télécommunications",
+    "type_fr": "Bureau de poste"
   },
   {
     "sector": "بريد و مواصلات",
     "type": "هوائي إتصالات",
     "cat_en": "Post & Telecommunications",
-    "type_en": "هوائي إتصالات",
-    "cat_fr": "Poste & Télécommunications"
+    "type_en": "Communications antenna",
+    "cat_fr": "Poste & Télécommunications",
+    "type_fr": "Antenne de communication"
   },
   {
     "sector": "بيئة",
     "type": "ردم تقني",
-    "cat_en": "بيئة",
-    "type_en": "ردم تقني",
-    "cat_fr": "Environnement"
+    "cat_en": "environment",
+    "type_en": "Technical backfill",
+    "cat_fr": "Environnement",
+    "type_fr": "Remblai technique"
   },
   {
     "sector": "بيئة",
     "type": "رسكلة النفايات",
-    "cat_en": "بيئة",
-    "type_en": "رسكلة النفايات",
-    "cat_fr": "Environnement"
+    "cat_en": "environment",
+    "type_en": "Waste recycling",
+    "cat_fr": "Environnement",
+    "type_fr": "Recyclage des déchets"
   },
   {
     "sector": "بيئة",
     "type": "شركة - بيئة",
-    "cat_en": "بيئة",
-    "type_en": "شركة - بيئة",
-    "cat_fr": "Environnement"
+    "cat_en": "environment",
+    "type_en": "Company - Environment",
+    "cat_fr": "Environnement",
+    "type_fr": "Entreprise - Environnement"
   },
   {
     "sector": "بيئة",
     "type": "مديرية - بيئة",
-    "cat_en": "بيئة",
-    "type_en": "مديرية - بيئة",
-    "cat_fr": "Environnement"
+    "cat_en": "environment",
+    "type_en": "Directorate - Environment",
+    "cat_fr": "Environnement",
+    "type_fr": "Direction - Environnement"
   },
   {
     "sector": "بيئة",
     "type": "معالجة النفايات",
-    "cat_en": "بيئة",
-    "type_en": "معالجة النفايات",
-    "cat_fr": "Environnement"
+    "cat_en": "environment",
+    "type_en": "Waste treatment",
+    "cat_fr": "Environnement",
+    "type_fr": "Traitement des déchets"
   },
   {
     "sector": "بيئة",
     "type": "مفتشية - بيئة",
-    "cat_en": "بيئة",
-    "type_en": "مفتشية - بيئة",
-    "cat_fr": "Environnement"
+    "cat_en": "environment",
+    "type_en": "Inspectorate - Environment",
+    "cat_fr": "Environnement",
+    "type_fr": "Inspection - Environnement"
   },
   {
     "sector": "بيئة",
     "type": "مفرغة عمومية",
-    "cat_en": "بيئة",
-    "type_en": "مفرغة عمومية",
-    "cat_fr": "Environnement"
+    "cat_en": "environment",
+    "type_en": "General treadmill",
+    "cat_fr": "Environnement",
+    "type_fr": "Tapis roulant général"
   },
   {
     "sector": "تجارة",
     "type": "سوق ",
     "cat_en": "Trade",
-    "type_en": "سوق ",
-    "cat_fr": "Commerce"
+    "type_en": "market",
+    "cat_fr": "Commerce",
+    "type_fr": "marché"
   },
   {
     "sector": "تجارة",
     "type": "غرفة تبريد",
     "cat_en": "Trade",
-    "type_en": "غرفة تبريد",
-    "cat_fr": "Commerce"
+    "type_en": "Cold room",
+    "cat_fr": "Commerce",
+    "type_fr": "Chambre froide"
   },
   {
     "sector": "تجارة",
     "type": "مخزن تجارة",
     "cat_en": "Trade",
-    "type_en": "مخزن تجارة",
-    "cat_fr": "Commerce"
+    "type_en": "Trade store",
+    "cat_fr": "Commerce",
+    "type_fr": "Magasin commercial"
   },
   {
     "sector": "تجارة",
     "type": "مديرية التجارة",
     "cat_en": "Trade",
-    "type_en": "مديرية التجارة",
-    "cat_fr": "Commerce"
+    "type_en": "Directorate of Commerce",
+    "cat_fr": "Commerce",
+    "type_fr": "Direction du Commerce"
   },
   {
     "sector": "تجارة",
     "type": "مذبح",
     "cat_en": "Trade",
-    "type_en": "مذبح",
-    "cat_fr": "Commerce"
+    "type_en": "altar",
+    "cat_fr": "Commerce",
+    "type_fr": "autel"
   },
   {
     "sector": "تجارة",
     "type": "مركز تجاري",
     "cat_en": "Trade",
-    "type_en": "مركز تجاري",
-    "cat_fr": "Commerce"
+    "type_en": "Mall",
+    "cat_fr": "Commerce",
+    "type_fr": "Centre commercial"
   },
   {
     "sector": "تجارة",
     "type": "مفتشية التجارة",
     "cat_en": "Trade",
-    "type_en": "مفتشية التجارة",
-    "cat_fr": "Commerce"
+    "type_en": "Trade Inspectorate",
+    "cat_fr": "Commerce",
+    "type_fr": "Inspection du Commerce"
   },
   {
     "sector": "تجارة",
     "type": "مؤسسة - تجارة",
     "cat_en": "Trade",
-    "type_en": "مؤسسة - تجارة",
-    "cat_fr": "Commerce"
+    "type_en": "Corporation - Trade",
+    "cat_fr": "Commerce",
+    "type_fr": "Société - Commerce"
   },
   {
     "sector": "تجارة",
     "type": "نقطة بيع",
     "cat_en": "Trade",
-    "type_en": "نقطة بيع",
-    "cat_fr": "Commerce"
+    "type_en": "Point of sale",
+    "cat_fr": "Commerce",
+    "type_fr": "Point de vente"
   },
   {
     "sector": "تجارة",
     "type": "وكالة عقارية",
     "cat_en": "Trade",
     "type_en": "Real Estate Agency",
-    "cat_fr": "Commerce"
+    "cat_fr": "Commerce",
+    "type_fr": "Agence immobilière"
   },
   {
     "sector": "تشغيل وضمان إجتماعي",
     "type": "إتحاد - نقابة شغل",
-    "cat_en": "تشغيل وضمان إجتماعي",
-    "type_en": "إتحاد - نقابة شغل",
-    "cat_fr": "Emploi & Sécurité Sociale"
+    "cat_en": "Employment and social security",
+    "type_en": "Union - labor union",
+    "cat_fr": "Emploi & Sécurité Sociale",
+    "type_fr": "Syndicat - syndicat"
   },
   {
     "sector": "تشغيل وضمان إجتماعي",
     "type": "تأمين",
-    "cat_en": "تشغيل وضمان إجتماعي",
-    "type_en": "تأمين",
-    "cat_fr": "Emploi & Sécurité Sociale"
+    "cat_en": "Employment and social security",
+    "type_en": "insurance",
+    "cat_fr": "Emploi & Sécurité Sociale",
+    "type_fr": "assurance"
   },
   {
     "sector": "تشغيل وضمان إجتماعي",
     "type": "مفتشية التشغيل",
-    "cat_en": "تشغيل وضمان إجتماعي",
-    "type_en": "مفتشية التشغيل",
-    "cat_fr": "Emploi & Sécurité Sociale"
+    "cat_en": "Employment and social security",
+    "type_en": "Operating Inspectorate",
+    "cat_fr": "Emploi & Sécurité Sociale",
+    "type_fr": "Inspection des opérations"
   },
   {
     "sector": "تشغيل وضمان إجتماعي",
     "type": "وكالة التشغيل",
-    "cat_en": "تشغيل وضمان إجتماعي",
-    "type_en": "وكالة التشغيل",
-    "cat_fr": "Emploi & Sécurité Sociale"
+    "cat_en": "Employment and social security",
+    "type_en": "Employment agency",
+    "cat_fr": "Emploi & Sécurité Sociale",
+    "type_fr": "Agence pour l'emploi"
   },
   {
     "sector": "تضامن وطني وأسرة",
     "type": "تأهيل المعوقين",
-    "cat_en": "تضامن وطني وأسرة",
-    "type_en": "تأهيل المعوقين",
-    "cat_fr": "Solidarité Nationale & Famille"
+    "cat_en": "National and family solidarity",
+    "type_en": "Rehabilitation of people with disabilities",
+    "cat_fr": "Solidarité Nationale & Famille",
+    "type_fr": "Réadaptation des personnes handicapées"
   },
   {
     "sector": "تضامن وطني وأسرة",
     "type": "خلية للتضامن",
-    "cat_en": "تضامن وطني وأسرة",
-    "type_en": "خلية للتضامن",
-    "cat_fr": "Solidarité Nationale & Famille"
+    "cat_en": "National and family solidarity",
+    "type_en": "Solidarity cell",
+    "cat_fr": "Solidarité Nationale & Famille",
+    "type_fr": "Cellule de solidarité"
   },
   {
     "sector": "تضامن وطني وأسرة",
     "type": "دار الطفولة",
-    "cat_en": "تضامن وطني وأسرة",
-    "type_en": "دار الطفولة",
-    "cat_fr": "Solidarité Nationale & Famille"
+    "cat_en": "National and family solidarity",
+    "type_en": "Childhood home",
+    "cat_fr": "Solidarité Nationale & Famille",
+    "type_fr": "Maison d'enfance"
   },
   {
     "sector": "تضامن وطني وأسرة",
     "type": "دار المسنين",
-    "cat_en": "تضامن وطني وأسرة",
-    "type_en": "دار المسنين",
-    "cat_fr": "Solidarité Nationale & Famille"
+    "cat_en": "National and family solidarity",
+    "type_en": "Nursing home",
+    "cat_fr": "Solidarité Nationale & Famille",
+    "type_fr": "Maison de repos"
   },
   {
     "sector": "تضامن وطني وأسرة",
     "type": "مديرية تضامن وطني وأسرة",
-    "cat_en": "تضامن وطني وأسرة",
-    "type_en": "مديرية تضامن وطني وأسرة",
-    "cat_fr": "Solidarité Nationale & Famille"
+    "cat_en": "National and family solidarity",
+    "type_en": "Directorate of National Solidarity and Family",
+    "cat_fr": "Solidarité Nationale & Famille",
+    "type_fr": "Direction de la Solidarité Nationale et de la Famille"
   },
   {
     "sector": "تضامن وطني وأسرة",
     "type": "مفتشية تضامن وطني وأسرة",
-    "cat_en": "تضامن وطني وأسرة",
-    "type_en": "مفتشية تضامن وطني وأسرة",
-    "cat_fr": "Solidarité Nationale & Famille"
+    "cat_en": "National and family solidarity",
+    "type_en": "National Solidarity and Family Inspectorate",
+    "cat_fr": "Solidarité Nationale & Famille",
+    "type_fr": "Inspection Nationale de la Solidarité et de la Famille"
   },
   {
     "sector": "تعليم",
     "type": "إقامة جامعية",
-    "cat_en": "تعليم",
-    "type_en": "إقامة جامعية",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "University residence",
+    "cat_fr": "Éducation",
+    "type_fr": "Résidence universitaire"
   },
   {
     "sector": "تعليم",
     "type": "إكمالية",
-    "cat_en": "تعليم",
-    "type_en": "إكمالية",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "Complementarity",
+    "cat_fr": "Éducation",
+    "type_fr": "Complémentarité"
   },
   {
     "sector": "تعليم",
     "type": "تعاضدية عمال التربية",
-    "cat_en": "تعليم",
-    "type_en": "تعاضدية عمال التربية",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "Mutual education workers",
+    "cat_fr": "Éducation",
+    "type_fr": "Travailleurs de la mutuelle d'éducation"
   },
   {
     "sector": "تعليم",
     "type": "ثانوية",
-    "cat_en": "تعليم",
+    "cat_en": "education",
     "type_en": "High School",
-    "cat_fr": "Éducation"
+    "cat_fr": "Éducation",
+    "type_fr": "Lycée"
   },
   {
     "sector": "تعليم",
     "type": "جامعة",
-    "cat_en": "تعليم",
+    "cat_en": "education",
     "type_en": "University",
-    "cat_fr": "Éducation"
+    "cat_fr": "Éducation",
+    "type_fr": "université"
   },
   {
     "sector": "تعليم",
     "type": "كلية",
-    "cat_en": "تعليم",
+    "cat_en": "education",
     "type_en": "Faculty",
-    "cat_fr": "Éducation"
+    "cat_fr": "Éducation",
+    "type_fr": "collège"
   },
   {
     "sector": "تعليم",
     "type": "مجمع مدرسي",
-    "cat_en": "تعليم",
-    "type_en": "مجمع مدرسي",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "School complex",
+    "cat_fr": "Éducation",
+    "type_fr": "Complexe scolaire"
   },
   {
     "sector": "تعليم",
     "type": "مدرسة إبتدائية",
-    "cat_en": "تعليم",
+    "cat_en": "education",
     "type_en": "Primary School",
-    "cat_fr": "Éducation"
+    "cat_fr": "Éducation",
+    "type_fr": "école primaire"
   },
   {
     "sector": "تعليم",
     "type": "مدرسة خاصة",
-    "cat_en": "تعليم",
-    "type_en": "مدرسة خاصة",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "private school",
+    "cat_fr": "Éducation",
+    "type_fr": "école privée"
   },
   {
     "sector": "تعليم",
     "type": "مدرسة وطنية",
-    "cat_en": "تعليم",
-    "type_en": "مدرسة وطنية",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "National school",
+    "cat_fr": "Éducation",
+    "type_fr": "Ecole Nationale"
   },
   {
     "sector": "تعليم",
     "type": "مديرية التربية",
-    "cat_en": "تعليم",
-    "type_en": "مديرية التربية",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "Directorate of Education",
+    "cat_fr": "Éducation",
+    "type_fr": "Direction de l'Éducation"
   },
   {
     "sector": "تعليم",
     "type": "مديرية التكوين المهني",
-    "cat_en": "تعليم",
-    "type_en": "مديرية التكوين المهني",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "Directorate of Vocational Training",
+    "cat_fr": "Éducation",
+    "type_fr": "Direction de la Formation Professionnelle"
   },
   {
     "sector": "تعليم",
     "type": "مركز بحث و تطوير",
-    "cat_en": "تعليم",
-    "type_en": "مركز بحث و تطوير",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "Research and development center",
+    "cat_fr": "Éducation",
+    "type_fr": "Centre de recherche et développement"
   },
   {
     "sector": "تعليم",
     "type": "مركز تكوين مهني",
-    "cat_en": "تعليم",
-    "type_en": "مركز تكوين مهني",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "Vocational training center",
+    "cat_fr": "Éducation",
+    "type_fr": "Centre de formation professionnelle"
   },
   {
     "sector": "تعليم",
     "type": "مركز جامعي",
-    "cat_en": "تعليم",
-    "type_en": "مركز جامعي",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "University center",
+    "cat_fr": "Éducation",
+    "type_fr": "Centre universitaire"
   },
   {
     "sector": "تعليم",
     "type": "مركز ولائي",
-    "cat_en": "تعليم",
-    "type_en": "مركز ولائي",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "My loyalty center",
+    "cat_fr": "Éducation",
+    "type_fr": "Mon centre de fidélité"
   },
   {
     "sector": "تعليم",
     "type": "معهد تكوين مهني",
-    "cat_en": "تعليم",
-    "type_en": "معهد تكوين مهني",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "Vocational training institute",
+    "cat_fr": "Éducation",
+    "type_fr": "Institut de formation professionnelle"
   },
   {
     "sector": "تعليم",
     "type": "معهد جامعي",
-    "cat_en": "تعليم",
-    "type_en": "معهد جامعي",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "University institute",
+    "cat_fr": "Éducation",
+    "type_fr": "Institut universitaire"
   },
   {
     "sector": "تعليم",
     "type": "مفتشية التعليم",
-    "cat_en": "تعليم",
-    "type_en": "مفتشية التعليم",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "Education Inspectorate",
+    "cat_fr": "Éducation",
+    "type_fr": "Inspection de l'éducation"
   },
   {
     "sector": "تعليم",
     "type": "ملحق مدرسة",
-    "cat_en": "تعليم",
-    "type_en": "ملحق مدرسة",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "School annex",
+    "cat_fr": "Éducation",
+    "type_fr": "Annexe scolaire"
   },
   {
     "sector": "تعليم",
     "type": "ملحق مركز تكوين مهني",
-    "cat_en": "تعليم",
-    "type_en": "ملحق مركز تكوين مهني",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "Vocational training center annex",
+    "cat_fr": "Éducation",
+    "type_fr": "Annexe du centre de formation professionnelle"
   },
   {
     "sector": "تعليم",
     "type": "ملحقة جامعية",
-    "cat_en": "تعليم",
-    "type_en": "ملحقة جامعية",
-    "cat_fr": "Éducation"
+    "cat_en": "education",
+    "type_en": "University attaché",
+    "cat_fr": "Éducation",
+    "type_fr": "Attaché universitaire"
   },
   {
     "sector": "ثقافة",
     "type": "تكوين - ثقافة",
     "cat_en": "Culture",
-    "type_en": "تكوين - ثقافة",
-    "cat_fr": "Culture"
+    "type_en": "Composition - culture",
+    "cat_fr": "Culture",
+    "type_fr": "Composition-culture"
   },
   {
     "sector": "ثقافة",
     "type": "دار الثقافة",
     "cat_en": "Culture",
     "type_en": "Cultural Center",
-    "cat_fr": "Culture"
+    "cat_fr": "Culture",
+    "type_fr": "Maison de la Culture"
   },
   {
     "sector": "ثقافة",
     "type": "سينما",
     "cat_en": "Culture",
-    "type_en": "سينما",
-    "cat_fr": "Culture"
+    "type_en": "cinema",
+    "cat_fr": "Culture",
+    "type_fr": "cinéma"
   },
   {
     "sector": "ثقافة",
     "type": "قاعة حفلات",
     "cat_en": "Culture",
     "type_en": "Event Hall",
-    "cat_fr": "Culture"
+    "cat_fr": "Culture",
+    "type_fr": "Salle de concert"
   },
   {
     "sector": "ثقافة",
     "type": "متحف",
     "cat_en": "Culture",
     "type_en": "Museum",
-    "cat_fr": "Culture"
+    "cat_fr": "Culture",
+    "type_fr": "musée"
   },
   {
     "sector": "ثقافة",
     "type": "مديرية الثقافة",
     "cat_en": "Culture",
-    "type_en": "مديرية الثقافة",
-    "cat_fr": "Culture"
+    "type_en": "Directorate of Culture",
+    "cat_fr": "Culture",
+    "type_fr": "Direction de la Culture"
   },
   {
     "sector": "ثقافة",
     "type": "مركب - مركز ثقافي",
     "cat_en": "Culture",
-    "type_en": "مركب - مركز ثقافي",
-    "cat_fr": "Culture"
+    "type_en": "Complex - cultural center",
+    "cat_fr": "Culture",
+    "type_fr": "Complexe - centre culturel"
   },
   {
     "sector": "ثقافة",
     "type": "مسرح",
     "cat_en": "Culture",
     "type_en": "Theater",
-    "cat_fr": "Culture"
+    "cat_fr": "Culture",
+    "type_fr": "scène"
   },
   {
     "sector": "ثقافة",
     "type": "مكتبة",
     "cat_en": "Culture",
     "type_en": "Bookstore",
-    "cat_fr": "Culture"
+    "cat_fr": "Culture",
+    "type_fr": "bibliothèque"
   },
   {
     "sector": "ثقافة",
     "type": "موقع أثري",
     "cat_en": "Culture",
-    "type_en": "موقع أثري",
-    "cat_fr": "Culture"
+    "type_en": "Archaeological site",
+    "cat_fr": "Culture",
+    "type_fr": "Site archéologique"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "إقامة - جماعات محلية",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "إقامة - جماعات محلية",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "Accommodation - local communities",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Hébergement - communautés locales"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "أمن حضري",
-    "cat_en": "داخلية وجماعات محلية",
+    "cat_en": "Internal and local groups",
     "type_en": "Urban Security",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Sécurité urbaine"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "أمن دائرة",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "أمن دائرة",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "Circle security",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Sécurité du cercle"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "أمن ولاية",
-    "cat_en": "داخلية وجماعات محلية",
+    "cat_en": "Internal and local groups",
     "type_en": "Provincial Security",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Sécurité de l'État"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "حديقة عامة",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "حديقة عامة",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "Public park",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Parc public"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "حرس بلدي",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "حرس بلدي",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "My guard",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Ma garde"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "حماية مدنية",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "حماية مدنية",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "Civil protection",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Protection civile"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "ساحة عمومية",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "ساحة عمومية",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "Public square",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Place publique"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "سد - نقطة مراقبة أمن وطني",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "سد - نقطة مراقبة أمن وطني",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "Dam - a national security observation point",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Barrage - un point d'observation de la sécurité nationale"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "شاطىء",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "شاطىء",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "Beach",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Plage"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "شركة حراسة",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "شركة حراسة",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "Guard company",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Compagnie de garde"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "فرع بلدي",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "فرع بلدي",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "My branch",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Ma succursale"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "مدرسة الشرطة",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "مدرسة الشرطة",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "Police school",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "École de police"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "مقر البلدية",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "مقر البلدية",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "Municipality headquarters",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Siège de la municipalité"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "مقر الدائرة",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "مقر الدائرة",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "Department headquarters",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Siège du département"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "مقر الولاية",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "مقر الولاية",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "State headquarters",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Siège de l'État"
   },
   {
     "sector": "داخلية وجماعات محلية",
     "type": "وحدة أمن وطني",
-    "cat_en": "داخلية وجماعات محلية",
-    "type_en": "وحدة أمن وطني",
-    "cat_fr": "Intérieur & Collectivités Locales"
+    "cat_en": "Internal and local groups",
+    "type_en": "National security unit",
+    "cat_fr": "Intérieur & Collectivités Locales",
+    "type_fr": "Unité de sécurité nationale"
   },
   {
     "sector": "رياضة",
     "type": "تكوين - رياضة",
     "cat_en": "Sports",
-    "type_en": "تكوين - رياضة",
-    "cat_fr": "Sports"
+    "type_en": "Composition - Sports",
+    "cat_fr": "Sports",
+    "type_fr": "Composition - Sports"
   },
   {
     "sector": "رياضة",
     "type": "دار الشباب",
     "cat_en": "Sports",
-    "type_en": "دار الشباب",
-    "cat_fr": "Sports"
+    "type_en": "Youth House",
+    "cat_fr": "Sports",
+    "type_fr": "Maison des Jeunes"
   },
   {
     "sector": "رياضة",
     "type": "قاعة متعددة الرياضات",
     "cat_en": "Sports",
-    "type_en": "قاعة متعددة الرياضات",
-    "cat_fr": "Sports"
+    "type_en": "Multi-sports hall",
+    "cat_fr": "Sports",
+    "type_fr": "Salle multisports"
   },
   {
     "sector": "رياضة",
     "type": "مديرية الشباب والرياضة",
     "cat_en": "Sports",
-    "type_en": "مديرية الشباب والرياضة",
-    "cat_fr": "Sports"
+    "type_en": "Directorate of Youth and Sports",
+    "cat_fr": "Sports",
+    "type_fr": "Direction de la Jeunesse et des Sports"
   },
   {
     "sector": "رياضة",
     "type": "مركب رياضي",
     "cat_en": "Sports",
-    "type_en": "مركب رياضي",
-    "cat_fr": "Sports"
+    "type_en": "Sports complex",
+    "cat_fr": "Sports",
+    "type_fr": "Complexe sportif"
   },
   {
     "sector": "رياضة",
     "type": "مسبح ",
     "cat_en": "Sports",
-    "type_en": "مسبح ",
-    "cat_fr": "Sports"
+    "type_en": "swimming pool",
+    "cat_fr": "Sports",
+    "type_fr": "piscine"
   },
   {
     "sector": "رياضة",
     "type": "ملعب",
     "cat_en": "Sports",
     "type_en": "Stadium",
-    "cat_fr": "Sports"
+    "cat_fr": "Sports",
+    "type_fr": "stade"
   },
   {
     "sector": "رياضة",
     "type": "نادي الفروسية",
     "cat_en": "Sports",
-    "type_en": "نادي الفروسية",
-    "cat_fr": "Sports"
+    "type_en": "Equestrian club",
+    "cat_fr": "Sports",
+    "type_fr": "Club équestre"
   },
   {
     "sector": "رياضة",
     "type": "نادي رياضي",
     "cat_en": "Sports",
-    "type_en": "نادي رياضي",
-    "cat_fr": "Sports"
+    "type_en": "sports club",
+    "cat_fr": "Sports",
+    "type_fr": "club de sport"
   },
   {
     "sector": "سكن وعمران",
     "type": "المراقبة التقنية للبناء",
-    "cat_en": "سكن وعمران",
-    "type_en": "المراقبة التقنية للبناء",
-    "cat_fr": "Habitat & Urbanisme"
+    "cat_en": "Residence and construction",
+    "type_en": "Technical monitoring of construction",
+    "cat_fr": "Habitat & Urbanisme",
+    "type_fr": "Suivi technique de chantier"
   },
   {
     "sector": "سكن وعمران",
     "type": "ديوان الترقية والتسيير العقاري",
-    "cat_en": "سكن وعمران",
-    "type_en": "ديوان الترقية والتسيير العقاري",
-    "cat_fr": "Habitat & Urbanisme"
+    "cat_en": "Residence and construction",
+    "type_en": "Office of Promotion and Real Estate Management",
+    "cat_fr": "Habitat & Urbanisme",
+    "type_fr": "Bureau de promotion et de gestion immobilière"
   },
   {
     "sector": "سكن وعمران",
     "type": "شركة بناء",
-    "cat_en": "سكن وعمران",
-    "type_en": "شركة بناء",
-    "cat_fr": "Habitat & Urbanisme"
+    "cat_en": "Residence and construction",
+    "type_en": "Construction company",
+    "cat_fr": "Habitat & Urbanisme",
+    "type_fr": "Entreprise de construction"
   },
   {
     "sector": "سكن وعمران",
     "type": "فرع البناء و التعمير",
-    "cat_en": "سكن وعمران",
-    "type_en": "فرع البناء و التعمير",
-    "cat_fr": "Habitat & Urbanisme"
+    "cat_en": "Residence and construction",
+    "type_en": "Construction and Construction Branch",
+    "cat_fr": "Habitat & Urbanisme",
+    "type_fr": "Direction de la construction et de la construction"
   },
   {
     "sector": "سكن وعمران",
     "type": "قاعدة حياة - سكن",
-    "cat_en": "سكن وعمران",
-    "type_en": "قاعدة حياة - سكن",
-    "cat_fr": "Habitat & Urbanisme"
+    "cat_en": "Residence and construction",
+    "type_en": "Base life - housing",
+    "cat_fr": "Habitat & Urbanisme",
+    "type_fr": "Durée de vie - logement"
   },
   {
     "sector": "سكن وعمران",
     "type": "مديرية - سكن",
-    "cat_en": "سكن وعمران",
-    "type_en": "مديرية - سكن",
-    "cat_fr": "Habitat & Urbanisme"
+    "cat_en": "Residence and construction",
+    "type_en": "Directorate - Housing",
+    "cat_fr": "Habitat & Urbanisme",
+    "type_fr": "Direction - Logement"
   },
   {
     "sector": "سكن وعمران",
     "type": "مكتب الدراسات",
-    "cat_en": "سكن وعمران",
-    "type_en": "مكتب الدراسات",
-    "cat_fr": "Habitat & Urbanisme"
+    "cat_en": "Residence and construction",
+    "type_en": "Studies office",
+    "cat_fr": "Habitat & Urbanisme",
+    "type_fr": "Bureau d'études"
   },
   {
     "sector": "سياحة",
     "type": "إقامة إطعام سياحي",
     "cat_en": "Tourism",
-    "type_en": "إقامة إطعام سياحي",
-    "cat_fr": "Tourisme"
+    "type_en": "Tourist feeding accommodation",
+    "cat_fr": "Tourisme",
+    "type_fr": "Hébergement touristique"
   },
   {
     "sector": "سياحة",
     "type": "المعهد الوطني المتخصص في الفندقة والسياحة",
     "cat_en": "Tourism",
-    "type_en": "المعهد الوطني المتخصص في الفندقة والسياحة",
-    "cat_fr": "Tourisme"
+    "type_en": "The National Institute specializing in hotel and tourism",
+    "cat_fr": "Tourisme",
+    "type_fr": "L'Institut National spécialisé dans l'hôtellerie et le tourisme"
   },
   {
     "sector": "سياحة",
     "type": "تكوين - سياحة",
     "cat_en": "Tourism",
-    "type_en": "تكوين - سياحة",
-    "cat_fr": "Tourisme"
+    "type_en": "Training - Tourism",
+    "cat_fr": "Tourisme",
+    "type_fr": "Formation - Tourisme"
   },
   {
     "sector": "سياحة",
     "type": "مخيم",
     "cat_en": "Tourism",
-    "type_en": "مخيم",
-    "cat_fr": "Tourisme"
+    "type_en": "camp",
+    "cat_fr": "Tourisme",
+    "type_fr": "camp"
   },
   {
     "sector": "سياحة",
     "type": "مديرية السياحة",
     "cat_en": "Tourism",
-    "type_en": "مديرية السياحة",
-    "cat_fr": "Tourisme"
+    "type_en": "Tourism Directorate",
+    "cat_fr": "Tourisme",
+    "type_fr": "Direction du Tourisme"
   },
   {
     "sector": "سياحة",
     "type": "مرفق سياحي",
     "cat_en": "Tourism",
-    "type_en": "مرفق سياحي",
-    "cat_fr": "Tourisme"
+    "type_en": "Tourist facility",
+    "cat_fr": "Tourisme",
+    "type_fr": "Installation touristique"
   },
   {
     "sector": "سياحة",
     "type": "مركب سياحي",
     "cat_en": "Tourism",
-    "type_en": "مركب سياحي",
-    "cat_fr": "Tourisme"
+    "type_en": "Tourist boat",
+    "cat_fr": "Tourisme",
+    "type_fr": "Bateau touristique"
   },
   {
     "sector": "سياحة",
     "type": "مركز راحة عائلي ",
     "cat_en": "Tourism",
-    "type_en": "مركز راحة عائلي ",
-    "cat_fr": "Tourisme"
+    "type_en": "Family comfort center",
+    "cat_fr": "Tourisme",
+    "type_fr": "Centre de confort familial"
   },
   {
     "sector": "سياحة",
     "type": "موقع سياحي",
     "cat_en": "Tourism",
-    "type_en": "موقع سياحي",
-    "cat_fr": "Tourisme"
+    "type_en": "Tourist site",
+    "cat_fr": "Tourisme",
+    "type_fr": "Site touristique"
   },
   {
     "sector": "سياحة",
     "type": "نزل",
     "cat_en": "Tourism",
-    "type_en": "نزل",
-    "cat_fr": "Tourisme"
+    "type_en": "hostel",
+    "cat_fr": "Tourisme",
+    "type_fr": "auberge"
   },
   {
     "sector": "سياحة",
     "type": "وكالة سياحية",
     "cat_en": "Tourism",
-    "type_en": "وكالة سياحية",
-    "cat_fr": "Tourisme"
+    "type_en": "Tourist agency",
+    "cat_fr": "Tourisme",
+    "type_fr": "Agence de tourisme"
   },
   {
     "sector": "شؤون خارجية",
     "type": "إقامة سفارة",
-    "cat_en": "شؤون خارجية",
-    "type_en": "إقامة سفارة",
-    "cat_fr": "Affaires Étrangères"
+    "cat_en": "Foreign affairs",
+    "type_en": "Establishing an embassy",
+    "cat_fr": "Affaires Étrangères",
+    "type_fr": "Création d'une ambassade"
   },
   {
     "sector": "شؤون خارجية",
     "type": "سفارة",
-    "cat_en": "شؤون خارجية",
-    "type_en": "سفارة",
-    "cat_fr": "Affaires Étrangères"
+    "cat_en": "Foreign affairs",
+    "type_en": "embassy",
+    "cat_fr": "Affaires Étrangères",
+    "type_fr": "ambassade"
   },
   {
     "sector": "شؤون خارجية",
     "type": "قنصلية",
-    "cat_en": "شؤون خارجية",
-    "type_en": "قنصلية",
-    "cat_fr": "Affaires Étrangères"
+    "cat_en": "Foreign affairs",
+    "type_en": "consulate",
+    "cat_fr": "Affaires Étrangères",
+    "type_fr": "consulat"
   },
   {
     "sector": "شؤون خارجية",
     "type": "ملحق عسكري",
-    "cat_en": "شؤون خارجية",
-    "type_en": "ملحق عسكري",
-    "cat_fr": "Affaires Étrangères"
+    "cat_en": "Foreign affairs",
+    "type_en": "Military attaché",
+    "cat_fr": "Affaires Étrangères",
+    "type_fr": "Attaché militaire"
   },
   {
     "sector": "شؤون خارجية",
     "type": "هيئة أجنبية",
-    "cat_en": "شؤون خارجية",
-    "type_en": "هيئة أجنبية",
-    "cat_fr": "Affaires Étrangères"
+    "cat_en": "Foreign affairs",
+    "type_en": "Foreign body",
+    "cat_fr": "Affaires Étrangères",
+    "type_fr": "Corps étranger"
   },
   {
     "sector": "شؤون دينية",
     "type": "زاوية",
     "cat_en": "Religious Affairs",
     "type_en": "Zawiya",
-    "cat_fr": "Affaires Religieuses"
+    "cat_fr": "Affaires Religieuses",
+    "type_fr": "coin"
   },
   {
     "sector": "شؤون دينية",
     "type": "ضريح",
     "cat_en": "Religious Affairs",
-    "type_en": "ضريح",
-    "cat_fr": "Affaires Religieuses"
+    "type_en": "shrine",
+    "cat_fr": "Affaires Religieuses",
+    "type_fr": "tombeau"
   },
   {
     "sector": "شؤون دينية",
     "type": "كنيسة",
     "cat_en": "Religious Affairs",
-    "type_en": "كنيسة",
-    "cat_fr": "Affaires Religieuses"
+    "type_en": "church",
+    "cat_fr": "Affaires Religieuses",
+    "type_fr": "église"
   },
   {
     "sector": "شؤون دينية",
     "type": "مدرسة قرآنية",
     "cat_en": "Religious Affairs",
-    "type_en": "مدرسة قرآنية",
-    "cat_fr": "Affaires Religieuses"
+    "type_en": "Quranic school",
+    "cat_fr": "Affaires Religieuses",
+    "type_fr": "école coranique"
   },
   {
     "sector": "شؤون دينية",
     "type": "مديرية الشؤون الدينية والأوقاف",
     "cat_en": "Religious Affairs",
-    "type_en": "مديرية الشؤون الدينية والأوقاف",
-    "cat_fr": "Affaires Religieuses"
+    "type_en": "Directorate of Religious Affairs and Endowments",
+    "cat_fr": "Affaires Religieuses",
+    "type_fr": "Direction des Affaires Religieuses et des Dotations"
   },
   {
     "sector": "شؤون دينية",
     "type": "مسجد",
     "cat_en": "Religious Affairs",
     "type_en": "Mosque",
-    "cat_fr": "Affaires Religieuses"
+    "cat_fr": "Affaires Religieuses",
+    "type_fr": "mosquée"
   },
   {
     "sector": "شؤون دينية",
     "type": "معهد إسلامي",
     "cat_en": "Religious Affairs",
-    "type_en": "معهد إسلامي",
-    "cat_fr": "Affaires Religieuses"
+    "type_en": "Islamic institute",
+    "cat_fr": "Affaires Religieuses",
+    "type_fr": "institut islamique"
   },
   {
     "sector": "شؤون دينية",
     "type": "مقبرة",
     "cat_en": "Religious Affairs",
     "type_en": "Cemetery",
-    "cat_fr": "Affaires Religieuses"
+    "cat_fr": "Affaires Religieuses",
+    "type_fr": "cimetière"
   },
   {
     "sector": "شؤون دينية",
     "type": "موقع ديني",
     "cat_en": "Religious Affairs",
-    "type_en": "موقع ديني",
-    "cat_fr": "Affaires Religieuses"
+    "type_en": "Religious site",
+    "cat_fr": "Affaires Religieuses",
+    "type_fr": "Site religieux"
   },
   {
     "sector": "صحة",
     "type": "بيطري",
     "cat_en": "Health",
-    "type_en": "بيطري",
-    "cat_fr": "Santé"
+    "type_en": "veterinary",
+    "cat_fr": "Santé",
+    "type_fr": "vétérinaire"
   },
   {
     "sector": "صحة",
     "type": "صيدلية",
     "cat_en": "Health",
     "type_en": "Pharmacy",
-    "cat_fr": "Santé"
+    "cat_fr": "Santé",
+    "type_fr": "pharmacie"
   },
   {
     "sector": "صحة",
     "type": "عيادة خاصة",
     "cat_en": "Health",
-    "type_en": "عيادة خاصة",
-    "cat_fr": "Santé"
+    "type_en": "Private clinic",
+    "cat_fr": "Santé",
+    "type_fr": "Clinique privée"
   },
   {
     "sector": "صحة",
     "type": "عيادة متعددة الخدمات",
     "cat_en": "Health",
     "type_en": "Polyclinic",
-    "cat_fr": "Santé"
+    "cat_fr": "Santé",
+    "type_fr": "Clinique multiservice"
   },
   {
     "sector": "صحة",
     "type": "قاعة علاج",
     "cat_en": "Health",
-    "type_en": "قاعة علاج",
-    "cat_fr": "Santé"
+    "type_en": "Treatment hall",
+    "cat_fr": "Santé",
+    "type_fr": "Salle de soins"
   },
   {
     "sector": "صحة",
     "type": "قطاع صحي",
     "cat_en": "Health",
-    "type_en": "قطاع صحي",
-    "cat_fr": "Santé"
+    "type_en": "Health sector",
+    "cat_fr": "Santé",
+    "type_fr": "Secteur de la santé"
   },
   {
     "sector": "صحة",
     "type": "مخبر",
     "cat_en": "Health",
-    "type_en": "مخبر",
-    "cat_fr": "Santé"
+    "type_en": "informer",
+    "cat_fr": "Santé",
+    "type_fr": "informateur"
   },
   {
     "sector": "صحة",
     "type": "مديرية الصحة",
     "cat_en": "Health",
-    "type_en": "مديرية الصحة",
-    "cat_fr": "Santé"
+    "type_en": "Health Directorate",
+    "cat_fr": "Santé",
+    "type_fr": "Direction de la Santé"
   },
   {
     "sector": "صحة",
     "type": "مركز إستشفائي جامعي",
     "cat_en": "Health",
-    "type_en": "مركز إستشفائي جامعي",
-    "cat_fr": "Santé"
+    "type_en": "University hospital center",
+    "cat_fr": "Santé",
+    "type_fr": "Centre hospitalier universitaire"
   },
   {
     "sector": "صحة",
     "type": "مركز صحي",
     "cat_en": "Health",
-    "type_en": "مركز صحي",
-    "cat_fr": "Santé"
+    "type_en": "Health center",
+    "cat_fr": "Santé",
+    "type_fr": "Centre de santé"
   },
   {
     "sector": "صحة",
     "type": "مركز طبي",
     "cat_en": "Health",
-    "type_en": "مركز طبي",
-    "cat_fr": "Santé"
+    "type_en": "Medical center",
+    "cat_fr": "Santé",
+    "type_fr": "Centre médical"
   },
   {
     "sector": "صحة",
     "type": "مركز طبي متخصص",
     "cat_en": "Health",
-    "type_en": "مركز طبي متخصص",
-    "cat_fr": "Santé"
+    "type_en": "Specialized medical center",
+    "cat_fr": "Santé",
+    "type_fr": "Centre médical spécialisé"
   },
   {
     "sector": "صحة",
     "type": "مصنع أدوية",
     "cat_en": "Health",
-    "type_en": "مصنع أدوية",
-    "cat_fr": "Santé"
+    "type_en": "Pharmaceutical factory",
+    "cat_fr": "Santé",
+    "type_fr": "Usine pharmaceutique"
   },
   {
     "sector": "صحة",
     "type": "معهد",
     "cat_en": "Health",
     "type_en": "Institute",
-    "cat_fr": "Santé"
+    "cat_fr": "Santé",
+    "type_fr": "institut"
   },
   {
     "sector": "صحة",
     "type": "مؤسسات تكوين",
     "cat_en": "Health",
-    "type_en": "مؤسسات تكوين",
-    "cat_fr": "Santé"
+    "type_en": "Training institutions",
+    "cat_fr": "Santé",
+    "type_fr": "Institutions de formation"
   },
   {
     "sector": "صحة",
     "type": "مؤسسة إستشفائية جامعية",
     "cat_en": "Health",
-    "type_en": "مؤسسة إستشفائية جامعية",
-    "cat_fr": "Santé"
+    "type_en": "University hospital institution",
+    "cat_fr": "Santé",
+    "type_fr": "Établissement hospitalier universitaire"
   },
   {
     "sector": "صحة",
     "type": "مؤسسة استشفائية متخصصة",
     "cat_en": "Health",
-    "type_en": "مؤسسة استشفائية متخصصة",
-    "cat_fr": "Santé"
+    "type_en": "Specialized hospital institution",
+    "cat_fr": "Santé",
+    "type_fr": "Institution hospitalière spécialisée"
   },
   {
     "sector": "صحة",
     "type": "مؤسسة عمومية استشفائية",
     "cat_en": "Health",
-    "type_en": "مؤسسة عمومية استشفائية",
-    "cat_fr": "Santé"
+    "type_en": "A public hospital institution",
+    "cat_fr": "Santé",
+    "type_fr": "Un établissement public hospitalier"
   },
   {
     "sector": "صحة",
     "type": "مؤسسة عمومية للصحة الجوارية",
     "cat_en": "Health",
-    "type_en": "مؤسسة عمومية للصحة الجوارية",
-    "cat_fr": "Santé"
+    "type_en": "Public neighborhood health institution",
+    "cat_fr": "Santé",
+    "type_fr": "Établissement public de santé de quartier"
   },
   {
     "sector": "صناعة",
     "type": "شركة",
     "cat_en": "Industry",
     "type_en": "Company",
-    "cat_fr": "Industrie"
+    "cat_fr": "Industrie",
+    "type_fr": "une entreprise"
   },
   {
     "sector": "صناعة",
     "type": "قاعدة حياة صناعية",
     "cat_en": "Industry",
-    "type_en": "قاعدة حياة صناعية",
-    "cat_fr": "Industrie"
+    "type_en": "Artificial life base",
+    "cat_fr": "Industrie",
+    "type_fr": "Base de vie artificielle"
   },
   {
     "sector": "صناعة",
     "type": "محجرة",
     "cat_en": "Industry",
-    "type_en": "محجرة",
-    "cat_fr": "Industrie"
+    "type_en": "Quarry",
+    "cat_fr": "Industrie",
+    "type_fr": "Carrière"
   },
   {
     "sector": "صناعة",
     "type": "مديرية الصناعة",
     "cat_en": "Industry",
-    "type_en": "مديرية الصناعة",
-    "cat_fr": "Industrie"
+    "type_en": "Industry Directorate",
+    "cat_fr": "Industrie",
+    "type_fr": "Direction de l'Industrie"
   },
   {
     "sector": "صناعة",
     "type": "مركب صناعي",
     "cat_en": "Industry",
-    "type_en": "مركب صناعي",
-    "cat_fr": "Industrie"
+    "type_en": "Synthetic compound",
+    "cat_fr": "Industrie",
+    "type_fr": "Composé synthétique"
   },
   {
     "sector": "صناعة",
     "type": "مرملة",
     "cat_en": "Industry",
-    "type_en": "مرملة",
-    "cat_fr": "Industrie"
+    "type_en": "Sandblasted",
+    "cat_fr": "Industrie",
+    "type_fr": "Sablé"
   },
   {
     "sector": "صناعة",
     "type": "مستودع",
     "cat_en": "Industry",
-    "type_en": "مستودع",
-    "cat_fr": "Industrie"
+    "type_en": "storehouse",
+    "cat_fr": "Industrie",
+    "type_fr": "entrepôt"
   },
   {
     "sector": "صناعة",
     "type": "مصنع",
     "cat_en": "Industry",
     "type_en": "Factory",
-    "cat_fr": "Industrie"
+    "cat_fr": "Industrie",
+    "type_fr": "usine"
   },
   {
     "sector": "صناعة",
     "type": "منجم",
     "cat_en": "Industry",
-    "type_en": "منجم",
-    "cat_fr": "Industrie"
+    "type_en": "mine",
+    "cat_fr": "Industrie",
+    "type_fr": "le mien"
   },
   {
     "sector": "صناعة",
     "type": "منطقة صناعية",
     "cat_en": "Industry",
-    "type_en": "منطقة صناعية",
-    "cat_fr": "Industrie"
+    "type_en": "Industrial area",
+    "cat_fr": "Industrie",
+    "type_fr": "Zone industrielle"
   },
   {
     "sector": "صناعة",
     "type": "ورشة",
     "cat_en": "Industry",
     "type_en": "Workshop",
-    "cat_fr": "Industrie"
+    "cat_fr": "Industrie",
+    "type_fr": "atelier"
   },
   {
     "sector": "طاقة",
     "type": "انبوب بترول",
-    "cat_en": "طاقة",
-    "type_en": "انبوب بترول",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Oil pipe",
+    "cat_fr": "Énergie",
+    "type_fr": "Conduite d'huile"
   },
   {
     "sector": "طاقة",
     "type": "أنبوب غاز",
-    "cat_en": "طاقة",
-    "type_en": "أنبوب غاز",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas tube",
+    "cat_fr": "Énergie",
+    "type_fr": "Tube à gaz"
   },
   {
     "sector": "طاقة",
     "type": "بئر بترول",
-    "cat_en": "طاقة",
-    "type_en": "بئر بترول",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Oil well",
+    "cat_fr": "Énergie",
+    "type_fr": "Puits de pétrole"
   },
   {
     "sector": "طاقة",
     "type": "بئر غاز",
-    "cat_en": "طاقة",
-    "type_en": "بئر غاز",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas well",
+    "cat_fr": "Énergie",
+    "type_fr": "Puits de gaz"
   },
   {
     "sector": "طاقة",
     "type": "تخزين و توزيع المحروقات",
-    "cat_en": "طاقة",
-    "type_en": "تخزين و توزيع المحروقات",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Storage and distribution of fuel",
+    "cat_fr": "Énergie",
+    "type_fr": "Stockage et distribution de carburant"
   },
   {
     "sector": "طاقة",
     "type": "تنقيب",
-    "cat_en": "طاقة",
-    "type_en": "تنقيب",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "prospecting",
+    "cat_fr": "Énergie",
+    "type_fr": "prospection"
   },
   {
     "sector": "طاقة",
     "type": "خط كهرباء",
-    "cat_en": "طاقة",
-    "type_en": "خط كهرباء",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Power line",
+    "cat_fr": "Énergie",
+    "type_fr": "Ligne électrique"
   },
   {
     "sector": "طاقة",
     "type": "طاقة متجددة",
-    "cat_en": "طاقة",
-    "type_en": "طاقة متجددة",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Renewable energy",
+    "cat_fr": "Énergie",
+    "type_fr": "Énergie renouvelable"
   },
   {
     "sector": "طاقة",
     "type": "قاعدة حياة - طاقة",
-    "cat_en": "طاقة",
-    "type_en": "قاعدة حياة - طاقة",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Life base - energy",
+    "cat_fr": "Énergie",
+    "type_fr": "Base de vie - énergie"
   },
   {
     "sector": "طاقة",
     "type": "محطة الضغط العالي",
-    "cat_en": "طاقة",
-    "type_en": "محطة الضغط العالي",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "High pressure station",
+    "cat_fr": "Énergie",
+    "type_fr": "Station haute pression"
   },
   {
     "sector": "طاقة",
     "type": "محطة الطاقة الشمسية",
-    "cat_en": "طاقة",
-    "type_en": "محطة الطاقة الشمسية",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Solar power station",
+    "cat_fr": "Énergie",
+    "type_fr": "Centrale solaire"
   },
   {
     "sector": "طاقة",
     "type": "محطة الطاقة الكهربائية",
-    "cat_en": "طاقة",
-    "type_en": "محطة الطاقة الكهربائية",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Electric power station",
+    "cat_fr": "Énergie",
+    "type_fr": "Centrale électrique"
   },
   {
     "sector": "طاقة",
     "type": "محطة إنطلاق الغاز",
-    "cat_en": "طاقة",
-    "type_en": "محطة إنطلاق الغاز",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas starting station",
+    "cat_fr": "Énergie",
+    "type_fr": "Station de départ de gaz"
   },
   {
     "sector": "طاقة",
     "type": "محطة توزيع الغاز",
-    "cat_en": "طاقة",
-    "type_en": "محطة توزيع الغاز",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas distribution station",
+    "cat_fr": "Énergie",
+    "type_fr": "Poste de distribution de gaz"
   },
   {
     "sector": "طاقة",
     "type": "محطة ضخ الغاز",
-    "cat_en": "طاقة",
-    "type_en": "محطة ضخ الغاز",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas pumping station",
+    "cat_fr": "Énergie",
+    "type_fr": "Station de pompage de gaz"
   },
   {
     "sector": "طاقة",
     "type": "محطة ضغط الغاز",
-    "cat_en": "طاقة",
-    "type_en": "محطة ضغط الغاز",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas compression station",
+    "cat_fr": "Énergie",
+    "type_fr": "Station de compression de gaz"
   },
   {
     "sector": "طاقة",
     "type": "محطة وصول الغاز",
-    "cat_en": "طاقة",
-    "type_en": "محطة وصول الغاز",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas arrival station",
+    "cat_fr": "Énergie",
+    "type_fr": "Station d'arrivée de gaz"
   },
   {
     "sector": "طاقة",
     "type": "محطة وقود",
-    "cat_en": "طاقة",
-    "type_en": "محطة وقود",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas station",
+    "cat_fr": "Énergie",
+    "type_fr": "Station-service"
   },
   {
     "sector": "طاقة",
     "type": "محول كهربائي",
-    "cat_en": "طاقة",
-    "type_en": "محول كهربائي",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Electrical transformer",
+    "cat_fr": "Énergie",
+    "type_fr": "Transformateur électrique"
   },
   {
     "sector": "طاقة",
     "type": "مديرية - طاقة",
-    "cat_en": "طاقة",
-    "type_en": "مديرية - طاقة",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Directorate - Energy",
+    "cat_fr": "Énergie",
+    "type_fr": "Direction - Énergie"
   },
   {
     "sector": "طاقة",
     "type": "مركب بترول",
-    "cat_en": "طاقة",
-    "type_en": "مركب بترول",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Petroleum compound",
+    "cat_fr": "Énergie",
+    "type_fr": "Composé pétrolier"
   },
   {
     "sector": "طاقة",
     "type": "مركب غاز",
-    "cat_en": "طاقة",
-    "type_en": "مركب غاز",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas compound",
+    "cat_fr": "Énergie",
+    "type_fr": "Composé gazeux"
   },
   {
     "sector": "طاقة",
     "type": "مركز أخذ عينات الغاز",
-    "cat_en": "طاقة",
-    "type_en": "مركز أخذ عينات الغاز",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas sampling center",
+    "cat_fr": "Énergie",
+    "type_fr": "Centre de prélèvement de gaz"
   },
   {
     "sector": "طاقة",
     "type": "مركز الحساب",
-    "cat_en": "طاقة",
-    "type_en": "مركز الحساب",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Account center",
+    "cat_fr": "Énergie",
+    "type_fr": "Centre de comptes"
   },
   {
     "sector": "طاقة",
     "type": "مركز الزبائن",
-    "cat_en": "طاقة",
-    "type_en": "مركز الزبائن",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Customer center",
+    "cat_fr": "Énergie",
+    "type_fr": "Espace client"
   },
   {
     "sector": "طاقة",
     "type": "مركز تعبئة الغاز",
-    "cat_en": "طاقة",
-    "type_en": "مركز تعبئة الغاز",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas filling center",
+    "cat_fr": "Énergie",
+    "type_fr": "Centre de remplissage de gaz"
   },
   {
     "sector": "طاقة",
     "type": "مركز تقسيم الغاز",
-    "cat_en": "طاقة",
-    "type_en": "مركز تقسيم الغاز",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas division center",
+    "cat_fr": "Énergie",
+    "type_fr": "Centre de division Gaz"
   },
   {
     "sector": "طاقة",
     "type": "مركز حقن الغاز",
-    "cat_en": "طاقة",
-    "type_en": "مركز حقن الغاز",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas injection center",
+    "cat_fr": "Énergie",
+    "type_fr": "Centre d'injection de gaz"
   },
   {
     "sector": "طاقة",
     "type": "مركز قطع غاز",
-    "cat_en": "طاقة",
-    "type_en": "مركز قطع غاز",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Gas cutting center",
+    "cat_fr": "Énergie",
+    "type_fr": "Centre de coupage de gaz"
   },
   {
     "sector": "طاقة",
     "type": "معالجة وتصفية الزيوت",
-    "cat_en": "طاقة",
-    "type_en": "معالجة وتصفية الزيوت",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Processing and filtering oils",
+    "cat_fr": "Énergie",
+    "type_fr": "Traitement et filtration des huiles"
   },
   {
     "sector": "طاقة",
     "type": "مقر مؤسسة طاقوية",
-    "cat_en": "طاقة",
-    "type_en": "مقر مؤسسة طاقوية",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Headquarters of the Taqwa Foundation",
+    "cat_fr": "Énergie",
+    "type_fr": "Siège de la Fondation Taqwa"
   },
   {
     "sector": "طاقة",
     "type": "مواد كيميائية",
-    "cat_en": "طاقة",
-    "type_en": "مواد كيميائية",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Chemicals",
+    "cat_fr": "Énergie",
+    "type_fr": "Produits chimiques"
   },
   {
     "sector": "طاقة",
     "type": "نقطة منخفضة",
-    "cat_en": "طاقة",
-    "type_en": "نقطة منخفضة",
-    "cat_fr": "Énergie"
+    "cat_en": "energy",
+    "type_en": "Low point",
+    "cat_fr": "Énergie",
+    "type_fr": "Point bas"
   },
   {
     "sector": "عدل",
     "type": "فرع محكمة",
     "cat_en": "Justice",
-    "type_en": "فرع محكمة",
-    "cat_fr": "Justice"
+    "type_en": "Court branch",
+    "cat_fr": "Justice",
+    "type_fr": "Branche du tribunal"
   },
   {
     "sector": "عدل",
     "type": "مجلس قضاء",
     "cat_en": "Justice",
     "type_en": "Judicial Council",
-    "cat_fr": "Justice"
+    "cat_fr": "Justice",
+    "type_fr": "Conseil judiciaire"
   },
   {
     "sector": "عدل",
     "type": "محكمة",
     "cat_en": "Justice",
     "type_en": "Court",
-    "cat_fr": "Justice"
+    "cat_fr": "Justice",
+    "type_fr": "tribunal"
   },
   {
     "sector": "عدل",
     "type": "مدرسة - عدل",
     "cat_en": "Justice",
-    "type_en": "مدرسة - عدل",
-    "cat_fr": "Justice"
+    "type_en": "School - Edit",
+    "cat_fr": "Justice",
+    "type_fr": "École - Modifier"
   },
   {
     "sector": "عدل",
     "type": "مدرسة قضاء",
     "cat_en": "Justice",
-    "type_en": "مدرسة قضاء",
-    "cat_fr": "Justice"
+    "type_en": "District school",
+    "cat_fr": "Justice",
+    "type_fr": "École de district"
   },
   {
     "sector": "عدل",
     "type": "مركز الاحداث",
     "cat_en": "Justice",
-    "type_en": "مركز الاحداث",
-    "cat_fr": "Justice"
+    "type_en": "Events Center",
+    "cat_fr": "Justice",
+    "type_fr": "Centre d'événements"
   },
   {
     "sector": "عدل",
     "type": "مؤسسة عقابية",
     "cat_en": "Justice",
-    "type_en": "مؤسسة عقابية",
-    "cat_fr": "Justice"
+    "type_en": "Penal institution",
+    "cat_fr": "Justice",
+    "type_fr": "Établissement pénitentiaire"
   },
   {
     "sector": "عدل",
     "type": "مؤسسة وقاية",
     "cat_en": "Justice",
-    "type_en": "مؤسسة وقاية",
-    "cat_fr": "Justice"
+    "type_en": "Weqaya Foundation",
+    "cat_fr": "Justice",
+    "type_fr": "Fondation Weqaya"
   },
   {
     "sector": "فلاحة",
     "type": "أغذية الأنعام",
     "cat_en": "Agriculture",
-    "type_en": "أغذية الأنعام",
-    "cat_fr": "Agriculture"
+    "type_en": "Livestock foods",
+    "cat_fr": "Agriculture",
+    "type_fr": "Aliments pour le bétail"
   },
   {
     "sector": "فلاحة",
     "type": "الصيد البحري",
     "cat_en": "Agriculture",
-    "type_en": "الصيد البحري",
-    "cat_fr": "Agriculture"
+    "type_en": "Sea fishing",
+    "cat_fr": "Agriculture",
+    "type_fr": "Pêche en mer"
   },
   {
     "sector": "فلاحة",
     "type": "تربية الدواجن",
     "cat_en": "Agriculture",
-    "type_en": "تربية الدواجن",
-    "cat_fr": "Agriculture"
+    "type_en": "poultry farming",
+    "cat_fr": "Agriculture",
+    "type_fr": "élevage de volailles"
   },
   {
     "sector": "فلاحة",
     "type": "تربية المائيات",
     "cat_en": "Agriculture",
-    "type_en": "تربية المائيات",
-    "cat_fr": "Agriculture"
+    "type_en": "Aquaculture",
+    "cat_fr": "Agriculture",
+    "type_fr": "Aquaculture"
   },
   {
     "sector": "فلاحة",
     "type": "تعاونية الحبوب و البقول الجافة",
     "cat_en": "Agriculture",
-    "type_en": "تعاونية الحبوب و البقول الجافة",
-    "cat_fr": "Agriculture"
+    "type_en": "Dry grains and legumes cooperative",
+    "cat_fr": "Agriculture",
+    "type_fr": "Coopérative de céréales sèches et de légumineuses"
   },
   {
     "sector": "فلاحة",
     "type": "تعاونية فلاحية",
     "cat_en": "Agriculture",
-    "type_en": "تعاونية فلاحية",
-    "cat_fr": "Agriculture"
+    "type_en": "Agricultural cooperative",
+    "cat_fr": "Agriculture",
+    "type_fr": "Coopérative agricole"
   },
   {
     "sector": "فلاحة",
     "type": "حماية الغابات",
     "cat_en": "Agriculture",
-    "type_en": "حماية الغابات",
-    "cat_fr": "Agriculture"
+    "type_en": "Forest protection",
+    "cat_fr": "Agriculture",
+    "type_fr": "Protection des forêts"
   },
   {
     "sector": "فلاحة",
     "type": "مخزن الحبوب و البقول الجافة",
     "cat_en": "Agriculture",
-    "type_en": "مخزن الحبوب و البقول الجافة",
-    "cat_fr": "Agriculture"
+    "type_en": "Storehouse of grains and dry legumes",
+    "cat_fr": "Agriculture",
+    "type_fr": "Entrepôt de céréales et de légumineuses sèches"
   },
   {
     "sector": "فلاحة",
     "type": "مدجنة",
     "cat_en": "Agriculture",
-    "type_en": "مدجنة",
-    "cat_fr": "Agriculture"
+    "type_en": "Domesticated",
+    "cat_fr": "Agriculture",
+    "type_fr": "Domestiqué"
   },
   {
     "sector": "فلاحة",
     "type": "مديرية - فلاحة",
     "cat_en": "Agriculture",
-    "type_en": "مديرية - فلاحة",
-    "cat_fr": "Agriculture"
+    "type_en": "Directorate - Agriculture",
+    "cat_fr": "Agriculture",
+    "type_fr": "Direction - Agriculture"
   },
   {
     "sector": "فلاحة",
     "type": "مزرعة",
     "cat_en": "Agriculture",
     "type_en": "Farm",
-    "cat_fr": "Agriculture"
+    "cat_fr": "Agriculture",
+    "type_fr": "ferme"
   },
   {
     "sector": "فلاحة",
     "type": "مطحنة",
     "cat_en": "Agriculture",
-    "type_en": "مطحنة",
-    "cat_fr": "Agriculture"
+    "type_en": "mill",
+    "cat_fr": "Agriculture",
+    "type_fr": "moulin"
   },
   {
     "sector": "فلاحة",
     "type": "معصرة زيت الزيتون",
     "cat_en": "Agriculture",
-    "type_en": "معصرة زيت الزيتون",
-    "cat_fr": "Agriculture"
+    "type_en": "Olive oil press",
+    "cat_fr": "Agriculture",
+    "type_fr": "Pressoir à huile d'olive"
   },
   {
     "sector": "فلاحة",
     "type": "ملبنة",
     "cat_en": "Agriculture",
-    "type_en": "ملبنة",
-    "cat_fr": "Agriculture"
+    "type_en": "Lactobacillus",
+    "cat_fr": "Agriculture",
+    "type_fr": "Lactobacilles"
   },
   {
     "sector": "فلاحة",
     "type": "مؤسسة - فلاحة",
     "cat_en": "Agriculture",
-    "type_en": "مؤسسة - فلاحة",
-    "cat_fr": "Agriculture"
+    "type_en": "Foundation - Farming",
+    "cat_fr": "Agriculture",
+    "type_fr": "Fondation - Agriculture"
   },
   {
     "sector": "مالية",
     "type": "بنك",
-    "cat_en": "مالية",
+    "cat_en": "Financial",
     "type_en": "Bank",
-    "cat_fr": "Finances"
+    "cat_fr": "Finances",
+    "type_fr": "Banque"
   },
   {
     "sector": "مالية",
     "type": "خزينة",
-    "cat_en": "مالية",
-    "type_en": "خزينة",
-    "cat_fr": "Finances"
+    "cat_en": "Financial",
+    "type_en": "treasury",
+    "cat_fr": "Finances",
+    "type_fr": "trésorerie"
   },
   {
     "sector": "مالية",
     "type": "ضرائب",
-    "cat_en": "مالية",
-    "type_en": "ضرائب",
-    "cat_fr": "Finances"
+    "cat_en": "Financial",
+    "type_en": "Taxes",
+    "cat_fr": "Finances",
+    "type_fr": "Impôts"
   },
   {
     "sector": "مالية",
     "type": "محافظة عقارية",
-    "cat_en": "مالية",
-    "type_en": "محافظة عقارية",
-    "cat_fr": "Finances"
+    "cat_en": "Financial",
+    "type_en": "Real estate province",
+    "cat_fr": "Finances",
+    "type_fr": "Province immobilière"
   },
   {
     "sector": "مالية",
     "type": "مديرية المالية",
-    "cat_en": "مالية",
-    "type_en": "مديرية المالية",
-    "cat_fr": "Finances"
+    "cat_en": "Financial",
+    "type_en": "Finance Directorate",
+    "cat_fr": "Finances",
+    "type_fr": "Direction des Finances"
   },
   {
     "sector": "مالية",
     "type": "مفتشية أملاك",
-    "cat_en": "مالية",
-    "type_en": "مفتشية أملاك",
-    "cat_fr": "Finances"
+    "cat_en": "Financial",
+    "type_en": "Property Inspectorate",
+    "cat_fr": "Finances",
+    "type_fr": "Inspection des biens"
   },
   {
     "sector": "مالية",
     "type": "مؤسسة مالية",
-    "cat_en": "مالية",
-    "type_en": "مؤسسة مالية",
-    "cat_fr": "Finances"
+    "cat_en": "Financial",
+    "type_en": "Financial institution",
+    "cat_fr": "Finances",
+    "type_fr": "Institution financière"
   },
   {
     "sector": "مالية",
     "type": "وحدة جمارك",
-    "cat_en": "مالية",
-    "type_en": "وحدة جمارك",
-    "cat_fr": "Finances"
+    "cat_en": "Financial",
+    "type_en": "Customs unit",
+    "cat_fr": "Finances",
+    "type_fr": "Unité des douanes"
   },
   {
     "sector": "مجاهدين",
     "type": "قسمة المجاهدين",
-    "cat_en": "مجاهدين",
-    "type_en": "قسمة المجاهدين",
-    "cat_fr": "Moudjahidine"
+    "cat_en": "Mujahideen",
+    "type_en": "Division of the Mujahideen",
+    "cat_fr": "Moudjahidine",
+    "type_fr": "Division des Moudjahidines"
   },
   {
     "sector": "مجاهدين",
     "type": "متحف المجاهد",
-    "cat_en": "مجاهدين",
-    "type_en": "متحف المجاهد",
-    "cat_fr": "Moudjahidine"
+    "cat_en": "Mujahideen",
+    "type_en": "Mujahid Museum",
+    "cat_fr": "Moudjahidine",
+    "type_fr": "Musée des Moudjahiddines"
   },
   {
     "sector": "مجاهدين",
     "type": "مديرية المجاهدين",
-    "cat_en": "مجاهدين",
-    "type_en": "مديرية المجاهدين",
-    "cat_fr": "Moudjahidine"
+    "cat_en": "Mujahideen",
+    "type_en": "Mujahideen Directorate",
+    "cat_fr": "Moudjahidine",
+    "type_fr": "Direction des Moudjahidines"
   },
   {
     "sector": "مجاهدين",
     "type": "مقبرة الشهداء",
-    "cat_en": "مجاهدين",
-    "type_en": "مقبرة الشهداء",
-    "cat_fr": "Moudjahidine"
+    "cat_en": "Mujahideen",
+    "type_en": "Martyrs' Cemetery",
+    "cat_fr": "Moudjahidine",
+    "type_fr": "Cimetière des martyrs"
   },
   {
     "sector": "مجاهدين",
     "type": "منضمة المجاهدين",
-    "cat_en": "مجاهدين",
-    "type_en": "منضمة المجاهدين",
-    "cat_fr": "Moudjahidine"
+    "cat_en": "Mujahideen",
+    "type_en": "Mujahideen Association",
+    "cat_fr": "Moudjahidine",
+    "type_fr": "Association des Moudjahidines"
   },
   {
     "sector": "مختلفات",
     "type": "مرحاض عمومي",
-    "cat_en": "مختلفات",
-    "type_en": "مرحاض عمومي",
-    "cat_fr": "Divers"
+    "cat_en": "Various",
+    "type_en": "Public toilet",
+    "cat_fr": "Divers",
+    "type_fr": "Toilettes publiques"
   },
   {
     "sector": "مختلفات",
     "type": "منارة",
-    "cat_en": "مختلفات",
-    "type_en": "منارة",
-    "cat_fr": "Divers"
+    "cat_en": "Various",
+    "type_en": "beacon",
+    "cat_fr": "Divers",
+    "type_fr": "balise"
   },
   {
     "sector": "موارد مائية",
     "type": "برج مائي",
-    "cat_en": "موارد مائية",
-    "type_en": "برج مائي",
-    "cat_fr": "Ressources en Eau"
+    "cat_en": "Water resources",
+    "type_en": "Water tower",
+    "cat_fr": "Ressources en Eau",
+    "type_fr": "Château d'eau"
   },
   {
     "sector": "موارد مائية",
     "type": "بئر",
-    "cat_en": "موارد مائية",
-    "type_en": "بئر",
-    "cat_fr": "Ressources en Eau"
+    "cat_en": "Water resources",
+    "type_en": "a well",
+    "cat_fr": "Ressources en Eau",
+    "type_fr": "un puits"
   },
   {
     "sector": "موارد مائية",
     "type": "تصفية المياه",
-    "cat_en": "موارد مائية",
-    "type_en": "تصفية المياه",
-    "cat_fr": "Ressources en Eau"
+    "cat_en": "Water resources",
+    "type_en": "Water filter",
+    "cat_fr": "Ressources en Eau",
+    "type_fr": "Filtre à eau"
   },
   {
     "sector": "موارد مائية",
     "type": "تطهير المياه",
-    "cat_en": "موارد مائية",
-    "type_en": "تطهير المياه",
-    "cat_fr": "Ressources en Eau"
+    "cat_en": "Water resources",
+    "type_en": "Water disinfection",
+    "cat_fr": "Ressources en Eau",
+    "type_fr": "Désinfection de l'eau"
   },
   {
     "sector": "موارد مائية",
     "type": "خزان مياه",
-    "cat_en": "موارد مائية",
-    "type_en": "خزان مياه",
-    "cat_fr": "Ressources en Eau"
+    "cat_en": "Water resources",
+    "type_en": "Water tank",
+    "cat_fr": "Ressources en Eau",
+    "type_fr": "Réservoir d'eau"
   },
   {
     "sector": "موارد مائية",
     "type": "سد مائي",
-    "cat_en": "موارد مائية",
-    "type_en": "سد مائي",
-    "cat_fr": "Ressources en Eau"
+    "cat_en": "Water resources",
+    "type_en": "Water dam",
+    "cat_fr": "Ressources en Eau",
+    "type_fr": "Barrage d'eau"
   },
   {
     "sector": "موارد مائية",
     "type": "شركة الجزائرية للمياه",
-    "cat_en": "موارد مائية",
-    "type_en": "شركة الجزائرية للمياه",
-    "cat_fr": "Ressources en Eau"
+    "cat_en": "Water resources",
+    "type_en": "Algerian Water Company",
+    "cat_fr": "Ressources en Eau",
+    "type_fr": "Compagnie Algérienne des Eaux"
   },
   {
     "sector": "موارد مائية",
     "type": "محطة ضخ المياه",
-    "cat_en": "موارد مائية",
-    "type_en": "محطة ضخ المياه",
-    "cat_fr": "Ressources en Eau"
+    "cat_en": "Water resources",
+    "type_en": "Water pumping station",
+    "cat_fr": "Ressources en Eau",
+    "type_fr": "Station de pompage d'eau"
   },
   {
     "sector": "موارد مائية",
     "type": "معالجة المياه",
-    "cat_en": "موارد مائية",
-    "type_en": "معالجة المياه",
-    "cat_fr": "Ressources en Eau"
+    "cat_en": "Water resources",
+    "type_en": "Water treatment",
+    "cat_fr": "Ressources en Eau",
+    "type_fr": "Traitement de l'eau"
   },
   {
     "sector": "موارد مائية",
     "type": "منبع مائي",
-    "cat_en": "موارد مائية",
-    "type_en": "منبع مائي",
-    "cat_fr": "Ressources en Eau"
+    "cat_en": "Water resources",
+    "type_en": "Water source",
+    "cat_fr": "Ressources en Eau",
+    "type_fr": "Source d'eau"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "برج مراقبة",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "برج مراقبة",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Watchtower",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Tour de guet"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "تقاطع السكة الحديدية مع الطريق",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "تقاطع السكة الحديدية مع الطريق",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "The intersection of the railway and the road",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "L'intersection de la voie ferrée et de la route"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "جسر سكك حديدية",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "جسر سكك حديدية",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Railway bridge",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Pont ferroviaire"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "جسر محول",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "جسر محول",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Adapter bridge",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Pont adaptateur"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "حضيرة بلدية",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "حضيرة بلدية",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Municipal barn",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Grange municipale"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "شركة أشغال",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "شركة أشغال",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Ashghal Company",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Société Ashghal"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "شركة نقل",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "شركة نقل",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Transportation company",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Entreprise de transport"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "فوهة سكك حديدية",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "فوهة سكك حديدية",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Rail nozzle",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Buse de rail"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "محطة التليفيريك",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "محطة التليفيريك",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Cable car station",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Station du téléphérique"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "محطة برية",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "محطة برية",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Land station",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Station terrestre"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "محطة سيارات الأجرة",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "محطة سيارات الأجرة",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Taxi station",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Station de taxis"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "محطة قطار",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "محطة قطار",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Train station",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Gare"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "مدرسة تعليم السياقة",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "مدرسة تعليم السياقة",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Driving school",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "École de conduite"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "مديرية الأشغال العمومية و النقل",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "مديرية الأشغال العمومية و النقل",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Directorate of Public Works and Transport",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Direction des Travaux Publics et des Transports"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "مطار",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "مطار",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "airport",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "aéroport"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "ممر علوي للراجلين",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "ممر علوي للراجلين",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Overpass for pedestrians",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Passage supérieur pour piétons"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "منشآت فنية سكك حديدية",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "منشآت فنية سكك حديدية",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Railway art installations",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Installations artistiques ferroviaires"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "موقف الحافلات",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "موقف الحافلات",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Bus stop",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Arrêt de bus"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "موقف قطار",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "موقف قطار",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Train stop",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Arrêt du train"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "ميناء",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "ميناء",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "harbor",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "port"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "نفق",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "نفق",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "tunnel",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "tunnel"
   },
   {
     "sector": "نقل و أشغال عمومية",
     "type": "نفق سكك حديدية",
-    "cat_en": "نقل و أشغال عمومية",
-    "type_en": "نفق سكك حديدية",
-    "cat_fr": "Transport & Travaux Publics"
+    "cat_en": "Transportation and public works",
+    "type_en": "Railway tunnel",
+    "cat_fr": "Transport & Travaux Publics",
+    "type_fr": "Tunnel ferroviaire"
   }
 ]

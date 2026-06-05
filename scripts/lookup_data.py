@@ -132,7 +132,9 @@ def activity_categories(locale: str = 'ar') -> list[tuple[str, str]]:
         if category and category not in seen:
             seen.add(category)
             if locale != 'ar':
-                val = entry.get(f'cat_{locale}', '') or category
+                val = entry.get(f'cat_{locale}', '')
+                if not val or val == category:
+                    val = category
             else:
                 val = category
             result.append((val, category))
@@ -149,11 +151,13 @@ def activity_types_for_category(
     for entry in activity_types():
         if entry.get('sector', '') == cat:
             type_val = entry.get('type', '')
-            if locale != 'ar':
-                display = entry.get(f'type_{locale}', '') or type_val
-            else:
-                display = type_val
             if type_val:
+                if locale != 'ar':
+                    display = entry.get(f'type_{locale}', '')
+                    if not display or display == type_val:
+                        display = type_val
+                else:
+                    display = type_val
                 result.append((display, type_val))
     return result
 

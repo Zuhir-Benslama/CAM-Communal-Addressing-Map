@@ -4,6 +4,7 @@ import logging
 from typing import Any, ClassVar
 
 from geoalchemy2.functions import ST_Within
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from ...core.base import Base, TimestampMixin
@@ -25,7 +26,7 @@ def _parent_zone_id(session: Session, geometry: Any) -> str | None:
     try:
         zone = session.query(Zone).filter(ST_Within(geometry, Zone.geometry)).first()
         return zone.id if zone else None
-    except Exception:  # pylint: disable=W0718
+    except SQLAlchemyError:
         logger.warning('parent zone lookup failed', exc_info=True)
         return None
 
@@ -44,7 +45,7 @@ def _has_child_entities(session: Session, zone_geometry: Any) -> bool:
                 .first()
             ):
                 return True
-    except Exception:  # pylint: disable=W0718
+    except SQLAlchemyError:
         logger.warning('has_child check failed', exc_info=True)
     return False
 

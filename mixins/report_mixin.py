@@ -1,5 +1,5 @@
-# mypy: ignore-errors
 """Reporting mixin for generating statistical reports and purchase orders."""
+# mypy: disable-error-code="attr-defined"
 
 from __future__ import annotations
 
@@ -75,7 +75,7 @@ class ReportMixin:
                 capture_output=True,
                 text=True,
                 check=True,
-                **_SUBPROCESS_FLAGS,
+                **_SUBPROCESS_FLAGS,  # type: ignore[call-overload]
             )
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Information)
@@ -95,7 +95,7 @@ class ReportMixin:
             msg.exec()
             return False
         except OSError:
-            logger.exception('Unexpected error')
+            logger.exception('Failed to run reporting script')
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
             msg.setWindowTitle(self._tr('Error'))
@@ -106,6 +106,7 @@ class ReportMixin:
 
     def generate_report(self: HasReportContext) -> bool:
         """Generate a statistical report via the external reporting script."""
+        assert self.current_user is not None
         report_data = {
             'prog': count_numberings(NUM_PLANNED),
             'wrong': count_numberings('numbered_mismatched'),
@@ -132,6 +133,7 @@ class ReportMixin:
 
     def purchase_order(self: HasReportContext) -> bool:
         """Generate a purchase order via the external reporting script."""
+        assert self.current_user is not None
         order_data = {
             'date': datetime.now().date().strftime('%Y/%m/%d'),
             'wilaya': self.current_user.get('wilaya'),

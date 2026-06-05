@@ -103,8 +103,8 @@ class TestSignIn(unittest.TestCase):
             'app.users.service.get_session', return_value=self.mock_session
         ).start()
         patch('app.users.schemas.get_session', return_value=self.mock_session).start()
-        self.mock_jwt_encode = patch(
-            'app.users.service.jwt.encode', return_value='fake.jwt.token'
+        self.mock_token = patch(
+            'app.users.service.secrets.token_urlsafe', return_value='fake-session-token'
         ).start()
 
     def tearDown(self):
@@ -195,7 +195,7 @@ class TestLogout(unittest.TestCase):
         with patch('builtins.open', MagicMock()):
             logout(self.mock_iface, None)
 
-        self.assertIsNone(mock_user.api_key)
+        self.assertIsNone(mock_user.session_token)
         self.mock_session.commit.assert_called_once()
         self.mock_session.close.assert_called_once()
 

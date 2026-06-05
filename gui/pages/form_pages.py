@@ -167,12 +167,9 @@ def build_num_form(dialog) -> None:
     label.setObjectName('label_36')
     form.addRow(label, dialog._combo_road_ref)
 
-    dialog._label_ref_name = QLabel()
-    dialog._label_ref_name.setObjectName('ref_name')
-    form.addRow('Reference:', dialog._label_ref_name)
     dialog._btn_select_road_ref = QPushButton('Select Reference')
     dialog._btn_select_road_ref.setObjectName('select_road_ref')
-    form.addRow('', dialog._btn_select_road_ref)
+    form.addRow(dialog._btn_select_road_ref)
     dialog._field_num_val = QLineEdit()
     dialog._field_num_val.setObjectName('num_val')
     label = QLabel('Number:')
@@ -234,12 +231,9 @@ def build_pan_form(dialog) -> None:
     label.setObjectName('label_40')
     form.addRow(label, dialog._combo_panel_ref)
 
-    dialog._label_ref_name2 = QLabel()
-    dialog._label_ref_name2.setObjectName('ref_name2')
-    form.addRow('Reference:', dialog._label_ref_name2)
     dialog._btn_select_panel_ref = QPushButton('Select Reference')
     dialog._btn_select_panel_ref.setObjectName('select_panel_ref')
-    form.addRow('', dialog._btn_select_panel_ref)
+    form.addRow(dialog._btn_select_panel_ref)
 
     layout.addLayout(form)
 

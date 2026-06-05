@@ -92,7 +92,7 @@ def _build_form_page(dialog) -> None:
     plan_frame = make_section_frame()
     plan_layout = plan_frame.layout()
 
-    plan_title = QLabel('Plan Selection')
+    plan_title = QLabel('Phase')
     plan_title.setObjectName('groupBox_plan_selection')
     plan_title.setStyleSheet('font-size: 13px; font-weight: bold;')
     plan_layout.addWidget(plan_title)
@@ -107,7 +107,7 @@ def _build_form_page(dialog) -> None:
     action_frame = make_section_frame()
     action_layout = action_frame.layout()
 
-    action_title = QLabel('Actions')
+    action_title = QLabel('Tools')
     action_title.setObjectName('groupBox_actions')
     action_title.setStyleSheet('font-size: 13px; font-weight: bold;')
     action_layout.addWidget(action_title)
@@ -142,7 +142,7 @@ def _build_form_page(dialog) -> None:
     form_frame = make_section_frame()
     form_layout = form_frame.layout()
 
-    form_title = QLabel('Form Data')
+    form_title = QLabel('Feature')
     form_title.setObjectName('groupBox_form_data')
     form_title.setStyleSheet('font-size: 13px; font-weight: bold;')
     form_layout.addWidget(form_title)

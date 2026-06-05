@@ -4,6 +4,7 @@ from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import (
     QComboBox,
     QFormLayout,
+    QHBoxLayout,
     QLabel,
     QLineEdit,
     QPushButton,
@@ -61,13 +62,14 @@ def build_login_page(dialog) -> None:
     dialog._btn_sign_in.setObjectName('sign_in_user')
     section_layout.addWidget(dialog._btn_sign_in)
 
+    btn_row = QHBoxLayout()
     dialog._btn_add_user = QPushButton('Add User')
     dialog._btn_add_user.setObjectName('add_u')
-    section_layout.addWidget(dialog._btn_add_user)
-
+    btn_row.addWidget(dialog._btn_add_user)
     dialog._btn_restore_db = QPushButton('Restore Database')
     dialog._btn_restore_db.setObjectName('restore_db')
-    section_layout.addWidget(dialog._btn_restore_db)
+    btn_row.addWidget(dialog._btn_restore_db)
+    section_layout.addLayout(btn_row)
 
     section_layout.addStretch()
 

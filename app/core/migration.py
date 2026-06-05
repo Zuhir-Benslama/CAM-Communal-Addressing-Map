@@ -101,6 +101,7 @@ NEW_TABLES = {
             wilaya_code INTEGER,
             commune_code VARCHAR(255),
             api_key TEXT,
+            session_token TEXT,
             email VARCHAR(255),
             phone VARCHAR(255),
             created_at DATETIME,
