@@ -42,7 +42,7 @@ class _SimpleTabBar:
         pass
 
     @staticmethod
-    def setStyleSheet(ss: str) -> None:
+    def setStyleSheet(_ss: str) -> None:
         pass
 
 

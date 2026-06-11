@@ -52,7 +52,7 @@ class ConnectionPool:
                     )
                     if not os.path.exists(dll):
                         raise RuntimeError(f'SpatiaLite DLL not found: {dll}') from exc
-                    dbapi_conn.execute("SELECT load_extension(?)", (dll,))
+                    dbapi_conn.execute('SELECT load_extension(?)', (dll,))
                 try:
                     cursor = dbapi_conn.execute(
                         'SELECT count(*) FROM sqlite_master '

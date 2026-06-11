@@ -9,14 +9,7 @@ import uuid
 
 from geoalchemy2.elements import WKTElement
 from qgis.core import QgsLayerTreeLayer, QgsProject
-from qgis.PyQt.QtWidgets import (
-    QCheckBox,
-    QComboBox,
-    QFormLayout,
-    QLineEdit,
-    QMessageBox,
-    QSpinBox,
-)
+from qgis.PyQt.QtWidgets import QMessageBox
 from shapely import wkt
 from shapely.geometry import LineString, Point, Polygon
 from sqlalchemy.exc import SQLAlchemyError
@@ -241,21 +234,6 @@ class LayerOpsMixin:
             self._handle_default_tab(root)
 
         self.iface.mapCanvas().refresh()
-
-    def clear_forms(self, layout) -> None:
-        """Clear all widgets (QLineEdit, QComboBox, etc.) in the given
-        form layout."""
-        for i in range(layout.rowCount()):
-            widget = layout.itemAt(i, QFormLayout.FieldRole)
-            if widget:
-                if isinstance(widget.widget(), QLineEdit):
-                    widget.widget().clear()
-                elif isinstance(widget.widget(), QComboBox):
-                    widget.widget().setCurrentIndex(0)
-                elif isinstance(widget.widget(), QSpinBox):
-                    widget.widget().setValue(widget.widget().minimum())
-                elif isinstance(widget.widget(), QCheckBox):
-                    widget.widget().setChecked(False)
 
     def list_road_entries(self) -> None:
         """Open an entity list dialog for roads."""

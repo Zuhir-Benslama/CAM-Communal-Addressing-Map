@@ -22,7 +22,7 @@
 """
 
 import logging
-from typing import Any
+from typing import Any, ClassVar
 
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import (
@@ -416,7 +416,7 @@ class MainDialog(
         current_tab = self.menu.currentIndex()
         self.on_opt_selected(current_tab)
 
-    LAYER_KEY_MAP = [
+    LAYER_KEY_MAP: ClassVar[list[str]] = [
         'zone',
         'road',
         'org',
@@ -445,7 +445,7 @@ class MainDialog(
         self._btn_measure.setText('')
         self._btn_measure.setToolTip(measure)
 
-    LAYER_INDEX_MAP = [
+    LAYER_INDEX_MAP: ClassVar[list[str]] = [
         'Zones',
         'Roads',
         'Facilities',

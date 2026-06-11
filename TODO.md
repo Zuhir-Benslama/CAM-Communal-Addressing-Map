@@ -1670,3 +1670,52 @@ Open QGIS, load the plugin, and verify:
 ## 32. Login Page Layout (P2) ✅
 
 - [x] "Add User" and "Restore Database" buttons on the same horizontal row in login page (`login_page.py`)
+
+---
+
+## 68. Code Quality Fixes — 2026-06-11
+
+### Ruff Lint Errors (P2)
+
+- [x] **Remove extraneous `f` prefix** — 4 instances in `scripts/install_rna.py:226,266-268` (F541)
+- [x] **Run `ruff format` on 5 files** — `app/core/database.py`, `gui/ui_fillers.py`, `i18n/__init__.py`, `resources.py`, `scripts/install_rna.py`
+
+### Dead Code (P2) ✅
+
+- [x] **Remove unused variable `ss`** — `gui/dialog_helpers.py:45`
+- [x] **Remove unused functions** — `fill_org_subcategory`, `fill_activity_subcategory` removed from `gui/ui_fillers.py`
+- [x] **Remove unused `LAYER_MODEL`** — `app/shared/constants.py:83`
+- [x] **Remove unused `_missing_` enum method** — `app/shared/constants.py:117`
+- [x] **Remove unused `clear_forms`** — `mixins/layer_ops_mixin.py:245` (also removed 5 unused imports: QCheckBox, QComboBox, QFormLayout, QLineEdit, QSpinBox)
+
+### Additional Dead Code Found & Removed
+
+- [x] **Remove unused imports** — `activity_subcategories`, `org_subcategories` from `gui/ui_fillers.py` (leftover after removing the two functions that used them)
+
+### Mutable Class Defaults (RUF012) ✅
+
+- [x] **Annotate `_list_columns` with `ClassVar[list[str]]`** — 5 model files (`numbering.py`, `organization.py`, `road.py`, `subdivision.py`, `zone.py`)
+- [x] **Annotate `LAYER_KEY_MAP` and `LAYER_INDEX_MAP` with `ClassVar[list[str]]`** — `gui/main_dialog.py`
+
+### Stale `# noqa` Directives Removed (RUF100) ✅
+
+- [x] **22 stale `# noqa` directives removed** — across `test/helpers/__init__.py`, `test/test_auth.py`, `test/test_db_ops.py`, `test/test_init.py`, `test/test_integration_flow.py`, `test/test_operations.py`, `test/test_qss.py`, `scripts/migrate_db.py`, `mixins/layer_edit_mixin.py`, `constants.py`
+
+### Config Cleanup ✅
+
+- [x] **`pyproject.toml`** — Added `E402`, `I001` to test per-file-ignores (sys.path hack before imports is standard test pattern)
+- [x] **Restored `# ruff: noqa: F401`** in `constants.py` (intentional re-export module, removed incorrectly by RUF100 auto-fix)
+
+### Test Status
+
+- [x] **228 passed, 3 skipped** — no regressions from changes
+
+### Further Improvements (P3)
+
+- [ ] **Audit `get_*_options` functions in `gui/ui_fillers.py`** — 11 functions never called from production code (only mocked in tests); may be dead API surface
+
+### Cyclomatic Complexity (P2) ✅
+
+- [x] **Refactor `PanelSign.label`** (complexity 10 → 4) — extracted candidates list pattern
+- [x] **Refactor `PanelSign.save`** (complexity 8 → 4) — extracted `_validate_reference` helper
+- [x] **Refactor `PanelSign` class** (complexity 8 → 5) — byproduct of method refactors

@@ -21,9 +21,12 @@ import sys
 
 logger = logging.getLogger('install_rna')
 _log_handler = logging.StreamHandler(sys.stdout)
-_log_handler.setFormatter(logging.Formatter(
-    '%(asctime)s [%(levelname)s] %(message)s', datefmt='%H:%M:%S',
-))
+_log_handler.setFormatter(
+    logging.Formatter(
+        '%(asctime)s [%(levelname)s] %(message)s',
+        datefmt='%H:%M:%S',
+    )
+)
 logger.addHandler(_log_handler)
 logger.setLevel(logging.INFO)
 
@@ -33,16 +36,31 @@ PROJECT_ROOT = os.path.dirname(HERE)
 REQUIREMENTS = os.path.join(PROJECT_ROOT, 'requirements.txt')
 
 EXCLUDE_DIRS = {
-    '__pycache__', '.git', '.github', '.gitignore',
+    '__pycache__',
+    '.git',
+    '.github',
+    '.gitignore',
     'test',
-    '.mypy_cache', '.pytest_cache', '.ruff_cache',
-    '.agents', '.codex', '.idea', '.vscode', '__pycache__',
+    '.mypy_cache',
+    '.pytest_cache',
+    '.ruff_cache',
+    '.agents',
+    '.codex',
+    '.idea',
+    '.vscode',
+    '__pycache__',
 }
 
 EXCLUDE_FILES = {
-    'Makefile', 'pb_tool.cfg', 'pyproject.toml',
-    'README.md', 'SECURITY.md', 'TODO.md', 'WORK_RESUME.md',
-    'requirements.txt', 'resources.qrc',
+    'Makefile',
+    'pb_tool.cfg',
+    'pyproject.toml',
+    'README.md',
+    'SECURITY.md',
+    'TODO.md',
+    'WORK_RESUME.md',
+    'requirements.txt',
+    'resources.qrc',
     'symbology-style.db',
 }
 
@@ -55,7 +73,12 @@ QGIS_PLUGIN_DIRS = {
     ),
     'Windows': os.path.join(
         os.environ.get('APPDATA', ''),
-        'QGIS', 'QGIS3', 'profiles', 'default', 'python', 'plugins',
+        'QGIS',
+        'QGIS3',
+        'profiles',
+        'default',
+        'python',
+        'plugins',
     ),
 }
 
@@ -109,8 +132,12 @@ def check_qgis():
     if get_os() == 'Darwin' and os.path.isdir('/Applications/QGIS.app'):
         return True, '/Applications/QGIS.app'
     if get_os() == 'Windows':
-        for root in (r'C:\Program Files\QGIS 3.34', r'C:\Program Files\QGIS 3.36',
-                     r'C:\Program Files\QGIS 3.38', r'C:\OSGeo4W'):
+        for root in (
+            r'C:\Program Files\QGIS 3.34',
+            r'C:\Program Files\QGIS 3.36',
+            r'C:\Program Files\QGIS 3.38',
+            r'C:\OSGeo4W',
+        ):
             exe = os.path.join(root, 'bin', 'qgis.exe')
             if os.path.isfile(exe):
                 return True, exe
@@ -122,8 +149,10 @@ def check_libreoffice():
     if soffice:
         return True, soffice
     if get_os() == 'Windows':
-        for path in (r'C:\Program Files\LibreOffice\program\soffice.exe',
-                     r'C:\Program Files (x86)\LibreOffice\program\soffice.exe'):
+        for path in (
+            r'C:\Program Files\LibreOffice\program\soffice.exe',
+            r'C:\Program Files (x86)\LibreOffice\program\soffice.exe',
+        ):
             if os.path.isfile(path):
                 return True, path
     if get_os() == 'Darwin':
@@ -136,8 +165,8 @@ def check_libreoffice():
 def install_python_packages(qgis_python):
     if not qgis_python:
         logger.warning(
-            'No QGIS Python found. Install packages manually:\n'
-            '  pip install -r %s', REQUIREMENTS,
+            'No QGIS Python found. Install packages manually:\n  pip install -r %s',
+            REQUIREMENTS,
         )
         return False
     pip_dir = os.path.dirname(qgis_python)
@@ -154,7 +183,8 @@ def install_python_packages(qgis_python):
     logger.info('Installing packages from %s ...', REQUIREMENTS)
     result = subprocess.run(
         [*pip_cmd, 'install', '-r', REQUIREMENTS],
-        capture_output=True, text=True,
+        capture_output=True,
+        text=True,
     )
     if result.returncode == 0:
         logger.info('Python packages installed successfully.')
@@ -191,7 +221,8 @@ def install_plugin(plugin_dir):
         logger.info('Removing existing installation at %s', target)
         shutil.rmtree(target)
     shutil.copytree(
-        PROJECT_ROOT, target,
+        PROJECT_ROOT,
+        target,
         ignore=_ignore_patterns,
         symlinks=False,
     )
@@ -223,7 +254,7 @@ def main():
     )
     args = parser.parse_args()
 
-    print(f'=== RNA QGIS Plugin Installer ===')
+    print('=== RNA QGIS Plugin Installer ===')
     print(f'Platform: {platform.system()} {platform.release()}')
     print()
 
@@ -263,9 +294,9 @@ def main():
     print()
 
     print('=== Done ===')
-    print(f'Restart QGIS and enable RNA in:')
-    print(f'  Plugins → Manage and Install Plugins → Installed')
-    print(f'  (check the box next to RNA)')
+    print('Restart QGIS and enable RNA in:')
+    print('  Plugins → Manage and Install Plugins → Installed')
+    print('  (check the box next to RNA)')
     print()
 
 

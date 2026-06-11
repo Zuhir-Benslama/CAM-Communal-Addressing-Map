@@ -4,9 +4,9 @@ Re-exports all public helpers so existing
 ``from test.helpers import ...`` imports keep working.
 """
 
-from ._core_mocks import setup_mocks  # noqa: F401
-from ._gui_mocks import setup_gui_mocks  # noqa: F401
-from ._shared import (  # noqa: F401
+from ._core_mocks import setup_mocks
+from ._gui_mocks import setup_gui_mocks
+from ._shared import (
     _mirror_app_modules,
     _mock_constants_base,
     _mock_model_table,

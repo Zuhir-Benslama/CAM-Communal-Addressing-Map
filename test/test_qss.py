@@ -1,6 +1,5 @@
 """Tests for generated QSS theme stylesheets."""
 
-# ruff: noqa: E402, I001
 import os
 import re
 import sys
@@ -11,7 +10,7 @@ from app.shared.constants import THEME_DARK
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from app.core.config import (  # noqa: E402
+from app.core.config import (
     DARK_QSS,
     DARK_QSS_DIALOG,
     LIGHT_QSS,

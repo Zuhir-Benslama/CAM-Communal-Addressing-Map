@@ -80,12 +80,6 @@ LAYER_KEY = {
     LAYER_ZONES: 'zone',
 }
 
-LAYER_MODEL = {
-    LAYER_ROADS: 'Road',
-    LAYER_FACILITIES: 'Organization',
-    LAYER_SUBDIVISIONS: 'Subdivision',
-}
-
 PANEL_TYPE_MAP = {
     LAYER_ROADS: 'roads',
     LAYER_FACILITIES: 'facilities',
@@ -113,15 +107,6 @@ class Theme(str, Enum):
 
     DARK = 'Dark'
     LIGHT = 'Light'
-
-    @classmethod
-    def _missing_(cls, value):
-        """Handle backward-compat lookup of legacy theme values."""
-        if value in ('Light', 'light', 'فاتح'):
-            return cls.LIGHT
-        if value in ('Dark', 'dark', 'داكن'):
-            return cls.DARK
-        return None
 
 
 PAN_MOUNTED = PanelStatus.MOUNTED

@@ -13,7 +13,7 @@ import sys
 # pylint: disable=wrong-import-position,import-error
 sys.path.insert(0, '.')
 
-from app.core.migration import migrate_database  # noqa: E402
+from app.core.migration import migrate_database
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 

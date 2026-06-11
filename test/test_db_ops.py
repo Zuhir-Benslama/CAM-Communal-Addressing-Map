@@ -9,9 +9,9 @@ from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from app.core.config import find_mod_spatialite_dll  # noqa: E402
-from app.core.security import hash_password, verify_password  # noqa: E402
-from app.users.repository import (  # noqa: E402
+from app.core.config import find_mod_spatialite_dll
+from app.core.security import hash_password, verify_password
+from app.users.repository import (
     _get_authenticated_user,
     create_cookie,
     qgis_config,

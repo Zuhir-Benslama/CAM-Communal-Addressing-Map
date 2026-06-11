@@ -1,7 +1,7 @@
 """Organization / facility spatial model."""
 
 import uuid
-from typing import Any, Optional
+from typing import Any, ClassVar, Optional
 
 from geoalchemy2 import Geometry
 from sqlalchemy import Column, ForeignKey, String, Text
@@ -15,7 +15,7 @@ class Organization(_BaseSpatialModel):
     """Organization / facility spatial model."""
 
     __tablename__ = 'organization'
-    _list_columns = ['category', 'type', 'name']
+    _list_columns: ClassVar[list[str]] = ['category', 'type', 'name']
 
     id = Column(Text, primary_key=True, default=lambda: str(uuid.uuid4()))
     locality_id = Column(String, index=True)

@@ -20,7 +20,6 @@ from ..constants import (
 from ..i18n import tr as _i18n_tr
 from ..scripts.lookup_data import (
     activity_categories,
-    activity_subcategories,
     activity_types,
     activity_types_for_category,
     clear_cache,
@@ -30,7 +29,6 @@ from ..scripts.lookup_data import (
     mounting_statuses,
     numbering_states,
     org_categories,
-    org_subcategories,
     org_types_for_category,
     road_types,
     subdivision_types,
@@ -39,6 +37,7 @@ from ..scripts.lookup_data import (
 )
 
 logger = logging.getLogger(__name__)
+
 
 def _setup_combo(combobox: QComboBox) -> None:
     """Configure a combobox with popup completion and no-insert policy."""
@@ -165,24 +164,6 @@ def fill_activity_category(combobox) -> None:
     _setup_combo(combobox)
 
 
-def fill_org_subcategory(combobox, cat) -> None:
-    """Populate a combobox with distinct organization subcategories."""
-    combobox.clear()
-    for sub in org_subcategories(cat):
-        combobox.addItem(sub, sub)
-    combobox.setCurrentIndex(0)
-    _setup_combo(combobox)
-
-
-def fill_activity_subcategory(combobox, cat) -> None:
-    """Populate a combobox with distinct activity subcategories."""
-    combobox.clear()
-    for sub in activity_subcategories(cat):
-        combobox.addItem(sub, sub)
-    combobox.setCurrentIndex(0)
-    _setup_combo(combobox)
-
-
 def fill_activity_type(combobox, cat) -> None:
     """Populate a combobox with activity types for a given category."""
     loc = _locale()
@@ -298,77 +279,3 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
 # ---------------------------------------------------------------------------
 # Option helpers (return [{text, value}, ...] lists)
 # ---------------------------------------------------------------------------
-
-
-def _json_to_options(data: list, loc: str) -> list[dict]:
-    """Convert a list of JSON entries to an option list."""
-    return [
-        {'text': locale_label(entry, loc), 'value': entry.get('pk', '')}
-        for entry in data
-    ]
-
-
-def get_zone_type_options(loc: str) -> list[dict]:
-    return _json_to_options(zone_types(), loc)
-
-
-def get_road_type_options(loc: str) -> list[dict]:
-    return _json_to_options(road_types(), loc)
-
-
-def get_subdivision_type_options(loc: str) -> list[dict]:
-    return _json_to_options(subdivision_types(), loc)
-
-
-def get_numbering_state_options(loc: str) -> list[dict]:
-    return _json_to_options(numbering_states(), loc)
-
-
-def get_mounting_status_options(loc: str) -> list[dict]:
-    return _json_to_options(mounting_statuses(), loc)
-
-
-def get_org_category_options(loc: str) -> list[dict]:
-    return [{'text': display, 'value': value} for display, value in org_categories(loc)]
-
-
-def get_org_type_options(loc: str, cat_value: str = '') -> list[dict]:
-    if not cat_value:
-        return []
-    return [
-        {'text': display, 'value': value}
-        for display, value in org_types_for_category(cat_value, loc)
-    ]
-
-
-def get_activity_category_options(loc: str) -> list[dict]:
-    options = [{'text': _i18n_tr(NO_ACTIVITY, loc), 'value': str(NO_ACTIVITY)}]
-    options += [
-        {'text': display, 'value': value} for display, value in activity_categories(loc)
-    ]
-    return options
-
-
-def get_activity_type_options(loc: str, cat_value: str = '') -> list[dict]:
-    if not cat_value or cat_value == NO_ACTIVITY:
-        return [{'text': _i18n_tr(NO_ACTIVITY, loc), 'value': str(NO_ACTIVITY)}]
-    return [
-        {'text': display, 'value': value}
-        for display, value in activity_types_for_category(cat_value, loc)
-    ]
-
-
-def get_road_reference_options(loc: str) -> list[dict]:
-    data_list = qgis_config().get('refs') or []
-    return [
-        {'text': _i18n_tr(cfg.get('label', ''), loc), 'value': cfg.get('label', '')}
-        for cfg in data_list
-    ]
-
-
-def get_panel_reference_options(loc: str) -> list[dict]:
-    data_list = qgis_config().get('refs2') or []
-    return [
-        {'text': _i18n_tr(cfg.get('label', ''), loc), 'value': cfg.get('label', '')}
-        for cfg in data_list
-    ]

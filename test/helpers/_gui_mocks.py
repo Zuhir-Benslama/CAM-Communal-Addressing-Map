@@ -431,20 +431,7 @@ def _setup_gui_domain_mocks():
         'fill_activity_type',
     ):
         setattr(_ui_fillers, fn, MagicMock())
-    for fn in (
-        'get_zone_type_options',
-        'get_road_type_options',
-        'get_subdivision_type_options',
-        'get_numbering_state_options',
-        'get_mounting_status_options',
-        'get_org_category_options',
-        'get_org_type_options',
-        'get_activity_category_options',
-        'get_activity_type_options',
-        'get_road_reference_options',
-        'get_panel_reference_options',
-    ):
-        setattr(_ui_fillers, fn, MagicMock(return_value=[]))
+
     sys.modules['plans_adressage.gui.ui_fillers'] = _ui_fillers
 
 

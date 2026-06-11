@@ -1,7 +1,7 @@
 """Subdivision spatial model."""
 
 import uuid
-from typing import Any, Optional
+from typing import Any, ClassVar, Optional
 
 from geoalchemy2 import Geometry
 from sqlalchemy import Column, ForeignKey, String, Text
@@ -15,7 +15,7 @@ class Subdivision(_BaseSpatialModel):
     """Subdivision spatial model."""
 
     __tablename__ = 'subdivision'
-    _list_columns = ['type', 'name']
+    _list_columns: ClassVar[list[str]] = ['type', 'name']
 
     id = Column(
         Text,

@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from app.orders.repository import (  # noqa: E402
+from app.orders.repository import (
     count_numberings,
     count_panels,
     get_zone_distribution,

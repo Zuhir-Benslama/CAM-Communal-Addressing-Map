@@ -1,7 +1,7 @@
 """Road spatial model."""
 
 import uuid
-from typing import Any, Optional
+from typing import Any, ClassVar, Optional
 
 from geoalchemy2 import Geometry
 from sqlalchemy import Column, ForeignKey, String, Text
@@ -20,7 +20,7 @@ class Road(_BaseSpatialModel):
     """Road spatial model."""
 
     __tablename__ = 'road'
-    _list_columns = ['type', 'name', 'decision_number']
+    _list_columns: ClassVar[list[str]] = ['type', 'name', 'decision_number']
 
     id = Column(
         Text,

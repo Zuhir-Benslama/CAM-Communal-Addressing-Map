@@ -44,7 +44,7 @@ class IntegrationFlowTest(unittest.TestCase):
         )
         host = type('Host', bases, {'_tr': lambda self, s: s})()
         # Override validate_text to accept single arg and return just text
-        mods['auth_mixin'].validate_text = lambda t: t  # noqa: E731
+        mods['auth_mixin'].validate_text = lambda t: t
         return host, mods
 
     def _setup_widgets(self, host):

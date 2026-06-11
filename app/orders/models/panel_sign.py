@@ -71,38 +71,19 @@ class PanelSign(_BaseSpatialModel):
     def label(self) -> str | None:
         """Return a human-readable label based on the referenced entity."""
         loc = current_locale()
-        if (
-            self.road_id is not None
-            and self.subdivision_id is None
-            and self.organization_id is None
-        ):
+        candidates = [
+            (self.road_id, self.road, 'road'),
+            (self.subdivision_id, self.subdivision, 'subdivision'),
+            (self.organization_id, self.organization, 'organization'),
+        ]
+        active = [(fid, ent) for fid, ent, _ in candidates if fid is not None]
+        if len(active) == 1:
+            _, entity = active[0]
             return (
                 '\u200f'
-                + locale_value(self.road, 'type', loc)
+                + locale_value(entity, 'type', loc)
                 + ' '
-                + locale_value(self.road, 'name', loc)
-            )
-        if (
-            self.road_id is None
-            and self.subdivision_id is not None
-            and self.organization_id is None
-        ):
-            return (
-                '\u200f'
-                + locale_value(self.subdivision, 'type', loc)
-                + ' '
-                + locale_value(self.subdivision, 'name', loc)
-            )
-        if (
-            self.road_id is None
-            and self.subdivision_id is None
-            and self.organization_id is not None
-        ):
-            return (
-                '\u200f'
-                + locale_value(self.organization, 'type', loc)
-                + ' '
-                + locale_value(self.organization, 'name', loc)
+                + locale_value(entity, 'name', loc)
             )
         return None
 
@@ -123,6 +104,18 @@ class PanelSign(_BaseSpatialModel):
         session.commit()
         return instance
 
+    @staticmethod
+    def _validate_reference(
+        session, model_class, ref_id: str | None, type_label: str
+    ) -> str | None:
+        """Validate a referenced entity exists and return its type label."""
+        if not ref_id:
+            return None
+        entity = session.query(model_class).filter(model_class.id == ref_id).first()
+        if not entity:
+            raise ValueError(f'{type_label} with id {ref_id} not found')
+        return type_label
+
     def save(self, session: Session) -> None:
         """Validate referenced entities and persist panel sign."""
         from .organization import Organization
@@ -130,32 +123,18 @@ class PanelSign(_BaseSpatialModel):
         from .subdivision import Subdivision
 
         user_data = _get_current_user()
-        if user_data:
-            self.user_id = user_data.get('id')
-            if self.road_id:
-                road = session.query(Road).filter(Road.id == self.road_id).first()
-                if not road:
-                    raise ValueError(f'Road with id {self.road_id} not found')
-                self.type = LAYER_ROADS
-            if self.organization_id:
-                org = (
-                    session.query(Organization)
-                    .filter(Organization.id == self.organization_id)
-                    .first()
-                )
-                if not org:
-                    raise ValueError(f'Organization {self.organization_id} not found')
-                self.type = LAYER_FACILITIES
-            if self.subdivision_id:
-                sub = (
-                    session.query(Subdivision)
-                    .filter(Subdivision.id == self.subdivision_id)
-                    .first()
-                )
-                if not sub:
-                    raise ValueError(f'Subdivision {self.subdivision_id} not found')
-                self.type = LAYER_SUBDIVISIONS
-            session.add(self)
-            session.commit()
-        else:
+        if not user_data:
             raise ValueError('No user found')
+
+        self.user_id = user_data.get('id')
+        refs = [
+            (self.road_id, Road, LAYER_ROADS),
+            (self.organization_id, Organization, LAYER_FACILITIES),
+            (self.subdivision_id, Subdivision, LAYER_SUBDIVISIONS),
+        ]
+        for ref_id, model_class, type_label in refs:
+            found = self._validate_reference(session, model_class, ref_id, type_label)
+            if found:
+                self.type = found
+        session.add(self)
+        session.commit()

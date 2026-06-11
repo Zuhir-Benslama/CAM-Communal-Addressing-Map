@@ -108,7 +108,7 @@ class LayerEditMixin:
             return {f'{field_base}_{loc}': value}
         return {}
 
-    def add_panel(  # noqa: E501
+    def add_panel(
         self: HasFullEditContext,
     ) -> None:
         """Add a new panel sign linked to a selected road, org, or
@@ -247,7 +247,7 @@ class LayerEditMixin:
             no_callback()
         return False
 
-    def add_numbering(  # noqa: E501
+    def add_numbering(
         self: HasFullEditContext,
     ) -> None:
         """Add a new numbering linked to a selected road or subdivision."""
