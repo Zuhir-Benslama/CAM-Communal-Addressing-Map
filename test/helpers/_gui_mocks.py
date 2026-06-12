@@ -46,18 +46,18 @@ def _make_gui_pyqt_mocks():
         '__init__': lambda self, parent=None: None,
         'setObjectName': lambda self, name: None,
         'setSizeGripEnabled': lambda self, enabled: None,
-        'setMinimumSize': lambda self, w, h: None,
-        'setMaximumSize': lambda self, w, h: None,
+        'setMinimumSize': lambda self, w, _h: None,
+        'setMaximumSize': lambda self, w, _h: None,
         'setWindowTitle': lambda self, title: setattr(
             self,
             '_window_title',
             title,
         ),
         'windowTitle': lambda self: getattr(self, '_window_title', ''),
-        'setStyleSheet': lambda self, ss: None,
+        'setStyleSheet': lambda self, _ss: None,
         'findChild': lambda self, cls, name='': MagicMock(),
         'close': lambda self: None,
-        'resize': lambda self, w, h: None,
+        'resize': lambda self, w, _h: None,
         'width': lambda self: 800,
         'height': lambda self: 600,
         'layout': property(lambda _self: MagicMock()),
@@ -228,7 +228,7 @@ def _make_gui_pyqt_mocks():
     _qgis_qtcore.QVariant = MagicMock()
     _qgis_qtcore.QSize = MagicMock()
     _qgis_qtcore.pyqtSignal = MagicMock()
-    _qgis_qtcore.pyqtSlot = lambda *types, **kw: lambda f: f
+    _qgis_qtcore.pyqtSlot = lambda *types, **_kw: lambda f: f
     _qgis_qtcore.QObject = type(
         'QObject',
         (),

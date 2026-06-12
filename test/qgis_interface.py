@@ -119,7 +119,7 @@ class QgisInterface(QObject):
     def zoomToActiveLayer(self):
         """Zoom to extent of active layer."""
 
-    def addVectorLayer(self, path, base_name, provider_key):
+    def addVectorLayer(self, path, base_name, _provider_key):
         """Add a vector layer.
 
         :param path: Path to layer.
@@ -128,8 +128,8 @@ class QgisInterface(QObject):
         :param base_name: Base name for layer.
         :type base_name: str
 
-        :param provider_key: Provider key e.g. 'ogr'
-        :type provider_key: str
+        :param _provider_key: Provider key e.g. 'ogr'
+        :type _provider_key: str
         """
 
     def addRasterLayer(self, path, base_name):
@@ -180,11 +180,11 @@ class QgisInterface(QObject):
         In case of QGIS it returns an instance of QgisApp.
         """
 
-    def addDockWidget(self, area, dock_widget):
+    def addDockWidget(self, _area, dock_widget):
         """Add a dock widget to the main window.
 
-        :param area: Where in the ui the dock should be placed.
-        :type area:
+        :param _area: Where in the ui the dock should be placed.
+        :type _area:
 
         :param dock_widget: A dock widget to add to the UI.
         :type dock_widget: QDockWidget

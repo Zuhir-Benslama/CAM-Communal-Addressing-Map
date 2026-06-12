@@ -490,7 +490,15 @@ No hand-written Python file exceeds 500 lines. Auto-generated files (`resources.
 
 ---
 
-## 36. Remaining Work (Pylint 7.06 → target 7.5+)
+## 36. Dead Code Cleanup — Vulture Findings
+
+### P2 — Medium (in progress)
+
+- [x] **Remove unused `COMMUNES_GEOJSON` export** — `constants.py:16` re-exports `COMMUNES_GEOJSON` from `app/shared/constants.py`, but no consumer ever imports it. Remove the line.
+- [x] **Clean up unused variables in test mocks** — `test/helpers/_gui_mocks.py:49,50,57,60,231` has lambda parameters `h`, `ss`, `kw` that are never used. Prefix with `_` or remove.
+- [x] **Clean up unused parameters in `test/qgis_interface.py`** — `qgis_interface.py:122` `provider_key` parameter unused; `qgis_interface.py:183` `area` parameter unused.
+
+## 37. Remaining Work (Pylint 7.06 → target 7.5+)
 
 ### Completed (Round 1 — Easy & Moderate)
 
@@ -1712,7 +1720,7 @@ Open QGIS, load the plugin, and verify:
 
 ### Further Improvements (P3)
 
-- [ ] **Audit `get_*_options` functions in `gui/ui_fillers.py`** — 11 functions never called from production code (only mocked in tests); may be dead API surface
+- [x] **Audit `get_*_options` functions in `gui/ui_fillers.py`** — 11 functions were already removed in commit ccf7989. Removed residual orphaned section comment.
 
 ### Cyclomatic Complexity (P2) ✅
 

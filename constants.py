@@ -17,7 +17,6 @@ from .app.shared.constants import (
     AVAILABLE_LOCALES,
     CHART_SVG,
     COMMUNES_DB,
-    COMMUNES_GEOJSON,
     COMMUNES_JSON,
     COOKIE_FILE,
     CRS,

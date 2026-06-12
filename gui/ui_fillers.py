@@ -274,8 +274,3 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
     except (OSError, json.JSONDecodeError):
         logger.exception('Failed to save new type to %s', filepath)
         return False
-
-
-# ---------------------------------------------------------------------------
-# Option helpers (return [{text, value}, ...] lists)
-# ---------------------------------------------------------------------------
