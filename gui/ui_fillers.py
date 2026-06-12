@@ -115,8 +115,10 @@ def fill_commune_of_wilaya(combobox: QComboBox, code_w: int) -> None:
             else:
                 name = entry.get(f'commune_{loc}', '')
                 if not name:
+                    name = entry.get('commune_fr', '')
+                if not name:
                     name = _i18n_tr(str(entry.get('commune_ar', '')), loc)
-            combobox.addItem(name, entry.get('commune_code', ''))
+            combobox.addItem(name, str(entry.get('commune_code', '') or ''))
     combobox.setCurrentIndex(0)
     _setup_combo(combobox)
 
