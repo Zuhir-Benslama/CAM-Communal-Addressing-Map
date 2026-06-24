@@ -77,7 +77,9 @@ class LayerEditMixin:
         """Enable geometry editing on the currently selected layer."""
         self._update_handler(self._current_layer_name())
 
-    def _get_geometry_and_id(self: HasFeatureState, entity_name: str) -> tuple[Any, Any]:
+    def _get_geometry_and_id(
+        self: HasFeatureState, entity_name: str
+    ) -> tuple[Any, Any]:
         """Retrieve the captured geometry WKT and feature PK."""
         geometry_wkt = getattr(self, '_last_feature_wkt', None)
         feature_id = getattr(self, '_last_feature_id', None)

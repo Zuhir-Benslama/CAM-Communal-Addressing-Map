@@ -195,7 +195,9 @@ class IdentifyTool(QgsMapToolIdentify):
                     return str(locale_val)
         return str(feature[base_name]) if feature[base_name] else ''
 
-    def feature_as_ref(self, feature_id: Any, feature_type: Any, feature_name: Any) -> None:
+    def feature_as_ref(
+        self, feature_id: Any, feature_type: Any, feature_name: Any
+    ) -> None:
         """Store the selected feature as a reference for another entity."""
         self.feature_id = feature_id
         self.feature_type = feature_type

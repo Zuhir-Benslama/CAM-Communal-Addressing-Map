@@ -106,7 +106,9 @@ def _query_all_records(
     return [(row, None) for row in rows]
 
 
-def _build_feature(result: Any, geom_wkt: Any, field_names: list[str], all_fields: list[str]) -> QgsFeature | None:
+def _build_feature(
+    result: Any, geom_wkt: Any, field_names: list[str], all_fields: list[str]
+) -> QgsFeature | None:
     """Build a QgsFeature from a model instance and geometry WKT."""
     if not geom_wkt:
         return None
@@ -186,7 +188,9 @@ def refresh_layer_from_db(_iface: Any, layer_name: str, model_name: str) -> None
         session.close()
 
 
-def apply_categorized_style(_iface: Any, layer_name: str, category_fields: list[str]) -> None:
+def apply_categorized_style(
+    _iface: Any, layer_name: str, category_fields: list[str]
+) -> None:
     """Apply a categorized renderer to a layer based on field values."""
     layers = QgsProject.instance().mapLayersByName(layer_name)
     if not layers:
@@ -238,7 +242,9 @@ def _resolve_wkt(model_instance: Any, geometry: str | None = None) -> str | None
         session.close()
 
 
-def add_feature_to_layer(layer: Any, model_instance: Any, geometry_wkt: str | None = None) -> None:
+def add_feature_to_layer(
+    layer: Any, model_instance: Any, geometry_wkt: str | None = None
+) -> None:
     """Insert a single model instance as a new feature into a QGIS layer.
 
     This is the fast path — avoids deleting and re-adding all features
