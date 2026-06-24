@@ -82,7 +82,7 @@ def fill_paper(combobox: QComboBox) -> None:
     combobox.addItem(_i18n_tr('A0 Sheet for Administration', loc), 'A0')
 
 
-def _fill_from_json(combobox, data, loc):
+def _fill_from_json(combobox: QComboBox, data: list[dict], loc: str) -> None:
     """Fill a combobox from a list of {pk, label_fr, label_en} dicts."""
     combobox.clear()
     for entry in data:
@@ -123,7 +123,7 @@ def fill_commune_of_wilaya(combobox: QComboBox, code_w: int) -> None:
     _setup_combo(combobox)
 
 
-def fill_road_reference(combobox) -> None:
+def fill_road_reference(combobox: QComboBox) -> None:
     """Populate a combobox with road reference types from config."""
     loc = _locale()
     data_list = qgis_config().get('refs') or []
@@ -134,7 +134,7 @@ def fill_road_reference(combobox) -> None:
     combobox.setCurrentIndex(0)
 
 
-def fill_panel_reference(combobox) -> None:
+def fill_panel_reference(combobox: QComboBox) -> None:
     """Populate a combobox with panel reference types from config."""
     loc = _locale()
     data_list = qgis_config().get('refs2') or []
@@ -145,7 +145,7 @@ def fill_panel_reference(combobox) -> None:
     combobox.setCurrentIndex(0)
 
 
-def fill_org_category(combobox) -> None:
+def fill_org_category(combobox: QComboBox) -> None:
     """Populate a combobox with distinct organization categories from JSON."""
     loc = _locale()
     combobox.clear()
@@ -155,7 +155,7 @@ def fill_org_category(combobox) -> None:
     _setup_combo(combobox)
 
 
-def fill_activity_category(combobox) -> None:
+def fill_activity_category(combobox: QComboBox) -> None:
     """Populate a combobox with distinct activity categories from JSON."""
     loc = _locale()
     combobox.clear()
@@ -166,7 +166,7 @@ def fill_activity_category(combobox) -> None:
     _setup_combo(combobox)
 
 
-def fill_activity_type(combobox, cat) -> None:
+def fill_activity_type(combobox: QComboBox, cat: str) -> None:
     """Populate a combobox with activity types for a given category."""
     loc = _locale()
     combobox.clear()
@@ -177,7 +177,7 @@ def fill_activity_type(combobox, cat) -> None:
         combobox.addItem(_i18n_tr(NO_ACTIVITY, loc), NO_ACTIVITY)
 
 
-def fill_org_type(combobox, cat) -> None:
+def fill_org_type(combobox: QComboBox, cat: str) -> None:
     """Populate a combobox with organization types for a given category."""
     loc = _locale()
     combobox.clear()
@@ -187,17 +187,17 @@ def fill_org_type(combobox, cat) -> None:
     _setup_combo(combobox)
 
 
-def fill_road_type(combobox) -> None:
+def fill_road_type(combobox: QComboBox) -> None:
     """Populate a combobox with road types from JSON."""
     _fill_from_json(combobox, road_types(), _locale())
 
 
-def fill_mounting_status(combobox) -> None:
+def fill_mounting_status(combobox: QComboBox) -> None:
     """Populate a combobox with mounting statuses from JSON."""
     _fill_from_json(combobox, mounting_statuses(), _locale())
 
 
-def fill_numbering_state(combobox) -> None:
+def fill_numbering_state(combobox: QComboBox) -> None:
     """Populate a combobox with numbering states from JSON."""
     _fill_from_json(combobox, numbering_states(), _locale())
 
@@ -254,12 +254,12 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
         filepath = os.path.join(TEMPLATE_DATA_DIR, 'activity.json')
         entry = {'sector': category, 'type': type_name}
     else:
-        _JSON_FILES = {
+        _json_files = {
             LAYER_ZONES: 'zone_type.json',
             LAYER_ROADS: 'type_road.json',
             LAYER_SUBDIVISIONS: 'type_cite.json',
         }
-        filename = _JSON_FILES.get(main_type)
+        filename = _json_files.get(main_type)
         if not filename:
             return False
         filepath = os.path.join(TEMPLATE_DATA_DIR, filename)

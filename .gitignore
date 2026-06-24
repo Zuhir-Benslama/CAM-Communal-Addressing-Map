@@ -22,6 +22,10 @@ data/*.sqlite
 data/*.toml
 data/*.migrated
 
+# Temp / backup
+*.bak
+*.tmp
+
 # IDE / agents
 .idea/
 .vscode/

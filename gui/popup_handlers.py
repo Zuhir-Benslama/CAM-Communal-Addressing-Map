@@ -5,7 +5,7 @@ Update functions read from ``dialog._current_form_data`` dict.
 """
 
 import logging
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from qgis.PyQt.QtWidgets import QMessageBox
 from sqlalchemy.exc import SQLAlchemyError
@@ -43,14 +43,14 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 
-def populate_road(_dialog: 'PopupDialog', query, loc) -> dict:
+def populate_road(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
     return {
         'name': locale_value(query, 'name', loc),
         'type': query.type,
     }
 
 
-def populate_facility(_dialog: 'PopupDialog', query, loc) -> dict:
+def populate_facility(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
     return {
         'name': locale_value(query, 'name', loc),
         'category': query.category,
@@ -58,21 +58,21 @@ def populate_facility(_dialog: 'PopupDialog', query, loc) -> dict:
     }
 
 
-def populate_subdivision(_dialog: 'PopupDialog', query, loc) -> dict:
+def populate_subdivision(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
     return {
         'name': locale_value(query, 'name', loc),
         'type': query.type,
     }
 
 
-def populate_zone(_dialog: 'PopupDialog', query, loc) -> dict:
+def populate_zone(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
     return {
         'name': locale_value(query, 'name', loc),
         'type': query.type,
     }
 
 
-def populate_numbering(_dialog: 'PopupDialog', query, loc) -> dict:
+def populate_numbering(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
     data: dict = {
         'number': query.value or '',
         'repetition': query.repetition or '',
@@ -93,7 +93,7 @@ def populate_numbering(_dialog: 'PopupDialog', query, loc) -> dict:
     return data
 
 
-def populate_panel(_dialog: 'PopupDialog', query, loc) -> dict:
+def populate_panel(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
     data: dict = {
         'mountStatus': query.status or '',
     }
@@ -160,10 +160,10 @@ def _data(dialog: 'PopupDialog') -> dict:
 
 def _update_entity(
     dialog: 'PopupDialog',
-    model_class,
+    model_class: type[Any],
     success_msg: str,
     error_msg: str,
-    **fields,
+    **fields: Any,
 ) -> None:
     """Generic update helper: open session, call model.update, notify."""
     session = get_session()

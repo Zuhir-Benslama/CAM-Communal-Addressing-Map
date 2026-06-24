@@ -1,5 +1,7 @@
 """Login page builder for MainDialog."""
 
+from typing import Any
+
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import (
     QComboBox,
@@ -15,7 +17,7 @@ from qgis.PyQt.QtWidgets import (
 from ..dialog_helpers import make_section_frame
 
 
-def build_login_page(dialog) -> None:
+def build_login_page(dialog: Any) -> None:
     page = QWidget()
     page.setObjectName('login')
 

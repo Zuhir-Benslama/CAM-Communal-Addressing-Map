@@ -1,6 +1,7 @@
 """Vector layer editing and update operations."""
 
 import logging
+from typing import Any
 
 from qgis.core import Qgis, QgsMapLayer, QgsProject, QgsWkbTypes
 
@@ -10,7 +11,7 @@ from ..scripts.widget_texts import get_string
 logger = logging.getLogger(__name__)
 
 
-def _activate_add_feature(iface, layer) -> None:
+def _activate_add_feature(iface: Any, layer: Any) -> None:
     """Enable editing and activate the add-feature tool for a vector layer."""
     layer.startEditing()
     geometry_type = layer.geometryType()
@@ -43,7 +44,7 @@ def _activate_add_feature(iface, layer) -> None:
         )
 
 
-def edit_line_layer(iface) -> None:
+def edit_line_layer(iface: Any) -> None:
     """Enable editing and add feature tool on the active layer."""
     active_layer = iface.activeLayer()
 
@@ -59,7 +60,7 @@ def edit_line_layer(iface) -> None:
         )
 
 
-def save_changes(iface) -> None:
+def save_changes(iface: Any) -> None:
     """Commit pending edits on the active vector layer."""
     loc = current_locale()
     layer = iface.activeLayer()
@@ -97,7 +98,7 @@ def save_changes(iface) -> None:
         )
 
 
-def start_editing_layer(iface, layer_name) -> None:
+def start_editing_layer(iface: Any, layer_name: str) -> None:
     """Start editing mode on a named layer and activate add feature tool."""
     loc = current_locale()
     layers = QgsProject.instance().mapLayersByName(layer_name)
@@ -123,7 +124,7 @@ def start_editing_layer(iface, layer_name) -> None:
         )
 
 
-def stop_editing_layer(iface, layer_name) -> None:
+def stop_editing_layer(iface: Any, layer_name: str) -> None:
     """Stop editing and commit changes on a named layer."""
     loc = current_locale()
     layers = QgsProject.instance().mapLayersByName(layer_name)
@@ -171,7 +172,7 @@ def stop_editing_layer(iface, layer_name) -> None:
         )
 
 
-def update_layer(iface, layer_name) -> None:
+def update_layer(iface: Any, layer_name: str) -> None:
     """Enable vertex tool on a named layer for geometry editing."""
     layers = QgsProject.instance().mapLayersByName(layer_name)
 

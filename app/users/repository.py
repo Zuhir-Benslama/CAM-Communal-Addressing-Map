@@ -112,21 +112,11 @@ def _get_authenticated_user() -> dict[str, Any] | None:
 
 def get_user_location() -> str | None:
     """Return the WKT geometry of the authenticated user's municipality."""
-    user_data = get_current_user()
-    if not user_data:
+    commune = _get_authenticated_user()
+    if not commune:
         return None
-    commune_code = user_data.get('commune_code')
-    if not commune_code:
-        return None
-
-    # Find commune_id from commune_code
-    commune_id = None
-    for c in _load_localites():
-        v = c.get('commune_code')
-        if v is not None and int(v) == int(commune_code):
-            commune_id = int(c.get('commune_id', 0))
-            break
-    if commune_id is None:
+    commune_id = commune.get('commune_id')
+    if not commune_id:
         return None
 
     try:
@@ -155,6 +145,12 @@ def create_cookie(cookie: str, uid: str) -> None:
 
 
 _qgis_config_cache = None
+
+
+def reset_qgis_config_cache() -> None:
+    """Clear the cached QGIS config (useful for test isolation)."""
+    global _qgis_config_cache
+    _qgis_config_cache = None
 
 
 def qgis_config() -> dict:

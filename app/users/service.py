@@ -5,6 +5,7 @@ import logging
 import os
 import secrets
 import tempfile
+from typing import Any
 
 import toml
 from marshmallow import ValidationError
@@ -134,7 +135,7 @@ def sign_in(
         return False, None, error_details
 
 
-def remove_all_layers(iface) -> None:
+def remove_all_layers(iface: Any) -> None:
     """Remove all layers from the QGIS project and refresh the canvas."""
     project = QgsProject.instance()
     layers = project.mapLayers().values()
@@ -143,7 +144,7 @@ def remove_all_layers(iface) -> None:
     iface.mapCanvas().refresh()
 
 
-def logout(iface, dlg) -> None:
+def logout(iface: Any, dlg: Any) -> None:
     """Clear session cookie, revoke API key, remove layers, and close dialog."""
     filename = COOKIE_FILE
 

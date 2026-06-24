@@ -8,6 +8,7 @@ from geoalchemy2 import Geometry
 from geoalchemy2.elements import WKTElement
 from geoalchemy2.shape import to_shape
 from sqlalchemy import text
+from sqlalchemy.orm import Session
 
 from ..core.database import get_session
 from ..orders.models import (
@@ -32,17 +33,16 @@ _WRITER_MODELS = {
 }
 
 
-def _add_entity(instance, session=None) -> Any:
+def _add_entity(instance: Any, session: Session | None = None) -> Any:
     """Save a model instance with automatic session management."""
     own_session = session is None
-    if own_session:
-        session = get_session()
+    _session: Session = get_session() if own_session else session
     try:
-        instance.save(session)
+        instance.save(_session)
         return instance
     finally:
         if own_session:
-            session.close()
+            _session.close()
 
 
 def export_model(model_name: str) -> None:
@@ -76,14 +76,14 @@ def export_model(model_name: str) -> None:
 
 def add_panel_sign(
     *,
-    geometry_wkt,
-    mount_status,
-    road_id=None,
-    subdivision_id=None,
-    organization_id=None,
-    dimensions=None,
-    record_id=None,
-):
+    geometry_wkt: str,
+    mount_status: str,
+    road_id: str | None = None,
+    subdivision_id: str | None = None,
+    organization_id: str | None = None,
+    dimensions: str | None = None,
+    record_id: str | None = None,
+) -> PanelSign:
     """Create and persist a new PanelSign entity."""
     instance = PanelSign(
         id=record_id,
@@ -99,14 +99,14 @@ def add_panel_sign(
 
 def add_organization(
     *,
-    geometry_wkt,
-    org_name,
-    org_type,
-    org_cat,
-    record_id=None,
-    name_fr=None,
-    name_en=None,
-):
+    geometry_wkt: str,
+    org_name: str,
+    org_type: str,
+    org_cat: str,
+    record_id: str | None = None,
+    name_fr: str | None = None,
+    name_en: str | None = None,
+) -> Organization:
     """Create and persist a new Organization entity."""
     instance = Organization(
         id=record_id,
@@ -122,14 +122,14 @@ def add_organization(
 
 def add_road(
     *,
-    geometry_wkt,
-    road_name,
-    type_road,
-    road_decision,
-    record_id=None,
-    name_fr=None,
-    name_en=None,
-):
+    geometry_wkt: str,
+    road_name: str,
+    type_road: str,
+    road_decision: str,
+    record_id: str | None = None,
+    name_fr: str | None = None,
+    name_en: str | None = None,
+) -> Road:
     """Create and persist a new Road entity."""
     instance = Road(
         id=record_id,
@@ -145,16 +145,16 @@ def add_road(
 
 def add_numbering(
     *,
-    geometry_wkt,
-    value,
-    road_id=None,
-    subdivision_id=None,
-    repetition=None,
-    state=None,
-    activity_cat=None,
-    activity_type=None,
-    record_id=None,
-):
+    geometry_wkt: str,
+    value: str,
+    road_id: str | None = None,
+    subdivision_id: str | None = None,
+    repetition: str | None = None,
+    state: str | None = None,
+    activity_cat: str | None = None,
+    activity_type: str | None = None,
+    record_id: str | None = None,
+) -> Numbering:
     """Create and persist a new Numbering entity."""
     instance = Numbering(
         id=record_id,
@@ -172,13 +172,13 @@ def add_numbering(
 
 def add_subdivision(
     *,
-    geometry_wkt,
-    subdivision_type,
-    name,
-    record_id=None,
-    name_fr=None,
-    name_en=None,
-):
+    geometry_wkt: str,
+    subdivision_type: str,
+    name: str,
+    record_id: str | None = None,
+    name_fr: str | None = None,
+    name_en: str | None = None,
+) -> Subdivision:
     """Create and persist a new Subdivision entity."""
     instance = Subdivision(
         id=record_id,
@@ -193,13 +193,13 @@ def add_subdivision(
 
 def add_zone(
     *,
-    geometry_wkt,
-    zone_type,
-    name,
-    record_id=None,
-    name_fr=None,
-    name_en=None,
-):
+    geometry_wkt: str,
+    zone_type: str,
+    name: str,
+    record_id: str | None = None,
+    name_fr: str | None = None,
+    name_en: str | None = None,
+) -> Zone:
     """Create and persist a new Zone entity."""
     instance = Zone(
         id=record_id,

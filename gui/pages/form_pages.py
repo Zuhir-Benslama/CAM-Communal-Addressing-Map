@@ -1,5 +1,7 @@
 """Individual form page builders (zone, road, org, city, num, pan)."""
 
+from typing import Any
+
 from qgis.PyQt.QtWidgets import (
     QComboBox,
     QFormLayout,
@@ -12,7 +14,7 @@ from qgis.PyQt.QtWidgets import (
 )
 
 
-def build_zone_form(dialog) -> None:
+def build_zone_form(dialog: Any) -> None:
     w = QWidget()
     w.setObjectName('zoneForm')
     layout = QVBoxLayout(w)
@@ -42,7 +44,7 @@ def build_zone_form(dialog) -> None:
     dialog._held_widgets.append(w)
 
 
-def build_road_form(dialog) -> None:
+def build_road_form(dialog: Any) -> None:
     w = QWidget()
     w.setObjectName('roadForm')
     layout = QVBoxLayout(w)
@@ -77,7 +79,7 @@ def build_road_form(dialog) -> None:
     dialog._held_widgets.append(w)
 
 
-def build_org_form(dialog) -> None:
+def build_org_form(dialog: Any) -> None:
     w = QWidget()
     w.setObjectName('orgForm')
     layout = QVBoxLayout(w)
@@ -117,7 +119,7 @@ def build_org_form(dialog) -> None:
     dialog._held_widgets.append(w)
 
 
-def build_city_form(dialog) -> None:
+def build_city_form(dialog: Any) -> None:
     w = QWidget()
     w.setObjectName('cityForm')
     layout = QVBoxLayout(w)
@@ -152,7 +154,7 @@ def build_city_form(dialog) -> None:
     dialog._held_widgets.append(w)
 
 
-def build_num_form(dialog) -> None:
+def build_num_form(dialog: Any) -> None:
     w = QWidget()
     w.setObjectName('numForm')
     layout = QVBoxLayout(w)
@@ -211,7 +213,7 @@ def build_num_form(dialog) -> None:
     dialog._held_widgets.append(w)
 
 
-def build_pan_form(dialog) -> None:
+def build_pan_form(dialog: Any) -> None:
     w = QWidget()
     w.setObjectName('panForm')
     layout = QVBoxLayout(w)

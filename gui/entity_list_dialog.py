@@ -113,13 +113,13 @@ class EntityListDialog(QDialog):
                 session.query(model_class).offset(offset).limit(self.PAGE_SIZE).all()
             )
 
-            PROPERTY_LABELS = {
+            property_labels = {
                 'pan_label': 'Label',
                 'username': 'User',
             }
 
             fields, labels = get_all_fields_and_labels(
-                model_class, PROPERTY_LABELS, locale=self._tr_locale
+                model_class, property_labels, locale=self._tr_locale
             )
 
             labels = [

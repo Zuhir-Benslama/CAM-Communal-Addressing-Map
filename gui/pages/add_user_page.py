@@ -1,5 +1,7 @@
 """Add user page builder for MainDialog."""
 
+from typing import Any
+
 from qgis.PyQt.QtWidgets import (
     QComboBox,
     QFormLayout,
@@ -12,7 +14,7 @@ from qgis.PyQt.QtWidgets import (
 )
 
 
-def build_add_user_page(dialog) -> None:
+def build_add_user_page(dialog: Any) -> None:
     page = QWidget()
     page.setObjectName('add_usr')
     layout = QVBoxLayout(page)

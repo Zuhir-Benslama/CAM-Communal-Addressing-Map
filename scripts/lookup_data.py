@@ -91,10 +91,7 @@ def org_types_for_category(
     for entry in organization_types():
         if entry.get('category', '') == category:
             pk = entry.get('type_ar', '')
-            if locale != 'ar':
-                display = entry.get('type_fr', '') or pk
-            else:
-                display = pk
+            display = entry.get('type_fr', '') or pk if locale != 'ar' else pk
             if pk:
                 result.append((display, pk))
     return result
@@ -229,7 +226,7 @@ def locale_label(entry: dict[str, Any], locale: str) -> str:
     """Return locale-appropriate label for a simple lookup entry."""
     if locale == 'ar':
         return entry.get('label_ar') or entry.get('pk', '') or ''
-    return entry.get(f'label_{locale}', None) or entry.get('pk', '') or ''
+    return entry.get(f'label_{locale}') or entry.get('pk', '') or ''
 
 
 def clear_cache() -> None:

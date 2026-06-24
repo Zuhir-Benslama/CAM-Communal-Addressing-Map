@@ -53,22 +53,22 @@ class RNA:
         self.menu: str = self.tr('&RNA')
         self.first_start: bool | None = None
 
-    def tr(self, message) -> str:
+    def tr(self, message: str) -> str:
         """Translate *message* via Qt's internationalisation framework."""
         return QCoreApplication.translate('RNA', message)
 
     def add_action(
         self,
-        icon_path,
-        text,
-        callback,
+        icon_path: str,
+        text: str,
+        callback: object,
         *,
-        enabled_flag=True,
-        add_to_menu=True,
-        add_to_toolbar=True,
-        status_tip=None,
-        whats_this=None,
-        parent=None,
+        enabled_flag: bool = True,
+        add_to_menu: bool = True,
+        add_to_toolbar: bool = True,
+        status_tip: str | None = None,
+        whats_this: str | None = None,
+        parent: Any = None,
     ) -> Any:
         """Register a QGIS toolbar action and/or menu item."""
         icon = QIcon(icon_path)

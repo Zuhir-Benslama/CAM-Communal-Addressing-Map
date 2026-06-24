@@ -11,7 +11,7 @@ from ..shared.constants import COOKIE_FILE
 from ..users.models import User
 
 
-def _navigate_to_login(self) -> None:
+def _navigate_to_login(self: Any) -> None:
     """Navigate to the login page if the router widget is available."""
     router = getattr(self, 'router', None)
     if router is not None:
@@ -20,11 +20,11 @@ def _navigate_to_login(self) -> None:
             router.setCurrentWidget(login_page)
 
 
-def login_required(func) -> Callable:
+def login_required(func: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator: redirect to login page if no valid session cookie exists."""
 
     @wraps(func)
-    def wrapper(self, *args, **kwargs) -> Any:
+    def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:
         filename = COOKIE_FILE
         try:
             with open(filename, encoding='utf-8') as f:

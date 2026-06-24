@@ -42,9 +42,6 @@ REPORTING_SCRIPT = os.path.join(PLUGIN_DIR, 'scripts', 'reporting.py')
 MEMORY_PROVIDER = 'memory'
 NOTIFY_DURATION = 3
 
-# Layer names used as QGIS display names AND internal identifiers.
-# The NEUTRAL_LAYER_* constants provide locale-independent aliases
-# for programmatic lookups.
 LAYER_MUNICIPALITY = 'My Municipality'
 LAYER_ROADS = 'Roads'
 LAYER_FACILITIES = 'Facilities'
@@ -52,14 +49,6 @@ LAYER_SUBDIVISIONS = 'Subdivisions'
 LAYER_ZONES = 'Zones'
 LAYER_NUMBERING = 'Numbering'
 LAYER_PANELS = 'Panels'
-
-NEUTRAL_LAYER_MUNICIPALITY = 'municipality'
-NEUTRAL_LAYER_ROADS = 'roads'
-NEUTRAL_LAYER_FACILITIES = 'facilities'
-NEUTRAL_LAYER_SUBDIVISIONS = 'subdivisions'
-NEUTRAL_LAYER_ZONES = 'zones'
-NEUTRAL_LAYER_NUMBERING = 'numbering'
-NEUTRAL_LAYER_PANELS = 'panels'
 
 LAYER_NAMES = [
     LAYER_MUNICIPALITY,

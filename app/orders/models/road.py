@@ -56,7 +56,7 @@ class Road(_BaseSpatialModel):
     geometry = Column(Geometry('LINESTRING', srid=SRID), nullable=True)
     zone_id = Column(Text, ForeignKey('zone.id'), nullable=True, index=True)
     user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
-    user = relationship('User', backref='user_line', foreign_keys=[user_id])
+    user = relationship('User', backref='roads', foreign_keys=[user_id])
 
     @classmethod
     def update(

@@ -22,6 +22,7 @@
 """
 
 import logging
+from collections.abc import Callable
 from typing import Any, ClassVar
 
 from qgis.PyQt.QtCore import Qt
@@ -79,6 +80,16 @@ from .ui_fillers import (
 logger = logging.getLogger(__name__)
 
 
+def _run_init_steps(steps: list[tuple[str, Callable[..., Any]]]) -> None:
+    """Execute a list of ``(name, callable)`` init steps, logging failures."""
+    for name, fn in steps:
+        try:
+            fn()
+        except Exception:
+            logger.exception('Init step %r failed', name)
+            raise
+
+
 class MainDialog(
     QDialog,
     ChartMixin,
@@ -106,75 +117,18 @@ class MainDialog(
         self._current_theme = DEFAULT_THEME
         self._settings_visible = False
 
-        try:
-            self._init_ui()
-        except Exception as exc:
-            logger.exception('Step 1 _init_ui failed: %s', exc)
-            raise
-
-        try:
-            self._init_state()
-        except Exception as exc:
-            logger.exception('Step 2 _init_state failed: %s', exc)
-            raise
-
-        try:
-            init_theme_locale(self)
-        except Exception as exc:
-            logger.exception('Step 3 init_theme_locale failed: %s', exc)
-            raise
-
-        try:
-            populate_combos(self)
-        except Exception as exc:
-            logger.exception('Step 4 populate_combos failed: %s', exc)
-            raise
-
-        try:
-            self.fill_map_options()
-        except Exception as exc:
-            logger.exception('Step 5 fill_map_options failed: %s', exc)
-            raise
-
-        try:
-            self._connect_signals()
-        except Exception as exc:
-            logger.exception('Step 6 _connect_signals failed: %s', exc)
-            raise
-
-        try:
-            self.iface.mapCanvas().setContextMenuPolicy(
-                Qt.ContextMenuPolicy.CustomContextMenu
-            )
-            self.iface.mapCanvas().customContextMenuRequested.connect(
-                self.on_edition_release
-            )
-            self.iface.mapCanvas().mapToolSet.connect(self._on_map_tool_changed)
-        except Exception as exc:
-            logger.exception('Step 7 map canvas setup failed: %s', exc)
-            raise
-
-        try:
-            apply_widget_texts(self, self._tr_locale)
-        except Exception as exc:
-            logger.exception('Step 8 apply_widget_texts failed: %s', exc)
-            raise
-
-        for b in ('_btn_draw', '_btn_select', '_btn_edit', '_btn_measure'):
-            getattr(self, b, None) and getattr(self, b).setText('')
-
-        try:
-            clear_i18n_cache()
-            translate_internal_combos(self)
-        except Exception as exc:
-            logger.exception('Step 9 translate_internal_combos failed: %s', exc)
-            raise
-
-        try:
-            self.apply_theme()
-        except Exception as exc:
-            logger.exception('Step 10 apply_theme failed: %s', exc)
-            raise
+        _run_init_steps([
+            ('_init_ui', self._init_ui),
+            ('_init_state', self._init_state),
+            ('init_theme_locale', lambda: init_theme_locale(self)),
+            ('populate_combos', lambda: populate_combos(self)),
+            ('fill_map_options', self.fill_map_options),
+            ('_connect_signals', self._connect_signals),
+            ('map canvas setup', self._setup_map_canvas),
+            ('apply_widget_texts', lambda: apply_widget_texts(self, self._tr_locale)),
+            ('translate_internal_combos', self._setup_i18n),
+            ('apply_theme', self.apply_theme),
+        ])
 
     # ------------------------------------------------------------------
     # UI Construction
@@ -234,6 +188,22 @@ class MainDialog(
         self.activity_type = self._combo_activity_type
         self.mount_status = self._combo_mount_status
         self.panel_ref = self._combo_panel_ref
+
+    def _setup_map_canvas(self) -> None:
+        """Configure map canvas context menu and tool-change signals."""
+        canvas = self.iface.mapCanvas()
+        canvas.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        canvas.customContextMenuRequested.connect(self.on_edition_release)
+        canvas.mapToolSet.connect(self._on_map_tool_changed)
+
+    def _setup_i18n(self) -> None:
+        """Clear toolbar button texts, flush i18n cache, translate combos."""
+        for b in ('_btn_draw', '_btn_select', '_btn_edit', '_btn_measure'):
+            btn = getattr(self, b, None)
+            if btn:
+                btn.setText('')
+        clear_i18n_cache()
+        translate_internal_combos(self)
 
     # ------------------------------------------------------------------
     # Signal wiring

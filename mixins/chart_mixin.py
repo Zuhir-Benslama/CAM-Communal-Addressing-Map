@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 import arabic_reshaper
 import matplotlib.pyplot as plt
@@ -24,7 +25,7 @@ logger = logging.getLogger(__name__)
 CHART_COLOR = 'yellow'
 
 
-def _render_bar_chart(results, xlabel: str, ylabel: str, title: str) -> None:
+def _render_bar_chart(results: Any, xlabel: str, ylabel: str, title: str) -> None:
     """Render a bar chart from query results and save to CHART_SVG."""
     reshaper = arabic_reshaper.ArabicReshaper(
         configuration={
@@ -67,8 +68,8 @@ class ChartMixin:
 
     def _generate_chart(
         self: HasTranslation,
-        _model_class,
-        column,
+        _model_class: Any,
+        column: Any,
         title_key: str,
         layer_to_show: str,
         layer_to_hide: str,

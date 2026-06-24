@@ -242,7 +242,7 @@
   </selection>
   <labeling type="simple">
     <settings calloutType="simple">
-      <text-style textOpacity="1" useSubstitutions="0" textColor="90,106,191,255,rgb:0.35294117647058826,0.41568627450980394,0.7490196078431373,1" tabStopDistanceUnit="Percentage" blendMode="0" multilineHeightUnit="Percentage" fontSize="10" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontLetterSpacing="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" textOrientation="horizontal" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="Point" legendString="Aa" fontWordSpacing="0" forcedBold="0" fontStrikeout="0" allowHtml="0" forcedItalic="0" fontUnderline="0" fieldName="coalesce(&quot;valeur&quot;, '') || ' ' || coalesce(&quot;repetition&quot;, '')" multilineHeight="1" fontFamily="Arial" fontKerning="1" isExpression="1" capitalization="0" tabStopDistance="6" fontWeight="50" namedStyle="Normal">
+      <text-style textOpacity="1" useSubstitutions="0" textColor="90,106,191,255,rgb:0.35294117647058826,0.41568627450980394,0.7490196078431373,1" tabStopDistanceUnit="Percentage" blendMode="0" multilineHeightUnit="Percentage" fontSize="10" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontItalic="0" fontLetterSpacing="0" fontSizeMapUnitScale="3x:0,0,0,0,0,0" textOrientation="horizontal" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="Point" legendString="Aa" fontWordSpacing="0" forcedBold="0" fontStrikeout="0" allowHtml="0" forcedItalic="0" fontUnderline="0" fieldName="coalesce(&quot;value&quot;, '') || ' ' || coalesce(&quot;repetition&quot;, '')" multilineHeight="1" fontFamily="Arial" fontKerning="1" isExpression="1" capitalization="0" tabStopDistance="6" fontWeight="50" namedStyle="Normal">
         <families/>
         <text-buffer bufferJoinStyle="128" bufferSize="1" bufferColor="255,255,255,255,rgb:1,1,1,1" bufferDraw="1" bufferBlendMode="0" bufferSizeUnits="MM" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferOpacity="1" bufferNoFill="1"/>
         <text-mask maskEnabled="1" maskSizeMapUnitScale="3x:0,0,0,0,0,0" maskSize="1.5" maskJoinStyle="128" maskedSymbolLayers="" maskType="0" maskSize2="1.5" maskSizeUnits="MM" maskOpacity="1"/>
@@ -381,35 +381,35 @@
   <legend showLabelLegend="0" type="default-vector"/>
   <referencedLayers/>
   <fieldConfiguration>
-    <field configurationFlags="NoFlag" name="pkuid">
+    <field configurationFlags="NoFlag" name="id">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="NoFlag" name="valeur">
+    <field configurationFlags="NoFlag" name="value">
       <editWidget type="Range">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="NoFlag" name="idLine">
+    <field configurationFlags="NoFlag" name="road_id">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="NoFlag" name="idPoly">
+    <field configurationFlags="NoFlag" name="subdivision_id">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="NoFlag" name="idOrg">
+    <field configurationFlags="NoFlag" name="organization_id">
       <editWidget type="TextEdit">
         <config>
           <Option/>
@@ -423,14 +423,14 @@
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="NoFlag" name="etat">
+    <field configurationFlags="NoFlag" name="state">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field configurationFlags="NoFlag" name="uid">
+    <field configurationFlags="NoFlag" name="user_id">
       <editWidget type="TextEdit">
         <config>
           <Option/>
@@ -446,69 +446,69 @@
     </field>
   </fieldConfiguration>
   <aliases>
-    <alias index="0" name="" field="pkuid"/>
-    <alias index="1" name="" field="valeur"/>
-    <alias index="2" name="" field="idLine"/>
-    <alias index="3" name="" field="idPoly"/>
-    <alias index="4" name="" field="idOrg"/>
+    <alias index="0" name="" field="id"/>
+    <alias index="1" name="" field="value"/>
+    <alias index="2" name="" field="road_id"/>
+    <alias index="3" name="" field="subdivision_id"/>
+    <alias index="4" name="" field="organization_id"/>
     <alias index="5" name="" field="repetition"/>
-    <alias index="6" name="" field="etat"/>
-    <alias index="7" name="" field="uid"/>
+    <alias index="6" name="" field="state"/>
+    <alias index="7" name="" field="user_id"/>
     <alias index="8" name="" field="id"/>
   </aliases>
   <splitPolicies>
-    <policy policy="Duplicate" field="pkuid"/>
-    <policy policy="Duplicate" field="valeur"/>
-    <policy policy="Duplicate" field="idLine"/>
-    <policy policy="Duplicate" field="idPoly"/>
-    <policy policy="Duplicate" field="idOrg"/>
+    <policy policy="Duplicate" field="id"/>
+    <policy policy="Duplicate" field="value"/>
+    <policy policy="Duplicate" field="road_id"/>
+    <policy policy="Duplicate" field="subdivision_id"/>
+    <policy policy="Duplicate" field="organization_id"/>
     <policy policy="Duplicate" field="repetition"/>
-    <policy policy="Duplicate" field="etat"/>
-    <policy policy="Duplicate" field="uid"/>
+    <policy policy="Duplicate" field="state"/>
+    <policy policy="Duplicate" field="user_id"/>
     <policy policy="Duplicate" field="id"/>
   </splitPolicies>
   <duplicatePolicies>
-    <policy policy="Duplicate" field="pkuid"/>
-    <policy policy="Duplicate" field="valeur"/>
-    <policy policy="Duplicate" field="idLine"/>
-    <policy policy="Duplicate" field="idPoly"/>
-    <policy policy="Duplicate" field="idOrg"/>
+    <policy policy="Duplicate" field="id"/>
+    <policy policy="Duplicate" field="value"/>
+    <policy policy="Duplicate" field="road_id"/>
+    <policy policy="Duplicate" field="subdivision_id"/>
+    <policy policy="Duplicate" field="organization_id"/>
     <policy policy="Duplicate" field="repetition"/>
-    <policy policy="Duplicate" field="etat"/>
-    <policy policy="Duplicate" field="uid"/>
+    <policy policy="Duplicate" field="state"/>
+    <policy policy="Duplicate" field="user_id"/>
     <policy policy="Duplicate" field="id"/>
   </duplicatePolicies>
   <defaults>
-    <default applyOnUpdate="0" field="pkuid" expression=""/>
-    <default applyOnUpdate="0" field="valeur" expression=""/>
-    <default applyOnUpdate="0" field="idLine" expression=""/>
-    <default applyOnUpdate="0" field="idPoly" expression=""/>
-    <default applyOnUpdate="0" field="idOrg" expression=""/>
+    <default applyOnUpdate="0" field="id" expression=""/>
+    <default applyOnUpdate="0" field="value" expression=""/>
+    <default applyOnUpdate="0" field="road_id" expression=""/>
+    <default applyOnUpdate="0" field="subdivision_id" expression=""/>
+    <default applyOnUpdate="0" field="organization_id" expression=""/>
     <default applyOnUpdate="0" field="repetition" expression=""/>
-    <default applyOnUpdate="0" field="etat" expression=""/>
-    <default applyOnUpdate="0" field="uid" expression=""/>
+    <default applyOnUpdate="0" field="state" expression=""/>
+    <default applyOnUpdate="0" field="user_id" expression=""/>
     <default applyOnUpdate="0" field="id" expression=""/>
   </defaults>
   <constraints>
-    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="pkuid" unique_strength="0"/>
-    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="valeur" unique_strength="0"/>
-    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="idLine" unique_strength="0"/>
-    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="idPoly" unique_strength="0"/>
-    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="idOrg" unique_strength="0"/>
+    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="id" unique_strength="0"/>
+    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="value" unique_strength="0"/>
+    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="road_id" unique_strength="0"/>
+    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="subdivision_id" unique_strength="0"/>
+    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="organization_id" unique_strength="0"/>
     <constraint constraints="0" exp_strength="0" notnull_strength="0" field="repetition" unique_strength="0"/>
-    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="etat" unique_strength="0"/>
-    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="uid" unique_strength="0"/>
+    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="state" unique_strength="0"/>
+    <constraint constraints="0" exp_strength="0" notnull_strength="0" field="user_id" unique_strength="0"/>
     <constraint constraints="0" exp_strength="0" notnull_strength="0" field="id" unique_strength="0"/>
   </constraints>
   <constraintExpressions>
-    <constraint desc="" exp="" field="pkuid"/>
-    <constraint desc="" exp="" field="valeur"/>
-    <constraint desc="" exp="" field="idLine"/>
-    <constraint desc="" exp="" field="idPoly"/>
-    <constraint desc="" exp="" field="idOrg"/>
+    <constraint desc="" exp="" field="id"/>
+    <constraint desc="" exp="" field="value"/>
+    <constraint desc="" exp="" field="road_id"/>
+    <constraint desc="" exp="" field="subdivision_id"/>
+    <constraint desc="" exp="" field="organization_id"/>
     <constraint desc="" exp="" field="repetition"/>
-    <constraint desc="" exp="" field="etat"/>
-    <constraint desc="" exp="" field="uid"/>
+    <constraint desc="" exp="" field="state"/>
+    <constraint desc="" exp="" field="user_id"/>
     <constraint desc="" exp="" field="id"/>
   </constraintExpressions>
   <expressionfields/>
@@ -517,13 +517,13 @@
   </attributeactions>
   <attributetableconfig sortOrder="0" sortExpression="" actionWidgetStyle="dropDown">
     <columns>
-      <column name="pkuid" width="-1" hidden="0" type="field"/>
-      <column name="valeur" width="-1" hidden="0" type="field"/>
-      <column name="idLine" width="-1" hidden="0" type="field"/>
-      <column name="idPoly" width="-1" hidden="0" type="field"/>
-      <column name="idOrg" width="-1" hidden="0" type="field"/>
-      <column name="etat" width="-1" hidden="0" type="field"/>
-      <column name="uid" width="-1" hidden="0" type="field"/>
+      <column name="id" width="-1" hidden="0" type="field"/>
+      <column name="value" width="-1" hidden="0" type="field"/>
+      <column name="road_id" width="-1" hidden="0" type="field"/>
+      <column name="subdivision_id" width="-1" hidden="0" type="field"/>
+      <column name="organization_id" width="-1" hidden="0" type="field"/>
+      <column name="state" width="-1" hidden="0" type="field"/>
+      <column name="user_id" width="-1" hidden="0" type="field"/>
       <column name="id" width="-1" hidden="0" type="field"/>
       <column name="repetition" width="-1" hidden="0" type="field"/>
       <column width="-1" hidden="1" type="actions"/>
@@ -561,7 +561,7 @@ def my_form_open(dialog, layer, feature):
     <labelStyle overrideLabelColor="0" labelColor="" overrideLabelFont="0">
       <labelFont bold="0" underline="0" strikethrough="0" description="Arial,8.25,-1,5,50,0,0,0,0,0" italic="0" style=""/>
     </labelStyle>
-    <attributeEditorField index="1" name="valeur" verticalStretch="0" horizontalStretch="0" showLabel="1">
+    <attributeEditorField index="1" name="value" verticalStretch="0" horizontalStretch="0" showLabel="1">
       <labelStyle overrideLabelColor="0" labelColor="" overrideLabelFont="0">
         <labelFont bold="0" underline="0" strikethrough="0" description="Arial,8.3,-1,5,50,0,0,0,0,0" italic="0" style=""/>
       </labelStyle>
@@ -571,7 +571,7 @@ def my_form_open(dialog, layer, feature):
         <labelFont bold="0" underline="0" strikethrough="0" description="Arial,8.3,-1,5,50,0,0,0,0,0" italic="0" style=""/>
       </labelStyle>
     </attributeEditorField>
-    <attributeEditorField index="6" name="etat" verticalStretch="0" horizontalStretch="0" showLabel="1">
+    <attributeEditorField index="6" name="state" verticalStretch="0" horizontalStretch="0" showLabel="1">
       <labelStyle overrideLabelColor="0" labelColor="" overrideLabelFont="0">
         <labelFont bold="0" underline="0" strikethrough="0" description="Arial,8.3,-1,5,50,0,0,0,0,0" italic="0" style=""/>
       </labelStyle>
@@ -579,43 +579,43 @@ def my_form_open(dialog, layer, feature):
   </attributeEditorForm>
   <editable>
     <field editable="1" name="Prefix"/>
-    <field editable="1" name="etat"/>
+    <field editable="1" name="state"/>
     <field editable="1" name="id"/>
-    <field editable="1" name="idLine"/>
-    <field editable="1" name="idOrg"/>
-    <field editable="1" name="idPoly"/>
-    <field editable="1" name="pkuid"/>
+    <field editable="1" name="road_id"/>
+    <field editable="1" name="organization_id"/>
+    <field editable="1" name="subdivision_id"/>
+    <field editable="1" name="id"/>
     <field editable="1" name="repetition"/>
-    <field editable="1" name="uid"/>
-    <field editable="1" name="valeur"/>
+    <field editable="1" name="user_id"/>
+    <field editable="1" name="value"/>
   </editable>
   <labelOnTop>
     <field name="Prefix" labelOnTop="0"/>
-    <field name="etat" labelOnTop="0"/>
+    <field name="state" labelOnTop="0"/>
     <field name="id" labelOnTop="0"/>
-    <field name="idLine" labelOnTop="0"/>
-    <field name="idOrg" labelOnTop="0"/>
-    <field name="idPoly" labelOnTop="0"/>
-    <field name="pkuid" labelOnTop="0"/>
+    <field name="road_id" labelOnTop="0"/>
+    <field name="organization_id" labelOnTop="0"/>
+    <field name="subdivision_id" labelOnTop="0"/>
+    <field name="id" labelOnTop="0"/>
     <field name="repetition" labelOnTop="0"/>
-    <field name="uid" labelOnTop="0"/>
-    <field name="valeur" labelOnTop="0"/>
+    <field name="user_id" labelOnTop="0"/>
+    <field name="value" labelOnTop="0"/>
   </labelOnTop>
   <reuseLastValue>
     <field name="Prefix" reuseLastValue="0"/>
-    <field name="etat" reuseLastValue="0"/>
+    <field name="state" reuseLastValue="0"/>
     <field name="id" reuseLastValue="0"/>
-    <field name="idLine" reuseLastValue="0"/>
-    <field name="idOrg" reuseLastValue="0"/>
-    <field name="idPoly" reuseLastValue="0"/>
-    <field name="pkuid" reuseLastValue="0"/>
+    <field name="road_id" reuseLastValue="0"/>
+    <field name="organization_id" reuseLastValue="0"/>
+    <field name="subdivision_id" reuseLastValue="0"/>
+    <field name="id" reuseLastValue="0"/>
     <field name="repetition" reuseLastValue="0"/>
-    <field name="uid" reuseLastValue="0"/>
-    <field name="valeur" reuseLastValue="0"/>
+    <field name="user_id" reuseLastValue="0"/>
+    <field name="value" reuseLastValue="0"/>
   </reuseLastValue>
   <dataDefinedFieldProperties/>
   <widgets/>
-  <previewExpression>"pkuid"</previewExpression>
+  <previewExpression>"id"</previewExpression>
   <mapTip enabled="1"></mapTip>
   <layerGeometryType>0</layerGeometryType>
 </qgis>

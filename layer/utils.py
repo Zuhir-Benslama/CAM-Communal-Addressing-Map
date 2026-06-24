@@ -3,6 +3,7 @@
 import json
 import logging
 import sqlite3
+from typing import Any
 
 from geoalchemy2 import Geometry
 from qgis.core import (
@@ -52,14 +53,14 @@ _TYPE_MAP: list[tuple[tuple, object]] = [
 ]
 
 
-def _sa_type_to_qvariant(column_type) -> object:
+def _sa_type_to_qvariant(column_type: Any) -> object:
     for types, qv in _TYPE_MAP:
         if isinstance(column_type, types):
             return qv
     return QVariant.String
 
 
-def create_other_layers(_iface) -> None:
+def create_other_layers(_iface: Any) -> None:
     """Create non-mapper vector layers from QGIS config."""
     other_layer_list = qgis_config().get('other_layers') or []
     mapper = qgis_config().get('mapper') or []
@@ -134,7 +135,7 @@ def _wkt_from_commune_id(commune_id: int) -> str | None:
     return None
 
 
-def init_allowed_zone(iface) -> None:
+def init_allowed_zone(iface: Any) -> None:
     """Create the municipality boundary layer from the authenticated user."""
     user_data = get_current_user()
     commune_code = user_data.get('commune_code') if user_data else None

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import logging
 
 from qgis.core import QgsProject
@@ -23,17 +24,13 @@ class LayerDrawMixin:
             logger.warning("Layer '%s' not found for drawing", layer_name)
             return
         layer = layers[0]
-        try:
+        with contextlib.suppress(TypeError):
             layer.featureAdded.disconnect(self.on_feature_added)
-        except TypeError:
-            pass
         layer.featureAdded.connect(self.on_feature_added)
-        try:
+        with contextlib.suppress(TypeError):
             self.iface.mapCanvas().customContextMenuRequested.disconnect(
                 self.on_edition_release,
             )
-        except TypeError:
-            pass
         self.iface.mapCanvas().setContextMenuPolicy(
             Qt.ContextMenuPolicy.DefaultContextMenu,
         )

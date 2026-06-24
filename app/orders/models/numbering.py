@@ -42,11 +42,11 @@ class Numbering(_BaseSpatialModel):
         Text, ForeignKey('user.id'), nullable=True, index=True, info={'label': 'User'}
     )
 
-    road = relationship('Road', backref='ref_line_num', foreign_keys=[road_id])
+    road = relationship('Road', backref='numberings', foreign_keys=[road_id])
     subdivision = relationship(
-        'Subdivision', backref='ref_polychild_num', foreign_keys=[subdivision_id]
+        'Subdivision', backref='numberings', foreign_keys=[subdivision_id]
     )
-    user = relationship('User', backref='user_num', foreign_keys=[user_id])
+    user = relationship('User', backref='numberings', foreign_keys=[user_id])
 
     activity_cat = Column(String, nullable=True)
     activity_type = Column(String, nullable=True)

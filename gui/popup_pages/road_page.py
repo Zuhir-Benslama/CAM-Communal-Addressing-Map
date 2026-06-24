@@ -1,6 +1,6 @@
 """Road page builder for PopupDialog."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from qgis.PyQt.QtWidgets import (
     QComboBox,
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from ..popup_dialog import PopupDialog
 
 
-def build_road_page(dialog: 'PopupDialog', stack) -> None:
+def build_road_page(dialog: 'PopupDialog', stack: Any) -> None:
     w = QWidget()
     w.setObjectName('roadPage')
     layout = QVBoxLayout(w)

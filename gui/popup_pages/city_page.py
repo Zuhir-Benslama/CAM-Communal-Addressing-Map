@@ -1,6 +1,6 @@
 """City (subdivision) page builder for PopupDialog."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from qgis.PyQt.QtWidgets import (
     QComboBox,
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from ..popup_dialog import PopupDialog
 
 
-def build_city_page(dialog: 'PopupDialog', stack) -> None:
+def build_city_page(dialog: 'PopupDialog', stack: Any) -> None:
     w = QWidget()
     w.setObjectName('cityPage')
     layout = QVBoxLayout(w)

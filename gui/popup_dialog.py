@@ -2,7 +2,7 @@
 
 import logging
 from collections.abc import Callable
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from qgis.core import QgsProject
 from qgis.PyQt.QtWidgets import (
@@ -344,7 +344,7 @@ class PopupDialog(QDialog):
             handler(self, data)
 
     @staticmethod
-    def _set_combo_by_data(combo: QComboBox, value) -> None:
+    def _set_combo_by_data(combo: QComboBox, value: Any) -> None:
         """Set a combo's current index by data value."""
         if value is not None and value != '':
             idx = combo.findData(value)
@@ -419,7 +419,7 @@ class PopupDialog(QDialog):
         if layer:
             self.iface.setActiveLayer(layer[0])
 
-    def _on_reference_selected(self, feature_id, layer_name) -> None:
+    def _on_reference_selected(self, feature_id: Any, layer_name: str) -> None:
         """Called when the user selects a reference feature on the map."""
         self._ref_id = str(feature_id)
         self._ref_layer = layer_name

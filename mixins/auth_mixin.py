@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 from qgis.core import QgsProject, QgsRasterLayer
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox, QWidget
@@ -173,13 +174,13 @@ class AuthMixin:
             )
         return False
 
-    def private_route(self: HasNavWidgets, page_index) -> None:
+    def private_route(self: HasNavWidgets, page_index: Any) -> None:
         """Navigate to a private (authenticated) page in the stacked widget."""
         page = self.router.findChild(QWidget, page_index)
         if page:
             self.router.setCurrentWidget(page)
 
-    def public_route(self: HasNavWidgets, page_index) -> None:
+    def public_route(self: HasNavWidgets, page_index: Any) -> None:
         """Navigate to a public (login/register) page in the stacked widget."""
         page = self.router.findChild(QWidget, page_index)
         if page:
@@ -187,7 +188,7 @@ class AuthMixin:
 
     def closeEvent(
         self: HasFullAuthContext,
-        event,
+        event: Any,
     ) -> None:
         """Clean up tools and logout on dialog close."""
         self.stop()
@@ -205,19 +206,19 @@ class AuthMixin:
             self.router.setCurrentWidget(page)
         event.accept()
 
-    def on_select_wilaya(self: HasLocationWidgets, _index) -> None:
+    def on_select_wilaya(self: HasLocationWidgets, _index: Any) -> None:
         """Populate the commune combo when the wilaya selection changes."""
         selected_value = self.wilaya_list.itemData(
             self.wilaya_list.currentIndex(),
         )
         fill_commune_of_wilaya(self.commune_of_wilaya, selected_value)
 
-    def on_select_org_cat(self: HasCategoryWidgets, _index) -> None:
+    def on_select_org_cat(self: HasCategoryWidgets, _index: Any) -> None:
         """Populate the organization type combo when the category changes."""
         selected_value = self.org_cat.itemData(self.org_cat.currentIndex())
         fill_org_type(self.org_type, selected_value)
 
-    def on_select_activity_cat(self: HasCategoryWidgets, _index) -> None:
+    def on_select_activity_cat(self: HasCategoryWidgets, _index: Any) -> None:
         """Populate the activity type combo when the category changes."""
         selected_value = self.activity_cat.itemData(self.activity_cat.currentIndex())
         fill_activity_type(self.activity_type, selected_value)

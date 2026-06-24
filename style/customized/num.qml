@@ -446,7 +446,7 @@
   </selection>
   <labeling type="rule-based">
     <rules key="{8de589da-eaff-477a-8672-da9765173a26}">
-      <rule filter="&quot;etat&quot;='مبرمجة'" key="{6ae8e1fd-3a80-47e4-ba0b-9a583fcec4ac}">
+      <rule filter="&quot;state&quot;='مبرمجة'" key="{6ae8e1fd-3a80-47e4-ba0b-9a583fcec4ac}">
         <settings calloutType="simple">
           <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="190,106,80,255,rgb:0.74509803921568629,0.41568627450980394,0.31372549019607843,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="coalesce(valeur, '') || ' ' || coalesce( repetition, '')" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="1" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
             <families/>
@@ -570,7 +570,7 @@
           </callout>
         </settings>
       </rule>
-      <rule filter="&quot;etat&quot;='مرقمة ومطابقة'" key="{36a272c8-90cc-49c2-ba2d-d489d50ddfab}">
+      <rule filter="&quot;state&quot;='مرقمة ومطابقة'" key="{36a272c8-90cc-49c2-ba2d-d489d50ddfab}">
         <settings calloutType="simple">
           <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="80,160,70,255,rgb:0.31372549019607843,0.62745098039215685,0.27450980392156865,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="coalesce(valeur, '') || ' ' || coalesce( repetition, '')" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="1" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
             <families/>
@@ -694,7 +694,7 @@
           </callout>
         </settings>
       </rule>
-      <rule filter="&quot;etat&quot;='مرقمة وغير مطابقة'" key="{1c79baea-7b32-4127-aac7-cb89db7b47e9}">
+      <rule filter="&quot;state&quot;='مرقمة وغير مطابقة'" key="{1c79baea-7b32-4127-aac7-cb89db7b47e9}">
         <settings calloutType="simple">
           <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="180,70,60,255,rgb:0.70588235294117652,0.27450980392156865,0.23529411764705882,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="coalesce(valeur, '') || ' ' || coalesce( repetition, '')" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="1" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
             <families/>
@@ -818,7 +818,7 @@
           </callout>
         </settings>
       </rule>
-      <rule filter="&quot;etat&quot;='محجوز(ة)'" key="{b60468cc-d81d-49b0-ad0c-7568d5467e73}">
+      <rule filter="&quot;state&quot;='محجوز(ة)'" key="{b60468cc-d81d-49b0-ad0c-7568d5467e73}">
         <settings calloutType="simple">
           <text-style fontSizeMapUnitScale="3x:0,0,0,0,0,0" textColor="140,80,140,255,rgb:0.5490196078431373,0.31372549019607843,0.5490196078431373,1" tabStopDistanceMapUnitScale="3x:0,0,0,0,0,0" fontSizeUnit="MM" namedStyle="Normal" fontSize="7" fontWeight="50" blendMode="0" tabStopDistanceUnit="Percentage" previewBkgrdColor="255,255,255,255,rgb:1,1,1,1" fontKerning="1" legendString="Aa" fontFamily="Arial" multilineHeightUnit="Percentage" capitalization="0" fontItalic="0" textOpacity="1" fieldName="coalesce(valeur, '') || ' ' || coalesce( repetition, '')" fontStrikeout="0" textOrientation="horizontal" forcedBold="0" fontUnderline="0" isExpression="1" fontWordSpacing="0" multilineHeight="1" forcedItalic="0" tabStopDistance="6" useSubstitutions="0" allowHtml="0" fontLetterSpacing="0">
             <families/>

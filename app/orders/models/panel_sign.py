@@ -106,7 +106,7 @@ class PanelSign(_BaseSpatialModel):
 
     @staticmethod
     def _validate_reference(
-        session, model_class, ref_id: str | None, type_label: str
+        session: Session, model_class: Any, ref_id: str | None, type_label: str
     ) -> str | None:
         """Validate a referenced entity exists and return its type label."""
         if not ref_id:

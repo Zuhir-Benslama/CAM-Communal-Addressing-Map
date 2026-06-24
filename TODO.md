@@ -1727,3 +1727,29 @@ Open QGIS, load the plugin, and verify:
 - [x] **Refactor `PanelSign.label`** (complexity 10 → 4) — extracted candidates list pattern
 - [x] **Refactor `PanelSign.save`** (complexity 8 → 4) — extracted `_validate_reference` helper
 - [x] **Refactor `PanelSign` class** (complexity 8 → 5) — byproduct of method refactors
+
+---
+
+## 69. Remaining Code Quality Issues — 2026-06-24 ✅
+
+### High (P1)
+
+- [x] **Tighten mypy configuration** — removed `[[tool.mypy.overrides]]` for 3 modules; added `warn_unused_ignores`, `warn_redundant_casts`, `no_implicit_optional`.
+- [x] **Broad `except Exception` in migration code** — changed to `except sqlite3.OperationalError` / `(sqlite3.OperationalError, ValueError, IndexError)` with `logger.error`.
+- [x] **Dead code: `list_all()` on base model** — removed.
+- [x] **Dead code: `_get_authenticated_user()`** — kept and refactored `get_user_location()` to use it, eliminating code duplication.
+- [x] **Dead code: unused `NEUTRAL_LAYER_*` constants** — removed from `app/shared/constants.py`.
+
+### Medium (P2)
+
+- [x] **10-step init repetition in `main_dialog.py`** — extracted `_run_init_steps()` helper and `_setup_map_canvas()`, `_setup_i18n()` methods.
+- [x] **SQL via f-strings** — parameterized queries + `_validate_safe_name()` regex guard in `app/core/database.py` and `app/core/migration.py`.
+- [x] **Docstring inconsistencies** — `add_action()` docstring added; `_allowlist_columns` docstring corrected.
+- [x] **Missing type annotations on hot-path parameters** — `tr(message: str)`, `add_action(...)` fully typed.
+- [x] **Module-level mutable state in tests** — added `reset_qgis_config_cache()` in `app/users/repository.py` and `reset_jwt_secret()` in `app/core/security.py`.
+- [x] **Coverage target too low** — raised from 60 → 80 in `pyproject.toml`.
+
+### Low (P3)
+
+- [x] **Cryptic SQLAlchemy backref names** — renamed across `numbering.py`, `road.py`, `organization.py`, `subdivision.py`.
+- [x] **Ruff ruleset could be expanded** — added `N`, `SIM`, `B`, `RUF` to `select` in `pyproject.toml`; added `per-file-ignores` for false-positive naming violations (Qt overrides, test fixtures).

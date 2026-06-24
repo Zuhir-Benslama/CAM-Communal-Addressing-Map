@@ -7,17 +7,28 @@ target-version = "py310"
 line-length = 88
 
 [tool.ruff.lint]
-select = ["E", "W", "F", "I", "UP"]
+select = ["E", "W", "F", "I", "UP", "N", "SIM", "B", "RUF"]
 ignore = [
     "E501",  # line-length — covered by formatter
     "E741",  # ambiguous variable name
+    "N818",  # exception name convention (not applicable to all exceptions)
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401", "F403"]
-"test/*" = ["UP006", "UP007", "E402", "E501", "I001"]
+"__init__.py" = ["F401", "F403", "N802"]
+"app/main.py" = ["N802"]
+"gui/dialog_helpers.py" = ["N802"]
+"gui/identify_tool.py" = ["N802"]
+"gui/measure_tool.py" = ["N802"]
+"mixins/_protocols.py" = ["N802"]
+"mixins/auth_mixin.py" = ["N802"]
+"test/*" = ["UP006", "UP007", "E402", "E501", "I001", "N802", "N806", "N815", "B010"]
 "scripts/*" = ["UP006", "UP007", "E501"]
-"resources.py" = ["E501"]
+"resources.py" = ["E501", "N802"]
+"test/helpers/_core_mocks.py" = ["N806"]
+"test/helpers/_gui_mocks.py" = ["N802", "N806"]
+"test/helpers/_shared.py" = ["N806"]
+"test/qgis_interface.py" = ["N802", "N815"]
 
 [tool.ruff.format]
 quote-style = "single"
@@ -31,7 +42,7 @@ branch = true
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 60
+fail_under = 80
 
 [tool.pytest.ini_options]
 testpaths = ["test"]
@@ -42,21 +53,9 @@ markers = [
 [tool.mypy]
 ignore_missing_imports = true
 follow_imports = "skip"
-
-[[tool.mypy.overrides]]
-module = [
-    "app.orders.models",
-    "app.users.service",
-    "gui.ui_fillers",
-]
-disable_error_code = [
-    "assignment",
-    "union-attr",
-    "arg-type",
-    "return-value",
-    "attr-defined",
-    "func-returns-value",
-]
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
 
 [[tool.mypy.overrides]]
 module = "resources"

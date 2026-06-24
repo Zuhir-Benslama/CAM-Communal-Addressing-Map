@@ -45,7 +45,7 @@ class IdentifyTool(QgsMapToolIdentify):
             self.feature_name = None
             self.ref_name = None
 
-    def set_active_layer(self, layer) -> None:
+    def set_active_layer(self, layer: Any) -> None:
         """Set the active layer to identify features on."""
         self._active_layer = layer
 
@@ -53,7 +53,7 @@ class IdentifyTool(QgsMapToolIdentify):
         """Return the currently active identify layer."""
         return self._active_layer
 
-    def set_iface(self, iface) -> None:
+    def set_iface(self, iface: Any) -> None:
         """Set the QGIS interface instance."""
         self._iface = iface
 
@@ -61,7 +61,7 @@ class IdentifyTool(QgsMapToolIdentify):
         """Return the QGIS interface instance."""
         return self._iface
 
-    def set_ref_name(self, ref_name) -> None:
+    def set_ref_name(self, ref_name: Any) -> None:
         """Set the reference name widget for ref mode."""
         self.ref_name = ref_name
 
@@ -69,7 +69,7 @@ class IdentifyTool(QgsMapToolIdentify):
         """Return the selected feature's PK and layer name."""
         return {'id': self.feature_id, 'layer_name': self.get_active_layer().name()}
 
-    def canvasReleaseEvent(self, event) -> None:
+    def canvasReleaseEvent(self, event: Any) -> None:
         """Handle map canvas click: identify feature under the cursor."""
         if event.button() == Qt.MouseButton.LeftButton:
             _ = self.toMapCoordinates(event.pos())
@@ -130,7 +130,7 @@ class IdentifyTool(QgsMapToolIdentify):
         """Unset this identify tool from the canvas."""
         self.canvas.unsetMapTool(self)
 
-    def display_or_update_form_feature(self, feature_id) -> None:
+    def display_or_update_form_feature(self, feature_id: Any) -> None:
         """Open the popup dialog for the identified feature."""
         from .popup_dialog import PopupDialog  # pylint: disable=import-outside-toplevel
 
@@ -149,7 +149,7 @@ class IdentifyTool(QgsMapToolIdentify):
         self.dlg.show()
         self.dlg.exec()
 
-    def delete_feature(self, feature_id) -> None:
+    def delete_feature(self, feature_id: Any) -> None:
         """Delete the identified feature from DB and map layer."""
         layer_name = self.get_active_layer().name()
         data_list = qgis_config().get('mapper') or []
@@ -184,7 +184,7 @@ class IdentifyTool(QgsMapToolIdentify):
 
         self.canvas.refresh()
 
-    def _locale_feature_attr(self, feature, base_name: str) -> str:
+    def _locale_feature_attr(self, feature: Any, base_name: str) -> str:
         """Read locale-appropriate attribute from a QGIS feature."""
         loc = current_locale()
         if loc != 'ar':
@@ -195,7 +195,7 @@ class IdentifyTool(QgsMapToolIdentify):
                     return str(locale_val)
         return str(feature[base_name]) if feature[base_name] else ''
 
-    def feature_as_ref(self, feature_id, feature_type, feature_name) -> None:
+    def feature_as_ref(self, feature_id: Any, feature_type: Any, feature_name: Any) -> None:
         """Store the selected feature as a reference for another entity."""
         self.feature_id = feature_id
         self.feature_type = feature_type

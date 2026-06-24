@@ -1,5 +1,7 @@
 """Marshmallow schemas for user authentication and signup validation."""
 
+from typing import Any
+
 from marshmallow import Schema, ValidationError, fields, pre_load, validates
 
 from ..core.database import get_session
@@ -10,7 +12,7 @@ class _EmptyStringMixin:
     """Convert empty strings to None during deserialization."""
 
     @pre_load
-    def convert_empty_strings(self, data, **_kwargs) -> dict:
+    def convert_empty_strings(self, data: dict[str, Any], **_kwargs: Any) -> dict:
         """Replace empty-string values with None during deserialization."""
         return {key: (None if value == '' else value) for key, value in data.items()}
 
@@ -70,7 +72,7 @@ class SignupSchema(_EmptyStringMixin, Schema):
     )
 
     @validates('username')
-    def validate_username(self, value, **_kwargs) -> None:
+    def validate_username(self, value: str | None, **_kwargs: Any) -> None:
         """Ensure the username is unique and non-empty."""
         if value is not None:
             if value:

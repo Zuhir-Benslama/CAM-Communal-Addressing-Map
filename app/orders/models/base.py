@@ -12,7 +12,7 @@ from ...core.base import Base, TimestampMixin
 logger = logging.getLogger(__name__)
 
 
-def _get_current_user():
+def _get_current_user() -> Any:
     """Return the currently authenticated user dict, or None."""
     from ...users.repository import get_current_user
 
@@ -67,16 +67,6 @@ class _BaseSpatialModel(Base, TimestampMixin):
         if self.user_id:
             return self.user.username
         return None
-
-    @classmethod
-    def list_all(cls, session: Session) -> dict:
-        """Query all rows, returning only columns listed in _list_columns."""
-        columns = [
-            column
-            for column in cls.__table__.columns
-            if column.name in cls._list_columns
-        ]
-        return {'data': session.query(*columns).all(), 'cols': columns}
 
     def delete(self, session: Session) -> None:
         """Delete this instance via *session* and commit."""

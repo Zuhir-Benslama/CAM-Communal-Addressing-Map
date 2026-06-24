@@ -1,6 +1,7 @@
 """Shared helpers for dialog UI construction."""
 
 from types import SimpleNamespace
+from typing import Any
 
 from qgis.PyQt.QtWidgets import QLabel, QVBoxLayout, QWidget
 
@@ -57,7 +58,7 @@ def make_section_frame(max_width: int | None = None) -> QWidget:
     return w
 
 
-def add_form_row(form, label_text: str, obj_name: str, field) -> QLabel:
+def add_form_row(form: Any, label_text: str, obj_name: str, field: Any) -> QLabel:
     label = QLabel(label_text)
     label.setObjectName(obj_name)
     form.addRow(label, field)

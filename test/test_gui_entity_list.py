@@ -25,7 +25,7 @@ class TestEntityListDialog(unittest.TestCase):
         spec.loader.exec_module(cls.mod)
         parent = sys.modules.get('plans_adressage.gui')
         if parent is not None:
-            setattr(parent, 'entity_list_dialog', cls.mod)
+            parent.entity_list_dialog = cls.mod
 
     def setUp(self):
         self.dialog = self.mod.EntityListDialog('Road', 'roads', parent=None)
@@ -106,7 +106,7 @@ class TestEntityListDialogWithData(unittest.TestCase):
         spec.loader.exec_module(cls.mod)
         parent = sys.modules.get('plans_adressage.gui')
         if parent is not None:
-            setattr(parent, 'entity_list_dialog', cls.mod)
+            parent.entity_list_dialog = cls.mod
 
     def _make_dialog(self, records, total_count=None):
         mock_session = MagicMock()

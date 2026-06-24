@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+import contextlib
 import logging
+from typing import Any
 
 from qgis.core import QgsProject
 from qgis.PyQt.QtCore import Qt
@@ -66,10 +68,8 @@ class LayerEditMixin:
         if not layers:
             return
         layer = layers[0]
-        try:
+        with contextlib.suppress(TypeError):
             layer.geometryChanged.disconnect(self.on_geometry_changed)
-        except TypeError:
-            pass
         layer.geometryChanged.connect(self.on_geometry_changed)
         update_layer(self.iface, layer_name)
 
@@ -77,7 +77,7 @@ class LayerEditMixin:
         """Enable geometry editing on the currently selected layer."""
         self._update_handler(self._current_layer_name())
 
-    def _get_geometry_and_id(self: HasFeatureState, entity_name: str):
+    def _get_geometry_and_id(self: HasFeatureState, entity_name: str) -> tuple[Any, Any]:
         """Retrieve the captured geometry WKT and feature PK."""
         geometry_wkt = getattr(self, '_last_feature_wkt', None)
         feature_id = getattr(self, '_last_feature_id', None)
@@ -213,7 +213,7 @@ class LayerEditMixin:
             logger.exception('Failed to add road: %s', e)
             self._show_error('Cannot add road, it already exists')
 
-    def key_press_event(self, event, action: str = 'add_numbering') -> None:
+    def key_press_event(self, event: Any, action: str = 'add_numbering') -> None:
         """Handle Enter key press to trigger the given action."""
         if event.key() == Qt.Key.Key_Return:
             getattr(self, action)()
@@ -222,8 +222,8 @@ class LayerEditMixin:
         self: HasTranslation,
         title: str,
         message: str,
-        yes_callback=None,
-        no_callback=None,
+        yes_callback: Any = None,
+        no_callback: Any = None,
     ) -> bool:
         """Display a confirmation dialog with yes/no callbacks."""
         msg_box = QMessageBox(self)

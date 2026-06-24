@@ -10,6 +10,12 @@ logger = logging.getLogger(__name__)
 _SECRET: str | None = None
 
 
+def reset_jwt_secret() -> None:
+    """Clear the cached JWT secret (useful for test isolation)."""
+    global _SECRET
+    _SECRET = None
+
+
 def get_jwt_secret() -> str:
     """Return the JWT signing secret from the RNA_JWT_SECRET env var."""
     global _SECRET

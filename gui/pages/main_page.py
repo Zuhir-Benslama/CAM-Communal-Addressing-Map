@@ -1,6 +1,7 @@
 """Main page builder (toolbar, form container, footer)."""
 
 import os
+from typing import Any
 
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtGui import QIcon
@@ -28,7 +29,7 @@ from .settings_page import build_settings_page
 _ICON_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'resources')
 
 
-def build_main_page(dialog) -> None:
+def build_main_page(dialog: Any) -> None:
     page = QWidget()
     page.setObjectName('main')
     layout = QVBoxLayout(page)
@@ -82,7 +83,7 @@ def build_main_page(dialog) -> None:
     dialog._held_widgets.append(toolbar)
 
 
-def _build_form_page(dialog) -> None:
+def _build_form_page(dialog: Any) -> None:
     page = QWidget()
     layout = QVBoxLayout(page)
     layout.setContentsMargins(8, 8, 8, 8)

@@ -3,6 +3,9 @@
 
 from __future__ import annotations
 
+import contextlib
+from typing import Any
+
 from qgis.core import QgsProject
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import QMessageBox
@@ -28,7 +31,7 @@ class MapToolsMixin:
     ref_identify_tool: IdentifyTool | None
     measure_tool: MeasureTool | None
 
-    def _selection_handler(self: HasMapToolsContext, layer=None) -> None:
+    def _selection_handler(self: HasMapToolsContext, layer: Any = None) -> None:
         """Activate identify tool for feature selection on the active layer."""
         if self.ref_identify_tool:
             self.ref_identify_tool.unset_map_tool()
@@ -70,24 +73,20 @@ class MapToolsMixin:
             if self.measure_tool:
                 self.measure_tool.clear()
 
-    def on_edition_release(self: HasMapToolsContext, _event) -> None:
+    def on_edition_release(self: HasMapToolsContext, _event: Any) -> None:
         """Stop active tools when the edition context menu is triggered."""
         self.stop()
 
     def _reconnect_context_menu(self: HasIface) -> None:
         """Reconnect the custom context menu to ensure it stays active."""
         canvas = self.iface.mapCanvas()
-        try:
+        with contextlib.suppress(TypeError):
             canvas.customContextMenuRequested.disconnect(self.on_edition_release)
-        except TypeError:
-            pass
-        try:
+        with contextlib.suppress(TypeError):
             canvas.customContextMenuRequested.connect(self.on_edition_release)
-        except TypeError:
-            pass
         canvas.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
-    def _on_map_tool_changed(self: HasIface, _new_tool) -> None:
+    def _on_map_tool_changed(self: HasIface, _new_tool: Any) -> None:
         """Reconnect context menu when the map tool changes."""
         try:
             self.iface.mapCanvas()
@@ -101,7 +100,7 @@ class MapToolsMixin:
 
     def _select_ref(
         self: HasFullMapToolsContext,
-        combo,
+        combo: Any,
     ) -> None:
         """Activate identify tool in reference mode for selecting a
         reference feature."""

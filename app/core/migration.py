@@ -5,9 +5,19 @@ and the plugin's Import Database feature.
 
 import logging
 import os
+import re
 import sqlite3
 
 logger = logging.getLogger(__name__)
+
+_IDENTIFIER_RE = re.compile(r'^[a-zA-Z_][a-zA-Z0-9_]*$')
+
+
+def _validate_safe_name(name: str) -> str:
+    """Validate that *name* is a safe SQL identifier (no SQL injection risk)."""
+    if not _IDENTIFIER_RE.match(name):
+        raise ValueError(f'Unsafe SQL identifier: {name!r}')
+    return name
 
 
 COLUMN_MAP = {
@@ -248,20 +258,26 @@ def register_geometry(
     geom_config: tuple,
 ) -> None:
     """Register a geometry column using AddGeometryColumn."""
+    _validate_safe_name(table)
+    _validate_safe_name(col)
     geom_type, srid, dims = geom_config[:3]
     conn.execute(
-        f"SELECT AddGeometryColumn('{table}', '{col}', {srid}, '{geom_type}', {dims})"
+        'SELECT AddGeometryColumn(?, ?, ?, ?, ?)',
+        (table, col, srid, geom_type, dims),
     )
 
 
 def create_spatial_index(conn: sqlite3.Connection, table: str, col: str) -> None:
     """Create a spatial R-tree index."""
-    conn.execute(f"SELECT CreateSpatialIndex('{table}', '{col}')")
+    _validate_safe_name(table)
+    _validate_safe_name(col)
+    conn.execute('SELECT CreateSpatialIndex(?, ?)', (table, col))
 
 
 def _migrate_lookup_tables(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
     """Copy lookup table data from old to new database."""
     for name, ddl in LOOKUP_TABLE_DDL.items():
+        _validate_safe_name(name)
         new.execute(ddl)
         old_cur = old.execute(f'SELECT * FROM "{name}"')
         old_rows = old_cur.fetchall()
@@ -284,8 +300,8 @@ def _register_geometry_columns(new: sqlite3.Connection) -> None:
     for table, geom_config in GEOMETRY_TYPES.items():
         try:
             register_geometry(new, table, 'geometry', geom_config)
-        except Exception as e:  # pylint: disable=W0718
-            logger.warning('  %s.geometry: %s', table, e)
+        except sqlite3.OperationalError as e:
+            logger.error('  %s.geometry registration failed: %s', table, e)
 
 
 def _migrate_data(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
@@ -294,6 +310,7 @@ def _migrate_data(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
         old_cols = list(col_map.keys())
         new_cols = list(col_map.values())
 
+        _validate_safe_name(table)
         old_rows = old.execute(f'SELECT * FROM "{table}"').fetchall()
         if not old_rows:
             logger.info('  %s: 0 rows (skipped)', table)
@@ -311,7 +328,7 @@ def _migrate_data(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
                     values,
                 )
                 migrated += 1
-            except Exception as e:  # pylint: disable=W0718
+            except (sqlite3.OperationalError, ValueError, IndexError) as e:
                 logger.warning(
                     '  %s row %s: %s',
                     table,
@@ -327,8 +344,8 @@ def _create_spatial_indexes(new: sqlite3.Connection) -> None:
         try:
             create_spatial_index(new, table, 'geometry')
             logger.info('  %s.geometry: index created', table)
-        except Exception as e:  # pylint: disable=W0718
-            logger.warning('  %s.geometry index: %s', table, e)
+        except sqlite3.OperationalError as e:
+            logger.error('  %s.geometry index creation failed: %s', table, e)
 
 
 def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
@@ -371,7 +388,7 @@ def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
                     )
                     if target.total_changes > 0:
                         merged += 1
-                except Exception as e:  # pylint: disable=W0718
+                except (sqlite3.OperationalError, ValueError) as e:
                     logger.warning('  user %s: %s', row['id'], e)
             target.commit()
             logger.info('  Merged %d user(s) from %s', merged, auth_path)

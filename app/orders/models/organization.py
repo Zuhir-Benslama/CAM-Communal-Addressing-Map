@@ -27,7 +27,7 @@ class Organization(_BaseSpatialModel):
     geometry = Column(Geometry('POLYGON', srid=SRID), nullable=True)
     user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
     zone_id = Column(Text, ForeignKey('zone.id'), nullable=True, index=True)
-    user = relationship('User', backref='user_org', foreign_keys=[user_id])
+    user = relationship('User', backref='organizations', foreign_keys=[user_id])
 
     @property
     def cat(self) -> str | None:

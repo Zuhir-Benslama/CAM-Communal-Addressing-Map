@@ -46,7 +46,7 @@ class Subdivision(_BaseSpatialModel):
     )
     user = relationship(
         'User',
-        backref='user_poly_child',
+        backref='subdivisions',
         foreign_keys=[user_id],
     )
 

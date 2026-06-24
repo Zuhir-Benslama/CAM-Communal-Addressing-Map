@@ -90,13 +90,13 @@ def normalize_theme(theme_name: Theme | str | None) -> Theme:
 def get_theme_qss(theme_name: Theme | str | None) -> str:
     """Return the main QSS stylesheet for *theme_name*."""
     theme = normalize_theme(theme_name)
-    return THEMES.get(theme, THEMES[DEFAULT_THEME])[0]  # type: ignore
+    return THEMES.get(theme, THEMES[DEFAULT_THEME])[0]
 
 
 def get_dialog_qss(theme_name: Theme | str | None) -> str:
     """Return the dialog QSS stylesheet for *theme_name*."""
     theme = normalize_theme(theme_name)
-    return THEMES.get(theme, THEMES[DEFAULT_THEME])[1]  # type: ignore
+    return THEMES.get(theme, THEMES[DEFAULT_THEME])[1]
 
 
 def _find_in_candidate_paths(candidates: list[str]) -> str | None:

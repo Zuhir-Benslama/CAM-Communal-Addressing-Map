@@ -1,5 +1,7 @@
 """Map measure tool for distance measurement on canvas."""
 
+from typing import Any
+
 from qgis.core import QgsDistanceArea, QgsPointXY, QgsWkbTypes
 from qgis.gui import QgsMapToolEmitPoint, QgsRubberBand, QgsVertexMarker
 from qgis.PyQt.QtCore import Qt
@@ -40,7 +42,7 @@ class MeasureTool(QgsMapToolEmitPoint):
         self.canvas.extentsChanged.connect(self.updateLabels)
         self.canvas.scaleChanged.connect(self.updateLabels)
 
-    def canvasReleaseEvent(self, event) -> None:
+    def canvasReleaseEvent(self, event: Any) -> None:
         """Record point and draw measurement lines."""
         if self.paused:
             return
@@ -76,7 +78,7 @@ class MeasureTool(QgsMapToolEmitPoint):
                 _i18n_tr('Total Distance', current_locale()), msg, level=0, duration=10
             )
 
-    def canvasMoveEvent(self, event) -> None:
+    def canvasMoveEvent(self, event: Any) -> None:
         """Show temporary distance on mouse move."""
         if self.paused or not self.points:
             return
@@ -93,7 +95,7 @@ class MeasureTool(QgsMapToolEmitPoint):
         dist_msg = f'{temp_distance + total_dist:.2f} {_i18n_tr("m", current_locale())}'
         QToolTip.showText(QCursor.pos(), dist_msg)
 
-    def keyPressEvent(self, event) -> None:
+    def keyPressEvent(self, event: Any) -> None:
         """Handle keyboard shortcuts for tool control."""
         if event.key() == Qt.Key.Key_R:
             self.clear()
@@ -126,7 +128,7 @@ class MeasureTool(QgsMapToolEmitPoint):
                 _i18n_tr('Status', current_locale()), state, level=level, duration=10
             )
 
-    def addDistanceLabel(self, point1, point2) -> None:
+    def addDistanceLabel(self, point1: Any, point2: Any) -> None:
         """Add a distance label between two points on canvas."""
         mid_x = (point1.x() + point2.x()) / 2
         mid_y = (point1.y() + point2.y()) / 2
@@ -148,7 +150,7 @@ class MeasureTool(QgsMapToolEmitPoint):
 
         # Create a group to hold the text with outline effect
         group = QGraphicsItemGroup()
-        group.mid_point = mid_point  # type: ignore[attr-defined]
+        group.mid_point = mid_point
 
         font = QFont('Arial', 11)
         text_item = QGraphicsSimpleTextItem(label_text)

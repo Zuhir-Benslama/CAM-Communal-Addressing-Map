@@ -48,7 +48,6 @@ EXCLUDE_DIRS = {
     '.codex',
     '.idea',
     '.vscode',
-    '__pycache__',
 }
 
 EXCLUDE_FILES = {

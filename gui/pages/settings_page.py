@@ -1,5 +1,7 @@
 """Settings page builder for MainDialog."""
 
+from typing import Any
+
 from qgis.PyQt.QtWidgets import (
     QComboBox,
     QFormLayout,
@@ -14,7 +16,7 @@ from qgis.PyQt.QtWidgets import (
 from ..dialog_helpers import add_form_row, make_section_frame
 
 
-def build_settings_page(dialog) -> None:
+def build_settings_page(dialog: Any) -> None:
     scroll = QScrollArea()
     scroll.setWidgetResizable(True)
     scroll.setObjectName('settingsTab')

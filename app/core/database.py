@@ -2,6 +2,7 @@
 
 import logging
 import os
+import re
 import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager
@@ -14,6 +15,15 @@ from sqlalchemy.orm import Session, sessionmaker
 from ..core.config import find_mod_spatialite_dll
 from ..shared.constants import AUTH_DATABASE_FILE, DATABASE_FILE, VIEWS_SQL
 from .base import Base
+
+_IDENTIFIER_RE = re.compile(r'^[a-zA-Z_][a-zA-Z0-9_]*$')
+
+
+def _validate_safe_name(name: str) -> str:
+    """Validate that *name* is a safe SQL identifier (no SQL injection risk)."""
+    if not _IDENTIFIER_RE.match(name):
+        raise ValueError(f'Unsafe SQL identifier: {name!r}')
+    return name
 
 logger = logging.getLogger(__name__)
 
@@ -111,6 +121,8 @@ def _add_column_if_not_exists(
     conn: Any, table: str, column: str, col_type: str
 ) -> None:
     """Add a column to a SQLite table if it does not already exist."""
+    _validate_safe_name(table)
+    _validate_safe_name(column)
     result = conn.execute(
         text(
             "SELECT count(*) FROM sqlite_master WHERE type='table' AND name=:name",
@@ -122,7 +134,7 @@ def _add_column_if_not_exists(
     result = conn.execute(text(f"PRAGMA table_info('{table}')"))
     existing = {row[1] for row in result.fetchall()}
     if column not in existing:
-        conn.execute(text(f"ALTER TABLE '{table}' ADD COLUMN {column} {col_type}"))
+        conn.execute(text(f'ALTER TABLE "{table}" ADD COLUMN {column} {col_type}'))
         logger.info('Added column %s.%s (%s)', table, column, col_type)
 
 
@@ -166,6 +178,8 @@ def _create_spatial_indexes(engine: Any) -> None:
     """Create SpatiaLite spatial indexes for all geometry columns."""
     with engine.connect() as conn:
         for table, column in _SPATIAL_INDEXES:
+            _validate_safe_name(table)
+            _validate_safe_name(column)
             if _spatial_index_exists(conn, table, column):
                 logger.debug(
                     'Spatial index already exists on %s.%s',
@@ -174,7 +188,8 @@ def _create_spatial_indexes(engine: Any) -> None:
                 )
                 continue
             try:
-                conn.execute(text(f"SELECT CreateSpatialIndex('{table}', '{column}')"))
+                conn.execute(text('SELECT CreateSpatialIndex(:table, :col)'),
+                             {'table': table, 'col': column})
                 conn.commit()
                 logger.info('Created spatial index on %s.%s', table, column)
             except (OperationalError, SQLAlchemyError):

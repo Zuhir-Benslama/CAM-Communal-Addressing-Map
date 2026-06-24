@@ -4,6 +4,8 @@ Each function takes a dialog instance as its first argument and operates
 on its attributes directly (matching the mixin pattern).
 """
 
+from typing import Any
+
 from qgis.PyQt.QtCore import QSettings, Qt
 from qgis.PyQt.QtWidgets import QApplication, QFileDialog
 
@@ -67,7 +69,7 @@ LAYER_TRANSLATIONS = {
 }
 
 
-def populate_combos(dialog) -> None:
+def populate_combos(dialog: Any) -> None:
     loc = dialog._tr_locale
     for name in dialog.LAYER_INDEX_MAP:
         dialog._combo_layer_selector.addItem(
@@ -91,7 +93,7 @@ def populate_combos(dialog) -> None:
     dialog._update_action_button_texts(dialog._combo_layer_selector.currentIndex())
 
 
-def translate_internal_combos(dialog) -> None:
+def translate_internal_combos(dialog: Any) -> None:
     loc = dialog._tr_locale
     for i, name in enumerate(dialog.LAYER_INDEX_MAP):
         dialog._combo_layer_selector.setItemText(
@@ -113,7 +115,7 @@ def translate_internal_combos(dialog) -> None:
             dialog._combo_locale.setItemText(i, LOCALE_LABELS[code][loc])
 
 
-def init_theme_locale(dialog) -> None:
+def init_theme_locale(dialog: Any) -> None:
     settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
     loc = dialog._tr_locale
     dark_arabic = ARABIC_THEME_NAMES['dark']
@@ -192,7 +194,7 @@ def on_action_changed(dialog, _index: int) -> None:
         dialog.numbering_chart()
 
 
-def on_save_action(dialog) -> None:
+def on_save_action(dialog: Any) -> None:
     directory = QFileDialog.getExistingDirectory(
         dialog,
         dialog._tr('Choose output directory'),
@@ -216,6 +218,6 @@ def on_save_action(dialog) -> None:
         dialog.backup()
 
 
-def apply_theme(dialog) -> None:
+def apply_theme(dialog: Any) -> None:
     qss = get_theme_qss(dialog._current_theme)
     dialog.setStyleSheet(qss)
