@@ -3,12 +3,13 @@
 import logging
 import os
 import subprocess
+from pathlib import Path
 
 from ..shared.constants import PLUGIN_DIR, THEME_DARK, THEME_LIGHT, Theme
 
 logger = logging.getLogger(__name__)
 
-_TEMPLATE_DIR = os.path.join(PLUGIN_DIR, 'resources')
+_TEMPLATE_DIR = Path(PLUGIN_DIR) / 'resources'
 
 _COLORS = {
     'DARK_BG': '#1a1b26',
@@ -38,7 +39,7 @@ _COLORS = {
 
 def _load_qss_template(filename: str) -> str:
     """Load a QSS template and replace {{VAR}} with color values."""
-    path = os.path.join(_TEMPLATE_DIR, filename)
+    path = _TEMPLATE_DIR / filename
     try:
         with open(path, encoding='utf-8') as f:
             template = f.read()
@@ -102,7 +103,7 @@ def get_dialog_qss(theme_name: Theme | str | None) -> str:
 def _find_in_candidate_paths(candidates: list[str]) -> str | None:
     """Return the first existing path from *candidates*, or None."""
     for p in candidates:
-        if os.path.exists(p):
+        if Path(p).exists():
             return p
     return None
 
@@ -122,7 +123,7 @@ def _find_via_ldconfig() -> str | None:
             parts = line.split('=>')
             if len(parts) == 2:
                 path = parts[1].strip()
-                if os.path.exists(path):
+                if Path(path).exists():
                     return path
     except (subprocess.CalledProcessError, FileNotFoundError, PermissionError, OSError):
         logger.debug(

@@ -1753,3 +1753,15 @@ Open QGIS, load the plugin, and verify:
 
 - [x] **Cryptic SQLAlchemy backref names** — renamed across `numbering.py`, `road.py`, `organization.py`, `subdivision.py`.
 - [x] **Ruff ruleset could be expanded** — added `N`, `SIM`, `B`, `RUF` to `select` in `pyproject.toml`; added `per-file-ignores` for false-positive naming violations (Qt overrides, test fixtures).
+
+---
+
+## 70. Current Code Quality Issues — 2026-06-29
+
+### P2 — Medium
+
+- [x] **Legacy build backend in `pyproject.toml`** — uses `setuptools.backends._legacy:_Backend` which is unusual and may cause packaging issues. Switched to `setuptools.build_meta`.
+- [x] **f-strings in exception constructors (EM102)** — 7 occurrences across the codebase use f-strings in `raise` statements, which evaluate eagerly instead of deferring string formatting. Use `%s`-style formatting for lazy evaluation.
+- [x] **Large hand-written files still over 400 lines** — `app/core/migration.py` (455, cohesive — kept as-is), `app/core/database.py` (427 → 118). Migration helpers extracted to `app/core/_schema_migrations.py` (~320 lines).
+- [x] **GUI test gaps** — `gui/pages/settings_page.py` and `gui/pages/add_user_page.py` have limited or no dedicated test coverage.
+- [x] **`os.path` vs `pathlib`** — ~50 usages across 14 source files migrated to `pathlib.Path` (constants, config, database, migration, mixins, gui pages, layer utils). One `os.path.dirname` remains in `app/users/service.py:173` because `tempfile.mkstemp(dir=...)` requires `str`, and `import os` is still needed for `os.fdopen`/`os.replace`/`os.unlink` in the same function.

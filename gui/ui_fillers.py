@@ -2,7 +2,6 @@
 
 import json
 import logging
-import os
 
 from qgis.PyQt.QtWidgets import QComboBox, QCompleter
 
@@ -251,7 +250,7 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
         return False
 
     if main_type == _ACTIVITY_KEY:
-        filepath = os.path.join(TEMPLATE_DATA_DIR, 'activity.json')
+        filepath = TEMPLATE_DATA_DIR / 'activity.json'
         entry = {'sector': category, 'type': type_name}
     else:
         _json_files = {
@@ -262,7 +261,7 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
         filename = _json_files.get(main_type)
         if not filename:
             return False
-        filepath = os.path.join(TEMPLATE_DATA_DIR, filename)
+        filepath = TEMPLATE_DATA_DIR / filename
         entry = {'pk': type_name}
 
     try:

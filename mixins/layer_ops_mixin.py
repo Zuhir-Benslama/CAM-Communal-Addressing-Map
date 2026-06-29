@@ -4,8 +4,8 @@
 from __future__ import annotations
 
 import logging
-import os
 import uuid
+from pathlib import Path
 
 from geoalchemy2.elements import WKTElement
 from qgis.core import QgsLayerTreeLayer, QgsProject
@@ -123,8 +123,8 @@ class LayerOpsMixin:
             tmpl_list = QgsProject.instance().mapLayersByName(layer_cfg.get('label'))
             if not tmpl_list:
                 continue
-            filename = os.path.join(style_dir, layer_cfg.get('style'))
-            result = tmpl_list[0].loadNamedStyle(filename)
+            filename = Path(style_dir) / layer_cfg.get('style')
+            result = tmpl_list[0].loadNamedStyle(str(filename))
             if isinstance(result, tuple):
                 success_val, _ = result
                 is_success = (

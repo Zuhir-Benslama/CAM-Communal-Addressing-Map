@@ -7,6 +7,7 @@ import logging
 import os
 import shutil
 import tempfile
+from pathlib import Path
 
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
 
@@ -33,7 +34,7 @@ class BackupMixin:
             shutil.copy2(source, temp)
             os.replace(temp, destination)
         except (OSError, shutil.Error):
-            if os.path.exists(temp):
+            if Path(temp).exists():
                 os.remove(temp)
             raise
 
@@ -100,7 +101,7 @@ class BackupMixin:
             return True
         except Exception as e:  # pylint: disable=W0718
             logger.exception('Migration failed')
-            if os.path.exists(temp_path):
+            if Path(temp_path).exists():
                 os.unlink(temp_path)
             QMessageBox.critical(
                 self,
@@ -123,7 +124,7 @@ class BackupMixin:
             )
             return False
         finally:
-            if os.path.exists(temp_path):
+            if Path(temp_path).exists():
                 os.unlink(temp_path)
 
     # ------------------------------------------------------------------
@@ -146,7 +147,7 @@ class BackupMixin:
         QMessageBox.information(
             self,
             self._tr('Success'),
-            self._tr('Database restored from %s') % os.path.basename(source_path),
+            self._tr('Database restored from %s') % Path(source_path).name,
         )
 
     def backup(self: HasTranslation) -> None:

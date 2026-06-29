@@ -113,7 +113,8 @@ class PanelSign(_BaseSpatialModel):
             return None
         entity = session.query(model_class).filter(model_class.id == ref_id).first()
         if not entity:
-            raise ValueError(f'{type_label} with id {ref_id} not found')
+            msg = f'{type_label} with id {ref_id} not found'
+            raise ValueError(msg)
         return type_label
 
     def save(self, session: Session) -> None:

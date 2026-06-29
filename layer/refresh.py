@@ -2,7 +2,6 @@
 
 import datetime
 import logging
-import os
 from typing import Any
 
 from geoalchemy2 import Geometry
@@ -274,8 +273,8 @@ def refresh_all_layers(iface: Any) -> None:
     for layer_cfg in data_list:
         layers = QgsProject.instance().mapLayersByName(layer_cfg.get('label'))
         if layers:
-            filename = os.path.join(DEFAULT_STYLE_DIR, layer_cfg.get('style'))
-            result = layers[0].loadNamedStyle(filename)
+            filename = DEFAULT_STYLE_DIR / layer_cfg.get('style')
+            result = layers[0].loadNamedStyle(str(filename))
             logger.info(
                 "loadNamedStyle('%s') for '%s': %s",
                 filename,
@@ -305,4 +304,4 @@ def remove_all_categorized_styles(iface: Any) -> None:
 
     filename = STYLE_QML
     for layer in QgsProject.instance().mapLayers().values():
-        layer.loadNamedStyle(filename)
+        layer.loadNamedStyle(str(filename))

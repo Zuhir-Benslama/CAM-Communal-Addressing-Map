@@ -1,6 +1,6 @@
 """Main page builder (toolbar, form container, footer)."""
 
-import os
+from pathlib import Path
 from typing import Any
 
 from qgis.PyQt.QtCore import Qt
@@ -26,7 +26,7 @@ from .form_pages import (
 )
 from .settings_page import build_settings_page
 
-_ICON_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'resources')
+_ICON_DIR = str(Path(__file__).resolve().parent.parent.parent / 'resources')
 
 
 def build_main_page(dialog: Any) -> None:
@@ -117,22 +117,22 @@ def _build_form_page(dialog: Any) -> None:
     btn_row.setSpacing(6)
     dialog._btn_draw = QPushButton()
     dialog._btn_draw.setObjectName('drawBtn')
-    dialog._btn_draw.setIcon(QIcon(os.path.join(_ICON_DIR, 'draw.svg')))
+    dialog._btn_draw.setIcon(QIcon(str(Path(_ICON_DIR) / 'draw.svg')))
     dialog._btn_draw.setToolTip('Draw')
     btn_row.addWidget(dialog._btn_draw, 1)
     dialog._btn_select = QPushButton()
     dialog._btn_select.setObjectName('selectBtn')
-    dialog._btn_select.setIcon(QIcon(os.path.join(_ICON_DIR, 'select.svg')))
+    dialog._btn_select.setIcon(QIcon(str(Path(_ICON_DIR) / 'select.svg')))
     dialog._btn_select.setToolTip('Select')
     btn_row.addWidget(dialog._btn_select, 1)
     dialog._btn_edit = QPushButton()
     dialog._btn_edit.setObjectName('editBtn')
-    dialog._btn_edit.setIcon(QIcon(os.path.join(_ICON_DIR, 'edit.svg')))
+    dialog._btn_edit.setIcon(QIcon(str(Path(_ICON_DIR) / 'edit.svg')))
     dialog._btn_edit.setToolTip('Edit')
     btn_row.addWidget(dialog._btn_edit, 1)
     dialog._btn_measure = QPushButton()
     dialog._btn_measure.setObjectName('mesure_dist')
-    dialog._btn_measure.setIcon(QIcon(os.path.join(_ICON_DIR, 'measure.svg')))
+    dialog._btn_measure.setIcon(QIcon(str(Path(_ICON_DIR) / 'measure.svg')))
     dialog._btn_measure.setToolTip('Measure Distance')
     btn_row.addWidget(dialog._btn_measure, 1)
     action_layout.addLayout(btn_row)

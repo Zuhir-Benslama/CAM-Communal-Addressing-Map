@@ -23,9 +23,9 @@
 """
 
 import logging
-import os
 import sys
 import traceback
+from pathlib import Path
 from typing import Any
 
 logging.basicConfig(
@@ -46,7 +46,7 @@ def classFactory(iface: Any) -> Any:  # pylint: disable=invalid-name
     """
     # Ensure RNA plugin dir is on sys.path so 'app' subpackage
     # resolves even under QGIS's import hook on Python 3.14
-    _dir = os.path.dirname(__file__)
+    _dir = str(Path(__file__).parent)
     if _dir not in sys.path:
         sys.path.insert(0, _dir)
 

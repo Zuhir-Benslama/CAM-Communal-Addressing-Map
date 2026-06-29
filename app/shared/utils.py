@@ -5,6 +5,7 @@ import os
 import shutil
 import subprocess
 from collections.abc import Mapping
+from pathlib import Path
 from types import MappingProxyType
 from typing import TypeVar
 
@@ -76,7 +77,7 @@ def get_qgis_python() -> str | None:
     """Return the path to a suitable QGIS Python interpreter."""
     python = os.getenv('PYTHON_QGIS_BAT')
     if python:
-        if not os.path.isfile(python) or not os.access(python, os.X_OK):
+        if not Path(python).is_file() or not os.access(python, os.X_OK):
             logger.warning(
                 'PYTHON_QGIS_BAT path is not executable: %s, falling back',
                 python,

@@ -1,43 +1,41 @@
 """Shared constants: paths, layer names, enums, and settings keys."""
 
-import os
 from enum import Enum
+from pathlib import Path
 
-PLUGIN_DIR = os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-)
+PLUGIN_DIR = Path(__file__).resolve().parent.parent.parent
 
 SRID = 4326
 CRS = f'EPSG:{SRID}'
 
-COOKIE_FILE = os.path.join(PLUGIN_DIR, 'data', 'cookie.toml')
-DATABASE_FILE = os.path.join(PLUGIN_DIR, 'data', 'database.sqlite')
-AUTH_DATABASE_FILE = os.path.join(PLUGIN_DIR, 'data', 'auth.sqlite')
-QGIS_CONFIG_FILE = os.path.join(PLUGIN_DIR, 'data', 'qgis_config.json')
-STYLE_QML = os.path.join(PLUGIN_DIR, 'style', 'style.qml')
-DEFAULT_STYLE_DIR = os.path.join(PLUGIN_DIR, 'style', 'default')
-CUSTOM_STYLE_DIR = os.path.join(PLUGIN_DIR, 'style', 'customized')
-TEMPLATE_REP = os.path.join(PLUGIN_DIR, 'templates', 'rep.odt')
-TEMPLATE_CMD = os.path.join(PLUGIN_DIR, 'templates', 'cmd.odt')
-TMP_JSON = os.path.join(PLUGIN_DIR, 'data', 'tmp.json')
-MAP_PNG = os.path.join(PLUGIN_DIR, 'resources', 'map.png')
-ICON_PNG = os.path.join(PLUGIN_DIR, 'resources', 'icon.png')
-VIEWS_SQL = os.path.join(PLUGIN_DIR, 'data', 'Views.sql')
-TEMPLATE_DATA_DIR = os.path.join(PLUGIN_DIR, 'template_data')
-WILAYAS_JSON = os.path.join(TEMPLATE_DATA_DIR, 'wilayas.json')
-DAIRA_JSON = os.path.join(TEMPLATE_DATA_DIR, 'daira.json')
-COMMUNES_JSON = os.path.join(TEMPLATE_DATA_DIR, 'communes.json')
-COMMUNES_GEOJSON = os.path.join(TEMPLATE_DATA_DIR, 'communes.geojson')
-COMMUNES_DB = os.path.join(TEMPLATE_DATA_DIR, 'communes.db')
+COOKIE_FILE = PLUGIN_DIR / 'data' / 'cookie.toml'
+DATABASE_FILE = PLUGIN_DIR / 'data' / 'database.sqlite'
+AUTH_DATABASE_FILE = PLUGIN_DIR / 'data' / 'auth.sqlite'
+QGIS_CONFIG_FILE = PLUGIN_DIR / 'data' / 'qgis_config.json'
+STYLE_QML = PLUGIN_DIR / 'style' / 'style.qml'
+DEFAULT_STYLE_DIR = PLUGIN_DIR / 'style' / 'default'
+CUSTOM_STYLE_DIR = PLUGIN_DIR / 'style' / 'customized'
+TEMPLATE_REP = PLUGIN_DIR / 'templates' / 'rep.odt'
+TEMPLATE_CMD = PLUGIN_DIR / 'templates' / 'cmd.odt'
+TMP_JSON = PLUGIN_DIR / 'data' / 'tmp.json'
+MAP_PNG = PLUGIN_DIR / 'resources' / 'map.png'
+ICON_PNG = PLUGIN_DIR / 'resources' / 'icon.png'
+VIEWS_SQL = PLUGIN_DIR / 'data' / 'Views.sql'
+TEMPLATE_DATA_DIR = PLUGIN_DIR / 'template_data'
+WILAYAS_JSON = TEMPLATE_DATA_DIR / 'wilayas.json'
+DAIRA_JSON = TEMPLATE_DATA_DIR / 'daira.json'
+COMMUNES_JSON = TEMPLATE_DATA_DIR / 'communes.json'
+COMMUNES_GEOJSON = TEMPLATE_DATA_DIR / 'communes.geojson'
+COMMUNES_DB = TEMPLATE_DATA_DIR / 'communes.db'
 
-MAP_A3_TEMPLATE = os.path.join(PLUGIN_DIR, 'templates', 'map_a3.odt')
-MAP_A0_TEMPLATE = os.path.join(PLUGIN_DIR, 'templates', 'map_a0.odt')
-SITUATION_PNG = os.path.join(PLUGIN_DIR, 'resources', 'situation.png')
-NORTH_ARROW_SVG = os.path.join(PLUGIN_DIR, 'resources', 'north_arrow.svg')
-SYMBOLS_SVG = os.path.join(PLUGIN_DIR, 'resources', 'symbols.svg')
-SCALE_BAR_SVG = os.path.join(PLUGIN_DIR, 'resources', 'scale_bar.svg')
-CHART_SVG = os.path.join(PLUGIN_DIR, 'resources', 'chart.svg')
-REPORTING_SCRIPT = os.path.join(PLUGIN_DIR, 'scripts', 'reporting.py')
+MAP_A3_TEMPLATE = PLUGIN_DIR / 'templates' / 'map_a3.odt'
+MAP_A0_TEMPLATE = PLUGIN_DIR / 'templates' / 'map_a0.odt'
+SITUATION_PNG = PLUGIN_DIR / 'resources' / 'situation.png'
+NORTH_ARROW_SVG = PLUGIN_DIR / 'resources' / 'north_arrow.svg'
+SYMBOLS_SVG = PLUGIN_DIR / 'resources' / 'symbols.svg'
+SCALE_BAR_SVG = PLUGIN_DIR / 'resources' / 'scale_bar.svg'
+CHART_SVG = PLUGIN_DIR / 'resources' / 'chart.svg'
+REPORTING_SCRIPT = PLUGIN_DIR / 'scripts' / 'reporting.py'
 
 MEMORY_PROVIDER = 'memory'
 NOTIFY_DURATION = 3

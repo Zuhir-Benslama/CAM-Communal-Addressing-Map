@@ -2,6 +2,7 @@
 
 import logging
 import os
+from pathlib import Path
 from typing import Any
 
 from qgis.core import QgsApplication
@@ -29,14 +30,14 @@ class RNA:
     def __init__(self, iface: QgisInterface) -> None:
         QgsApplication.setPrefixPath(os.getenv('QGIS_BASE_PATH', '/usr'), True)
 
-        svg_path = os.path.join(
-            os.getenv('QGIS_BASE_PATH', '/usr'), 'apps', 'qgis', 'svg'
+        svg_path = str(
+            Path(os.getenv('QGIS_BASE_PATH', '/usr')) / 'apps' / 'qgis' / 'svg'
         )
         QgsApplication.setDefaultSvgPaths([svg_path])
         QgsApplication.instance().setSvgPaths([svg_path])
 
         self.iface: QgisInterface = iface
-        self.plugin_dir: str = os.path.dirname(os.path.dirname(__file__))
+        self.plugin_dir: str = str(Path(__file__).resolve().parent.parent)
         settings = QSettings()
         settings.beginGroup('digitizing')
         settings.setValue('disable-enter-attribute-values-dialog', True)
@@ -91,7 +92,7 @@ class RNA:
     def initGui(self) -> None:
         """Create the plugin toolbar button and menu entry."""
         self.add_action(
-            ICON_PNG,
+            str(ICON_PNG),
             text=self.tr(''),
             callback=self.run,
             parent=self.iface.mainWindow(),

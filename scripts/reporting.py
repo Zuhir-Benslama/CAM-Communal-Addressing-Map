@@ -75,7 +75,8 @@ def _find_soffice() -> str:
     path = os.getenv('SOFFICE_EXE')
     if path:
         if not os.path.isfile(path) or not os.access(path, os.X_OK):
-            raise OSError(f'SOFFICE_EXE path is not executable: {path}')
+            msg = f'SOFFICE_EXE path is not executable: {path}'
+            raise OSError(msg)
         return path
     path = shutil.which('soffice')
     if path:

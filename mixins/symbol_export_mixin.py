@@ -156,7 +156,7 @@ class SymbolExportMixin:
         svg_settings.forceVectorOutput = True
         svg_settings.dpi = 900
 
-        result = exporter.exportToSvg(output_path, svg_settings)
+        result = exporter.exportToSvg(str(output_path), svg_settings)
 
         if result == QgsLayoutExporter.Success:
             logger.info(
@@ -216,7 +216,7 @@ class SymbolExportMixin:
         exporter = QgsLayoutExporter(layout)
         settings = QgsLayoutExporter.ImageExportSettings()
         output_path = SITUATION_PNG
-        exporter.exportToImage(output_path, settings)
+        exporter.exportToImage(str(output_path), settings)
 
         logger.info('Map exported to %s', output_path)
 
@@ -258,7 +258,7 @@ class SymbolExportMixin:
 
         exporter = QgsLayoutExporter(layout)
         output_path = NORTH_ARROW_SVG
-        exporter.exportToSvg(output_path, export_settings)
+        exporter.exportToSvg(str(output_path), export_settings)
 
     def scale(self: HasScaleContext) -> None:
         """Export a scale bar SVG matching the current map canvas scale."""
@@ -319,4 +319,4 @@ class SymbolExportMixin:
 
         output_path = SCALE_BAR_SVG
         exporter = QgsLayoutExporter(layout)
-        exporter.exportToSvg(output_path, export_settings)
+        exporter.exportToSvg(str(output_path), export_settings)

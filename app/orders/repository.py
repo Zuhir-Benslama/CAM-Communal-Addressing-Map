@@ -51,7 +51,8 @@ def export_model(model_name: str) -> None:
     try:
         model_class = _WRITER_MODELS.get(model_name)
         if model_class is None:
-            raise ValueError(f'Unknown model: {model_name}')
+            msg = f'Unknown model: {model_name}'
+            raise ValueError(msg)
         query = session.query(model_class).all()
 
         records = []

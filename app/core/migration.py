@@ -7,6 +7,7 @@ import logging
 import os
 import re
 import sqlite3
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +17,8 @@ _IDENTIFIER_RE = re.compile(r'^[a-zA-Z_][a-zA-Z0-9_]*$')
 def _validate_safe_name(name: str) -> str:
     """Validate that *name* is a safe SQL identifier (no SQL injection risk)."""
     if not _IDENTIFIER_RE.match(name):
-        raise ValueError(f'Unsafe SQL identifier: {name!r}')
+        msg = f'Unsafe SQL identifier: {name!r}'
+        raise ValueError(msg)
     return name
 
 
@@ -354,7 +356,7 @@ def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
     Used when the old setup had a separate ``auth.sqlite`` file.  Users
     whose ``id`` already exists in the target are skipped.
     """
-    if not auth_path or not os.path.exists(auth_path):
+    if not auth_path or not Path(auth_path).exists():
         logger.info('  auth file not found: %s (skipped)', auth_path)
         return
 
@@ -411,8 +413,9 @@ def migrate_database(
 
     Raises ``FileExistsError`` if *new_path* already exists.
     """
-    if os.path.exists(new_path):
-        raise FileExistsError(f'Output already exists: {new_path}')
+    if Path(new_path).exists():
+        msg = f'Output already exists: {new_path}'
+        raise FileExistsError(msg)
 
     old = sqlite3.connect(old_path)
     old.row_factory = sqlite3.Row
