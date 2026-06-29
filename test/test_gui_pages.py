@@ -6,19 +6,7 @@ import types
 import unittest
 from unittest.mock import MagicMock
 
-from .helpers import get_qapp, setup_gui_mocks
-
-
-def _real_qt_widgets():
-    """Return the real QtWidgets module (not mocked), preferring PyQt5."""
-    for name in ('PyQt5.QtWidgets', 'PyQt6.QtWidgets', 'qgis.PyQt.QtWidgets'):
-        try:
-            mod = importlib.import_module(name)
-        except ImportError:
-            continue
-        if hasattr(mod, 'QWidget') and not isinstance(mod.QWidget, MagicMock):
-            return mod
-    return None
+from .helpers import get_qapp, _qt_widgets_module, setup_gui_mocks
 
 
 def _ensure_package_hierarchy(qwidget_cls, qvboxlayout_cls):
@@ -63,10 +51,10 @@ class TestBuildAddUserPage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         setup_gui_mocks()
-        cls.qt = _real_qt_widgets()
+        cls.qt = _qt_widgets_module()
         if cls.qt is None:
             raise unittest.SkipTest('No real Qt widgets module available')
-        cls.app = cls.qt.QApplication(sys.argv)
+        cls.app = get_qapp()
         sys.modules['qgis.PyQt.QtWidgets'] = cls.qt
         _ensure_package_hierarchy(cls.qt.QWidget, cls.qt.QVBoxLayout)
         cls.mod = _load_page_module(
@@ -135,10 +123,10 @@ class TestBuildSettingsPage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         setup_gui_mocks()
-        cls.qt = _real_qt_widgets()
+        cls.qt = _qt_widgets_module()
         if cls.qt is None:
             raise unittest.SkipTest('No real Qt widgets module available')
-        cls.app = cls.qt.QApplication(sys.argv)
+        cls.app = get_qapp()
         sys.modules['qgis.PyQt.QtWidgets'] = cls.qt
         _ensure_package_hierarchy(cls.qt.QWidget, cls.qt.QVBoxLayout)
         cls.mod = _load_page_module(
