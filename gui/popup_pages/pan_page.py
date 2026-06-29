@@ -22,7 +22,7 @@ def build_pan_page(dialog: 'PopupDialog', stack: Any) -> None:
     layout.setSpacing(12)
 
     form = QFormLayout()
-    form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+    form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
     form.setSpacing(8)
 
     dialog._combo_mount_status = QComboBox()

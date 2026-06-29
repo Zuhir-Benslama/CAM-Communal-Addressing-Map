@@ -35,7 +35,7 @@ def build_login_page(dialog: Any) -> None:
     section_layout.addSpacing(12)
 
     form = QFormLayout()
-    form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+    form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
     form.setSpacing(8)
 
     dialog._field_username = QLineEdit()

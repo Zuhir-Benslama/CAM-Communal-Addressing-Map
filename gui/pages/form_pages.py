@@ -21,7 +21,7 @@ def build_zone_form(dialog: Any) -> None:
     layout.setContentsMargins(0, 0, 0, 0)
 
     form = QFormLayout()
-    form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+    form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
     form.setSpacing(6)
     dialog._combo_zone_type = QComboBox()
     dialog._combo_zone_type.setObjectName('zone_type')
@@ -51,7 +51,7 @@ def build_road_form(dialog: Any) -> None:
     layout.setContentsMargins(0, 0, 0, 0)
 
     form = QFormLayout()
-    form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+    form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
     form.setSpacing(6)
     dialog._combo_type_road = QComboBox()
     dialog._combo_type_road.setObjectName('type_road')
@@ -86,7 +86,7 @@ def build_org_form(dialog: Any) -> None:
     layout.setContentsMargins(0, 0, 0, 0)
 
     form = QFormLayout()
-    form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+    form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
     form.setSpacing(6)
     dialog._combo_org_cat = QComboBox()
     dialog._combo_org_cat.setObjectName('org_cat')
@@ -126,7 +126,7 @@ def build_city_form(dialog: Any) -> None:
     layout.setContentsMargins(0, 0, 0, 0)
 
     form = QFormLayout()
-    form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+    form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
     form.setSpacing(6)
     dialog._combo_subd_type = QComboBox()
     dialog._combo_subd_type.setObjectName('subd_type')
@@ -161,7 +161,7 @@ def build_num_form(dialog: Any) -> None:
     layout.setContentsMargins(0, 0, 0, 0)
 
     form = QFormLayout()
-    form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+    form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
     form.setSpacing(6)
     dialog._combo_road_ref = QComboBox()
     dialog._combo_road_ref.setObjectName('road_ref')
@@ -220,7 +220,7 @@ def build_pan_form(dialog: Any) -> None:
     layout.setContentsMargins(0, 0, 0, 0)
 
     form = QFormLayout()
-    form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+    form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
     form.setSpacing(6)
     dialog._combo_mount_status = QComboBox()
     dialog._combo_mount_status.setObjectName('mount_status')

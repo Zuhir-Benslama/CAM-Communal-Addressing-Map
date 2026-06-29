@@ -23,7 +23,7 @@ def build_num_page(dialog: 'PopupDialog', stack: Any) -> None:
     layout.setSpacing(12)
 
     form = QFormLayout()
-    form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+    form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
     form.setSpacing(8)
 
     dialog._combo_road_ref = QComboBox()

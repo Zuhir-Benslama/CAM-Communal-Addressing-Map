@@ -27,7 +27,7 @@ def build_add_user_page(dialog: Any) -> None:
     layout.addWidget(title)
 
     form = QFormLayout()
-    form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+    form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
     form.setSpacing(6)
 
     dialog._field_fname = QLineEdit()
