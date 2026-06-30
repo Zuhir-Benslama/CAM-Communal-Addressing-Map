@@ -3,11 +3,8 @@
 import json
 import os
 import shutil
-import sys
 import unittest
 from unittest.mock import MagicMock, patch
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from app.core.config import find_mod_spatialite_dll
 from app.core.security import hash_password, verify_password

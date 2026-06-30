@@ -1,17 +1,21 @@
 """Shared helpers for dialog UI construction."""
 
-from types import SimpleNamespace
+from dataclasses import dataclass
 from typing import Any
 
 from qgis.PyQt.QtWidgets import QLabel, QVBoxLayout, QWidget
 
 
-class _SimpleTabBar:
-    """Minimal tab-like facade for mixin compatibility."""
+@dataclass
+class _TabWidget:
+    """Lightweight tab state tracker for mixin compatibility.
 
-    def __init__(self) -> None:
-        self._current = 0
-        self._names = {0: 'Operations', 1: 'Report', 2: 'Settings'}
+    Stores the current tab index and provides a ``QTabWidget``-like
+    interface for mixins that need to know which tab is active.
+    """
+
+    _current: int = 0
+    _names: tuple[str, str, str] = ('Operations', 'Report', 'Settings')
 
     def setCurrentIndex(self, index: int) -> None:
         self._current = index
@@ -20,31 +24,14 @@ class _SimpleTabBar:
         return self._current
 
     def tabText(self, index: int) -> str:
-        return self._names.get(index, '')
+        return self._names[index] if 0 <= index < len(self._names) else ''
 
     def count(self) -> int:
         return len(self._names)
 
-    def currentWidget(self) -> SimpleNamespace:
-        idx = self.currentIndex()
-        return SimpleNamespace(
-            objectName=lambda: 'tab_ops' if idx == 0 else 'tab',
-        )
-
-    def tabBar(self) -> SimpleNamespace:
-        return SimpleNamespace(hide=lambda: None)
-
-    @staticmethod
-    def setDocumentMode(val: bool) -> None:
-        pass
-
-    @staticmethod
-    def setUsesScrollButtons(val: bool) -> None:
-        pass
-
-    @staticmethod
-    def setStyleSheet(_ss: str) -> None:
-        pass
+    @property
+    def currentWidget(self) -> str:
+        return 'tab_ops' if self._current == 0 else 'tab'
 
 
 def make_section_frame(max_width: int | None = None) -> QWidget:

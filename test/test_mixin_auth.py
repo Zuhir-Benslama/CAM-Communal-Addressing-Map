@@ -88,7 +88,10 @@ class TestAuthMixin(unittest.TestCase):
 
     def test_submit_add_usr_failure(self):
         sign_up = MagicMock(return_value=(False, ['error1', 'error2']))
-        with patch.object(self.mod, 'sign_up', sign_up), patch.object(self.mixin, '_show_error') as mock_err:
+        with (
+            patch.object(self.mod, 'sign_up', sign_up),
+            patch.object(self.mixin, '_show_error') as mock_err,
+        ):
             self.mixin.submit_add_usr()
             mock_err.assert_called_once_with('error1\nerror2')
 

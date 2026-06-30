@@ -20,6 +20,9 @@ class TimestampMixin:  # pylint: disable=too-few-public-methods
     )
 
 
+_ALLOWLIST_CACHE: dict[type, dict[str, str]] = {}
+
+
 def _allowlist_columns(model_class: type, **kwargs: Any) -> dict:
     """Filter kwargs to only include valid column names for the model.
 
@@ -27,21 +30,25 @@ def _allowlist_columns(model_class: type, **kwargs: Any) -> dict:
     dict keyed by Python attribute names,
     safe for use with ``setattr``.
     """
-    col_map: dict[str, str] = {}
-    for col in model_class.__table__.columns:  # type: ignore[attr-defined]
-        col_map[col.name] = col.name
+    col_map = _ALLOWLIST_CACHE.get(model_class)
+    if col_map is None:
+        col_map = {}
+        for col in model_class.__table__.columns:  # type: ignore[attr-defined]
+            col_map[col.name] = col.name
 
-    try:
-        mapper = model_class.__mapper__  # type: ignore[attr-defined]
-        for attr in mapper.attrs:
-            if hasattr(attr, 'columns'):
-                for col in attr.columns:
-                    col_map[col.name] = attr.key
+        try:
+            mapper = model_class.__mapper__  # type: ignore[attr-defined]
+            for attr in mapper.attrs:
+                if hasattr(attr, 'columns'):
+                    for col in attr.columns:
+                        col_map[col.name] = attr.key
+                        col_map[attr.key] = attr.key
+                else:
                     col_map[attr.key] = attr.key
-            else:
-                col_map[attr.key] = attr.key
-    except AttributeError:
-        pass
+        except AttributeError:
+            pass
+
+        _ALLOWLIST_CACHE[model_class] = col_map
 
     return {
         python_name: v

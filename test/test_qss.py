@@ -1,14 +1,10 @@
 """Tests for generated QSS theme stylesheets."""
 
-import os
 import re
-import sys
 
 import pytest
 
 from app.shared.constants import THEME_DARK
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from app.core.config import (
     DARK_QSS,

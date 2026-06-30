@@ -1,11 +1,7 @@
 """Tests for repository operations (counts, distributions, missing entities)."""
 
-import os
-import sys
 import unittest
 from unittest.mock import MagicMock, patch
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from app.orders.repository import (
     count_numberings,

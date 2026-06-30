@@ -7,8 +7,6 @@ from unittest.mock import MagicMock, patch
 
 from marshmallow import ValidationError
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-
 os.environ['RNA_JWT_SECRET'] = 'test-secret-key-for-testing-only'
 
 qgis = MagicMock()

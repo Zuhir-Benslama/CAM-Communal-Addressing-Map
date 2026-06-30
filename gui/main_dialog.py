@@ -53,7 +53,7 @@ from ..scripts.widget_texts import (
     get_string,
     widget_text,
 )
-from .dialog_helpers import _SimpleTabBar
+from .dialog_helpers import _TabWidget
 from .dialog_state import (
     apply_theme as state_apply_theme,
 )
@@ -78,6 +78,9 @@ from .ui_fillers import (
 )
 
 logger = logging.getLogger(__name__)
+
+# Dispatch table for _on_submit — maps action names to 0-argument handlers.
+_SUBMIT_DISPATCH: dict[str, Callable[[], None]] = {}
 
 
 def _run_init_steps(steps: list[tuple[str, Callable[..., Any]]]) -> None:
@@ -117,18 +120,24 @@ class MainDialog(
         self._current_theme = DEFAULT_THEME
         self._settings_visible = False
 
-        _run_init_steps([
-            ('_init_ui', self._init_ui),
-            ('_init_state', self._init_state),
-            ('init_theme_locale', lambda: init_theme_locale(self)),
-            ('populate_combos', lambda: populate_combos(self)),
-            ('fill_map_options', self.fill_map_options),
-            ('_connect_signals', self._connect_signals),
-            ('map canvas setup', self._setup_map_canvas),
-            ('apply_widget_texts', lambda: apply_widget_texts(self, self._tr_locale)),
-            ('translate_internal_combos', self._setup_i18n),
-            ('apply_theme', self.apply_theme),
-        ])
+        _run_init_steps(
+            [
+                ('_init_ui', self._init_ui),
+                ('_populate_dispatch', self._populate_dispatch),
+                ('_init_state', self._init_state),
+                ('init_theme_locale', lambda: init_theme_locale(self)),
+                ('populate_combos', lambda: populate_combos(self)),
+                ('fill_map_options', self.fill_map_options),
+                ('_connect_signals', self._connect_signals),
+                ('map canvas setup', self._setup_map_canvas),
+                (
+                    'apply_widget_texts',
+                    lambda: apply_widget_texts(self, self._tr_locale),
+                ),
+                ('translate_internal_combos', self._setup_i18n),
+                ('apply_theme', self.apply_theme),
+            ]
+        )
 
     # ------------------------------------------------------------------
     # UI Construction
@@ -155,11 +164,13 @@ class MainDialog(
         self._page_stack.setCurrentIndex(0)
 
         self.router = self._page_stack
-        self.menu = _SimpleTabBar()
+        self.menu = _TabWidget()
         self.form_stack = self._form_stack
+        self._validate_layer_maps()
 
-        # Public widget aliases for mixin protocol compatibility
-        # (protocols expect bare names; widgets use _combo_ / _field_ / _label_)
+        self._setup_widget_aliases()
+
+    def _setup_widget_aliases(self) -> None:
         self.map_options = self._combo_map_options
         self.username = self._field_username
         self.password = self._field_password
@@ -208,6 +219,32 @@ class MainDialog(
     # ------------------------------------------------------------------
     # Signal wiring
     # ------------------------------------------------------------------
+
+    def _populate_dispatch(self) -> None:
+        _SUBMIT_DISPATCH.update(
+            {
+                'login': lambda: self.login_user(),
+                'add_usr': lambda: self.submit_add_usr(),
+                'restore_db': lambda: self.restore_database(),
+                'zone': lambda: self.add_zone(),
+                'road': lambda: self.add_road(),
+                'org': lambda: self.add_organization(),
+                'city': lambda: self.add_city(),
+                'num': lambda: self.add_numbering(),
+                'pan': lambda: self.add_panel(),
+                'draw': lambda: self.start_drawing(),
+                'select': lambda: self.start_selecting(),
+                'edit': lambda: self.start_editing(),
+                'measure': lambda: self.activate_measure(),
+                'save_action': lambda: on_save_action(self),
+                'save_new_type': lambda: self._save_new_type(),
+                'list_roads': lambda: self.list_road_entries(),
+                'list_orgs': lambda: self.list_organizations(),
+                'list_subds': lambda: self.list_subdivisions(),
+                'list_nums': lambda: self.list_numberings(),
+                'list_panels': lambda: self.list_panel_signs(),
+            }
+        )
 
     def _connect_signals(self) -> None:
         # Login page
@@ -277,31 +314,11 @@ class MainDialog(
         self._btn_select_panel_ref.clicked.connect(self.select_panel_ref_handler)
 
     def _on_submit(self, page_name: str) -> None:
-        dispatch = {
-            'login': self.login_user,
-            'add_usr': self.submit_add_usr,
-            'restore_db': self.restore_database,
-            'zone': self.add_zone,
-            'road': self.add_road,
-            'org': self.add_organization,
-            'city': self.add_city,
-            'num': self.add_numbering,
-            'pan': self.add_panel,
-            'draw': self.start_drawing,
-            'select': self.start_selecting,
-            'edit': self.start_editing,
-            'measure': self.activate_measure,
-            'save_action': lambda: on_save_action(self),
-            'save_new_type': self._save_new_type,
-            'list_roads': self.list_road_entries,
-            'list_orgs': self.list_organizations,
-            'list_subds': self.list_subdivisions,
-            'list_nums': self.list_numberings,
-            'list_panels': self.list_panel_signs,
-        }
-        handler = dispatch.get(page_name)
-        if handler:
+        handler = _SUBMIT_DISPATCH.get(page_name)
+        if handler is not None:
             handler()
+        else:
+            logger.error('Unknown submit action: %s', page_name)
 
     def _on_map_option_changed(self, index: int) -> None:
         self._combo_map_options.setCurrentIndex(index)
@@ -386,22 +403,29 @@ class MainDialog(
         current_tab = self.menu.currentIndex()
         self.on_opt_selected(current_tab)
 
-    LAYER_KEY_MAP: ClassVar[list[str]] = [
-        'zone',
-        'road',
-        'org',
-        'city',
-        'num',
-        'pan',
-    ]
+    @staticmethod
+    def _default_layer_keys() -> list[str]:
+        return ['zone', 'road', 'org', 'city', 'num', 'pan']
+
+    def _layer_key_map(self) -> list[str]:
+        """Derive layer keys from form stack widget objectNames."""
+        stack = getattr(self, '_form_stack', None)
+        if stack is None:
+            return self._default_layer_keys()
+        keys = []
+        for i in range(stack.count()):
+            w = stack.widget(i)
+            name = w.objectName()
+            if name.endswith('Form'):
+                keys.append(name[:-4])
+            else:
+                keys.append(name)
+        return keys
 
     def _update_action_button_texts(self, index: int) -> None:
         loc = self._tr_locale
-        layer_key = (
-            self.LAYER_KEY_MAP[index]
-            if 0 <= index < len(self.LAYER_KEY_MAP)
-            else 'zone'
-        )
+        keys = self._layer_key_map()
+        layer_key = keys[index] if 0 <= index < len(keys) else 'zone'
         draw = widget_text(f'draw_{layer_key}', loc) or 'Draw'
         select = widget_text(f'select_{layer_key}', loc) or 'Select'
         edit = widget_text(f'edit_{layer_key}', loc) or 'Edit'
@@ -423,6 +447,19 @@ class MainDialog(
         'Numbering',
         'Panels',
     ]
+
+    def _validate_layer_maps(self) -> None:
+        """Ensure LAYER_INDEX_MAP matches the form stack page count."""
+        stack = getattr(self, '_form_stack', None)
+        if stack is None:
+            return
+        count = stack.count()
+        if len(self.LAYER_INDEX_MAP) != count:
+            msg = (
+                f'LAYER_INDEX_MAP has {len(self.LAYER_INDEX_MAP)} entries '
+                f'but form stack has {count} pages'
+            )
+            raise AssertionError(msg)
 
     def _current_layer_name(self) -> str:
         idx = self._combo_layer_selector.currentIndex()

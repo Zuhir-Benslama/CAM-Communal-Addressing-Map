@@ -1765,3 +1765,33 @@ Open QGIS, load the plugin, and verify:
 - [x] **Large hand-written files still over 400 lines** — `app/core/migration.py` (455, cohesive — kept as-is), `app/core/database.py` (427 → 118). Migration helpers extracted to `app/core/_schema_migrations.py` (~320 lines).
 - [x] **GUI test gaps** — `gui/pages/settings_page.py` and `gui/pages/add_user_page.py` have limited or no dedicated test coverage.
 - [x] **`os.path` vs `pathlib`** — ~50 usages across 14 source files migrated to `pathlib.Path` (constants, config, database, migration, mixins, gui pages, layer utils). One `os.path.dirname` remains in `app/users/service.py:173` because `tempfile.mkstemp(dir=...)` requires `str`, and `import os` is still needed for `os.fdopen`/`os.replace`/`os.unlink` in the same function.
+
+---
+
+## 71. Code Quality Issues — 2026-06-30
+
+Pylint: 9.10/10 | Ruff: 0 violations | Tests: 245 passed, 3 skipped
+
+### P1 — High
+
+- [ ] **DRY: Consolidate 6 near-identical form builders in `gui/pages/form_pages.py:17-253`** — `build_zone_form`, `build_road_form`, `build_org_form`, `build_city_form`, `build_num_form`, `build_pan_form` differ only by field definitions and widget names. Extract shared `_build_entity_form(name, fields: list[tuple])` pattern.
+- [ ] **`_WRITER_MODELS` manual dict in `app/orders/repository.py:26-33`** — Maps model name strings to classes manually. If a new spatial model is added, this dict is easy to miss. Use `__subclasses__()` or a class registry on `_BaseSpatialModel` to auto-discover models.
+- [ ] **`_on_submit()` dispatch uses untyped string keys** — `gui/main_dialog.py:279-304` routes ~22 actions via string-keyed dict. A typo in `_connect_signals` would silently call nothing. Replace with an `Enum` or `TypedDict` for type-safe dispatch.
+- [ ] **`COLUMN_MAP` duplicated** — `app/core/migration.py:25-100` and `scripts/migrate_db.py` both define `COLUMN_MAP`, `NEW_TABLES`, `GEOMETRY_TYPES`. Extract to a shared `app/core/_column_map.py`.
+
+### P2 — Medium
+
+- [ ] **`_SimpleTabBar` facade in `gui/dialog_helpers.py:9-47`** — Static methods silently no-op instead of delegating to the real `QTabWidget`. Remove facade and directly reference the real widget.
+- [ ] **`LAYER_KEY_MAP` and `LAYER_INDEX_MAP` in `gui/main_dialog.py:389-425`** — Two class-level lists that must stay in sync with `QStackedWidget` form pages. If a page is added/removed, these break silently. Derive keys from the form stack's actual widget count.
+- [ ] **Test files use `sys.path.insert(0, ...)`** — `test/test_db_ops.py:10` and others before imports. Use `python -m pytest` with proper `PYTHONPATH` or `conftest.py` instead.
+- [ ] **`_allowlist_columns` O(n²) mapping buildup per call** — `app/core/base.py:23-49` builds `col_map` on every invocation. Cache result per `model_class` (e.g. `_ALLOWLIST_CACHE: dict[type, dict[str, str]] = {}`).
+- [ ] **28 widget alias assignments in `gui/main_dialog.py:163-191`** — Move into a `_setup_widget_aliases()` helper, or define via Protocol in `_protocols.py`.
+- [ ] **`_on_submit` dispatcher is a single large dict** — `gui/main_dialog.py:279-304` 22-entry dispatch dict is clean but fragile. Consider using `functools.singledispatch` or a registry pattern for better extensibility.
+- [ ] **MainDialog inherits from 12 mixins** — `gui/main_dialog.py:93-105` complex diamond inheritance. While protocol typing helps, 10 mixin parents is inherently fragile.
+
+### P3 — Low
+
+- [ ] **`app/lifespan.py` is a 15-line trivial file** — Inline into `__init__.py` or `app/main.py`.
+- [ ] **`_BaseLookup` save() could use `dataclass`** — `app/orders/models/base.py` 8 lookup models with identical structure. Already consolidated via `_BaseLookup` but `dataclass` would reduce boilerplate further.
+- [ ] **Test mocks re-register `app.*` as MagicMock** — `test/helpers/_gui_mocks.py:308-328` could mask real import errors. Use selective patching instead.
+- [ ] **Test `_gui_mocks.py:17-34` mocks 27+ attributes manually** — Use `create_autospec()` where possible to catch QGIS API drift.

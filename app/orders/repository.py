@@ -23,14 +23,15 @@ from ..shared.constants import DEFAULT_PANEL_DIM, PANEL_TYPE_MAP, SRID
 
 logger = logging.getLogger(__name__)
 
-_WRITER_MODELS = {
-    'Road': Road,
-    'Organization': Organization,
-    'Subdivision': Subdivision,
-    'Zone': Zone,
-    'PanelSign': PanelSign,
-    'Numbering': Numbering,
-}
+_SPATIAL_MODELS = (Road, Organization, Subdivision, Zone, PanelSign, Numbering)
+
+
+def _model_class(name: str) -> type | None:
+    """Return the spatial model class matching *name*, or None."""
+    for cls in _SPATIAL_MODELS:
+        if cls.__name__ == name:
+            return cls
+    return None
 
 
 def _add_entity(instance: Any, session: Session | None = None) -> Any:
@@ -49,7 +50,7 @@ def export_model(model_name: str) -> None:
     """Export all records of *model_name* to a Shapefile."""
     session = get_session()
     try:
-        model_class = _WRITER_MODELS.get(model_name)
+        model_class = _model_class(model_name)
         if model_class is None:
             msg = f'Unknown model: {model_name}'
             raise ValueError(msg)

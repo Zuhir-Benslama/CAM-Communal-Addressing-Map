@@ -27,6 +27,7 @@ def _validate_safe_name(name: str) -> str:
         raise ValueError(msg)
     return name
 
+
 _SPATIAL_INDEXES = (
     ('zone', 'geometry'),
     ('subdivision', 'geometry'),
@@ -169,8 +170,10 @@ def _create_spatial_indexes(engine: Any) -> None:
                 )
                 continue
             try:
-                conn.execute(text('SELECT CreateSpatialIndex(:table, :col)'),
-                             {'table': table, 'col': column})
+                conn.execute(
+                    text('SELECT CreateSpatialIndex(:table, :col)'),
+                    {'table': table, 'col': column},
+                )
                 conn.commit()
                 logger.info('Created spatial index on %s.%s', table, column)
             except (OperationalError, SQLAlchemyError):

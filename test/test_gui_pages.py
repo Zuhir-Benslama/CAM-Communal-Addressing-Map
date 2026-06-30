@@ -207,7 +207,8 @@ class TestBuildSettingsPage(unittest.TestCase):
         dialog = self._make_mock_dialog()
         self.mod.build_settings_page(dialog)
         frames = [
-            w for w in dialog._held_widgets
+            w
+            for w in dialog._held_widgets
             if hasattr(w, 'objectName') and w.objectName() == 'sectionFrame'
         ]
         self.assertGreaterEqual(len(frames), 3)
