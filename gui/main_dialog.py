@@ -80,6 +80,7 @@ from .ui_fillers import (
 
 logger = logging.getLogger(__name__)
 
+
 class Action(Enum):
     """Typed action names for the _on_submit dispatch table."""
 
@@ -323,7 +324,9 @@ class MainDialog(
         self._btn_save_city.clicked.connect(lambda: self._on_submit(Action.CITY))
         self._btn_save_num.clicked.connect(lambda: self._on_submit(Action.NUM))
         self._btn_save_pan.clicked.connect(lambda: self._on_submit(Action.PAN))
-        self._btn_save_action.clicked.connect(lambda: self._on_submit(Action.SAVE_ACTION))
+        self._btn_save_action.clicked.connect(
+            lambda: self._on_submit(Action.SAVE_ACTION)
+        )
         self._btn_save_new_type.clicked.connect(
             lambda: self._on_submit(Action.SAVE_NEW_TYPE)
         )
@@ -331,9 +334,13 @@ class MainDialog(
         # List buttons
         self._btn_list_roads.clicked.connect(lambda: self._on_submit(Action.LIST_ROADS))
         self._btn_list_orgs.clicked.connect(lambda: self._on_submit(Action.LIST_ORGS))
-        self._btn_list_cities.clicked.connect(lambda: self._on_submit(Action.LIST_SUBDS))
+        self._btn_list_cities.clicked.connect(
+            lambda: self._on_submit(Action.LIST_SUBDS)
+        )
         self._btn_list_nums.clicked.connect(lambda: self._on_submit(Action.LIST_NUMS))
-        self._btn_list_panels.clicked.connect(lambda: self._on_submit(Action.LIST_PANELS))
+        self._btn_list_panels.clicked.connect(
+            lambda: self._on_submit(Action.LIST_PANELS)
+        )
 
         # Reference selection buttons
         self._btn_select_road_ref.clicked.connect(self.select_ref_handler)

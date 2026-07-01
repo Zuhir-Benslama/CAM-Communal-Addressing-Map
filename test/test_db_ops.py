@@ -46,7 +46,9 @@ class TestFindModSpatialiteDLL(unittest.TestCase):
     @patch('app.core.config.os.path.exists', return_value=False)
     @patch('app.core.config.os.name', 'posix')
     @patch('app.core.config.os.uname')
-    def test_linux_default(self, mock_uname: MagicMock, _mock_exists: MagicMock) -> None:
+    def test_linux_default(
+        self, mock_uname: MagicMock, _mock_exists: MagicMock
+    ) -> None:
         mock_uname.return_value.sysname = 'Linux'
         result = find_mod_spatialite_dll()
         self.assertEqual(result, 'mod_spatialite.so')
