@@ -10,6 +10,7 @@ from typing import Any
 import toml
 from marshmallow import ValidationError
 from qgis.core import QgsMessageLog, QgsProject
+from sqlalchemy.exc import SQLAlchemyError
 
 from ..core.database import get_session
 from ..core.security import hash_password, verify_password
@@ -85,7 +86,7 @@ def sign_up(
             )
             session.add(user)
             session.commit()
-        except Exception:  # pylint: disable=W0718
+        except SQLAlchemyError:
             session.rollback()
             raise
         finally:
@@ -120,7 +121,7 @@ def sign_in(
             session.commit()
             create_cookie(session_token, user.id)
             return True, user.username, None
-        except Exception as e:  # pylint: disable=W0718
+        except SQLAlchemyError as e:
             session.rollback()
             QgsMessageLog.logMessage(f'sign_in error: {e}', 'RNA', level=2)
             logger.error('An error occurred: %s', e)
@@ -175,7 +176,7 @@ def logout(iface: Any, dlg: Any) -> None:
                     with os.fdopen(fd, 'w', encoding='utf-8') as f:
                         toml.dump(cookie_data, f)
                     os.replace(tmp_path, filename)
-                except Exception:
+                except (OSError, PermissionError):
                     os.unlink(tmp_path)
                     raise
             finally:

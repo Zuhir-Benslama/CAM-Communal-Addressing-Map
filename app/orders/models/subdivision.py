@@ -1,7 +1,9 @@
 """Subdivision spatial model."""
 
+from __future__ import annotations
+
 import uuid
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar
 
 from geoalchemy2 import Geometry
 from sqlalchemy import Column, ForeignKey, String, Text
@@ -53,7 +55,7 @@ class Subdivision(_BaseSpatialModel):
     @classmethod
     def update(
         cls, session: Session, record_id: str, **kwargs: Any
-    ) -> Optional['Subdivision']:
+    ) -> Subdivision | None:
         """Update subdivision attributes and recalc parent zone."""
         from ...core.base import _allowlist_columns
 

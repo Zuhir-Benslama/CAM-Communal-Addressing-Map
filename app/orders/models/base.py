@@ -55,11 +55,19 @@ class _BaseSpatialModel(Base, TimestampMixin):
 
     Subclasses override :attr:`_list_columns` to control which columns
     appear in :meth:`list_all`.
+
+    Subclasses are automatically registered in :attr:`_registry` via
+    ``__init_subclass__``.  The abstract base itself is excluded.
     """
 
     __abstract__ = True
 
+    _registry: ClassVar[list[type['_BaseSpatialModel']]] = []
     _list_columns: ClassVar[list[str]] = []
+
+    def __init_subclass__(cls, **kwargs: object) -> None:
+        super().__init_subclass__(**kwargs)
+        cls._registry.append(cls)
 
     @property
     def username(self) -> str | None:

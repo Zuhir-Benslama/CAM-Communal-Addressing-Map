@@ -122,26 +122,25 @@ def fill_commune_of_wilaya(combobox: QComboBox, code_w: int) -> None:
     _setup_combo(combobox)
 
 
-def fill_road_reference(combobox: QComboBox) -> None:
-    """Populate a combobox with road reference types from config."""
+def _fill_reference(combobox: QComboBox, config_key: str) -> None:
+    """Populate a combobox with reference types from *config_key* in qgis_config."""
     loc = _locale()
-    data_list = qgis_config().get('refs') or []
+    data_list = qgis_config().get(config_key) or []
     combobox.clear()
     for layer_cfg in data_list:
         source = layer_cfg.get('label')
         combobox.addItem(_i18n_tr(source, loc), source)
     combobox.setCurrentIndex(0)
+
+
+def fill_road_reference(combobox: QComboBox) -> None:
+    """Populate a combobox with road reference types from config."""
+    _fill_reference(combobox, 'refs')
 
 
 def fill_panel_reference(combobox: QComboBox) -> None:
     """Populate a combobox with panel reference types from config."""
-    loc = _locale()
-    data_list = qgis_config().get('refs2') or []
-    combobox.clear()
-    for layer_cfg in data_list:
-        source = layer_cfg.get('label')
-        combobox.addItem(_i18n_tr(source, loc), source)
-    combobox.setCurrentIndex(0)
+    _fill_reference(combobox, 'refs2')
 
 
 def fill_org_category(combobox: QComboBox) -> None:
@@ -201,13 +200,13 @@ def fill_numbering_state(combobox: QComboBox) -> None:
     _fill_from_json(combobox, numbering_states(), _locale())
 
 
-_ACTIVITY_KEY = 'Activities'
+ACTIVITY_KEY = 'Activities'
 
 _MAIN_TYPE_MAP = {
     LAYER_ZONES: zone_types,
     LAYER_ROADS: road_types,
     LAYER_SUBDIVISIONS: subdivision_types,
-    _ACTIVITY_KEY: activity_types,
+    ACTIVITY_KEY: activity_types,
 }
 
 
@@ -222,7 +221,7 @@ def fill_feature_combo(combobox: QComboBox) -> None:
 
 def fill_subtype_combo(combobox: QComboBox, main_type: str) -> None:
     """Populate subtype combo with existing types from JSON for *main_type*."""
-    if main_type == _ACTIVITY_KEY:
+    if main_type == ACTIVITY_KEY:
         loc = _locale()
         combobox.clear()
         for display, value in activity_categories(loc):
@@ -246,10 +245,10 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
     if not type_name or not main_type:
         return False
 
-    if main_type == _ACTIVITY_KEY and not category:
+    if main_type == ACTIVITY_KEY and not category:
         return False
 
-    if main_type == _ACTIVITY_KEY:
+    if main_type == ACTIVITY_KEY:
         filepath = TEMPLATE_DATA_DIR / 'activity.json'
         entry = {'sector': category, 'type': type_name}
     else:

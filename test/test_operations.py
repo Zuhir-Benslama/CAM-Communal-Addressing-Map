@@ -14,38 +14,38 @@ from app.orders.repository import (
 
 
 class TestCountQueries(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.mock_session = MagicMock()
         self.mock_get_session = patch(
             'app.orders.repository.get_session', return_value=self.mock_session
         ).start()
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         patch.stopall()
 
-    def test_count_numberings_returns_count(self):
+    def test_count_numberings_returns_count(self) -> None:
         self.mock_session.execute.return_value.fetchone.return_value = (5,)
         result = count_numberings('test_state')
         self.assertEqual(result, 5)
         call_args = self.mock_session.execute.call_args
         self.assertIn('state', str(call_args))
 
-    def test_count_numberings_no_result_returns_zero(self):
+    def test_count_numberings_no_result_returns_zero(self) -> None:
         self.mock_session.execute.return_value.fetchone.return_value = None
         result = count_numberings('missing')
         self.assertEqual(result, 0)
 
-    def test_count_panels_returns_count(self):
+    def test_count_panels_returns_count(self) -> None:
         self.mock_session.execute.return_value.fetchone.return_value = (3,)
         result = count_panels('road', 'mounted')
         self.assertEqual(result, 3)
 
-    def test_count_panels_no_result_returns_zero(self):
+    def test_count_panels_no_result_returns_zero(self) -> None:
         self.mock_session.execute.return_value.fetchone.return_value = None
         result = count_panels('road', 'nonexistent')
         self.assertEqual(result, 0)
 
-    def test_query_missing_pan_returns_list(self):
+    def test_query_missing_pan_returns_list(self) -> None:
         self.mock_session.execute.return_value.fetchall.return_value = [
             ('Main St', 'road', 10),
             ('Second St', 'road', 5),
@@ -55,7 +55,7 @@ class TestCountQueries(unittest.TestCase):
         self.assertEqual(result[0]['label'], 'Main St')
         self.assertEqual(result[0]['total'], 10)
 
-    def test_query_missing_num_returns_list(self):
+    def test_query_missing_num_returns_list(self) -> None:
         self.mock_session.execute.return_value.fetchall.return_value = [
             ('A1', 3),
             ('B2', 7),
@@ -64,7 +64,7 @@ class TestCountQueries(unittest.TestCase):
         self.assertEqual(len(result), 2)
         self.assertEqual(result[1]['value'], 'B2')
 
-    def test_query_missing_rep_returns_list(self):
+    def test_query_missing_rep_returns_list(self) -> None:
         self.mock_session.execute.return_value.fetchall.return_value = [
             ('R1', 2),
         ]
@@ -76,16 +76,16 @@ class TestCountQueries(unittest.TestCase):
 class TestGetZoneDistribution(unittest.TestCase):
     """Tests for get_zone_distribution() in app/orders/repository."""
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.mock_session = MagicMock()
         self.mock_get_session = patch(
             'app.orders.repository.get_session', return_value=self.mock_session
         ).start()
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         patch.stopall()
 
-    def test_returns_type_count_pairs(self):
+    def test_returns_type_count_pairs(self) -> None:
         self.mock_session.execute.return_value.fetchall.return_value = [
             ('industrial', 8),
             ('residential', 12),
@@ -97,14 +97,14 @@ class TestGetZoneDistribution(unittest.TestCase):
         self.assertEqual(result[1], ('residential', 12))
         self.assertEqual(result[2], ('commercial', 5))
 
-    def test_passes_wilaya_number_to_query(self):
+    def test_passes_wilaya_number_to_query(self) -> None:
         self.mock_session.execute.return_value.fetchall.return_value = []
         get_zone_distribution(31)
         call_args = self.mock_session.execute.call_args
         self.assertIn('wilaya', str(call_args))
         self.assertIn('31', str(call_args))
 
-    def test_orders_by_total_descending(self):
+    def test_orders_by_total_descending(self) -> None:
         self.mock_session.execute.return_value.fetchall.return_value = [
             ('commercial', 20),
             ('residential', 10),
@@ -113,12 +113,12 @@ class TestGetZoneDistribution(unittest.TestCase):
         self.assertEqual(result[0][1], 20)
         self.assertEqual(result[1][1], 10)
 
-    def test_empty_result_returns_empty_list(self):
+    def test_empty_result_returns_empty_list(self) -> None:
         self.mock_session.execute.return_value.fetchall.return_value = []
         result = get_zone_distribution(99)
         self.assertEqual(result, [])
 
-    def test_closes_session(self):
+    def test_closes_session(self) -> None:
         self.mock_session.execute.return_value.fetchall.return_value = []
         get_zone_distribution(16)
         self.mock_session.close.assert_called_once()

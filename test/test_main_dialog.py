@@ -3,6 +3,7 @@
 import importlib
 import sys
 import unittest
+from typing import Any
 from unittest.mock import MagicMock, patch
 
 from .helpers import get_qapp, get_qt_widget_class, make_mock_iface, setup_gui_mocks
@@ -13,7 +14,7 @@ class TestMainDialogCore(unittest.TestCase):
     """Test MainDialog core methods defined in main_dialog.py."""
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         cls.app = get_qapp()
         setup_gui_mocks()
         cls.QComboBox = get_qt_widget_class('QComboBox')
@@ -22,7 +23,7 @@ class TestMainDialogCore(unittest.TestCase):
         cls._load_module('dialog_state')
 
     @classmethod
-    def _load_module(cls, name):
+    def _load_module(cls, name: str) -> None:
         spec = importlib.util.spec_from_file_location(
             f'plans_adressage.gui.{name}',
             f'gui/{name}.py',
@@ -32,7 +33,7 @@ class TestMainDialogCore(unittest.TestCase):
         spec.loader.exec_module(mod)
         setattr(cls, name.replace('.', '_'), mod)
 
-    def _make_raw(self):
+    def _make_raw(self) -> Any:
         """Create a raw MainDialog instance without calling __init__."""
         dialog = self.main_dialog.MainDialog.__new__(self.main_dialog.MainDialog)
         dialog.iface = make_mock_iface()
@@ -44,13 +45,13 @@ class TestMainDialogCore(unittest.TestCase):
         dialog._combo_action = self.QComboBox()
         return dialog
 
-    def _add_action_btns(self, dialog):
+    def _add_action_btns(self, dialog) -> None:
         dialog._btn_draw = MagicMock()
         dialog._btn_select = MagicMock()
         dialog._btn_edit = MagicMock()
         dialog._btn_measure = MagicMock()
 
-    def _make_locale_combo(self, code='fr', label='French'):
+    def _make_locale_combo(self, code='fr', label='French') -> Any:
         combo = self.QComboBox()
         combo.addItem(label, code)
         combo.setCurrentIndex(0)
@@ -60,14 +61,14 @@ class TestMainDialogCore(unittest.TestCase):
     # _current_layer_name
     # ------------------------------------------------------------------
 
-    def test_current_layer_name_returns_first_by_default(self):
+    def test_current_layer_name_returns_first_by_default(self) -> None:
         dialog = self._make_raw()
         dialog._combo_layer_selector = self.QComboBox()
         dialog._combo_layer_selector.addItem('Zones', 'Zones')
         dialog._combo_layer_selector.addItem('Roads', 'Roads')
         self.assertEqual(dialog._current_layer_name(), 'Zones')
 
-    def test_current_layer_name_returns_by_index(self):
+    def test_current_layer_name_returns_by_index(self) -> None:
         dialog = self._make_raw()
         dialog._combo_layer_selector = self.QComboBox()
         for name in [
@@ -85,7 +86,7 @@ class TestMainDialogCore(unittest.TestCase):
             dialog._combo_layer_selector.setCurrentIndex(idx)
             self.assertEqual(dialog._current_layer_name(), expected)
 
-    def test_current_layer_name_fallback_on_bad_index(self):
+    def test_current_layer_name_fallback_on_bad_index(self) -> None:
         dialog = self._make_raw()
         dialog._combo_layer_selector = self.QComboBox()
         dialog._combo_layer_selector.addItem('Zones', 'Zones')
@@ -96,7 +97,7 @@ class TestMainDialogCore(unittest.TestCase):
     # _tr
     # ------------------------------------------------------------------
 
-    def test_tr_delegates_to_get_string(self):
+    def test_tr_delegates_to_get_string(self) -> None:
         dialog = self._make_raw()
         result = dialog._tr('Hello')
         self.assertEqual(result, 'Hello')
@@ -105,7 +106,7 @@ class TestMainDialogCore(unittest.TestCase):
     # translate_internal_combos (dialog_state)
     # ------------------------------------------------------------------
 
-    def test_translate_internal_combos_sets_item_texts(self):
+    def test_translate_internal_combos_sets_item_texts(self) -> None:
         dialog = self._make_raw()
         dialog._tr_locale = 'en'
         dialog._combo_layer_selector = self.QComboBox()
@@ -152,7 +153,7 @@ class TestMainDialogCore(unittest.TestCase):
     # _init_state
     # ------------------------------------------------------------------
 
-    def test_init_state_resets_tool_state(self):
+    def test_init_state_resets_tool_state(self) -> None:
         dialog = self._make_raw()
         dialog._init_state()
         self.assertIsNone(dialog.sat_view)
@@ -172,7 +173,7 @@ class TestMainDialogCore(unittest.TestCase):
     # apply_theme
     # ------------------------------------------------------------------
 
-    def test_apply_theme_sets_stylesheet(self):
+    def test_apply_theme_sets_stylesheet(self) -> None:
         dialog = self._make_raw()
         dialog.setStyleSheet = MagicMock()
         dialog.apply_theme()
@@ -182,7 +183,7 @@ class TestMainDialogCore(unittest.TestCase):
     # _on_layer_changed
     # ------------------------------------------------------------------
 
-    def test_on_layer_changed_switches_form_stack_and_updates_map(self):
+    def test_on_layer_changed_switches_form_stack_and_updates_map(self) -> None:
         dialog = self._make_raw()
         dialog._form_stack = MagicMock()
         dialog.menu = MagicMock()
@@ -198,7 +199,7 @@ class TestMainDialogCore(unittest.TestCase):
         dialog._update_action_button_texts.assert_called_once_with(2)
         dialog.on_opt_selected.assert_called_once_with(0)
 
-    def test_update_action_button_texts_sets_text_for_each_layer(self):
+    def test_update_action_button_texts_sets_text_for_each_layer(self) -> None:
         dialog = self._make_raw()
         btn_draw = MagicMock()
         btn_select = MagicMock()
@@ -220,7 +221,7 @@ class TestMainDialogCore(unittest.TestCase):
     # init_theme_locale (dialog_state)
     # ------------------------------------------------------------------
 
-    def test_init_theme_locale_creates_combos(self):
+    def test_init_theme_locale_creates_combos(self) -> None:
         dialog = self._make_raw()
         dialog._combo_theme = self.QComboBox()
         dialog._combo_locale = self.QComboBox()
@@ -244,7 +245,7 @@ class TestMainDialogCore(unittest.TestCase):
     # on_theme_changed (dialog_state)
     # ------------------------------------------------------------------
 
-    def test_on_theme_changed_saves_and_applies(self):
+    def test_on_theme_changed_saves_and_applies(self) -> None:
         dialog = self._make_raw()
         dialog._combo_theme = self.QComboBox()
         dialog._combo_theme.addItem('dark', 'dark')
@@ -261,7 +262,7 @@ class TestMainDialogCore(unittest.TestCase):
     # on_locale_changed (dialog_state)
     # ------------------------------------------------------------------
 
-    def test_on_locale_changed_skips_empty_code(self):
+    def test_on_locale_changed_skips_empty_code(self) -> None:
         dialog = self._make_raw()
         dialog._combo_locale = self.QComboBox()
         dialog._combo_locale.addItem('', '')
@@ -293,7 +294,7 @@ class TestMainDialogCore(unittest.TestCase):
         _fill_act_cat,
         _fill_road_ref,
         _fill_panel_ref,
-    ):
+    ) -> None:
         dialog = self._make_raw()
         dialog._combo_locale = self._make_locale_combo()
         for attr in (
@@ -357,7 +358,7 @@ class TestMainDialogCore(unittest.TestCase):
         _fill_act_cat,
         _fill_road_ref,
         _fill_panel_ref,
-    ):
+    ) -> None:
         dialog = self._make_raw()
         dialog._combo_locale = self._make_locale_combo(code='ar', label='Arabic')
         dialog._combo_layer_selector = self.QComboBox()
@@ -427,7 +428,7 @@ class TestMainDialogCore(unittest.TestCase):
         _fill_act_cat,
         _fill_road_ref,
         _fill_panel_ref,
-    ):
+    ) -> None:
         dialog = self._make_raw()
         dialog._combo_locale = self._make_locale_combo()
         dialog._combo_layer_selector = self.QComboBox()
@@ -471,7 +472,7 @@ class TestMainDialogCore(unittest.TestCase):
             self.main_dialog.Qt.LayoutDirection.LeftToRight,
         )
 
-    def test_on_locale_changed_refills_combos(self):
+    def test_on_locale_changed_refills_combos(self) -> None:
         dialog = self._make_raw()
         dialog._combo_locale = self._make_locale_combo()
         for attr in (
@@ -535,7 +536,7 @@ class TestMainDialogCore(unittest.TestCase):
     # on_action_changed (dialog_state)
     # ------------------------------------------------------------------
 
-    def test_on_action_changed_triggers_chart(self):
+    def test_on_action_changed_triggers_chart(self) -> None:
         dialog = self._make_raw()
         dialog._combo_action = self.QComboBox()
         dialog._combo_action.addItem('Panels Map', 'panels_map')
@@ -546,7 +547,7 @@ class TestMainDialogCore(unittest.TestCase):
         self.dialog_state.on_action_changed(dialog, 0)
         dialog.panel_chart.assert_called_once()
 
-    def test_on_action_changed_numbering_map(self):
+    def test_on_action_changed_numbering_map(self) -> None:
         dialog = self._make_raw()
         dialog._combo_action = self.QComboBox()
         dialog._combo_action.addItem('Numbering Map', 'num_map')
@@ -561,7 +562,7 @@ class TestMainDialogCore(unittest.TestCase):
     # _save_new_type
     # ------------------------------------------------------------------
 
-    def test_save_new_type_with_activity(self):
+    def test_save_new_type_with_activity(self) -> None:
         dialog = self._make_raw()
         dialog.feature_combo = self.QComboBox()
         dialog.feature_combo.addItem('Activity', '_ACTIVITY')

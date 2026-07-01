@@ -23,6 +23,7 @@
 
 import logging
 from collections.abc import Callable
+from enum import Enum
 from typing import Any, ClassVar
 
 from qgis.PyQt.QtCore import Qt
@@ -70,7 +71,7 @@ from .pages.add_user_page import build_add_user_page
 from .pages.login_page import build_login_page
 from .pages.main_page import build_main_page
 from .ui_fillers import (
-    _ACTIVITY_KEY,
+    ACTIVITY_KEY,
     fill_subtype_combo,
 )
 from .ui_fillers import (
@@ -79,8 +80,33 @@ from .ui_fillers import (
 
 logger = logging.getLogger(__name__)
 
+class Action(Enum):
+    """Typed action names for the _on_submit dispatch table."""
+
+    LOGIN = 'login'
+    ADD_USR = 'add_usr'
+    RESTORE_DB = 'restore_db'
+    ZONE = 'zone'
+    ROAD = 'road'
+    ORG = 'org'
+    CITY = 'city'
+    NUM = 'num'
+    PAN = 'pan'
+    DRAW = 'draw'
+    SELECT = 'select'
+    MEASURE = 'measure'
+    SAVE_ACTION = 'save_action'
+    SAVE_NEW_TYPE = 'save_new_type'
+    LIST_ROADS = 'list_roads'
+    LIST_ORGS = 'list_orgs'
+    LIST_SUBDS = 'list_subds'
+    LIST_NUMS = 'list_nums'
+    LIST_PANELS = 'list_panels'
+    EDIT = 'edit'
+
+
 # Dispatch table for _on_submit — maps action names to 0-argument handlers.
-_SUBMIT_DISPATCH: dict[str, Callable[[], None]] = {}
+_SUBMIT_DISPATCH: dict[Action, Callable[[], None]] = {}
 
 
 def _run_init_steps(steps: list[tuple[str, Callable[..., Any]]]) -> None:
@@ -223,47 +249,47 @@ class MainDialog(
     def _populate_dispatch(self) -> None:
         _SUBMIT_DISPATCH.update(
             {
-                'login': lambda: self.login_user(),
-                'add_usr': lambda: self.submit_add_usr(),
-                'restore_db': lambda: self.restore_database(),
-                'zone': lambda: self.add_zone(),
-                'road': lambda: self.add_road(),
-                'org': lambda: self.add_organization(),
-                'city': lambda: self.add_city(),
-                'num': lambda: self.add_numbering(),
-                'pan': lambda: self.add_panel(),
-                'draw': lambda: self.start_drawing(),
-                'select': lambda: self.start_selecting(),
-                'edit': lambda: self.start_editing(),
-                'measure': lambda: self.activate_measure(),
-                'save_action': lambda: on_save_action(self),
-                'save_new_type': lambda: self._save_new_type(),
-                'list_roads': lambda: self.list_road_entries(),
-                'list_orgs': lambda: self.list_organizations(),
-                'list_subds': lambda: self.list_subdivisions(),
-                'list_nums': lambda: self.list_numberings(),
-                'list_panels': lambda: self.list_panel_signs(),
+                Action.LOGIN: lambda: self.login_user(),
+                Action.ADD_USR: lambda: self.submit_add_usr(),
+                Action.RESTORE_DB: lambda: self.restore_database(),
+                Action.ZONE: lambda: self.add_zone(),
+                Action.ROAD: lambda: self.add_road(),
+                Action.ORG: lambda: self.add_organization(),
+                Action.CITY: lambda: self.add_city(),
+                Action.NUM: lambda: self.add_numbering(),
+                Action.PAN: lambda: self.add_panel(),
+                Action.DRAW: lambda: self.start_drawing(),
+                Action.SELECT: lambda: self.start_selecting(),
+                Action.EDIT: lambda: self.start_editing(),
+                Action.MEASURE: lambda: self.activate_measure(),
+                Action.SAVE_ACTION: lambda: on_save_action(self),
+                Action.SAVE_NEW_TYPE: lambda: self._save_new_type(),
+                Action.LIST_ROADS: lambda: self.list_road_entries(),
+                Action.LIST_ORGS: lambda: self.list_organizations(),
+                Action.LIST_SUBDS: lambda: self.list_subdivisions(),
+                Action.LIST_NUMS: lambda: self.list_numberings(),
+                Action.LIST_PANELS: lambda: self.list_panel_signs(),
             }
         )
 
     def _connect_signals(self) -> None:
         # Login page
-        self._btn_sign_in.clicked.connect(lambda: self._on_submit('login'))
+        self._btn_sign_in.clicked.connect(lambda: self._on_submit(Action.LOGIN))
         self._btn_add_user.clicked.connect(lambda: self._switch_page('add_usr'))
-        self._btn_restore_db.clicked.connect(lambda: self._on_submit('restore_db'))
+        self._btn_restore_db.clicked.connect(lambda: self._on_submit(Action.RESTORE_DB))
 
         # Add User page
-        self._btn_save_add.clicked.connect(lambda: self._on_submit('add_usr'))
+        self._btn_save_add.clicked.connect(lambda: self._on_submit(Action.ADD_USR))
         self._btn_cancel_add.clicked.connect(lambda: self._switch_page('login'))
 
         # Main page toolbar
         self._btn_gear.clicked.connect(self._toggle_settings)
 
         # Main page actions
-        self._btn_draw.clicked.connect(lambda: self._on_submit('draw'))
-        self._btn_select.clicked.connect(lambda: self._on_submit('select'))
-        self._btn_edit.clicked.connect(lambda: self._on_submit('edit'))
-        self._btn_measure.clicked.connect(lambda: self._on_submit('measure'))
+        self._btn_draw.clicked.connect(lambda: self._on_submit(Action.DRAW))
+        self._btn_select.clicked.connect(lambda: self._on_submit(Action.SELECT))
+        self._btn_edit.clicked.connect(lambda: self._on_submit(Action.EDIT))
+        self._btn_measure.clicked.connect(lambda: self._on_submit(Action.MEASURE))
 
         # Combo signals
         self._combo_layer_selector.currentIndexChanged.connect(self._on_layer_changed)
@@ -291,29 +317,34 @@ class MainDialog(
         )
 
         # Save buttons
-        self._btn_save_zone.clicked.connect(lambda: self._on_submit('zone'))
-        self._btn_save_road.clicked.connect(lambda: self._on_submit('road'))
-        self._btn_save_org.clicked.connect(lambda: self._on_submit('org'))
-        self._btn_save_city.clicked.connect(lambda: self._on_submit('city'))
-        self._btn_save_num.clicked.connect(lambda: self._on_submit('num'))
-        self._btn_save_pan.clicked.connect(lambda: self._on_submit('pan'))
-        self._btn_save_action.clicked.connect(lambda: self._on_submit('save_action'))
+        self._btn_save_zone.clicked.connect(lambda: self._on_submit(Action.ZONE))
+        self._btn_save_road.clicked.connect(lambda: self._on_submit(Action.ROAD))
+        self._btn_save_org.clicked.connect(lambda: self._on_submit(Action.ORG))
+        self._btn_save_city.clicked.connect(lambda: self._on_submit(Action.CITY))
+        self._btn_save_num.clicked.connect(lambda: self._on_submit(Action.NUM))
+        self._btn_save_pan.clicked.connect(lambda: self._on_submit(Action.PAN))
+        self._btn_save_action.clicked.connect(lambda: self._on_submit(Action.SAVE_ACTION))
         self._btn_save_new_type.clicked.connect(
-            lambda: self._on_submit('save_new_type')
+            lambda: self._on_submit(Action.SAVE_NEW_TYPE)
         )
 
         # List buttons
-        self._btn_list_roads.clicked.connect(lambda: self._on_submit('list_roads'))
-        self._btn_list_orgs.clicked.connect(lambda: self._on_submit('list_orgs'))
-        self._btn_list_cities.clicked.connect(lambda: self._on_submit('list_subds'))
-        self._btn_list_nums.clicked.connect(lambda: self._on_submit('list_nums'))
-        self._btn_list_panels.clicked.connect(lambda: self._on_submit('list_panels'))
+        self._btn_list_roads.clicked.connect(lambda: self._on_submit(Action.LIST_ROADS))
+        self._btn_list_orgs.clicked.connect(lambda: self._on_submit(Action.LIST_ORGS))
+        self._btn_list_cities.clicked.connect(lambda: self._on_submit(Action.LIST_SUBDS))
+        self._btn_list_nums.clicked.connect(lambda: self._on_submit(Action.LIST_NUMS))
+        self._btn_list_panels.clicked.connect(lambda: self._on_submit(Action.LIST_PANELS))
 
         # Reference selection buttons
         self._btn_select_road_ref.clicked.connect(self.select_ref_handler)
         self._btn_select_panel_ref.clicked.connect(self.select_panel_ref_handler)
 
-    def _on_submit(self, page_name: str) -> None:
+    def _on_submit(self, page_name: Action | str) -> None:
+        if isinstance(page_name, str):
+            try:
+                page_name = Action(page_name)
+            except ValueError:
+                return
         handler = _SUBMIT_DISPATCH.get(page_name)
         if handler is not None:
             handler()
@@ -369,7 +400,7 @@ class MainDialog(
         main_type = self.feature_combo.itemData(index)
         if not isinstance(main_type, str):
             return
-        is_activity = main_type == _ACTIVITY_KEY
+        is_activity = main_type == ACTIVITY_KEY
         self._label_subtype.setVisible(is_activity)
         self._field_new_type.setVisible(is_activity)
         fill_subtype_combo(self.subtype_combo, main_type)
@@ -382,7 +413,7 @@ class MainDialog(
             type_name = self.subtype_combo.currentText().strip()
         category = (
             self.subtype_combo.currentData()
-            if self.subtype_combo and main_type == _ACTIVITY_KEY
+            if self.subtype_combo and main_type == ACTIVITY_KEY
             else ''
         )
         if save_new_type_to_json(main_type, type_name, category):

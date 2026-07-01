@@ -1,7 +1,6 @@
 """Database engine and session management for SQLite/SpatiaLite."""
 
 import logging
-import re
 import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager
@@ -25,16 +24,6 @@ from ._schema_migrations import (
 from .base import Base
 
 logger = logging.getLogger(__name__)
-
-_IDENTIFIER_RE = re.compile(r'^[a-zA-Z_][a-zA-Z0-9_]*$')
-
-
-def _validate_safe_name(name: str) -> str:
-    """Validate that *name* is a safe SQL identifier (no SQL injection risk)."""
-    if not _IDENTIFIER_RE.match(name):
-        msg = f'Unsafe SQL identifier: {name!r}'
-        raise ValueError(msg)
-    return name
 
 
 class ConnectionPool:

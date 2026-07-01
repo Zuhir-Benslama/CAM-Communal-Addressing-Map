@@ -1,7 +1,9 @@
 """Panel sign model."""
 
+from __future__ import annotations
+
 import uuid
-from typing import Any, Optional
+from typing import Any
 
 from geoalchemy2 import Geometry
 from sqlalchemy import Column, ForeignKey, String, Text
@@ -90,7 +92,7 @@ class PanelSign(_BaseSpatialModel):
     @classmethod
     def update(
         cls, session: Session, record_id: str, **kwargs: Any
-    ) -> Optional['PanelSign']:
+    ) -> PanelSign | None:
         """Update panel sign attributes."""
         from ...core.base import _allowlist_columns
 

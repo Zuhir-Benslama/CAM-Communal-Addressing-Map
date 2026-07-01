@@ -108,6 +108,38 @@ class AuthMixin:
         for cfg in maps:
             self.map_options.addItem(cfg.get('label'), cfg.get('url'))
 
+    def _add_satellite_layer(self: HasFullAuthContext, label: str, url: str) -> bool:
+        """Add or reuse a WMS satellite layer."""
+        osm_layer = QgsRasterLayer(url, label, 'wms')
+        if not osm_layer.isValid():
+            return False
+        existing_layers = QgsProject.instance().mapLayersByName(label)
+        if not existing_layers:
+            QgsProject.instance().addMapLayer(osm_layer)
+        self.sat_view = label
+        self.rast = None
+        return True
+
+    def _add_raster_file(self: HasFullAuthContext, label: str) -> bool:
+        """Prompt the user to select a TIFF file and add it as a raster layer."""
+        dialog = QFileDialog(self, self._tr('Select a file'))
+        dialog.setOption(QFileDialog.DontUseNativeDialog, True)
+        dialog.setNameFilter('TIFF Files (*.tif *.tiff)')
+        dialog.setFileMode(QFileDialog.ExistingFile)
+        dialog.setStyleSheet(get_dialog_qss(current_theme()))
+
+        if not dialog.exec():
+            return False
+        selected_file = dialog.selectedFiles()[0]
+        if not selected_file:
+            return False
+        logger.info('Selected file: %s', selected_file)
+        raster_layer = QgsRasterLayer(selected_file, label)
+        if not raster_layer.isValid():
+            return False
+        QgsProject.instance().addMapLayer(raster_layer)
+        return True
+
     def add_map_layer(self: HasFullAuthContext) -> bool:
         """Add the selected raster or WMS map layer to the project."""
         selected_label = self.map_options.currentText()
@@ -120,58 +152,23 @@ class AuthMixin:
             self.map_options.currentIndex(),
         )
 
-        if selected_value and selected_label:
-            if selected_label.startswith('Satellite View '):
-                osm_layer = QgsRasterLayer(
-                    selected_value,
-                    selected_label,
-                    'wms',
-                )
-                if osm_layer.isValid():
-                    existing_layers = QgsProject.instance().mapLayersByName(
-                        selected_label
-                    )
-                    if existing_layers:
-                        self.sat_view = selected_label
-                        self.rast = None
-                        return True
-                    QgsProject.instance().addMapLayer(osm_layer)
-                    self.sat_view = selected_label
-                    self.rast = None
-                    return True
-
-            if selected_label == 'Raster':
-                dialog = QFileDialog(self, self._tr('Select a file'))
-                dialog.setOption(QFileDialog.DontUseNativeDialog, True)
-                dialog.setNameFilter('TIFF Files (*.tif *.tiff)')
-                dialog.setFileMode(QFileDialog.ExistingFile)
-                self.sat_view = None
-                self.rast = selected_label
-                dialog.setStyleSheet(get_dialog_qss(current_theme()))
-
-                if dialog.exec():
-                    selected_file = dialog.selectedFiles()[0]
-                    logger.info('Selected file: %s', selected_file)
-                    if selected_file:
-                        raster_layer = QgsRasterLayer(
-                            selected_file,
-                            selected_label,
-                        )
-                        if raster_layer.isValid():
-                            QgsProject.instance().addMapLayer(raster_layer)
-                            return True
-                        return False
-                    return False
-                return False
-            QMessageBox.critical(
-                self, self._tr('Error'), self._tr('Failed to Map layer.')
-            )
-        else:
+        if not selected_value or not selected_label:
             QMessageBox.warning(
                 self,
                 self._tr('No Selection'),
                 self._tr('Please select a map layer option.'),
             )
+            return False
+
+        if selected_label.startswith('Satellite View '):
+            return self._add_satellite_layer(selected_label, selected_value)
+
+        if selected_label == 'Raster':
+            self.sat_view = None
+            self.rast = selected_label
+            return self._add_raster_file(selected_label)
+
+        QMessageBox.critical(self, self._tr('Error'), self._tr('Failed to Map layer.'))
         return False
 
     def private_route(self: HasNavWidgets, page_index: Any) -> None:

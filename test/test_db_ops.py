@@ -17,15 +17,15 @@ from app.users.repository import (
 TMPDIR = os.path.join(os.path.dirname(__file__), '__testtmp__')
 
 
-def setUpModule():
+def setUpModule() -> None:
     os.makedirs(TMPDIR, exist_ok=True)
 
 
-def tearDownModule():
+def tearDownModule() -> None:
     shutil.rmtree(TMPDIR, ignore_errors=True)
 
 
-def _clean_tmpdir():
+def _clean_tmpdir() -> None:
     if os.path.exists(TMPDIR):
         shutil.rmtree(TMPDIR)
     os.makedirs(TMPDIR, exist_ok=True)
@@ -33,12 +33,12 @@ def _clean_tmpdir():
 
 class TestFindModSpatialiteDLL(unittest.TestCase):
     @patch('app.core.config.os.name', 'nt')
-    def test_windows_default(self):
+    def test_windows_default(self) -> None:
         self.assertEqual(find_mod_spatialite_dll(), 'mod_spatialite.dll')
 
     @patch('app.core.config.os.name', 'posix')
     @patch('app.core.config.os.uname')
-    def test_macos_default(self, mock_uname):
+    def test_macos_default(self, mock_uname: MagicMock) -> None:
         mock_uname.return_value.sysname = 'Darwin'
         result = find_mod_spatialite_dll()
         self.assertEqual(result, 'mod_spatialite.dylib')
@@ -46,13 +46,13 @@ class TestFindModSpatialiteDLL(unittest.TestCase):
     @patch('app.core.config.os.path.exists', return_value=False)
     @patch('app.core.config.os.name', 'posix')
     @patch('app.core.config.os.uname')
-    def test_linux_default(self, mock_uname, _mock_exists):
+    def test_linux_default(self, mock_uname: MagicMock, _mock_exists: MagicMock) -> None:
         mock_uname.return_value.sysname = 'Linux'
         result = find_mod_spatialite_dll()
         self.assertEqual(result, 'mod_spatialite.so')
 
     @patch('app.core.config.os.getenv')
-    def test_env_var_override(self, mock_getenv):
+    def test_env_var_override(self, mock_getenv: MagicMock) -> None:
         mock_getenv.return_value = '/custom/path/mod_spatialite.so'
         result = find_mod_spatialite_dll()
         self.assertEqual(result, '/custom/path/mod_spatialite.so')
@@ -60,17 +60,17 @@ class TestFindModSpatialiteDLL(unittest.TestCase):
 
 
 class TestPasswordFunctions(unittest.TestCase):
-    def test_hash_and_verify_roundtrip(self):
+    def test_hash_and_verify_roundtrip(self) -> None:
         password = 'test_password_123'
         hashed = hash_password(password)
         self.assertTrue(verify_password(password, hashed))
 
-    def test_verify_wrong_password(self):
+    def test_verify_wrong_password(self) -> None:
         password = 'correct_password'
         hashed = hash_password(password)
         self.assertFalse(verify_password('wrong_password', hashed))
 
-    def test_hash_is_different_each_time(self):
+    def test_hash_is_different_each_time(self) -> None:
         password = 'same_password'
         hash1 = hash_password(password)
         hash2 = hash_password(password)
@@ -78,10 +78,10 @@ class TestPasswordFunctions(unittest.TestCase):
 
 
 class TestCreateCookie(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         _clean_tmpdir()
 
-    def test_create_cookie_writes_file(self):
+    def test_create_cookie_writes_file(self) -> None:
         cookie_path = os.path.join(TMPDIR, 'cookie.toml')
         with patch('app.users.repository.COOKIE_FILE', cookie_path):
             create_cookie('test_cookie', 'test_uid')
@@ -93,10 +93,10 @@ class TestCreateCookie(unittest.TestCase):
 
 
 class TestQgisConfig(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         _clean_tmpdir()
 
-    def test_qgis_config_reads_json(self):
+    def test_qgis_config_reads_json(self) -> None:
         expected = {'other_layers': [], 'mapper': {}}
         config_path = os.path.join(TMPDIR, 'qgis_config.json')
         with open(config_path, 'w', encoding='utf-8') as f:
@@ -107,10 +107,10 @@ class TestQgisConfig(unittest.TestCase):
 
 
 class TestGetAuthenticatedUser(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         _clean_tmpdir()
 
-    def test_no_cookie_file_returns_none(self):
+    def test_no_cookie_file_returns_none(self) -> None:
         cookie_path = os.path.join(TMPDIR, 'cookie.toml')
         with (
             patch('app.users.repository.COOKIE_FILE', cookie_path),
@@ -120,7 +120,7 @@ class TestGetAuthenticatedUser(unittest.TestCase):
             self.assertIsNone(result)
             mock_session.assert_not_called()
 
-    def test_user_not_found_returns_none(self):
+    def test_user_not_found_returns_none(self) -> None:
         cookie_path = os.path.join(TMPDIR, 'cookie.toml')
         with open(cookie_path, 'w', encoding='utf-8') as f:
             f.write('[Session]\ncookie = "ck"\nuid = "ui"\n')
@@ -136,7 +136,7 @@ class TestGetAuthenticatedUser(unittest.TestCase):
             result = _get_authenticated_user()
             self.assertIsNone(result)
 
-    def test_commune_not_found_returns_none(self):
+    def test_commune_not_found_returns_none(self) -> None:
         cookie_path = os.path.join(TMPDIR, 'cookie.toml')
         with open(cookie_path, 'w', encoding='utf-8') as f:
             f.write('[Session]\ncookie = "ck"\nuid = "ui"\n')

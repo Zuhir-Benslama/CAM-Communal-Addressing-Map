@@ -18,17 +18,16 @@ from ..orders.models import (
     Road,
     Subdivision,
     Zone,
+    _BaseSpatialModel,
 )
 from ..shared.constants import DEFAULT_PANEL_DIM, PANEL_TYPE_MAP, SRID
 
 logger = logging.getLogger(__name__)
 
-_SPATIAL_MODELS = (Road, Organization, Subdivision, Zone, PanelSign, Numbering)
-
 
 def _model_class(name: str) -> type | None:
     """Return the spatial model class matching *name*, or None."""
-    for cls in _SPATIAL_MODELS:
+    for cls in _BaseSpatialModel._registry:
         if cls.__name__ == name:
             return cls
     return None

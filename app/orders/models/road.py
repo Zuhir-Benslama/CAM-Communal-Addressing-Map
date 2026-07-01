@@ -1,7 +1,9 @@
 """Road spatial model."""
 
+from __future__ import annotations
+
 import uuid
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar
 
 from geoalchemy2 import Geometry
 from sqlalchemy import Column, ForeignKey, String, Text
@@ -59,9 +61,7 @@ class Road(_BaseSpatialModel):
     user = relationship('User', backref='roads', foreign_keys=[user_id])
 
     @classmethod
-    def update(
-        cls, session: Session, record_id: str, **kwargs: Any
-    ) -> Optional['Road']:
+    def update(cls, session: Session, record_id: str, **kwargs: Any) -> Road | None:
         """Update zone attributes and recalc has_child."""
         from ...core.base import _allowlist_columns
 

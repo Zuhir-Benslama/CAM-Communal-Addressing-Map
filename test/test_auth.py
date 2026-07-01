@@ -6,6 +6,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 from marshmallow import ValidationError
+from sqlalchemy.exc import SQLAlchemyError
 
 os.environ['RNA_JWT_SECRET'] = 'test-secret-key-for-testing-only'
 
@@ -27,23 +28,23 @@ from app.users.service import logout, sign_in, sign_up
 
 
 class TestJWTSecret(unittest.TestCase):
-    def test_jwt_secret_reads_from_env(self):
+    def test_jwt_secret_reads_from_env(self) -> None:
         self.assertEqual(get_jwt_secret(), 'test-secret-key-for-testing-only')
 
 
 class TestSignUp(unittest.TestCase):
-    def setUp(self):
-        self.mock_session = MagicMock()
+    def setUp(self) -> None:
+        self.mock_session: MagicMock = MagicMock()
         self.mock_session.query.return_value.filter_by.return_value.first.return_value = None
         self.mock_get_session = patch(
             'app.users.service.get_session', return_value=self.mock_session
         ).start()
         patch('app.users.schemas.get_session', return_value=self.mock_session).start()
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         patch.stopall()
 
-    def test_sign_up_creates_user(self):
+    def test_sign_up_creates_user(self) -> None:
         with (
             patch('app.users.service.hash_password', return_value='hashed_pw'),
             patch('app.users.service.COMMUNES_JSON', '/dev/null'),
@@ -72,8 +73,7 @@ class TestSignUp(unittest.TestCase):
         self.mock_session.commit.assert_called_once()
         self.mock_session.close.assert_called()
 
-    def test_sign_up_validation_error_returns_false(self):
-
+    def test_sign_up_validation_error_returns_false(self) -> None:
         with patch(
             'app.users.service.SignupSchema.load',
             side_effect=ValidationError({'username': ['Required']}),
@@ -94,8 +94,8 @@ class TestSignUp(unittest.TestCase):
 
 
 class TestSignIn(unittest.TestCase):
-    def setUp(self):
-        self.mock_session = MagicMock()
+    def setUp(self) -> None:
+        self.mock_session: MagicMock = MagicMock()
         self.mock_session.query.return_value.filter_by.return_value.first.return_value = None
         self.mock_get_session = patch(
             'app.users.service.get_session', return_value=self.mock_session
@@ -105,10 +105,10 @@ class TestSignIn(unittest.TestCase):
             'app.users.service.secrets.token_urlsafe', return_value='fake-session-token'
         ).start()
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         patch.stopall()
 
-    def _make_user_mock(self, **kwargs):
+    def _make_user_mock(self, **kwargs: object) -> MagicMock:
         user = MagicMock()
         user.password = kwargs.get('password', 'hashed_pw')
         user.username = kwargs.get('username', 'test')
@@ -116,7 +116,7 @@ class TestSignIn(unittest.TestCase):
         user.to_dict.return_value = kwargs.get('to_dict', {'id': 1, 'username': 'test'})
         return user
 
-    def test_sign_in_success_returns_true(self):
+    def test_sign_in_success_returns_true(self) -> None:
         mock_user = self._make_user_mock()
 
         session_query = self.mock_session.query.return_value
@@ -129,7 +129,7 @@ class TestSignIn(unittest.TestCase):
         self.assertEqual(username, 'test')
         self.assertIsNone(error)
 
-    def test_sign_in_username_does_not_exist(self):
+    def test_sign_in_username_does_not_exist(self) -> None:
         session_query = self.mock_session.query.return_value
         session_query.filter_by.return_value.first.return_value = None
 
@@ -138,7 +138,7 @@ class TestSignIn(unittest.TestCase):
         self.assertIsNone(username)
         self.assertIsNotNone(error)
 
-    def test_sign_in_wrong_password(self):
+    def test_sign_in_wrong_password(self) -> None:
         mock_user = self._make_user_mock()
 
         session_query = self.mock_session.query.return_value
@@ -150,8 +150,7 @@ class TestSignIn(unittest.TestCase):
         self.assertIsNone(username)
         self.assertIsNotNone(error)
 
-    def test_sign_in_validation_error(self):
-
+    def test_sign_in_validation_error(self) -> None:
         with patch(
             'app.users.service.AuthSchema.load',
             side_effect=ValidationError({'USERNAME': ['Required']}),
@@ -161,8 +160,8 @@ class TestSignIn(unittest.TestCase):
         self.assertIsNone(username)
         self.assertIsNotNone(error)
 
-    def test_sign_in_exception_triggers_rollback(self):
-        self.mock_session.query.side_effect = Exception('DB error')
+    def test_sign_in_exception_triggers_rollback(self) -> None:
+        self.mock_session.query.side_effect = SQLAlchemyError('DB error')
         ok, username, error = sign_in('test', 'password')
         self.assertFalse(ok)
         self.assertIsNone(username)
@@ -171,18 +170,18 @@ class TestSignIn(unittest.TestCase):
 
 
 class TestLogout(unittest.TestCase):
-    def setUp(self):
-        self.mock_session = MagicMock()
+    def setUp(self) -> None:
+        self.mock_session: MagicMock = MagicMock()
         self.mock_get_session = patch(
             'app.users.service.get_session', return_value=self.mock_session
         ).start()
         self.mock_toml = patch('app.users.service.toml').start()
-        self.mock_iface = MagicMock()
+        self.mock_iface: MagicMock = MagicMock()
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         patch.stopall()
 
-    def test_logout_clears_cookie_and_closes(self):
+    def test_logout_clears_cookie_and_closes(self) -> None:
         mock_user = MagicMock()
         mock_user.active = True
         self.mock_toml.load.return_value = {'Session': {'cookie': 'tok', 'uid': 1}}
@@ -197,13 +196,13 @@ class TestLogout(unittest.TestCase):
         self.mock_session.commit.assert_called_once()
         self.mock_session.close.assert_called_once()
 
-    def test_logout_no_cookie_skips_clear(self):
+    def test_logout_no_cookie_skips_clear(self) -> None:
         self.mock_toml.load.return_value = {'Session': {'cookie': None, 'uid': None}}
         with patch('builtins.open', MagicMock()):
             logout(self.mock_iface, None)
         self.mock_session.query.assert_not_called()
 
-    def test_logout_no_cookie_entry_skips_clear(self):
+    def test_logout_no_cookie_entry_skips_clear(self) -> None:
         self.mock_toml.load.return_value = {}
         with patch('builtins.open', MagicMock()):
             logout(self.mock_iface, None)

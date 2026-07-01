@@ -43,33 +43,31 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 
-def populate_road(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
+def _populate_name_type(query: Any, loc: str) -> dict:
+    """Return a dict with locale-aware name and type fields."""
     return {
         'name': locale_value(query, 'name', loc),
         'type': query.type,
     }
+
+
+def populate_road(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
+    return _populate_name_type(query, loc)
 
 
 def populate_facility(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
     return {
-        'name': locale_value(query, 'name', loc),
+        **_populate_name_type(query, loc),
         'category': query.category,
-        'type': query.type,
     }
 
 
 def populate_subdivision(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
-    return {
-        'name': locale_value(query, 'name', loc),
-        'type': query.type,
-    }
+    return _populate_name_type(query, loc)
 
 
 def populate_zone(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
-    return {
-        'name': locale_value(query, 'name', loc),
-        'type': query.type,
-    }
+    return _populate_name_type(query, loc)
 
 
 def populate_numbering(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:

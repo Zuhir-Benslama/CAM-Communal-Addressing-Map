@@ -69,10 +69,50 @@ class IdentifyTool(QgsMapToolIdentify):
         """Return the selected feature's PK and layer name."""
         return {'id': self.feature_id, 'layer_name': self.get_active_layer().name()}
 
+    def _build_form_menu(self, feature: Any, event: Any) -> QMenu:
+        """Build context menu for form mode (view/update or delete)."""
+        menu = QMenu()
+        form_action = menu.addAction(
+            get_string('View or Update Form', current_locale())
+        )
+        form_action.triggered.connect(
+            lambda f=feature: self.display_or_update_form_feature(f['id'])
+        )
+        remove_action = menu.addAction(get_string('Remove Item', current_locale()))
+        remove_action.triggered.connect(lambda f=feature: self.delete_feature(f['id']))
+        menu.exec_(event.globalPos())
+        return menu
+
+    def _build_ref_menu(self, feature: Any, event: Any) -> QMenu:
+        """Build context menu for ref mode (set as reference)."""
+        name_locale = self._locale_feature_attr(feature, 'name')
+        type_locale = self._locale_feature_attr(feature, 'type')
+        menu = QMenu()
+        ref_action = menu.addAction(
+            get_string('Set Item as Reference', current_locale())
+        )
+        ref_action.triggered.connect(
+            lambda f=feature, t=type_locale, n=name_locale: self.feature_as_ref(
+                f['id'], t, n
+            )
+        )
+        menu.exec_(event.globalPos())
+        return menu
+
+    def _handle_identify_results(self, results, event: Any) -> None:
+        """Iterate identify results and show the appropriate context menu."""
+        for result in results:
+            feature = result.mFeature
+            if self.mode == self.MODE_FORM:
+                self._build_form_menu(feature, event)
+            else:
+                self._build_ref_menu(feature, event)
+            break
+
     def canvasReleaseEvent(self, event: Any) -> None:
         """Handle map canvas click: identify feature under the cursor."""
         if event.button() == Qt.MouseButton.LeftButton:
-            _ = self.toMapCoordinates(event.pos())
+            self.toMapCoordinates(event.pos())
 
             results = self.identify(
                 event.x(),
@@ -82,44 +122,7 @@ class IdentifyTool(QgsMapToolIdentify):
             )
 
             if results:
-                for result in results:
-                    feature = result.mFeature
-
-                    menu = QMenu()
-                    if self.mode == self.MODE_FORM:
-                        form_action = menu.addAction(
-                            get_string('View or Update Form', current_locale())
-                        )
-                        form_action.triggered.connect(
-                            lambda f=feature: self.display_or_update_form_feature(
-                                f['id']
-                            )
-                        )
-
-                        remove_action = menu.addAction(
-                            get_string('Remove Item', current_locale())
-                        )
-                        remove_action.triggered.connect(
-                            lambda f=feature: self.delete_feature(f['id'])
-                        )
-                    else:
-                        name_locale = self._locale_feature_attr(feature, 'name')
-                        type_locale = self._locale_feature_attr(feature, 'type')
-                        ref_action = menu.addAction(
-                            get_string('Set Item as Reference', current_locale())
-                        )
-                        ref_action.triggered.connect(
-                            lambda f=feature, t=type_locale, n=name_locale: (
-                                self.feature_as_ref(
-                                    f['id'],
-                                    t,
-                                    n,
-                                )
-                            )
-                        )
-
-                    menu.exec_(event.globalPos())
-                    break
+                self._handle_identify_results(results, event)
             else:
                 logger.info('No features identified at this location.')
 

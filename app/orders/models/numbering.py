@@ -1,7 +1,9 @@
 """Numbering attribute model."""
 
+from __future__ import annotations
+
 import uuid
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar
 
 from geoalchemy2 import Geometry
 from sqlalchemy import Column, ForeignKey, String, Text
@@ -54,7 +56,7 @@ class Numbering(_BaseSpatialModel):
     @classmethod
     def update(
         cls, session: Session, record_id: str, **kwargs: Any
-    ) -> Optional['Numbering']:
+    ) -> Numbering | None:
         """Update numbering attributes."""
         from ...core.base import _allowlist_columns
 

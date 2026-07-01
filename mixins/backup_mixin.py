@@ -63,7 +63,7 @@ class BackupMixin:
             QMessageBox.critical(
                 self,
                 self._tr('Error'),
-                self._tr('Selected %s is not a valid SQLite database') % label,
+                f'Selected {label} is not a valid SQLite database',
             )
             return False
         return True
@@ -106,7 +106,7 @@ class BackupMixin:
             QMessageBox.critical(
                 self,
                 self._tr('Error'),
-                self._tr('Migration failed: %s') % str(e),
+                f'Migration failed: {e}',
             )
             return False
 
@@ -120,7 +120,7 @@ class BackupMixin:
             QMessageBox.critical(
                 self,
                 self._tr('Error'),
-                self._tr('Failed to replace current database: %s') % str(e),
+                f'Failed to replace current database: {e}',
             )
             return False
         finally:
@@ -147,7 +147,7 @@ class BackupMixin:
         QMessageBox.information(
             self,
             self._tr('Success'),
-            self._tr('Database restored from %s') % Path(source_path).name,
+            f'Database restored from {Path(source_path).name}',
         )
 
     def backup(self: HasTranslation) -> None:

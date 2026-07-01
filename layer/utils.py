@@ -135,76 +135,74 @@ def _wkt_from_commune_id(commune_id: int) -> str | None:
     return None
 
 
-def init_allowed_zone(iface: Any) -> None:
-    """Create the municipality boundary layer from the authenticated user."""
+def _resolve_commune_geometry() -> QgsGeometry:
+    """Resolve the commune geometry from the authenticated user's commune_code."""
     user_data = get_current_user()
     commune_code = user_data.get('commune_code') if user_data else None
 
-    wkt = None
-    if commune_code:
-        commune_id = _commune_id_from_code(commune_code)
-        if commune_id is not None:
-            wkt = _wkt_from_commune_id(commune_id)
-    else:
+    if not commune_code:
         logger.info('init_allowed_zone: no commune_code, skipping geometry lookup')
+        return QgsGeometry()
 
-    if wkt:
-        multipolygon = QgsGeometry.fromWkt(wkt)
-        logger.info(
-            'init_allowed_zone: geometry empty=%s isValid=%s',
-            multipolygon.isEmpty(),
-            multipolygon.isGeosValid(),
-        )
-    else:
-        multipolygon = QgsGeometry()
-        logger.info('init_allowed_zone: no wkt, empty geometry')
+    commune_id = _commune_id_from_code(commune_code)
+    if commune_id is None:
+        return QgsGeometry()
 
-    existing_layers = QgsProject.instance().mapLayersByName(LAYER_MUNICIPALITY)
+    wkt = _wkt_from_commune_id(commune_id)
+    if not wkt:
+        return QgsGeometry()
 
-    if existing_layers:
-        logger.info('init_allowed_zone: updating existing layer')
-        layer = existing_layers[0]
-        layer.startEditing()
-        provider = layer.dataProvider()
-        provider.deleteFeatures([f.id() for f in layer.getFeatures()])
-        if multipolygon and not multipolygon.isEmpty():
-            feature = QgsFeature()
-            feature.setGeometry(multipolygon)
-            provider.addFeature(feature)
-        layer.commitChanges()
-        layer.updateExtents()
-        layer.triggerRepaint()
-    else:
-        logger.info('init_allowed_zone: creating new layer')
-        layer = QgsVectorLayer(
-            f'MultiPolygon?crs={CRS}', LAYER_MUNICIPALITY, MEMORY_PROVIDER
-        )
-        layer.setMinimumScale(10000000)
-        logger.info('init_allowed_zone: layer valid=%s', layer.isValid())
-        provider = layer.dataProvider()
-        layer.updateFields()
-        if multipolygon and not multipolygon.isEmpty():
-            feature = QgsFeature()
-            feature.setGeometry(multipolygon)
-            provider.addFeature(feature)
-        layer.updateExtents()
-        symbol = QgsFillSymbol.createSimple(
-            {'color': 'transparent', 'outline_color': 'red', 'outline_width': '0.5'}
-        )
-        layer.renderer().setSymbol(symbol)
-        QgsProject.instance().addMapLayer(layer)
-        root = QgsProject.instance().layerTreeRoot()
-        logger.info(
-            'init_allowed_zone: tree children=%s', [c.name() for c in root.children()]
-        )
+    multipolygon = QgsGeometry.fromWkt(wkt)
+    logger.info(
+        'init_allowed_zone: geometry empty=%s isValid=%s',
+        multipolygon.isEmpty(),
+        multipolygon.isGeosValid(),
+    )
+    return multipolygon
 
+
+def _set_layer_geometry(layer: QgsVectorLayer, multipolygon: QgsGeometry) -> None:
+    """Replace *layer* features with a single *multipolygon* feature."""
+    layer.startEditing()
+    provider = layer.dataProvider()
+    provider.deleteFeatures([f.id() for f in layer.getFeatures()])
     if multipolygon and not multipolygon.isEmpty():
-        iface.mapCanvas().zoomToFeatureExtent(multipolygon.boundingBox())
-    iface.mapCanvas().refresh()
+        feature = QgsFeature()
+        feature.setGeometry(multipolygon)
+        provider.addFeature(feature)
+    layer.commitChanges()
+    layer.updateExtents()
+    layer.triggerRepaint()
 
-    create_other_layers(iface)
 
-    # Final diagnostics
+def _create_municipality_layer(multipolygon: QgsGeometry) -> QgsVectorLayer:
+    """Create a new municipality boundary layer and add it to the project."""
+    layer = QgsVectorLayer(
+        f'MultiPolygon?crs={CRS}', LAYER_MUNICIPALITY, MEMORY_PROVIDER
+    )
+    layer.setMinimumScale(10000000)
+    logger.info('init_allowed_zone: layer valid=%s', layer.isValid())
+    provider = layer.dataProvider()
+    layer.updateFields()
+    if multipolygon and not multipolygon.isEmpty():
+        feature = QgsFeature()
+        feature.setGeometry(multipolygon)
+        provider.addFeature(feature)
+    layer.updateExtents()
+    symbol = QgsFillSymbol.createSimple(
+        {'color': 'transparent', 'outline_color': 'red', 'outline_width': '0.5'}
+    )
+    layer.renderer().setSymbol(symbol)
+    QgsProject.instance().addMapLayer(layer)
+    root = QgsProject.instance().layerTreeRoot()
+    logger.info(
+        'init_allowed_zone: tree children=%s', [c.name() for c in root.children()]
+    )
+    return layer
+
+
+def _log_municipality_diagnostics() -> None:
+    """Log final diagnostics for the municipality layer."""
     root = QgsProject.instance().layerTreeRoot()
     final_names = [c.name() for c in root.children()]
     logger.info('init_allowed_zone: FINAL tree children=%s', final_names)
@@ -216,3 +214,23 @@ def init_allowed_zone(iface: Any) -> None:
             mun_layer.featureCount(),
             mun_layer.extent().toString(),
         )
+
+
+def init_allowed_zone(iface: Any) -> None:
+    """Create the municipality boundary layer from the authenticated user."""
+    multipolygon = _resolve_commune_geometry()
+
+    existing_layers = QgsProject.instance().mapLayersByName(LAYER_MUNICIPALITY)
+    if existing_layers:
+        logger.info('init_allowed_zone: updating existing layer')
+        _set_layer_geometry(existing_layers[0], multipolygon)
+    else:
+        logger.info('init_allowed_zone: creating new layer')
+        _create_municipality_layer(multipolygon)
+
+    if multipolygon and not multipolygon.isEmpty():
+        iface.mapCanvas().zoomToFeatureExtent(multipolygon.boundingBox())
+    iface.mapCanvas().refresh()
+
+    create_other_layers(iface)
+    _log_municipality_diagnostics()

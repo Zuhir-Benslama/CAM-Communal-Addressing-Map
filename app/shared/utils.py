@@ -2,6 +2,7 @@
 
 import logging
 import os
+import re
 import shutil
 import subprocess
 from collections.abc import Mapping
@@ -32,6 +33,17 @@ def ensure(value: T | None, message: str = '') -> T:
     if value is None:
         raise ValueError(message or 'Expected non-None value')
     return value
+
+
+_IDENTIFIER_RE = re.compile(r'^[a-zA-Z_][a-zA-Z0-9_]*$')
+
+
+def validate_safe_name(name: str) -> str:
+    """Validate that *name* is a safe SQL identifier (no SQL injection risk)."""
+    if not _IDENTIFIER_RE.match(name):
+        msg = f'Unsafe SQL identifier: {name!r}'
+        raise ValueError(msg)
+    return name
 
 
 def validate_text(value: str, max_length: int = 255) -> str:

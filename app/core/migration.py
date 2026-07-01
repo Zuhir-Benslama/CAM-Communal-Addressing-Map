@@ -5,21 +5,12 @@ and the plugin's Import Database feature.
 
 import logging
 import os
-import re
 import sqlite3
 from pathlib import Path
 
+from ..shared.utils import validate_safe_name
+
 logger = logging.getLogger(__name__)
-
-_IDENTIFIER_RE = re.compile(r'^[a-zA-Z_][a-zA-Z0-9_]*$')
-
-
-def _validate_safe_name(name: str) -> str:
-    """Validate that *name* is a safe SQL identifier (no SQL injection risk)."""
-    if not _IDENTIFIER_RE.match(name):
-        msg = f'Unsafe SQL identifier: {name!r}'
-        raise ValueError(msg)
-    return name
 
 
 COLUMN_MAP = {
@@ -260,8 +251,8 @@ def register_geometry(
     geom_config: tuple,
 ) -> None:
     """Register a geometry column using AddGeometryColumn."""
-    _validate_safe_name(table)
-    _validate_safe_name(col)
+    validate_safe_name(table)
+    validate_safe_name(col)
     geom_type, srid, dims = geom_config[:3]
     conn.execute(
         'SELECT AddGeometryColumn(?, ?, ?, ?, ?)',
@@ -271,15 +262,15 @@ def register_geometry(
 
 def create_spatial_index(conn: sqlite3.Connection, table: str, col: str) -> None:
     """Create a spatial R-tree index."""
-    _validate_safe_name(table)
-    _validate_safe_name(col)
+    validate_safe_name(table)
+    validate_safe_name(col)
     conn.execute('SELECT CreateSpatialIndex(?, ?)', (table, col))
 
 
 def _migrate_lookup_tables(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
     """Copy lookup table data from old to new database."""
     for name, ddl in LOOKUP_TABLE_DDL.items():
-        _validate_safe_name(name)
+        validate_safe_name(name)
         new.execute(ddl)
         old_cur = old.execute(f'SELECT * FROM "{name}"')
         old_rows = old_cur.fetchall()
@@ -312,7 +303,7 @@ def _migrate_data(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
         old_cols = list(col_map.keys())
         new_cols = list(col_map.values())
 
-        _validate_safe_name(table)
+        validate_safe_name(table)
         old_rows = old.execute(f'SELECT * FROM "{table}"').fetchall()
         if not old_rows:
             logger.info('  %s: 0 rows (skipped)', table)

@@ -7,7 +7,6 @@ All functions are private (``_``-prefixed) and called from
 
 import logging
 import os
-import re
 from pathlib import Path
 from typing import Any
 
@@ -15,17 +14,9 @@ from sqlalchemy import text
 from sqlalchemy.exc import OperationalError, SQLAlchemyError
 
 from ..shared.constants import AUTH_DATABASE_FILE, VIEWS_SQL
+from ..shared.utils import validate_safe_name
 
 logger = logging.getLogger(__name__)
-
-_IDENTIFIER_RE = re.compile(r'^[a-zA-Z_][a-zA-Z0-9_]*$')
-
-
-def _validate_safe_name(name: str) -> str:
-    if not _IDENTIFIER_RE.match(name):
-        msg = f'Unsafe SQL identifier: {name!r}'
-        raise ValueError(msg)
-    return name
 
 
 _SPATIAL_INDEXES = (
@@ -118,8 +109,8 @@ def _add_column_if_not_exists(
     conn: Any, table: str, column: str, col_type: str
 ) -> None:
     """Add a column to a SQLite table if it does not already exist."""
-    _validate_safe_name(table)
-    _validate_safe_name(column)
+    validate_safe_name(table)
+    validate_safe_name(column)
     result = conn.execute(
         text(
             "SELECT count(*) FROM sqlite_master WHERE type='table' AND name=:name",
@@ -160,8 +151,8 @@ def _create_spatial_indexes(engine: Any) -> None:
     """Create SpatiaLite spatial indexes for all geometry columns."""
     with engine.connect() as conn:
         for table, column in _SPATIAL_INDEXES:
-            _validate_safe_name(table)
-            _validate_safe_name(column)
+            validate_safe_name(table)
+            validate_safe_name(column)
             if _spatial_index_exists(conn, table, column):
                 logger.debug(
                     'Spatial index already exists on %s.%s',
@@ -270,23 +261,11 @@ def _migrate_timestamp_columns(engine: Any) -> None:
                 )
 
 
-def _migrate_users_from_auth(engine: Any) -> None:
-    """One-shot merge of ``auth.sqlite`` users into the main DB.
-
-    Prior to the DB merge the project used two files:
-    ``database.sqlite`` (spatial) and ``auth.sqlite`` (credentials).
-    If ``auth.sqlite`` still exists on disk, this function attaches it
-    and copies any users not yet present in the main DB, then renames
-    the old file to ``auth.sqlite.migrated`` so the migration runs at
-    most once.
-    """
-    auth_path = AUTH_DATABASE_FILE
-    if not Path(auth_path).exists():
-        return
-
-    try:
-        with engine.connect() as conn:
-            conn.execute(text(f"ATTACH DATABASE '{auth_path}' AS auth_db"))
+def _attach_and_merge_users(engine: Any, auth_path: str) -> None:
+    """Attach auth.sqlite, merge missing users, then detach."""
+    with engine.connect() as conn:
+        conn.execute(text(f"ATTACH DATABASE '{auth_path}' AS auth_db"))
+        try:
             result = conn.execute(
                 text(
                     'SELECT count(*) FROM auth_db.user '
@@ -313,7 +292,35 @@ def _migrate_users_from_auth(engine: Any) -> None:
                     'Merged %d user(s) from auth.sqlite into main DB',
                     missing,
                 )
+        finally:
             conn.execute(text('DETACH DATABASE auth_db'))
+
+
+def _rename_migrated_auth(auth_path: str) -> None:
+    """Rename auth.sqlite to auth.sqlite.migrated after successful merge."""
+    try:
+        os.rename(auth_path, auth_path + '.migrated')
+        logger.info('Renamed auth.sqlite \u2192 auth.sqlite.migrated')
+    except OSError:
+        logger.warning('Could not rename auth.sqlite after merge')
+
+
+def _migrate_users_from_auth(engine: Any) -> None:
+    """One-shot merge of ``auth.sqlite`` users into the main DB.
+
+    Prior to the DB merge the project used two files:
+    ``database.sqlite`` (spatial) and ``auth.sqlite`` (credentials).
+    If ``auth.sqlite`` still exists on disk, this function attaches it
+    and copies any users not yet present in the main DB, then renames
+    the old file to ``auth.sqlite.migrated`` so the migration runs at
+    most once.
+    """
+    auth_path = AUTH_DATABASE_FILE
+    if not Path(auth_path).exists():
+        return
+
+    try:
+        _attach_and_merge_users(engine, auth_path)
     except (SQLAlchemyError, OSError):
         logger.warning(
             'Failed to merge users from auth.sqlite',
@@ -321,8 +328,4 @@ def _migrate_users_from_auth(engine: Any) -> None:
         )
         return
 
-    try:
-        os.rename(auth_path, auth_path + '.migrated')
-        logger.info('Renamed auth.sqlite \u2192 auth.sqlite.migrated')
-    except OSError:
-        logger.warning('Could not rename auth.sqlite after merge')
+    _rename_migrated_auth(auth_path)

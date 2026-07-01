@@ -5,11 +5,12 @@ import sys
 import types
 import unittest
 from unittest.mock import MagicMock
+from typing import Any
 
 from .helpers import get_qapp, _qt_widgets_module, setup_gui_mocks
 
 
-def _ensure_package_hierarchy(qwidget_cls, qvboxlayout_cls):
+def _ensure_package_hierarchy(qwidget_cls: Any, qvboxlayout_cls: Any) -> None:
     if 'plans_adressage' not in sys.modules:
         sys.modules['plans_adressage'] = MagicMock()
     if 'plans_adressage.gui' not in sys.modules:
@@ -32,7 +33,7 @@ def _ensure_package_hierarchy(qwidget_cls, qvboxlayout_cls):
     sys.modules['plans_adressage.gui.dialog_helpers'] = _dialog_helpers
 
 
-def _load_page_module(module_path, package):
+def _load_page_module(module_path, package) -> types.ModuleType:
     spec = importlib.util.spec_from_file_location(
         f'{package}.{module_path.split("/")[-1].replace(".py", "")}',
         module_path,
@@ -49,7 +50,7 @@ class TestBuildAddUserPage(unittest.TestCase):
     """Test gui/pages/add_user_page.py — build_add_user_page."""
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         setup_gui_mocks()
         cls.qt = _qt_widgets_module()
         if cls.qt is None:
@@ -62,26 +63,26 @@ class TestBuildAddUserPage(unittest.TestCase):
             'plans_adressage.gui.pages',
         )
 
-    def _make_mock_dialog(self):
+    def _make_mock_dialog(self) -> Any:
         dialog = type('MockDialog', (), {})()
         dialog._page_stack = self.qt.QStackedWidget()
         dialog._main_stack = self.qt.QStackedWidget()
         dialog._held_widgets = []
         return dialog
 
-    def test_build_adds_page_to_stack(self):
+    def test_build_adds_page_to_stack(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_add_user_page(dialog)
         page = dialog._page_stack.widget(0)
         self.assertIsNotNone(page)
         self.assertEqual(page.objectName(), 'add_usr')
 
-    def test_build_appends_page_to_held_widgets(self):
+    def test_build_appends_page_to_held_widgets(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_add_user_page(dialog)
         self.assertGreater(len(dialog._held_widgets), 0)
 
-    def test_build_creates_text_fields(self):
+    def test_build_creates_text_fields(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_add_user_page(dialog)
         self.assertIsNotNone(dialog._field_fname)
@@ -92,7 +93,7 @@ class TestBuildAddUserPage(unittest.TestCase):
         self.assertIsNotNone(dialog._field_uname)
         self.assertIsNotNone(dialog._field_pwd)
 
-    def test_build_password_echo_mode(self):
+    def test_build_password_echo_mode(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_add_user_page(dialog)
         self.assertEqual(
@@ -100,14 +101,14 @@ class TestBuildAddUserPage(unittest.TestCase):
             self.qt.QLineEdit.EchoMode.Password,
         )
 
-    def test_build_creates_combos(self):
+    def test_build_creates_combos(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_add_user_page(dialog)
         self.assertIsNotNone(dialog.wilaya_list)
         self.assertEqual(dialog.wilaya_list.objectName(), 'wilaya_list')
         self.assertIsNotNone(dialog.commune_of_wilaya)
 
-    def test_build_creates_buttons(self):
+    def test_build_creates_buttons(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_add_user_page(dialog)
         self.assertIsNotNone(dialog._btn_cancel_add)
@@ -121,7 +122,7 @@ class TestBuildSettingsPage(unittest.TestCase):
     """Test gui/pages/settings_page.py — build_settings_page."""
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         setup_gui_mocks()
         cls.qt = _qt_widgets_module()
         if cls.qt is None:
@@ -134,68 +135,68 @@ class TestBuildSettingsPage(unittest.TestCase):
             'plans_adressage.gui.pages',
         )
 
-    def _make_mock_dialog(self):
+    def _make_mock_dialog(self) -> Any:
         dialog = type('MockDialog', (), {})()
         dialog._page_stack = self.qt.QStackedWidget()
         dialog._main_stack = self.qt.QStackedWidget()
         dialog._held_widgets = []
         return dialog
 
-    def test_build_adds_scroll_area_to_stack(self):
+    def test_build_adds_scroll_area_to_stack(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_settings_page(dialog)
         widget = dialog._main_stack.widget(0)
         self.assertIsNotNone(widget)
         self.assertEqual(widget.objectName(), 'settingsTab')
 
-    def test_build_appends_to_held_widgets(self):
+    def test_build_appends_to_held_widgets(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_settings_page(dialog)
         self.assertGreaterEqual(len(dialog._held_widgets), 3)
 
-    def test_build_creates_action_combo(self):
+    def test_build_creates_action_combo(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_settings_page(dialog)
         self.assertIsNotNone(dialog._combo_action)
         self.assertEqual(dialog._combo_action.objectName(), '_action_combo')
 
-    def test_build_creates_paper_combo_hidden(self):
+    def test_build_creates_paper_combo_hidden(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_settings_page(dialog)
         self.assertIsNotNone(dialog._combo_paper)
         self.assertFalse(dialog._combo_paper.isVisible())
 
-    def test_build_creates_save_action_button(self):
+    def test_build_creates_save_action_button(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_settings_page(dialog)
         self.assertIsNotNone(dialog._btn_save_action)
         self.assertEqual(dialog._btn_save_action.objectName(), 'print')
 
-    def test_build_creates_feature_combo(self):
+    def test_build_creates_feature_combo(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_settings_page(dialog)
         self.assertIsNotNone(dialog.feature_combo)
         self.assertEqual(dialog.feature_combo.objectName(), 'feature_combo')
 
-    def test_build_creates_subtype_combo_editable(self):
+    def test_build_creates_subtype_combo_editable(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_settings_page(dialog)
         self.assertIsNotNone(dialog.subtype_combo)
         self.assertTrue(dialog.subtype_combo.isEditable())
 
-    def test_build_creates_new_type_field(self):
+    def test_build_creates_new_type_field(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_settings_page(dialog)
         self.assertIsNotNone(dialog._field_new_type)
         self.assertEqual(dialog._field_new_type.objectName(), 'new_type')
 
-    def test_build_creates_save_new_type_button(self):
+    def test_build_creates_save_new_type_button(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_settings_page(dialog)
         self.assertIsNotNone(dialog._btn_save_new_type)
         self.assertEqual(dialog._btn_save_new_type.objectName(), 'add_type_btn')
 
-    def test_build_creates_theme_and_locale_combos(self):
+    def test_build_creates_theme_and_locale_combos(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_settings_page(dialog)
         self.assertIsNotNone(dialog._combo_theme)
@@ -203,7 +204,7 @@ class TestBuildSettingsPage(unittest.TestCase):
         self.assertIsNotNone(dialog._combo_locale)
         self.assertEqual(dialog._combo_locale.objectName(), '_locale_combo')
 
-    def test_build_creates_section_frames(self):
+    def test_build_creates_section_frames(self) -> None:
         dialog = self._make_mock_dialog()
         self.mod.build_settings_page(dialog)
         frames = [

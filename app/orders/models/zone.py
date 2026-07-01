@@ -1,7 +1,9 @@
 """Zone spatial model."""
 
+from __future__ import annotations
+
 import uuid
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar
 
 from geoalchemy2 import Geometry
 from sqlalchemy import Boolean, Column, ForeignKey, String, Text
@@ -50,9 +52,7 @@ class Zone(_BaseSpatialModel):
     user = relationship('User', backref='user_poly', foreign_keys=[user_id])
 
     @classmethod
-    def update(
-        cls, session: Session, record_id: str, **kwargs: Any
-    ) -> Optional['Zone']:
+    def update(cls, session: Session, record_id: str, **kwargs: Any) -> Zone | None:
         """Update zone attributes and recalc has_child."""
 
         instance = session.query(cls).filter_by(id=record_id).first()
