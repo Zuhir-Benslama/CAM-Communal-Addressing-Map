@@ -1795,22 +1795,22 @@ All items resolved via prior refactoring or this session:
 
 ### P1 — High
 
-- [ ] **`_validate_safe_name` + `_IDENTIFIER_RE` triplicated** — Identical regex + function repeated in `app/core/database.py:32`, `app/core/_schema_migrations.py:24`, `app/core/migration.py:17`. Extract to a shared utility (e.g. `app/core/base.py` or `app/shared/utils.py`).
-- [ ] **`init_allowed_zone()` at `layer/utils.py:138` — 81 lines** — Does too much: geometry lookup, layer create/update, zoom, diagnostics. Split into smaller focused functions.
-- [ ] **`canvasReleaseEvent()` at `gui/identify_tool.py:72` — 57 lines** — Handles 2 modes (FORM/REF), builds context menu inline, triggers different actions. Extract mode-specific handlers.
-- [ ] **`add_map_layer()` at `mixins/auth_mixin.py:111` — 65 lines** — Raster vs WMS branching, file dialog, multiple return paths. Simplify with extracted helpers.
-- [ ] **`_migrate_users_from_auth()` at `app/core/_schema_migrations.py:273` — 56 lines** — Two-phase attach/migrate/rename function. Split into discrete steps.
-- [ ] **Old-style `%` formatting in `mixins/backup_mixin.py`** — 4 occurrences (lines 66, 109, 123, 150) use `self._tr('...') % value` instead of f-strings. Inconsistent with the rest of the codebase.
-- [ ] **`except Exception` too broad in `app/users/service.py`** — Lines 88 and 123 catch `Exception` instead of specific types like `SQLAlchemyError` or `ValidationError`, masking real errors.
-- [x] **Test code largely untyped** — `test_main_dialog.py`, `test_auth.py`, `test_db_ops.py`, `test_gui_pages.py`, `test_operations.py` have no type hints on test methods, reducing mypy coverage.
+- [x] **`_validate_safe_name` + `_IDENTIFIER_RE` triplicated** — Extracted to `app/shared/utils.py:38`.
+- [x] **`init_allowed_zone()` at `layer/utils.py:138` — 81 lines** — Split into `_resolve_commune_geometry()`, `_set_layer_geometry()`, `_create_municipality_layer()`, `_log_municipality_diagnostics()`. Now 18 lines.
+- [x] **`canvasReleaseEvent()` at `gui/identify_tool.py:72` — 57 lines** — Extracted `_handle_identify_results()`, `_build_form_menu()`, `_build_ref_menu()`. Now 19 lines.
+- [x] **`add_map_layer()` at `mixins/auth_mixin.py:111` — 65 lines** — Extracted `_add_satellite_layer()`, `_add_raster_file()`. Now 30 lines.
+- [x] **`_migrate_users_from_auth()` at `app/core/_schema_migrations.py:273` — 56 lines** — Extracted `_attach_and_merge_users()`, `_rename_migrated_auth()`. Now 24 lines.
+- [x] **Old-style `%` formatting in `mixins/backup_mixin.py`** — 4 occurrences converted to f-strings.
+- [x] **`except Exception` too broad in `app/users/service.py`** — Narrowed to `SQLAlchemyError` / `(OSError, PermissionError)`.
+- [x] **Test code largely untyped** — All 81+ test methods annotated with `-> None` across 5 test files.
 
 ### P2 — Medium
 
-- [ ] **`fill_road_reference` / `fill_panel_reference` ~95% identical** — `gui/ui_fillers.py:125-144` differ only by which config key (`refs` vs `refs2`). Extract a parameterized `_fill_reference(config_key)` helper.
-- [ ] **`populate_*` functions nearly identical in `gui/popup_handlers.py:46-72`** — `populate_road`, `populate_facility`, `populate_subdivision`, `populate_zone` return different field subsets but share the same structure. Could use a shared factory or dispatch dict.
-- [ ] **`Optional[T]` used instead of `T | None`** — 6 model files in `app/orders/models/` (`organization.py:40`, `zone.py:55`, `road.py:64`, `subdivision.py:56`, `numbering.py:57`, `panel_sign.py:93`) use `Optional['ClassName']` import style. Project targets Python ≥3.10; `from __future__ import annotations` + `T | None` syntax is cleaner.
-- [ ] **`_ACTIVITY_KEY` naming** — `gui/ui_fillers.py:204`: module-level constant `_ACTIVITY_KEY = 'Activities'` uses _private prefix but is not UPPER_CASE like other module-level constants.
+- [x] **`fill_road_reference` / `fill_panel_reference` ~95% identical** — DRY'd via `_fill_reference(config_key)` helper.
+- [x] **`populate_*` functions nearly identical in `gui/popup_handlers.py:46-72`** — DRY'd via `_populate_name_type()` helper.
+- [x] **`Optional[T]` used instead of `T | None`** — All 6 model files converted to `T | None` syntax.
+- [x] **`_ACTIVITY_KEY` naming** — Renamed to `ACTIVITY_KEY` (uppercase module-level constant) in both `ui_fillers.py` and `main_dialog.py`.
 
 ### P3 — Low
 
-- [ ] **Minor: unused imports in `app/orders/models/panel_sign.py:10`** — `LAYER_FACILITIES`, `LAYER_ROADS`, `LAYER_SUBDIVISIONS` are imported but only used conditionally at lines 132-134.
+- [x] **Minor: unused imports in `app/orders/models/panel_sign.py:10`** — False positive: `LAYER_FACILITIES`, `LAYER_ROADS`, `LAYER_SUBDIVISIONS` are used at lines 134-136 for reference validation.
