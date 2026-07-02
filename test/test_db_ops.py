@@ -99,7 +99,7 @@ class TestQgisConfig(unittest.TestCase):
         _clean_tmpdir()
 
     def test_qgis_config_reads_json(self) -> None:
-        expected = {'other_layers': [], 'mapper': {}}
+        expected: dict[str, object] = {'other_layers': [], 'mapper': {}}
         config_path = os.path.join(TMPDIR, 'qgis_config.json')
         with open(config_path, 'w', encoding='utf-8') as f:
             json.dump(expected, f)

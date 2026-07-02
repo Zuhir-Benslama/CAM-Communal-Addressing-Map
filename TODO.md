@@ -1814,3 +1814,51 @@ All items resolved via prior refactoring or this session:
 ### P3 — Low
 
 - [x] **Minor: unused imports in `app/orders/models/panel_sign.py:10`** — False positive: `LAYER_FACILITIES`, `LAYER_ROADS`, `LAYER_SUBDIVISIONS` are used at lines 134-136 for reference validation.
+
+---
+
+## 73. Mypy Type Errors — 2026-07-02
+
+**Ruff: 0 violations | Tests: 245 passed, 3 skipped**
+**mypy: 151 errors in 8 files**
+
+### Source Code (P1 — real type safety issues)
+
+| File | Line | Error | Fix |
+|------|------|-------|-----|
+| `app/core/_schema_migrations.py` | 323 | `Path` passed to `_attach_and_merge_users()` which expects `str` | Wrap in `str()` |
+| `app/core/_schema_migrations.py` | 331 | `Path` passed to `_rename_migrated_auth()` which expects `str` | Wrap in `str()` |
+| `mixins/symbol_export_mixin.py` | 166 | Returns `Path` but return type is `str \| None` | Change return annotation to `Path \| None` or cast |
+| `mixins/auth_mixin.py` | 164 | `HasFullAuthContext` protocol missing `_add_satellite_layer` | Add method to protocol |
+| `mixins/auth_mixin.py` | 169 | `HasFullAuthContext` protocol missing `_add_raster_file` | Add method to protocol |
+| `mixins/layer_ops_mixin.py` | 178 | `Path` passed to `_load_tab_styles()` which expects `str` | Wrap in `str()` |
+| `mixins/layer_ops_mixin.py` | 189 | `Path` passed to `_load_tab_styles()` which expects `str` | Wrap in `str()` |
+| `app/orders/repository.py` | 61 | `type` has no attribute `__table__` (class vs instance confusion) | Fix annotation or call on instance |
+
+### Test Files (P3 — test infrastructure noise)
+
+| File | Errors | Pattern |
+|------|--------|---------|
+| `test/test_main_dialog.py` | ~80 | `cls.QComboBox`, `cls.dialog_state` accessed on class object, not instance. Add `ClassVar` annotations or use `self` in `setup_method`. |
+| `test/test_gui_pages.py` | ~30 | Same pattern: `cls.qt`, `cls.mod`, `cls.app` accessed on `type`. |
+| `test/test_db_ops.py` | 1 | Missing type annotation for `expected` variable. |
+
+### Priority Recommendations
+
+- **[P1]** Fix the 8 source-code type errors (trivial fixes: `str()` wrappers, protocol method additions, return type corrections)
+- **[P2]** Add `ClassVar` annotations to test class attributes to resolve ~110 of the 151 errors
+- **[P2]** Fix remaining test annotations (`test/test_db_ops.py:102`)
+
+### Status — ✅ All Fixed
+
+**mypy: 0 errors** (down from 151)
+
+| Change | Files |
+|--------|-------|
+| `str()` wrappers around `Path` args | `_schema_migrations.py:323,331`, `layer_ops_mixin.py:178,189` |
+| Return type `str\|None` → `Path\|None` | `symbol_export_mixin.py:166` |
+| Added `_add_satellite_layer`, `_add_raster_file` to protocol | `mixins/_protocols.py` (HasFullAuthContext) |
+| Return type `type\|None` → `type[_BaseSpatialModel]\|None` | `repository.py:28` |
+| `ClassVar[Any]` annotations for class attrs | `test_main_dialog.py` (5), `test_gui_pages.py` (6) |
+| Typed `expected` variable | `test_db_ops.py:102` |
+| `# type: ignore[attr-defined]` on `importlib.util` | `test_main_dialog.py:33,37`, `test_gui_pages.py:37,41` |

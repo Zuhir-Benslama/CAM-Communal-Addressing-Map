@@ -3,7 +3,7 @@
 import importlib
 import sys
 import unittest
-from typing import Any
+from typing import Any, ClassVar
 from unittest.mock import MagicMock, patch
 
 from .helpers import get_qapp, get_qt_widget_class, make_mock_iface, setup_gui_mocks
@@ -12,6 +12,12 @@ from .helpers import get_qapp, get_qt_widget_class, make_mock_iface, setup_gui_m
 @unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
 class TestMainDialogCore(unittest.TestCase):
     """Test MainDialog core methods defined in main_dialog.py."""
+
+    app: ClassVar[Any]
+    QComboBox: ClassVar[Any]
+    QLineEdit: ClassVar[Any]
+    main_dialog: ClassVar[Any]
+    dialog_state: ClassVar[Any]
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -24,11 +30,11 @@ class TestMainDialogCore(unittest.TestCase):
 
     @classmethod
     def _load_module(cls, name: str) -> None:
-        spec = importlib.util.spec_from_file_location(
+        spec = importlib.util.spec_from_file_location(  # type: ignore[attr-defined]
             f'plans_adressage.gui.{name}',
             f'gui/{name}.py',
         )
-        mod = importlib.util.module_from_spec(spec)
+        mod = importlib.util.module_from_spec(spec)  # type: ignore[attr-defined]
         sys.modules[f'plans_adressage.gui.{name}'] = mod
         spec.loader.exec_module(mod)
         setattr(cls, name.replace('.', '_'), mod)

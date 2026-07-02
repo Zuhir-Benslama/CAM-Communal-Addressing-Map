@@ -175,7 +175,7 @@ class LayerOpsMixin:
             f'ops:{selected_layer}' if tab_name == 'Operations' else selected_layer
         )
         if selected_key != last_tab:
-            self._load_tab_styles(data_list, DEFAULT_STYLE_DIR)
+            self._load_tab_styles(data_list, str(DEFAULT_STYLE_DIR))
             self._last_loaded_tab = selected_key
 
     def _handle_settings_tab(self: HasTabSwitchContext, root) -> None:
@@ -186,7 +186,7 @@ class LayerOpsMixin:
         self._hide_all_tab_layers(root)
         self._show_base_layers(root)
         data_list = qgis_config().get('other_layers')
-        self._load_tab_styles(data_list, CUSTOM_STYLE_DIR)
+        self._load_tab_styles(data_list, str(CUSTOM_STYLE_DIR))
         self._show_always_shown_layers(root)
 
     def _handle_default_tab(self: HasTabSwitchContext, root) -> None:

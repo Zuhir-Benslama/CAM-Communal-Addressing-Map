@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 
 from qgis.core import (
     QgsApplication,
@@ -125,7 +126,7 @@ class SymbolExportMixin:
             new_y = (total_height - legend_rect.height()) / 2
             legend.setPos(legend.scenePos().x(), new_y)
 
-    def symbols(self: HasSymbolPlanContext) -> str | None:
+    def symbols(self: HasSymbolPlanContext) -> Path | None:
         """Export a layout with map and legend to SVG."""
         if not (self.type_plan and self.type_to_hide):
             return None

@@ -320,7 +320,7 @@ def _migrate_users_from_auth(engine: Any) -> None:
         return
 
     try:
-        _attach_and_merge_users(engine, auth_path)
+        _attach_and_merge_users(engine, str(auth_path))
     except (SQLAlchemyError, OSError):
         logger.warning(
             'Failed to merge users from auth.sqlite',
@@ -328,4 +328,4 @@ def _migrate_users_from_auth(engine: Any) -> None:
         )
         return
 
-    _rename_migrated_auth(auth_path)
+    _rename_migrated_auth(str(auth_path))

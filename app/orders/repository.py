@@ -25,7 +25,7 @@ from ..shared.constants import DEFAULT_PANEL_DIM, PANEL_TYPE_MAP, SRID
 logger = logging.getLogger(__name__)
 
 
-def _model_class(name: str) -> type | None:
+def _model_class(name: str) -> type[_BaseSpatialModel] | None:
     """Return the spatial model class matching *name*, or None."""
     for cls in _BaseSpatialModel._registry:
         if cls.__name__ == name:

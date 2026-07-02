@@ -4,8 +4,8 @@ import importlib
 import sys
 import types
 import unittest
+from typing import Any, ClassVar
 from unittest.mock import MagicMock
-from typing import Any
 
 from .helpers import get_qapp, _qt_widgets_module, setup_gui_mocks
 
@@ -34,11 +34,11 @@ def _ensure_package_hierarchy(qwidget_cls: Any, qvboxlayout_cls: Any) -> None:
 
 
 def _load_page_module(module_path, package) -> types.ModuleType:
-    spec = importlib.util.spec_from_file_location(
+    spec = importlib.util.spec_from_file_location(  # type: ignore[attr-defined]
         f'{package}.{module_path.split("/")[-1].replace(".py", "")}',
         module_path,
     )
-    mod = importlib.util.module_from_spec(spec)
+    mod = importlib.util.module_from_spec(spec)  # type: ignore[attr-defined]
     mod.__package__ = package
     sys.modules[spec.name] = mod
     spec.loader.exec_module(mod)
@@ -48,6 +48,10 @@ def _load_page_module(module_path, package) -> types.ModuleType:
 @unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
 class TestBuildAddUserPage(unittest.TestCase):
     """Test gui/pages/add_user_page.py — build_add_user_page."""
+
+    qt: ClassVar[Any]
+    app: ClassVar[Any]
+    mod: ClassVar[Any]
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -120,6 +124,10 @@ class TestBuildAddUserPage(unittest.TestCase):
 @unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
 class TestBuildSettingsPage(unittest.TestCase):
     """Test gui/pages/settings_page.py — build_settings_page."""
+
+    qt: ClassVar[Any]
+    app: ClassVar[Any]
+    mod: ClassVar[Any]
 
     @classmethod
     def setUpClass(cls) -> None:

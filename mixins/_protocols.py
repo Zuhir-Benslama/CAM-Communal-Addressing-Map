@@ -409,6 +409,12 @@ class HasFullAuthContext(
     def add_map_layer(self) -> bool:
         """Add the selected raster or WMS map layer to the project."""
 
+    def _add_satellite_layer(self, label: str, url: str) -> bool:
+        """Add a satellite WMS layer to the project."""
+
+    def _add_raster_file(self, label: str) -> bool:
+        """Add a raster file to the project as a map layer."""
+
     def private_route(self, page_index: Any) -> None:
         """Navigate to a private (authenticated) page."""
 
