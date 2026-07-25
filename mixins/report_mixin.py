@@ -75,7 +75,7 @@ class ReportMixin:
                 capture_output=True,
                 text=True,
                 check=True,
-                **_SUBPROCESS_FLAGS,  # type: ignore[call-overload]
+                **_SUBPROCESS_FLAGS,
             )
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Information)

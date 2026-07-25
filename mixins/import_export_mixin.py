@@ -127,7 +127,7 @@ class ImportExportMixin:
                 capture_output=True,
                 text=True,
                 check=True,
-                **_SUBPROCESS_FLAGS,  # type: ignore[call-overload]
+                **_SUBPROCESS_FLAGS,
             )
             QMessageBox.information(
                 self,
