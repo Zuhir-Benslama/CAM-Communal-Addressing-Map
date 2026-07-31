@@ -189,6 +189,6 @@ class ImportExportMixin:
         else:
             QMessageBox.critical(
                 self,
-                'Error',
-                'Please select a paper size',
+                self._tr('Error'),
+                self._tr('Please select a paper size'),
             )

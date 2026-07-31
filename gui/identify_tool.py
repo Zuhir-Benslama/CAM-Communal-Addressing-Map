@@ -43,7 +43,6 @@ class IdentifyTool(QgsMapToolIdentify):
             self.feature_id = None
             self.feature_type = None
             self.feature_name = None
-            self.ref_name = None
 
     def set_active_layer(self, layer: Any) -> None:
         """Set the active layer to identify features on."""
@@ -61,13 +60,13 @@ class IdentifyTool(QgsMapToolIdentify):
         """Return the QGIS interface instance."""
         return self._iface
 
-    def set_ref_name(self, ref_name: Any) -> None:
-        """Set the reference name widget for ref mode."""
-        self.ref_name = ref_name
-
     def get_id(self) -> dict:
         """Return the selected feature's PK and layer name."""
-        return {'id': self.feature_id, 'layer_name': self.get_active_layer().name()}
+        layer = self.get_active_layer()
+        return {
+            'id': self.feature_id,
+            'layer_name': layer.name() if layer else '',
+        }
 
     def _build_form_menu(self, feature: Any, event: Any) -> QMenu:
         """Build context menu for form mode (view/update or delete)."""
@@ -112,8 +111,6 @@ class IdentifyTool(QgsMapToolIdentify):
     def canvasReleaseEvent(self, event: Any) -> None:
         """Handle map canvas click: identify feature under the cursor."""
         if event.button() == Qt.MouseButton.LeftButton:
-            self.toMapCoordinates(event.pos())
-
             results = self.identify(
                 event.x(),
                 event.y(),

@@ -51,15 +51,6 @@ class TestPopupDialog(unittest.TestCase):
     def test_current_form_data_initialized(self):
         self.assertIsInstance(self.dialog._current_form_data, dict)
 
-    def test_set_combo_value_stores_in_data(self):
-        self.dialog._set_combo_value('test_combo', 'val_b')
-        self.assertEqual(self.dialog._current_form_data.get('test_combo'), 'val_b')
-
-    def test_set_combo_value_overwrites_previous(self):
-        self.dialog._current_form_data = {'test_combo': 'old_val'}
-        self.dialog._set_combo_value('test_combo', 'new_val')
-        self.assertEqual(self.dialog._current_form_data.get('test_combo'), 'new_val')
-
     def test_populate_dispatch_has_all_layers(self):
         expected_layers = [
             'roads',

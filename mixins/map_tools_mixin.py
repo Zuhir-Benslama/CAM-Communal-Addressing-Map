@@ -10,14 +10,12 @@ from qgis.core import QgsProject
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import QMessageBox
 
-from ..constants import LAYER_PANELS
 from ..gui.identify_tool import IdentifyTool
 from ..gui.measure_tool import MeasureTool
 from ._protocols import (
     HasFullMapToolsContext,
     HasIface,
     HasMapToolsContext,
-    HasRefSelectContext,
     HasRefWidgets,
     HasSelectContext,
 )
@@ -133,20 +131,3 @@ class MapToolsMixin:
     def select_panel_ref_handler(self: HasRefWidgets) -> None:
         """Activate reference selection for the panel reference combo."""
         self._select_ref(self.panel_ref)
-
-    def ref_pan_selected(self: HasRefSelectContext) -> None:
-        """Handle panel reference selection event."""
-        if not self.ref_identify_tool:
-            return
-        ref_data = self.ref_identify_tool.get_id()
-        if not ref_data:
-            QMessageBox.critical(
-                self,
-                self._tr('Error'),
-                self._tr('Reference type not specified'),
-            )
-            return
-
-        layer = QgsProject.instance().mapLayersByName(LAYER_PANELS)
-        if layer:
-            self.iface.setActiveLayer(layer[0])

@@ -8,7 +8,6 @@ import logging
 from typing import Any
 
 from qgis.core import QgsProject
-from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import QMessageBox
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -51,7 +50,6 @@ class LayerEditMixin:
         _geometry_ready (str | None) — layer name of last drawn geometry
         ref_identify_tool (IdentifyTool | None) — ref selection tool
         measure_tool (MeasureTool | None) — measurement line tool
-        update_object (bool) — flag for edit-vs-insert mode
         num_val / repetition / road_name / road_decision / org_name
         / subd_name / nom_zone
         org_cat / org_type / type_road / subd_type / zone_type / num_state
@@ -116,8 +114,6 @@ class LayerEditMixin:
         """Add a new panel sign linked to a selected road, org, or
         subdivision."""
         if self._geometry_ready != LAYER_PANELS:
-            return
-        if self.update_object:
             return
         ref_data = self.ref_identify_tool.get_id()
         if ref_data is None:
@@ -214,11 +210,6 @@ class LayerEditMixin:
         except SQLAlchemyError as e:
             logger.exception('Failed to add road: %s', e)
             self._show_error('Cannot add road, it already exists')
-
-    def key_press_event(self, event: Any, action: str = 'add_numbering') -> None:
-        """Handle Enter key press to trigger the given action."""
-        if event.key() == Qt.Key.Key_Return:
-            getattr(self, action)()
 
     def show_confirm_dialog(
         self: HasTranslation,
@@ -334,8 +325,6 @@ class LayerEditMixin:
     ) -> None:
         """Add a new zone through the form."""
         if self._geometry_ready != LAYER_ZONES:
-            return
-        if self.update_object:
             return
         geometry_wkt, feature_id = self._get_geometry_and_id('zone')
         if not geometry_wkt or not feature_id:

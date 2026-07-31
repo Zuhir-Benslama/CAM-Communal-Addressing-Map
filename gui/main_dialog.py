@@ -30,6 +30,7 @@ from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import (
     QApplication,
     QDialog,
+    QMessageBox,
     QStackedWidget,
     QVBoxLayout,
 )
@@ -133,7 +134,20 @@ class MainDialog(
     ImportExportMixin,
     ReportMixin,
 ):
-    """Main dialog for the RNA QGIS plugin — Qt Widgets version."""
+    """Main dialog for the RNA QGIS plugin — Qt Widgets version.
+
+    UI logic is split across the following mixins:
+    - AuthMixin: login/sign-up/logout flows.
+    - ChartMixin: panel and numbering distribution charts.
+    - LayerOpsMixin: layer tabs, feature CRUD, geometry validation.
+    - LayerDrawMixin: drawing/editing sessions on map layers.
+    - LayerEditMixin: feature add/edit via forms.
+    - MapToolsMixin: measure/identify/select map tools.
+    - BackupMixin: SQLite/SpatiaLite backup and restore.
+    - ImportExportMixin: PNG map export / external export scripts.
+    - SymbolExportMixin: SVG/PNG layout exports (legend, scale bar...).
+    - ReportMixin: statistical reports and purchase orders.
+    """
 
     def __init__(self, iface, parent=None) -> None:
         super().__init__(parent)
@@ -313,9 +327,7 @@ class MainDialog(
         self._combo_locale.currentIndexChanged.connect(
             lambda i: on_locale_changed(self, i)
         )
-        self._combo_map_options.currentIndexChanged.connect(
-            lambda i: self._on_map_option_changed(i)
-        )
+        self._combo_map_options.currentIndexChanged.connect(self._on_map_option_changed)
 
         # Save buttons
         self._btn_save_zone.clicked.connect(lambda: self._on_submit(Action.ZONE))
@@ -359,7 +371,6 @@ class MainDialog(
             logger.error('Unknown submit action: %s', page_name)
 
     def _on_map_option_changed(self, index: int) -> None:
-        self._combo_map_options.setCurrentIndex(index)
         logger.info(
             'map_options changed: index=%d, text=%s, data=%s',
             index,
@@ -396,8 +407,6 @@ class MainDialog(
         self.popup_dialog: PopupDialog | None = None
         self.current_user: dict[str, Any] | None = None
         self._output_dir: str = '~/Documents'
-        self.update_object: dict[str, Any] = {}
-        self.update_only_form: dict[str, Any] = {}
 
     # ------------------------------------------------------------------
     # Feature / type management
@@ -430,6 +439,12 @@ class MainDialog(
             count = self.subtype_combo.count()
             if count > 0:
                 self.subtype_combo.setCurrentIndex(count - 1)
+        else:
+            QMessageBox.warning(
+                self,
+                self._tr('Error'),
+                self._tr('Failed to save the new type.'),
+            )
 
     # ------------------------------------------------------------------
     # Layer / form stack

@@ -16,7 +16,11 @@ from ..core.database import get_session
 from ..core.security import hash_password, verify_password
 from ..shared.constants import COMMUNES_JSON, COOKIE_FILE, DAIRA_JSON
 from ..users.models import User
-from ..users.repository import create_cookie
+from ..users.repository import (
+    create_cookie,
+    find_active_session_user,
+    load_session_cookie,
+)
 from ..users.schemas import AuthSchema, SignupSchema
 
 logger = logging.getLogger(__name__)
@@ -86,9 +90,9 @@ def sign_up(
             )
             session.add(user)
             session.commit()
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
             session.rollback()
-            raise
+            return False, [str(e)]
         finally:
             session.close()
         return True, None
@@ -121,7 +125,7 @@ def sign_in(
             session.commit()
             create_cookie(session_token, user.id)
             return True, user.username, None
-        except SQLAlchemyError as e:
+        except (SQLAlchemyError, OSError) as e:
             session.rollback()
             QgsMessageLog.logMessage(f'sign_in error: {e}', 'RNA', level=2)
             logger.error('An error occurred: %s', e)
@@ -147,40 +151,36 @@ def remove_all_layers(iface: Any) -> None:
 
 def logout(iface: Any, dlg: Any) -> None:
     """Clear session cookie, revoke API key, remove layers, and close dialog."""
-    filename = COOKIE_FILE
-
-    with open(filename, encoding='utf-8') as f:
-        cookie_data = toml.load(f)
-        cookie = cookie_data.get('Session', {}).get('cookie', None)
-        uid = cookie_data.get('Session', {}).get('uid', None)
-        if cookie and uid:
-            session = get_session()
-            try:
-                user = (
-                    session.query(User)
-                    .filter(
-                        User.id == uid,
-                        User.session_token == cookie,
-                        User.active.is_(True),
-                    )
-                    .first()
-                )
-                if user:
-                    user.session_token = None
-                session.commit()
-                cookie_data['Session']['cookie'] = None
-                cookie_data['Session']['uid'] = None
-
-                fd, tmp_path = tempfile.mkstemp(dir=os.path.dirname(filename) or '.')
-                try:
-                    with os.fdopen(fd, 'w', encoding='utf-8') as f:
-                        toml.dump(cookie_data, f)
-                    os.replace(tmp_path, filename)
-                except (OSError, PermissionError):
-                    os.unlink(tmp_path)
-                    raise
-            finally:
-                session.close()
+    cookie_data = load_session_cookie()
+    if not cookie_data:
         remove_all_layers(iface)
         if dlg:
             dlg.close()
+        return
+
+    session_data = cookie_data.get('Session')
+    cookie = session_data.get('cookie') if session_data else None
+    uid = session_data.get('uid') if session_data else None
+    if cookie and uid and session_data:
+        session = get_session()
+        try:
+            user = find_active_session_user(session, uid, cookie)
+            if user:
+                user.session_token = None
+            session.commit()
+            session_data['cookie'] = None
+            session_data['uid'] = None
+
+            fd, tmp_path = tempfile.mkstemp(dir=os.path.dirname(COOKIE_FILE) or '.')
+            try:
+                with os.fdopen(fd, 'w', encoding='utf-8') as f:
+                    toml.dump(cookie_data, f)
+                os.replace(tmp_path, COOKIE_FILE)
+            except (OSError, PermissionError):
+                os.unlink(tmp_path)
+                raise
+        finally:
+            session.close()
+    remove_all_layers(iface)
+    if dlg:
+        dlg.close()

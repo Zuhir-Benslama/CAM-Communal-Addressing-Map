@@ -168,11 +168,11 @@ def _update_entity(
     try:
         model_class.update(session, record_id=dialog.attribute, **fields)
         _notify_success(dialog, success_msg)
+        _finish_update(dialog)
     except (ValueError, SQLAlchemyError) as e:
         _notify_failure(dialog, error_msg, e)
     finally:
         session.close()
-    _finish_update(dialog)
 
 
 def update_road(dialog: 'PopupDialog') -> None:

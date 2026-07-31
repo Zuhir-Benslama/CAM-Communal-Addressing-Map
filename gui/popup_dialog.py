@@ -203,7 +203,7 @@ class PopupDialog(QDialog):
         self.attribute = str(attribute)
         self.iface = iface
 
-        self._current_form_data: dict = {}
+        self._current_form_data: dict[str, Any] = {}
         self.ref_identify_tool: IdentifyTool | None = None
         self._ref_layer: str = ''
         self._ref_id: str = ''
@@ -427,11 +427,3 @@ class PopupDialog(QDialog):
     # ------------------------------------------------------------------
     # Public API used by popup_handlers
     # ------------------------------------------------------------------
-
-    @property
-    def bridge(self) -> object:
-        return self
-
-    def _set_combo_value(self, combo_name: str, value: str) -> None:
-        """Set a combo by value (stored for populate handlers)."""
-        self._current_form_data[combo_name] = value

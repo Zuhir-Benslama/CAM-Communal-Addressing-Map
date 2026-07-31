@@ -43,7 +43,6 @@ class TestIdentifyTool(unittest.TestCase):
         self.assertIsNone(tool.feature_id)
         self.assertIsNone(tool.feature_type)
         self.assertIsNone(tool.feature_name)
-        self.assertIsNone(tool.ref_name)
 
     def test_form_mode_does_not_init_ref_attrs(self):
         self.assertIsNone(self.tool.dlg)
@@ -67,11 +66,6 @@ class TestIdentifyTool(unittest.TestCase):
         iface = MagicMock()
         self.tool._iface = iface
         self.assertEqual(self.tool.get_iface(), iface)
-
-    def test_set_ref_name(self):
-        ref = MagicMock()
-        self.tool.set_ref_name(ref)
-        self.assertEqual(self.tool.ref_name, ref)
 
     def test_get_id_returns_dict_with_layer_name(self):
         layer = MagicMock()

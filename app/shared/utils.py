@@ -3,12 +3,10 @@
 import logging
 import os
 import re
-import shutil
 import subprocess
 from collections.abc import Mapping
 from pathlib import Path
 from types import MappingProxyType
-from typing import TypeVar
 
 from qgis.PyQt.QtCore import QSettings
 from sqlalchemy import inspect
@@ -24,16 +22,6 @@ from ..shared.constants import (
 )
 
 logger = logging.getLogger(__name__)
-
-T = TypeVar('T')
-
-
-def ensure(value: T | None, message: str = '') -> T:
-    """Assert value is not None, returning it or raising ValueError."""
-    if value is None:
-        raise ValueError(message or 'Expected non-None value')
-    return value
-
 
 _IDENTIFIER_RE = re.compile(r'^[a-zA-Z_][a-zA-Z0-9_]*$')
 
@@ -80,7 +68,7 @@ def current_theme() -> Theme:
     settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
     value = settings.value(SETTINGS_KEY_THEME, THEME_DARK)
     theme = normalize_theme(value)
-    if theme is not value:
+    if value != theme:
         settings.setValue(SETTINGS_KEY_THEME, theme)
     return theme
 
@@ -98,8 +86,6 @@ def get_qgis_python() -> str | None:
             return python
     if os.name == 'nt':
         return 'python.exe'
-    if shutil.which('python3'):
-        return 'python3'
     return 'python3'
 
 

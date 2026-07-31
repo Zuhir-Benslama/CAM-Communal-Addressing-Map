@@ -1,14 +1,11 @@
 """Tests for authentication (JWT, sign-up, sign-in, logout)."""
 
-import os
 import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
 from marshmallow import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
-
-os.environ['RNA_JWT_SECRET'] = 'test-secret-key-for-testing-only'
 
 qgis = MagicMock()
 qgis.PyQt = MagicMock()
@@ -23,13 +20,7 @@ sys.modules['qgis.PyQt.QtCore'] = qgis.PyQt.QtCore
 sys.modules['qgis.PyQt.QtWidgets'] = qgis.PyQt.QtWidgets
 sys.modules['qgis.core'] = qgis.core
 
-from app.core.security import get_jwt_secret
 from app.users.service import logout, sign_in, sign_up
-
-
-class TestJWTSecret(unittest.TestCase):
-    def test_jwt_secret_reads_from_env(self) -> None:
-        self.assertEqual(get_jwt_secret(), 'test-secret-key-for-testing-only')
 
 
 class TestSignUp(unittest.TestCase):
@@ -175,7 +166,7 @@ class TestLogout(unittest.TestCase):
         self.mock_get_session = patch(
             'app.users.service.get_session', return_value=self.mock_session
         ).start()
-        self.mock_toml = patch('app.users.service.toml').start()
+        self.mock_toml = patch('app.users.repository.toml').start()
         self.mock_iface: MagicMock = MagicMock()
 
     def tearDown(self) -> None:

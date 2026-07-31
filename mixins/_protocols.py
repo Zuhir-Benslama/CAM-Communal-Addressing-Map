@@ -69,7 +69,6 @@ class HasFeatureState(Protocol):
     _last_feature_wkt: str | None
     _last_feature_id: str | None
     _geometry_ready: str | None
-    update_object: dict[str, Any]
 
 
 @runtime_checkable
@@ -321,14 +320,8 @@ class HasTabSwitchContext(
     def _hide_all_tab_layers(self, root: Any) -> None:
         """Rollback editable layers and hide all."""
 
-    def _show_base_layers(self, root: Any) -> None:
-        """Ensure base/context layers stay visible."""
-
     def _load_tab_styles(self, data_list: Any, style_dir: str) -> None:
         """Load named styles for each layer in the config list."""
-
-    def _show_always_shown_layers(self, root: Any) -> None:
-        """Ensure core layers are visible."""
 
     _last_loaded_tab: str | None
 
@@ -426,13 +419,3 @@ class HasFullAuthContext(
 
     def _show_error(self, text: str) -> None:
         """Show a critical error message dialog."""
-
-
-@runtime_checkable
-class HasRefSelectContext(
-    HasIface,
-    HasLayerTools,
-    HasTranslation,
-    Protocol,
-):
-    """Mixin host for reference selection operations."""

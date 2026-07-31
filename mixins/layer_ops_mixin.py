@@ -18,7 +18,6 @@ from ..app.core.database import get_session
 from ..app.orders import models as _models
 from ..app.users.repository import get_user_location, qgis_config
 from ..constants import (
-    CUSTOM_STYLE_DIR,
     DEFAULT_STYLE_DIR,
     LAYER_FACILITIES,
     LAYER_MUNICIPALITY,
@@ -31,7 +30,6 @@ from ..constants import (
 from ..gui.entity_list_dialog import EntityListDialog
 from ._protocols import (
     HasAuthIfaceContext,
-    HasAuthState,
     HasCurrentLayer,
     HasGeometryChangedContext,
     HasLayerOpsContext,
@@ -92,17 +90,6 @@ class LayerOpsMixin:
         if target_layer:
             self.iface.setActiveLayer(target_layer)
 
-    def _show_base_layers(self: HasAuthState, root) -> None:
-        """Ensure base/context layers stay visible."""
-        for name in [self.sat_view, self.rast, LAYER_MUNICIPALITY]:
-            if not name:
-                continue
-            layers = QgsProject.instance().mapLayersByName(name)
-            if layers:
-                node = root.findLayer(layers[0].id())
-                if node:
-                    node.setItemVisibilityChecked(True)
-
     def _hide_all_tab_layers(self, root) -> None:
         """Rollback editable layers and hide all."""
         for layer_node in root.children():
@@ -127,9 +114,7 @@ class LayerOpsMixin:
             result = tmpl_list[0].loadNamedStyle(str(filename))
             if isinstance(result, tuple):
                 success_val, _ = result
-                is_success = (
-                    isinstance(success_val, str) and len(success_val) == 0
-                ) or (isinstance(success_val, (int, bool)) and success_val == 0)
+                is_success = bool(success_val)
                 if not is_success:
                     logger.warning(
                         "Failed to load style for '%s' from %s",
@@ -142,15 +127,6 @@ class LayerOpsMixin:
                     layer_cfg.get('label'),
                     result,
                 )
-
-    def _show_always_shown_layers(self, root) -> None:
-        """Ensure core layers are visible."""
-        for i in [LAYER_SUBDIVISIONS, LAYER_FACILITIES, LAYER_ROADS]:
-            always_shown = QgsProject.instance().mapLayersByName(i)
-            if always_shown:
-                layer_to_show = root.findLayer(always_shown[0].id())
-                if layer_to_show:
-                    layer_to_show.setItemVisibilityChecked(True)
 
     def _current_ops_layer(self: HasCurrentLayer) -> str:
         """Return the currently selected layer name via the mixin protocol."""
@@ -178,17 +154,6 @@ class LayerOpsMixin:
             self._load_tab_styles(data_list, str(DEFAULT_STYLE_DIR))
             self._last_loaded_tab = selected_key
 
-    def _handle_settings_tab(self: HasTabSwitchContext, root) -> None:
-        self._hide_all_tab_layers(root)
-        self._show_base_layers(root)
-
-    def _handle_report_tab(self: HasTabSwitchContext, root) -> None:
-        self._hide_all_tab_layers(root)
-        self._show_base_layers(root)
-        data_list = qgis_config().get('other_layers')
-        self._load_tab_styles(data_list, str(CUSTOM_STYLE_DIR))
-        self._show_always_shown_layers(root)
-
     def _handle_default_tab(self: HasTabSwitchContext, root) -> None:
         self._hide_all_tab_layers(root)
         for layer_node in root.children():
@@ -211,25 +176,14 @@ class LayerOpsMixin:
         index,
     ) -> None:
         self.type_plan = ''
-        if hasattr(self.menu, '_rna_tab_src'):
-            tab_name = self.menu._rna_tab_src[index]
-        else:
-            tab_name = self.menu.tabText(index)
+        tab_name = self.menu.tabText(index)
         root = QgsProject.instance().layerTreeRoot()
         self._reset_tools()
 
-        selected_layer = ''
-        if tab_name == 'Operations':
-            selected_layer = self._current_ops_layer()
-        elif tab_name not in ('Settings', 'Report'):
-            selected_layer = tab_name
+        selected_layer = self._current_ops_layer()
 
         if selected_layer:
             self._handle_ops_tab(root, tab_name, selected_layer)
-        elif tab_name == 'Settings':
-            self._handle_settings_tab(root)
-        elif tab_name == 'Report':
-            self._handle_report_tab(root)
         else:
             self._handle_default_tab(root)
 
@@ -275,7 +229,11 @@ class LayerOpsMixin:
             2 = Polygon intersects zone
             3 = LineString intersects zone
         """
-        uloc = wkt.loads(get_user_location())
+        user_location = get_user_location()
+        if user_location is None:
+            logger.warning('No user location available; skipping zone check')
+            return 1
+        uloc = wkt.loads(user_location)
         current_obj = wkt.loads(geometry_wkt)
 
         if isinstance(current_obj, Point) and current_obj.within(uloc):
@@ -316,10 +274,7 @@ class LayerOpsMixin:
                     self._geometry_ready = layer.name()
 
             current_index = self.menu.currentIndex()
-            if hasattr(self.menu, '_rna_tab_src'):
-                tab_text = self.menu._rna_tab_src[current_index]
-            else:
-                tab_text = self.menu.tabText(current_index)
+            tab_text = self.menu.tabText(current_index)
             selected_ops = self._current_ops_layer()
             if LAYER_NUMBERING in (tab_text, selected_ops):
                 self.num_val.setFocus()
@@ -359,6 +314,6 @@ class LayerOpsMixin:
                             )
                         except SQLAlchemyError as e:
                             logger.exception('Failed to save feature: %s', e)
-                            QMessageBox.critical(self, self._tr('Erreur'), str(e))
+                            QMessageBox.critical(self, self._tr('Error'), str(e))
                         finally:
                             session.close()

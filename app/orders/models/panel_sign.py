@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session, relationship
 
 from ...shared.constants import LAYER_FACILITIES, LAYER_ROADS, LAYER_SUBDIVISIONS, SRID
 from ...shared.utils import current_locale, locale_value
-from .base import _BaseSpatialModel, _get_current_user
+from .base import _BaseSpatialModel
 
 
 class PanelSign(_BaseSpatialModel):
@@ -89,23 +89,6 @@ class PanelSign(_BaseSpatialModel):
             )
         return None
 
-    @classmethod
-    def update(
-        cls, session: Session, record_id: str, **kwargs: Any
-    ) -> PanelSign | None:
-        """Update panel sign attributes."""
-        from ...core.base import _allowlist_columns
-
-        instance = session.query(cls).filter_by(id=record_id).first()
-        user_data = _get_current_user()
-        if not user_data or not instance:
-            raise ValueError('PanelSign not found or no authenticated user')
-        for key, value in _allowlist_columns(cls, **kwargs).items():
-            setattr(instance, key, value)
-        instance.user_id = user_data.get('id')
-        session.commit()
-        return instance
-
     @staticmethod
     def _validate_reference(
         session: Session, model_class: Any, ref_id: str | None, type_label: str
@@ -120,16 +103,11 @@ class PanelSign(_BaseSpatialModel):
         return type_label
 
     def save(self, session: Session) -> None:
-        """Validate referenced entities and persist panel sign."""
+        """Validate referenced entities, then persist panel sign."""
         from .organization import Organization
         from .road import Road
         from .subdivision import Subdivision
 
-        user_data = _get_current_user()
-        if not user_data:
-            raise ValueError('No user found')
-
-        self.user_id = user_data.get('id')
         refs = [
             (self.road_id, Road, LAYER_ROADS),
             (self.organization_id, Organization, LAYER_FACILITIES),
@@ -139,5 +117,4 @@ class PanelSign(_BaseSpatialModel):
             found = self._validate_reference(session, model_class, ref_id, type_label)
             if found:
                 self.type = found
-        session.add(self)
-        session.commit()
+        super().save(session)

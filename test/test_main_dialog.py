@@ -172,8 +172,6 @@ class TestMainDialogCore(unittest.TestCase):
         self.assertIsNone(dialog.ref_identify_tool)
         self.assertIsNone(dialog.popup_dialog)
         self.assertIsNone(dialog.current_user)
-        self.assertEqual(dialog.update_object, {})
-        self.assertEqual(dialog.update_only_form, {})
 
     # ------------------------------------------------------------------
     # apply_theme

@@ -86,8 +86,6 @@ class IntegrationFlowTest(unittest.TestCase):
         host.rast = None
         host.rest = None
         host.current_user = None
-        host.update_object = {}
-        host.update_only_form = {}
 
         # Protocol methods
         host._reconnect_context_menu = MagicMock()

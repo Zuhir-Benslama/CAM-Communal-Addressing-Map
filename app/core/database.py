@@ -2,8 +2,6 @@
 
 import logging
 import sqlite3
-from collections.abc import Iterator
-from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
@@ -96,15 +94,6 @@ class ConnectionPool:
 
 
 _pool = ConnectionPool()
-
-
-@contextmanager
-def session_scope() -> Iterator[Session]:
-    session = _pool.get_session()
-    try:
-        yield session
-    finally:
-        session.close()
 
 
 def reset_connection_pool() -> None:

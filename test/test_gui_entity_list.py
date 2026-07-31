@@ -82,12 +82,6 @@ class TestEntityListDialog(unittest.TestCase):
         self.dialog._on_next()
         self.assertEqual(self.dialog._page, 0)
 
-    def test_populate_table_public_api(self):
-        self.dialog._total_records = 100
-        self.dialog._page = 0
-        self.dialog.populate_table(2)
-        self.assertEqual(self.dialog._page, 0)
-
 
 @unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
 class TestEntityListDialogWithData(unittest.TestCase):

@@ -31,15 +31,6 @@ def _load_localites() -> list[dict[str, Any]]:
         return []
 
 
-def _get_commune_by_id(commune_id: int) -> dict[str, Any] | None:
-    """Look up a commune by its commune_id."""
-    data = _load_localites()
-    for c in data:
-        if int(c.get('commune_id', 0)) == commune_id:
-            return c
-    return None
-
-
 def _get_commune_by_code(commune_code: str) -> dict[str, Any] | None:
     """Look up a commune by its commune_code (handles int/str)."""
     if not commune_code:
@@ -55,13 +46,28 @@ def _get_commune_by_code(commune_code: str) -> dict[str, Any] | None:
     return None
 
 
+def load_session_cookie() -> dict[str, Any] | None:
+    """Read the session cookie file; None if missing or unparsable."""
+    try:
+        with open(COOKIE_FILE, encoding='utf-8') as f:
+            return toml.load(f)
+    except (OSError, toml.TomlDecodeError):
+        return None
+
+
+def find_active_session_user(session: Any, uid: str, cookie: str) -> Any | None:
+    """Return the active user matching a session uid/cookie pair."""
+    return (
+        session.query(User)
+        .filter(User.id == uid, User.session_token == cookie, User.active.is_(True))
+        .first()
+    )
+
+
 def get_current_user() -> dict | None:
     """Return authenticated user info from cookie, or None."""
-    filename = COOKIE_FILE
-    try:
-        with open(filename, encoding='utf-8') as f:
-            data = toml.load(f)
-    except (FileNotFoundError, toml.TomlDecodeError):
+    data = load_session_cookie()
+    if not data:
         return None
     cookie = data.get('Session', {}).get('cookie', None)
     uid = data.get('Session', {}).get('uid', None)
@@ -70,11 +76,7 @@ def get_current_user() -> dict | None:
 
     session = get_session()
     try:
-        user = (
-            session.query(User)
-            .filter(User.id == uid, User.session_token == cookie, User.active.is_(True))
-            .first()
-        )
+        user = find_active_session_user(session, uid, cookie)
         if not user:
             return None
         commune = _get_commune_by_code(user.commune_code) if user.commune_code else None

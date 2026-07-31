@@ -114,7 +114,7 @@ class EntityListDialog(QDialog):
             )
 
             property_labels = {
-                'pan_label': 'Label',
+                'label': 'Label',
                 'username': 'User',
             }
 
@@ -160,9 +160,3 @@ class EntityListDialog(QDialog):
         self._btn_next.setEnabled(
             (self._page + 1) * self.PAGE_SIZE < self._total_records
         )
-
-    def populate_table(self, page: int | None = None) -> None:
-        """Public API: populate the table (compat wrapper)."""
-        if page is None:
-            page = self._page
-        self._populate_table(page)

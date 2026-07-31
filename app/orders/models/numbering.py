@@ -3,14 +3,14 @@
 from __future__ import annotations
 
 import uuid
-from typing import Any, ClassVar
+from typing import ClassVar
 
 from geoalchemy2 import Geometry
 from sqlalchemy import Column, ForeignKey, String, Text
-from sqlalchemy.orm import Session, relationship
+from sqlalchemy.orm import relationship
 
 from ...shared.constants import SRID
-from .base import _BaseSpatialModel, _get_current_user
+from .base import _BaseSpatialModel
 
 
 class Numbering(_BaseSpatialModel):
@@ -52,30 +52,3 @@ class Numbering(_BaseSpatialModel):
 
     activity_cat = Column(String, nullable=True)
     activity_type = Column(String, nullable=True)
-
-    @classmethod
-    def update(
-        cls, session: Session, record_id: str, **kwargs: Any
-    ) -> Numbering | None:
-        """Update numbering attributes."""
-        from ...core.base import _allowlist_columns
-
-        instance = session.query(cls).filter_by(id=record_id).first()
-        user_data = _get_current_user()
-        if not user_data or not instance:
-            raise ValueError('Numbering not found or no authenticated user')
-        for key, value in _allowlist_columns(cls, **kwargs).items():
-            setattr(instance, key, value)
-        instance.user_id = user_data.get('id')
-        session.commit()
-        return instance
-
-    def save(self, session: Session) -> None:
-        """Persist numbering, linking to the current user."""
-        user_data = _get_current_user()
-        if user_data:
-            self.user_id = user_data.get('id')
-            session.add(self)
-            session.commit()
-        else:
-            raise ValueError('No user found')

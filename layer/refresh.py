@@ -1,4 +1,4 @@
-"""Layer refresh and categorized style management."""
+"""Layer refresh utilities."""
 
 import datetime
 import logging
@@ -6,37 +6,19 @@ from typing import Any
 
 from geoalchemy2 import Geometry
 from qgis.core import (
-    QgsCategorizedSymbolRenderer,
-    QgsExpression,
-    QgsExpressionContext,
     QgsFeature,
     QgsField,
     QgsGeometry,
     QgsProject,
-    QgsRendererCategory,
-    QgsSingleSymbolRenderer,
-    QgsSymbol,
     QgsVectorLayer,
 )
-
-try:
-    from qgis.core import QVariant
-except ImportError:
-    from enum import IntEnum
-
-    class QVariant(IntEnum):  # type: ignore[no-redef]
-        Bool = 1
-        Int = 2
-        Double = 6
-        String = 10
-
-
 from sqlalchemy import func
 
 from ..app.core.database import get_session
 from ..app.orders import models as _models
 from ..app.users.repository import qgis_config
-from ..constants import DEFAULT_STYLE_DIR, STYLE_QML
+from ..constants import DEFAULT_STYLE_DIR
+from .utils import QVariant
 
 logger = logging.getLogger(__name__)
 
@@ -133,17 +115,6 @@ def _build_feature(
     return feature
 
 
-def _commit_feature(layer: Any, feature: QgsFeature) -> None:
-    """Add a feature to a layer within an edit session."""
-    provider = layer.dataProvider()
-    was_editing = layer.isEditable()
-    if not was_editing:
-        layer.startEditing()
-    provider.addFeature(feature)
-    layer.commitChanges()
-    layer.triggerRepaint()
-
-
 def refresh_layer_from_db(_iface: Any, layer_name: str, model_name: str) -> None:
     """Refresh a map layer with data from the database model."""
     session = get_session()
@@ -154,8 +125,6 @@ def refresh_layer_from_db(_iface: Any, layer_name: str, model_name: str) -> None
 
         geometry_col = _get_geometry_column(model_class)
         results = _query_all_records(session, model_class, geometry_col)
-        if not results:
-            return
 
         layer = _get_layer(layer_name)
         if layer is None:
@@ -187,79 +156,6 @@ def refresh_layer_from_db(_iface: Any, layer_name: str, model_name: str) -> None
         session.close()
 
 
-def apply_categorized_style(
-    _iface: Any, layer_name: str, category_fields: list[str]
-) -> None:
-    """Apply a categorized renderer to a layer based on field values."""
-    layers = QgsProject.instance().mapLayersByName(layer_name)
-    if not layers:
-        return
-    layer = layers[0]
-    expression_string = " || '  ' || ".join(category_fields)
-    expression = QgsExpression(expression_string)
-    unique_values = set()
-    for feature in layer.getFeatures():
-        context = QgsExpressionContext()
-        context.setFeature(feature)
-        result = expression.evaluate(context)
-        unique_values.add(result)
-    categories = []
-
-    for value in unique_values:
-        symbol = QgsSymbol.defaultSymbol(layer.geometryType())
-        category = QgsRendererCategory(value, symbol, str(value))
-        categories.append(category)
-
-    renderer = QgsCategorizedSymbolRenderer(expression_string, categories)
-    layer.setRenderer(renderer)
-    layer.triggerRepaint()
-
-
-def remove_categorized_style(_iface: Any, layer_name: str) -> None:
-    """Remove categorized style and revert to single symbol."""
-    layers = QgsProject.instance().mapLayersByName(layer_name)
-    if not layers:
-        return
-    layer = layers[0]
-    symbol = QgsSymbol.defaultSymbol(layer.geometryType())
-    renderer = QgsSingleSymbolRenderer(symbol)
-    layer.setRenderer(renderer)
-
-
-def _resolve_wkt(model_instance: Any, geometry: str | None = None) -> str | None:
-    """Resolve geometry WKT from model geometry attribute or explicit value."""
-    if geometry is not None:
-        return geometry
-    geom = model_instance.geometry
-    if geom is None:
-        return None
-    session = get_session()
-    try:
-        row = session.query(func.ST_AsText(geom)).first()
-        return str(row[0]) if row else None
-    finally:
-        session.close()
-
-
-def add_feature_to_layer(
-    layer: Any, model_instance: Any, geometry_wkt: str | None = None
-) -> None:
-    """Insert a single model instance as a new feature into a QGIS layer.
-
-    This is the fast path — avoids deleting and re-adding all features
-    when only one new record needs to appear on the map.
-    """
-    wkt = _resolve_wkt(model_instance, geometry_wkt)
-    if wkt is None:
-        return
-
-    all_fields = _get_all_model_fields(type(model_instance))
-    field_names = [field.name() for field in layer.fields()]
-    feature = _build_feature(model_instance, wkt, field_names, all_fields)
-    if feature:
-        _commit_feature(layer, feature)
-
-
 def refresh_all_layers(iface: Any) -> None:
     """Refresh all mapper layers and apply stored styles."""
     data_list = qgis_config().get('mapper') or []
@@ -281,27 +177,3 @@ def refresh_all_layers(iface: Any) -> None:
                 layer_cfg.get('label'),
                 result,
             )
-
-
-def apply_all_categorized_styles(iface: Any) -> None:
-    """Apply categorized styles to all configured layers."""
-    data_list = qgis_config().get('categorize') or []
-    for cfg in data_list:
-        try:
-            apply_categorized_style(iface, cfg.get('layer'), cfg.get('by'))
-        except Exception:  # pylint: disable=W0718
-            logger.exception('Error applying categorized style to %s', cfg.get('layer'))
-
-
-def remove_all_categorized_styles(iface: Any) -> None:
-    """Remove categorized styles from all configured layers."""
-    data_list = qgis_config().get('other_layers') or []
-    for cfg in data_list:
-        try:
-            remove_categorized_style(iface, cfg.get('label'))
-        except Exception:  # pylint: disable=W0718
-            logger.exception('Error removing categorized style: %s', cfg.get('label'))
-
-    filename = STYLE_QML
-    for layer in QgsProject.instance().mapLayers().values():
-        layer.loadNamedStyle(str(filename))

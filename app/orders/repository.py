@@ -1,12 +1,8 @@
 """Repository layer for CRUD operations on spatial entities."""
 
-import logging
 from typing import Any
 
-import geopandas as gpd
-from geoalchemy2 import Geometry
 from geoalchemy2.elements import WKTElement
-from geoalchemy2.shape import to_shape
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -18,19 +14,8 @@ from ..orders.models import (
     Road,
     Subdivision,
     Zone,
-    _BaseSpatialModel,
 )
 from ..shared.constants import DEFAULT_PANEL_DIM, PANEL_TYPE_MAP, SRID
-
-logger = logging.getLogger(__name__)
-
-
-def _model_class(name: str) -> type[_BaseSpatialModel] | None:
-    """Return the spatial model class matching *name*, or None."""
-    for cls in _BaseSpatialModel._registry:
-        if cls.__name__ == name:
-            return cls
-    return None
 
 
 def _add_entity(instance: Any, session: Session | None = None) -> Any:
@@ -43,36 +28,6 @@ def _add_entity(instance: Any, session: Session | None = None) -> Any:
     finally:
         if own_session:
             _session.close()
-
-
-def export_model(model_name: str) -> None:
-    """Export all records of *model_name* to a Shapefile."""
-    session = get_session()
-    try:
-        model_class = _model_class(model_name)
-        if model_class is None:
-            msg = f'Unknown model: {model_name}'
-            raise ValueError(msg)
-        query = session.query(model_class).all()
-
-        records = []
-        for record in query:
-            rec = {}
-            for column_name, column_obj in model_class.__table__.columns.items():
-                if isinstance(column_obj.type, Geometry):
-                    wkb = getattr(record, column_name)
-                    if wkb is not None:
-                        rec[column_name] = to_shape(wkb)
-                else:
-                    rec[column_name] = getattr(record, column_name)
-            records.append(rec)
-
-        gdf = gpd.GeoDataFrame(records, geometry='geometry')
-        gdf.set_crs('EPSG:4326', inplace=True)
-        gdf.to_file(f'{model_name}.shp')
-        logger.info('Shapefile export completed successfully.')
-    finally:
-        session.close()
 
 
 def add_panel_sign(

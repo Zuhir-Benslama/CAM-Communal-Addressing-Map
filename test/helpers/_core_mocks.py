@@ -117,7 +117,6 @@ def setup_mocks():
     sys.modules['plans_adressage.app.users.repository'] = _users_repo
 
     _orders_repo = MagicMock()
-    _orders_repo.export_model = MagicMock()
     _orders_repo.count_numberings = MagicMock()
     _orders_repo.count_panels = MagicMock()
     for fn in ('query_missing_pan', 'query_missing_num', 'query_missing_rep'):

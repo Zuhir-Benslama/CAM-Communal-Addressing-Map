@@ -60,12 +60,20 @@ class TestBuildAddUserPage(unittest.TestCase):
         if cls.qt is None:
             raise unittest.SkipTest('No real Qt widgets module available')
         cls.app = get_qapp()
+        cls._prev_qtwidgets = sys.modules.get('qgis.PyQt.QtWidgets')
         sys.modules['qgis.PyQt.QtWidgets'] = cls.qt
         _ensure_package_hierarchy(cls.qt.QWidget, cls.qt.QVBoxLayout)
         cls.mod = _load_page_module(
             'gui/pages/add_user_page.py',
             'plans_adressage.gui.pages',
         )
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        if cls._prev_qtwidgets is None:
+            sys.modules.pop('qgis.PyQt.QtWidgets', None)
+        else:
+            sys.modules['qgis.PyQt.QtWidgets'] = cls._prev_qtwidgets
 
     def _make_mock_dialog(self) -> Any:
         dialog = type('MockDialog', (), {})()
@@ -136,12 +144,20 @@ class TestBuildSettingsPage(unittest.TestCase):
         if cls.qt is None:
             raise unittest.SkipTest('No real Qt widgets module available')
         cls.app = get_qapp()
+        cls._prev_qtwidgets = sys.modules.get('qgis.PyQt.QtWidgets')
         sys.modules['qgis.PyQt.QtWidgets'] = cls.qt
         _ensure_package_hierarchy(cls.qt.QWidget, cls.qt.QVBoxLayout)
         cls.mod = _load_page_module(
             'gui/pages/settings_page.py',
             'plans_adressage.gui.pages',
         )
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        if cls._prev_qtwidgets is None:
+            sys.modules.pop('qgis.PyQt.QtWidgets', None)
+        else:
+            sys.modules['qgis.PyQt.QtWidgets'] = cls._prev_qtwidgets
 
     def _make_mock_dialog(self) -> Any:
         dialog = type('MockDialog', (), {})()

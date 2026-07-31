@@ -6,13 +6,11 @@ from __future__ import annotations
 import logging
 import os
 import shutil
-import tempfile
 from pathlib import Path
 
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
 
 from ..app.core.database import reset_connection_pool
-from ..app.core.migration import migrate_database
 from ..constants import (
     DATABASE_FILE,
     PLUGIN_DIR,
@@ -37,10 +35,6 @@ class BackupMixin:
             if Path(temp).exists():
                 os.remove(temp)
             raise
-
-    # ------------------------------------------------------------------
-    # Helpers for import_database
-    # ------------------------------------------------------------------
 
     def _select_db_file(
         self: HasTranslation, title: str, name_filter: str
@@ -68,65 +62,6 @@ class BackupMixin:
             return False
         return True
 
-    def _select_auth_file(self: HasTranslation) -> str | None:
-        reply = QMessageBox.question(
-            self,
-            self._tr('Import'),
-            self._tr(
-                'Do you have a companion auth.sqlite file from the old '
-                'database?\n\n'
-                'This is only needed if user accounts were stored in a '
-                'separate file.'
-            ),
-            QMessageBox.Yes | QMessageBox.No,
-        )
-        if reply != QMessageBox.Yes:
-            return None
-
-        auth_path = self._select_db_file(
-            'Select auth.sqlite',
-            'SQLite Files (*.sqlite *.db);;All Files (*)',
-        )
-        if auth_path is None:
-            return None
-        if not self._validate_sqlite_header(auth_path, 'auth file'):
-            return None
-        return auth_path
-
-    def _perform_migration(
-        self: HasTranslation, old_path: str, temp_path: str, auth_path: str | None
-    ) -> bool:
-        try:
-            migrate_database(old_path, temp_path, auth_path)
-            return True
-        except Exception as e:  # pylint: disable=W0718
-            logger.exception('Migration failed')
-            if Path(temp_path).exists():
-                os.unlink(temp_path)
-            QMessageBox.critical(
-                self,
-                self._tr('Error'),
-                f'Migration failed: {e}',
-            )
-            return False
-
-    def _replace_and_reset(self: HasTranslation, temp_path: str) -> bool:
-        try:
-            self._replace_db_file(temp_path, DATABASE_FILE)
-            reset_connection_pool()
-            return True
-        except (OSError, shutil.Error) as e:
-            logger.exception('Failed to replace database')
-            QMessageBox.critical(
-                self,
-                self._tr('Error'),
-                f'Failed to replace current database: {e}',
-            )
-            return False
-        finally:
-            if Path(temp_path).exists():
-                os.unlink(temp_path)
-
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
@@ -141,8 +76,17 @@ class BackupMixin:
         if not self._validate_sqlite_header(source_path, 'file'):
             return
 
-        self._replace_db_file(source_path, DATABASE_FILE)
-        reset_connection_pool()
+        try:
+            self._replace_db_file(source_path, DATABASE_FILE)
+            reset_connection_pool()
+        except (OSError, shutil.Error) as e:
+            logger.exception('Failed to restore database')
+            QMessageBox.critical(
+                self,
+                self._tr('Error'),
+                f'Failed to restore database: {e}',
+            )
+            return
 
         QMessageBox.information(
             self,
@@ -179,28 +123,4 @@ class BackupMixin:
             logger.exception('Failed to backup database: %s', e)
             QMessageBox.critical(
                 self, self._tr('Error'), self._tr('Failed to copy file')
-            )
-
-    def import_database(self: HasTranslation) -> None:
-        old_path = self._select_db_file(
-            'Select Old Database File',
-            'SQLite/SpatiaLite Files (*.sqlite *.db *.sqlite3);;All Files (*)',
-        )
-        if old_path is None:
-            return
-        if not self._validate_sqlite_header(old_path, 'file'):
-            return
-
-        auth_path = self._select_auth_file()
-
-        fd, temp_path = tempfile.mkstemp(suffix='.sqlite')
-        os.close(fd)
-        if not self._perform_migration(old_path, temp_path, auth_path):
-            return
-
-        if self._replace_and_reset(temp_path):
-            QMessageBox.information(
-                self,
-                self._tr('Success'),
-                self._tr('Database imported and migrated successfully'),
             )

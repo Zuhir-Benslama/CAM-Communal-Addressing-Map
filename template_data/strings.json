@@ -1,4 +1,69 @@
 {
+  "Activity Cat:": {
+    "ar": ": فئة النشاط",
+    "fr": "Catégorie d'activité :",
+    "en": "Activity Category:"
+  },
+  "Activity Type:": {
+    "ar": ": نوع النشاط",
+    "fr": "Type d'activité :",
+    "en": "Activity Type:"
+  },
+  "Category:": {
+    "ar": ": فئة",
+    "fr": "Catégorie :",
+    "en": "Category:"
+  },
+  "Duplicated:": {
+    "ar": ": مكرر",
+    "fr": "Doublon :",
+    "en": "Duplicate:"
+  },
+  "Mount Status:": {
+    "ar": ": حالة التركيب",
+    "fr": "État de montage :",
+    "en": "Mounting Status:"
+  },
+  "Name:": {
+    "ar": ": اسم",
+    "fr": "Nom :",
+    "en": "Name:"
+  },
+  "Number:": {
+    "ar": ": رقم",
+    "fr": "Numéro :",
+    "en": "Number:"
+  },
+  "Please select a paper size": {
+    "ar": "الرجاء تحديد حجم الورق",
+    "fr": "Veuillez sélectionner un format de papier",
+    "en": "Please select a paper size"
+  },
+  "Ref Type:": {
+    "ar": ": نوع المرجع",
+    "fr": "Type de référence :",
+    "en": "Reference Type:"
+  },
+  "Save": {
+    "ar": "حفظ",
+    "fr": "Enregistrer",
+    "en": "Save"
+  },
+  "Select Reference": {
+    "ar": "حدد المرجع",
+    "fr": "Sélectionner la référence",
+    "en": "Select Reference"
+  },
+  "State:": {
+    "ar": ":حالة",
+    "fr": "État :",
+    "en": "Status:"
+  },
+  "Type:": {
+    "ar": ": نوع",
+    "fr": "Type :",
+    "en": "Type:"
+  },
   ":  فئة": {
     "ar": ":  فئة",
     "fr": "Catégorie :",
@@ -1973,5 +2038,10 @@
     "ar": "إنشاء نسخة احتياطية لقاعدة البيانات",
     "fr": "Créer une sauvegarde BD",
     "en": "Create Database Backup"
+  },
+  "Failed to save the new type.": {
+    "ar": "تعذّر حفظ النوع الجديد",
+    "fr": "Échec de l'enregistrement du nouveau type",
+    "en": "Failed to save the new type."
   }
 }

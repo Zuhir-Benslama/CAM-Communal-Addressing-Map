@@ -84,6 +84,9 @@ def fill_paper(combobox: QComboBox) -> None:
 def _fill_from_json(combobox: QComboBox, data: list[dict], loc: str) -> None:
     """Fill a combobox from a list of {pk, label_fr, label_en} dicts."""
     combobox.clear()
+    if not isinstance(data, list):
+        logger.warning('Expected a list for combo data, got %s', type(data).__name__)
+        return
     for entry in data:
         display = locale_label(entry, loc)
         combobox.addItem(display, entry.get('pk', ''))

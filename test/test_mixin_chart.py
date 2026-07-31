@@ -69,26 +69,6 @@ class TestChartMixin(unittest.TestCase):
         self.session_mock.query.assert_called_once()
         self.session_mock.close.assert_called_once()
 
-    def test_get_zone_chart_with_data(self):
-        dist_mock = MagicMock(return_value=[('type_a', 10), ('type_b', 5)])
-        with patch.object(
-            self.mod,
-            'get_zone_distribution',
-            dist_mock,
-        ):
-            self.mixin.get_zone_chart(16)
-            dist_mock.assert_called_once_with(16)
-
-    def test_get_zone_chart_no_data(self):
-        dist_mock = MagicMock(return_value=[])
-        with patch.object(
-            self.mod,
-            'get_zone_distribution',
-            dist_mock,
-        ):
-            self.mixin.get_zone_chart(16)
-            dist_mock.assert_called_once_with(16)
-
     def test_render_bar_chart_creates_file(self):
         results = [('A', 10), ('B', 5)]
         self.mod._render_bar_chart(results, 'X', 'Y', 'Test')

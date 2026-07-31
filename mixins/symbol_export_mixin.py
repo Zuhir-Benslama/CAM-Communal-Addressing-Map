@@ -172,15 +172,24 @@ class SymbolExportMixin:
         """Export a situation map highlighting the municipality to PNG."""
         project = QgsProject.instance()
 
-        municipality_layer = QgsProject.instance().mapLayersByName(LAYER_MUNICIPALITY)[
-            0
-        ]
+        municipality_layers = QgsProject.instance().mapLayersByName(LAYER_MUNICIPALITY)
+        if not municipality_layers:
+            logger.warning(
+                'Municipality layer "%s" not found for situation map',
+                LAYER_MUNICIPALITY,
+            )
+            return
+        municipality_layer = municipality_layers[0]
 
         base_layer = None
         if self.sat_view:
-            base_layer = QgsProject.instance().mapLayersByName(self.sat_view)[0]
+            sat_layers = QgsProject.instance().mapLayersByName(self.sat_view)
+            if sat_layers:
+                base_layer = sat_layers[0]
         elif self.rast:
-            base_layer = QgsProject.instance().mapLayersByName(self.rast)[0]
+            rast_layers = QgsProject.instance().mapLayersByName(self.rast)
+            if rast_layers:
+                base_layer = rast_layers[0]
 
         if base_layer is None:
             logger.warning(
