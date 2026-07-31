@@ -6,7 +6,7 @@
 name=RNA
 qgisMinimumVersion=3.0
 description=RNA - Plans d'Adressage (Addressing Plans Management)
-version=0.3.0
+version=0.4.0
 author=C.A.S
 email=rna@qgis.org
 
