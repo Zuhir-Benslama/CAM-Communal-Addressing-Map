@@ -13,6 +13,7 @@ build/
 resources_rc.py
 *.qgs
 *.qgz
+RNA.zip
 
 # Database
 *.sqlite

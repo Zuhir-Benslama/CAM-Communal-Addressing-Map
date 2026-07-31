@@ -21,7 +21,15 @@ jobs:
       - name: Build plugin ZIP
         run: |
           mkdir -p dist
-          git archive --prefix=RNA/ -o dist/RNA.zip HEAD
+          rm -rf staging/RNA
+          mkdir -p staging/RNA
+          cp __init__.py constants.py resources.py metadata.txt staging/RNA/
+          for dir in mixins gui layer scripts resources templates data icons i18n style template_data app; do
+            cp -R "$dir" staging/RNA/
+          done
+          find staging/RNA -name __pycache__ -type d -exec rm -rf {} +
+          find staging/RNA -name '*.pyc' -delete
+          (cd staging && zip -9r ../dist/RNA.zip RNA)
 
       - name: Compute SHA1
         run: echo "SHA1=$(sha1sum dist/RNA.zip | cut -d' ' -f1)" >> $GITHUB_ENV
