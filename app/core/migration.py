@@ -293,8 +293,8 @@ def _register_geometry_columns(new: sqlite3.Connection) -> None:
     for table, geom_config in GEOMETRY_TYPES.items():
         try:
             register_geometry(new, table, 'geometry', geom_config)
-        except sqlite3.OperationalError as e:
-            logger.error('  %s.geometry registration failed: %s', table, e)
+        except sqlite3.OperationalError:
+            logger.exception('  %s.geometry registration failed', table)
 
 
 def _migrate_data(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
@@ -337,8 +337,8 @@ def _create_spatial_indexes(new: sqlite3.Connection) -> None:
         try:
             create_spatial_index(new, table, 'geometry')
             logger.info('  %s.geometry: index created', table)
-        except sqlite3.OperationalError as e:
-            logger.error('  %s.geometry index creation failed: %s', table, e)
+        except sqlite3.OperationalError:
+            logger.exception('  %s.geometry index creation failed', table)
 
 
 def _merge_auth_users(new_path: str, auth_path: str | None) -> None:

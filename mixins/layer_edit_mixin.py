@@ -155,7 +155,7 @@ class LayerEditMixin:
             else:
                 self._show_success('Panel added successfully')
         except (SQLAlchemyError, TypeError, AttributeError, ValueError) as e:
-            logger.exception('Failed to add panel: %s', e)
+            logger.exception('Failed to add panel')
             self._show_error(str(e))
         finally:
             self.ref_identify_tool.unset_map_tool()
@@ -182,8 +182,8 @@ class LayerEditMixin:
             kwargs.update(self._make_locale_kwargs('org_name', name_val))
             add_organization(**kwargs)
             self._show_success('Facility added successfully')
-        except SQLAlchemyError as e:
-            logger.exception('Failed to add organization: %s', e)
+        except SQLAlchemyError:
+            logger.exception('Failed to add organization')
             self._show_error('Cannot add facility, it already exists')
 
     def add_road(
@@ -207,8 +207,8 @@ class LayerEditMixin:
             kwargs.update(self._make_locale_kwargs('road_name', name_val))
             add_road(**kwargs)
             self._show_success('Road added successfully')
-        except SQLAlchemyError as e:
-            logger.exception('Failed to add road: %s', e)
+        except SQLAlchemyError:
+            logger.exception('Failed to add road')
             self._show_error('Cannot add road, it already exists')
 
     def show_confirm_dialog(
@@ -289,7 +289,7 @@ class LayerEditMixin:
             else:
                 self._show_success('Numbering added successfully')
         except (SQLAlchemyError, TypeError, AttributeError, ValueError) as e:
-            logger.exception('Failed to add numbering: %s', e)
+            logger.exception('Failed to add numbering')
             self._show_error(str(e))
 
         self.num_val.setFocus()
@@ -317,7 +317,7 @@ class LayerEditMixin:
             add_subdivision(**kwargs)
             self._show_success('Subdivision added successfully')
         except SQLAlchemyError as e:
-            logger.exception('Failed to add city: %s', e)
+            logger.exception('Failed to add city')
             self._show_error(str(e))
 
     def add_zone(
@@ -340,6 +340,6 @@ class LayerEditMixin:
             kwargs.update(self._make_locale_kwargs('name', name_val))
             add_zone(**kwargs)
             self._show_success('Zone added successfully')
-        except SQLAlchemyError as e:
-            logger.exception('Failed to add zone: %s', e)
+        except SQLAlchemyError:
+            logger.exception('Failed to add zone')
             self._show_error('Cannot add zone, zone already exists')

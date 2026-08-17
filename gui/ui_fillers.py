@@ -267,13 +267,14 @@ def save_new_type(main_type: str, type_name: str, category: str = '') -> bool:
         entry = {'pk': type_name}
 
     try:
-        with open(filepath, encoding='utf-8') as f:
+        with filepath.open(encoding='utf-8') as f:
             data = json.load(f)
         data.append(entry)
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with filepath.open('w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
-        clear_cache()
-        return True
     except (OSError, json.JSONDecodeError):
         logger.exception('Failed to save new type to %s', filepath)
         return False
+    else:
+        clear_cache()
+        return True

@@ -6,7 +6,6 @@ All functions are private (``_``-prefixed) and called from
 """
 
 import logging
-import os
 from pathlib import Path
 from typing import Any
 
@@ -221,7 +220,7 @@ def _create_views(engine: Any) -> None:
         return
     with engine.connect() as conn:
         try:
-            with open(VIEWS_SQL, encoding='utf-8') as f:
+            with Path(VIEWS_SQL).open(encoding='utf-8') as f:
                 sql = f.read()
             for statement in sql.split(';'):
                 stmt = statement.strip()
@@ -299,7 +298,7 @@ def _attach_and_merge_users(engine: Any, auth_path: str) -> None:
 def _rename_migrated_auth(auth_path: str) -> None:
     """Rename auth.sqlite to auth.sqlite.migrated after successful merge."""
     try:
-        os.rename(auth_path, auth_path + '.migrated')
+        Path(auth_path).rename(Path(auth_path + '.migrated'))
         logger.info('Renamed auth.sqlite \u2192 auth.sqlite.migrated')
     except OSError:
         logger.warning('Could not rename auth.sqlite after merge')

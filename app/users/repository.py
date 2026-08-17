@@ -2,8 +2,8 @@
 
 import json
 import logging
-import os
 import sqlite3
+from pathlib import Path
 from typing import Any
 
 import toml
@@ -24,10 +24,10 @@ logger = logging.getLogger(__name__)
 def _load_localites() -> list[dict[str, Any]]:
     """Load commune metadata from communes.json."""
     try:
-        with open(COMMUNES_JSON, encoding='utf-8') as f:
+        with Path(COMMUNES_JSON).open(encoding='utf-8') as f:
             return list(json.load(f).values())
     except (FileNotFoundError, json.JSONDecodeError):
-        logger.error('Failed to load %s', COMMUNES_JSON)
+        logger.exception('Failed to load %s', COMMUNES_JSON)
         return []
 
 
@@ -49,7 +49,7 @@ def _get_commune_by_code(commune_code: str) -> dict[str, Any] | None:
 def load_session_cookie() -> dict[str, Any] | None:
     """Read the session cookie file; None if missing or unparsable."""
     try:
-        with open(COOKIE_FILE, encoding='utf-8') as f:
+        with Path(COOKIE_FILE).open(encoding='utf-8') as f:
             return toml.load(f)
     except (OSError, toml.TomlDecodeError):
         return None
@@ -84,7 +84,7 @@ def get_current_user() -> dict | None:
         wilaya_name = ''
         if user.wilaya_code is not None:
             try:
-                with open(WILAYAS_JSON, encoding='utf-8') as f:
+                with Path(WILAYAS_JSON).open(encoding='utf-8') as f:
                     wilayas = json.load(f)
                 w = wilayas.get(str(user.wilaya_code))
                 if w:
@@ -129,7 +129,7 @@ def get_user_location() -> str | None:
             if row:
                 return row[0]
     except sqlite3.Error:
-        logger.error('Failed to query %s', COMMUNES_DB)
+        logger.exception('Failed to query %s', COMMUNES_DB)
     return None
 
 
@@ -138,11 +138,11 @@ def create_cookie(cookie: str, uid: str) -> None:
     data = {'Session': {'cookie': cookie, 'uid': uid}}
     filename = COOKIE_FILE
     try:
-        with open(filename, 'w', encoding='utf-8') as f:
+        with Path(filename).open('w', encoding='utf-8') as f:
             toml.dump(data, f)
-        os.chmod(filename, 0o600)
-    except (OSError, PermissionError) as e:
-        logger.error('Failed to write cookie file %s: %s', filename, e)
+        Path(filename).chmod(0o600)
+    except (OSError, PermissionError):
+        logger.exception('Failed to write cookie file %s', filename)
         raise
 
 
@@ -162,12 +162,12 @@ def qgis_config() -> dict:
         return _qgis_config_cache
     filename = QGIS_CONFIG_FILE
     try:
-        with open(filename, encoding='utf-8') as file:
+        with Path(filename).open(encoding='utf-8') as file:
             _qgis_config_cache = json.load(file)
             return _qgis_config_cache
     except FileNotFoundError:
-        logger.error('QGIS config file not found: %s', filename)
+        logger.exception('QGIS config file not found: %s', filename)
         raise
-    except json.JSONDecodeError as e:
-        logger.error('Invalid JSON in config file %s: %s', filename, e)
+    except json.JSONDecodeError:
+        logger.exception('Invalid JSON in config file %s', filename)
         raise

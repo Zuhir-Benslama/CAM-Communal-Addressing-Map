@@ -6,6 +6,7 @@ from __future__ import annotations
 import logging
 import uuid
 from pathlib import Path
+from typing import Any
 
 from geoalchemy2.elements import WKTElement
 from qgis.core import QgsLayerTreeLayer, QgsProject
@@ -73,6 +74,13 @@ class LayerOpsMixin:
                 visible_names.update(layer_cfg.get('show_with'))
                 break
 
+        target_layer = self._apply_layer_visibility(root, visible_names, layer_label)
+        if target_layer:
+            self.iface.setActiveLayer(target_layer)
+
+    @staticmethod
+    def _apply_layer_visibility(root, visible_names: set, layer_label: str) -> Any:
+        """Set layer visibility, rollback editable layers, return target."""
         target_layer = None
         for layer_node in root.children():
             if not isinstance(layer_node, QgsLayerTreeLayer):
@@ -86,9 +94,7 @@ class LayerOpsMixin:
             layer_node.setItemVisibilityChecked(lyr.name() in visible_names)
             if lyr.name() == layer_label:
                 target_layer = lyr
-
-        if target_layer:
-            self.iface.setActiveLayer(target_layer)
+        return target_layer
 
     def _hide_all_tab_layers(self, root) -> None:
         """Rollback editable layers and hide all."""
@@ -313,7 +319,7 @@ class LayerOpsMixin:
                                 geometry=WKTElement(str(geometry_wkt), srid=SRID),
                             )
                         except SQLAlchemyError as e:
-                            logger.exception('Failed to save feature: %s', e)
+                            logger.exception('Failed to save feature')
                             QMessageBox.critical(self, self._tr('Error'), str(e))
                         finally:
                             session.close()

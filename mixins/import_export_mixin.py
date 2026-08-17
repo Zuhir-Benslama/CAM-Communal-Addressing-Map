@@ -97,7 +97,6 @@ class ImportExportMixin:
         try:
             with open(TMP_JSON, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
-            return True
         except (OSError, TypeError):
             logger.exception('Error saving JSON data to %s', TMP_JSON)
             QMessageBox.critical(
@@ -106,6 +105,8 @@ class ImportExportMixin:
                 self._tr('Failed to write export data'),
             )
             return False
+        else:
+            return True
 
     def _validate_export_data(self: HasExportContext, data: dict) -> bool:
         required_keys = ('type_plan', 'num_plan', 'scale', 'by', 'date')
@@ -127,7 +128,7 @@ class ImportExportMixin:
                 capture_output=True,
                 text=True,
                 check=True,
-                **_SUBPROCESS_FLAGS,  # type: ignore[call-overload]
+                **_SUBPROCESS_FLAGS,
             )
             QMessageBox.information(
                 self,
@@ -136,7 +137,7 @@ class ImportExportMixin:
             )
         except subprocess.CalledProcessError as e:
             err_msg = e.stderr.strip() if e.stderr else '(no output)'
-            logger.error(
+            logger.exception(
                 'Map export failed (exit %d): %s',
                 e.returncode,
                 err_msg,

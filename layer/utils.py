@@ -3,6 +3,7 @@
 import json
 import logging
 import sqlite3
+from pathlib import Path
 from typing import Any
 
 from geoalchemy2 import Geometry
@@ -100,7 +101,7 @@ def create_other_layers(_iface: Any) -> None:
 def _commune_id_from_code(commune_code: str) -> int | None:
     """Resolve commune_id from commune_code using communes.json."""
     try:
-        with open(COMMUNES_JSON, encoding='utf-8') as f:
+        with Path(COMMUNES_JSON).open(encoding='utf-8') as f:
             data = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError) as e:
         logger.warning('could not load %s: %s', COMMUNES_JSON, e)

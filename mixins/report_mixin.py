@@ -7,6 +7,7 @@ import json
 import logging
 import subprocess
 from datetime import datetime
+from pathlib import Path
 
 from qgis.PyQt.QtWidgets import QMessageBox
 
@@ -49,7 +50,7 @@ class ReportMixin:
     ) -> bool:
         """Run the external reporting script and display result dialogs."""
         try:
-            with open(TMP_JSON, 'w', encoding='utf-8') as f:
+            with Path(TMP_JSON).open('w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
         except OSError:
             logger.exception('Error saving JSON file')
@@ -75,7 +76,7 @@ class ReportMixin:
                 capture_output=True,
                 text=True,
                 check=True,
-                **_SUBPROCESS_FLAGS,  # type: ignore[call-overload]
+                **_SUBPROCESS_FLAGS,
             )
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Information)
@@ -83,9 +84,8 @@ class ReportMixin:
             msg.setStyleSheet(get_theme_qss(current_theme()))
             msg.setInformativeText(success_msg)
             msg.exec()
-            return True
         except subprocess.CalledProcessError as e:
-            logger.error('Subprocess failed with error: %s', e)
+            logger.exception('Subprocess failed with error')
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
             msg.setWindowTitle(self._tr('Error'))
@@ -103,6 +103,8 @@ class ReportMixin:
             msg.setText(fail_msg)
             msg.exec()
             return False
+        else:
+            return True
 
     def generate_report(self: HasReportContext) -> bool:
         """Generate a statistical report via the external reporting script."""

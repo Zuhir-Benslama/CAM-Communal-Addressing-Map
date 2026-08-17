@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import logging
-import os
 import shutil
 from pathlib import Path
 
@@ -30,10 +29,10 @@ class BackupMixin:
         temp = destination + '.tmp'
         try:
             shutil.copy2(source, temp)
-            os.replace(temp, destination)
+            Path(temp).replace(destination)
         except (OSError, shutil.Error):
             if Path(temp).exists():
-                os.remove(temp)
+                Path(temp).unlink()
             raise
 
     def _select_db_file(
@@ -119,8 +118,8 @@ class BackupMixin:
                 self._tr('Success'),
                 self._tr('File copied successfully'),
             )
-        except (OSError, shutil.Error) as e:
-            logger.exception('Failed to backup database: %s', e)
+        except (OSError, shutil.Error):
+            logger.exception('Failed to backup database')
             QMessageBox.critical(
                 self, self._tr('Error'), self._tr('Failed to copy file')
             )

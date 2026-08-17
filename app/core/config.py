@@ -41,16 +41,17 @@ def _load_qss_template(filename: str) -> str:
     """Load a QSS template and replace {{VAR}} with color values."""
     path = _TEMPLATE_DIR / filename
     try:
-        with open(path, encoding='utf-8') as f:
+        with path.open(encoding='utf-8') as f:
             template = f.read()
+    except FileNotFoundError:
+        logger.warning('QSS template not found: %s', path)
+        return ''
+    else:
         for key, value in _COLORS.items():
             template = template.replace('{{' + key + '}}', value)
         template = template.replace('{{', '{')
         template = template.replace('}}', '}')
         return template
-    except FileNotFoundError:
-        logger.warning('QSS template not found: %s', path)
-        return ''
 
 
 DARK_QSS = _load_qss_template('dark_qss.template')

@@ -5,6 +5,7 @@ import logging
 import os
 import secrets
 import tempfile
+from pathlib import Path
 from typing import Any
 
 import toml
@@ -29,9 +30,9 @@ logger = logging.getLogger(__name__)
 def _lookup_wilaya_code(commune_code: str) -> int | None:
     """Resolve wilaya_code from commune_code using communes/daira JSON."""
     try:
-        with open(COMMUNES_JSON, encoding='utf-8') as f:
+        with Path(COMMUNES_JSON).open(encoding='utf-8') as f:
             communes = json.load(f)
-        with open(DAIRA_JSON, encoding='utf-8') as f:
+        with Path(DAIRA_JSON).open(encoding='utf-8') as f:
             dairas = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return None
@@ -95,13 +96,14 @@ def sign_up(
             return False, [str(e)]
         finally:
             session.close()
-        return True, None
     except ValidationError as err:
         error_details = [
             f'{field}: {"; ".join(messages)}'
             for field, messages in err.messages.items()
         ]
         return False, error_details
+    else:
+        return True, None
 
 
 def sign_in(
@@ -124,12 +126,13 @@ def sign_in(
             user.session_token = session_token
             session.commit()
             create_cookie(session_token, user.id)
-            return True, user.username, None
         except (SQLAlchemyError, OSError) as e:
             session.rollback()
             QgsMessageLog.logMessage(f'sign_in error: {e}', 'RNA', level=2)
-            logger.error('An error occurred: %s', e)
+            logger.exception('An error occurred')
             return False, None, str(e)
+        else:
+            return True, user.username, None
         finally:
             session.close()
     except ValidationError as err:
@@ -171,13 +174,13 @@ def logout(iface: Any, dlg: Any) -> None:
             session_data['cookie'] = None
             session_data['uid'] = None
 
-            fd, tmp_path = tempfile.mkstemp(dir=os.path.dirname(COOKIE_FILE) or '.')
+            fd, tmp_path = tempfile.mkstemp(dir=str(Path(COOKIE_FILE).parent) or '.')
             try:
                 with os.fdopen(fd, 'w', encoding='utf-8') as f:
                     toml.dump(cookie_data, f)
-                os.replace(tmp_path, COOKIE_FILE)
+                Path(tmp_path).replace(COOKIE_FILE)
             except (OSError, PermissionError):
-                os.unlink(tmp_path)
+                Path(tmp_path).unlink()
                 raise
         finally:
             session.close()
