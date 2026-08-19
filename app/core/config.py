@@ -2,6 +2,7 @@
 
 import logging
 import os
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -111,9 +112,12 @@ def _find_in_candidate_paths(candidates: list[str]) -> str | None:
 
 def _find_via_ldconfig() -> str | None:
     """Locate mod_spatialite.so via ``ldconfig -p`` output."""
+    ldconfig_path = shutil.which('ldconfig')
+    if ldconfig_path is None:
+        return None
     try:
         result = subprocess.run(
-            ['ldconfig', '-p'],
+            [ldconfig_path, '-p'],
             capture_output=True,
             text=True,
             check=True,

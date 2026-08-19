@@ -272,7 +272,7 @@ def _migrate_lookup_tables(old: sqlite3.Connection, new: sqlite3.Connection) -> 
     for name, ddl in LOOKUP_TABLE_DDL.items():
         validate_safe_name(name)
         new.execute(ddl)
-        old_cur = old.execute(f'SELECT * FROM "{name}"')
+        old_cur = old.execute(f'SELECT * FROM "{name}"')  # nosec S608 - name validated by validate_safe_name()
         old_rows = old_cur.fetchall()
         if old_rows:
             cols = [desc[0] for desc in old_cur.description]
@@ -280,7 +280,7 @@ def _migrate_lookup_tables(old: sqlite3.Connection, new: sqlite3.Connection) -> 
             col_list = ','.join(f'"{c}"' for c in cols)
             for row in old_rows:
                 new.execute(
-                    f'INSERT INTO "{name}" ({col_list}) VALUES ({placeholders})',
+                    f'INSERT INTO "{name}" ({col_list}) VALUES ({placeholders})',  # nosec S608 - name validated by validate_safe_name()
                     tuple(row[c] for c in cols),
                 )
             logger.info('  %s: %d rows', name, len(old_rows))
@@ -304,7 +304,7 @@ def _migrate_data(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
         new_cols = list(col_map.values())
 
         validate_safe_name(table)
-        old_rows = old.execute(f'SELECT * FROM "{table}"').fetchall()
+        old_rows = old.execute(f'SELECT * FROM "{table}"').fetchall()  # nosec S608 - table validated by validate_safe_name()
         if not old_rows:
             logger.info('  %s: 0 rows (skipped)', table)
             continue
@@ -317,7 +317,7 @@ def _migrate_data(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
             try:
                 values = [row[old_c] for old_c in old_cols]
                 new.execute(
-                    f'INSERT INTO "{table}" ({new_col_list}) VALUES ({placeholders})',
+                    f'INSERT INTO "{table}" ({new_col_list}) VALUES ({placeholders})',  # nosec S608 - table validated by validate_safe_name()
                     values,
                 )
                 migrated += 1
@@ -375,7 +375,7 @@ def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
             for row in users:
                 try:
                     target.execute(
-                        f'INSERT OR IGNORE INTO user ({col_list}) '
+                        f'INSERT OR IGNORE INTO user ({col_list}) '  # nosec S608 - user is a fixed table name
                         f'VALUES ({placeholders})',
                         tuple(row[c] for c in cols),
                     )

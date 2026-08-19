@@ -71,7 +71,7 @@ class ReportMixin:
         )
 
         try:
-            subprocess.run(
+            subprocess.run(  # nosec S603 - command built from internal constants only
                 command,
                 capture_output=True,
                 text=True,
@@ -108,7 +108,9 @@ class ReportMixin:
 
     def generate_report(self: HasReportContext) -> bool:
         """Generate a statistical report via the external reporting script."""
-        assert self.current_user is not None
+        if self.current_user is None:
+            logger.error('No current user for report generation')
+            return False
         report_data = {
             'prog': count_numberings(NUM_PLANNED),
             'wrong': count_numberings('numbered_mismatched'),
@@ -135,7 +137,9 @@ class ReportMixin:
 
     def purchase_order(self: HasReportContext) -> bool:
         """Generate a purchase order via the external reporting script."""
-        assert self.current_user is not None
+        if self.current_user is None:
+            logger.error('No current user for purchase order generation')
+            return False
         order_data = {
             'date': datetime.now().date().strftime('%Y/%m/%d'),
             'wilaya': self.current_user.get('wilaya'),

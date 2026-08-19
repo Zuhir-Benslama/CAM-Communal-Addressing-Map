@@ -78,7 +78,9 @@ class ImportExportMixin:
         canvas = self.iface.mapCanvas()
         current_scale = canvas.scale()
         now = datetime.now()
-        assert self.current_user is not None
+        if self.current_user is None:
+            logger.error('No current user for export data')
+            return None
         first = self.current_user.get('first_name', '') or ''
         last = self.current_user.get('last_name', '') or ''
         return {
@@ -123,7 +125,7 @@ class ImportExportMixin:
 
     def _invoke_reporting_script(self: HasExportContext, _method: str) -> None:
         try:
-            subprocess.run(
+            subprocess.run(  # nosec S603 - command built from internal constants only
                 [f'{get_qgis_python()}', REPORTING_SCRIPT, '--method', _method],
                 capture_output=True,
                 text=True,
@@ -173,7 +175,7 @@ class ImportExportMixin:
             return
 
         data = self._build_export_data()
-        if not self._validate_export_data(data):
+        if data is None or not self._validate_export_data(data):
             return
 
         if not self._write_export_json(data):
