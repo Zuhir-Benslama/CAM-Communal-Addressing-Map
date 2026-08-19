@@ -73,33 +73,29 @@ class TestRNA(unittest.TestCase):
             delattr(self.plugin, 'dock_widget')
         self.plugin._normalize_dock_width()
 
-    @patch('plans_adressage.app.main.MainDialog')
-    @patch('plans_adressage.app.main.QDockWidget')
-    @patch('plans_adressage.app.main.QTimer')
-    @patch('plans_adressage.app.main.current_locale', return_value='en')
-    @patch('plans_adressage.app.main.get_string', return_value='RNA')
-    def test_run_first_start(
-        self, mock_str, mock_locale, mock_timer, mock_dock_cls, mock_dlg
-    ):
-        mock_dock = mock_dock_cls.return_value
-        mock_dock.width.return_value = 600
-        mock_dock.height.return_value = 400
-        self.plugin.first_start = True
-        self.plugin.run()
-        self.assertFalse(self.plugin.first_start)
-        mock_dlg.assert_called_once()
+    def test_run_first_start(self):
+        with patch.object(self.mod, 'MainDialog') as mock_dlg, \
+             patch.object(self.mod, 'QDockWidget') as mock_dock_cls, \
+             patch.object(self.mod, 'QTimer') as mock_timer, \
+             patch.object(self.mod, 'current_locale', return_value='en') as mock_locale, \
+             patch.object(self.mod, 'get_string', return_value='RNA') as mock_str:
+            mock_dock = mock_dock_cls.return_value
+            mock_dock.width.return_value = 600
+            mock_dock.height.return_value = 400
+            self.plugin.first_start = True
+            self.plugin.run()
+            self.assertFalse(self.plugin.first_start)
+            mock_dlg.assert_called_once()
 
-    @patch('plans_adressage.app.main.MainDialog')
-    @patch('plans_adressage.app.main.QDockWidget')
-    @patch('plans_adressage.app.main.QTimer')
-    @patch('plans_adressage.app.main.current_locale', return_value='en')
-    @patch('plans_adressage.app.main.get_string', return_value='RNA')
-    def test_run_subsequent(
-        self, mock_str, mock_locale, mock_timer, mock_dock, mock_dlg
-    ):
-        self.plugin.first_start = False
-        self.plugin.dock_widget = MagicMock()
-        self.plugin.dock_widget.width.return_value = 600
-        self.plugin.run()
-        self.plugin.dock_widget.raise_.assert_called()
-        self.plugin.dock_widget.show.assert_called()
+    def test_run_subsequent(self):
+        with patch.object(self.mod, 'MainDialog') as mock_dlg, \
+             patch.object(self.mod, 'QDockWidget') as mock_dock, \
+             patch.object(self.mod, 'QTimer') as mock_timer, \
+             patch.object(self.mod, 'current_locale', return_value='en') as mock_locale, \
+             patch.object(self.mod, 'get_string', return_value='RNA') as mock_str:
+            self.plugin.first_start = False
+            self.plugin.dock_widget = MagicMock()
+            self.plugin.dock_widget.width.return_value = 600
+            self.plugin.run()
+            self.plugin.dock_widget.raise_.assert_called()
+            self.plugin.dock_widget.show.assert_called()

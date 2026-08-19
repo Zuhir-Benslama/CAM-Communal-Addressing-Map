@@ -135,94 +135,94 @@ class TestInitThemeLocale(unittest.TestCase):
         dialog._combo_locale.findData.return_value = 0
         return dialog
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    def test_adds_dark_and_light_theme_items(self, MockSettings):
-        settings_inst = MagicMock()
-        settings_inst.value.return_value = 'dark'
-        MockSettings.return_value = settings_inst
+    def test_adds_dark_and_light_theme_items(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings:
+            settings_inst = MagicMock()
+            settings_inst.value.return_value = 'dark'
+            MockSettings.return_value = settings_inst
 
-        dialog = self._make_dialog()
-        self.mod.init_theme_locale(dialog)
+            dialog = self._make_dialog()
+            self.mod.init_theme_locale(dialog)
 
-        self.assertEqual(dialog._combo_theme.addItem.call_count, 2)
+            self.assertEqual(dialog._combo_theme.addItem.call_count, 2)
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    def test_sets_saved_theme_index(self, MockSettings):
-        settings_inst = MagicMock()
-        settings_inst.value.return_value = 'dark'
-        MockSettings.return_value = settings_inst
+    def test_sets_saved_theme_index(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings:
+            settings_inst = MagicMock()
+            settings_inst.value.return_value = 'dark'
+            MockSettings.return_value = settings_inst
 
-        dialog = self._make_dialog()
-        self.mod.init_theme_locale(dialog)
+            dialog = self._make_dialog()
+            self.mod.init_theme_locale(dialog)
 
-        dialog._combo_theme.setCurrentIndex.assert_called_once()
+            dialog._combo_theme.setCurrentIndex.assert_called_once()
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    def test_sets_current_theme_from_combo(self, MockSettings):
-        settings_inst = MagicMock()
-        settings_inst.value.return_value = 'dark'
-        MockSettings.return_value = settings_inst
+    def test_sets_current_theme_from_combo(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings:
+            settings_inst = MagicMock()
+            settings_inst.value.return_value = 'dark'
+            MockSettings.return_value = settings_inst
 
-        dialog = self._make_dialog()
-        self.mod.init_theme_locale(dialog)
+            dialog = self._make_dialog()
+            self.mod.init_theme_locale(dialog)
 
-        self.assertEqual(dialog._current_theme, 'dark')
+            self.assertEqual(dialog._current_theme, 'dark')
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    def test_adds_locale_items(self, MockSettings):
-        settings_inst = MagicMock()
-        settings_inst.value.return_value = ''
-        MockSettings.return_value = settings_inst
+    def test_adds_locale_items(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings:
+            settings_inst = MagicMock()
+            settings_inst.value.return_value = ''
+            MockSettings.return_value = settings_inst
 
-        dialog = self._make_dialog()
-        self.mod.init_theme_locale(dialog)
+            dialog = self._make_dialog()
+            self.mod.init_theme_locale(dialog)
 
-        self.assertEqual(dialog._combo_locale.addItem.call_count, 3)
+            self.assertEqual(dialog._combo_locale.addItem.call_count, 3)
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    def test_sets_saved_locale_index(self, MockSettings):
-        settings_inst = MagicMock()
-        settings_inst.value.return_value = 'fr'
-        MockSettings.return_value = settings_inst
+    def test_sets_saved_locale_index(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings:
+            settings_inst = MagicMock()
+            settings_inst.value.return_value = 'fr'
+            MockSettings.return_value = settings_inst
 
-        dialog = self._make_dialog()
-        dialog._combo_locale.findData.return_value = 1
-        self.mod.init_theme_locale(dialog)
+            dialog = self._make_dialog()
+            dialog._combo_locale.findData.return_value = 1
+            self.mod.init_theme_locale(dialog)
 
-        dialog._combo_locale.setCurrentIndex.assert_called_with(1)
+            dialog._combo_locale.setCurrentIndex.assert_called_with(1)
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    def test_no_locale_restore_when_empty(self, MockSettings):
-        settings_inst = MagicMock()
-        settings_inst.value.return_value = ''
-        MockSettings.return_value = settings_inst
+    def test_no_locale_restore_when_empty(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings:
+            settings_inst = MagicMock()
+            settings_inst.value.return_value = ''
+            MockSettings.return_value = settings_inst
 
-        dialog = self._make_dialog()
-        self.mod.init_theme_locale(dialog)
+            dialog = self._make_dialog()
+            self.mod.init_theme_locale(dialog)
 
-        dialog._combo_locale.setCurrentIndex.assert_not_called()
+            dialog._combo_locale.setCurrentIndex.assert_not_called()
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    def test_arabic_theme_value_normalized(self, MockSettings):
-        settings_inst = MagicMock()
-        settings_inst.value.return_value = 'فاتح'
-        MockSettings.return_value = settings_inst
+    def test_arabic_theme_value_normalized(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings:
+            settings_inst = MagicMock()
+            settings_inst.value.return_value = 'فاتح'
+            MockSettings.return_value = settings_inst
 
-        dialog = self._make_dialog()
-        self.mod.init_theme_locale(dialog)
+            dialog = self._make_dialog()
+            self.mod.init_theme_locale(dialog)
 
-        dialog._combo_theme.findData.assert_called_with('light')
+            dialog._combo_theme.findData.assert_called_with('light')
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    def test_saves_normalized_theme_to_settings(self, MockSettings):
-        settings_inst = MagicMock()
-        settings_inst.value.return_value = 'فاتح'
-        MockSettings.return_value = settings_inst
+    def test_saves_normalized_theme_to_settings(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings:
+            settings_inst = MagicMock()
+            settings_inst.value.return_value = 'فاتح'
+            MockSettings.return_value = settings_inst
 
-        dialog = self._make_dialog()
-        self.mod.init_theme_locale(dialog)
+            dialog = self._make_dialog()
+            self.mod.init_theme_locale(dialog)
 
-        settings_inst.setValue.assert_any_call('theme', 'light')
+            settings_inst.setValue.assert_any_call('theme', 'light')
 
 
 class TestOnLocaleChanged(unittest.TestCase):
@@ -259,82 +259,78 @@ class TestOnLocaleChanged(unittest.TestCase):
         dialog.LAYER_INDEX_MAP = ['Zones', 'Roads']
         return dialog
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    @patch('plans_adressage.gui.dialog_state.QApplication')
-    @patch('plans_adressage.gui.dialog_state.translate_internal_combos')
-    def test_returns_early_when_code_is_empty(
-        self, mock_translate, MockQApp, MockSettings
-    ):
-        dialog = self._make_dialog()
-        dialog._combo_locale.currentData.return_value = ''
-        self.mod.on_locale_changed(dialog, 0)
-        MockSettings.return_value.setValue.assert_not_called()
-        mock_translate.assert_not_called()
+    def test_returns_early_when_code_is_empty(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings, \
+             patch.object(self.mod, 'QApplication') as MockQApp, \
+             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+            dialog = self._make_dialog()
+            dialog._combo_locale.currentData.return_value = ''
+            self.mod.on_locale_changed(dialog, 0)
+            MockSettings.return_value.setValue.assert_not_called()
+            mock_translate.assert_not_called()
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    @patch('plans_adressage.gui.dialog_state.QApplication')
-    @patch('plans_adressage.gui.dialog_state.translate_internal_combos')
-    def test_saves_locale_to_settings(self, mock_translate, MockQApp, MockSettings):
-        dialog = self._make_dialog(locale='fr')
-        self.mod.on_locale_changed(dialog, 1)
-        MockSettings.return_value.setValue.assert_called_with('locale', 'fr')
+    def test_saves_locale_to_settings(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings, \
+             patch.object(self.mod, 'QApplication') as MockQApp, \
+             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+            dialog = self._make_dialog(locale='fr')
+            self.mod.on_locale_changed(dialog, 1)
+            MockSettings.return_value.setValue.assert_called_with('locale', 'fr')
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    @patch('plans_adressage.gui.dialog_state.QApplication')
-    @patch('plans_adressage.gui.dialog_state.translate_internal_combos')
-    def test_updates_tr_locale(self, mock_translate, MockQApp, MockSettings):
-        dialog = self._make_dialog(locale='fr')
-        self.mod.on_locale_changed(dialog, 1)
-        self.assertEqual(dialog._tr_locale, 'fr')
+    def test_updates_tr_locale(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings, \
+             patch.object(self.mod, 'QApplication') as MockQApp, \
+             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+            dialog = self._make_dialog(locale='fr')
+            self.mod.on_locale_changed(dialog, 1)
+            self.assertEqual(dialog._tr_locale, 'fr')
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    @patch('plans_adressage.gui.dialog_state.QApplication')
-    @patch('plans_adressage.gui.dialog_state.translate_internal_combos')
-    def test_clears_button_texts(self, mock_translate, MockQApp, MockSettings):
-        dialog = self._make_dialog(locale='en')
-        self.mod.on_locale_changed(dialog, 2)
-        dialog._btn_draw.setText.assert_called_with('')
-        dialog._btn_select.setText.assert_called_with('')
-        dialog._btn_edit.setText.assert_called_with('')
-        dialog._btn_measure.setText.assert_called_with('')
+    def test_clears_button_texts(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings, \
+             patch.object(self.mod, 'QApplication') as MockQApp, \
+             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+            dialog = self._make_dialog(locale='en')
+            self.mod.on_locale_changed(dialog, 2)
+            dialog._btn_draw.setText.assert_called_with('')
+            dialog._btn_select.setText.assert_called_with('')
+            dialog._btn_edit.setText.assert_called_with('')
+            dialog._btn_measure.setText.assert_called_with('')
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    @patch('plans_adressage.gui.dialog_state.QApplication')
-    @patch('plans_adressage.gui.dialog_state.translate_internal_combos')
-    def test_calls_translate_internal_combos(
-        self, mock_translate, MockQApp, MockSettings
-    ):
-        dialog = self._make_dialog(locale='fr')
-        self.mod.on_locale_changed(dialog, 1)
-        mock_translate.assert_called_once_with(dialog)
+    def test_calls_translate_internal_combos(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings, \
+             patch.object(self.mod, 'QApplication') as MockQApp, \
+             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+            dialog = self._make_dialog(locale='fr')
+            self.mod.on_locale_changed(dialog, 1)
+            mock_translate.assert_called_once_with(dialog)
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    @patch('plans_adressage.gui.dialog_state.QApplication')
-    @patch('plans_adressage.gui.dialog_state.translate_internal_combos')
-    def test_sets_rtl_for_arabic(self, mock_translate, MockQApp, MockSettings):
-        dialog = self._make_dialog(locale='ar')
-        self.mod.on_locale_changed(dialog, 0)
-        MockQApp.setLayoutDirection.assert_called_with(
-            self.mod.Qt.LayoutDirection.RightToLeft
-        )
+    def test_sets_rtl_for_arabic(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings, \
+             patch.object(self.mod, 'QApplication') as MockQApp, \
+             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+            dialog = self._make_dialog(locale='ar')
+            self.mod.on_locale_changed(dialog, 0)
+            MockQApp.setLayoutDirection.assert_called_with(
+                self.mod.Qt.LayoutDirection.RightToLeft
+            )
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    @patch('plans_adressage.gui.dialog_state.QApplication')
-    @patch('plans_adressage.gui.dialog_state.translate_internal_combos')
-    def test_sets_ltr_for_non_arabic(self, mock_translate, MockQApp, MockSettings):
-        dialog = self._make_dialog(locale='fr')
-        self.mod.on_locale_changed(dialog, 1)
-        MockQApp.setLayoutDirection.assert_called_with(
-            self.mod.Qt.LayoutDirection.LeftToRight
-        )
+    def test_sets_ltr_for_non_arabic(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings, \
+             patch.object(self.mod, 'QApplication') as MockQApp, \
+             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+            dialog = self._make_dialog(locale='fr')
+            self.mod.on_locale_changed(dialog, 1)
+            MockQApp.setLayoutDirection.assert_called_with(
+                self.mod.Qt.LayoutDirection.LeftToRight
+            )
 
-    @patch('plans_adressage.gui.dialog_state.QSettings')
-    @patch('plans_adressage.gui.dialog_state.QApplication')
-    @patch('plans_adressage.gui.dialog_state.translate_internal_combos')
-    def test_calls_fill_wilayas_list(self, mock_translate, MockQApp, MockSettings):
-        dialog = self._make_dialog(locale='fr')
-        self.mod.on_locale_changed(dialog, 1)
-        self.mod.fill_wilayas_list.assert_called_with(dialog.wilaya_list)
+    def test_calls_fill_wilayas_list(self):
+        with patch.object(self.mod, 'QSettings') as MockSettings, \
+             patch.object(self.mod, 'QApplication') as MockQApp, \
+             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+            dialog = self._make_dialog(locale='fr')
+            self.mod.on_locale_changed(dialog, 1)
+            self.mod.fill_wilayas_list.assert_called_with(dialog.wilaya_list)
 
 
 class TestOnActionChanged(unittest.TestCase):
@@ -388,55 +384,55 @@ class TestOnSaveAction(unittest.TestCase):
         sys.modules['plans_adressage.gui.dialog_state'] = cls.mod
         spec.loader.exec_module(cls.mod)
 
-    @patch('plans_adressage.gui.dialog_state.QFileDialog')
-    def test_returns_early_when_no_directory(self, MockFileDialog):
-        MockFileDialog.getExistingDirectory.return_value = ''
-        dialog = MagicMock()
-        self.mod.on_save_action(dialog)
-        dialog.generate_report.assert_not_called()
+    def test_returns_early_when_no_directory(self):
+        with patch.object(self.mod, 'QFileDialog') as MockFileDialog:
+            MockFileDialog.getExistingDirectory.return_value = ''
+            dialog = MagicMock()
+            self.mod.on_save_action(dialog)
+            dialog.generate_report.assert_not_called()
 
-    @patch('plans_adressage.gui.dialog_state.QFileDialog')
-    def test_report_action(self, MockFileDialog):
-        MockFileDialog.getExistingDirectory.return_value = '/tmp/out'
-        dialog = MagicMock()
-        dialog._combo_action.currentData.return_value = 'report'
-        self.mod.on_save_action(dialog)
-        self.assertEqual(dialog._output_dir, '/tmp/out')
-        dialog.generate_report.assert_called_once()
+    def test_report_action(self):
+        with patch.object(self.mod, 'QFileDialog') as MockFileDialog:
+            MockFileDialog.getExistingDirectory.return_value = '/tmp/out'
+            dialog = MagicMock()
+            dialog._combo_action.currentData.return_value = 'report'
+            self.mod.on_save_action(dialog)
+            self.assertEqual(dialog._output_dir, '/tmp/out')
+            dialog.generate_report.assert_called_once()
 
-    @patch('plans_adressage.gui.dialog_state.QFileDialog')
-    def test_order_action(self, MockFileDialog):
-        MockFileDialog.getExistingDirectory.return_value = '/tmp/out'
-        dialog = MagicMock()
-        dialog._combo_action.currentData.return_value = 'order'
-        self.mod.on_save_action(dialog)
-        dialog.purchase_order.assert_called_once()
+    def test_order_action(self):
+        with patch.object(self.mod, 'QFileDialog') as MockFileDialog:
+            MockFileDialog.getExistingDirectory.return_value = '/tmp/out'
+            dialog = MagicMock()
+            dialog._combo_action.currentData.return_value = 'order'
+            self.mod.on_save_action(dialog)
+            dialog.purchase_order.assert_called_once()
 
-    @patch('plans_adressage.gui.dialog_state.QFileDialog')
-    def test_panels_map_action(self, MockFileDialog):
-        MockFileDialog.getExistingDirectory.return_value = '/tmp/out'
-        dialog = MagicMock()
-        dialog._combo_action.currentData.return_value = 'panels_map'
-        self.mod.on_save_action(dialog)
-        dialog.panel_chart.assert_called_once()
-        dialog.export_to_image.assert_called_once()
+    def test_panels_map_action(self):
+        with patch.object(self.mod, 'QFileDialog') as MockFileDialog:
+            MockFileDialog.getExistingDirectory.return_value = '/tmp/out'
+            dialog = MagicMock()
+            dialog._combo_action.currentData.return_value = 'panels_map'
+            self.mod.on_save_action(dialog)
+            dialog.panel_chart.assert_called_once()
+            dialog.export_to_image.assert_called_once()
 
-    @patch('plans_adressage.gui.dialog_state.QFileDialog')
-    def test_num_map_action(self, MockFileDialog):
-        MockFileDialog.getExistingDirectory.return_value = '/tmp/out'
-        dialog = MagicMock()
-        dialog._combo_action.currentData.return_value = 'num_map'
-        self.mod.on_save_action(dialog)
-        dialog.numbering_chart.assert_called_once()
-        dialog.export_to_image.assert_called_once()
+    def test_num_map_action(self):
+        with patch.object(self.mod, 'QFileDialog') as MockFileDialog:
+            MockFileDialog.getExistingDirectory.return_value = '/tmp/out'
+            dialog = MagicMock()
+            dialog._combo_action.currentData.return_value = 'num_map'
+            self.mod.on_save_action(dialog)
+            dialog.numbering_chart.assert_called_once()
+            dialog.export_to_image.assert_called_once()
 
-    @patch('plans_adressage.gui.dialog_state.QFileDialog')
-    def test_backup_action(self, MockFileDialog):
-        MockFileDialog.getExistingDirectory.return_value = '/tmp/out'
-        dialog = MagicMock()
-        dialog._combo_action.currentData.return_value = 'backup'
-        self.mod.on_save_action(dialog)
-        dialog.backup.assert_called_once()
+    def test_backup_action(self):
+        with patch.object(self.mod, 'QFileDialog') as MockFileDialog:
+            MockFileDialog.getExistingDirectory.return_value = '/tmp/out'
+            dialog = MagicMock()
+            dialog._combo_action.currentData.return_value = 'backup'
+            self.mod.on_save_action(dialog)
+            dialog.backup.assert_called_once()
 
 
 if __name__ == '__main__':

@@ -89,42 +89,42 @@ class TestUpdateHandler(unittest.TestCase):
     def setUp(self):
         self.h = _MixinHarness(self.mod)
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.QgsProject')
-    @patch('plans_adressage.mixins.layer_edit_mixin.update_layer')
-    def test_no_layers_found(self, mock_update, mock_proj):
-        mock_proj.instance.return_value.mapLayersByName.return_value = []
-        self.h.mixin._update_handler('Nonexistent')
-        mock_update.assert_not_called()
+    def test_no_layers_found(self):
+        with patch.object(self.mod, 'QgsProject') as mock_proj, \
+             patch.object(self.mod, 'update_layer') as mock_update:
+            mock_proj.instance.return_value.mapLayersByName.return_value = []
+            self.h.mixin._update_handler('Nonexistent')
+            mock_update.assert_not_called()
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.QgsProject')
-    @patch('plans_adressage.mixins.layer_edit_mixin.update_layer')
-    def test_layers_found_connects_signal(self, mock_update, mock_proj):
-        layer = MagicMock()
-        mock_proj.instance.return_value.mapLayersByName.return_value = [layer]
-        self.h.mixin._update_handler('roads')
-        layer.geometryChanged.connect.assert_called_once_with(
-            self.h.mixin.on_geometry_changed,
-        )
-        mock_update.assert_called_once_with(self.h.mixin.iface, 'roads')
+    def test_layers_found_connects_signal(self):
+        with patch.object(self.mod, 'QgsProject') as mock_proj, \
+             patch.object(self.mod, 'update_layer') as mock_update:
+            layer = MagicMock()
+            mock_proj.instance.return_value.mapLayersByName.return_value = [layer]
+            self.h.mixin._update_handler('roads')
+            layer.geometryChanged.connect.assert_called_once_with(
+                self.h.mixin.on_geometry_changed,
+            )
+            mock_update.assert_called_once_with(self.h.mixin.iface, 'roads')
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.QgsProject')
-    @patch('plans_adressage.mixins.layer_edit_mixin.update_layer')
-    def test_disconnect_before_connect(self, mock_update, mock_proj):
-        layer = MagicMock()
-        mock_proj.instance.return_value.mapLayersByName.return_value = [layer]
-        self.h.mixin._update_handler('roads')
-        layer.geometryChanged.disconnect.assert_called_once()
-        layer.geometryChanged.connect.assert_called_once()
+    def test_disconnect_before_connect(self):
+        with patch.object(self.mod, 'QgsProject') as mock_proj, \
+             patch.object(self.mod, 'update_layer') as mock_update:
+            layer = MagicMock()
+            mock_proj.instance.return_value.mapLayersByName.return_value = [layer]
+            self.h.mixin._update_handler('roads')
+            layer.geometryChanged.disconnect.assert_called_once()
+            layer.geometryChanged.connect.assert_called_once()
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.QgsProject')
-    @patch('plans_adressage.mixins.layer_edit_mixin.update_layer')
-    def test_disconnect_type_error_suppressed(self, mock_update, mock_proj):
-        layer = MagicMock()
-        layer.geometryChanged.disconnect.side_effect = TypeError
-        mock_proj.instance.return_value.mapLayersByName.return_value = [layer]
-        self.h.mixin._update_handler('roads')
-        layer.geometryChanged.connect.assert_called_once()
-        mock_update.assert_called_once()
+    def test_disconnect_type_error_suppressed(self):
+        with patch.object(self.mod, 'QgsProject') as mock_proj, \
+             patch.object(self.mod, 'update_layer') as mock_update:
+            layer = MagicMock()
+            layer.geometryChanged.disconnect.side_effect = TypeError
+            mock_proj.instance.return_value.mapLayersByName.return_value = [layer]
+            self.h.mixin._update_handler('roads')
+            layer.geometryChanged.connect.assert_called_once()
+            mock_update.assert_called_once()
 
 
 class TestStartEditing(unittest.TestCase):
@@ -207,14 +207,14 @@ class TestShowSuccess(unittest.TestCase):
     def setUp(self):
         self.h = _MixinHarness(self.mod)
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.QMessageBox')
-    def test_calls_information(self, mock_msg):
-        self.h.mixin._show_success('it worked')
-        mock_msg.information.assert_called_once_with(
-            self.h.mixin,
-            'Success',
-            'it worked',
-        )
+    def test_calls_information(self):
+        with patch.object(self.mod, 'QMessageBox') as mock_msg:
+            self.h.mixin._show_success('it worked')
+            mock_msg.information.assert_called_once_with(
+                self.h.mixin,
+                'Success',
+                'it worked',
+            )
 
 
 class TestShowError(unittest.TestCase):
@@ -232,14 +232,14 @@ class TestShowError(unittest.TestCase):
     def setUp(self):
         self.h = _MixinHarness(self.mod)
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.QMessageBox')
-    def test_calls_critical(self, mock_msg):
-        self.h.mixin._show_error('boom')
-        mock_msg.critical.assert_called_once_with(
-            self.h.mixin,
-            'Error',
-            'boom',
-        )
+    def test_calls_critical(self):
+        with patch.object(self.mod, 'QMessageBox') as mock_msg:
+            self.h.mixin._show_error('boom')
+            mock_msg.critical.assert_called_once_with(
+                self.h.mixin,
+                'Error',
+                'boom',
+            )
 
 
 class TestMakeLocaleKwargs(unittest.TestCase):
@@ -257,21 +257,21 @@ class TestMakeLocaleKwargs(unittest.TestCase):
     def setUp(self):
         self.h = _MixinHarness(self.mod)
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.current_locale', return_value='ar')
-    def test_arabic_returns_empty(self, _):
-        self.assertEqual(self.h.mixin._make_locale_kwargs('name', 'val'), {})
+    def test_arabic_returns_empty(self):
+        with patch.object(self.mod, 'current_locale', return_value='ar'):
+            self.assertEqual(self.h.mixin._make_locale_kwargs('name', 'val'), {})
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.current_locale', return_value='fr')
-    def test_french(self, _):
-        self.assertEqual(
-            self.h.mixin._make_locale_kwargs('name', 'val'), {'name_fr': 'val'}
-        )
+    def test_french(self):
+        with patch.object(self.mod, 'current_locale', return_value='fr'):
+            self.assertEqual(
+                self.h.mixin._make_locale_kwargs('name', 'val'), {'name_fr': 'val'}
+            )
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.current_locale', return_value='en')
-    def test_english(self, _):
-        self.assertEqual(
-            self.h.mixin._make_locale_kwargs('road_name', 'A'), {'road_name_en': 'A'}
-        )
+    def test_english(self):
+        with patch.object(self.mod, 'current_locale', return_value='en'):
+            self.assertEqual(
+                self.h.mixin._make_locale_kwargs('road_name', 'A'), {'road_name_en': 'A'}
+            )
 
 
 class TestAddZone(unittest.TestCase):
@@ -298,36 +298,27 @@ class TestAddZone(unittest.TestCase):
         self.h.mixin._last_feature_wkt = None
         self.h.mixin.add_zone()
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.add_zone')
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.validate_text',
-        side_effect=lambda v, **kw: v,
-    )
-    def test_success(self, mock_validate, mock_add):
-        self.h.mixin._geometry_ready = LAYER_ZONES
-        self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
-        self.h.mixin._last_feature_id = 'pk-1'
-        self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
-        self.h.mixin.add_zone()
-        mock_add.assert_called_once()
-        self.assertIn('geometry_wkt', mock_add.call_args.kwargs)
-
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.add_zone',
-        side_effect=SQLAlchemyError('db'),
-    )
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.validate_text',
-        side_effect=lambda v, **kw: v,
-    )
-    def test_sqlalchemy_error(self, mock_validate, mock_add):
-        self.h.mixin._geometry_ready = LAYER_ZONES
-        self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
-        self.h.mixin._last_feature_id = 'pk-1'
-        self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
-        with patch.object(self.h.mixin, '_show_error') as mock_err:
+    def test_success(self):
+        with patch.object(self.mod, 'add_zone') as mock_add, \
+             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+            self.h.mixin._geometry_ready = LAYER_ZONES
+            self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
+            self.h.mixin._last_feature_id = 'pk-1'
+            self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
             self.h.mixin.add_zone()
-            mock_err.assert_called_once()
+            mock_add.assert_called_once()
+            self.assertIn('geometry_wkt', mock_add.call_args.kwargs)
+
+    def test_sqlalchemy_error(self):
+        with patch.object(self.mod, 'add_zone', side_effect=SQLAlchemyError('db')) as mock_add, \
+             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+            self.h.mixin._geometry_ready = LAYER_ZONES
+            self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
+            self.h.mixin._last_feature_id = 'pk-1'
+            self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
+            with patch.object(self.h.mixin, '_show_error') as mock_err:
+                self.h.mixin.add_zone()
+                mock_err.assert_called_once()
 
 
 class TestAddRoad(unittest.TestCase):
@@ -354,36 +345,27 @@ class TestAddRoad(unittest.TestCase):
         self.h.mixin._last_feature_wkt = None
         self.h.mixin.add_road()
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.add_road')
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.validate_text',
-        side_effect=lambda v, **kw: v,
-    )
-    def test_success(self, mock_validate, mock_add):
-        self.h.mixin._geometry_ready = LAYER_ROADS
-        self.h.mixin._last_feature_wkt = 'LINESTRING(0 0,1 1)'
-        self.h.mixin._last_feature_id = 'pk-2'
-        self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
-        self.h.mixin.add_road()
-        mock_add.assert_called_once()
-        self.assertIn('road_name', mock_add.call_args.kwargs)
-
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.add_road',
-        side_effect=SQLAlchemyError('db'),
-    )
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.validate_text',
-        side_effect=lambda v, **kw: v,
-    )
-    def test_sqlalchemy_error(self, mock_validate, mock_add):
-        self.h.mixin._geometry_ready = LAYER_ROADS
-        self.h.mixin._last_feature_wkt = 'LINESTRING(0 0,1 1)'
-        self.h.mixin._last_feature_id = 'pk-2'
-        self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
-        with patch.object(self.h.mixin, '_show_error') as mock_err:
+    def test_success(self):
+        with patch.object(self.mod, 'add_road') as mock_add, \
+             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+            self.h.mixin._geometry_ready = LAYER_ROADS
+            self.h.mixin._last_feature_wkt = 'LINESTRING(0 0,1 1)'
+            self.h.mixin._last_feature_id = 'pk-2'
+            self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
             self.h.mixin.add_road()
-            mock_err.assert_called_once()
+            mock_add.assert_called_once()
+            self.assertIn('road_name', mock_add.call_args.kwargs)
+
+    def test_sqlalchemy_error(self):
+        with patch.object(self.mod, 'add_road', side_effect=SQLAlchemyError('db')) as mock_add, \
+             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+            self.h.mixin._geometry_ready = LAYER_ROADS
+            self.h.mixin._last_feature_wkt = 'LINESTRING(0 0,1 1)'
+            self.h.mixin._last_feature_id = 'pk-2'
+            self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
+            with patch.object(self.h.mixin, '_show_error') as mock_err:
+                self.h.mixin.add_road()
+                mock_err.assert_called_once()
 
 
 class TestAddOrganization(unittest.TestCase):
@@ -410,35 +392,26 @@ class TestAddOrganization(unittest.TestCase):
         self.h.mixin._last_feature_wkt = None
         self.h.mixin.add_organization()
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.add_organization')
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.validate_text',
-        side_effect=lambda v, **kw: v,
-    )
-    def test_success(self, mock_validate, mock_add):
-        self.h.mixin._geometry_ready = LAYER_FACILITIES
-        self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
-        self.h.mixin._last_feature_id = 'pk-3'
-        self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
-        self.h.mixin.add_organization()
-        mock_add.assert_called_once()
-
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.add_organization',
-        side_effect=SQLAlchemyError('db'),
-    )
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.validate_text',
-        side_effect=lambda v, **kw: v,
-    )
-    def test_sqlalchemy_error(self, mock_validate, mock_add):
-        self.h.mixin._geometry_ready = LAYER_FACILITIES
-        self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
-        self.h.mixin._last_feature_id = 'pk-3'
-        self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
-        with patch.object(self.h.mixin, '_show_error') as mock_err:
+    def test_success(self):
+        with patch.object(self.mod, 'add_organization') as mock_add, \
+             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+            self.h.mixin._geometry_ready = LAYER_FACILITIES
+            self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
+            self.h.mixin._last_feature_id = 'pk-3'
+            self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
             self.h.mixin.add_organization()
-            mock_err.assert_called_once()
+            mock_add.assert_called_once()
+
+    def test_sqlalchemy_error(self):
+        with patch.object(self.mod, 'add_organization', side_effect=SQLAlchemyError('db')) as mock_add, \
+             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+            self.h.mixin._geometry_ready = LAYER_FACILITIES
+            self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
+            self.h.mixin._last_feature_id = 'pk-3'
+            self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
+            with patch.object(self.h.mixin, '_show_error') as mock_err:
+                self.h.mixin.add_organization()
+                mock_err.assert_called_once()
 
 
 class TestAddCity(unittest.TestCase):
@@ -465,35 +438,26 @@ class TestAddCity(unittest.TestCase):
         self.h.mixin._last_feature_wkt = None
         self.h.mixin.add_city()
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.add_subdivision')
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.validate_text',
-        side_effect=lambda v, **kw: v,
-    )
-    def test_success(self, mock_validate, mock_add):
-        self.h.mixin._geometry_ready = LAYER_SUBDIVISIONS
-        self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
-        self.h.mixin._last_feature_id = 'pk-4'
-        self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
-        self.h.mixin.add_city()
-        mock_add.assert_called_once()
-
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.add_subdivision',
-        side_effect=SQLAlchemyError('db'),
-    )
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.validate_text',
-        side_effect=lambda v, **kw: v,
-    )
-    def test_sqlalchemy_error(self, mock_validate, mock_add):
-        self.h.mixin._geometry_ready = LAYER_SUBDIVISIONS
-        self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
-        self.h.mixin._last_feature_id = 'pk-4'
-        self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
-        with patch.object(self.h.mixin, '_show_error') as mock_err:
+    def test_success(self):
+        with patch.object(self.mod, 'add_subdivision') as mock_add, \
+             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+            self.h.mixin._geometry_ready = LAYER_SUBDIVISIONS
+            self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
+            self.h.mixin._last_feature_id = 'pk-4'
+            self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
             self.h.mixin.add_city()
-            mock_err.assert_called_once()
+            mock_add.assert_called_once()
+
+    def test_sqlalchemy_error(self):
+        with patch.object(self.mod, 'add_subdivision', side_effect=SQLAlchemyError('db')) as mock_add, \
+             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+            self.h.mixin._geometry_ready = LAYER_SUBDIVISIONS
+            self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
+            self.h.mixin._last_feature_id = 'pk-4'
+            self.h.mixin._make_locale_kwargs = MagicMock(return_value={})
+            with patch.object(self.h.mixin, '_show_error') as mock_err:
+                self.h.mixin.add_city()
+                mock_err.assert_called_once()
 
 
 class TestAddPanel(unittest.TestCase):
@@ -529,87 +493,84 @@ class TestAddPanel(unittest.TestCase):
         self.h.mixin._last_feature_wkt = None
         self.h.mixin.add_panel()
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.add_panel_sign')
-    def test_success_with_measure_tool(self, mock_add):
-        self.h.mixin._geometry_ready = LAYER_PANELS
-        self.h.mixin._last_feature_wkt = 'POINT(3 4)'
-        self.h.mixin._last_feature_id = 'pk-5'
-        self.h.mixin.ref_identify_tool.get_id.return_value = {
-            'layer_name': LAYER_ROADS,
-            'id': 'r-1',
-        }
-        self.h.mixin.measure_tool = MagicMock()
-        self.h.mixin.show_confirm_dialog = MagicMock()
-        self.h.mixin.add_panel()
-        mock_add.assert_called_once()
-        self.h.mixin.ref_identify_tool.unset_map_tool.assert_called_once()
-        self.h.mixin._draw_handler.assert_called_once_with(LAYER_PANELS)
-        self.h.mixin.show_confirm_dialog.assert_called_once()
-
-    @patch('plans_adressage.mixins.layer_edit_mixin.add_panel_sign')
-    def test_success_without_measure_tool(self, mock_add):
-        self.h.mixin._geometry_ready = LAYER_PANELS
-        self.h.mixin._last_feature_wkt = 'POINT(3 4)'
-        self.h.mixin._last_feature_id = 'pk-5'
-        self.h.mixin.ref_identify_tool.get_id.return_value = {
-            'layer_name': LAYER_ROADS,
-            'id': 'r-1',
-        }
-        self.h.mixin.measure_tool = None
-        with patch.object(self.h.mixin, '_show_success') as mock_suc:
+    def test_success_with_measure_tool(self):
+        with patch.object(self.mod, 'add_panel_sign') as mock_add:
+            self.h.mixin._geometry_ready = LAYER_PANELS
+            self.h.mixin._last_feature_wkt = 'POINT(3 4)'
+            self.h.mixin._last_feature_id = 'pk-5'
+            self.h.mixin.ref_identify_tool.get_id.return_value = {
+                'layer_name': LAYER_ROADS,
+                'id': 'r-1',
+            }
+            self.h.mixin.measure_tool = MagicMock()
+            self.h.mixin.show_confirm_dialog = MagicMock()
             self.h.mixin.add_panel()
-            mock_suc.assert_called_once_with('Panel added successfully')
+            mock_add.assert_called_once()
+            self.h.mixin.ref_identify_tool.unset_map_tool.assert_called_once()
+            self.h.mixin._draw_handler.assert_called_once_with(LAYER_PANELS)
+            self.h.mixin.show_confirm_dialog.assert_called_once()
 
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.add_panel_sign',
-        side_effect=ValueError('bad'),
-    )
-    def test_error_path(self, mock_add):
-        self.h.mixin._geometry_ready = LAYER_PANELS
-        self.h.mixin._last_feature_wkt = 'POINT(3 4)'
-        self.h.mixin._last_feature_id = 'pk-5'
-        self.h.mixin.ref_identify_tool.get_id.return_value = {
-            'layer_name': LAYER_ROADS,
-            'id': 'r-1',
-        }
-        self.h.mixin.measure_tool = None
-        with patch.object(self.h.mixin, '_show_error') as mock_err:
+    def test_success_without_measure_tool(self):
+        with patch.object(self.mod, 'add_panel_sign') as mock_add:
+            self.h.mixin._geometry_ready = LAYER_PANELS
+            self.h.mixin._last_feature_wkt = 'POINT(3 4)'
+            self.h.mixin._last_feature_id = 'pk-5'
+            self.h.mixin.ref_identify_tool.get_id.return_value = {
+                'layer_name': LAYER_ROADS,
+                'id': 'r-1',
+            }
+            self.h.mixin.measure_tool = None
+            with patch.object(self.h.mixin, '_show_success') as mock_suc:
+                self.h.mixin.add_panel()
+                mock_suc.assert_called_once_with('Panel added successfully')
+
+    def test_error_path(self):
+        with patch.object(self.mod, 'add_panel_sign', side_effect=ValueError('bad')) as mock_add:
+            self.h.mixin._geometry_ready = LAYER_PANELS
+            self.h.mixin._last_feature_wkt = 'POINT(3 4)'
+            self.h.mixin._last_feature_id = 'pk-5'
+            self.h.mixin.ref_identify_tool.get_id.return_value = {
+                'layer_name': LAYER_ROADS,
+                'id': 'r-1',
+            }
+            self.h.mixin.measure_tool = None
+            with patch.object(self.h.mixin, '_show_error') as mock_err:
+                self.h.mixin.add_panel()
+                mock_err.assert_called_once()
+            self.h.mixin.ref_identify_tool.unset_map_tool.assert_called_once()
+            self.h.mixin._draw_handler.assert_called_once_with(LAYER_PANELS)
+
+    def test_ref_facilities(self):
+        with patch.object(self.mod, 'add_panel_sign') as mock_add:
+            self.h.mixin._geometry_ready = LAYER_PANELS
+            self.h.mixin._last_feature_wkt = 'POINT(3 4)'
+            self.h.mixin._last_feature_id = 'pk-5'
+            self.h.mixin.ref_identify_tool.get_id.return_value = {
+                'layer_name': LAYER_FACILITIES,
+                'id': 'f-1',
+            }
+            self.h.mixin.measure_tool = None
             self.h.mixin.add_panel()
-            mock_err.assert_called_once()
-        self.h.mixin.ref_identify_tool.unset_map_tool.assert_called_once()
-        self.h.mixin._draw_handler.assert_called_once_with(LAYER_PANELS)
+            call_kwargs = mock_add.call_args.kwargs
+            self.assertEqual(call_kwargs['organization_id'], 'f-1')
+            self.assertIsNone(call_kwargs['road_id'])
+            self.assertIsNone(call_kwargs['subdivision_id'])
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.add_panel_sign')
-    def test_ref_facilities(self, mock_add):
-        self.h.mixin._geometry_ready = LAYER_PANELS
-        self.h.mixin._last_feature_wkt = 'POINT(3 4)'
-        self.h.mixin._last_feature_id = 'pk-5'
-        self.h.mixin.ref_identify_tool.get_id.return_value = {
-            'layer_name': LAYER_FACILITIES,
-            'id': 'f-1',
-        }
-        self.h.mixin.measure_tool = None
-        self.h.mixin.add_panel()
-        call_kwargs = mock_add.call_args.kwargs
-        self.assertEqual(call_kwargs['organization_id'], 'f-1')
-        self.assertIsNone(call_kwargs['road_id'])
-        self.assertIsNone(call_kwargs['subdivision_id'])
-
-    @patch('plans_adressage.mixins.layer_edit_mixin.add_panel_sign')
-    def test_ref_subdivisions(self, mock_add):
-        self.h.mixin._geometry_ready = LAYER_PANELS
-        self.h.mixin._last_feature_wkt = 'POINT(3 4)'
-        self.h.mixin._last_feature_id = 'pk-5'
-        self.h.mixin.ref_identify_tool.get_id.return_value = {
-            'layer_name': LAYER_SUBDIVISIONS,
-            'id': 's-1',
-        }
-        self.h.mixin.measure_tool = None
-        self.h.mixin.add_panel()
-        call_kwargs = mock_add.call_args.kwargs
-        self.assertEqual(call_kwargs['subdivision_id'], 's-1')
-        self.assertIsNone(call_kwargs['road_id'])
-        self.assertIsNone(call_kwargs['organization_id'])
+    def test_ref_subdivisions(self):
+        with patch.object(self.mod, 'add_panel_sign') as mock_add:
+            self.h.mixin._geometry_ready = LAYER_PANELS
+            self.h.mixin._last_feature_wkt = 'POINT(3 4)'
+            self.h.mixin._last_feature_id = 'pk-5'
+            self.h.mixin.ref_identify_tool.get_id.return_value = {
+                'layer_name': LAYER_SUBDIVISIONS,
+                'id': 's-1',
+            }
+            self.h.mixin.measure_tool = None
+            self.h.mixin.add_panel()
+            call_kwargs = mock_add.call_args.kwargs
+            self.assertEqual(call_kwargs['subdivision_id'], 's-1')
+            self.assertIsNone(call_kwargs['road_id'])
+            self.assertIsNone(call_kwargs['organization_id'])
 
 
 class TestAddNumbering(unittest.TestCase):
@@ -636,100 +597,82 @@ class TestAddNumbering(unittest.TestCase):
         self.h.mixin._last_feature_wkt = None
         self.h.mixin.add_numbering()
 
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.validate_text',
-        side_effect=lambda v, **kw: v,
-    )
-    @patch('plans_adressage.mixins.layer_edit_mixin.add_numbering')
-    def test_ref_is_road(self, mock_add, mock_val):
-        self.h.mixin._geometry_ready = LAYER_NUMBERING
-        self.h.mixin._last_feature_wkt = 'POINT(1 2)'
-        self.h.mixin._last_feature_id = 'pk-6'
-        self.h.mixin.ref_identify_tool.get_id.return_value = {
-            'layer_name': LAYER_ROADS,
-            'id': 'r-10',
-        }
-        self.h.mixin.measure_tool = None
-        self.h.mixin.add_numbering()
-        mock_add.assert_called_once()
-        call_kwargs = mock_add.call_args.kwargs
-        self.assertEqual(call_kwargs['road_id'], 'r-10')
-        self.assertIsNone(call_kwargs['subdivision_id'])
-
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.validate_text',
-        side_effect=lambda v, **kw: v,
-    )
-    @patch('plans_adressage.mixins.layer_edit_mixin.add_numbering')
-    def test_ref_is_subdivision(self, mock_add, mock_val):
-        self.h.mixin._geometry_ready = LAYER_NUMBERING
-        self.h.mixin._last_feature_wkt = 'POINT(1 2)'
-        self.h.mixin._last_feature_id = 'pk-6'
-        self.h.mixin.ref_identify_tool.get_id.return_value = {
-            'layer_name': LAYER_SUBDIVISIONS,
-            'id': 's-10',
-        }
-        self.h.mixin.measure_tool = None
-        self.h.mixin.add_numbering()
-        mock_add.assert_called_once()
-        call_kwargs = mock_add.call_args.kwargs
-        self.assertEqual(call_kwargs['subdivision_id'], 's-10')
-        self.assertIsNone(call_kwargs['road_id'])
-
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.validate_text',
-        side_effect=lambda v, **kw: v,
-    )
-    @patch('plans_adressage.mixins.layer_edit_mixin.add_numbering')
-    def test_no_ref_data(self, mock_add, mock_val):
-        self.h.mixin._geometry_ready = LAYER_NUMBERING
-        self.h.mixin._last_feature_wkt = 'POINT(1 2)'
-        self.h.mixin._last_feature_id = 'pk-6'
-        self.h.mixin.ref_identify_tool.get_id.return_value = None
-        self.h.mixin.measure_tool = None
-        self.h.mixin.add_numbering()
-        mock_add.assert_not_called()
-
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.validate_text',
-        side_effect=lambda v, **kw: v,
-    )
-    @patch('plans_adressage.mixins.layer_edit_mixin.add_numbering')
-    def test_with_measure_tool(self, mock_add, mock_val):
-        self.h.mixin._geometry_ready = LAYER_NUMBERING
-        self.h.mixin._last_feature_wkt = 'POINT(1 2)'
-        self.h.mixin._last_feature_id = 'pk-6'
-        self.h.mixin.ref_identify_tool.get_id.return_value = {
-            'layer_name': LAYER_ROADS,
-            'id': 'r-10',
-        }
-        self.h.mixin.measure_tool = MagicMock()
-        self.h.mixin.show_confirm_dialog = MagicMock()
-        self.h.mixin.add_numbering()
-        self.h.mixin.show_confirm_dialog.assert_called_once()
-        call_kwargs = self.h.mixin.show_confirm_dialog.call_args.kwargs
-        self.assertIs(call_kwargs['yes_callback'], self.h.mixin.measure_tool.clear)
-
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.validate_text',
-        side_effect=lambda v, **kw: v,
-    )
-    @patch(
-        'plans_adressage.mixins.layer_edit_mixin.add_numbering',
-        side_effect=TypeError('bad'),
-    )
-    def test_error_path(self, mock_add, mock_val):
-        self.h.mixin._geometry_ready = LAYER_NUMBERING
-        self.h.mixin._last_feature_wkt = 'POINT(1 2)'
-        self.h.mixin._last_feature_id = 'pk-6'
-        self.h.mixin.ref_identify_tool.get_id.return_value = {
-            'layer_name': LAYER_ROADS,
-            'id': 'r-10',
-        }
-        self.h.mixin.measure_tool = None
-        with patch.object(self.h.mixin, '_show_error') as mock_err:
+    def test_ref_is_road(self):
+        with patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_val, \
+             patch.object(self.mod, 'add_numbering') as mock_add:
+            self.h.mixin._geometry_ready = LAYER_NUMBERING
+            self.h.mixin._last_feature_wkt = 'POINT(1 2)'
+            self.h.mixin._last_feature_id = 'pk-6'
+            self.h.mixin.ref_identify_tool.get_id.return_value = {
+                'layer_name': LAYER_ROADS,
+                'id': 'r-10',
+            }
+            self.h.mixin.measure_tool = None
             self.h.mixin.add_numbering()
-            mock_err.assert_called_once()
+            mock_add.assert_called_once()
+            call_kwargs = mock_add.call_args.kwargs
+            self.assertEqual(call_kwargs['road_id'], 'r-10')
+            self.assertIsNone(call_kwargs['subdivision_id'])
+
+    def test_ref_is_subdivision(self):
+        with patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_val, \
+             patch.object(self.mod, 'add_numbering') as mock_add:
+            self.h.mixin._geometry_ready = LAYER_NUMBERING
+            self.h.mixin._last_feature_wkt = 'POINT(1 2)'
+            self.h.mixin._last_feature_id = 'pk-6'
+            self.h.mixin.ref_identify_tool.get_id.return_value = {
+                'layer_name': LAYER_SUBDIVISIONS,
+                'id': 's-10',
+            }
+            self.h.mixin.measure_tool = None
+            self.h.mixin.add_numbering()
+            mock_add.assert_called_once()
+            call_kwargs = mock_add.call_args.kwargs
+            self.assertEqual(call_kwargs['subdivision_id'], 's-10')
+            self.assertIsNone(call_kwargs['road_id'])
+
+    def test_no_ref_data(self):
+        with patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_val, \
+             patch.object(self.mod, 'add_numbering') as mock_add:
+            self.h.mixin._geometry_ready = LAYER_NUMBERING
+            self.h.mixin._last_feature_wkt = 'POINT(1 2)'
+            self.h.mixin._last_feature_id = 'pk-6'
+            self.h.mixin.ref_identify_tool.get_id.return_value = None
+            self.h.mixin.measure_tool = None
+            self.h.mixin.add_numbering()
+            mock_add.assert_not_called()
+
+    def test_with_measure_tool(self):
+        with patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_val, \
+             patch.object(self.mod, 'add_numbering') as mock_add:
+            self.h.mixin._geometry_ready = LAYER_NUMBERING
+            self.h.mixin._last_feature_wkt = 'POINT(1 2)'
+            self.h.mixin._last_feature_id = 'pk-6'
+            self.h.mixin.ref_identify_tool.get_id.return_value = {
+                'layer_name': LAYER_ROADS,
+                'id': 'r-10',
+            }
+            self.h.mixin.measure_tool = MagicMock()
+            self.h.mixin.show_confirm_dialog = MagicMock()
+            self.h.mixin.add_numbering()
+            self.h.mixin.show_confirm_dialog.assert_called_once()
+            call_kwargs = self.h.mixin.show_confirm_dialog.call_args.kwargs
+            self.assertIs(call_kwargs['yes_callback'], self.h.mixin.measure_tool.clear)
+
+    def test_error_path(self):
+        with patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_val, \
+             patch.object(self.mod, 'add_numbering', side_effect=TypeError('bad')) as mock_add:
+            self.h.mixin._geometry_ready = LAYER_NUMBERING
+            self.h.mixin._last_feature_wkt = 'POINT(1 2)'
+            self.h.mixin._last_feature_id = 'pk-6'
+            self.h.mixin.ref_identify_tool.get_id.return_value = {
+                'layer_name': LAYER_ROADS,
+                'id': 'r-10',
+            }
+            self.h.mixin.measure_tool = None
+            with patch.object(self.h.mixin, '_show_error') as mock_err:
+                self.h.mixin.add_numbering()
+                mock_err.assert_called_once()
 
     def test_ref_identify_tool_raises_type_error(self):
         self.h.mixin._geometry_ready = LAYER_NUMBERING
@@ -759,39 +702,39 @@ class TestShowConfirmDialog(unittest.TestCase):
     def setUp(self):
         self.h = _MixinHarness(self.mod)
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.QMessageBox')
-    def test_yes_calls_yes_callback(self, mock_msg_cls):
-        mock_msg_cls.Yes = 1
-        mock_msg_cls.No = 2
-        mock_msg_cls.Question = 4
-        instance = mock_msg_cls.return_value
-        instance.exec.return_value = 1
-        yes_cb = MagicMock()
-        result = self.h.mixin.show_confirm_dialog('T', 'M', yes_callback=yes_cb)
-        self.assertTrue(result)
-        yes_cb.assert_called_once()
+    def test_yes_calls_yes_callback(self):
+        with patch.object(self.mod, 'QMessageBox') as mock_msg_cls:
+            mock_msg_cls.Yes = 1
+            mock_msg_cls.No = 2
+            mock_msg_cls.Question = 4
+            instance = mock_msg_cls.return_value
+            instance.exec.return_value = 1
+            yes_cb = MagicMock()
+            result = self.h.mixin.show_confirm_dialog('T', 'M', yes_callback=yes_cb)
+            self.assertTrue(result)
+            yes_cb.assert_called_once()
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.QMessageBox')
-    def test_no_calls_no_callback(self, mock_msg_cls):
-        mock_msg_cls.Yes = 1
-        mock_msg_cls.No = 2
-        mock_msg_cls.Question = 4
-        instance = mock_msg_cls.return_value
-        instance.exec.return_value = 2
-        no_cb = MagicMock()
-        result = self.h.mixin.show_confirm_dialog('T', 'M', no_callback=no_cb)
-        self.assertFalse(result)
-        no_cb.assert_called_once()
+    def test_no_calls_no_callback(self):
+        with patch.object(self.mod, 'QMessageBox') as mock_msg_cls:
+            mock_msg_cls.Yes = 1
+            mock_msg_cls.No = 2
+            mock_msg_cls.Question = 4
+            instance = mock_msg_cls.return_value
+            instance.exec.return_value = 2
+            no_cb = MagicMock()
+            result = self.h.mixin.show_confirm_dialog('T', 'M', no_callback=no_cb)
+            self.assertFalse(result)
+            no_cb.assert_called_once()
 
-    @patch('plans_adressage.mixins.layer_edit_mixin.QMessageBox')
-    def test_no_callback_none(self, mock_msg_cls):
-        mock_msg_cls.Yes = 1
-        mock_msg_cls.No = 2
-        mock_msg_cls.Question = 4
-        instance = mock_msg_cls.return_value
-        instance.exec.return_value = 2
-        result = self.h.mixin.show_confirm_dialog('T', 'M')
-        self.assertFalse(result)
+    def test_no_callback_none(self):
+        with patch.object(self.mod, 'QMessageBox') as mock_msg_cls:
+            mock_msg_cls.Yes = 1
+            mock_msg_cls.No = 2
+            mock_msg_cls.Question = 4
+            instance = mock_msg_cls.return_value
+            instance.exec.return_value = 2
+            result = self.h.mixin.show_confirm_dialog('T', 'M')
+            self.assertFalse(result)
 
 
 if __name__ == '__main__':

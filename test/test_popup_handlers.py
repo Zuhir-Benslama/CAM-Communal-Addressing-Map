@@ -320,34 +320,28 @@ class TestNotifyHelpers(unittest.TestCase):
     def setUpClass(cls):
         cls.mod = _load_module()
 
-    @patch('plans_adressage.gui.popup_handlers.QMessageBox')
-    @patch(
-        'plans_adressage.gui.popup_handlers.get_string',
-        side_effect=lambda s, loc=None: s,
-    )
-    def test_notify_success(self, _gs, mock_qmb):
-        dialog = _make_dialog()
-        self.mod._notify_success(dialog, 'update ok')
-        mock_qmb.information.assert_called_once()
-        args = mock_qmb.information.call_args[0]
-        self.assertEqual(args[0], dialog)
-        self.assertIn('Success', args[1])
-        self.assertIn('update ok', args[2])
+    def test_notify_success(self):
+        with patch.object(self.mod, 'QMessageBox') as mock_qmb, \
+             patch.object(self.mod, 'get_string', side_effect=lambda s, loc=None: s) as _gs:
+            dialog = _make_dialog()
+            self.mod._notify_success(dialog, 'update ok')
+            mock_qmb.information.assert_called_once()
+            args = mock_qmb.information.call_args[0]
+            self.assertEqual(args[0], dialog)
+            self.assertIn('Success', args[1])
+            self.assertIn('update ok', args[2])
 
-    @patch('plans_adressage.gui.popup_handlers.QMessageBox')
-    @patch(
-        'plans_adressage.gui.popup_handlers.get_string',
-        side_effect=lambda s, loc=None: s,
-    )
-    def test_notify_failure(self, _gs, mock_qmb):
-        dialog = _make_dialog()
-        exc = RuntimeError('db exploded')
-        self.mod._notify_failure(dialog, 'update failed', exc)
-        mock_qmb.critical.assert_called_once()
-        args = mock_qmb.critical.call_args[0]
-        self.assertEqual(args[0], dialog)
-        self.assertIn('Error', args[1])
-        self.assertIn('update failed', args[2])
+    def test_notify_failure(self):
+        with patch.object(self.mod, 'QMessageBox') as mock_qmb, \
+             patch.object(self.mod, 'get_string', side_effect=lambda s, loc=None: s) as _gs:
+            dialog = _make_dialog()
+            exc = RuntimeError('db exploded')
+            self.mod._notify_failure(dialog, 'update failed', exc)
+            mock_qmb.critical.assert_called_once()
+            args = mock_qmb.critical.call_args[0]
+            self.assertEqual(args[0], dialog)
+            self.assertIn('Error', args[1])
+            self.assertIn('update failed', args[2])
 
 
 class TestFinishUpdate(unittest.TestCase):
@@ -355,12 +349,12 @@ class TestFinishUpdate(unittest.TestCase):
     def setUpClass(cls):
         cls.mod = _load_module()
 
-    @patch('plans_adressage.gui.popup_handlers.refresh_all_layers')
-    def test_calls_refresh_and_close(self, mock_refresh):
-        dialog = _make_dialog()
-        self.mod._finish_update(dialog)
-        mock_refresh.assert_called_once_with(dialog.iface)
-        dialog.close.assert_called_once()
+    def test_calls_refresh_and_close(self):
+        with patch.object(self.mod, 'refresh_all_layers') as mock_refresh:
+            dialog = _make_dialog()
+            self.mod._finish_update(dialog)
+            mock_refresh.assert_called_once_with(dialog.iface)
+            dialog.close.assert_called_once()
 
 
 class TestData(unittest.TestCase):
@@ -384,45 +378,43 @@ class TestUpdateEntity(unittest.TestCase):
     def setUpClass(cls):
         cls.mod = _load_module()
 
-    @patch('plans_adressage.gui.popup_handlers._finish_update')
-    @patch('plans_adressage.gui.popup_handlers._notify_success')
-    @patch('plans_adressage.gui.popup_handlers.get_session')
-    def test_success_path(self, mock_sess, mock_ns, mock_fu):
-        model_class = MagicMock()
-        dialog = _make_dialog()
-        self.mod._update_entity(dialog, model_class, 'ok', 'fail', name='foo')
-        model_class.update.assert_called_once_with(
-            mock_sess.return_value,
-            record_id='rec-1',
-            name='foo',
-        )
-        mock_ns.assert_called_once_with(dialog, 'ok')
-        mock_fu.assert_called_once_with(dialog)
-        mock_sess.return_value.close.assert_called_once()
+    def test_success_path(self):
+        with patch.object(self.mod, '_finish_update') as mock_fu, \
+             patch.object(self.mod, '_notify_success') as mock_ns, \
+             patch.object(self.mod, 'get_session') as mock_sess:
+            model_class = MagicMock()
+            dialog = _make_dialog()
+            self.mod._update_entity(dialog, model_class, 'ok', 'fail', name='foo')
+            model_class.update.assert_called_once_with(
+                mock_sess.return_value,
+                record_id='rec-1',
+                name='foo',
+            )
+            mock_ns.assert_called_once_with(dialog, 'ok')
+            mock_fu.assert_called_once_with(dialog)
+            mock_sess.return_value.close.assert_called_once()
 
-    @patch('plans_adressage.gui.popup_handlers._notify_failure')
-    @patch('plans_adressage.gui.popup_handlers.get_session')
-    def test_value_error_path(self, mock_sess, mock_nf):
+    def test_value_error_path(self):
+        with patch.object(self.mod, '_notify_failure') as mock_nf, \
+             patch.object(self.mod, 'get_session') as mock_sess:
+            model_class = MagicMock()
+            model_class.update.side_effect = ValueError('bad input')
+            dialog = _make_dialog()
+            self.mod._update_entity(dialog, model_class, 'ok', 'fail', name='x')
+            mock_nf.assert_called_once()
+            self.assertEqual(mock_nf.call_args[0][1], 'fail')
+            mock_sess.return_value.close.assert_called_once()
 
-        model_class = MagicMock()
-        model_class.update.side_effect = ValueError('bad input')
-        dialog = _make_dialog()
-        self.mod._update_entity(dialog, model_class, 'ok', 'fail', name='x')
-        mock_nf.assert_called_once()
-        self.assertEqual(mock_nf.call_args[0][1], 'fail')
-        mock_sess.return_value.close.assert_called_once()
-
-    @patch('plans_adressage.gui.popup_handlers._notify_failure')
-    @patch('plans_adressage.gui.popup_handlers.get_session')
-    def test_sqlalchemy_error_path(self, mock_sess, mock_nf):
+    def test_sqlalchemy_error_path(self):
         from sqlalchemy.exc import SQLAlchemyError
-
-        model_class = MagicMock()
-        model_class.update.side_effect = SQLAlchemyError('conn lost')
-        dialog = _make_dialog()
-        self.mod._update_entity(dialog, model_class, 'ok', 'fail', name='x')
-        mock_nf.assert_called_once()
-        mock_sess.return_value.close.assert_called_once()
+        with patch.object(self.mod, '_notify_failure') as mock_nf, \
+             patch.object(self.mod, 'get_session') as mock_sess:
+            model_class = MagicMock()
+            model_class.update.side_effect = SQLAlchemyError('conn lost')
+            dialog = _make_dialog()
+            self.mod._update_entity(dialog, model_class, 'ok', 'fail', name='x')
+            mock_nf.assert_called_once()
+            mock_sess.return_value.close.assert_called_once()
 
 
 class TestUpdateRoad(unittest.TestCase):
@@ -438,21 +430,21 @@ class TestUpdateRoad(unittest.TestCase):
         cls._vtp.stop()
         cls._lvp.stop()
 
-    @patch('plans_adressage.gui.popup_handlers._update_entity')
-    def test_calls_update_entity(self, mock_ue):
-        dialog = _make_dialog()
-        dialog._current_form_data = {'name': '  Test Road  ', 'type': 'Avenue'}
-        self.mod.update_road(dialog)
-        mock_ue.assert_called_once()
-        call_kwargs = mock_ue.call_args
-        self.assertIs(call_kwargs[0][0], dialog)
-        from plans_adressage.app.orders.models import Road
+    def test_calls_update_entity(self):
+        with patch.object(self.mod, '_update_entity') as mock_ue:
+            dialog = _make_dialog()
+            dialog._current_form_data = {'name': '  Test Road  ', 'type': 'Avenue'}
+            self.mod.update_road(dialog)
+            mock_ue.assert_called_once()
+            call_kwargs = mock_ue.call_args
+            self.assertIs(call_kwargs[0][0], dialog)
+            from plans_adressage.app.orders.models import Road
 
-        self.assertIs(call_kwargs[0][1], Road)
-        self.assertIn('updated successfully', call_kwargs[0][2])
-        self.assertIn('Cannot update', call_kwargs[0][3])
-        self.assertEqual(call_kwargs[1]['name'], 'Test Road')
-        self.assertEqual(call_kwargs[1]['type'], 'Avenue')
+            self.assertIs(call_kwargs[0][1], Road)
+            self.assertIn('updated successfully', call_kwargs[0][2])
+            self.assertIn('Cannot update', call_kwargs[0][3])
+            self.assertEqual(call_kwargs[1]['name'], 'Test Road')
+            self.assertEqual(call_kwargs[1]['type'], 'Avenue')
 
 
 class TestUpdateOrganization(unittest.TestCase):
@@ -468,23 +460,23 @@ class TestUpdateOrganization(unittest.TestCase):
         cls._vtp.stop()
         cls._lvp.stop()
 
-    @patch('plans_adressage.gui.popup_handlers._update_entity')
-    def test_calls_update_entity(self, mock_ue):
-        dialog = _make_dialog()
-        dialog._current_form_data = {
-            'name': 'Hospital',
-            'type': 'Medical',
-            'category': 'health',
-        }
-        self.mod.update_organization(dialog)
-        mock_ue.assert_called_once()
-        args = mock_ue.call_args[0]
-        from plans_adressage.app.orders.models import Organization
+    def test_calls_update_entity(self):
+        with patch.object(self.mod, '_update_entity') as mock_ue:
+            dialog = _make_dialog()
+            dialog._current_form_data = {
+                'name': 'Hospital',
+                'type': 'Medical',
+                'category': 'health',
+            }
+            self.mod.update_organization(dialog)
+            mock_ue.assert_called_once()
+            args = mock_ue.call_args[0]
+            from plans_adressage.app.orders.models import Organization
 
-        self.assertIs(args[1], Organization)
-        self.assertEqual(mock_ue.call_args[1]['name'], 'Hospital')
-        self.assertEqual(mock_ue.call_args[1]['type'], 'Medical')
-        self.assertEqual(mock_ue.call_args[1]['category'], 'health')
+            self.assertIs(args[1], Organization)
+            self.assertEqual(mock_ue.call_args[1]['name'], 'Hospital')
+            self.assertEqual(mock_ue.call_args[1]['type'], 'Medical')
+            self.assertEqual(mock_ue.call_args[1]['category'], 'health')
 
 
 class TestUpdateSubdivision(unittest.TestCase):
@@ -500,17 +492,17 @@ class TestUpdateSubdivision(unittest.TestCase):
         cls._vtp.stop()
         cls._lvp.stop()
 
-    @patch('plans_adressage.gui.popup_handlers._update_entity')
-    def test_calls_update_entity(self, mock_ue):
-        dialog = _make_dialog()
-        dialog._current_form_data = {'name': 'Cite 500', 'type': 'Residential'}
-        self.mod.update_subdivision(dialog)
-        mock_ue.assert_called_once()
-        from plans_adressage.app.orders.models import Subdivision
+    def test_calls_update_entity(self):
+        with patch.object(self.mod, '_update_entity') as mock_ue:
+            dialog = _make_dialog()
+            dialog._current_form_data = {'name': 'Cite 500', 'type': 'Residential'}
+            self.mod.update_subdivision(dialog)
+            mock_ue.assert_called_once()
+            from plans_adressage.app.orders.models import Subdivision
 
-        self.assertIs(mock_ue.call_args[0][1], Subdivision)
-        self.assertEqual(mock_ue.call_args[1]['name'], 'Cite 500')
-        self.assertEqual(mock_ue.call_args[1]['type'], 'Residential')
+            self.assertIs(mock_ue.call_args[0][1], Subdivision)
+            self.assertEqual(mock_ue.call_args[1]['name'], 'Cite 500')
+            self.assertEqual(mock_ue.call_args[1]['type'], 'Residential')
 
 
 class TestUpdateZone(unittest.TestCase):
@@ -526,17 +518,17 @@ class TestUpdateZone(unittest.TestCase):
         cls._vtp.stop()
         cls._lvp.stop()
 
-    @patch('plans_adressage.gui.popup_handlers._update_entity')
-    def test_calls_update_entity(self, mock_ue):
-        dialog = _make_dialog()
-        dialog._current_form_data = {'name': 'Zone A', 'type': 'Industrial'}
-        self.mod.update_zone(dialog)
-        mock_ue.assert_called_once()
-        from plans_adressage.app.orders.models import Zone
+    def test_calls_update_entity(self):
+        with patch.object(self.mod, '_update_entity') as mock_ue:
+            dialog = _make_dialog()
+            dialog._current_form_data = {'name': 'Zone A', 'type': 'Industrial'}
+            self.mod.update_zone(dialog)
+            mock_ue.assert_called_once()
+            from plans_adressage.app.orders.models import Zone
 
-        self.assertIs(mock_ue.call_args[0][1], Zone)
-        self.assertEqual(mock_ue.call_args[1]['name'], 'Zone A')
-        self.assertEqual(mock_ue.call_args[1]['type'], 'Industrial')
+            self.assertIs(mock_ue.call_args[0][1], Zone)
+            self.assertEqual(mock_ue.call_args[1]['name'], 'Zone A')
+            self.assertEqual(mock_ue.call_args[1]['type'], 'Industrial')
 
 
 class TestUpdatePanel(unittest.TestCase):
@@ -558,90 +550,89 @@ class TestUpdatePanel(unittest.TestCase):
         cls._vtp.stop()
         cls._lvp.stop()
 
-    @patch('plans_adressage.gui.popup_handlers._finish_update')
-    @patch('plans_adressage.gui.popup_handlers._notify_success')
-    @patch('plans_adressage.gui.popup_handlers.get_session')
-    def test_ref_facilities(self, mock_sess, mock_ns, mock_fu):
-        dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
-        dialog._current_form_data = {'mountStatus': 'mounted'}
-        self.mod.update_panel(dialog)
-        from plans_adressage.app.orders.models import PanelSign
+    def test_ref_facilities(self):
+        with patch.object(self.mod, '_finish_update') as mock_fu, \
+             patch.object(self.mod, '_notify_success') as mock_ns, \
+             patch.object(self.mod, 'get_session') as mock_sess:
+            dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
+            dialog._current_form_data = {'mountStatus': 'mounted'}
+            self.mod.update_panel(dialog)
+            from plans_adressage.app.orders.models import PanelSign
 
-        PanelSign.update.assert_called_once_with(
-            mock_sess.return_value,
-            record_id='rec-1',
-            status='mounted',
-            organization_id='org-1',
-            road_id=None,
-            subdivision_id=None,
-        )
-        mock_ns.assert_called_once()
-        mock_fu.assert_called_once()
+            PanelSign.update.assert_called_once_with(
+                mock_sess.return_value,
+                record_id='rec-1',
+                status='mounted',
+                organization_id='org-1',
+                road_id=None,
+                subdivision_id=None,
+            )
+            mock_ns.assert_called_once()
+            mock_fu.assert_called_once()
 
-    @patch('plans_adressage.gui.popup_handlers._finish_update')
-    @patch('plans_adressage.gui.popup_handlers._notify_success')
-    @patch('plans_adressage.gui.popup_handlers.get_session')
-    def test_ref_roads(self, mock_sess, mock_ns, mock_fu):
-        dialog = _make_dialog(_ref_id='road-1', _ref_layer='roads')
-        dialog._current_form_data = {'mountStatus': 'planned'}
-        self.mod.update_panel(dialog)
-        from plans_adressage.app.orders.models import PanelSign
+    def test_ref_roads(self):
+        with patch.object(self.mod, '_finish_update') as mock_fu, \
+             patch.object(self.mod, '_notify_success') as mock_ns, \
+             patch.object(self.mod, 'get_session') as mock_sess:
+            dialog = _make_dialog(_ref_id='road-1', _ref_layer='roads')
+            dialog._current_form_data = {'mountStatus': 'planned'}
+            self.mod.update_panel(dialog)
+            from plans_adressage.app.orders.models import PanelSign
 
-        PanelSign.update.assert_called_once_with(
-            mock_sess.return_value,
-            record_id='rec-1',
-            status='planned',
-            road_id='road-1',
-            subdivision_id=None,
-            organization_id=None,
-        )
+            PanelSign.update.assert_called_once_with(
+                mock_sess.return_value,
+                record_id='rec-1',
+                status='planned',
+                road_id='road-1',
+                subdivision_id=None,
+                organization_id=None,
+            )
 
-    @patch('plans_adressage.gui.popup_handlers._finish_update')
-    @patch('plans_adressage.gui.popup_handlers._notify_success')
-    @patch('plans_adressage.gui.popup_handlers.get_session')
-    def test_ref_subdivisions(self, mock_sess, mock_ns, mock_fu):
-        dialog = _make_dialog(_ref_id='sub-1', _ref_layer='subdivisions')
-        dialog._current_form_data = {'mountStatus': 'to_fix'}
-        self.mod.update_panel(dialog)
-        from plans_adressage.app.orders.models import PanelSign
+    def test_ref_subdivisions(self):
+        with patch.object(self.mod, '_finish_update') as mock_fu, \
+             patch.object(self.mod, '_notify_success') as mock_ns, \
+             patch.object(self.mod, 'get_session') as mock_sess:
+            dialog = _make_dialog(_ref_id='sub-1', _ref_layer='subdivisions')
+            dialog._current_form_data = {'mountStatus': 'to_fix'}
+            self.mod.update_panel(dialog)
+            from plans_adressage.app.orders.models import PanelSign
 
-        PanelSign.update.assert_called_once_with(
-            mock_sess.return_value,
-            record_id='rec-1',
-            status='to_fix',
-            subdivision_id='sub-1',
-            road_id=None,
-            organization_id=None,
-        )
+            PanelSign.update.assert_called_once_with(
+                mock_sess.return_value,
+                record_id='rec-1',
+                status='to_fix',
+                subdivision_id='sub-1',
+                road_id=None,
+                organization_id=None,
+            )
 
-    @patch('plans_adressage.gui.popup_handlers._finish_update')
-    @patch('plans_adressage.gui.popup_handlers._notify_success')
-    @patch('plans_adressage.gui.popup_handlers.get_session')
-    def test_no_ref_id(self, mock_sess, mock_ns, mock_fu):
-        dialog = _make_dialog(_ref_id=None, _ref_layer=None)
-        dialog._current_form_data = {'mountStatus': 'old'}
-        self.mod.update_panel(dialog)
-        from plans_adressage.app.orders.models import PanelSign
+    def test_no_ref_id(self):
+        with patch.object(self.mod, '_finish_update') as mock_fu, \
+             patch.object(self.mod, '_notify_success') as mock_ns, \
+             patch.object(self.mod, 'get_session') as mock_sess:
+            dialog = _make_dialog(_ref_id=None, _ref_layer=None)
+            dialog._current_form_data = {'mountStatus': 'old'}
+            self.mod.update_panel(dialog)
+            from plans_adressage.app.orders.models import PanelSign
 
-        PanelSign.update.assert_called_once_with(
-            mock_sess.return_value,
-            record_id='rec-1',
-            status='old',
-        )
+            PanelSign.update.assert_called_once_with(
+                mock_sess.return_value,
+                record_id='rec-1',
+                status='old',
+            )
 
-    @patch('plans_adressage.gui.popup_handlers._notify_failure')
-    @patch('plans_adressage.gui.popup_handlers.get_session')
-    def test_error_path(self, mock_sess, mock_nf):
+    def test_error_path(self):
         from sqlalchemy.exc import SQLAlchemyError
+        with patch.object(self.mod, '_notify_failure') as mock_nf, \
+             patch.object(self.mod, 'get_session') as mock_sess:
+            dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
+            dialog._current_form_data = {'mountStatus': 'x'}
+            from plans_adressage.app.orders.models import PanelSign
 
-        dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
-        dialog._current_form_data = {'mountStatus': 'x'}
-        from plans_adressage.app.orders.models import PanelSign
-
-        PanelSign.update.side_effect = SQLAlchemyError('fail')
-        self.mod.update_panel(dialog)
-        mock_nf.assert_called_once()
-        self.assertIn('Cannot update panel', mock_nf.call_args[0])
+            PanelSign.update.side_effect = SQLAlchemyError('fail')
+            self.mod.update_panel(dialog)
+            mock_nf.assert_called_once()
+            self.assertIn('Cannot update panel', mock_nf.call_args[0])
 
 
 class TestUpdateNumbering(unittest.TestCase):
@@ -663,110 +654,109 @@ class TestUpdateNumbering(unittest.TestCase):
         cls._vtp.stop()
         cls._vtp.stop()
 
-    @patch('plans_adressage.gui.popup_handlers._finish_update')
-    @patch('plans_adressage.gui.popup_handlers._notify_success')
-    @patch('plans_adressage.gui.popup_handlers.get_session')
-    def test_ref_facilities(self, mock_sess, mock_ns, mock_fu):
-        dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
-        dialog._current_form_data = {
-            'number': '42',
-            'repetition': 'bis',
-            'state': 'booked',
-            'activityCat': 'residential',
-            'activityType': 'house',
-        }
-        self.mod.update_numbering(dialog)
-        from plans_adressage.app.orders.models import Numbering
+    def test_ref_facilities(self):
+        with patch.object(self.mod, '_finish_update') as mock_fu, \
+             patch.object(self.mod, '_notify_success') as mock_ns, \
+             patch.object(self.mod, 'get_session') as mock_sess:
+            dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
+            dialog._current_form_data = {
+                'number': '42',
+                'repetition': 'bis',
+                'state': 'booked',
+                'activityCat': 'residential',
+                'activityType': 'house',
+            }
+            self.mod.update_numbering(dialog)
+            from plans_adressage.app.orders.models import Numbering
 
-        Numbering.update.assert_called_once()
-        call_kw = Numbering.update.call_args[1]
-        self.assertEqual(call_kw['organization_id'], 'org-1')
-        self.assertIsNone(call_kw['road_id'])
-        self.assertIsNone(call_kw['subdivision_id'])
-        self.assertEqual(call_kw['value'], '42')
-        self.assertEqual(call_kw['repetition'], 'bis')
-        self.assertEqual(call_kw['state'], 'booked')
-        self.assertEqual(call_kw['activity_cat'], 'residential')
-        self.assertEqual(call_kw['activity_type'], 'house')
+            Numbering.update.assert_called_once()
+            call_kw = Numbering.update.call_args[1]
+            self.assertEqual(call_kw['organization_id'], 'org-1')
+            self.assertIsNone(call_kw['road_id'])
+            self.assertIsNone(call_kw['subdivision_id'])
+            self.assertEqual(call_kw['value'], '42')
+            self.assertEqual(call_kw['repetition'], 'bis')
+            self.assertEqual(call_kw['state'], 'booked')
+            self.assertEqual(call_kw['activity_cat'], 'residential')
+            self.assertEqual(call_kw['activity_type'], 'house')
 
-    @patch('plans_adressage.gui.popup_handlers._finish_update')
-    @patch('plans_adressage.gui.popup_handlers._notify_success')
-    @patch('plans_adressage.gui.popup_handlers.get_session')
-    def test_ref_roads(self, mock_sess, mock_ns, mock_fu):
-        dialog = _make_dialog(_ref_id='road-1', _ref_layer='roads')
-        dialog._current_form_data = {
-            'number': '7',
-            'repetition': '',
-            'state': 'planned',
-            'activityCat': '',
-            'activityType': '',
-        }
-        self.mod.update_numbering(dialog)
-        from plans_adressage.app.orders.models import Numbering
+    def test_ref_roads(self):
+        with patch.object(self.mod, '_finish_update') as mock_fu, \
+             patch.object(self.mod, '_notify_success') as mock_ns, \
+             patch.object(self.mod, 'get_session') as mock_sess:
+            dialog = _make_dialog(_ref_id='road-1', _ref_layer='roads')
+            dialog._current_form_data = {
+                'number': '7',
+                'repetition': '',
+                'state': 'planned',
+                'activityCat': '',
+                'activityType': '',
+            }
+            self.mod.update_numbering(dialog)
+            from plans_adressage.app.orders.models import Numbering
 
-        call_kw = Numbering.update.call_args[1]
-        self.assertEqual(call_kw['road_id'], 'road-1')
-        self.assertIsNone(call_kw['subdivision_id'])
-        self.assertIsNone(call_kw['organization_id'])
+            call_kw = Numbering.update.call_args[1]
+            self.assertEqual(call_kw['road_id'], 'road-1')
+            self.assertIsNone(call_kw['subdivision_id'])
+            self.assertIsNone(call_kw['organization_id'])
 
-    @patch('plans_adressage.gui.popup_handlers._finish_update')
-    @patch('plans_adressage.gui.popup_handlers._notify_success')
-    @patch('plans_adressage.gui.popup_handlers.get_session')
-    def test_ref_subdivisions(self, mock_sess, mock_ns, mock_fu):
-        dialog = _make_dialog(_ref_id='sub-1', _ref_layer='subdivisions')
-        dialog._current_form_data = {
-            'number': '10',
-            'repetition': '',
-            'state': '',
-            'activityCat': '',
-            'activityType': '',
-        }
-        self.mod.update_numbering(dialog)
-        from plans_adressage.app.orders.models import Numbering
+    def test_ref_subdivisions(self):
+        with patch.object(self.mod, '_finish_update') as mock_fu, \
+             patch.object(self.mod, '_notify_success') as mock_ns, \
+             patch.object(self.mod, 'get_session') as mock_sess:
+            dialog = _make_dialog(_ref_id='sub-1', _ref_layer='subdivisions')
+            dialog._current_form_data = {
+                'number': '10',
+                'repetition': '',
+                'state': '',
+                'activityCat': '',
+                'activityType': '',
+            }
+            self.mod.update_numbering(dialog)
+            from plans_adressage.app.orders.models import Numbering
 
-        call_kw = Numbering.update.call_args[1]
-        self.assertEqual(call_kw['subdivision_id'], 'sub-1')
-        self.assertIsNone(call_kw['road_id'])
-        self.assertIsNone(call_kw['organization_id'])
+            call_kw = Numbering.update.call_args[1]
+            self.assertEqual(call_kw['subdivision_id'], 'sub-1')
+            self.assertIsNone(call_kw['road_id'])
+            self.assertIsNone(call_kw['organization_id'])
 
-    @patch('plans_adressage.gui.popup_handlers._finish_update')
-    @patch('plans_adressage.gui.popup_handlers._notify_success')
-    @patch('plans_adressage.gui.popup_handlers.get_session')
-    def test_no_ref(self, mock_sess, mock_ns, mock_fu):
-        dialog = _make_dialog(_ref_id=None, _ref_layer=None)
-        dialog._current_form_data = {
-            'number': '',
-            'repetition': '',
-            'state': '',
-            'activityCat': '',
-            'activityType': '',
-        }
-        self.mod.update_numbering(dialog)
-        from plans_adressage.app.orders.models import Numbering
+    def test_no_ref(self):
+        with patch.object(self.mod, '_finish_update') as mock_fu, \
+             patch.object(self.mod, '_notify_success') as mock_ns, \
+             patch.object(self.mod, 'get_session') as mock_sess:
+            dialog = _make_dialog(_ref_id=None, _ref_layer=None)
+            dialog._current_form_data = {
+                'number': '',
+                'repetition': '',
+                'state': '',
+                'activityCat': '',
+                'activityType': '',
+            }
+            self.mod.update_numbering(dialog)
+            from plans_adressage.app.orders.models import Numbering
 
-        call_kw = Numbering.update.call_args[1]
-        self.assertIsNone(call_kw['road_id'])
-        self.assertIsNone(call_kw['subdivision_id'])
-        self.assertIsNone(call_kw['organization_id'])
+            call_kw = Numbering.update.call_args[1]
+            self.assertIsNone(call_kw['road_id'])
+            self.assertIsNone(call_kw['subdivision_id'])
+            self.assertIsNone(call_kw['organization_id'])
 
-    @patch('plans_adressage.gui.popup_handlers._notify_failure')
-    @patch('plans_adressage.gui.popup_handlers.get_session')
-    def test_error_path(self, mock_sess, mock_nf):
+    def test_error_path(self):
+        with patch.object(self.mod, '_notify_failure') as mock_nf, \
+             patch.object(self.mod, 'get_session') as mock_sess:
+            dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
+            dialog._current_form_data = {
+                'number': '1',
+                'repetition': '',
+                'state': '',
+                'activityCat': '',
+                'activityType': '',
+            }
+            from plans_adressage.app.orders.models import Numbering
 
-        dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
-        dialog._current_form_data = {
-            'number': '1',
-            'repetition': '',
-            'state': '',
-            'activityCat': '',
-            'activityType': '',
-        }
-        from plans_adressage.app.orders.models import Numbering
-
-        Numbering.update.side_effect = ValueError('bad value')
-        self.mod.update_numbering(dialog)
-        mock_nf.assert_called_once()
-        self.assertIn('Cannot update numbering', mock_nf.call_args[0])
+            Numbering.update.side_effect = ValueError('bad value')
+            self.mod.update_numbering(dialog)
+            mock_nf.assert_called_once()
+            self.assertIn('Cannot update numbering', mock_nf.call_args[0])
 
 
 if __name__ == '__main__':

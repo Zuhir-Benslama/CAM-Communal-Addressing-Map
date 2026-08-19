@@ -37,6 +37,9 @@ class TestMainDialogCore(unittest.TestCase):
         mod = importlib.util.module_from_spec(spec)  # type: ignore[attr-defined]
         sys.modules[f'plans_adressage.gui.{name}'] = mod
         spec.loader.exec_module(mod)
+        parent = sys.modules.get('plans_adressage.gui')
+        if parent is not None:
+            setattr(parent, name, mod)
         setattr(cls, name.replace('.', '_'), mod)
 
     def _make_raw(self) -> Any:

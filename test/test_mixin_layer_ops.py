@@ -122,35 +122,35 @@ class TestLayerOpsMixin(unittest.TestCase):
             self.mixin._show_layers_for_label(root, 'Zones')
         self.mixin.iface.setActiveLayer.assert_called_once_with(layer1)
 
-    @patch('plans_adressage.mixins.layer_ops_mixin.get_user_location')
-    def test_check_geometry_in_zone_point_inside(self, mock_loc):
-        mock_loc.return_value = 'POLYGON((0 0,10 0,10 10,0 10,0 0))'
-        result = self.mixin._check_geometry_in_zone('POINT(5 5)')
-        self.assertEqual(result, 1)
+    def test_check_geometry_in_zone_point_inside(self):
+        with patch.object(self.mod, 'get_user_location') as mock_loc:
+            mock_loc.return_value = 'POLYGON((0 0,10 0,10 10,0 10,0 0))'
+            result = self.mixin._check_geometry_in_zone('POINT(5 5)')
+            self.assertEqual(result, 1)
 
-    @patch('plans_adressage.mixins.layer_ops_mixin.get_user_location')
-    def test_check_geometry_in_zone_point_outside(self, mock_loc):
-        mock_loc.return_value = 'POLYGON((0 0,10 0,10 10,0 10,0 0))'
-        result = self.mixin._check_geometry_in_zone('POINT(50 50)')
-        self.assertEqual(result, 0)
+    def test_check_geometry_in_zone_point_outside(self):
+        with patch.object(self.mod, 'get_user_location') as mock_loc:
+            mock_loc.return_value = 'POLYGON((0 0,10 0,10 10,0 10,0 0))'
+            result = self.mixin._check_geometry_in_zone('POINT(50 50)')
+            self.assertEqual(result, 0)
 
-    @patch('plans_adressage.mixins.layer_ops_mixin.get_user_location')
-    def test_check_geometry_in_zone_no_location(self, mock_loc):
-        mock_loc.return_value = None
-        result = self.mixin._check_geometry_in_zone('POINT(5 5)')
-        self.assertEqual(result, 1)
+    def test_check_geometry_in_zone_no_location(self):
+        with patch.object(self.mod, 'get_user_location') as mock_loc:
+            mock_loc.return_value = None
+            result = self.mixin._check_geometry_in_zone('POINT(5 5)')
+            self.assertEqual(result, 1)
 
-    @patch('plans_adressage.mixins.layer_ops_mixin.get_user_location')
-    def test_check_geometry_in_zone_polygon(self, mock_loc):
-        mock_loc.return_value = 'POLYGON((0 0,10 0,10 10,0 10,0 0))'
-        result = self.mixin._check_geometry_in_zone('POLYGON((1 1,2 1,2 2,1 2,1 1))')
-        self.assertEqual(result, 2)
+    def test_check_geometry_in_zone_polygon(self):
+        with patch.object(self.mod, 'get_user_location') as mock_loc:
+            mock_loc.return_value = 'POLYGON((0 0,10 0,10 10,0 10,0 0))'
+            result = self.mixin._check_geometry_in_zone('POLYGON((1 1,2 1,2 2,1 2,1 1))')
+            self.assertEqual(result, 2)
 
-    @patch('plans_adressage.mixins.layer_ops_mixin.get_user_location')
-    def test_check_geometry_in_zone_linestring(self, mock_loc):
-        mock_loc.return_value = 'POLYGON((0 0,10 0,10 10,0 10,0 0))'
-        result = self.mixin._check_geometry_in_zone('LINESTRING(1 1,5 5)')
-        self.assertEqual(result, 3)
+    def test_check_geometry_in_zone_linestring(self):
+        with patch.object(self.mod, 'get_user_location') as mock_loc:
+            mock_loc.return_value = 'POLYGON((0 0,10 0,10 10,0 10,0 0))'
+            result = self.mixin._check_geometry_in_zone('LINESTRING(1 1,5 5)')
+            self.assertEqual(result, 3)
 
     def test_list_road_entries(self):
         with patch.object(self.mod, 'EntityListDialog') as mock_dlg:
