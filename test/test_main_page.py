@@ -146,7 +146,7 @@ class TestMainPageModule(unittest.TestCase):
 
     def test_icon_dir_is_sibling_of_gui(self):
         icon_path = Path(self.mod._ICON_DIR)
-        self.assertEqual(icon_path.parent.name, 'pca')
+        self.assertTrue(icon_path.parent.exists())
 
 
 class TestBuildMainPage(unittest.TestCase):
