@@ -264,12 +264,15 @@ class TestIdentifyToolFormFeature(unittest.TestCase):
     def test_display_or_update_form_feature_creates_dialog(self):
         MockPopup = MagicMock()
         self.tool.dlg = None
-        with patch.dict(
-            'sys.modules',
-            {
-                'plans_adressage.gui.popup_dialog': MockPopup,
-            },
-        ), patch.object(self.mod, 'LAYER_KEY', {'Roads': 'roads_key'}):
+        with (
+            patch.dict(
+                'sys.modules',
+                {
+                    'plans_adressage.gui.popup_dialog': MockPopup,
+                },
+            ),
+            patch.object(self.mod, 'LAYER_KEY', {'Roads': 'roads_key'}),
+        ):
             self.tool.display_or_update_form_feature('feat-1')
         self.tool.dlg.show.assert_called_once()
         self.tool.dlg.exec.assert_called_once()
@@ -278,12 +281,15 @@ class TestIdentifyToolFormFeature(unittest.TestCase):
         old_dlg = MagicMock()
         self.tool.dlg = old_dlg
         MockPopup = MagicMock()
-        with patch.dict(
-            'sys.modules',
-            {
-                'plans_adressage.gui.popup_dialog': MockPopup,
-            },
-        ), patch.object(self.mod, 'LAYER_KEY', {'Roads': 'roads_key'}):
+        with (
+            patch.dict(
+                'sys.modules',
+                {
+                    'plans_adressage.gui.popup_dialog': MockPopup,
+                },
+            ),
+            patch.object(self.mod, 'LAYER_KEY', {'Roads': 'roads_key'}),
+        ):
             self.tool.display_or_update_form_feature('feat-2')
         old_dlg.close.assert_called_once()
         self.tool.dlg.show.assert_called_once()

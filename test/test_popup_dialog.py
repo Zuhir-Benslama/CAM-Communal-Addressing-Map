@@ -696,15 +696,17 @@ class TestStartRefSelection(unittest.TestCase):
 
     @patch('plans_adressage.gui.identify_tool.IdentifyTool')
     @patch('plans_adressage.gui.popup_dialog.QgsProject')
-    def test_with_layer_found(self, MockQgsProject, MockIdentifyTool):
+    def test_with_layer_found(self, mock_qgs_project, mock_identify_tool):
         d = _make_wired_dialog(self.mod)
         mock_layer = MagicMock()
-        MockQgsProject.instance.return_value.mapLayersByName.return_value = [mock_layer]
+        mock_qgs_project.instance.return_value.mapLayersByName.return_value = [
+            mock_layer
+        ]
 
         d._start_ref_selection('SomeLayer')
 
         d.iface.setActiveLayer.assert_any_call(mock_layer)
-        MockIdentifyTool.assert_called_once()
+        mock_identify_tool.assert_called_once()
         self.assertIsNotNone(d.ref_identify_tool)
 
     @patch('plans_adressage.gui.popup_dialog.QgsProject')
@@ -712,20 +714,22 @@ class TestStartRefSelection(unittest.TestCase):
     @patch(
         'plans_adressage.gui.popup_dialog.get_string', side_effect=lambda s, loc=None: s
     )
-    def test_empty_layer_name_shows_error(self, _gs, MockQMessageBox, MockQgsProject):
+    def test_empty_layer_name_shows_error(
+        self, _gs, mock_qmessagebox, mock_qgs_project
+    ):
         d = _make_wired_dialog(self.mod)
-        MockQgsProject.instance.return_value.mapLayersByName.return_value = [
+        mock_qgs_project.instance.return_value.mapLayersByName.return_value = [
             MagicMock()
         ]
 
         d._start_ref_selection('')
 
-        MockQMessageBox.critical.assert_called_once()
+        mock_qmessagebox.critical.assert_called_once()
 
     @patch('plans_adressage.gui.popup_dialog.QgsProject')
-    def test_with_layer_not_found(self, MockQgsProject):
+    def test_with_layer_not_found(self, mock_qgs_project):
         d = _make_wired_dialog(self.mod)
-        MockQgsProject.instance.return_value.mapLayersByName.return_value = []
+        mock_qgs_project.instance.return_value.mapLayersByName.return_value = []
 
         d._start_ref_selection('MissingLayer')
 
@@ -734,13 +738,13 @@ class TestStartRefSelection(unittest.TestCase):
     @patch('plans_adressage.gui.identify_tool.IdentifyTool')
     @patch('plans_adressage.gui.popup_dialog.QgsProject')
     def test_sets_active_layer_for_layer_name_key(
-        self, MockQgsProject, MockIdentifyTool
+        self, mock_qgs_project, mock_identify_tool
     ):
         d = _make_wired_dialog(self.mod, layer_name_key='numbering')
         ref_layer = MagicMock()
         key_layer = MagicMock()
-        MockQgsProject.instance.return_value.mapLayersByName.side_effect = lambda name: (
-            [ref_layer] if name == 'roads' else [key_layer]
+        mock_qgs_project.instance.return_value.mapLayersByName.side_effect = (
+            lambda name: [ref_layer] if name == 'roads' else [key_layer]
         )
 
         d._start_ref_selection('roads')

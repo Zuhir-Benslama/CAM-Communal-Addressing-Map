@@ -57,3 +57,4 @@ liquid-glass/
 *.odt
 *.png
 !resources/icon.png
+.coverage

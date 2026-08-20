@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Wrapper script to launch QGIS with RNA plugin JWT secret.
+# Wrapper script to launch QGIS with CAM plugin JWT secret.
 
-SECRET_FILE="${HOME}/.cache/rna-jwt-secret"
+SECRET_FILE="${HOME}/.cache/cam-jwt-secret"
 
 if [ ! -f "$SECRET_FILE" ]; then
     mkdir -p "$(dirname "$SECRET_FILE")"
@@ -9,7 +9,7 @@ if [ ! -f "$SECRET_FILE" ]; then
     chmod 600 "$SECRET_FILE"
 fi
 
-export RNA_JWT_SECRET
-RNA_JWT_SECRET=$(cat "$SECRET_FILE")
+export CAM_JWT_SECRET
+CAM_JWT_SECRET=$(cat "$SECRET_FILE")
 
 exec qgis "$@"

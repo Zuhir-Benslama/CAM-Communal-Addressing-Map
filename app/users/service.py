@@ -128,7 +128,7 @@ def sign_in(
             create_cookie(session_token, user.id)
         except (SQLAlchemyError, OSError) as e:
             session.rollback()
-            QgsMessageLog.logMessage(f'sign_in error: {e}', 'RNA', level=2)
+            QgsMessageLog.logMessage(f'sign_in error: {e}', 'CAM', level=2)
             logger.exception('An error occurred')
             return False, None, str(e)
         else:

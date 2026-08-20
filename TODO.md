@@ -1,4 +1,4 @@
-# RNA Plugin — Code Quality & Bug Fix Tracking
+# CAM Plugin — Code Quality & Bug Fix Tracking
 
 ## Priority Legend
 - **P0**: Critical (will crash or corrupt data)

@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/plugins/RNA" >
+    <qresource prefix="/plugins/CAM" >
         <file>resources/icon.png</file>
     </qresource>
 </RCC>

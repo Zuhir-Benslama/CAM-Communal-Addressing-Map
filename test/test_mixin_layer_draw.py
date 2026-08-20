@@ -34,17 +34,23 @@ class TestLayerDrawMixin(unittest.TestCase):
         self.mixin._draw_handler.assert_called_once_with('Panels')
 
     def test_draw_handler(self):
-        with patch.object(self.mod, 'start_editing_layer') as mock_start, \
-             patch.object(self.mod, 'QgsProject') as mock_project:
+        with (
+            patch.object(self.mod, 'start_editing_layer') as mock_start,
+            patch.object(self.mod, 'QgsProject') as mock_project,
+        ):
             mock_layer = MagicMock()
-            mock_project.instance.return_value.mapLayersByName.return_value = [mock_layer]
+            mock_project.instance.return_value.mapLayersByName.return_value = [
+                mock_layer
+            ]
             self.mixin._draw_handler('Panels')
             mock_start.assert_called_once()
             mock_layer.featureAdded.connect.assert_called_once()
 
     def test_draw_handler_no_layer(self):
-        with patch.object(self.mod, 'start_editing_layer') as mock_start, \
-             patch.object(self.mod, 'QgsProject') as mock_project:
+        with (
+            patch.object(self.mod, 'start_editing_layer') as mock_start,
+            patch.object(self.mod, 'QgsProject') as mock_project,
+        ):
             mock_project.instance.return_value.mapLayersByName.return_value = []
             self.mixin._draw_handler('NonExistent')
             mock_start.assert_not_called()

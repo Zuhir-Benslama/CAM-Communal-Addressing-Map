@@ -8,7 +8,7 @@ from unittest.mock import MagicMock, patch
 from test.helpers import setup_gui_mocks
 
 
-class TestRNA(unittest.TestCase):
+class TestCAM(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         setup_gui_mocks()
@@ -22,7 +22,7 @@ class TestRNA(unittest.TestCase):
 
     def setUp(self):
         self.iface = MagicMock()
-        self.plugin = self.mod.RNA(self.iface)
+        self.plugin = self.mod.CAM(self.iface)
 
     def test_init_actions_empty(self):
         self.assertEqual(self.plugin.actions, [])
@@ -74,11 +74,13 @@ class TestRNA(unittest.TestCase):
         self.plugin._normalize_dock_width()
 
     def test_run_first_start(self):
-        with patch.object(self.mod, 'MainDialog') as mock_dlg, \
-             patch.object(self.mod, 'QDockWidget') as mock_dock_cls, \
-             patch.object(self.mod, 'QTimer') as mock_timer, \
-             patch.object(self.mod, 'current_locale', return_value='en') as mock_locale, \
-             patch.object(self.mod, 'get_string', return_value='RNA') as mock_str:
+        with (
+            patch.object(self.mod, 'MainDialog') as mock_dlg,
+            patch.object(self.mod, 'QDockWidget') as mock_dock_cls,
+            patch.object(self.mod, 'QTimer'),
+            patch.object(self.mod, 'current_locale', return_value='en'),
+            patch.object(self.mod, 'get_string', return_value='CAM'),
+        ):
             mock_dock = mock_dock_cls.return_value
             mock_dock.width.return_value = 600
             mock_dock.height.return_value = 400
@@ -88,11 +90,13 @@ class TestRNA(unittest.TestCase):
             mock_dlg.assert_called_once()
 
     def test_run_subsequent(self):
-        with patch.object(self.mod, 'MainDialog') as mock_dlg, \
-             patch.object(self.mod, 'QDockWidget') as mock_dock, \
-             patch.object(self.mod, 'QTimer') as mock_timer, \
-             patch.object(self.mod, 'current_locale', return_value='en') as mock_locale, \
-             patch.object(self.mod, 'get_string', return_value='RNA') as mock_str:
+        with (
+            patch.object(self.mod, 'MainDialog'),
+            patch.object(self.mod, 'QDockWidget'),
+            patch.object(self.mod, 'QTimer'),
+            patch.object(self.mod, 'current_locale', return_value='en'),
+            patch.object(self.mod, 'get_string', return_value='CAM'),
+        ):
             self.plugin.first_start = False
             self.plugin.dock_widget = MagicMock()
             self.plugin.dock_widget.width.return_value = 600

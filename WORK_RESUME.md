@@ -1,4 +1,4 @@
-# RNA Plugin — Work Resume
+# CAM Plugin — Work Resume
 
 A comprehensive QGIS plugin modernization and code quality overhaul.
 
@@ -7,9 +7,9 @@ A comprehensive QGIS plugin modernization and code quality overhaul.
 ## 1. Architecture Restructuring
 
 - **Project layout** aligned to `structure.txt`: split monolith into `app/core/`, `app/users/`, `app/orders/`, `app/shared/`
-- Removed duplicate entry point (`RNA.py`), consolidated into `app/main.py`
-- Moved main dialog (`RNA_dialog.py`) to `gui/main_dialog.py` following PEP 8 naming conventions
-- Renamed `test/test_RNA_dialog.py` → `test/test_rna_dialog.py`
+- Removed duplicate entry point (`CAM.py`), consolidated into `app/main.py`
+- Moved main dialog (`CAM_dialog.py`) to `gui/main_dialog.py` following PEP 8 naming conventions
+- Renamed `test/test_CAM_dialog.py` → `test/test_cam_dialog.py`
 - Deleted dead files: `app/core/logging.py`, `app/orders/service.py`
 - Cleaned up shim re-export modules (`db/`, `models/`, `auth/`)
 
@@ -45,7 +45,7 @@ A comprehensive QGIS plugin modernization and code quality overhaul.
 
 ## 5. Security Hardening
 
-- JWT auth: ephemeral secret → env var (`RNA_JWT_SECRET`), raises `RuntimeError` if unset
+- JWT auth: ephemeral secret → env var (`CAM_JWT_SECRET`), raises `RuntimeError` if unset
 - Column whitelist: `update()` methods no longer accept arbitrary `**kwargs` (no more `api_key`/`password` overwrites)
 - Cookie file: `chmod 0o600` permissions on `cookie.toml`
 - Session management: context managers (`session_scope()`, `auth_session_scope()`) prevent leaks

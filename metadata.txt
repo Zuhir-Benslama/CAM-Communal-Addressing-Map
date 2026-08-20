@@ -3,14 +3,17 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=RNA
+name=CAM
 qgisMinimumVersion=3.0
-description=RNA - Plans d'Adressage (Addressing Plans Management)
+description=CAM - Communal Addressing Map
 version=0.4.0
-author=C.A.S
-email=rna@qgis.org
+author=Zuhir Benslama
+email=zuhirbenslama@protonmail.com
 
 about=QGIS plugin for managing Algerian municipal addressing plans. Handles streets, subdivisions, organizations, zones, numbering, and signage.
+
+license=GPL-3.0-or-later
+licensefile=LICENSE
 
 tracker=https://github.com/Zuhir-Benslama/CAM-Communal-Addressing-Map/issues
 repository=https://github.com/Zuhir-Benslama/CAM-Communal-Addressing-Map
@@ -22,7 +25,7 @@ hasProcessingProvider=no
 changelog=See the CHANGELOG at https://github.com/Zuhir-Benslama/CAM-Communal-Addressing-Map/releases
 
 # Tags are comma separated with spaces allowed
-tags=address, Algeria, municipal, planning, RNA
+tags=address, Algeria, municipal, planning, CAM
 
 homepage=https://github.com/Zuhir-Benslama/CAM-Communal-Addressing-Map
 category=Plugins

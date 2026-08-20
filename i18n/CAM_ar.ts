@@ -1,315 +1,315 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="en" sourcelanguage="en">
+<TS version="2.0" language="ar" sourcelanguage="en">
 <context>
     <name>MainDialog</name>
     <message>
         <source>Done by</source>
-        <translation>Done by</translation>
+        <translation>   منجز من طرف </translation>
     </message>
     <message>
         <source>List of </source>
-        <translation>List of </translation>
+        <translation>  قائمة </translation>
     </message>
     <message>
         <source>Category:</source>
-        <translation>Category:</translation>
+        <translation> :  فئة</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation>Name:</translation>
+        <translation> : اسم</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Username:</translation>
+        <translation> : اسم المستخدم</translation>
     </message>
     <message>
         <source>Geometry Status:</source>
-        <translation>Geometry Status:</translation>
+        <translation> : توافر الشكل الهندسي</translation>
     </message>
     <message>
         <source>Mounting Status:</source>
-        <translation>Mounting Status:</translation>
+        <translation> : حالة التركيب</translation>
     </message>
     <message>
         <source>Select Map:</source>
-        <translation>Select Map:</translation>
+        <translation> : حدد الخريطة</translation>
     </message>
     <message>
         <source>Number:</source>
-        <translation>Number:</translation>
+        <translation> : رقم</translation>
     </message>
     <message>
         <source>Decision No.:</source>
-        <translation>Decision No.:</translation>
+        <translation> : رقم القرار</translation>
     </message>
     <message>
         <source>Category:</source>
-        <translation>Category:</translation>
+        <translation> : فئة</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Password:</translation>
+        <translation> : كلمة السر</translation>
     </message>
     <message>
         <source>Duplicate:</source>
-        <translation>Duplicate:</translation>
+        <translation> : مكرر</translation>
     </message>
     <message>
         <source>Type:</source>
-        <translation>Type:</translation>
+        <translation> : نوع</translation>
     </message>
     <message>
         <source>Type:</source>
-        <translation>Type:</translation>
+        <translation> : نوع </translation>
     </message>
     <message>
         <source>Road Type:</source>
-        <translation>Road Type:</translation>
+        <translation> : نوع الطريق</translation>
     </message>
     <message>
         <source>Reference Type:</source>
-        <translation>Reference Type:</translation>
+        <translation> : نوع المرجع</translation>
     </message>
     <message>
         <source>Status:</source>
-        <translation>Status:</translation>
+        <translation> :حالة</translation>
     </message>
     <message>
         <source> Do you want to clear the measurement line?</source>
-        <translation> Do you want to clear the measurement line?</translation>
+        <translation> هل تريد مسح خط القياس ؟</translation>
     </message>
     <message>
         <source> Clear the measurement line?</source>
-        <translation> Clear the measurement line?</translation>
+        <translation> هل تمسح خط القياس ؟</translation>
     </message>
     <message>
         <source>Subdivision Type:</source>
-        <translation>Subdivision Type:</translation>
+        <translation>: نوع التجزئة</translation>
     </message>
     <message>
         <source>Zone Type:</source>
-        <translation>Zone Type:</translation>
+        <translation>: نوع المنطقة</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Save information and geometry to the database&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;Save information and geometry to the database&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;حفظ المعلومات والشكل الهندسي في قاعدة البيانات&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Decision number for dedication&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Decision number for dedication&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt; رقم القرار الخاص بالتكريس&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Create a backup of the database&lt;/p&gt;&lt;p align=&quot;right&quot;&gt; to restore it in case of error&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Create a backup of the database&lt;/p&gt;&lt;p align=&quot;right&quot;&gt; to restore it in case of error&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;إنشاء نسخة من قاعدة البيانات&lt;/p&gt;&lt;p align=&quot;right&quot;&gt; لاسترادها في حالة حدوث خطأ&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Draw the road geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Draw the road geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;ارسم الشكل الهندسي للطريق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Draw the zone geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Draw the zone geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;ارسم الشكل الهندسي للمنطقة&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Subdivisions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Subdivisions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;الأحياء&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Facilities&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Facilities&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;المرافق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Zones&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Zones&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;المناطق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Update the road geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Update the road geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;تحديث الشكل الهندسي للطريق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Update the zone geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Update the zone geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;تحديث الشكل الهندسي للمنطقة&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Select the road on the map to delete or update its information&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Select the road on the map to delete or update its information&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;تحديد الطريق على الخريطة لحذفه أو تحديث المعلومات المتعلقة به&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Select the zone on the map to delete or update its information&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Select the zone on the map to delete or update its information&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;تحديد المنطقة على الخريطة لحذفها أو تحديث المعلومات المتعلقة بها&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Select road type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Select road type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;حدد نوع الطريق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Select zone type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Select zone type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;حدد نوع المنطقة&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Save information and geometry to the database&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Save information and geometry to the database&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;حفظ المعلومات والشكل الهندسي في قاعدة البيانات&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;View subdivisions list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;View subdivisions list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;عرض قائمة التجزئات&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;View road list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;View road list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;عرض قائمة الطرق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;View panels list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;View panels list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;عرض قائمة اللوحات&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;View entrances list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;View entrances list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;عرض قائمة المداخل&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;View facilities list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;View facilities list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;عرض قائمة المرافق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;In case of error, you can restore the previous version of the database&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;In case of error, you can restore the previous version of the database&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;في حالة حدوث خطأ يمكنك استعادة الإصدار السابق من قاعدة البيانات&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Subdivision geometry availability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Subdivision geometry availability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;مؤشر توافر الشكل الهندسي للحي&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Road geometry availability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Road geometry availability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;مؤشر توافر الشكل الهندسي للطريق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Entrance geometry availability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Entrance geometry availability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;مؤشر توافر الشكل الهندسي للمدخل&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Facility geometry availability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Facility geometry availability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;مؤشر توافر الشكل الهندسي للمرفق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Zone geometry availability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;Zone geometry availability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;مؤشر توافر الشكل الهندسي للمنطقة&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;The subdivision name should not be concatenated with the subdivision type e.g.&lt;span style=&quot; font-weight:600;&quot;&gt; Cooperatie El Bortokal &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Subdivision Type :&lt;/span&gt; Cooperatie&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Subdivision Name :&lt;/span&gt; El Bortokal&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;The subdivision name should not be concatenated with the subdivision type e.g.&lt;span style=&quot; font-weight:600;&quot;&gt; Cooperatie El Bortokal &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Subdivision Type :&lt;/span&gt; Cooperatie&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Subdivision Name :&lt;/span&gt; El Bortokal&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;يجب ألا يكون اسم الحي متسلسلا مع نوع الحي مثل&lt;span style=&quot; font-weight:600;&quot;&gt; تعاونية البرتقال &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;نوع الحي : &lt;/span&gt;تعاونية&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;اسم الحي :&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;/&gt;البرتقال&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;The road name should not be concatenated with the road type e.g.&lt;span style=&quot; font-weight:600;&quot;&gt; Rue Didouche Mourad &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Road Type :&lt;/span&gt; Rue&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Road Name :&lt;/span&gt; Didouche Mourad&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;The road name should not be concatenated with the road type e.g.&lt;span style=&quot; font-weight:600;&quot;&gt; Rue Didouche Mourad &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Road Type :&lt;/span&gt; Rue&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Road Name :&lt;/span&gt; Didouche Mourad&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;يجب ألا يكون اسم الطريق متسلسلا مع نوع الطريق مثل&lt;span style=&quot; font-weight:600;&quot;&gt; شارع ديدوش مراد &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;نوع الطريق :&lt;/span&gt; شارع&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;اسم الطريق :&lt;/span&gt; ديدوش مراد&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;The facility name should not be concatenated with the facility type e.g.&lt;span style=&quot; font-weight:600;&quot;&gt; Bachir Mentouri Hospital &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Facility Type :&lt;/span&gt; Hospital&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Facility Name :&lt;/span&gt; Bachir Mentouri&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;The facility name should not be concatenated with the facility type e.g.&lt;span style=&quot; font-weight:600;&quot;&gt; Bachir Mentouri Hospital &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Facility Type :&lt;/span&gt; Hospital&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Facility Name :&lt;/span&gt; Bachir Mentouri&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;يجب ألا يكون اسم المرفق متسلسلا مع نوع المرفق مثل&lt;span style=&quot; font-weight:600;&quot;&gt; مستشفى بشير منتوري &lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;نوع المرفق :&lt;/span&gt;مستشفى&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;اسم المرفق :&lt;/span&gt; شير منتوري&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;The zone name should not be concatenated with the zone type e.g.&lt;span style=&quot; font-weight:600;&quot;&gt; Industrial Zone Dar El Beida&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Zone Type :&lt;/span&gt; Industrial Zone&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Zone Name :&lt;/span&gt; Dar El Beida&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;The zone name should not be concatenated with the zone type e.g.&lt;span style=&quot; font-weight:600;&quot;&gt; Industrial Zone Dar El Beida&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Zone Type :&lt;/span&gt; Industrial Zone&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Zone Name :&lt;/span&gt; Dar El Beida&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;يجب ألا يكون اسم المنطقة متسلسلا مع نوع المنطقة مثل&lt;span style=&quot; font-weight:600;&quot;&gt; منطقة الصناعية دار البيضاء&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;نوع منطقة :&lt;/span&gt; منطقة صناعية&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;اسم منطقة :&lt;/span&gt; دار البيضاء&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Draw the subdivision geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Draw the subdivision geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ارسم الشكل الهندسي للحي&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Draw the entrance geometry&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Draw the entrance geometry&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ارسم الشكل الهندسي للمدخل&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Draw the facility geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Draw the facility geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ارسم الشكل الهندسي للمرفق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Username &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Username &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;اسم المستخدم &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;اعدادات&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;First name &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt; :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;First name &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt; :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;الاسم &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt; :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Email &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Email &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;البريد الإلكتروني &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Municipality &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Municipality &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;البلدية &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Numbering&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Numbering&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;الترقيم&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Roads&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Roads&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;الطرق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Surname &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Surname &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;اللقب &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Panels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Panels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;اللوحات&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wilaya &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wilaya &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;الولاية &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update the subdivision geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update the subdivision geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;تحديث الشكل الهندسي للحي&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update the entrance geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update the entrance geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;تحديث الشكل الهندسي للمدخل&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update the facility geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update the facility geometry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;تحديث الشكل الهندسي للمرفق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the subdivision on the map to delete or update its information&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the subdivision on the map to delete or update its information&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;تحديد الحي على الخريطة لحذفه أو تحديث المعلومات المتعلقة به&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the entrance on the map to delete or update its information&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the entrance on the map to delete or update its information&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;تحديد المدخل على الخريطة لحذفه أو تحديث المعلومات المتعلقة به&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the facility on the map to delete or update its information&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the facility on the map to delete or update its information&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;تحديد المرفق على الخريطة لحذفه أو تحديث المعلومات المتعلقة به&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Report&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Report&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;تقرير&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select subdivision type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select subdivision type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;حدد نوع الحي&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select facility type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select facility type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;حدد نوع المرفق&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Phone number &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Phone number &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;رقم الهاتف &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measure distance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measure distance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;قياس المسافة&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Password &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Password &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;كلمة السر &lt;span style=&quot; color:red;&quot;&gt;*&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Cannot stop editing for layer</source>
@@ -345,7 +345,7 @@
     </message>
     <message>
         <source>Error</source>
-        <translation>Error</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <source>Error</source>
@@ -400,12 +400,12 @@
         <translation>Please select a map layer option.</translation>
     </message>
     <message>
-        <source>RNA Plugin</source>
-        <translation>RNA Plugin</translation>
+        <source>CAM Plugin</source>
+        <translation>CAM Plugin</translation>
     </message>
     <message>
-        <source>RNA Plugin Error</source>
-        <translation>RNA Plugin Error</translation>
+        <source>CAM Plugin Error</source>
+        <translation>CAM Plugin Error</translation>
     </message>
     <message>
         <source>Save Copy As</source>
@@ -441,845 +441,845 @@
     </message>
     <message>
         <source>Add User</source>
-        <translation>Add User</translation>
+        <translation>إضافة مستخدم</translation>
     </message>
     <message>
         <source>Reset measurement</source>
-        <translation>Reset measurement</translation>
+        <translation>إعادة تحديث القياس</translation>
     </message>
     <message>
         <source>Residence</source>
-        <translation>Residence</translation>
+        <translation>إقامة</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancel</translation>
+        <translation>إلغاء</translation>
     </message>
     <message>
         <source>Generate Report</source>
-        <translation>Generate Report</translation>
+        <translation>إنشاء التقرير</translation>
     </message>
     <message>
         <source>Generate Map</source>
-        <translation>Generate Map</translation>
+        <translation>إنشاء الخريطة</translation>
     </message>
     <message>
         <source>Generate Numbering Map</source>
-        <translation>Generate Numbering Map</translation>
+        <translation>إنشاء خريطة الترقيم</translation>
     </message>
     <message>
         <source>Generate Panels Map</source>
-        <translation>Generate Panels Map</translation>
+        <translation>إنشاء خريطة اللوحات</translation>
     </message>
     <message>
         <source>Create auth database</source>
-        <translation>Create auth database</translation>
+        <translation>إنشاء قاعدة بيانات المصادقة</translation>
     </message>
     <message>
         <source>Create Database Backup</source>
-        <translation>Create Database Backup</translation>
+        <translation>إنشاء نسخة احتياطية لقاعدة البيانات</translation>
     </message>
     <message>
         <source>Finish</source>
-        <translation>Finish</translation>
+        <translation>إنهاء</translation>
     </message>
     <message>
         <source>Start Drawing</source>
-        <translation>Start Drawing</translation>
+        <translation>ابدأ الرسم</translation>
     </message>
     <message>
         <source>Draw Subdivision</source>
-        <translation>Draw Subdivision</translation>
+        <translation>ارسم التجزئة</translation>
     </message>
     <message>
         <source>Draw Road</source>
-        <translation>Draw Road</translation>
+        <translation>ارسم الطريق</translation>
     </message>
     <message>
         <source>Draw Entrance</source>
-        <translation>Draw Entrance</translation>
+        <translation>ارسم المدخل</translation>
     </message>
     <message>
         <source>Draw Facility</source>
-        <translation>Draw Facility</translation>
+        <translation>ارسم المرفق</translation>
     </message>
     <message>
         <source>Draw Zone</source>
-        <translation>Draw Zone</translation>
+        <translation>ارسم المنطقة</translation>
     </message>
     <message>
         <source>Restore Database</source>
-        <translation>Restore Database</translation>
+        <translation>استعادة قاعدة البيانات</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Name</translation>
+        <translation>اسم</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation>Settings</translation>
+        <translation>اعدادات</translation>
     </message>
     <message>
         <source>Dimensions</source>
-        <translation>Dimensions</translation>
+        <translation>الأبعاد</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation>Settings</translation>
+        <translation>الإعدادات</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation>Date</translation>
+        <translation>التاريخ</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation>Next</translation>
+        <translation>التالي</translation>
     </message>
     <message>
         <source>Subdivisions</source>
-        <translation>Subdivisions</translation>
+        <translation>التجزئات</translation>
     </message>
     <message>
         <source>Subdivision</source>
-        <translation>Subdivision</translation>
+        <translation>التجزئة</translation>
     </message>
     <message>
         <source>Numbering</source>
-        <translation>Numbering</translation>
+        <translation>الترقيم</translation>
     </message>
     <message>
         <source>Distribution by Status</source>
-        <translation>Distribution by Status</translation>
+        <translation>التوزيع حسب الوضعية</translation>
     </message>
     <message>
         <source>Distribution by Numbering State</source>
-        <translation>Distribution by Numbering State</translation>
+        <translation>التوزيع حسب حالة الترقيم</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation>Status</translation>
+        <translation>الحالة</translation>
     </message>
     <message>
         <source>Logout</source>
-        <translation>Logout</translation>
+        <translation>الخروج</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation>Login</translation>
+        <translation>الدخول</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation>Previous</translation>
+        <translation>السابق</translation>
     </message>
     <message>
         <source>Page</source>
-        <translation>Page</translation>
+        <translation>الصفحة</translation>
     </message>
     <message>
         <source>Roads</source>
-        <translation>Roads</translation>
+        <translation>الطرق</translation>
     </message>
     <message>
         <source>Road</source>
-        <translation>Road</translation>
+        <translation>الطريق</translation>
     </message>
     <message>
         <source>Road already exists</source>
-        <translation>Road already exists</translation>
+        <translation>الطريق موجود بالفعل</translation>
     </message>
     <message>
         <source>Count</source>
-        <translation>Count</translation>
+        <translation>العدد</translation>
     </message>
     <message>
         <source>Sector</source>
-        <translation>Sector</translation>
+        <translation>القطاع</translation>
     </message>
     <message>
         <source>Language:</source>
-        <translation>Language:</translation>
+        <translation>اللغة:</translation>
     </message>
     <message>
         <source>Panels</source>
-        <translation>Panels</translation>
+        <translation>اللواحات</translation>
     </message>
     <message>
         <source>Panels</source>
-        <translation>Panels</translation>
+        <translation>اللوحات</translation>
     </message>
     <message>
         <source>Entrances</source>
-        <translation>Entrances</translation>
+        <translation>المداخل</translation>
     </message>
     <message>
         <source>Facilities</source>
-        <translation>Facilities</translation>
+        <translation>المرافق</translation>
     </message>
     <message>
         <source>Facility</source>
-        <translation>Facility</translation>
+        <translation>المرفق</translation>
     </message>
     <message>
         <source>Total Distance</source>
-        <translation>Total Distance</translation>
+        <translation>المسافة الإجمالية</translation>
     </message>
     <message>
         <source>Theme:</source>
-        <translation>Theme:</translation>
+        <translation>المظهر:</translation>
     </message>
     <message>
         <source>ID</source>
-        <translation>ID</translation>
+        <translation>المفتاح</translation>
     </message>
     <message>
         <source>Selected file is not a database</source>
-        <translation>Selected file is not a database</translation>
+        <translation>الملف المحدد ليس قاعدة بيانات</translation>
     </message>
     <message>
         <source>Selected file is not a valid SQLite database</source>
-        <translation>Selected file is not a valid SQLite database</translation>
+        <translation>الملف المحدد ليس قاعدة بيانات SQLite صالحة</translation>
     </message>
     <message>
         <source>Zones</source>
-        <translation>Zones</translation>
+        <translation>المناطق</translation>
     </message>
     <message>
         <source>Zone already exists</source>
-        <translation>Zone already exists</translation>
+        <translation>المنطقة موجودة بالفعل</translation>
     </message>
     <message>
         <source>Location</source>
-        <translation>Location</translation>
+        <translation>الموقع</translation>
     </message>
     <message>
         <source>Maps, Reports and Backup</source>
-        <translation>Maps, Reports and Backup</translation>
+        <translation>الخرائط والتقارير والنسخ الاحتياطي</translation>
     </message>
     <message>
         <source>Entrance-related Activity</source>
-        <translation>Entrance-related Activity</translation>
+        <translation>النشاط المرافق بالمدخل</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation>Type</translation>
+        <translation>النوع</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation>Status</translation>
+        <translation>الوضعية</translation>
     </message>
     <message>
         <source>No Activity</source>
-        <translation>No Activity</translation>
+        <translation>بدون نشاط</translation>
     </message>
     <message>
         <source>My Municipality</source>
-        <translation>My Municipality</translation>
+        <translation>بلديتي</translation>
     </message>
     <message>
         <source>Subdivision</source>
-        <translation>Subdivision</translation>
+        <translation>تجزئة</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation>Update</translation>
+        <translation>تحديث</translation>
     </message>
     <message>
         <source>Update Subdivision</source>
-        <translation>Update Subdivision</translation>
+        <translation>تحديث التجزئة</translation>
     </message>
     <message>
         <source>Update Road</source>
-        <translation>Update Road</translation>
+        <translation>تحديث الطريق</translation>
     </message>
     <message>
         <source>Update Entrance</source>
-        <translation>Update Entrance</translation>
+        <translation>تحديث المدخل</translation>
     </message>
     <message>
         <source>Update Facility</source>
-        <translation>Update Facility</translation>
+        <translation>تحديث المرفق</translation>
     </message>
     <message>
         <source>Update Zone</source>
-        <translation>Update Zone</translation>
+        <translation>تحديث المنطقة</translation>
     </message>
     <message>
         <source>Clear measurement line?</source>
-        <translation>Clear measurement line?</translation>
+        <translation>تريد مسح خط القياس ؟</translation>
     </message>
     <message>
         <source>Sign In</source>
-        <translation>Sign In</translation>
+        <translation>تسجيل الدخول</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation>Label</translation>
+        <translation>تسمية</translation>
     </message>
     <message>
         <source>Cooperative</source>
-        <translation>Cooperative</translation>
+        <translation>تعاونية</translation>
     </message>
     <message>
         <source>Report</source>
-        <translation>Report</translation>
+        <translation>تقرير</translation>
     </message>
     <message>
         <source>Division</source>
-        <translation>Division</translation>
+        <translation>تقسيم</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation>Duplicate</translation>
+        <translation>تكرار</translation>
     </message>
     <message>
         <source>Auth database created</source>
-        <translation>Auth database created</translation>
+        <translation>تم إنشاء قاعدة بيانات المصادقة</translation>
     </message>
     <message>
         <source>Measurement tool ended</source>
-        <translation>Measurement tool ended</translation>
+        <translation>تم إنهاء أداة القياس</translation>
     </message>
     <message>
         <source>Subdivision updated successfully</source>
-        <translation>Subdivision updated successfully</translation>
+        <translation>تم تحديث هذا الحي بنجاح</translation>
     </message>
     <message>
         <source>Road updated successfully</source>
-        <translation>Road updated successfully</translation>
+        <translation>تم تحديث هذا الطريق بنجاح</translation>
     </message>
     <message>
         <source>Entrance updated successfully</source>
-        <translation>Entrance updated successfully</translation>
+        <translation>تم تحديث هذا المدخل بنجاح</translation>
     </message>
     <message>
         <source>Facility updated successfully</source>
-        <translation>Facility updated successfully</translation>
+        <translation>تم تحديث هذا المرفق بنجاح</translation>
     </message>
     <message>
         <source>Panel updated successfully</source>
-        <translation>Panel updated successfully</translation>
+        <translation>تم تحديث هذه اللوحة بنجاح</translation>
     </message>
     <message>
         <source>Zone updated successfully</source>
-        <translation>Zone updated successfully</translation>
+        <translation>تم تحديث هذه المنطقة بنجاح</translation>
     </message>
     <message>
         <source>File saved in My Documents</source>
-        <translation>File saved in My Documents</translation>
+        <translation>تم حفظ ملفك في مستنداتي</translation>
     </message>
     <message>
         <source>File copied successfully</source>
-        <translation>File copied successfully</translation>
+        <translation>تم نسخ الملف بنجاح</translation>
     </message>
     <message>
         <source>Road type added</source>
-        <translation>Road type added</translation>
+        <translation>تمة إظافة   نوع الطريق</translation>
     </message>
     <message>
         <source>Zone type added</source>
-        <translation>Zone type added</translation>
+        <translation>تمة إظافة   نوع المنطقة</translation>
     </message>
     <message>
         <source>Subdivision type added</source>
-        <translation>Subdivision type added</translation>
+        <translation>تمة إظافة  نوع التجزئة</translation>
     </message>
     <message>
         <source>Facility type added</source>
-        <translation>Facility type added</translation>
+        <translation>تمة إظافة  نوع المرفق</translation>
     </message>
     <message>
         <source>Activity type added</source>
-        <translation>Activity type added</translation>
+        <translation>تمة إظافة  نوع النشاط</translation>
     </message>
     <message>
         <source>Subdivision added successfully</source>
-        <translation>Subdivision added successfully</translation>
+        <translation>تمت إضافة هذا الحي بنجاح</translation>
     </message>
     <message>
         <source>Road added successfully</source>
-        <translation>Road added successfully</translation>
+        <translation>تمت إضافة هذا الطريق بنجاح</translation>
     </message>
     <message>
         <source>Entrance added successfully</source>
-        <translation>Entrance added successfully</translation>
+        <translation>تمت إضافة هذا المدخل بنجاح</translation>
     </message>
     <message>
         <source>Entrance added.
 Clear measurement line?</source>
-        <translation>Entrance added.
-Clear measurement line?</translation>
+        <translation>تمت إضافة هذا المدخل بنجاح
+ هل تمسح خط القياس ؟</translation>
     </message>
     <message>
         <source>Facility added successfully</source>
-        <translation>Facility added successfully</translation>
+        <translation>تمت إضافة هذا المرفق بنجاح</translation>
     </message>
     <message>
         <source>Panel added successfully</source>
-        <translation>Panel added successfully</translation>
+        <translation>تمت إضافة هذه اللوحة بنجاح</translation>
     </message>
     <message>
         <source>Panel added.
 Clear measurement line?</source>
-        <translation>Panel added.
-Clear measurement line?</translation>
+        <translation>تمت إضافة هذه اللوحة بنجاح
+ هل تريد مسح خط القياس ؟</translation>
     </message>
     <message>
         <source>Zone added successfully</source>
-        <translation>Zone added successfully</translation>
+        <translation>تمت إضافة هذه المنطقة بنجاح</translation>
     </message>
     <message>
         <source>Resumed</source>
-        <translation>Resumed</translation>
+        <translation>تمت المتابعة</translation>
     </message>
     <message>
         <source>Delete measurement line?</source>
-        <translation>Delete measurement line?</translation>
+        <translation>تمسح خط القياس ؟</translation>
     </message>
     <message>
         <source>Boulevard</source>
-        <translation>Boulevard</translation>
+        <translation>جادة</translation>
     </message>
     <message>
         <source>Pedestrian Bridge</source>
-        <translation>Pedestrian Bridge</translation>
+        <translation>جسر خاص بالراجلين</translation>
     </message>
     <message>
         <source>Footbridge</source>
-        <translation>Footbridge</translation>
+        <translation>جسر مشاة</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation>Status</translation>
+        <translation>حالة</translation>
     </message>
     <message>
         <source>Select Subdivision</source>
-        <translation>Select Subdivision</translation>
+        <translation>حدد التجزئة</translation>
     </message>
     <message>
         <source>Select Road</source>
-        <translation>Select Road</translation>
+        <translation>حدد الطريق</translation>
     </message>
     <message>
         <source>Select Entrance</source>
-        <translation>Select Entrance</translation>
+        <translation>حدد المدخل</translation>
     </message>
     <message>
         <source>Select Reference</source>
-        <translation>Select Reference</translation>
+        <translation>حدد المرجع</translation>
     </message>
     <message>
         <source>Select Facility</source>
-        <translation>Select Facility</translation>
+        <translation>حدد المرفق</translation>
     </message>
     <message>
         <source>Select Zone</source>
-        <translation>Select Zone</translation>
+        <translation>حدد المنطقة</translation>
     </message>
     <message>
         <source>Select Geometry</source>
-        <translation>Select Geometry</translation>
+        <translation>حدد الهندسة</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Save</translation>
+        <translation>حفظ</translation>
     </message>
     <message>
         <source>Save report in My Documents</source>
-        <translation>Save report in My Documents</translation>
+        <translation>حفظ تقريرك في مستنداتك</translation>
     </message>
     <message>
         <source>Save file in My Documents</source>
-        <translation>Save file in My Documents</translation>
+        <translation>حفظ ملفك في مستنداتي</translation>
     </message>
     <message>
         <source>Neighborhood</source>
-        <translation>Neighborhood</translation>
+        <translation>حي</translation>
     </message>
     <message>
         <source>Residential Neighborhood</source>
-        <translation>Residential Neighborhood</translation>
+        <translation>حي سكني</translation>
     </message>
     <message>
         <source>Numbering map or panels map</source>
-        <translation>Numbering map or panels map</translation>
+        <translation>خريطة ترقيم المداخل أو خريطة اللواحات</translation>
     </message>
     <message>
         <source>Numbering map or panels map
 You must select the map type to print</source>
-        <translation>Numbering map or panels map
-You must select the map type to print</translation>
+        <translation>خريطة ترقيم المداخل أو خريطة اللواحات  
+  يجب عليك تحديد نوع الخريطة التي تريد طباعتها</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation>Dark</translation>
+        <translation>داكن</translation>
     </message>
     <message>
         <source>Path</source>
-        <translation>Path</translation>
+        <translation>درب</translation>
     </message>
     <message>
         <source>Roundabout</source>
-        <translation>Roundabout</translation>
+        <translation>دوار</translation>
     </message>
     <message>
         <source>Number</source>
-        <translation>Number</translation>
+        <translation>رقم</translation>
     </message>
     <message>
         <source>Decision No.</source>
-        <translation>Decision No.</translation>
+        <translation>رقم القرار</translation>
     </message>
     <message>
         <source>Plan Number</source>
-        <translation>Plan Number</translation>
+        <translation>رقم المخطط</translation>
     </message>
     <message>
         <source>Lane</source>
-        <translation>Lane</translation>
+        <translation>زقاق</translation>
     </message>
     <message>
         <source>Street</source>
-        <translation>Street</translation>
+        <translation>شارع</translation>
     </message>
     <message>
         <source>Geometry</source>
-        <translation>Geometry</translation>
+        <translation>شكل هندسي</translation>
     </message>
     <message>
         <source>Valid</source>
-        <translation>Valid</translation>
+        <translation>صالحة</translation>
     </message>
     <message>
         <source>Dirt Road</source>
-        <translation>Dirt Road</translation>
+        <translation>طريق ترابي</translation>
     </message>
     <message>
         <source>Private Road</source>
-        <translation>Private Road</translation>
+        <translation>طريق خاص</translation>
     </message>
     <message>
         <source>Dead End</source>
-        <translation>Dead End</translation>
+        <translation>طريق مسدود</translation>
     </message>
     <message>
         <source>Sloped Road</source>
-        <translation>Sloped Road</translation>
+        <translation>طريق منحدر</translation>
     </message>
     <message>
         <source>National Road</source>
-        <translation>National Road</translation>
+        <translation>طريق وطني</translation>
     </message>
     <message>
         <source>Unable to log in to server or image not found</source>
-        <translation>Unable to log in to server or image not found</translation>
+        <translation>غير قادر على تسجيل الدخول إلى الخادم أو الصورة غير موجودة</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation>Light</translation>
+        <translation>فاتح</translation>
     </message>
     <message>
         <source>Failed to create report</source>
-        <translation>Failed to create report</translation>
+        <translation>فشل في إنشاء التقرير</translation>
     </message>
     <message>
         <source>Failed to copy file</source>
-        <translation>Failed to copy file</translation>
+        <translation>فشل في نسخ الملف</translation>
     </message>
     <message>
         <source>Subdivisions List</source>
-        <translation>Subdivisions List</translation>
+        <translation>قائمة التجزئات</translation>
     </message>
     <message>
         <source>Road List</source>
-        <translation>Road List</translation>
+        <translation>قائمة الطرق</translation>
     </message>
     <message>
         <source>Panels List</source>
-        <translation>Panels List</translation>
+        <translation>قائمة اللواحات</translation>
     </message>
     <message>
         <source>Entrance List</source>
-        <translation>Entrance List</translation>
+        <translation>قائمة المداخل</translation>
     </message>
     <message>
         <source>Facility List</source>
-        <translation>Facility List</translation>
+        <translation>قائمة المرافق</translation>
     </message>
     <message>
         <source>Auth database already exists</source>
-        <translation>Auth database already exists</translation>
+        <translation>قاعدة بيانات المصادقة موجودة مسبقاً</translation>
     </message>
     <message>
         <source>Village</source>
-        <translation>Village</translation>
+        <translation>قرية</translation>
     </message>
     <message>
         <source>Urban Pole</source>
-        <translation>Urban Pole</translation>
+        <translation>قطب عمراني</translation>
     </message>
     <message>
         <source>Measure Distance</source>
-        <translation>Measure Distance</translation>
+        <translation>قياس المسافة</translation>
     </message>
     <message>
         <source>km</source>
-        <translation>km</translation>
+        <translation>كم</translation>
     </message>
     <message>
         <source>No</source>
-        <translation>No</translation>
+        <translation>لا</translation>
     </message>
     <message>
         <source>Cannot add road, road already exists</source>
-        <translation>Cannot add road, road already exists</translation>
+        <translation>لا يمكن إضافة الطريق , الطريق موجود بالفعل</translation>
     </message>
     <message>
         <source>Cannot add facility, facility already exists</source>
-        <translation>Cannot add facility, facility already exists</translation>
+        <translation>لا يمكن إضافة المرفق ، المرفق موجود بالفعل</translation>
     </message>
     <message>
         <source>Cannot add zone, zone already exists</source>
-        <translation>Cannot add zone, zone already exists</translation>
+        <translation>لا يمكن إضافة المنطقة , المنطقة موجودة بالفعل</translation>
     </message>
     <message>
         <source>Cannot update zone</source>
-        <translation>Cannot update zone</translation>
+        <translation>لا يمكن تحديث   المنطقة</translation>
     </message>
     <message>
         <source>Cannot update subdivision</source>
-        <translation>Cannot update subdivision</translation>
+        <translation>لا يمكن تحديث  الحي</translation>
     </message>
     <message>
         <source>Cannot update road</source>
-        <translation>Cannot update road</translation>
+        <translation>لا يمكن تحديث  الطريق</translation>
     </message>
     <message>
         <source>Cannot update panel</source>
-        <translation>Cannot update panel</translation>
+        <translation>لا يمكن تحديث  اللوحة</translation>
     </message>
     <message>
         <source>Cannot update facility</source>
-        <translation>Cannot update facility</translation>
+        <translation>لا يمكن تحديث  المرفق</translation>
     </message>
     <message>
         <source>No file selected</source>
-        <translation>No file selected</translation>
+        <translation>لا يوجد ملف محدد</translation>
     </message>
     <message>
         <source>To Be Corrected</source>
-        <translation>To Be Corrected</translation>
+        <translation>لتصحيحها</translation>
     </message>
     <message>
         <source>Subdivision type not added</source>
-        <translation>Subdivision type not added</translation>
+        <translation>لم يتم إظافة  نوع التجزئة</translation>
     </message>
     <message>
         <source>Road type not added</source>
-        <translation>Road type not added</translation>
+        <translation>لم يتم إظافة  نوع الطريق</translation>
     </message>
     <message>
         <source>Facility type not added</source>
-        <translation>Facility type not added</translation>
+        <translation>لم يتم إظافة  نوع المرفق</translation>
     </message>
     <message>
         <source>Zone type not added</source>
-        <translation>Zone type not added</translation>
+        <translation>لم يتم إظافة  نوع المنطقة</translation>
     </message>
     <message>
         <source>Activity type not added</source>
-        <translation>Activity type not added</translation>
+        <translation>لم يتم إظافة  نوع النشاط</translation>
     </message>
     <message>
         <source>To Be Moved</source>
-        <translation>To Be Moved</translation>
+        <translation>لنقلها</translation>
     </message>
     <message>
         <source>m</source>
-        <translation>m</translation>
+        <translation>م</translation>
     </message>
     <message>
         <source>Programmed</source>
-        <translation>Programmed</translation>
+        <translation>مبرمجة</translation>
     </message>
     <message>
         <source>m</source>
-        <translation>m</translation>
+        <translation>متر</translation>
     </message>
     <message>
         <source>Paused</source>
-        <translation>Paused</translation>
+        <translation>متوقفة مؤقتاً</translation>
     </message>
     <message>
         <source>Passage</source>
-        <translation>Passage</translation>
+        <translation>مجاز</translation>
     </message>
     <message>
         <source>Housing Complex</source>
-        <translation>Housing Complex</translation>
+        <translation>مجمع سكني</translation>
     </message>
     <message>
         <source>Real Estate Complex</source>
-        <translation>Real Estate Complex</translation>
+        <translation>مجمع عقاري</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation>Group</translation>
+        <translation>مجموعة</translation>
     </message>
     <message>
         <source>Reserved</source>
-        <translation>Reserved</translation>
+        <translation>محجوز(ة)</translation>
     </message>
     <message>
         <source>Steps</source>
-        <translation>Steps</translation>
+        <translation>مدرج</translation>
     </message>
     <message>
         <source>Numbered and Mismatched</source>
-        <translation>Numbered and Mismatched</translation>
+        <translation>مرقمة وغير مطابقة</translation>
     </message>
     <message>
         <source>Numbered and Matching</source>
-        <translation>Numbered and Matching</translation>
+        <translation>مرقمة ومطابقة</translation>
     </message>
     <message>
         <source>Compound</source>
-        <translation>Compound</translation>
+        <translation>مركب</translation>
     </message>
     <message>
         <source>Installed</source>
-        <translation>Installed</translation>
+        <translation>مركبة</translation>
     </message>
     <message>
         <source>Space Applications Center 2025 ©</source>
-        <translation>Space Applications Center 2025 ©</translation>
+        <translation>مركز التطبيقات الفضائية  2025 ©</translation>
     </message>
     <message>
         <source>Path</source>
-        <translation>Path</translation>
+        <translation>مسار</translation>
     </message>
     <message>
         <source>Municipal Path</source>
-        <translation>Municipal Path</translation>
+        <translation>مسار بلدي</translation>
     </message>
     <message>
         <source>Provincial Path</source>
-        <translation>Provincial Path</translation>
+        <translation>مسار ولائي</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>User</translation>
+        <translation>مستخدم</translation>
     </message>
     <message>
         <source>Hamlet</source>
-        <translation>Hamlet</translation>
+        <translation>مشتة</translation>
     </message>
     <message>
         <source>Passageway</source>
-        <translation>Passageway</translation>
+        <translation>ممر</translation>
     </message>
     <message>
         <source>Slope</source>
-        <translation>Slope</translation>
+        <translation>منحدر</translation>
     </message>
     <message>
         <source>Zone</source>
-        <translation>Zone</translation>
+        <translation>منطقة</translation>
     </message>
     <message>
         <source>Study Area</source>
-        <translation>Study Area</translation>
+        <translation>منطقة الدراسة</translation>
     </message>
     <message>
         <source>Industrial Zone</source>
-        <translation>Industrial Zone</translation>
+        <translation>منطقة صناعية</translation>
     </message>
     <message>
         <source>Activity Zone</source>
-        <translation>Activity Zone</translation>
+        <translation>منطقة نشاطات</translation>
     </message>
     <message>
         <source>Cut-through</source>
-        <translation>Cut-through</translation>
+        <translation>منقطع ممر</translation>
     </message>
     <message>
         <source>File copied successfully</source>
-        <translation>File copied successfully</translation>
+        <translation>نسخ الملف بنجاح</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation>Yes</translation>
+        <translation>نعم</translation>
     </message>
     <message>
         <source>Order Form</source>
-        <translation>Order Form</translation>
+        <translation>نموذج طلبية</translation>
     </message>
     <message>
         <source>Alley</source>
-        <translation>Alley</translation>
+        <translation>نهج</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation>Type</translation>
+        <translation>نوع</translation>
     </message>
     <message>
         <source>Reference Type</source>
-        <translation>Reference Type</translation>
+        <translation>نوع المرجع</translation>
     </message>
     <message>
         <source>Reference type not selected</source>
-        <translation>Reference type not selected</translation>
+        <translation>نوع المرجع غير محدد</translation>
     </message>
     <message>
         <source>Adding subdivision type</source>
-        <translation>Adding subdivision type</translation>
+        <translation>يتم إظافة  نوع التجزئة</translation>
     </message>
     <message>
         <source>Adding road type</source>
-        <translation>Adding road type</translation>
+        <translation>يتم إظافة  نوع الطريق</translation>
     </message>
     <message>
         <source>Adding facility type</source>
-        <translation>Adding facility type</translation>
+        <translation>يتم إظافة  نوع المرفق</translation>
     </message>
     <message>
         <source>Adding zone type</source>
-        <translation>Adding zone type</translation>
+        <translation>يتم إظافة  نوع المنطقة</translation>
     </message>
     <message>
         <source>Adding activity type</source>
-        <translation>Adding activity type</translation>
+        <translation>يتم إظافة  نوع النشاط</translation>
     </message>
     <message>
         <source>You must select the map type to print</source>
-        <translation>You must select the map type to print</translation>
+        <translation>يجب عليك تحديد نوع الخريطة التي تريد طباعتها</translation>
     </message>
     <message>
         <source>Please restart QGIS to apply the language change</source>
-        <translation>Please restart QGIS to apply the language change</translation>
+        <translation>يرجى إعادة تشغيل QGIS لتطبيق تغيير اللغة</translation>
     </message>
     <message>
         <source>Can add road</source>
-        <translation>Can add road</translation>
+        <translation>يمكن إضافة الطريق</translation>
     </message>
     <message>
         <source>Facility already exists, can add</source>
-        <translation>Facility already exists, can add</translation>
+        <translation>يمكن إضافة المرفق ، المرفق موجود بالفعل</translation>
     </message>
     <message>
         <source>Can add zone</source>
-        <translation>Can add zone</translation>
+        <translation>يمكن إضافة المنطقة</translation>
     </message>
     <message>
         <source>File selected</source>
-        <translation>File selected</translation>
+        <translation>يوجد ملف محدد</translation>
     </message>
     <message>
         <source>A0 Paper for Administration</source>
-        <translation>A0 Paper for Administration</translation>
+        <translation>‫ورقة A0 للإدارة‬</translation>
     </message>
     <message>
         <source>A3 Paper for Fieldwork</source>
-        <translation>A3 Paper for Fieldwork</translation>
+        <translation>‫ورقة A3 للعمل الميداني‬</translation>
     </message>
 </context>
 </TS>

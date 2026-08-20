@@ -45,6 +45,6 @@ jobs:
 
       - name: Run tests
         env:
-          RNA_JWT_SECRET: test-secret-key-for-testing-only
+          CAM_JWT_SECRET: test-secret-key-for-testing-only
           QT_QPA_PLATFORM: offscreen
         run: python -m pytest test/ --ignore=test/test_qgis_environment.py --ignore=test/test_translations.py -v

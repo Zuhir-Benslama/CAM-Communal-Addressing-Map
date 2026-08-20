@@ -455,11 +455,13 @@ class TestInitAllowedZone(unittest.TestCase):
         geom.isEmpty.return_value = False
         geom.boundingBox.return_value = MagicMock()
         mock_proj.instance.return_value.mapLayersByName.return_value = []
-        with patch.object(self.mod, '_resolve_commune_geometry', return_value=geom):
-            with patch.object(self.mod, '_create_municipality_layer'):
-                iface = make_mock_iface()
-                self.mod.init_allowed_zone(iface)
-                iface.mapCanvas().zoomToFeatureExtent.assert_called_once()
+        with (
+            patch.object(self.mod, '_resolve_commune_geometry', return_value=geom),
+            patch.object(self.mod, '_create_municipality_layer'),
+        ):
+            iface = make_mock_iface()
+            self.mod.init_allowed_zone(iface)
+            iface.mapCanvas().zoomToFeatureExtent.assert_called_once()
 
     @patch('plans_adressage.layer.utils.create_other_layers')
     @patch('plans_adressage.layer.utils._log_municipality_diagnostics')
@@ -468,11 +470,13 @@ class TestInitAllowedZone(unittest.TestCase):
         geom = MagicMock()
         geom.isEmpty.return_value = True
         mock_proj.instance.return_value.mapLayersByName.return_value = []
-        with patch.object(self.mod, '_resolve_commune_geometry', return_value=geom):
-            with patch.object(self.mod, '_create_municipality_layer'):
-                iface = make_mock_iface()
-                self.mod.init_allowed_zone(iface)
-                iface.mapCanvas().zoomToFeatureExtent.assert_not_called()
+        with (
+            patch.object(self.mod, '_resolve_commune_geometry', return_value=geom),
+            patch.object(self.mod, '_create_municipality_layer'),
+        ):
+            iface = make_mock_iface()
+            self.mod.init_allowed_zone(iface)
+            iface.mapCanvas().zoomToFeatureExtent.assert_not_called()
 
 
 if __name__ == '__main__':

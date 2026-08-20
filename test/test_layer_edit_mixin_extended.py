@@ -90,15 +90,19 @@ class TestUpdateHandler(unittest.TestCase):
         self.h = _MixinHarness(self.mod)
 
     def test_no_layers_found(self):
-        with patch.object(self.mod, 'QgsProject') as mock_proj, \
-             patch.object(self.mod, 'update_layer') as mock_update:
+        with (
+            patch.object(self.mod, 'QgsProject') as mock_proj,
+            patch.object(self.mod, 'update_layer') as mock_update,
+        ):
             mock_proj.instance.return_value.mapLayersByName.return_value = []
             self.h.mixin._update_handler('Nonexistent')
             mock_update.assert_not_called()
 
     def test_layers_found_connects_signal(self):
-        with patch.object(self.mod, 'QgsProject') as mock_proj, \
-             patch.object(self.mod, 'update_layer') as mock_update:
+        with (
+            patch.object(self.mod, 'QgsProject') as mock_proj,
+            patch.object(self.mod, 'update_layer') as mock_update,
+        ):
             layer = MagicMock()
             mock_proj.instance.return_value.mapLayersByName.return_value = [layer]
             self.h.mixin._update_handler('roads')
@@ -108,8 +112,10 @@ class TestUpdateHandler(unittest.TestCase):
             mock_update.assert_called_once_with(self.h.mixin.iface, 'roads')
 
     def test_disconnect_before_connect(self):
-        with patch.object(self.mod, 'QgsProject') as mock_proj, \
-             patch.object(self.mod, 'update_layer') as mock_update:
+        with (
+            patch.object(self.mod, 'QgsProject') as mock_proj,
+            patch.object(self.mod, 'update_layer'),
+        ):
             layer = MagicMock()
             mock_proj.instance.return_value.mapLayersByName.return_value = [layer]
             self.h.mixin._update_handler('roads')
@@ -117,8 +123,10 @@ class TestUpdateHandler(unittest.TestCase):
             layer.geometryChanged.connect.assert_called_once()
 
     def test_disconnect_type_error_suppressed(self):
-        with patch.object(self.mod, 'QgsProject') as mock_proj, \
-             patch.object(self.mod, 'update_layer') as mock_update:
+        with (
+            patch.object(self.mod, 'QgsProject') as mock_proj,
+            patch.object(self.mod, 'update_layer') as mock_update,
+        ):
             layer = MagicMock()
             layer.geometryChanged.disconnect.side_effect = TypeError
             mock_proj.instance.return_value.mapLayersByName.return_value = [layer]
@@ -270,7 +278,8 @@ class TestMakeLocaleKwargs(unittest.TestCase):
     def test_english(self):
         with patch.object(self.mod, 'current_locale', return_value='en'):
             self.assertEqual(
-                self.h.mixin._make_locale_kwargs('road_name', 'A'), {'road_name_en': 'A'}
+                self.h.mixin._make_locale_kwargs('road_name', 'A'),
+                {'road_name_en': 'A'},
             )
 
 
@@ -299,8 +308,10 @@ class TestAddZone(unittest.TestCase):
         self.h.mixin.add_zone()
 
     def test_success(self):
-        with patch.object(self.mod, 'add_zone') as mock_add, \
-             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+        with (
+            patch.object(self.mod, 'add_zone') as mock_add,
+            patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v),
+        ):
             self.h.mixin._geometry_ready = LAYER_ZONES
             self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
             self.h.mixin._last_feature_id = 'pk-1'
@@ -310,8 +321,10 @@ class TestAddZone(unittest.TestCase):
             self.assertIn('geometry_wkt', mock_add.call_args.kwargs)
 
     def test_sqlalchemy_error(self):
-        with patch.object(self.mod, 'add_zone', side_effect=SQLAlchemyError('db')) as mock_add, \
-             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+        with (
+            patch.object(self.mod, 'add_zone', side_effect=SQLAlchemyError('db')),
+            patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v),
+        ):
             self.h.mixin._geometry_ready = LAYER_ZONES
             self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
             self.h.mixin._last_feature_id = 'pk-1'
@@ -346,8 +359,10 @@ class TestAddRoad(unittest.TestCase):
         self.h.mixin.add_road()
 
     def test_success(self):
-        with patch.object(self.mod, 'add_road') as mock_add, \
-             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+        with (
+            patch.object(self.mod, 'add_road') as mock_add,
+            patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v),
+        ):
             self.h.mixin._geometry_ready = LAYER_ROADS
             self.h.mixin._last_feature_wkt = 'LINESTRING(0 0,1 1)'
             self.h.mixin._last_feature_id = 'pk-2'
@@ -357,8 +372,10 @@ class TestAddRoad(unittest.TestCase):
             self.assertIn('road_name', mock_add.call_args.kwargs)
 
     def test_sqlalchemy_error(self):
-        with patch.object(self.mod, 'add_road', side_effect=SQLAlchemyError('db')) as mock_add, \
-             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+        with (
+            patch.object(self.mod, 'add_road', side_effect=SQLAlchemyError('db')),
+            patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v),
+        ):
             self.h.mixin._geometry_ready = LAYER_ROADS
             self.h.mixin._last_feature_wkt = 'LINESTRING(0 0,1 1)'
             self.h.mixin._last_feature_id = 'pk-2'
@@ -393,8 +410,10 @@ class TestAddOrganization(unittest.TestCase):
         self.h.mixin.add_organization()
 
     def test_success(self):
-        with patch.object(self.mod, 'add_organization') as mock_add, \
-             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+        with (
+            patch.object(self.mod, 'add_organization') as mock_add,
+            patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v),
+        ):
             self.h.mixin._geometry_ready = LAYER_FACILITIES
             self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
             self.h.mixin._last_feature_id = 'pk-3'
@@ -403,8 +422,12 @@ class TestAddOrganization(unittest.TestCase):
             mock_add.assert_called_once()
 
     def test_sqlalchemy_error(self):
-        with patch.object(self.mod, 'add_organization', side_effect=SQLAlchemyError('db')) as mock_add, \
-             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+        with (
+            patch.object(
+                self.mod, 'add_organization', side_effect=SQLAlchemyError('db')
+            ),
+            patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v),
+        ):
             self.h.mixin._geometry_ready = LAYER_FACILITIES
             self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
             self.h.mixin._last_feature_id = 'pk-3'
@@ -439,8 +462,10 @@ class TestAddCity(unittest.TestCase):
         self.h.mixin.add_city()
 
     def test_success(self):
-        with patch.object(self.mod, 'add_subdivision') as mock_add, \
-             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+        with (
+            patch.object(self.mod, 'add_subdivision') as mock_add,
+            patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v),
+        ):
             self.h.mixin._geometry_ready = LAYER_SUBDIVISIONS
             self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
             self.h.mixin._last_feature_id = 'pk-4'
@@ -449,8 +474,12 @@ class TestAddCity(unittest.TestCase):
             mock_add.assert_called_once()
 
     def test_sqlalchemy_error(self):
-        with patch.object(self.mod, 'add_subdivision', side_effect=SQLAlchemyError('db')) as mock_add, \
-             patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_validate:
+        with (
+            patch.object(
+                self.mod, 'add_subdivision', side_effect=SQLAlchemyError('db')
+            ),
+            patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v),
+        ):
             self.h.mixin._geometry_ready = LAYER_SUBDIVISIONS
             self.h.mixin._last_feature_wkt = 'POLYGON((0 0,1 0,1 1,0 1,0 0))'
             self.h.mixin._last_feature_id = 'pk-4'
@@ -511,7 +540,7 @@ class TestAddPanel(unittest.TestCase):
             self.h.mixin.show_confirm_dialog.assert_called_once()
 
     def test_success_without_measure_tool(self):
-        with patch.object(self.mod, 'add_panel_sign') as mock_add:
+        with patch.object(self.mod, 'add_panel_sign'):
             self.h.mixin._geometry_ready = LAYER_PANELS
             self.h.mixin._last_feature_wkt = 'POINT(3 4)'
             self.h.mixin._last_feature_id = 'pk-5'
@@ -525,7 +554,7 @@ class TestAddPanel(unittest.TestCase):
                 mock_suc.assert_called_once_with('Panel added successfully')
 
     def test_error_path(self):
-        with patch.object(self.mod, 'add_panel_sign', side_effect=ValueError('bad')) as mock_add:
+        with patch.object(self.mod, 'add_panel_sign', side_effect=ValueError('bad')):
             self.h.mixin._geometry_ready = LAYER_PANELS
             self.h.mixin._last_feature_wkt = 'POINT(3 4)'
             self.h.mixin._last_feature_id = 'pk-5'
@@ -598,8 +627,10 @@ class TestAddNumbering(unittest.TestCase):
         self.h.mixin.add_numbering()
 
     def test_ref_is_road(self):
-        with patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_val, \
-             patch.object(self.mod, 'add_numbering') as mock_add:
+        with (
+            patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v),
+            patch.object(self.mod, 'add_numbering') as mock_add,
+        ):
             self.h.mixin._geometry_ready = LAYER_NUMBERING
             self.h.mixin._last_feature_wkt = 'POINT(1 2)'
             self.h.mixin._last_feature_id = 'pk-6'
@@ -615,8 +646,10 @@ class TestAddNumbering(unittest.TestCase):
             self.assertIsNone(call_kwargs['subdivision_id'])
 
     def test_ref_is_subdivision(self):
-        with patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_val, \
-             patch.object(self.mod, 'add_numbering') as mock_add:
+        with (
+            patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v),
+            patch.object(self.mod, 'add_numbering') as mock_add,
+        ):
             self.h.mixin._geometry_ready = LAYER_NUMBERING
             self.h.mixin._last_feature_wkt = 'POINT(1 2)'
             self.h.mixin._last_feature_id = 'pk-6'
@@ -632,8 +665,10 @@ class TestAddNumbering(unittest.TestCase):
             self.assertIsNone(call_kwargs['road_id'])
 
     def test_no_ref_data(self):
-        with patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_val, \
-             patch.object(self.mod, 'add_numbering') as mock_add:
+        with (
+            patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v),
+            patch.object(self.mod, 'add_numbering') as mock_add,
+        ):
             self.h.mixin._geometry_ready = LAYER_NUMBERING
             self.h.mixin._last_feature_wkt = 'POINT(1 2)'
             self.h.mixin._last_feature_id = 'pk-6'
@@ -643,8 +678,10 @@ class TestAddNumbering(unittest.TestCase):
             mock_add.assert_not_called()
 
     def test_with_measure_tool(self):
-        with patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_val, \
-             patch.object(self.mod, 'add_numbering') as mock_add:
+        with (
+            patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v),
+            patch.object(self.mod, 'add_numbering'),
+        ):
             self.h.mixin._geometry_ready = LAYER_NUMBERING
             self.h.mixin._last_feature_wkt = 'POINT(1 2)'
             self.h.mixin._last_feature_id = 'pk-6'
@@ -660,8 +697,10 @@ class TestAddNumbering(unittest.TestCase):
             self.assertIs(call_kwargs['yes_callback'], self.h.mixin.measure_tool.clear)
 
     def test_error_path(self):
-        with patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v) as mock_val, \
-             patch.object(self.mod, 'add_numbering', side_effect=TypeError('bad')) as mock_add:
+        with (
+            patch.object(self.mod, 'validate_text', side_effect=lambda v, **kw: v),
+            patch.object(self.mod, 'add_numbering', side_effect=TypeError('bad')),
+        ):
             self.h.mixin._geometry_ready = LAYER_NUMBERING
             self.h.mixin._last_feature_wkt = 'POINT(1 2)'
             self.h.mixin._last_feature_id = 'pk-6'

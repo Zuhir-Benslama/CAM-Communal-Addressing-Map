@@ -143,7 +143,9 @@ class TestLayerOpsMixin(unittest.TestCase):
     def test_check_geometry_in_zone_polygon(self):
         with patch.object(self.mod, 'get_user_location') as mock_loc:
             mock_loc.return_value = 'POLYGON((0 0,10 0,10 10,0 10,0 0))'
-            result = self.mixin._check_geometry_in_zone('POLYGON((1 1,2 1,2 2,1 2,1 1))')
+            result = self.mixin._check_geometry_in_zone(
+                'POLYGON((1 1,2 1,2 2,1 2,1 1))'
+            )
             self.assertEqual(result, 2)
 
     def test_check_geometry_in_zone_linestring(self):

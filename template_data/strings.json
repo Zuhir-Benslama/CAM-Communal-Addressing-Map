@@ -1564,15 +1564,15 @@
     "fr": "Aucune sélection",
     "en": "No Selection"
   },
-  "RNA Plugin": {
-    "ar": "إضافة RNA",
-    "fr": "Plugin RNA",
-    "en": "RNA Plugin"
+  "CAM Plugin": {
+    "ar": "إضافة CAM",
+    "fr": "Plugin CAM",
+    "en": "CAM Plugin"
   },
-  "RNA Plugin Error": {
-    "ar": "خطأ في إضافة RNA",
-    "fr": "Erreur du plugin RNA",
-    "en": "RNA Plugin Error"
+  "CAM Plugin Error": {
+    "ar": "خطأ في إضافة CAM",
+    "fr": "Erreur du plugin CAM",
+    "en": "CAM Plugin Error"
   },
   "Select a file": {
     "ar": "اختر ملفًا",

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Migrate an old RNA database to the current schema.
+"""Migrate an old CAM database to the current schema.
 
 Usage:
     python scripts/migrate_db.py /path/to/old.sqlite /path/to/output.sqlite
@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description='Migrate an old RNA database to the current schema.',
+        description='Migrate an old CAM database to the current schema.',
     )
     parser.add_argument('old_path', help='Path to the old SQLite database')
     parser.add_argument('new_path', help='Path for the migrated output database')

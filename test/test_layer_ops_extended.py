@@ -185,7 +185,9 @@ class TestLayerOpsMixinExtended(unittest.TestCase):
         layer_n = MagicMock()
         layer_n.name.return_value = 'Numbering'
         layer_n.isEditable.return_value = False
-        nodes = [self._make_fake_ltl(lyr) for lyr in (layer_r, layer_z, layer_p, layer_n)]
+        nodes = [
+            self._make_fake_ltl(lyr) for lyr in (layer_r, layer_z, layer_p, layer_n)
+        ]
         root = MagicMock()
         root.children.return_value = nodes
         with patch.object(self.mod, 'QgsLayerTreeLayer', type(nodes[0])):

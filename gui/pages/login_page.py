@@ -28,7 +28,7 @@ def build_login_page(dialog: Any) -> None:
     section = make_section_frame()
     section_layout = section.layout()
 
-    title = QLabel('RNA')
+    title = QLabel('CAM')
     title.setStyleSheet('font-size: 20px; font-weight: bold;')
     section_layout.addWidget(title, alignment=Qt.AlignmentFlag.AlignCenter)
 

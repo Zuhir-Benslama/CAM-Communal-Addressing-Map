@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cross-platform installer for the RNA QGIS plugin.
+"""Cross-platform installer for the CAM QGIS plugin.
 
 Usage:
     python scripts/install_rna.py [--plugin-dir DIR] [--qgis-python PATH]
@@ -30,7 +30,7 @@ _log_handler.setFormatter(
 logger.addHandler(_log_handler)
 logger.setLevel(logging.INFO)
 
-PLUGIN_NAME = 'RNA'
+PLUGIN_NAME = 'CAM'
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(HERE)
 REQUIREMENTS = os.path.join(PROJECT_ROOT, 'requirements.txt')
@@ -231,7 +231,7 @@ def install_plugin(plugin_dir):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Install RNA QGIS plugin',
+        description='Install CAM QGIS plugin',
     )
     parser.add_argument(
         '--plugin-dir',
@@ -253,7 +253,7 @@ def main():
     )
     args = parser.parse_args()
 
-    print('=== RNA QGIS Plugin Installer ===')
+    print('=== CAM QGIS Plugin Installer ===')
     print(f'Platform: {platform.system()} {platform.release()}')
     print()
 
@@ -293,9 +293,9 @@ def main():
     print()
 
     print('=== Done ===')
-    print('Restart QGIS and enable RNA in:')
+    print('Restart QGIS and enable CAM in:')
     print('  Plugins → Manage and Install Plugins → Installed')
-    print('  (check the box next to RNA)')
+    print('  (check the box next to CAM)')
     print()
 
 

@@ -488,9 +488,11 @@ class TestMergeAuthUsers(unittest.TestCase):
                     return target_mock
                 return original_connect(path, *a, **kw)
 
-            with patch('app.core.migration.sqlite3.connect', side_effect=_connect):
-                with self.assertLogs('app.core.migration', level='WARNING'):
-                    _merge_auth_users(target_path, auth_path)
+            with (
+                patch('app.core.migration.sqlite3.connect', side_effect=_connect),
+                self.assertLogs('app.core.migration', level='WARNING'),
+            ):
+                _merge_auth_users(target_path, auth_path)
         finally:
             os.unlink(auth_path)
             os.unlink(target_path)
@@ -521,9 +523,11 @@ class TestMergeAuthUsers(unittest.TestCase):
                     return m
                 return original_connect(path, *a, **kw)
 
-            with patch('app.core.migration.sqlite3.connect', side_effect=_connect):
-                with self.assertLogs('app.core.migration', level='INFO') as cm:
-                    _merge_auth_users(target_path, auth_path)
+            with (
+                patch('app.core.migration.sqlite3.connect', side_effect=_connect),
+                self.assertLogs('app.core.migration', level='INFO') as cm,
+            ):
+                _merge_auth_users(target_path, auth_path)
             self.assertTrue(any('Merged' in m for m in cm.output))
         finally:
             os.unlink(auth_path)
@@ -575,10 +579,12 @@ class TestMigrateDatabase(unittest.TestCase):
             oc.commit()
             oc.close()
 
-            with patch('app.core.migration.init_spatialite'):
-                with patch('app.core.migration._register_geometry_columns'):
-                    with patch('app.core.migration._create_spatial_indexes'):
-                        migrate_database(old_path, new_path)
+            with (
+                patch('app.core.migration.init_spatialite'),
+                patch('app.core.migration._register_geometry_columns'),
+                patch('app.core.migration._create_spatial_indexes'),
+            ):
+                migrate_database(old_path, new_path)
 
             nc = sqlite3.connect(new_path)
             rows = nc.execute('SELECT * FROM user ORDER BY id').fetchall()
@@ -633,10 +639,12 @@ class TestMigrateDatabase(unittest.TestCase):
             oc.commit()
             oc.close()
 
-            with patch('app.core.migration.init_spatialite'):
-                with patch('app.core.migration._register_geometry_columns'):
-                    with patch('app.core.migration._create_spatial_indexes'):
-                        migrate_database(old_path, new_path, auth_path)
+            with (
+                patch('app.core.migration.init_spatialite'),
+                patch('app.core.migration._register_geometry_columns'),
+                patch('app.core.migration._create_spatial_indexes'),
+            ):
+                migrate_database(old_path, new_path, auth_path)
 
             nc = sqlite3.connect(new_path)
             rows = nc.execute('SELECT * FROM user').fetchall()
@@ -666,9 +674,13 @@ class TestMigrateDatabase(unittest.TestCase):
             oc.commit()
             oc.close()
 
-            with patch(
-                'app.core.migration.init_spatialite', side_effect=Exception('boom')
-            ), self.assertRaises(Exception):
+            with (
+                patch(
+                    'app.core.migration.init_spatialite',
+                    side_effect=RuntimeError('boom'),
+                ),
+                self.assertRaises(RuntimeError),
+            ):
                 migrate_database(old_path, new_path)
         finally:
             for p in (old_path, new_path):
@@ -694,10 +706,12 @@ class TestMigrateDatabase(unittest.TestCase):
             oc.commit()
             oc.close()
 
-            with patch('app.core.migration.init_spatialite'):
-                with patch('app.core.migration._register_geometry_columns'):
-                    with patch('app.core.migration._create_spatial_indexes'):
-                        migrate_database(old_path, new_path)
+            with (
+                patch('app.core.migration.init_spatialite'),
+                patch('app.core.migration._register_geometry_columns'),
+                patch('app.core.migration._create_spatial_indexes'),
+            ):
+                migrate_database(old_path, new_path)
 
             nc = sqlite3.connect(new_path)
             journal = nc.execute('PRAGMA journal_mode').fetchone()[0]
@@ -727,10 +741,12 @@ class TestMigrateDatabase(unittest.TestCase):
             oc.commit()
             oc.close()
 
-            with patch('app.core.migration.init_spatialite'):
-                with patch('app.core.migration._register_geometry_columns'):
-                    with patch('app.core.migration._create_spatial_indexes'):
-                        migrate_database(old_path, new_path)
+            with (
+                patch('app.core.migration.init_spatialite'),
+                patch('app.core.migration._register_geometry_columns'),
+                patch('app.core.migration._create_spatial_indexes'),
+            ):
+                migrate_database(old_path, new_path)
 
             nc = sqlite3.connect(new_path)
             tables = {
@@ -766,10 +782,12 @@ class TestMigrateDatabase(unittest.TestCase):
             oc.commit()
             oc.close()
 
-            with patch('app.core.migration.init_spatialite'):
-                with patch('app.core.migration._register_geometry_columns'):
-                    with patch('app.core.migration._create_spatial_indexes'):
-                        migrate_database(old_path, new_path, auth_path=None)
+            with (
+                patch('app.core.migration.init_spatialite'),
+                patch('app.core.migration._register_geometry_columns'),
+                patch('app.core.migration._create_spatial_indexes'),
+            ):
+                migrate_database(old_path, new_path, auth_path=None)
             self.assertTrue(os.path.exists(new_path))
         finally:
             for p in (old_path, new_path):
@@ -796,10 +814,12 @@ class TestMigrateDatabase(unittest.TestCase):
             oc.close()
 
             mock_init = MagicMock()
-            with patch('app.core.migration.init_spatialite', mock_init):
-                with patch('app.core.migration._register_geometry_columns'):
-                    with patch('app.core.migration._create_spatial_indexes'):
-                        migrate_database(old_path, new_path)
+            with (
+                patch('app.core.migration.init_spatialite', mock_init),
+                patch('app.core.migration._register_geometry_columns'),
+                patch('app.core.migration._create_spatial_indexes'),
+            ):
+                migrate_database(old_path, new_path)
             mock_init.assert_called_once()
         finally:
             for p in (old_path, new_path):
@@ -825,10 +845,12 @@ class TestMigrateDatabase(unittest.TestCase):
             oc.commit()
             oc.close()
 
-            with patch('app.core.migration.init_spatialite'):
-                with patch('app.core.migration._register_geometry_columns'):
-                    with patch('app.core.migration._create_spatial_indexes'):
-                        migrate_database(old_path, new_path)
+            with (
+                patch('app.core.migration.init_spatialite'),
+                patch('app.core.migration._register_geometry_columns'),
+                patch('app.core.migration._create_spatial_indexes'),
+            ):
+                migrate_database(old_path, new_path)
             self.assertTrue(os.path.exists(new_path))
         finally:
             for p in (old_path, new_path):
@@ -854,11 +876,13 @@ class TestMigrateDatabase(unittest.TestCase):
             oc.commit()
             oc.close()
 
-            with patch('app.core.migration.init_spatialite'):
-                with patch('app.core.migration._register_geometry_columns'):
-                    with patch('app.core.migration._create_spatial_indexes'):
-                        with self.assertLogs('app.core.migration', level='INFO') as cm:
-                            migrate_database(old_path, new_path)
+            with (
+                patch('app.core.migration.init_spatialite'),
+                patch('app.core.migration._register_geometry_columns'),
+                patch('app.core.migration._create_spatial_indexes'),
+                self.assertLogs('app.core.migration', level='INFO') as cm,
+            ):
+                migrate_database(old_path, new_path)
             self.assertTrue(any('Migration complete' in m for m in cm.output))
         finally:
             for p in (old_path, new_path):

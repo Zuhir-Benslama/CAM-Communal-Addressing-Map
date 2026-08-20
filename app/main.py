@@ -1,4 +1,4 @@
-"""Main plugin entry point for the RNA QGIS plugin."""
+"""Main plugin entry point for the CAM QGIS plugin."""
 
 import logging
 import os
@@ -24,7 +24,7 @@ from .shared.utils import current_locale
 logger = logging.getLogger(__name__)
 
 
-class RNA:
+class CAM:
     """Main plugin class — handles startup, GUI creation, and teardown."""
 
     def __init__(self, iface: QgisInterface) -> None:
@@ -51,12 +51,12 @@ class RNA:
             self._locale_code = locale_val[0:2] if locale_val else 'en'
 
         self.actions: list[QAction] = []
-        self.menu: str = self.tr('&RNA')
+        self.menu: str = self.tr('&CAM')
         self.first_start: bool | None = None
 
     def tr(self, message: str) -> str:
         """Translate *message* via Qt's internationalisation framework."""
-        return QCoreApplication.translate('RNA', message)
+        return QCoreApplication.translate('CAM', message)
 
     def add_action(
         self,
@@ -102,7 +102,7 @@ class RNA:
     def unload(self) -> None:
         """Remove all plugin toolbar buttons and menu entries."""
         for action in self.actions:
-            self.iface.removePluginMenu(self.tr('&RNA'), action)
+            self.iface.removePluginMenu(self.tr('&CAM'), action)
             self.iface.removeToolBarIcon(action)
 
     def run(self) -> None:
@@ -119,7 +119,7 @@ class RNA:
                 loc = current_locale()
                 QMessageBox.critical(
                     None,
-                    get_string('RNA Plugin Error', loc),
+                    get_string('CAM Plugin Error', loc),
                     get_string('Failed to create dialog', loc)
                     + '\n\n'
                     + get_string('Check the QGIS log for details.', loc),
@@ -128,7 +128,7 @@ class RNA:
 
             loc = current_locale()
             self.dock_widget: QDockWidget = QDockWidget(
-                get_string('RNA Plugin', loc), self.iface.mainWindow()
+                get_string('CAM Plugin', loc), self.iface.mainWindow()
             )
             self.dock_widget.setWidget(self.dlg)
             self.iface.addDockWidget(

@@ -21,30 +21,30 @@ jobs:
       - name: Build plugin ZIP
         run: |
           mkdir -p dist
-          rm -rf staging/RNA
-          mkdir -p staging/RNA
-          cp __init__.py constants.py resources.py metadata.txt staging/RNA/
+          rm -rf staging/CAM
+          mkdir -p staging/CAM
+          cp __init__.py constants.py resources.py metadata.txt staging/CAM/
           for dir in mixins gui layer scripts resources templates data icons i18n style template_data app; do
-            cp -R "$dir" staging/RNA/
+            cp -R "$dir" staging/CAM/
           done
-          find staging/RNA -name __pycache__ -type d -exec rm -rf {} +
-          find staging/RNA -name '*.pyc' -delete
-          (cd staging && zip -9r ../dist/RNA.zip RNA)
+          find staging/CAM -name __pycache__ -type d -exec rm -rf {} +
+          find staging/CAM -name '*.pyc' -delete
+          (cd staging && zip -9r ../dist/CAM.zip CAM)
 
       - name: Compute SHA1
-        run: echo "SHA1=$(sha1sum dist/RNA.zip | cut -d' ' -f1)" >> $GITHUB_ENV
+        run: echo "SHA1=$(sha1sum dist/CAM.zip | cut -d' ' -f1)" >> $GITHUB_ENV
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/RNA.zip
+          files: dist/CAM.zip
           body: |
-            ## RNA ${{ github.ref_name }}
+            ## CAM ${{ github.ref_name }}
 
             **SHA1:** `${{ env.SHA1 }}`
 
             ### Install
-            1. Download `RNA.zip`
+            1. Download `CAM.zip`
             2. Open QGIS → **Plugins** → **Manage and Install Plugins**
             3. Select **Install from ZIP**
             4. Choose the downloaded file

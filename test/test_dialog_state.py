@@ -21,8 +21,8 @@ def _ensure_constants():
             ('en', 'English'),
         ]
         mod.DEFAULT_THEME = 'dark'
-        mod.SETTINGS_APP = 'RNA'
-        mod.SETTINGS_ORG = 'RNA'
+        mod.SETTINGS_APP = 'CAM'
+        mod.SETTINGS_ORG = 'CAM'
         mod.SETTINGS_KEY_LOCALE = 'locale'
         mod.SETTINGS_KEY_THEME = 'theme'
         mod.THEME_DARK = 'dark'
@@ -260,9 +260,11 @@ class TestOnLocaleChanged(unittest.TestCase):
         return dialog
 
     def test_returns_early_when_code_is_empty(self):
-        with patch.object(self.mod, 'QSettings') as MockSettings, \
-             patch.object(self.mod, 'QApplication') as MockQApp, \
-             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+        with (
+            patch.object(self.mod, 'QSettings') as MockSettings,
+            patch.object(self.mod, 'QApplication'),
+            patch.object(self.mod, 'translate_internal_combos') as mock_translate,
+        ):
             dialog = self._make_dialog()
             dialog._combo_locale.currentData.return_value = ''
             self.mod.on_locale_changed(dialog, 0)
@@ -270,25 +272,31 @@ class TestOnLocaleChanged(unittest.TestCase):
             mock_translate.assert_not_called()
 
     def test_saves_locale_to_settings(self):
-        with patch.object(self.mod, 'QSettings') as MockSettings, \
-             patch.object(self.mod, 'QApplication') as MockQApp, \
-             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+        with (
+            patch.object(self.mod, 'QSettings') as MockSettings,
+            patch.object(self.mod, 'QApplication'),
+            patch.object(self.mod, 'translate_internal_combos'),
+        ):
             dialog = self._make_dialog(locale='fr')
             self.mod.on_locale_changed(dialog, 1)
             MockSettings.return_value.setValue.assert_called_with('locale', 'fr')
 
     def test_updates_tr_locale(self):
-        with patch.object(self.mod, 'QSettings') as MockSettings, \
-             patch.object(self.mod, 'QApplication') as MockQApp, \
-             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+        with (
+            patch.object(self.mod, 'QSettings'),
+            patch.object(self.mod, 'QApplication'),
+            patch.object(self.mod, 'translate_internal_combos'),
+        ):
             dialog = self._make_dialog(locale='fr')
             self.mod.on_locale_changed(dialog, 1)
             self.assertEqual(dialog._tr_locale, 'fr')
 
     def test_clears_button_texts(self):
-        with patch.object(self.mod, 'QSettings') as MockSettings, \
-             patch.object(self.mod, 'QApplication') as MockQApp, \
-             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+        with (
+            patch.object(self.mod, 'QSettings'),
+            patch.object(self.mod, 'QApplication'),
+            patch.object(self.mod, 'translate_internal_combos'),
+        ):
             dialog = self._make_dialog(locale='en')
             self.mod.on_locale_changed(dialog, 2)
             dialog._btn_draw.setText.assert_called_with('')
@@ -297,17 +305,21 @@ class TestOnLocaleChanged(unittest.TestCase):
             dialog._btn_measure.setText.assert_called_with('')
 
     def test_calls_translate_internal_combos(self):
-        with patch.object(self.mod, 'QSettings') as MockSettings, \
-             patch.object(self.mod, 'QApplication') as MockQApp, \
-             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+        with (
+            patch.object(self.mod, 'QSettings'),
+            patch.object(self.mod, 'QApplication'),
+            patch.object(self.mod, 'translate_internal_combos') as mock_translate,
+        ):
             dialog = self._make_dialog(locale='fr')
             self.mod.on_locale_changed(dialog, 1)
             mock_translate.assert_called_once_with(dialog)
 
     def test_sets_rtl_for_arabic(self):
-        with patch.object(self.mod, 'QSettings') as MockSettings, \
-             patch.object(self.mod, 'QApplication') as MockQApp, \
-             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+        with (
+            patch.object(self.mod, 'QSettings'),
+            patch.object(self.mod, 'QApplication') as MockQApp,
+            patch.object(self.mod, 'translate_internal_combos'),
+        ):
             dialog = self._make_dialog(locale='ar')
             self.mod.on_locale_changed(dialog, 0)
             MockQApp.setLayoutDirection.assert_called_with(
@@ -315,9 +327,11 @@ class TestOnLocaleChanged(unittest.TestCase):
             )
 
     def test_sets_ltr_for_non_arabic(self):
-        with patch.object(self.mod, 'QSettings') as MockSettings, \
-             patch.object(self.mod, 'QApplication') as MockQApp, \
-             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+        with (
+            patch.object(self.mod, 'QSettings'),
+            patch.object(self.mod, 'QApplication') as MockQApp,
+            patch.object(self.mod, 'translate_internal_combos'),
+        ):
             dialog = self._make_dialog(locale='fr')
             self.mod.on_locale_changed(dialog, 1)
             MockQApp.setLayoutDirection.assert_called_with(
@@ -325,9 +339,11 @@ class TestOnLocaleChanged(unittest.TestCase):
             )
 
     def test_calls_fill_wilayas_list(self):
-        with patch.object(self.mod, 'QSettings') as MockSettings, \
-             patch.object(self.mod, 'QApplication') as MockQApp, \
-             patch.object(self.mod, 'translate_internal_combos') as mock_translate:
+        with (
+            patch.object(self.mod, 'QSettings'),
+            patch.object(self.mod, 'QApplication'),
+            patch.object(self.mod, 'translate_internal_combos'),
+        ):
             dialog = self._make_dialog(locale='fr')
             self.mod.on_locale_changed(dialog, 1)
             self.mod.fill_wilayas_list.assert_called_with(dialog.wilaya_list)

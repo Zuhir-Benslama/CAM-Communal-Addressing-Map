@@ -1,10 +1,10 @@
-# RNA - Plans d'Adressage
+# CAM - Communal Addressing Map
 
 QGIS plugin for managing Algerian municipal addressing plans. Handles streets, subdivisions, organizations, zones, numbering, and signage.
 
 ## Overview
 
-RNA is a QGIS 3.x plugin that provides a complete workflow for creating and managing addressing plans (Plans d'Adressage) for Algerian municipalities. It was originally developed for Windows and has been ported to Linux with extensive fixes and improvements.
+CAM is a QGIS 3.x plugin that provides a complete workflow for creating and managing communal addressing maps for Algerian municipalities. It was originally developed for Windows and has been ported to Linux with extensive fixes and improvements.
 
 ## Features
 
@@ -42,7 +42,7 @@ cp -r plans_adressage ~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/
 cp -r plans_adressage ~/.local/share/profiles/default/python/plugins/
 ```
 
-Then enable the plugin in QGIS: Plugins → Manage and Install Plugins → Installed → RNA.
+Then enable the plugin in QGIS: Plugins → Manage and Install Plugins → Installed → CAM.
 
 ### Windows
 
@@ -74,7 +74,7 @@ This plugin was originally developed on Windows and required significant changes
 | **Session pool exhaustion** — 12 query functions created engines/sessions without closing | Cached engine globally; cached sessionmaker; added `session.close()` to all query functions |
 | **Wildcard imports** (`from .module import *`) | All modules use explicit imports |
 | **Function name typo** — `sauvegarderModifications` | Normalized to `sauvegarder_modifications` |
-| **Import name error** — `RNAResourcesTest` in test file | Fixed to `RNADialogTest` |
+| **Import name error** — `CAMResourcesTest` in test file | Fixed to `CAMDialogTest` |
 
 ### P2 — Code Quality
 
@@ -108,8 +108,8 @@ python3 -m pytest test/test_db_ops.py -v
 
 ```
 plans_adressage/
-├── RNA.py                       # Plugin entry point
-├── RNA_dialog.py                # Main dialog (inherits mixins)
+├── CAM.py                       # Plugin entry point
+├── CAM_dialog.py                # Main dialog (inherits mixins)
 ├── __init__.py                  # Plugin loader (classFactory)
 ├── constants.py                 # App-wide constants & utilities
 ├── resources.py / resources.qrc # Compiled Qt resources
@@ -207,4 +207,4 @@ plans_adressage/
 
 ## License
 
-GPL v2 — See header comments in source files.
+GPL v3 — See header comments in source files.

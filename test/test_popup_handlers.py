@@ -321,8 +321,12 @@ class TestNotifyHelpers(unittest.TestCase):
         cls.mod = _load_module()
 
     def test_notify_success(self):
-        with patch.object(self.mod, 'QMessageBox') as mock_qmb, \
-             patch.object(self.mod, 'get_string', side_effect=lambda s, loc=None: s) as _gs:
+        with (
+            patch.object(self.mod, 'QMessageBox') as mock_qmb,
+            patch.object(
+                self.mod, 'get_string', side_effect=lambda s, loc=None: s
+            ) as _gs,
+        ):
             dialog = _make_dialog()
             self.mod._notify_success(dialog, 'update ok')
             mock_qmb.information.assert_called_once()
@@ -332,8 +336,12 @@ class TestNotifyHelpers(unittest.TestCase):
             self.assertIn('update ok', args[2])
 
     def test_notify_failure(self):
-        with patch.object(self.mod, 'QMessageBox') as mock_qmb, \
-             patch.object(self.mod, 'get_string', side_effect=lambda s, loc=None: s) as _gs:
+        with (
+            patch.object(self.mod, 'QMessageBox') as mock_qmb,
+            patch.object(
+                self.mod, 'get_string', side_effect=lambda s, loc=None: s
+            ) as _gs,
+        ):
             dialog = _make_dialog()
             exc = RuntimeError('db exploded')
             self.mod._notify_failure(dialog, 'update failed', exc)
@@ -379,9 +387,11 @@ class TestUpdateEntity(unittest.TestCase):
         cls.mod = _load_module()
 
     def test_success_path(self):
-        with patch.object(self.mod, '_finish_update') as mock_fu, \
-             patch.object(self.mod, '_notify_success') as mock_ns, \
-             patch.object(self.mod, 'get_session') as mock_sess:
+        with (
+            patch.object(self.mod, '_finish_update') as mock_fu,
+            patch.object(self.mod, '_notify_success') as mock_ns,
+            patch.object(self.mod, 'get_session') as mock_sess,
+        ):
             model_class = MagicMock()
             dialog = _make_dialog()
             self.mod._update_entity(dialog, model_class, 'ok', 'fail', name='foo')
@@ -395,8 +405,10 @@ class TestUpdateEntity(unittest.TestCase):
             mock_sess.return_value.close.assert_called_once()
 
     def test_value_error_path(self):
-        with patch.object(self.mod, '_notify_failure') as mock_nf, \
-             patch.object(self.mod, 'get_session') as mock_sess:
+        with (
+            patch.object(self.mod, '_notify_failure') as mock_nf,
+            patch.object(self.mod, 'get_session') as mock_sess,
+        ):
             model_class = MagicMock()
             model_class.update.side_effect = ValueError('bad input')
             dialog = _make_dialog()
@@ -407,8 +419,11 @@ class TestUpdateEntity(unittest.TestCase):
 
     def test_sqlalchemy_error_path(self):
         from sqlalchemy.exc import SQLAlchemyError
-        with patch.object(self.mod, '_notify_failure') as mock_nf, \
-             patch.object(self.mod, 'get_session') as mock_sess:
+
+        with (
+            patch.object(self.mod, '_notify_failure') as mock_nf,
+            patch.object(self.mod, 'get_session') as mock_sess,
+        ):
             model_class = MagicMock()
             model_class.update.side_effect = SQLAlchemyError('conn lost')
             dialog = _make_dialog()
@@ -551,9 +566,11 @@ class TestUpdatePanel(unittest.TestCase):
         cls._lvp.stop()
 
     def test_ref_facilities(self):
-        with patch.object(self.mod, '_finish_update') as mock_fu, \
-             patch.object(self.mod, '_notify_success') as mock_ns, \
-             patch.object(self.mod, 'get_session') as mock_sess:
+        with (
+            patch.object(self.mod, '_finish_update') as mock_fu,
+            patch.object(self.mod, '_notify_success') as mock_ns,
+            patch.object(self.mod, 'get_session') as mock_sess,
+        ):
             dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
             dialog._current_form_data = {'mountStatus': 'mounted'}
             self.mod.update_panel(dialog)
@@ -571,9 +588,11 @@ class TestUpdatePanel(unittest.TestCase):
             mock_fu.assert_called_once()
 
     def test_ref_roads(self):
-        with patch.object(self.mod, '_finish_update') as mock_fu, \
-             patch.object(self.mod, '_notify_success') as mock_ns, \
-             patch.object(self.mod, 'get_session') as mock_sess:
+        with (
+            patch.object(self.mod, '_finish_update'),
+            patch.object(self.mod, '_notify_success'),
+            patch.object(self.mod, 'get_session') as mock_sess,
+        ):
             dialog = _make_dialog(_ref_id='road-1', _ref_layer='roads')
             dialog._current_form_data = {'mountStatus': 'planned'}
             self.mod.update_panel(dialog)
@@ -589,9 +608,11 @@ class TestUpdatePanel(unittest.TestCase):
             )
 
     def test_ref_subdivisions(self):
-        with patch.object(self.mod, '_finish_update') as mock_fu, \
-             patch.object(self.mod, '_notify_success') as mock_ns, \
-             patch.object(self.mod, 'get_session') as mock_sess:
+        with (
+            patch.object(self.mod, '_finish_update'),
+            patch.object(self.mod, '_notify_success'),
+            patch.object(self.mod, 'get_session') as mock_sess,
+        ):
             dialog = _make_dialog(_ref_id='sub-1', _ref_layer='subdivisions')
             dialog._current_form_data = {'mountStatus': 'to_fix'}
             self.mod.update_panel(dialog)
@@ -607,9 +628,11 @@ class TestUpdatePanel(unittest.TestCase):
             )
 
     def test_no_ref_id(self):
-        with patch.object(self.mod, '_finish_update') as mock_fu, \
-             patch.object(self.mod, '_notify_success') as mock_ns, \
-             patch.object(self.mod, 'get_session') as mock_sess:
+        with (
+            patch.object(self.mod, '_finish_update'),
+            patch.object(self.mod, '_notify_success'),
+            patch.object(self.mod, 'get_session') as mock_sess,
+        ):
             dialog = _make_dialog(_ref_id=None, _ref_layer=None)
             dialog._current_form_data = {'mountStatus': 'old'}
             self.mod.update_panel(dialog)
@@ -623,8 +646,11 @@ class TestUpdatePanel(unittest.TestCase):
 
     def test_error_path(self):
         from sqlalchemy.exc import SQLAlchemyError
-        with patch.object(self.mod, '_notify_failure') as mock_nf, \
-             patch.object(self.mod, 'get_session') as mock_sess:
+
+        with (
+            patch.object(self.mod, '_notify_failure') as mock_nf,
+            patch.object(self.mod, 'get_session'),
+        ):
             dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
             dialog._current_form_data = {'mountStatus': 'x'}
             from plans_adressage.app.orders.models import PanelSign
@@ -655,9 +681,11 @@ class TestUpdateNumbering(unittest.TestCase):
         cls._vtp.stop()
 
     def test_ref_facilities(self):
-        with patch.object(self.mod, '_finish_update') as mock_fu, \
-             patch.object(self.mod, '_notify_success') as mock_ns, \
-             patch.object(self.mod, 'get_session') as mock_sess:
+        with (
+            patch.object(self.mod, '_finish_update'),
+            patch.object(self.mod, '_notify_success'),
+            patch.object(self.mod, 'get_session'),
+        ):
             dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
             dialog._current_form_data = {
                 'number': '42',
@@ -681,9 +709,11 @@ class TestUpdateNumbering(unittest.TestCase):
             self.assertEqual(call_kw['activity_type'], 'house')
 
     def test_ref_roads(self):
-        with patch.object(self.mod, '_finish_update') as mock_fu, \
-             patch.object(self.mod, '_notify_success') as mock_ns, \
-             patch.object(self.mod, 'get_session') as mock_sess:
+        with (
+            patch.object(self.mod, '_finish_update'),
+            patch.object(self.mod, '_notify_success'),
+            patch.object(self.mod, 'get_session'),
+        ):
             dialog = _make_dialog(_ref_id='road-1', _ref_layer='roads')
             dialog._current_form_data = {
                 'number': '7',
@@ -701,9 +731,11 @@ class TestUpdateNumbering(unittest.TestCase):
             self.assertIsNone(call_kw['organization_id'])
 
     def test_ref_subdivisions(self):
-        with patch.object(self.mod, '_finish_update') as mock_fu, \
-             patch.object(self.mod, '_notify_success') as mock_ns, \
-             patch.object(self.mod, 'get_session') as mock_sess:
+        with (
+            patch.object(self.mod, '_finish_update'),
+            patch.object(self.mod, '_notify_success'),
+            patch.object(self.mod, 'get_session'),
+        ):
             dialog = _make_dialog(_ref_id='sub-1', _ref_layer='subdivisions')
             dialog._current_form_data = {
                 'number': '10',
@@ -721,9 +753,11 @@ class TestUpdateNumbering(unittest.TestCase):
             self.assertIsNone(call_kw['organization_id'])
 
     def test_no_ref(self):
-        with patch.object(self.mod, '_finish_update') as mock_fu, \
-             patch.object(self.mod, '_notify_success') as mock_ns, \
-             patch.object(self.mod, 'get_session') as mock_sess:
+        with (
+            patch.object(self.mod, '_finish_update'),
+            patch.object(self.mod, '_notify_success'),
+            patch.object(self.mod, 'get_session'),
+        ):
             dialog = _make_dialog(_ref_id=None, _ref_layer=None)
             dialog._current_form_data = {
                 'number': '',
@@ -741,8 +775,10 @@ class TestUpdateNumbering(unittest.TestCase):
             self.assertIsNone(call_kw['organization_id'])
 
     def test_error_path(self):
-        with patch.object(self.mod, '_notify_failure') as mock_nf, \
-             patch.object(self.mod, 'get_session') as mock_sess:
+        with (
+            patch.object(self.mod, '_notify_failure') as mock_nf,
+            patch.object(self.mod, 'get_session'),
+        ):
             dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
             dialog._current_form_data = {
                 'number': '1',
