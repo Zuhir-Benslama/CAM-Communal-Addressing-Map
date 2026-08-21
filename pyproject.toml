@@ -96,7 +96,11 @@ ignore-names = [
 max-args = 9
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401", "F403", "N802"]
+# The plugin root directory name is not a valid module name by design:
+# QGIS installs plugins into arbitrary directories and CI checks out the
+# repository under its own (hyphenated) name. Only sub-packages are
+# importable by name.
+"__init__.py" = ["F401", "F403", "N802", "N999"]
 "app/main.py" = ["N802"]
 "gui/dialog_helpers.py" = ["N802"]
 "gui/identify_tool.py" = ["N802"]

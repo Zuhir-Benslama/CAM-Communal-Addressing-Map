@@ -33,7 +33,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pytest-cov ruff mypy pyqt6
+          pip install pytest pytest-cov 'ruff==0.15.15' mypy pyqt6
 
       - name: Lint with ruff
         run: |
