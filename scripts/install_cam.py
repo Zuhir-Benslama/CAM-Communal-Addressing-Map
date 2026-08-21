@@ -2,7 +2,7 @@
 """Cross-platform installer for the CAM QGIS plugin.
 
 Usage:
-    python scripts/install_rna.py [--plugin-dir DIR] [--qgis-python PATH]
+    python scripts/install_cam.py [--plugin-dir DIR] [--qgis-python PATH]
                                   [--skip-packages] [--skip-checks]
 
 Checks for system dependencies, installs Python packages into QGIS's
@@ -19,7 +19,7 @@ import shutil
 import subprocess
 import sys
 
-logger = logging.getLogger('install_rna')
+logger = logging.getLogger('install_cam')
 _log_handler = logging.StreamHandler(sys.stdout)
 _log_handler.setFormatter(
     logging.Formatter(
