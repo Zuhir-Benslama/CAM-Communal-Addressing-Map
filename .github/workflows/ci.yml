@@ -33,18 +33,41 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest ruff mypy pyqt6 2>/dev/null || true
+          pip install pytest pytest-cov ruff mypy pyqt6
 
       - name: Lint with ruff
         run: |
-          ruff check --select=E,W,F,I,UP app/ gui/ layer/ mixins/
+          ruff check .
+          ruff format --check .
 
       - name: Type check with mypy
         run: |
-          mypy app/ gui/ layer/ mixins/ 2>/dev/null || true
+          mypy app gui layer mixins constants.py
 
-      - name: Run tests
+      - name: Run tests with coverage gate (80%)
         env:
           CAM_JWT_SECRET: test-secret-key-for-testing-only
           QT_QPA_PLATFORM: offscreen
-        run: python -m pytest test/ --ignore=test/test_qgis_environment.py --ignore=test/test_translations.py -v
+        run: >
+          python -m pytest test/
+          --ignore=test/test_qgis_environment.py
+          --cov --cov-report=term-missing -v
+
+  qgis-tests:
+    # Exercises the test harness against a real QGIS installation
+    # (test_qgis_environment.py is excluded from the mocked main job).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install QGIS
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq qgis python3-pip
+
+      - name: Run QGIS integration tests
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          python3 -m pip install --break-system-packages pytest
+          python3 -m pytest test/test_qgis_environment.py -v

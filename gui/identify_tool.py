@@ -1,13 +1,19 @@
 """Map identify tool for feature selection and editing."""
 
+from __future__ import annotations
+
 import enum
 import logging
-from typing import Any
+from typing import TYPE_CHECKING
 
-from qgis.core import QgsExpression, QgsFeatureRequest
-from qgis.gui import QgsMapToolIdentify
+from qgis.core import QgsExpression, QgsFeature, QgsFeatureRequest, QgsMapLayer
+from qgis.gui import QgsInterface, QgsMapToolIdentify
 from qgis.PyQt.QtCore import Qt, pyqtSignal
+from qgis.PyQt.QtGui import QMouseEvent
 from qgis.PyQt.QtWidgets import QMenu
+
+if TYPE_CHECKING:
+    from .popup_dialog import PopupDialog
 
 from ..app.core.database import get_session
 from ..app.orders import models as _models
@@ -38,25 +44,25 @@ class IdentifyTool(QgsMapToolIdentify):
         self._iface = None
         self.mode = mode
 
-        self.dlg: Any = None
+        self.dlg: PopupDialog | None = None
         if mode == self.MODE_REF:
-            self.feature_id = None
-            self.feature_type = None
-            self.feature_name = None
+            self.feature_id: int | None = None
+            self.feature_type: str | None = None
+            self.feature_name: str | None = None
 
-    def set_active_layer(self, layer: Any) -> None:
+    def set_active_layer(self, layer: QgsMapLayer) -> None:
         """Set the active layer to identify features on."""
         self._active_layer = layer
 
-    def get_active_layer(self) -> Any:
+    def get_active_layer(self) -> QgsMapLayer | None:
         """Return the currently active identify layer."""
         return self._active_layer
 
-    def set_iface(self, iface: Any) -> None:
+    def set_iface(self, iface: QgsInterface) -> None:
         """Set the QGIS interface instance."""
         self._iface = iface
 
-    def get_iface(self) -> Any:
+    def get_iface(self) -> QgsInterface | None:
         """Return the QGIS interface instance."""
         return self._iface
 
@@ -68,7 +74,7 @@ class IdentifyTool(QgsMapToolIdentify):
             'layer_name': layer.name() if layer else '',
         }
 
-    def _build_form_menu(self, feature: Any, event: Any) -> QMenu:
+    def _build_form_menu(self, feature: QgsFeature, event: QMouseEvent) -> QMenu:
         """Build context menu for form mode (view/update or delete)."""
         menu = QMenu()
         form_action = menu.addAction(
@@ -82,7 +88,7 @@ class IdentifyTool(QgsMapToolIdentify):
         menu.exec_(event.globalPos())
         return menu
 
-    def _build_ref_menu(self, feature: Any, event: Any) -> QMenu:
+    def _build_ref_menu(self, feature: QgsFeature, event: QMouseEvent) -> QMenu:
         """Build context menu for ref mode (set as reference)."""
         name_locale = self._locale_feature_attr(feature, 'name')
         type_locale = self._locale_feature_attr(feature, 'type')
@@ -98,7 +104,7 @@ class IdentifyTool(QgsMapToolIdentify):
         menu.exec_(event.globalPos())
         return menu
 
-    def _handle_identify_results(self, results, event: Any) -> None:
+    def _handle_identify_results(self, results: list, event: QMouseEvent) -> None:
         """Iterate identify results and show the appropriate context menu."""
         for result in results:
             feature = result.mFeature
@@ -108,7 +114,7 @@ class IdentifyTool(QgsMapToolIdentify):
                 self._build_ref_menu(feature, event)
             break
 
-    def canvasReleaseEvent(self, event: Any) -> None:
+    def canvasReleaseEvent(self, event: QMouseEvent) -> None:
         """Handle map canvas click: identify feature under the cursor."""
         if event.button() == Qt.MouseButton.LeftButton:
             results = self.identify(
@@ -130,11 +136,15 @@ class IdentifyTool(QgsMapToolIdentify):
         """Unset this identify tool from the canvas."""
         self.canvas.unsetMapTool(self)
 
-    def display_or_update_form_feature(self, feature_id: Any) -> None:
+    def display_or_update_form_feature(self, feature_id: int) -> None:
         """Open the popup dialog for the identified feature."""
         from .popup_dialog import PopupDialog  # pylint: disable=import-outside-toplevel
 
-        layer_name = self.get_active_layer().name()
+        layer = self.get_active_layer()
+        if layer is None:
+            logger.error('No active layer set on identify tool')
+            return
+        layer_name = layer.name()
         layer_map = LAYER_KEY
         if self.dlg:
             self.dlg.close()
@@ -149,9 +159,13 @@ class IdentifyTool(QgsMapToolIdentify):
         self.dlg.show()
         self.dlg.exec()
 
-    def delete_feature(self, feature_id: Any) -> None:
+    def delete_feature(self, feature_id: int) -> None:
         """Delete the identified feature from DB and map layer."""
-        layer_name = self.get_active_layer().name()
+        layer = self.get_active_layer()
+        if layer is None:
+            logger.error('No active layer set on identify tool')
+            return
+        layer_name = layer.name()
         data_list = qgis_config().get('mapper') or []
         for data in data_list:
             if data.get('layer') == layer_name:
@@ -173,7 +187,6 @@ class IdentifyTool(QgsMapToolIdentify):
                 request = QgsFeatureRequest().setFilterExpression(
                     f'"id" = {QgsExpression.quotedValue(feature_id)}'
                 )
-                layer = self.get_active_layer()
                 layer.startEditing()
                 features_to_remove = layer.getFeatures(request)
                 for feature in features_to_remove:
@@ -184,7 +197,7 @@ class IdentifyTool(QgsMapToolIdentify):
 
         self.canvas.refresh()
 
-    def _locale_feature_attr(self, feature: Any, base_name: str) -> str:
+    def _locale_feature_attr(self, feature: QgsFeature, base_name: str) -> str:
         """Read locale-appropriate attribute from a QGIS feature."""
         loc = current_locale()
         if loc != 'ar':
@@ -196,7 +209,7 @@ class IdentifyTool(QgsMapToolIdentify):
         return str(feature[base_name]) if feature[base_name] else ''
 
     def feature_as_ref(
-        self, feature_id: Any, feature_type: Any, feature_name: Any
+        self, feature_id: int, feature_type: str, feature_name: str
     ) -> None:
         """Store the selected feature as a reference for another entity."""
         self.feature_id = feature_id

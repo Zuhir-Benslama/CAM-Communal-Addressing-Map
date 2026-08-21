@@ -23,7 +23,8 @@ def get_qgis_app():
     try:
         from qgis.core import QgsApplication
         from qgis.gui import QgsMapCanvas
-        from qgis.PyQt import QtCore, QtGui
+        from qgis.PyQt import QtCore
+        from qgis.PyQt.QtWidgets import QWidget
 
         from .qgis_interface import QgisInterface
     except ImportError:
@@ -34,7 +35,8 @@ def get_qgis_app():
     if QGIS_APP is None:
         gui_flag = True  # All test will run qgis in gui mode
         # noinspection PyPep8Naming
-        QGIS_APP = QgsApplication(sys.argv, gui_flag)
+        argv = [arg.encode('utf-8') for arg in sys.argv]
+        QGIS_APP = QgsApplication(argv, gui_flag)
         # Make sure QGIS_PREFIX_PATH is set in your env if needed!
         QGIS_APP.initQgis()
         s = QGIS_APP.showSettings()
@@ -43,7 +45,7 @@ def get_qgis_app():
     global PARENT  # pylint: disable=W0603
     if PARENT is None:
         # noinspection PyPep8Naming
-        PARENT = QtGui.QWidget()
+        PARENT = QWidget()
 
     global CANVAS  # pylint: disable=W0603
     if CANVAS is None:

@@ -4,7 +4,9 @@ Each function takes a dialog instance as its first argument and operates
 on its attributes directly (matching the mixin pattern).
 """
 
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from qgis.PyQt.QtCore import QSettings, Qt
 from qgis.PyQt.QtWidgets import QApplication, QFileDialog
@@ -40,6 +42,9 @@ from .ui_fillers import (
     fill_zone_type,
 )
 
+if TYPE_CHECKING:
+    from .main_dialog import MainDialog
+
 ARABIC_ACTION_NAMES = {
     'report': 'تقرير',
     'order': 'نموذج طلبية',
@@ -69,7 +74,7 @@ LAYER_TRANSLATIONS = {
 }
 
 
-def populate_combos(dialog: Any) -> None:
+def populate_combos(dialog: MainDialog) -> None:
     loc = dialog._tr_locale
     for name in dialog.LAYER_INDEX_MAP:
         dialog._combo_layer_selector.addItem(
@@ -93,7 +98,7 @@ def populate_combos(dialog: Any) -> None:
     dialog._update_action_button_texts(dialog._combo_layer_selector.currentIndex())
 
 
-def translate_internal_combos(dialog: Any) -> None:
+def translate_internal_combos(dialog: MainDialog) -> None:
     loc = dialog._tr_locale
     for i, name in enumerate(dialog.LAYER_INDEX_MAP):
         dialog._combo_layer_selector.setItemText(
@@ -115,7 +120,7 @@ def translate_internal_combos(dialog: Any) -> None:
             dialog._combo_locale.setItemText(i, LOCALE_LABELS[code][loc])
 
 
-def init_theme_locale(dialog: Any) -> None:
+def init_theme_locale(dialog: MainDialog) -> None:
     settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
     loc = dialog._tr_locale
     dark_arabic = ARABIC_THEME_NAMES['dark']
@@ -146,14 +151,14 @@ def init_theme_locale(dialog: Any) -> None:
             dialog._combo_locale.setCurrentIndex(li)
 
 
-def on_theme_changed(dialog, _index: int) -> None:
+def on_theme_changed(dialog: MainDialog, _index: int) -> None:
     dialog._current_theme = dialog._combo_theme.currentData()
     settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
     settings.setValue(SETTINGS_KEY_THEME, dialog._current_theme)
     dialog.apply_theme()
 
 
-def on_locale_changed(dialog, _idx: int) -> None:
+def on_locale_changed(dialog: MainDialog, _idx: int) -> None:
     code = dialog._combo_locale.currentData()
     if not code:
         return
@@ -184,7 +189,7 @@ def on_locale_changed(dialog, _idx: int) -> None:
         QApplication.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
 
 
-def on_action_changed(dialog, _index: int) -> None:
+def on_action_changed(dialog: MainDialog, _index: int) -> None:
     action = dialog._combo_action.currentData()
     is_map = action in ('panels_map', 'num_map')
     dialog._combo_paper.setVisible(is_map)
@@ -194,7 +199,7 @@ def on_action_changed(dialog, _index: int) -> None:
         dialog.numbering_chart()
 
 
-def on_save_action(dialog: Any) -> None:
+def on_save_action(dialog: MainDialog) -> None:
     directory = QFileDialog.getExistingDirectory(
         dialog,
         dialog._tr('Choose output directory'),
@@ -218,6 +223,6 @@ def on_save_action(dialog: Any) -> None:
         dialog.backup()
 
 
-def apply_theme(dialog: Any) -> None:
+def apply_theme(dialog: MainDialog) -> None:
     qss = get_theme_qss(dialog._current_theme)
     dialog.setStyleSheet(qss)

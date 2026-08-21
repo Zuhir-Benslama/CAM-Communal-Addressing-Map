@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
 
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import (
@@ -136,7 +135,7 @@ class EntityListDialog(QDialog):
             for row_idx, record in enumerate(results):
                 for col_idx, field in enumerate(fields):
                     try:
-                        value: Any = locale_value(record, field, self._tr_locale)
+                        value: object = locale_value(record, field, self._tr_locale)
                     except AttributeError:
                         value = getattr(record, field, None)
                     value = value if value not in (None, '') else 'N/A'

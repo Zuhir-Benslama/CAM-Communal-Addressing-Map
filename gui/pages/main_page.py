@@ -1,7 +1,9 @@
 """Main page builder (toolbar, form container, footer)."""
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING
 
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtGui import QIcon
@@ -29,7 +31,11 @@ from .settings_page import build_settings_page
 _ICON_DIR = str(Path(__file__).resolve().parent.parent.parent / 'resources')
 
 
-def build_main_page(dialog: Any) -> None:
+if TYPE_CHECKING:
+    from .main_dialog import MainDialog
+
+
+def build_main_page(dialog: MainDialog) -> None:
     page = QWidget()
     page.setObjectName('main')
     layout = QVBoxLayout(page)
@@ -83,81 +89,92 @@ def build_main_page(dialog: Any) -> None:
     dialog._held_widgets.append(toolbar)
 
 
-def _build_form_page(dialog: Any) -> None:
-    page = QWidget()
-    layout = QVBoxLayout(page)
-    layout.setContentsMargins(8, 8, 8, 8)
-    layout.setSpacing(12)
+def _section_title(layout: QVBoxLayout, text: str, obj_name: str) -> None:
+    """Add a bold section title to the given layout."""
+    title = QLabel(text)
+    title.setObjectName(obj_name)
+    title.setStyleSheet('font-size: 13px; font-weight: bold;')
+    layout.addWidget(title)
 
-    # Plan Selection
+
+def _build_plan_section(dialog: MainDialog, layout: QVBoxLayout) -> QWidget:
+    """Build the phase (layer) selection section."""
     plan_frame = make_section_frame()
     plan_layout = plan_frame.layout()
-
-    plan_title = QLabel('Phase')
-    plan_title.setObjectName('groupBox_plan_selection')
-    plan_title.setStyleSheet('font-size: 13px; font-weight: bold;')
-    plan_layout.addWidget(plan_title)
+    _section_title(plan_layout, 'Phase', 'groupBox_plan_selection')
 
     dialog._combo_layer_selector = QComboBox()
     dialog._combo_layer_selector.setObjectName('layer_selector')
     plan_layout.addWidget(dialog._combo_layer_selector)
 
     layout.addWidget(plan_frame)
+    return plan_frame
 
-    # Actions
+
+_TOOLBAR_BUTTONS = [
+    # (dialog attribute, object name, icon file, tooltip)
+    ('_btn_draw', 'drawBtn', 'draw.svg', 'Draw'),
+    ('_btn_select', 'selectBtn', 'select.svg', 'Select'),
+    ('_btn_edit', 'editBtn', 'edit.svg', 'Edit'),
+    ('_btn_measure', 'mesure_dist', 'measure.svg', 'Measure Distance'),
+]
+
+
+def _build_actions_section(dialog: MainDialog, layout: QVBoxLayout) -> QWidget:
+    """Build the map tools toolbar section."""
     action_frame = make_section_frame()
     action_layout = action_frame.layout()
-
-    action_title = QLabel('Tools')
-    action_title.setObjectName('groupBox_actions')
-    action_title.setStyleSheet('font-size: 13px; font-weight: bold;')
-    action_layout.addWidget(action_title)
+    _section_title(action_layout, 'Tools', 'groupBox_actions')
 
     btn_row = QHBoxLayout()
     btn_row.setSpacing(6)
-    dialog._btn_draw = QPushButton()
-    dialog._btn_draw.setObjectName('drawBtn')
-    dialog._btn_draw.setIcon(QIcon(str(Path(_ICON_DIR) / 'draw.svg')))
-    dialog._btn_draw.setToolTip('Draw')
-    btn_row.addWidget(dialog._btn_draw, 1)
-    dialog._btn_select = QPushButton()
-    dialog._btn_select.setObjectName('selectBtn')
-    dialog._btn_select.setIcon(QIcon(str(Path(_ICON_DIR) / 'select.svg')))
-    dialog._btn_select.setToolTip('Select')
-    btn_row.addWidget(dialog._btn_select, 1)
-    dialog._btn_edit = QPushButton()
-    dialog._btn_edit.setObjectName('editBtn')
-    dialog._btn_edit.setIcon(QIcon(str(Path(_ICON_DIR) / 'edit.svg')))
-    dialog._btn_edit.setToolTip('Edit')
-    btn_row.addWidget(dialog._btn_edit, 1)
-    dialog._btn_measure = QPushButton()
-    dialog._btn_measure.setObjectName('mesure_dist')
-    dialog._btn_measure.setIcon(QIcon(str(Path(_ICON_DIR) / 'measure.svg')))
-    dialog._btn_measure.setToolTip('Measure Distance')
-    btn_row.addWidget(dialog._btn_measure, 1)
+    for attr, obj_name, icon_file, tooltip in _TOOLBAR_BUTTONS:
+        btn = QPushButton()
+        btn.setObjectName(obj_name)
+        btn.setIcon(QIcon(str(Path(_ICON_DIR) / icon_file)))
+        btn.setToolTip(tooltip)
+        setattr(dialog, attr, btn)
+        btn_row.addWidget(btn, 1)
     action_layout.addLayout(btn_row)
 
     layout.addWidget(action_frame)
+    return action_frame
 
-    # Form Data
+
+_FORM_BUILDERS = [
+    build_zone_form,
+    build_road_form,
+    build_org_form,
+    build_city_form,
+    build_num_form,
+    build_pan_form,
+]
+
+
+def _build_data_section(dialog: MainDialog, layout: QVBoxLayout) -> QWidget:
+    """Build the feature form section containing the per-layer forms."""
     form_frame = make_section_frame()
     form_layout = form_frame.layout()
-
-    form_title = QLabel('Feature')
-    form_title.setObjectName('groupBox_form_data')
-    form_title.setStyleSheet('font-size: 13px; font-weight: bold;')
-    form_layout.addWidget(form_title)
+    _section_title(form_layout, 'Feature', 'groupBox_form_data')
 
     dialog._form_stack = QStackedWidget()
-    build_zone_form(dialog)
-    build_road_form(dialog)
-    build_org_form(dialog)
-    build_city_form(dialog)
-    build_num_form(dialog)
-    build_pan_form(dialog)
+    for build in _FORM_BUILDERS:
+        build(dialog)
     form_layout.addWidget(dialog._form_stack, stretch=1)
 
     layout.addWidget(form_frame, stretch=1)
+    return form_frame
+
+
+def _build_form_page(dialog: MainDialog) -> None:
+    page = QWidget()
+    layout = QVBoxLayout(page)
+    layout.setContentsMargins(8, 8, 8, 8)
+    layout.setSpacing(12)
+
+    plan_frame = _build_plan_section(dialog, layout)
+    action_frame = _build_actions_section(dialog, layout)
+    form_frame = _build_data_section(dialog, layout)
 
     dialog._main_stack.addWidget(page)
     dialog._held_widgets.append(page)

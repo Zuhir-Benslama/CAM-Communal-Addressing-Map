@@ -43,7 +43,9 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 
-def _populate_name_type(query: Any, loc: str) -> dict:
+def _populate_name_type(
+    query: Road | Organization | Subdivision | Zone, loc: str
+) -> dict:
     """Return a dict with locale-aware name and type fields."""
     return {
         'name': locale_value(query, 'name', loc),
@@ -51,26 +53,26 @@ def _populate_name_type(query: Any, loc: str) -> dict:
     }
 
 
-def populate_road(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
+def populate_road(_dialog: 'PopupDialog', query: Road, loc: str) -> dict:
     return _populate_name_type(query, loc)
 
 
-def populate_facility(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
+def populate_facility(_dialog: 'PopupDialog', query: Organization, loc: str) -> dict:
     return {
         **_populate_name_type(query, loc),
         'category': query.category,
     }
 
 
-def populate_subdivision(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
+def populate_subdivision(_dialog: 'PopupDialog', query: Subdivision, loc: str) -> dict:
     return _populate_name_type(query, loc)
 
 
-def populate_zone(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
+def populate_zone(_dialog: 'PopupDialog', query: Zone, loc: str) -> dict:
     return _populate_name_type(query, loc)
 
 
-def populate_numbering(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
+def populate_numbering(_dialog: 'PopupDialog', query: Numbering, loc: str) -> dict:
     data: dict = {
         'number': query.value or '',
         'repetition': query.repetition or '',
@@ -91,7 +93,7 @@ def populate_numbering(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
     return data
 
 
-def populate_panel(_dialog: 'PopupDialog', query: Any, loc: str) -> dict:
+def populate_panel(_dialog: 'PopupDialog', query: PanelSign, loc: str) -> dict:
     data: dict = {
         'mountStatus': query.status or '',
     }

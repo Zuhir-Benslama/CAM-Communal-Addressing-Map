@@ -1,6 +1,8 @@
 """Organization page builder for PopupDialog."""
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
+
+from qgis.PyQt.QtWidgets import QStackedWidget
 
 from ._builder import build_page
 
@@ -8,7 +10,7 @@ if TYPE_CHECKING:
     from ..popup_dialog import PopupDialog
 
 
-def build_org_page(dialog: 'PopupDialog', stack: Any) -> None:
+def build_org_page(dialog: 'PopupDialog', stack: QStackedWidget) -> None:
     build_page(
         dialog,
         stack,

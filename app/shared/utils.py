@@ -4,9 +4,8 @@ import logging
 import os
 import re
 import subprocess
-from collections.abc import Mapping
 from pathlib import Path
-from types import MappingProxyType
+from typing import TypedDict
 
 from qgis.PyQt.QtCore import QSettings
 from sqlalchemy import inspect
@@ -73,7 +72,7 @@ def current_theme() -> Theme:
     return theme
 
 
-def get_qgis_python() -> str | None:
+def get_qgis_python() -> str:
     """Return the path to a suitable QGIS Python interpreter."""
     python = os.getenv('PYTHON_QGIS_BAT')
     if python:
@@ -128,10 +127,14 @@ def get_all_fields_and_labels(
     return fields, labels
 
 
-_SUBPROCESS_FLAGS: Mapping[str, int]
-if os.name == 'nt':
-    _SUBPROCESS_FLAGS = MappingProxyType(
-        {'creationflags': subprocess.CREATE_NO_WINDOW},  # type: ignore[attr-defined]
-    )
-else:
-    _SUBPROCESS_FLAGS = MappingProxyType({})
+class _SubprocessFlags(TypedDict, total=False):
+    """Platform-specific keyword flags for :func:`subprocess.run`."""
+
+    creationflags: int
+
+
+_SUBPROCESS_FLAGS: _SubprocessFlags = (
+    {'creationflags': subprocess.CREATE_NO_WINDOW}  # type: ignore[attr-defined]
+    if os.name == 'nt'
+    else {}
+)

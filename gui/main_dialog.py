@@ -264,26 +264,26 @@ class MainDialog(
     def _populate_dispatch(self) -> None:
         _SUBMIT_DISPATCH.update(
             {
-                Action.LOGIN: lambda: self.login_user(),
-                Action.ADD_USR: lambda: self.submit_add_usr(),
-                Action.RESTORE_DB: lambda: self.restore_database(),
-                Action.ZONE: lambda: self.add_zone(),
-                Action.ROAD: lambda: self.add_road(),
-                Action.ORG: lambda: self.add_organization(),
-                Action.CITY: lambda: self.add_city(),
-                Action.NUM: lambda: self.add_numbering(),
-                Action.PAN: lambda: self.add_panel(),
-                Action.DRAW: lambda: self.start_drawing(),
-                Action.SELECT: lambda: self.start_selecting(),
-                Action.EDIT: lambda: self.start_editing(),
-                Action.MEASURE: lambda: self.activate_measure(),
+                Action.LOGIN: self.login_user,
+                Action.ADD_USR: self.submit_add_usr,
+                Action.RESTORE_DB: self.restore_database,
+                Action.ZONE: self.add_zone,
+                Action.ROAD: self.add_road,
+                Action.ORG: self.add_organization,
+                Action.CITY: self.add_city,
+                Action.NUM: self.add_numbering,
+                Action.PAN: self.add_panel,
+                Action.DRAW: self.start_drawing,
+                Action.SELECT: self.start_selecting,
+                Action.EDIT: self.start_editing,
+                Action.MEASURE: self.activate_measure,
                 Action.SAVE_ACTION: lambda: on_save_action(self),
-                Action.SAVE_NEW_TYPE: lambda: self._save_new_type(),
-                Action.LIST_ROADS: lambda: self.list_road_entries(),
-                Action.LIST_ORGS: lambda: self.list_organizations(),
-                Action.LIST_SUBDS: lambda: self.list_subdivisions(),
-                Action.LIST_NUMS: lambda: self.list_numberings(),
-                Action.LIST_PANELS: lambda: self.list_panel_signs(),
+                Action.SAVE_NEW_TYPE: self._save_new_type,
+                Action.LIST_ROADS: self.list_road_entries,
+                Action.LIST_ORGS: self.list_organizations,
+                Action.LIST_SUBDS: self.list_subdivisions,
+                Action.LIST_NUMS: self.list_numberings,
+                Action.LIST_PANELS: self.list_panel_signs,
             }
         )
 
@@ -308,14 +308,10 @@ class MainDialog(
 
         # Combo signals
         self._combo_layer_selector.currentIndexChanged.connect(self._on_layer_changed)
-        self.wilaya_list.currentIndexChanged.connect(
-            lambda idx: self.on_select_wilaya(idx)
-        )
-        self._combo_org_cat.currentIndexChanged.connect(
-            lambda idx: self.on_select_org_cat(idx)
-        )
+        self.wilaya_list.currentIndexChanged.connect(self.on_select_wilaya)
+        self._combo_org_cat.currentIndexChanged.connect(self.on_select_org_cat)
         self._combo_activity_cat.currentIndexChanged.connect(
-            lambda idx: self.on_select_activity_cat(idx)
+            self.on_select_activity_cat
         )
         self.feature_combo.currentIndexChanged.connect(self._on_feature_changed)
         self._combo_action.currentIndexChanged.connect(

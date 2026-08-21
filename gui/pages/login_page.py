@@ -1,6 +1,8 @@
 """Login page builder for MainDialog."""
 
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import (
@@ -16,8 +18,11 @@ from qgis.PyQt.QtWidgets import (
 
 from ..dialog_helpers import make_section_frame
 
+if TYPE_CHECKING:
+    from .main_dialog import MainDialog
 
-def build_login_page(dialog: Any) -> None:
+
+def build_login_page(dialog: MainDialog) -> None:
     page = QWidget()
     page.setObjectName('login')
 

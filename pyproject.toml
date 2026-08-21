@@ -14,6 +14,87 @@ ignore = [
     "N818",  # exception name convention (not applicable to all exceptions)
 ]
 
+[tool.ruff.lint.flake8-self]
+# The dialogs' widget registry and state attributes are shared by design
+# between MainDialog/PopupDialog and their builder/state helper modules
+# (gui/pages/*, gui/popup_pages/*, gui/dialog_state.py, gui/popup_handlers.py),
+# which form part of the dialog implementation. The two model hooks are
+# same-class instance accesses from base-class helpers. Ruff matches these
+# names exactly (no globs), so every shared name is listed explicitly.
+ignore-names = [
+    "_btn_add_user",
+    "_btn_cancel_add",
+    "_btn_draw",
+    "_btn_edit",
+    "_btn_gear",
+    "_btn_measure",
+    "_btn_restore_db",
+    "_btn_save_action",
+    "_btn_save_add",
+    "_btn_save_new_type",
+    "_btn_select",
+    "_btn_sign_in",
+    "_combo_action",
+    "_combo_activity_cat",
+    "_combo_activity_type",
+    "_combo_layer_selector",
+    "_combo_locale",
+    "_combo_map_options",
+    "_combo_mount_status",
+    "_combo_num_state",
+    "_combo_org_cat",
+    "_combo_org_type",
+    "_combo_panel_ref",
+    "_combo_paper",
+    "_combo_road_ref",
+    "_combo_road_type",
+    "_combo_subd_type",
+    "_combo_theme",
+    "_combo_type_road",
+    "_combo_zone_type",
+    "_current_form_data",
+    "_current_theme",
+    "_field_email",
+    "_field_fname",
+    "_field_lname",
+    "_field_new_type",
+    "_field_num_val",
+    "_field_org_name",
+    "_field_password",
+    "_field_pnum",
+    "_field_pwd",
+    "_field_repetition",
+    "_field_road_name",
+    "_field_subd_name",
+    "_field_uname",
+    "_field_username",
+    "_field_zone_name",
+    "_form_stack",
+    "_held_widgets",
+    "_label_subtype",
+    "_label_username",
+    "_main_stack",
+    "_on_feature_changed",
+    "_on_save",
+    "_output_dir",
+    "_page_stack",
+    "_recalc_has_child",
+    "_ref_id",
+    "_ref_layer",
+    "_refresh_derived",
+    "_rna_tab_src",
+    "_set_combo_by_data",
+    "_tr",
+    "_tr_locale",
+    "_update_action_button_texts",
+]
+
+[tool.ruff.lint.pylint]
+# Entity constructors (app/orders/repository.py add_*, users.service.sign_up)
+# legitimately accept one argument per model field, and app/main.py add_action
+# mirrors the standard QGIS plugin-boilerplate QAction factory signature.
+max-args = 9
+
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401", "F403", "N802"]
 "app/main.py" = ["N802"]
@@ -23,7 +104,13 @@ ignore = [
 "mixins/_protocols.py" = ["N802"]
 "mixins/auth_mixin.py" = ["N802"]
 "test/*" = ["UP006", "UP007", "E402", "E501", "I001", "N802", "N806", "N815", "B010"]
-"scripts/*" = ["UP006", "UP007", "E501"]
+"scripts/*" = [
+    "UP006",
+    "UP007",
+    "E501",
+    # CLI tools: stdout is the user-facing interface.
+    "T201",
+]
 "resources.py" = ["E501", "N802"]
 "test/helpers/_core_mocks.py" = ["N806"]
 "test/helpers/_gui_mocks.py" = ["N802", "N806"]

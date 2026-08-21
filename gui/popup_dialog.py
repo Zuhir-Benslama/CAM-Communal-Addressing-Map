@@ -256,14 +256,12 @@ class PopupDialog(QDialog):
         page_key = self.layer_name_value
 
         if page_key == 'org':
-            self._combo_org_cat.currentIndexChanged.connect(
-                lambda: self._on_org_cat_changed()
-            )
+            self._combo_org_cat.currentIndexChanged.connect(self._on_org_cat_changed)
 
         if page_key == 'num':
             self._btn_select_ref.clicked.connect(self._on_select_ref)
             self._combo_activity_cat.currentIndexChanged.connect(
-                lambda: self._on_activity_cat_changed()
+                self._on_activity_cat_changed
             )
 
         if page_key == 'pan':
@@ -296,12 +294,12 @@ class PopupDialog(QDialog):
             fill_mounting_status(self._combo_mount_status)
             fill_panel_reference(self._combo_panel_ref)
 
-    def _on_org_cat_changed(self) -> None:
+    def _on_org_cat_changed(self, _index: int = 0) -> None:
         cat = self._combo_org_cat.currentData()
         if cat:
             fill_org_type(self._combo_org_type, cat)
 
-    def _on_activity_cat_changed(self) -> None:
+    def _on_activity_cat_changed(self, _index: int = 0) -> None:
         cat = self._combo_activity_cat.currentData()
         fill_activity_type(self._combo_activity_type, cat)
 
@@ -344,7 +342,7 @@ class PopupDialog(QDialog):
             handler(self, data)
 
     @staticmethod
-    def _set_combo_by_data(combo: QComboBox, value: Any) -> None:
+    def _set_combo_by_data(combo: QComboBox, value: object) -> None:
         """Set a combo's current index by data value."""
         if value is not None and value != '':
             idx = combo.findData(value)
@@ -419,7 +417,7 @@ class PopupDialog(QDialog):
         if layer:
             self.iface.setActiveLayer(layer[0])
 
-    def _on_reference_selected(self, feature_id: Any, layer_name: str) -> None:
+    def _on_reference_selected(self, feature_id: int, layer_name: str) -> None:
         """Called when the user selects a reference feature on the map."""
         self._ref_id = str(feature_id)
         self._ref_layer = layer_name

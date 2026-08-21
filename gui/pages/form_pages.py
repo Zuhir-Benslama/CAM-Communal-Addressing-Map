@@ -1,6 +1,8 @@
 """Individual form page builders (zone, road, org, city, num, pan)."""
 
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from qgis.PyQt.QtWidgets import (
     QComboBox,
@@ -13,28 +15,31 @@ from qgis.PyQt.QtWidgets import (
     QWidget,
 )
 
+if TYPE_CHECKING:
+    from .main_dialog import MainDialog
 
-def build_zone_form(dialog: Any) -> None:
+
+def build_zone_form(dialog: MainDialog) -> None:
     _build_entity_form(dialog, _ZONE_CONFIG)
 
 
-def build_road_form(dialog: Any) -> None:
+def build_road_form(dialog: MainDialog) -> None:
     _build_entity_form(dialog, _ROAD_CONFIG)
 
 
-def build_org_form(dialog: Any) -> None:
+def build_org_form(dialog: MainDialog) -> None:
     _build_entity_form(dialog, _ORG_CONFIG)
 
 
-def build_city_form(dialog: Any) -> None:
+def build_city_form(dialog: MainDialog) -> None:
     _build_entity_form(dialog, _CITY_CONFIG)
 
 
-def build_num_form(dialog: Any) -> None:
+def build_num_form(dialog: MainDialog) -> None:
     _build_entity_form(dialog, _NUM_CONFIG)
 
 
-def build_pan_form(dialog: Any) -> None:
+def build_pan_form(dialog: MainDialog) -> None:
     _build_entity_form(dialog, _PAN_CONFIG)
 
 
@@ -43,7 +48,7 @@ _FORM_CONFIG = tuple[
 ]
 
 
-def _build_entity_form(dialog: Any, config: _FORM_CONFIG) -> None:
+def _build_entity_form(dialog: MainDialog, config: _FORM_CONFIG) -> None:
     name, fields, buttons = config
     w = QWidget()
     w.setObjectName(f'{name}Form')

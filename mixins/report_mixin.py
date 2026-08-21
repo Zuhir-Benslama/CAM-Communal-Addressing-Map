@@ -57,7 +57,12 @@ class ReportMixin:
             return False
 
         script_path = REPORTING_SCRIPT
-        command = [f'{get_qgis_python()}', script_path, '--method', method]
+        command: list[str] = [
+            f'{get_qgis_python()}',
+            str(script_path),
+            '--method',
+            method,
+        ]
 
         success_msg = (
             self._tr('Report saved to your documents')
@@ -116,7 +121,7 @@ class ReportMixin:
             'wrong': count_numberings('numbered_mismatched'),
             'right': count_numberings('numbered_matched'),
             'booked': count_numberings('booked'),
-            'date': datetime.now().date().strftime('%Y/%m/%d'),
+            'date': datetime.now().astimezone().date().strftime('%Y/%m/%d'),
             'pan_city0': count_panels(LAYER_SUBDIVISIONS, PAN_MOUNTED),
             'pan_org0': count_panels(LAYER_FACILITIES, PAN_MOUNTED),
             'pan_road0': count_panels(LAYER_ROADS, PAN_MOUNTED),
@@ -141,7 +146,7 @@ class ReportMixin:
             logger.error('No current user for purchase order generation')
             return False
         order_data = {
-            'date': datetime.now().date().strftime('%Y/%m/%d'),
+            'date': datetime.now().astimezone().date().strftime('%Y/%m/%d'),
             'wilaya': self.current_user.get('wilaya'),
             'commune': self.current_user.get('commune'),
             'items': query_missing_pan(PAN_PLANNED),

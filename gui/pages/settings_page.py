@@ -1,6 +1,8 @@
 """Settings page builder for MainDialog."""
 
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from qgis.PyQt.QtWidgets import (
     QComboBox,
@@ -15,25 +17,23 @@ from qgis.PyQt.QtWidgets import (
 
 from ..dialog_helpers import add_form_row, make_section_frame
 
+if TYPE_CHECKING:
+    from .main_dialog import MainDialog
 
-def build_settings_page(dialog: Any) -> None:
-    scroll = QScrollArea()
-    scroll.setWidgetResizable(True)
-    scroll.setObjectName('settingsTab')
-    content = QWidget()
-    content.setObjectName('settingsContent')
-    scroll.setWidget(content)
-    s_layout = QVBoxLayout(content)
-    s_layout.setContentsMargins(8, 8, 8, 8)
-    s_layout.setSpacing(12)
 
-    # Maps, Reports and Backup
+def _section_title(layout: QVBoxLayout, text: str, obj_name: str) -> None:
+    """Add a bold section title to the given layout."""
+    title = QLabel(text)
+    title.setObjectName(obj_name)
+    title.setStyleSheet('font-size: 13px; font-weight: bold;')
+    layout.addWidget(title)
+
+
+def _build_maps_reports_section(dialog: MainDialog, s_layout: QVBoxLayout) -> None:
+    """Build the 'Maps, Reports and Backup' section."""
     section = make_section_frame()
     sl = section.layout()
-    sec_title = QLabel('Maps, Reports and Backup')
-    sec_title.setObjectName('groupBox_3')
-    sec_title.setStyleSheet('font-size: 13px; font-weight: bold;')
-    sl.addWidget(sec_title)
+    _section_title(sl, 'Maps, Reports and Backup', 'groupBox_3')
 
     dialog._combo_action = QComboBox()
     dialog._combo_action.setObjectName('_action_combo')
@@ -51,13 +51,12 @@ def build_settings_page(dialog: Any) -> None:
     s_layout.addWidget(section)
     dialog._held_widgets.append(section)
 
-    # Add New Feature
+
+def _build_add_feature_section(dialog: MainDialog, s_layout: QVBoxLayout) -> None:
+    """Build the 'Add New Feature' section."""
     section = make_section_frame()
     sl = section.layout()
-    sec_title = QLabel('Add New Feature')
-    sec_title.setObjectName('groupBox_add_types')
-    sec_title.setStyleSheet('font-size: 13px; font-weight: bold;')
-    sl.addWidget(sec_title)
+    _section_title(sl, 'Add New Feature', 'groupBox_add_types')
 
     nf_form = QFormLayout()
     nf_form.setSpacing(6)
@@ -82,13 +81,15 @@ def build_settings_page(dialog: Any) -> None:
     s_layout.addWidget(section)
     dialog._held_widgets.append(section)
 
-    # Theme and Language
+
+def _build_theme_locale_section(
+    dialog: MainDialog,
+    s_layout: QVBoxLayout,
+) -> QWidget:
+    """Build the 'Theme and Language' section and return it."""
     section = make_section_frame()
     sl = section.layout()
-    sec_title = QLabel('Theme and Language')
-    sec_title.setObjectName('_settings_group')
-    sec_title.setStyleSheet('font-size: 13px; font-weight: bold;')
-    sl.addWidget(sec_title)
+    _section_title(sl, 'Theme and Language', '_settings_group')
 
     tl_form = QFormLayout()
     tl_form.setSpacing(6)
@@ -101,9 +102,27 @@ def build_settings_page(dialog: Any) -> None:
     sl.addLayout(tl_form)
 
     s_layout.addWidget(section)
+    return section
+
+
+def build_settings_page(dialog: MainDialog) -> None:
+    """Build the settings page and register it on the dialog."""
+    scroll = QScrollArea()
+    scroll.setWidgetResizable(True)
+    scroll.setObjectName('settingsTab')
+    content = QWidget()
+    content.setObjectName('settingsContent')
+    scroll.setWidget(content)
+    s_layout = QVBoxLayout(content)
+    s_layout.setContentsMargins(8, 8, 8, 8)
+    s_layout.setSpacing(12)
+
+    _build_maps_reports_section(dialog, s_layout)
+    _build_add_feature_section(dialog, s_layout)
+    theme_section = _build_theme_locale_section(dialog, s_layout)
     s_layout.addStretch()
 
     dialog._main_stack.addWidget(scroll)
     dialog._held_widgets.append(scroll)
     dialog._held_widgets.append(content)
-    dialog._held_widgets.append(section)
+    dialog._held_widgets.append(theme_section)

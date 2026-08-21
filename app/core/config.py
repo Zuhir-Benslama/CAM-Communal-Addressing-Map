@@ -67,22 +67,22 @@ THEMES = {
 
 DEFAULT_THEME = THEME_DARK
 
+_THEME_ALIASES: dict[str, Theme] = {
+    'light': THEME_LIGHT,
+    'فاتح': THEME_LIGHT,
+    'dark': THEME_DARK,
+    'داكن': THEME_DARK,
+}
+
 
 def normalize_theme(theme_name: Theme | str | None) -> Theme:
     """Map persisted or legacy theme values to a :class:`Theme` enum."""
     if isinstance(theme_name, Theme):
         return theme_name
-    if theme_name is None:
-        return DEFAULT_THEME
-    if isinstance(theme_name, str):
-        key = theme_name.strip()
-        if not key:
-            return DEFAULT_THEME
-        lowered = key.lower()
-        if lowered in ('light', 'فاتح'):
-            return THEME_LIGHT
-        if lowered in ('dark', 'داكن'):
-            return THEME_DARK
+    if isinstance(theme_name, str) and theme_name.strip():
+        key = theme_name.strip().lower()
+        if key in _THEME_ALIASES:
+            return _THEME_ALIASES[key]
         try:
             return Theme(key)
         except ValueError:

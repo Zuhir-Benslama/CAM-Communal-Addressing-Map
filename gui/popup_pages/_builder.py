@@ -1,12 +1,13 @@
 """Shared parametrized builder for popup form pages."""
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from qgis.PyQt.QtWidgets import (
     QComboBox,
     QFormLayout,
     QLineEdit,
     QPushButton,
+    QStackedWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -19,7 +20,7 @@ if TYPE_CHECKING:
 
 def build_page(
     dialog: 'PopupDialog',
-    stack: Any,
+    stack: QStackedWidget,
     *,
     object_name: str,
     save_kind: str,

@@ -1,11 +1,17 @@
 """Map measure tool for distance measurement on canvas."""
 
-from typing import Any
+from __future__ import annotations
 
 from qgis.core import QgsDistanceArea, QgsPointXY, QgsWkbTypes
-from qgis.gui import QgsMapToolEmitPoint, QgsRubberBand, QgsVertexMarker
+from qgis.gui import (
+    QgsInterface,
+    QgsMapCanvas,
+    QgsMapToolEmitPoint,
+    QgsRubberBand,
+    QgsVertexMarker,
+)
 from qgis.PyQt.QtCore import Qt
-from qgis.PyQt.QtGui import QColor, QCursor, QFont
+from qgis.PyQt.QtGui import QColor, QCursor, QFont, QKeyEvent, QMouseEvent
 from qgis.PyQt.QtWidgets import (
     QGraphicsDropShadowEffect,
     QGraphicsItemGroup,
@@ -21,7 +27,7 @@ from ..i18n import tr as _i18n_tr
 class MeasureTool(QgsMapToolEmitPoint):
     """Map tool for measuring distances on the canvas."""
 
-    def __init__(self, canvas, iface) -> None:
+    def __init__(self, canvas: QgsMapCanvas, iface: QgsInterface) -> None:
         """Initialize the measurement tool with canvas and interface."""
         super().__init__(canvas)
         self.canvas = canvas
@@ -42,7 +48,7 @@ class MeasureTool(QgsMapToolEmitPoint):
         self.canvas.extentsChanged.connect(self.updateLabels)
         self.canvas.scaleChanged.connect(self.updateLabels)
 
-    def canvasReleaseEvent(self, event: Any) -> None:
+    def canvasReleaseEvent(self, event: QMouseEvent) -> None:
         """Record point and draw measurement lines."""
         if self.paused:
             return
@@ -78,7 +84,7 @@ class MeasureTool(QgsMapToolEmitPoint):
                 _i18n_tr('Total Distance', current_locale()), msg, level=0, duration=10
             )
 
-    def canvasMoveEvent(self, event: Any) -> None:
+    def canvasMoveEvent(self, event: QMouseEvent) -> None:
         """Show temporary distance on mouse move."""
         if self.paused or not self.points:
             return
@@ -95,7 +101,7 @@ class MeasureTool(QgsMapToolEmitPoint):
         dist_msg = f'{temp_distance + total_dist:.2f} {_i18n_tr("m", current_locale())}'
         QToolTip.showText(QCursor.pos(), dist_msg)
 
-    def keyPressEvent(self, event: Any) -> None:
+    def keyPressEvent(self, event: QKeyEvent) -> None:
         """Handle keyboard shortcuts for tool control."""
         if event.key() == Qt.Key.Key_R:
             self.clear()
@@ -128,7 +134,7 @@ class MeasureTool(QgsMapToolEmitPoint):
                 _i18n_tr('Status', current_locale()), state, level=level, duration=10
             )
 
-    def addDistanceLabel(self, point1: Any, point2: Any) -> None:
+    def addDistanceLabel(self, point1: QgsPointXY, point2: QgsPointXY) -> None:
         """Add a distance label between two points on canvas."""
         mid_x = (point1.x() + point2.x()) / 2
         mid_y = (point1.y() + point2.y()) / 2

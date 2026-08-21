@@ -77,7 +77,7 @@ class ImportExportMixin:
     def _build_export_data(self: HasExportContext) -> dict | None:
         canvas = self.iface.mapCanvas()
         current_scale = canvas.scale()
-        now = datetime.now()
+        now = datetime.now().astimezone()
         if self.current_user is None:
             logger.error('No current user for export data')
             return None
@@ -124,9 +124,15 @@ class ImportExportMixin:
         return True
 
     def _invoke_reporting_script(self: HasExportContext, _method: str) -> None:
+        command: list[str] = [
+            f'{get_qgis_python()}',
+            str(REPORTING_SCRIPT),
+            '--method',
+            _method,
+        ]
         try:
             subprocess.run(  # nosec S603 - command built from internal constants only
-                [f'{get_qgis_python()}', REPORTING_SCRIPT, '--method', _method],
+                command,
                 capture_output=True,
                 text=True,
                 check=True,

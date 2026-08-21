@@ -48,7 +48,7 @@ def generate_report() -> None:
             template_path,
             _output_path(
                 data_dict,
-                f'rapport_{datetime.now().date().strftime("%Y-%m-%d")}.odt',
+                f'rapport_{datetime.now().astimezone().date().strftime("%Y-%m-%d")}.odt',
             ),
         )
         t.render(data_dict)
@@ -64,7 +64,7 @@ def generate_order_form() -> None:
             template_path,
             _output_path(
                 data_dict,
-                f'commande_{datetime.now().date().strftime("%Y-%m-%d")}.odt',
+                f'commande_{datetime.now().astimezone().date().strftime("%Y-%m-%d")}.odt',
             ),
         )
         t.render(data_dict)
