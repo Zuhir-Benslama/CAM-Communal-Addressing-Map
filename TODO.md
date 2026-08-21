@@ -84,7 +84,7 @@ Corrected claims (NOT dead — verified in use):
 ## 13. Unreachable Tab Branches (P2)
 
 - [x] `mixins/layer_ops_mixin.py` — `on_opt_selected` simplified: removed Settings/Report branches and the now-dead `_handle_settings_tab()` / `_handle_report_tab()` (tab index is always 0 → 'Operations'). Cascaded removals: `_show_base_layers()`, `_show_always_shown_layers()` (+ their `HasTabSwitchContext` protocol entries) and the `CUSTOM_STYLE_DIR` import.
-- [x] `mixins/layer_ops_mixin.py` — `hasattr(self.menu, '_rna_tab_src')` fallback removed from `on_opt_selected` and `on_feature_added` (`menu` is a `_TabWidget`, never a `QTabWidget`, so `apply_widget_texts` never sets it).
+- [x] `mixins/layer_ops_mixin.py` — `hasattr(self.menu, '_cam_tab_src')` fallback removed from `on_opt_selected` and `on_feature_added` (`menu` is a `_TabWidget`, never a `QTabWidget`, so `apply_widget_texts` never sets it).
 
 ## 14. Wrong Property Label in Panel List (P2)
 

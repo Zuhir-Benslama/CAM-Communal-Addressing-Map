@@ -56,15 +56,15 @@ def clear_i18n_cache() -> None:
 
 def _src_text(w, attr='text'):
     """Get or cache the original Arabic source text on a widget.
-    Uses attr-specific cache attribute (_rna_src, _rna_src_tip, _rna_src_win)
+    Uses attr-specific cache attribute (_cam_src, _cam_src_tip, _cam_src_win)
     to avoid clashes when a widget appears in multiple findChildren passes."""
     cache_attr = {
-        'text': '_rna_src',
-        'title': '_rna_src',
-        'placeholder': '_rna_src',
-        'tooltip': '_rna_src_tip',
-        'windowtitle': '_rna_src_win',
-    }.get(attr, '_rna_src')
+        'text': '_cam_src',
+        'title': '_cam_src',
+        'placeholder': '_cam_src',
+        'tooltip': '_cam_src_tip',
+        'windowtitle': '_cam_src_win',
+    }.get(attr, '_cam_src')
     cached = getattr(w, cache_attr, None)
     if cached is not None:
         return cached
@@ -147,10 +147,10 @@ def _translate_tabs(dialog, locale) -> None:
     )
 
     for w in dialog.findChildren(QTabWidget):
-        if not hasattr(w, '_rna_tab_src'):
-            w._rna_tab_src = [w.tabText(i) for i in range(w.count())]
+        if not hasattr(w, '_cam_tab_src'):
+            w._cam_tab_src = [w.tabText(i) for i in range(w.count())]
         for i in range(w.count()):
-            src = w._rna_tab_src[i]
+            src = w._cam_tab_src[i]
             if src:
                 w.setTabText(i, _get_string(src, locale))
 

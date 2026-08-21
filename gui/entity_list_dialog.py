@@ -52,7 +52,7 @@ class EntityListDialog(QDialog):
         self._populate_table(0)
 
     def _init_ui(self) -> None:
-        self.setObjectName('rnaEntityListDialog')
+        self.setObjectName('camEntityListDialog')
         self.setMinimumSize(700, 520)
         self.resize(760, 560)
         self.setSizeGripEnabled(True)

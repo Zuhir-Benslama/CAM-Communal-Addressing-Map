@@ -185,7 +185,7 @@ class MainDialog(
     # ------------------------------------------------------------------
 
     def _init_ui(self) -> None:
-        self.setObjectName('rnaMainDialog')
+        self.setObjectName('camMainDialog')
         self.setMinimumSize(360, 680)
         self.resize(360, 720)
         self.setSizeGripEnabled(True)

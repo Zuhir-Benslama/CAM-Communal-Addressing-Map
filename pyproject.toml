@@ -82,7 +82,7 @@ ignore-names = [
     "_ref_id",
     "_ref_layer",
     "_refresh_derived",
-    "_rna_tab_src",
+    "_cam_tab_src",
     "_set_combo_by_data",
     "_tr",
     "_tr_locale",

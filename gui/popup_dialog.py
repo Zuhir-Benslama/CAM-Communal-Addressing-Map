@@ -220,7 +220,7 @@ class PopupDialog(QDialog):
     # ------------------------------------------------------------------
 
     def _init_ui(self) -> None:
-        self.setObjectName('rnaPopupDialog')
+        self.setObjectName('camPopupDialog')
         self.setMinimumSize(700, 500)
         self.resize(760, 560)
         self.setSizeGripEnabled(True)

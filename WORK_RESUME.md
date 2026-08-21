@@ -122,7 +122,7 @@ A comprehensive QGIS plugin modernization and code quality overhaul.
 - **Map features invisible**: unconditional `create_other_layers()`, auto-zoom
 - **`NameError` in `init_allowed_zone()`**: structured null-safe flow
 - **Signup silently failing**: `sign_up()` returns `bool`, caller navigates
-- **Translation not persisting**: `_rna_src` caching on widgets
+- **Translation not persisting**: `_cam_src` caching on widgets
 - **Theme combo corrupted by i18n**: locale-independent `itemData`
 - **DetachedInstanceError**: inline WKT query before session close
 - **`IndexError` on missing layers**: guard `mapLayersByName()[0]`
