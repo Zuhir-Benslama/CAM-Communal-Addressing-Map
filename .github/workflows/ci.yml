@@ -12,9 +12,18 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.10", "3.11", "3.12"]
+    # The repo root ships an __init__.py (required for QGIS to load the
+    # plugin directory as a package), so tooling that derives module names
+    # from the filesystem (mypy) needs the checkout to live under a valid
+    # package name instead of the hyphenated repository name.
+    defaults:
+      run:
+        working-directory: plugin
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: plugin
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
