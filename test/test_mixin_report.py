@@ -2,6 +2,7 @@
 
 import importlib
 import sys
+import tempfile
 import unittest
 from unittest.mock import MagicMock, patch
 
@@ -67,8 +68,10 @@ class TestReportMixin(unittest.TestCase):
             self.assertTrue(result)
 
     def test_json_write_error_returns_false(self):
+        # The system temp dir always exists and is a directory, so opening
+        # it for writing raises IsADirectoryError (an OSError) everywhere.
         with (
-            patch.object(self.mod, 'TMP_JSON', '/tmp/opencode'),
+            patch.object(self.mod, 'TMP_JSON', tempfile.gettempdir()),
             patch.object(self.mod, 'get_qgis_python', return_value='python3'),
         ):
             result = self.mixin.generate_report()
