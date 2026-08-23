@@ -93,7 +93,7 @@ class CAM:
         """Create the plugin toolbar button and menu entry."""
         self.add_action(
             str(ICON_PNG),
-            text=self.tr(''),
+            text=self.tr('CAM'),
             callback=self.run,
             parent=self.iface.mainWindow(),
         )
