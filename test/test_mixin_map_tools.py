@@ -101,3 +101,67 @@ class TestMapToolsMixin(unittest.TestCase):
             MockTool.return_value = mock_tool
             self.mixin._selection_handler(layer=MagicMock())
             self.mixin.iface.mapCanvas().setMapTool.assert_called_with(mock_tool)
+
+    def test_selection_handler_unsets_ref_tool(self):
+        self.mixin.ref_identify_tool = MagicMock()
+        with patch.object(self.mod, 'IdentifyTool'):
+            self.mixin._selection_handler(layer=MagicMock())
+        self.mixin.ref_identify_tool.unset_map_tool.assert_called_once()
+
+    def test_start_selecting_success(self):
+        layer = MagicMock()
+        self.mixin._current_layer_name = MagicMock(return_value='roads')
+        with (
+            patch.object(self.mod, 'QgsProject') as mock_proj,
+            patch.object(self.mod, 'IdentifyTool'),
+        ):
+            mock_proj.instance.return_value.mapLayersByName.return_value = [layer]
+            self.mixin.start_selecting()
+            self.mixin.iface.setActiveLayer.assert_called_once_with(layer)
+            self.mixin.iface.mapCanvas().setMapTool.assert_called_once()
+
+    def test_reconnect_context_menu(self):
+        canvas = self.mixin.iface.mapCanvas()
+        self.mixin._reconnect_context_menu()
+        canvas.customContextMenuRequested.disconnect.assert_called_once_with(
+            self.mixin.on_edition_release,
+        )
+        canvas.customContextMenuRequested.connect.assert_called_once_with(
+            self.mixin.on_edition_release,
+        )
+        canvas.setContextMenuPolicy.assert_called_once()
+
+    def test_reconnect_context_menu_swallows_disconnect_error(self):
+        canvas = self.mixin.iface.mapCanvas()
+        canvas.customContextMenuRequested.disconnect.side_effect = TypeError
+        self.mixin._reconnect_context_menu()
+        canvas.customContextMenuRequested.connect.assert_called_once()
+
+    def test_on_map_tool_changed(self):
+        canvas = self.mixin.iface.mapCanvas()
+        self.mixin._on_map_tool_changed(None)
+        canvas.customContextMenuRequested.connect.assert_called_once()
+
+    def test_on_map_tool_changed_dead_canvas(self):
+        self.mixin.iface.mapCanvas.side_effect = RuntimeError('wrapped C/C++ deleted')
+        self.mixin._on_map_tool_changed(None)
+
+    def test_select_ref_layer_not_found(self):
+        self.mixin.road_ref = MagicMock()
+        self.mixin.road_ref.currentData.return_value = 'ghost'
+        with patch.object(self.mod, 'QgsProject') as mock_proj:
+            mock_proj.instance.return_value.mapLayersByName.return_value = []
+            self.mixin._select_ref(self.mixin.road_ref)
+        self.mixin.iface.mapCanvas().setCursor.assert_called_once()
+
+    def test_select_panel_ref_handler(self):
+        self.mixin.panel_ref = MagicMock()
+        self.mixin.panel_ref.currentData.return_value = 'panels'
+        with (
+            patch.object(self.mod, 'QgsProject') as mock_proj,
+            patch.object(self.mod, 'IdentifyTool'),
+        ):
+            mock_proj.instance.return_value.mapLayersByName.return_value = [
+                MagicMock(),
+            ]
+            self.mixin.select_panel_ref_handler()

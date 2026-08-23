@@ -193,6 +193,70 @@ class TestImportExportMixin(unittest.TestCase):
             self.mixin.export_to_image()
             mock_render.assert_not_called()
 
+    def test_build_export_data_no_user(self):
+        self.mixin.current_user = None
+        self.assertIsNone(self.mixin._build_export_data())
+
+    def test_validate_export_data_missing_keys(self):
+        with patch.object(self.mod, 'QMessageBox') as mock_mb:
+            result = self.mixin._validate_export_data({'type_plan': 'Numbering'})
+            self.assertFalse(result)
+            mock_mb.critical.assert_called_once()
+
+    def test_validate_export_data_complete(self):
+        data = {
+            'type_plan': 'Numbering',
+            'num_plan': '1',
+            'scale': '1:1000',
+            'by': 'Admin',
+            'date': '2026/01/01',
+        }
+        self.assertTrue(self.mixin._validate_export_data(data))
+
+    def test_render_and_export_no_current_user_skips_script(self):
+        self.mixin.current_user = None
+        self.mock_canvas()
+
+        mock_job = MagicMock()
+        mock_job.renderedImage.return_value.save = MagicMock(return_value=True)
+        mock_job.waitForFinished = MagicMock()
+
+        with (
+            patch.object(
+                self.mod, 'QgsMapRendererSequentialJob', return_value=mock_job
+            ),
+            patch.object(self.mod, 'QgsMapSettings'),
+            patch.object(self.mod, 'validate_text', return_value='valid'),
+        ):
+            self.mixin._render_and_export('3')
+        self.mod.subprocess.run.assert_not_called()
+
+    def test_invoke_reporting_script_process_error(self):
+        import subprocess
+
+        err = subprocess.CalledProcessError(2, 'cmd')
+        err.stderr = 'boom'
+        self.mod.subprocess.run.side_effect = err
+        with patch.object(self.mod, 'QMessageBox') as mock_mb:
+            self.mixin._invoke_reporting_script('3')
+            mock_mb.critical.assert_called_once()
+            self.assertIn('boom', mock_mb.critical.call_args[0][2])
+
+    def test_invoke_reporting_script_process_error_no_output(self):
+        import subprocess
+
+        err = subprocess.CalledProcessError(2, 'cmd')
+        err.stderr = None
+        self.mod.subprocess.run.side_effect = err
+        with patch.object(self.mod, 'QMessageBox'):
+            self.mixin._invoke_reporting_script('3')
+
+    def test_invoke_reporting_script_oserror(self):
+        self.mod.subprocess.run.side_effect = OSError('spawn failed')
+        with patch.object(self.mod, 'QMessageBox') as mock_mb:
+            self.mixin._invoke_reporting_script('3')
+            mock_mb.critical.assert_called_once()
+
 
 if __name__ == '__main__':
     unittest.main()
