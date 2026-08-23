@@ -42,7 +42,7 @@ def classFactory(iface: Any) -> Any:  # pylint: disable=invalid-name
     """Load CAM class from file CAM.
 
     :param iface: A QGIS interface instance.
-    :type iface: QgsInterface
+    :type iface: QgisInterface
     """
     # Ensure CAM plugin dir is on sys.path so 'app' subpackage
     # resolves even under QGIS's import hook on Python 3.14

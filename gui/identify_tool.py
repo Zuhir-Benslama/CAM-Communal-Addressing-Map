@@ -7,7 +7,7 @@ import logging
 from typing import TYPE_CHECKING
 
 from qgis.core import QgsExpression, QgsFeature, QgsFeatureRequest, QgsMapLayer
-from qgis.gui import QgsInterface, QgsMapToolIdentify
+from qgis.gui import QgisInterface, QgsMapToolIdentify
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtGui import QMouseEvent
 from qgis.PyQt.QtWidgets import QMenu
@@ -58,11 +58,11 @@ class IdentifyTool(QgsMapToolIdentify):
         """Return the currently active identify layer."""
         return self._active_layer
 
-    def set_iface(self, iface: QgsInterface) -> None:
+    def set_iface(self, iface: QgisInterface) -> None:
         """Set the QGIS interface instance."""
         self._iface = iface
 
-    def get_iface(self) -> QgsInterface | None:
+    def get_iface(self) -> QgisInterface | None:
         """Return the QGIS interface instance."""
         return self._iface
 

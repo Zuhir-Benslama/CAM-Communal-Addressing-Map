@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from qgis.core import QgsDistanceArea, QgsPointXY, QgsWkbTypes
 from qgis.gui import (
-    QgsInterface,
+    QgisInterface,
     QgsMapCanvas,
     QgsMapToolEmitPoint,
     QgsRubberBand,
@@ -27,7 +27,7 @@ from ..i18n import tr as _i18n_tr
 class MeasureTool(QgsMapToolEmitPoint):
     """Map tool for measuring distances on the canvas."""
 
-    def __init__(self, canvas: QgsMapCanvas, iface: QgsInterface) -> None:
+    def __init__(self, canvas: QgsMapCanvas, iface: QgisInterface) -> None:
         """Initialize the measurement tool with canvas and interface."""
         super().__init__(canvas)
         self.canvas = canvas
