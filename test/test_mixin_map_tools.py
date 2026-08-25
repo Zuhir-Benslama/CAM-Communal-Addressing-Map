@@ -62,6 +62,34 @@ class TestMapToolsMixin(unittest.TestCase):
             self.mixin.activate_measure()
             self.mixin.iface.mapCanvas().setMapTool.assert_called_with(mock_tool)
 
+    def test_activate_measure_disposes_previous_tool(self):
+        previous = MagicMock()
+        self.mixin.measure_tool = previous
+        with patch.object(self.mod, 'MeasureTool'):
+            self.mixin.activate_measure()
+        previous.dispose.assert_called_once()
+
+    def test_selection_handler_unsets_previous_identify_tool(self):
+        previous = MagicMock()
+        self.mixin.identify_tool = previous
+        with patch.object(self.mod, 'IdentifyTool'):
+            self.mixin._selection_handler(layer=MagicMock())
+        previous.unset_map_tool.assert_called_once()
+
+    def test_select_ref_disposes_previous_ref_tool(self):
+        layer = MagicMock()
+        self.mixin.road_ref = MagicMock()
+        self.mixin.road_ref.currentData.return_value = 'roads'
+        previous = MagicMock()
+        self.mixin.ref_identify_tool = previous
+        with (
+            patch.object(self.mod, 'QgsProject') as mock_proj,
+            patch.object(self.mod, 'IdentifyTool'),
+        ):
+            mock_proj.instance.return_value.mapLayersByName.return_value = [layer]
+            self.mixin.select_ref_handler()
+        previous.unset_map_tool.assert_called_once()
+
     def test_set_default_cursor(self):
         self.mixin.set_default_cursor()
         self.mixin.iface.mapCanvas().setCursor.assert_called_once()

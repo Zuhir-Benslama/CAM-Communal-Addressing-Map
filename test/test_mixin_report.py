@@ -1,6 +1,7 @@
 """Tests for mixins.report_mixin."""
 
 import importlib
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -40,55 +41,41 @@ class TestReportMixin(unittest.TestCase):
     def test_generate_report_success(self):
         with (
             patch.object(self.mod, 'TMP_JSON', '/tmp/test_report.json'),
-            patch.object(self.mod, 'get_qgis_python', return_value='python3'),
-            patch.object(self.mod, 'REPORTING_SCRIPT', '/tmp/script.py'),
+            patch.object(self.mod, 'run_reporting_script') as mock_run,
             patch('builtins.open', MagicMock()),
             patch('json.dump'),
-            patch.object(self.mod, 'subprocess') as mock_sub,
             patch.object(self.mod, 'QMessageBox'),
         ):
-            mock_sub.run.return_value = MagicMock(returncode=0)
-            mock_sub.CalledProcessError = type('CalledProcessError', (Exception,), {})
             result = self.mixin.generate_report()
             self.assertTrue(result)
+            mock_run.assert_called_once_with('2')
 
     def test_purchase_order_success(self):
         with (
             patch.object(self.mod, 'TMP_JSON', '/tmp/test_order.json'),
-            patch.object(self.mod, 'get_qgis_python', return_value='python3'),
-            patch.object(self.mod, 'REPORTING_SCRIPT', '/tmp/script.py'),
+            patch.object(self.mod, 'run_reporting_script'),
             patch('builtins.open', MagicMock()),
             patch('json.dump'),
-            patch.object(self.mod, 'subprocess') as mock_sub,
             patch.object(self.mod, 'QMessageBox'),
         ):
-            mock_sub.run.return_value = MagicMock(returncode=0)
-            mock_sub.CalledProcessError = type('CalledProcessError', (Exception,), {})
             result = self.mixin.purchase_order()
             self.assertTrue(result)
 
     def test_json_write_error_returns_false(self):
         # The system temp dir always exists and is a directory, so opening
         # it for writing raises IsADirectoryError (an OSError) everywhere.
-        with (
-            patch.object(self.mod, 'TMP_JSON', tempfile.gettempdir()),
-            patch.object(self.mod, 'get_qgis_python', return_value='python3'),
-        ):
+        with patch.object(self.mod, 'TMP_JSON', tempfile.gettempdir()):
             result = self.mixin.generate_report()
         self.assertFalse(result)
 
     def test_generate_report_process_error(self):
         with (
             patch.object(self.mod, 'TMP_JSON', '/tmp/test_report_err.json'),
-            patch.object(self.mod, 'get_qgis_python', return_value='python3'),
-            patch.object(self.mod, 'REPORTING_SCRIPT', '/tmp/script.py'),
             patch('json.dump'),
-            patch.object(self.mod, 'subprocess') as mock_sub,
+            patch.object(self.mod, 'run_reporting_script') as mock_run,
             patch.object(self.mod, 'QMessageBox') as mock_box,
         ):
-            err_cls = type('CalledProcessError', (Exception,), {})
-            mock_sub.CalledProcessError = err_cls
-            mock_sub.run.side_effect = err_cls(1, 'cmd')
+            mock_run.side_effect = subprocess.CalledProcessError(1, 'cmd')
             result = self.mixin.generate_report()
             self.assertFalse(result)
             self.assertEqual(mock_box.return_value.setIcon.call_count, 1)
@@ -96,29 +83,22 @@ class TestReportMixin(unittest.TestCase):
     def test_generate_report_oserror(self):
         with (
             patch.object(self.mod, 'TMP_JSON', '/tmp/test_report_err2.json'),
-            patch.object(self.mod, 'get_qgis_python', return_value='python3'),
-            patch.object(self.mod, 'REPORTING_SCRIPT', '/tmp/script.py'),
             patch('json.dump'),
-            patch.object(self.mod, 'subprocess') as mock_sub,
+            patch.object(self.mod, 'run_reporting_script') as mock_run,
             patch.object(self.mod, 'QMessageBox'),
         ):
-            mock_sub.CalledProcessError = type('CalledProcessError', (Exception,), {})
-            mock_sub.run.side_effect = OSError('spawn failed')
+            mock_run.side_effect = OSError('spawn failed')
             result = self.mixin.generate_report()
             self.assertFalse(result)
 
     def test_purchase_order_process_error(self):
         with (
             patch.object(self.mod, 'TMP_JSON', '/tmp/test_order_err.json'),
-            patch.object(self.mod, 'get_qgis_python', return_value='python3'),
-            patch.object(self.mod, 'REPORTING_SCRIPT', '/tmp/script.py'),
             patch('json.dump'),
-            patch.object(self.mod, 'subprocess') as mock_sub,
+            patch.object(self.mod, 'run_reporting_script') as mock_run,
             patch.object(self.mod, 'QMessageBox') as mock_box,
         ):
-            err_cls = type('CalledProcessError', (Exception,), {})
-            mock_sub.CalledProcessError = err_cls
-            mock_sub.run.side_effect = err_cls(1, 'cmd')
+            mock_run.side_effect = subprocess.CalledProcessError(1, 'cmd')
             result = self.mixin.purchase_order()
             self.assertFalse(result)
             self.assertEqual(mock_box.return_value.setIcon.call_count, 1)

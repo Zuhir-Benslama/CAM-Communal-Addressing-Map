@@ -13,6 +13,7 @@ from qgis.PyQt.QtWidgets import (
 )
 
 from ...scripts.widget_texts import get_string
+from ..form_specs import FieldRow
 
 if TYPE_CHECKING:
     from ..popup_dialog import PopupDialog
@@ -24,13 +25,13 @@ def build_page(
     *,
     object_name: str,
     save_kind: str,
-    rows: list[tuple[str, str, str, str]],
+    rows: list[FieldRow],
 ) -> None:
     """Build a form page with the given rows and a Save button.
 
-    Each row is ``(attr, kind, object_name, label)`` where *kind* is
-    ``'combo'``, ``'edit'``, or ``'button'``. For ``'button'`` rows the
-    label is used as the button text and no form label is rendered.
+    Rows come from :mod:`gui.form_specs`; ``popup_attr`` names the
+    attribute set on the dialog. ``'button'`` rows render as a bare
+    button (no label) inside the form.
     """
     w = QWidget()
     w.setObjectName(object_name)
@@ -43,20 +44,20 @@ def build_page(
     form.setSpacing(8)
 
     loc = dialog._tr_locale
-    for attr, kind, obj_name, label in rows:
-        if kind == 'combo':
+    for row in rows:
+        if row.kind == 'combo':
             widget = QComboBox()
-        elif kind == 'edit':
+        elif row.kind == 'text':
             widget = QLineEdit()
         else:
-            widget = QPushButton(get_string(label, loc))
-        if obj_name:
-            widget.setObjectName(obj_name)
-        setattr(dialog, attr, widget)
-        if kind == 'button':
+            widget = QPushButton(get_string(row.label, loc))
+        if row.obj_name:
+            widget.setObjectName(row.obj_name)
+        setattr(dialog, row.popup_attr, widget)
+        if row.kind == 'button':
             form.addRow(widget)
         else:
-            form.addRow(get_string(label, loc), widget)
+            form.addRow(get_string(row.label, loc), widget)
 
     layout.addLayout(form)
     layout.addStretch()

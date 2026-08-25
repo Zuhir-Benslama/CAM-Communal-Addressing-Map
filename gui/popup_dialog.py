@@ -1,5 +1,6 @@
 """Popup dialog for viewing and editing feature attributes — Qt Widgets version."""
 
+import contextlib
 import logging
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
@@ -67,14 +68,28 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-_PAGE_MAP = {
-    'zone': 0,
-    'roads': 1,
-    'org': 2,
-    'city': 3,
-    'num': 4,
-    'pan': 5,
-}
+
+class _PageSpec:
+    """Handlers for one entity page — single source of truth for its key.
+
+    ``stack_index`` is the page's position in the dialog's QStackedWidget,
+    the other fields are the DB→form, form→dict and dict→DB hooks.
+    """
+
+    __slots__ = ('collect', 'set_values', 'stack_index', 'update')
+
+    def __init__(
+        self,
+        stack_index: int,
+        set_values: Callable[['PopupDialog', dict], None],
+        collect: Callable[['PopupDialog'], dict],
+        update: Callable[['PopupDialog'], None],
+    ) -> None:
+        self.stack_index = stack_index
+        self.set_values = set_values
+        self.collect = collect
+        self.update = update
+
 
 # ---------------------------------------------------------------------------
 # Form-value dispatch helpers (module-level so they stay readable & testable)
@@ -120,16 +135,6 @@ def _set_num_values(dialog: 'PopupDialog', data: dict) -> None:
 def _set_pan_values(dialog: 'PopupDialog', data: dict) -> None:
     dialog._set_combo_by_data(dialog._combo_mount_status, data.get('mountStatus'))
     dialog._set_combo_by_data(dialog._combo_panel_ref, data.get('refType'))
-
-
-_SET_FORM_DISPATCH: dict[str, Callable] = {
-    'zone': _set_zone_values,
-    'roads': _set_road_values,
-    'org': _set_org_values,
-    'city': _set_city_values,
-    'num': _set_num_values,
-    'pan': _set_pan_values,
-}
 
 
 def _collect_zone_data(dialog: 'PopupDialog') -> dict:
@@ -179,13 +184,13 @@ def _collect_pan_data(dialog: 'PopupDialog') -> dict:
     }
 
 
-_COLLECT_FORM_DISPATCH: dict[str, Callable] = {
-    'zone': _collect_zone_data,
-    'roads': _collect_road_data,
-    'org': _collect_org_data,
-    'city': _collect_city_data,
-    'num': _collect_num_data,
-    'pan': _collect_pan_data,
+_PAGES: dict[str, _PageSpec] = {
+    'zone': _PageSpec(0, _set_zone_values, _collect_zone_data, _update_zone),
+    'roads': _PageSpec(1, _set_road_values, _collect_road_data, _update_road),
+    'org': _PageSpec(2, _set_org_values, _collect_org_data, _update_organization),
+    'city': _PageSpec(3, _set_city_values, _collect_city_data, _update_subdivision),
+    'num': _PageSpec(4, _set_num_values, _collect_num_data, _update_numbering),
+    'pan': _PageSpec(5, _set_pan_values, _collect_pan_data, _update_panel),
 }
 
 
@@ -240,8 +245,8 @@ class PopupDialog(QDialog):
         build_pan_page(self, self._stack)
 
         # Switch to the correct page
-        idx = _PAGE_MAP.get(self.layer_name_value, 0)
-        self._stack.setCurrentIndex(idx)
+        spec = _PAGES.get(self.layer_name_value)
+        self._stack.setCurrentIndex(spec.stack_index if spec else 0)
 
         # Populate combos and form data
         self._populate_combos()
@@ -309,37 +314,40 @@ class PopupDialog(QDialog):
 
     def set_form(self) -> None:
         """Load feature data from DB and populate form widgets."""
-        data_list = qgis_config().get('mapper') or []
-        for data in data_list:
-            if data.get('layer') == self.layer_name_key:
-                session = get_session()
-                try:
-                    model_name = data.get('model')
-                    model = getattr(_models, model_name, None)
-                    if model is None:
-                        logger.warning('Unknown model: %s', model_name)
-                        continue
+        config = next(
+            (
+                data
+                for data in qgis_config().get('mapper') or []
+                if data.get('layer') == self.layer_name_key
+            ),
+            None,
+        )
+        if config is None:
+            return
+        model_name = config.get('model')
+        model = getattr(_models, model_name, None)
+        if model is None:
+            logger.warning('Unknown model: %s', model_name)
+            return
 
-                    query = (
-                        session.query(model)
-                        .filter(
-                            model.id == self.attribute,
-                        )
-                        .first()
-                    )
-                    if query:
-                        handler = POPULATE_DISPATCH.get(self.layer_name_key)
-                        if handler:
-                            form_data = handler(self, query, self._tr_locale)
-                            self._current_form_data.update(form_data)
-                            self._set_form_values(form_data)
-                finally:
-                    session.close()
+        session = get_session()
+        try:
+            record = session.query(model).filter(model.id == self.attribute).first()
+            if record is None:
+                return
+            handler = POPULATE_DISPATCH.get(self.layer_name_key)
+            if handler is None:
+                return
+            form_data = handler(self, record, self._tr_locale)
+            self._current_form_data.update(form_data)
+            self._set_form_values(form_data)
+        finally:
+            session.close()
 
     def _set_form_values(self, data: dict) -> None:
-        handler = _SET_FORM_DISPATCH.get(self.layer_name_value)
-        if handler:
-            handler(self, data)
+        spec = _PAGES.get(self.layer_name_value)
+        if spec:
+            spec.set_values(self, data)
 
     @staticmethod
     def _set_combo_by_data(combo: QComboBox, value: object) -> None:
@@ -355,22 +363,14 @@ class PopupDialog(QDialog):
 
     def _on_save(self, page_key: str) -> None:
         self._current_form_data = self._collect_form_data(page_key)
-        dispatch = {
-            'zone': _update_zone,
-            'roads': _update_road,
-            'org': _update_organization,
-            'city': _update_subdivision,
-            'num': _update_numbering,
-            'pan': _update_panel,
-        }
-        handler = dispatch.get(page_key)
-        if handler:
-            handler(self)
+        spec = _PAGES.get(page_key)
+        if spec:
+            spec.update(self)
 
     def _collect_form_data(self, page_key: str) -> dict:
-        handler = _COLLECT_FORM_DISPATCH.get(page_key)
-        if handler:
-            return handler(self)
+        spec = _PAGES.get(page_key)
+        if spec:
+            return spec.collect(self)
         return {}
 
     # ------------------------------------------------------------------
@@ -397,6 +397,13 @@ class PopupDialog(QDialog):
             layer = project.mapLayersByName(layer_name)
             if layer:
                 self.iface.setActiveLayer(layer[0])
+                previous_tool = self.ref_identify_tool
+                if previous_tool is not None:
+                    with contextlib.suppress(TypeError):
+                        previous_tool.ref_selected.disconnect(
+                            self._on_reference_selected
+                        )
+                    previous_tool.unset_map_tool()
                 canvas = self.iface.mapCanvas()
                 self.ref_identify_tool = IdentifyTool(
                     canvas,

@@ -26,6 +26,7 @@ from ..constants import (
     LAYER_ROADS,
     LAYER_SUBDIVISIONS,
     LAYER_ZONES,
+    LOCALE_AR,
     current_locale,
     validate_text,
 )
@@ -104,7 +105,7 @@ class LayerEditMixin:
     def _make_locale_kwargs(self, field_base: str, value: str) -> dict:
         """Build locale-specific field kwargs for non-Arabic locales."""
         loc = current_locale()
-        if loc != 'ar':
+        if loc != LOCALE_AR:
             return {f'{field_base}_{loc}': value}
         return {}
 

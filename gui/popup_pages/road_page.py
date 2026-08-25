@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from qgis.PyQt.QtWidgets import QStackedWidget
 
+from ..form_specs import ROAD_ROWS
 from ._builder import build_page
 
 if TYPE_CHECKING:
@@ -16,8 +17,5 @@ def build_road_page(dialog: 'PopupDialog', stack: QStackedWidget) -> None:
         stack,
         object_name='roadPage',
         save_kind='roads',
-        rows=[
-            ('_combo_road_type', 'combo', 'type_road', 'Type:'),
-            ('_field_road_name', 'edit', 'road_name', 'Name:'),
-        ],
+        rows=ROAD_ROWS,
     )

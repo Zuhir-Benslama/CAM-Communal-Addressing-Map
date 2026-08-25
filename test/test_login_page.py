@@ -102,7 +102,7 @@ class TestBuildLoginPage(unittest.TestCase):
     def _make_dialog(self) -> Any:
         dialog = type('MockDialog', (), {})()
         dialog._page_stack = MagicMock()
-        dialog._held_widgets: list = []
+        dialog._held_widgets = []
         return dialog
 
     def test_adds_page_to_page_stack(self):

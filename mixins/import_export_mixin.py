@@ -7,17 +7,16 @@ import json
 import logging
 import subprocess
 from datetime import datetime
+from typing import Any, ClassVar
 
 from qgis.core import QgsMapRendererSequentialJob, QgsMapSettings
 from qgis.PyQt.QtCore import QSize
 from qgis.PyQt.QtWidgets import QApplication, QMessageBox
 
+from ..app.shared.utils import run_reporting_script
 from ..constants import (
-    _SUBPROCESS_FLAGS,
     MAP_PNG,
-    REPORTING_SCRIPT,
     TMP_JSON,
-    get_qgis_python,
     validate_text,
 )
 from ..layer.refresh import refresh_all_layers
@@ -32,6 +31,11 @@ class ImportExportMixin:
     """Mixin for exporting map canvases and invoking external
     reporting scripts."""
 
+    # Async render state (class-level defaults; shadowed per instance).
+    _export_in_progress: ClassVar[bool] = False
+    _render_job: ClassVar[Any] = None
+    _export_method: ClassVar[str | None] = None
+
     def _validate_export_ready(self: HasExportContext) -> bool:
         if not (self.type_plan and self.type_to_hide):
             QMessageBox.critical(
@@ -44,9 +48,14 @@ class ImportExportMixin:
             return False
         return True
 
-    def _prepare_map_render(
+    def _start_map_render(
         self: HasExportContext,
     ) -> QgsMapRendererSequentialJob | None:
+        """Prepare map settings and start an asynchronous render job.
+
+        The job runs in the background; :meth:`_on_map_render_finished`
+        continues the export when it completes. Returns None on failure.
+        """
         self.north()
         self.scale()
 
@@ -64,14 +73,8 @@ class ImportExportMixin:
         map_settings.setFlag(QgsMapSettings.Flag.Antialiasing, True)
 
         render_job = QgsMapRendererSequentialJob(map_settings)
+        self._render_job = render_job  # keep alive until finished
         render_job.start()
-        render_job.waitForFinished()
-
-        rendered_image = render_job.renderedImage()
-        if not rendered_image.save(MAP_PNG, 'png'):
-            logger.error('Failed to save rendered map to %s', MAP_PNG)
-            return None
-
         return render_job
 
     def _build_export_data(self: HasExportContext) -> dict | None:
@@ -124,20 +127,8 @@ class ImportExportMixin:
         return True
 
     def _invoke_reporting_script(self: HasExportContext, _method: str) -> None:
-        command: list[str] = [
-            f'{get_qgis_python()}',
-            str(REPORTING_SCRIPT),
-            '--method',
-            _method,
-        ]
         try:
-            subprocess.run(  # nosec S603 - command built from internal constants only
-                command,
-                capture_output=True,
-                text=True,
-                check=True,
-                **_SUBPROCESS_FLAGS,
-            )
+            run_reporting_script(_method)
             QMessageBox.information(
                 self,
                 self._tr('Success'),
@@ -168,13 +159,41 @@ class ImportExportMixin:
         _method: str,
         include_situation: bool = False,
     ) -> None:
+        if self._export_in_progress:
+            logger.info('Map export already in progress; ignoring request')
+            return
         if not self._validate_export_ready():
             return
 
         if include_situation:
             self.map_situation()
 
-        if self._prepare_map_render() is None:
+        job = self._start_map_render()
+        if job is None:
+            return
+
+        self._export_in_progress = True
+        self._export_method = _method
+        job.jobFinished.connect(self._on_map_render_finished)
+
+    def _on_map_render_finished(self: HasExportContext) -> None:
+        """Continue (and reset) the export once the render job completes."""
+        try:
+            self._finish_render_and_export()
+        finally:
+            self._export_in_progress = False
+            self._render_job = None
+            self._export_method = None
+
+    def _finish_render_and_export(self: HasExportContext) -> None:
+        """Save the rendered image and hand off to the reporting script."""
+        job = self._render_job
+        if job is None:
+            return
+
+        rendered_image = job.renderedImage()
+        if not rendered_image.save(MAP_PNG, 'png'):
+            logger.error('Failed to save rendered map to %s', MAP_PNG)
             return
 
         if not self.symbols():
@@ -187,7 +206,7 @@ class ImportExportMixin:
         if not self._write_export_json(data):
             return
 
-        self._invoke_reporting_script(_method)
+        self._invoke_reporting_script(self._export_method or '')
 
     def export_to_image(self: HasFormWidgets) -> None:
         selected_value = self.paper.currentData()

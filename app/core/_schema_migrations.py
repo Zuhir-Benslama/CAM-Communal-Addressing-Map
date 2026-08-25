@@ -262,8 +262,10 @@ def _migrate_timestamp_columns(engine: Any) -> None:
 
 def _attach_and_merge_users(engine: Any, auth_path: str) -> None:
     """Attach auth.sqlite, merge missing users, then detach."""
+    # SQLite has no parameter binding for ATTACH; neutralize quotes instead.
+    escaped_path = auth_path.replace("'", "''")
     with engine.connect() as conn:
-        conn.execute(text(f"ATTACH DATABASE '{auth_path}' AS auth_db"))
+        conn.execute(text(f"ATTACH DATABASE '{escaped_path}' AS auth_db"))
         try:
             result = conn.execute(
                 text(

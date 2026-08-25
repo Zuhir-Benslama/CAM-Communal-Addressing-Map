@@ -1,9 +1,6 @@
 """Layer creation and initialization utilities."""
 
-import json
 import logging
-import sqlite3
-from pathlib import Path
 from typing import Any
 
 from geoalchemy2 import Geometry
@@ -31,10 +28,13 @@ except ImportError:
 from sqlalchemy import Boolean, Float, Integer, SmallInteger, String, Text
 
 from ..app.orders import models as _models
+from ..app.shared.geo import (
+    find_commune_by_code,
+    get_commune_wkt,
+    load_communes,
+)
 from ..app.users.repository import get_current_user, qgis_config
 from ..constants import (
-    COMMUNES_DB,
-    COMMUNES_JSON,
     CRS,
     LAYER_MUNICIPALITY,
     MEMORY_PROVIDER,
@@ -100,40 +100,27 @@ def create_other_layers(_iface: Any) -> None:
 
 def _commune_id_from_code(commune_code: str) -> int | None:
     """Resolve commune_id from commune_code using communes.json."""
-    try:
-        with Path(COMMUNES_JSON).open(encoding='utf-8') as f:
-            data = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError) as e:
-        logger.warning('could not load %s: %s', COMMUNES_JSON, e)
+    commune = find_commune_by_code(load_communes(), commune_code)
+    if commune is None:
+        logger.warning('commune_code=%s not found in communes.json', commune_code)
         return None
-    for c in data.values():
-        v = c.get('commune_code')
-        if v is not None and int(v) == int(commune_code):
-            commune_id = int(c.get('commune_id', 0))
-            logger.info(
-                'matched commune_code=%s -> commune_id=%s',
-                v,
-                commune_id,
-            )
-            return commune_id
-    logger.warning('commune_code=%s not found in communes.json', commune_code)
-    return None
+    commune_id = int(commune.get('commune_id', 0))
+    logger.info(
+        'matched commune_code=%s -> commune_id=%s',
+        commune.get('commune_code'),
+        commune_id,
+    )
+    return commune_id
 
 
 def _wkt_from_commune_id(commune_id: int) -> str | None:
     """Read geometry WKT from communes.db for a given commune_id."""
-    try:
-        with sqlite3.connect(COMMUNES_DB) as conn:
-            sql = 'SELECT wkt FROM geometries WHERE commune_id = ?'
-            row = conn.execute(sql, (commune_id,)).fetchone()
-    except sqlite3.Error as e:
-        logger.warning('could not query %s: %s', COMMUNES_DB, e)
+    wkt = get_commune_wkt(commune_id)
+    if not wkt:
+        logger.warning('commune_id=%s not found in communes.db', commune_id)
         return None
-    if row:
-        logger.info('WKT from DB, len=%s', len(row[0]))
-        return row[0]
-    logger.warning('commune_id=%s not found in communes.db', commune_id)
-    return None
+    logger.info('WKT from DB, len=%s', len(wkt))
+    return wkt
 
 
 def _resolve_commune_geometry() -> QgsGeometry:

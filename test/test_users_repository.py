@@ -31,44 +31,19 @@ class TestGetUserLocation(unittest.TestCase):
         result = get_user_location()
         self.assertIsNone(result)
 
-    @patch('app.users.repository.sqlite3')
+    @patch('app.users.repository.get_commune_wkt', return_value='POINT(0 0)')
     @patch('app.users.repository._get_authenticated_user')
-    def test_returns_wkt(self, mock_auth, mock_sqlite):
+    def test_returns_wkt(self, mock_auth, mock_wkt):
         mock_auth.return_value = {'commune_id': 42}
-        mock_conn = MagicMock()
-        mock_cursor = MagicMock()
-        mock_cursor.fetchone.return_value = ['POINT(0 0)']
-        mock_conn.execute.return_value = mock_cursor
-        mock_sqlite.connect.return_value.__enter__ = lambda s: mock_conn
-        mock_sqlite.connect.return_value.__exit__ = MagicMock(return_value=False)
         from app.users.repository import get_user_location
 
         result = get_user_location()
         self.assertEqual(result, 'POINT(0 0)')
 
-    @patch('app.users.repository.sqlite3')
+    @patch('app.users.repository.get_commune_wkt', return_value=None)
     @patch('app.users.repository._get_authenticated_user')
-    def test_returns_none_on_sqlite_error(self, mock_auth, mock_sqlite):
+    def test_returns_none_when_no_row(self, mock_auth, mock_wkt):
         mock_auth.return_value = {'commune_id': 42}
-        import sqlite3
-
-        mock_sqlite.connect.side_effect = sqlite3.Error('db locked')
-        mock_sqlite.Error = sqlite3.Error
-        from app.users.repository import get_user_location
-
-        result = get_user_location()
-        self.assertIsNone(result)
-
-    @patch('app.users.repository.sqlite3')
-    @patch('app.users.repository._get_authenticated_user')
-    def test_returns_none_when_no_row(self, mock_auth, mock_sqlite):
-        mock_auth.return_value = {'commune_id': 42}
-        mock_conn = MagicMock()
-        mock_cursor = MagicMock()
-        mock_cursor.fetchone.return_value = None
-        mock_conn.execute.return_value = mock_cursor
-        mock_sqlite.connect.return_value.__enter__ = lambda s: mock_conn
-        mock_sqlite.connect.return_value.__exit__ = MagicMock(return_value=False)
         from app.users.repository import get_user_location
 
         result = get_user_location()
@@ -172,8 +147,9 @@ class TestGetCommuneByCode(unittest.TestCase):
 
 
 class TestLoadLocalites(unittest.TestCase):
-    @patch('app.users.repository.json')
-    @patch('app.users.repository.Path')
+    @patch('app.shared.geo.COMMUNES_JSON', '/fake/communes.json')
+    @patch('app.shared.geo.json')
+    @patch('app.shared.geo.Path')
     def test_loads_localites(self, mock_path, mock_json):
         mock_json.load.return_value = {'1': {'commune_code': 1601}}
         from app.users.repository import _load_localites
@@ -181,9 +157,8 @@ class TestLoadLocalites(unittest.TestCase):
         result = _load_localites()
         self.assertEqual(len(result), 1)
 
-    @patch('app.users.repository.Path')
-    def test_returns_empty_on_error(self, mock_path):
-        mock_path.return_value.open.side_effect = FileNotFoundError
+    @patch('app.shared.geo.COMMUNES_JSON', '/nonexistent/communes.json')
+    def test_returns_empty_on_error(self):
         from app.users.repository import _load_localites
 
         result = _load_localites()

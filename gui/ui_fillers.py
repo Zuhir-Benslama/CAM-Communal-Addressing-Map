@@ -13,6 +13,7 @@ from ..app.shared.constants import (
 )
 from ..app.users.repository import qgis_config
 from ..constants import (
+    LOCALE_AR,
     NO_ACTIVITY,
     current_locale,
 )
@@ -112,7 +113,7 @@ def fill_commune_of_wilaya(combobox: QComboBox, code_w: int) -> None:
     daira_ids = {int(did) for did, d in dairas.items() if int(d['wilaya_id']) == code_w}
     for entry in communes_list():
         if entry.get('daira_id') in daira_ids:
-            if loc == 'ar':
+            if loc == LOCALE_AR:
                 name = entry.get('commune_ar', '')
             else:
                 name = entry.get(f'commune_{loc}', '')

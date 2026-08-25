@@ -41,9 +41,20 @@ class TestImportExportMixin(unittest.TestCase):
         }
         self._subprocess_run = self.mod.subprocess.run
         self.mod.subprocess.run = MagicMock(return_value=MagicMock())
+        self._run_reporting = self.mod.run_reporting_script
+        self.mod.run_reporting_script = MagicMock(return_value=None)
 
     def tearDown(self):
         self.mod.subprocess.run = self._subprocess_run
+        self.mod.run_reporting_script = self._run_reporting
+        self.mixin._export_in_progress = False
+        self.mixin._render_job = None
+        self.mixin._export_method = None
+
+    def _finish_render(self, mock_job):
+        """Simulate the async render job completing."""
+        handler = mock_job.jobFinished.connect.call_args[0][0]
+        handler()
 
     def mock_canvas(self, scale_value=1000):
         canvas = MagicMock()
@@ -74,7 +85,6 @@ class TestImportExportMixin(unittest.TestCase):
         mock_image.save = MagicMock(return_value=True)
         mock_job = MagicMock()
         mock_job.renderedImage.return_value = mock_image
-        mock_job.waitForFinished = MagicMock()
 
         with (
             patch.object(
@@ -93,7 +103,11 @@ class TestImportExportMixin(unittest.TestCase):
             ms.setOutputSize.assert_called_once_with(self.mod.EXPORT_MAP_SIZE)
             ms.setFlag.assert_called_once()
             mock_job.start.assert_called_once()
-            mock_job.waitForFinished.assert_called_once()
+            mock_job.waitForFinished.assert_not_called()
+
+            # Simulate the render finishing; export continues.
+            self._finish_render(mock_job)
+
             mock_image.save.assert_called_once()
             mock_json.dump.assert_called_once()
             mock_mb.information.assert_called_once()
@@ -103,7 +117,6 @@ class TestImportExportMixin(unittest.TestCase):
 
         mock_job = MagicMock()
         mock_job.renderedImage.return_value.save = MagicMock(return_value=True)
-        mock_job.waitForFinished = MagicMock()
 
         with (
             patch.object(
@@ -124,24 +137,6 @@ class TestImportExportMixin(unittest.TestCase):
         mock_image.save = MagicMock(return_value=False)
         mock_job = MagicMock()
         mock_job.renderedImage.return_value = mock_image
-        mock_job.waitForFinished = MagicMock()
-
-        with (
-            patch.object(
-                self.mod, 'QgsMapRendererSequentialJob', return_value=mock_job
-            ),
-            patch.object(self.mod, 'QgsMapSettings'),
-        ):
-            self.mixin._render_and_export('3')
-            mock_image.save.assert_called_once()
-
-    def test_render_and_export_no_symbols_skips_json(self):
-        self.mock_canvas()
-        self.mixin.symbols = MagicMock(return_value=None)
-
-        mock_job = MagicMock()
-        mock_job.renderedImage.return_value.save = MagicMock(return_value=True)
-        mock_job.waitForFinished = MagicMock()
 
         with (
             patch.object(
@@ -151,6 +146,26 @@ class TestImportExportMixin(unittest.TestCase):
             patch.object(self.mod, 'json') as mock_json,
         ):
             self.mixin._render_and_export('3')
+            self._finish_render(mock_job)
+            mock_image.save.assert_called_once()
+            mock_json.dump.assert_not_called()
+
+    def test_render_and_export_no_symbols_skips_json(self):
+        self.mock_canvas()
+        self.mixin.symbols = MagicMock(return_value=None)
+
+        mock_job = MagicMock()
+        mock_job.renderedImage.return_value.save = MagicMock(return_value=True)
+
+        with (
+            patch.object(
+                self.mod, 'QgsMapRendererSequentialJob', return_value=mock_job
+            ),
+            patch.object(self.mod, 'QgsMapSettings'),
+            patch.object(self.mod, 'json') as mock_json,
+        ):
+            self.mixin._render_and_export('3')
+            self._finish_render(mock_job)
             mock_json.dump.assert_not_called()
 
     def test_render_and_export_json_write_failure_logged(self):
@@ -158,7 +173,6 @@ class TestImportExportMixin(unittest.TestCase):
 
         mock_job = MagicMock()
         mock_job.renderedImage.return_value.save = MagicMock(return_value=True)
-        mock_job.waitForFinished = MagicMock()
 
         with (
             patch.object(
@@ -171,6 +185,32 @@ class TestImportExportMixin(unittest.TestCase):
             mock_json.dump = MagicMock(side_effect=OSError('write error'))
             # Should not raise despite JSON write failure
             self.mixin._render_and_export('3')
+            self._finish_render(mock_job)
+
+    def test_render_and_export_reentrant_call_ignored(self):
+        self.mock_canvas()
+        # Exit the completion callback early; this test only checks
+        # that overlapping requests are ignored.
+        self.mixin.symbols = MagicMock(return_value=None)
+
+        mock_job = MagicMock()
+        mock_job.renderedImage.return_value.save = MagicMock(return_value=True)
+
+        with (
+            patch.object(
+                self.mod, 'QgsMapRendererSequentialJob', return_value=mock_job
+            ) as mock_job_cls,
+            patch.object(self.mod, 'QgsMapSettings'),
+        ):
+            self.mixin._render_and_export('3')
+            # Second request while the render is still running is ignored.
+            self.mixin._render_and_export('3')
+            self.assertEqual(mock_job_cls.call_count, 1)
+
+            self._finish_render(mock_job)
+            # After completion a new export may start.
+            self.mixin._render_and_export('3')
+            self.assertEqual(mock_job_cls.call_count, 2)
 
     def test_export_to_image1_a0(self):
         self.mixin.paper = MagicMock()
@@ -229,14 +269,14 @@ class TestImportExportMixin(unittest.TestCase):
             patch.object(self.mod, 'validate_text', return_value='valid'),
         ):
             self.mixin._render_and_export('3')
-        self.mod.subprocess.run.assert_not_called()
+        self.mod.run_reporting_script.assert_not_called()
 
     def test_invoke_reporting_script_process_error(self):
         import subprocess
 
         err = subprocess.CalledProcessError(2, 'cmd')
         err.stderr = 'boom'
-        self.mod.subprocess.run.side_effect = err
+        self.mod.run_reporting_script.side_effect = err
         with patch.object(self.mod, 'QMessageBox') as mock_mb:
             self.mixin._invoke_reporting_script('3')
             mock_mb.critical.assert_called_once()
@@ -247,12 +287,12 @@ class TestImportExportMixin(unittest.TestCase):
 
         err = subprocess.CalledProcessError(2, 'cmd')
         err.stderr = None
-        self.mod.subprocess.run.side_effect = err
+        self.mod.run_reporting_script.side_effect = err
         with patch.object(self.mod, 'QMessageBox'):
             self.mixin._invoke_reporting_script('3')
 
     def test_invoke_reporting_script_oserror(self):
-        self.mod.subprocess.run.side_effect = OSError('spawn failed')
+        self.mod.run_reporting_script.side_effect = OSError('spawn failed')
         with patch.object(self.mod, 'QMessageBox') as mock_mb:
             self.mixin._invoke_reporting_script('3')
             mock_mb.critical.assert_called_once()

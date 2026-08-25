@@ -770,9 +770,11 @@ class TestUpdateNumbering(unittest.TestCase):
             from plans_adressage.app.orders.models import Numbering
 
             call_kw = Numbering.update.call_args[1]
-            self.assertIsNone(call_kw['road_id'])
-            self.assertIsNone(call_kw['subdivision_id'])
-            self.assertIsNone(call_kw['organization_id'])
+            # No new reference picked: existing FKs must be left untouched,
+            # not wiped to NULL.
+            self.assertNotIn('road_id', call_kw)
+            self.assertNotIn('subdivision_id', call_kw)
+            self.assertNotIn('organization_id', call_kw)
 
     def test_error_path(self):
         with (

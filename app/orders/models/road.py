@@ -55,15 +55,6 @@ class Road(_BaseSpatialModel):
     user_id = Column(Text, ForeignKey('user.id'), nullable=True, index=True)
     user = relationship('User', backref='roads', foreign_keys=[user_id])
 
-    @classmethod
-    def _recalc_has_child(cls, session: Session, zone_id: str) -> None:
-        """Recalculate has_child flag for a road's parent zone."""
-        instance = session.query(cls).filter_by(id=zone_id).first()
-        if not instance:
-            return
-        instance.has_child = _has_child_entities(session, instance.geometry)
-        session.commit()
-
     def _refresh_derived(self, session: Session) -> None:
         """Recompute parent zone and has_child flag from the current geometry."""
         self.zone_id = _parent_zone_id(session, self.geometry)

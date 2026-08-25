@@ -33,6 +33,13 @@ class ConnectionPool:
         self._Session: Any = None
 
     def reset(self) -> None:
+        """Dispose pooled connections and drop cached engine/session.
+
+        ``dispose()`` is required so that SQLite handles to a replaced
+        database file are released before a new engine is created.
+        """
+        if self._engine is not None:
+            self._engine.dispose()
         self._engine = None
         self._Session = None
 

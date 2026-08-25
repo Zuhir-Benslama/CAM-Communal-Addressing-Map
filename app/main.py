@@ -15,6 +15,7 @@ from ..gui.main_dialog import MainDialog
 from ..scripts.widget_texts import get_string
 from .shared.constants import (
     ICON_PNG,
+    LOCALE_EN,
     SETTINGS_APP,
     SETTINGS_KEY_LOCALE,
     SETTINGS_ORG,
@@ -48,7 +49,7 @@ class CAM:
         )
         if not self._locale_code:
             locale_val = QSettings().value('locale/userLocale')
-            self._locale_code = locale_val[0:2] if locale_val else 'en'
+            self._locale_code = locale_val[0:2] if locale_val else LOCALE_EN
 
         self.actions: list[QAction] = []
         self.menu: str = self.tr('&CAM')
@@ -101,6 +102,9 @@ class CAM:
 
     def unload(self) -> None:
         """Remove all plugin toolbar buttons and menu entries."""
+        dlg = getattr(self, 'dlg', None)
+        if dlg is not None:
+            dlg.disconnect_map_canvas()
         for action in self.actions:
             self.iface.removePluginMenu(self.tr('&CAM'), action)
             self.iface.removeToolBarIcon(action)

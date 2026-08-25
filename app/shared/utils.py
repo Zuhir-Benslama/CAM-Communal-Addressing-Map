@@ -12,6 +12,9 @@ from sqlalchemy import inspect
 
 from ..core.config import normalize_theme
 from ..shared.constants import (
+    LOCALE_AR,
+    LOCALE_EN,
+    REPORTING_SCRIPT,
     SETTINGS_APP,
     SETTINGS_KEY_LOCALE,
     SETTINGS_KEY_THEME,
@@ -42,12 +45,12 @@ def validate_text(value: str, max_length: int = 255) -> str:
 
 
 def current_locale() -> str:
-    """Return the current locale code ('ar', 'fr', 'en', etc.)."""
+    """Return the current locale code (``LOCALE_AR``/``LOCALE_FR``/...)."""
     settings = QSettings(SETTINGS_ORG, SETTINGS_APP)
     locale = settings.value(SETTINGS_KEY_LOCALE, '')
     if not locale:
         locale_val = QSettings().value('locale/userLocale')
-        locale = locale_val[0:2] if locale_val else 'en'
+        locale = locale_val[0:2] if locale_val else LOCALE_EN
     return locale
 
 
@@ -55,7 +58,7 @@ def locale_value(instance, field_base: str, locale: str = '') -> str:
     """Return a locale-aware field value from a model instance."""
     if not locale:
         locale = current_locale()
-    if locale == 'ar':
+    if locale == LOCALE_AR:
         return getattr(instance, field_base, '') or ''
     locale_field = f'{field_base}_{locale}'
     value = getattr(instance, locale_field, None)
@@ -110,7 +113,7 @@ def get_all_fields_and_labels(
                 'zone_id',
             ]:
                 fields.append(column.name)
-                if locale != 'ar':
+                if locale != LOCALE_AR:
                     label_key = f'label_{locale}'
                     label = column.info.get(label_key)
                 else:
@@ -138,3 +141,20 @@ _SUBPROCESS_FLAGS: _SubprocessFlags = (
     if os.name == 'nt'
     else {}
 )
+
+
+def run_reporting_script(method: str) -> None:
+    """Run the external reporting script with *method* (raises on failure)."""
+    command: list[str] = [
+        get_qgis_python(),
+        str(REPORTING_SCRIPT),
+        '--method',
+        method,
+    ]
+    subprocess.run(  # nosec S603 - command built from internal constants only
+        command,
+        capture_output=True,
+        text=True,
+        check=True,
+        **_SUBPROCESS_FLAGS,
+    )

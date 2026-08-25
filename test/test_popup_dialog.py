@@ -112,62 +112,45 @@ def _make_wired_dialog(mod, **overrides):
 
 
 # ======================================================================
-# _SET_FORM_DISPATCH and _COLLECT_FORM_DISPATCH keys
+# _PAGES registry
 # ======================================================================
 
 
 @unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
-class TestDispatchDicts(unittest.TestCase):
+class TestPageRegistry(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.app = get_qapp()
         cls.mod = _load_module()
 
-    def test_set_dispatch_keys(self):
+    def test_registry_keys(self):
         expected = {'zone', 'roads', 'org', 'city', 'num', 'pan'}
-        self.assertEqual(set(self.mod._SET_FORM_DISPATCH.keys()), expected)
+        self.assertEqual(set(self.mod._PAGES.keys()), expected)
 
-    def test_set_dispatch_values_callable(self):
-        for key, fn in self.mod._SET_FORM_DISPATCH.items():
+    def test_stack_indices_are_contiguous(self):
+        indices = sorted(spec.stack_index for spec in self.mod._PAGES.values())
+        self.assertEqual(indices, [0, 1, 2, 3, 4, 5])
+
+    def test_set_values_map_correct_functions(self):
+        self.assertIs(self.mod._PAGES['zone'].set_values, self.mod._set_zone_values)
+        self.assertIs(self.mod._PAGES['roads'].set_values, self.mod._set_road_values)
+        self.assertIs(self.mod._PAGES['org'].set_values, self.mod._set_org_values)
+        self.assertIs(self.mod._PAGES['city'].set_values, self.mod._set_city_values)
+        self.assertIs(self.mod._PAGES['num'].set_values, self.mod._set_num_values)
+        self.assertIs(self.mod._PAGES['pan'].set_values, self.mod._set_pan_values)
+
+    def test_collect_map_correct_functions(self):
+        self.assertIs(self.mod._PAGES['zone'].collect, self.mod._collect_zone_data)
+        self.assertIs(self.mod._PAGES['roads'].collect, self.mod._collect_road_data)
+        self.assertIs(self.mod._PAGES['org'].collect, self.mod._collect_org_data)
+        self.assertIs(self.mod._PAGES['city'].collect, self.mod._collect_city_data)
+        self.assertIs(self.mod._PAGES['num'].collect, self.mod._collect_num_data)
+        self.assertIs(self.mod._PAGES['pan'].collect, self.mod._collect_pan_data)
+
+    def test_update_hooks_callable(self):
+        for key, spec in self.mod._PAGES.items():
             with self.subTest(key=key):
-                self.assertTrue(callable(fn))
-
-    def test_set_dispatch_maps_correct_functions(self):
-        self.assertIs(self.mod._SET_FORM_DISPATCH['zone'], self.mod._set_zone_values)
-        self.assertIs(self.mod._SET_FORM_DISPATCH['roads'], self.mod._set_road_values)
-        self.assertIs(self.mod._SET_FORM_DISPATCH['org'], self.mod._set_org_values)
-        self.assertIs(self.mod._SET_FORM_DISPATCH['city'], self.mod._set_city_values)
-        self.assertIs(self.mod._SET_FORM_DISPATCH['num'], self.mod._set_num_values)
-        self.assertIs(self.mod._SET_FORM_DISPATCH['pan'], self.mod._set_pan_values)
-
-    def test_collect_dispatch_keys(self):
-        expected = {'zone', 'roads', 'org', 'city', 'num', 'pan'}
-        self.assertEqual(set(self.mod._COLLECT_FORM_DISPATCH.keys()), expected)
-
-    def test_collect_dispatch_values_callable(self):
-        for key, fn in self.mod._COLLECT_FORM_DISPATCH.items():
-            with self.subTest(key=key):
-                self.assertTrue(callable(fn))
-
-    def test_collect_dispatch_maps_correct_functions(self):
-        self.assertIs(
-            self.mod._COLLECT_FORM_DISPATCH['zone'], self.mod._collect_zone_data
-        )
-        self.assertIs(
-            self.mod._COLLECT_FORM_DISPATCH['roads'], self.mod._collect_road_data
-        )
-        self.assertIs(
-            self.mod._COLLECT_FORM_DISPATCH['org'], self.mod._collect_org_data
-        )
-        self.assertIs(
-            self.mod._COLLECT_FORM_DISPATCH['city'], self.mod._collect_city_data
-        )
-        self.assertIs(
-            self.mod._COLLECT_FORM_DISPATCH['num'], self.mod._collect_num_data
-        )
-        self.assertIs(
-            self.mod._COLLECT_FORM_DISPATCH['pan'], self.mod._collect_pan_data
-        )
+                self.assertTrue(callable(spec.update))
 
 
 # ======================================================================
@@ -589,42 +572,42 @@ class TestOnSave(unittest.TestCase):
         cls.mod = _load_module()
 
     def test_zone_dispatches_to_update_zone(self):
-        with patch.object(self.mod, '_update_zone') as mock_uq:
+        with patch.object(self.mod._PAGES['zone'], 'update') as mock_uq:
             d = _make_wired_dialog(self.mod, layer_name_value='zone')
             d._on_save('zone')
             mock_uq.assert_called_once_with(d)
             self.assertEqual(d._current_form_data['type'], 'residential')
 
     def test_roads_dispatches_to_update_road(self):
-        with patch.object(self.mod, '_update_road') as mock_ur:
+        with patch.object(self.mod._PAGES['roads'], 'update') as mock_ur:
             d = _make_wired_dialog(self.mod, layer_name_value='roads')
             d._on_save('roads')
             mock_ur.assert_called_once_with(d)
             self.assertEqual(d._current_form_data['type'], 'avenue')
 
     def test_org_dispatches_to_update_organization(self):
-        with patch.object(self.mod, '_update_organization') as mock_uo:
+        with patch.object(self.mod._PAGES['org'], 'update') as mock_uo:
             d = _make_wired_dialog(self.mod, layer_name_value='org')
             d._on_save('org')
             mock_uo.assert_called_once_with(d)
             self.assertEqual(d._current_form_data['category'], 'health')
 
     def test_city_dispatches_to_update_subdivision(self):
-        with patch.object(self.mod, '_update_subdivision') as mock_us:
+        with patch.object(self.mod._PAGES['city'], 'update') as mock_us:
             d = _make_wired_dialog(self.mod, layer_name_value='city')
             d._on_save('city')
             mock_us.assert_called_once_with(d)
             self.assertEqual(d._current_form_data['type'], 'cite')
 
     def test_num_dispatches_to_update_numbering(self):
-        with patch.object(self.mod, '_update_numbering') as mock_un:
+        with patch.object(self.mod._PAGES['num'], 'update') as mock_un:
             d = _make_wired_dialog(self.mod, layer_name_value='num')
             d._on_save('num')
             mock_un.assert_called_once_with(d)
             self.assertEqual(d._current_form_data['number'], '42')
 
     def test_pan_dispatches_to_update_panel(self):
-        with patch.object(self.mod, '_update_panel') as mock_up:
+        with patch.object(self.mod._PAGES['pan'], 'update') as mock_up:
             d = _make_wired_dialog(self.mod, layer_name_value='pan')
             d._on_save('pan')
             mock_up.assert_called_once_with(d)
@@ -777,30 +760,6 @@ class TestOnReferenceSelected(unittest.TestCase):
         d._on_reference_selected(99.5, 'facilities')
         self.assertEqual(d._ref_id, '99.5')
         self.assertEqual(d._ref_layer, 'facilities')
-
-
-# ======================================================================
-# _PAGE_MAP
-# ======================================================================
-
-
-@unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
-class TestPageMap(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.app = get_qapp()
-        cls.mod = _load_module()
-
-    def test_has_six_pages(self):
-        self.assertEqual(len(self.mod._PAGE_MAP), 6)
-
-    def test_expected_keys(self):
-        expected = {'zone', 'roads', 'org', 'city', 'num', 'pan'}
-        self.assertEqual(set(self.mod._PAGE_MAP.keys()), expected)
-
-    def test_values_are_sequential(self):
-        values = sorted(self.mod._PAGE_MAP.values())
-        self.assertEqual(values, [0, 1, 2, 3, 4, 5])
 
 
 if __name__ == '__main__':

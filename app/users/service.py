@@ -15,7 +15,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from ..core.database import get_session
 from ..core.security import hash_password, verify_password
-from ..shared.constants import COMMUNES_JSON, COOKIE_FILE, DAIRA_JSON
+from ..shared.constants import COOKIE_FILE, DAIRA_JSON
+from ..shared.geo import find_commune_by_code, load_communes
 from ..users.models import User
 from ..users.repository import (
     create_cookie,
@@ -30,22 +31,21 @@ logger = logging.getLogger(__name__)
 def _lookup_wilaya_code(commune_code: str) -> int | None:
     """Resolve wilaya_code from commune_code using communes/daira JSON."""
     try:
-        with Path(COMMUNES_JSON).open(encoding='utf-8') as f:
-            communes = json.load(f)
         with Path(DAIRA_JSON).open(encoding='utf-8') as f:
             dairas = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
+        logger.warning(
+            'Failed to load commune/wilaya data for code %s',
+            commune_code,
+            exc_info=True,
+        )
         return None
-    code = int(commune_code) if commune_code else None
-    if code is None:
+    commune = find_commune_by_code(load_communes(), commune_code)
+    if not commune:
         return None
-    for c in communes.values():
-        v = c.get('commune_code')
-        if v is not None and int(v) == code:
-            daira = dairas.get(str(c.get('daira_id')))
-            if daira:
-                return int(daira.get('wilaya_id', 0))
-            break
+    daira = dairas.get(str(commune.get('daira_id')))
+    if daira:
+        return int(daira.get('wilaya_id', 0))
     return None
 
 
@@ -124,8 +124,11 @@ def sign_in(
                 return False, None, 'Wrong password try again !'
             session_token = secrets.token_urlsafe(32)
             user.session_token = session_token
-            session.commit()
+            # Write the cookie before committing: if either step fails the
+            # rollback keeps the DB token unchanged and the cookie is never
+            # trusted (fail-closed).
             create_cookie(session_token, user.id)
+            session.commit()
         except (SQLAlchemyError, OSError) as e:
             session.rollback()
             QgsMessageLog.logMessage(f'sign_in error: {e}', 'CAM', level=2)

@@ -318,7 +318,7 @@ class LayerOpsMixin:
                                 id=feature['id'],
                                 geometry=WKTElement(str(geometry_wkt), srid=SRID),
                             )
-                        except SQLAlchemyError as e:
+                        except (SQLAlchemyError, ValueError) as e:
                             logger.exception('Failed to save feature')
                             QMessageBox.critical(self, self._tr('Error'), str(e))
                         finally:

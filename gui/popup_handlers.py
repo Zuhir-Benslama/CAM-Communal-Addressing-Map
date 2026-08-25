@@ -158,6 +158,31 @@ def _data(dialog: 'PopupDialog') -> dict:
     return dialog._current_form_data
 
 
+_REF_FK_COLUMNS = {
+    LAYER_ROADS: 'road_id',
+    LAYER_SUBDIVISIONS: 'subdivision_id',
+    LAYER_FACILITIES: 'organization_id',
+}
+
+
+def _apply_reference(kwargs: dict, ref_id: str | None, ref_layer: str) -> None:
+    """Bind a newly picked reference feature to exactly one FK column.
+
+    Clears the sibling reference columns so only the chosen one is set.
+    No-op when no new reference was picked, preserving previously stored
+    references on plain attribute edits.
+    """
+    if not ref_id:
+        return
+    fk_column = _REF_FK_COLUMNS.get(ref_layer)
+    if fk_column is None:
+        logger.warning('Unknown reference layer: %s', ref_layer)
+        return
+    for column in _REF_FK_COLUMNS.values():
+        kwargs[column] = None
+    kwargs[fk_column] = ref_id
+
+
 def _update_entity(
     dialog: 'PopupDialog',
     model_class: type[Any],
@@ -230,26 +255,10 @@ def update_panel(dialog: 'PopupDialog') -> None:
     data = _data(dialog)
     session = get_session()
     try:
-        ref_id = dialog._ref_id or None
-        ref_layer = dialog._ref_layer or ''
-
         kwargs = {
             'status': data.get('mountStatus', ''),
         }
-
-        if ref_id:
-            if ref_layer == LAYER_FACILITIES:
-                kwargs['organization_id'] = ref_id
-                kwargs['road_id'] = None
-                kwargs['subdivision_id'] = None
-            elif ref_layer == LAYER_ROADS:
-                kwargs['road_id'] = ref_id
-                kwargs['subdivision_id'] = None
-                kwargs['organization_id'] = None
-            elif ref_layer == LAYER_SUBDIVISIONS:
-                kwargs['subdivision_id'] = ref_id
-                kwargs['road_id'] = None
-                kwargs['organization_id'] = None
+        _apply_reference(kwargs, dialog._ref_id or None, dialog._ref_layer or '')
 
         PanelSign.update(
             session,
@@ -268,27 +277,14 @@ def update_numbering(dialog: 'PopupDialog') -> None:
     data = _data(dialog)
     session = get_session()
     try:
-        ref_id = dialog._ref_id or None
-        ref_layer = dialog._ref_layer or ''
-
         kwargs: dict = {
             'repetition': validate_text(data.get('repetition', '')),
             'value': validate_text(data.get('number', '')),
             'state': data.get('state', ''),
-            'road_id': None,
-            'subdivision_id': None,
-            'organization_id': None,
             'activity_cat': data.get('activityCat', ''),
             'activity_type': data.get('activityType', ''),
         }
-
-        if ref_id:
-            if ref_layer == LAYER_FACILITIES:
-                kwargs['organization_id'] = ref_id
-            elif ref_layer == LAYER_ROADS:
-                kwargs['road_id'] = ref_id
-            elif ref_layer == LAYER_SUBDIVISIONS:
-                kwargs['subdivision_id'] = ref_id
+        _apply_reference(kwargs, dialog._ref_id or None, dialog._ref_layer or '')
 
         Numbering.update(session, record_id=dialog.attribute, **kwargs)
 

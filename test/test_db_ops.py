@@ -12,6 +12,7 @@ from app.users.repository import (
     _get_authenticated_user,
     create_cookie,
     qgis_config,
+    reset_qgis_config_cache,
 )
 
 TMPDIR = os.path.join(os.path.dirname(__file__), '__testtmp__')
@@ -97,6 +98,10 @@ class TestCreateCookie(unittest.TestCase):
 class TestQgisConfig(unittest.TestCase):
     def setUp(self) -> None:
         _clean_tmpdir()
+        reset_qgis_config_cache()
+
+    def tearDown(self) -> None:
+        reset_qgis_config_cache()
 
     def test_qgis_config_reads_json(self) -> None:
         expected: dict[str, object] = {'other_layers': [], 'mapper': {}}

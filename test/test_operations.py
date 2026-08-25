@@ -1,4 +1,4 @@
-"""Tests for repository operations (counts, distributions, missing entities)."""
+"""Tests for repository operations (counts, missing entities)."""
 
 import unittest
 from unittest.mock import MagicMock, patch
@@ -6,7 +6,6 @@ from unittest.mock import MagicMock, patch
 from app.orders.repository import (
     count_numberings,
     count_panels,
-    get_zone_distribution,
     query_missing_num,
     query_missing_pan,
     query_missing_rep,
@@ -71,57 +70,6 @@ class TestCountQueries(unittest.TestCase):
         result = query_missing_rep('planned')
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]['value'], 'R1')
-
-
-class TestGetZoneDistribution(unittest.TestCase):
-    """Tests for get_zone_distribution() in app/orders/repository."""
-
-    def setUp(self) -> None:
-        self.mock_session = MagicMock()
-        self.mock_get_session = patch(
-            'app.orders.repository.get_session', return_value=self.mock_session
-        ).start()
-
-    def tearDown(self) -> None:
-        patch.stopall()
-
-    def test_returns_type_count_pairs(self) -> None:
-        self.mock_session.execute.return_value.fetchall.return_value = [
-            ('industrial', 8),
-            ('residential', 12),
-            ('commercial', 5),
-        ]
-        result = get_zone_distribution(16)
-        self.assertEqual(len(result), 3)
-        self.assertEqual(result[0], ('industrial', 8))
-        self.assertEqual(result[1], ('residential', 12))
-        self.assertEqual(result[2], ('commercial', 5))
-
-    def test_passes_wilaya_number_to_query(self) -> None:
-        self.mock_session.execute.return_value.fetchall.return_value = []
-        get_zone_distribution(31)
-        call_args = self.mock_session.execute.call_args
-        self.assertIn('wilaya', str(call_args))
-        self.assertIn('31', str(call_args))
-
-    def test_orders_by_total_descending(self) -> None:
-        self.mock_session.execute.return_value.fetchall.return_value = [
-            ('commercial', 20),
-            ('residential', 10),
-        ]
-        result = get_zone_distribution(16)
-        self.assertEqual(result[0][1], 20)
-        self.assertEqual(result[1][1], 10)
-
-    def test_empty_result_returns_empty_list(self) -> None:
-        self.mock_session.execute.return_value.fetchall.return_value = []
-        result = get_zone_distribution(99)
-        self.assertEqual(result, [])
-
-    def test_closes_session(self) -> None:
-        self.mock_session.execute.return_value.fetchall.return_value = []
-        get_zone_distribution(16)
-        self.mock_session.close.assert_called_once()
 
 
 if __name__ == '__main__':

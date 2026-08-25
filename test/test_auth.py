@@ -38,15 +38,16 @@ class TestSignUp(unittest.TestCase):
     def test_sign_up_creates_user(self) -> None:
         with (
             patch('app.users.service.hash_password', return_value='hashed_pw'),
-            patch('app.users.service.COMMUNES_JSON', '/dev/null'),
+            patch('app.shared.geo.COMMUNES_JSON', '/dev/null'),
+            patch(
+                'app.shared.geo.json.load',
+                return_value={'1': {'commune_code': 4112, 'daira_id': 1}},
+            ),
             patch('app.users.service.DAIRA_JSON', '/dev/null'),
             patch('app.users.service.open'),
             patch(
                 'app.users.service.json.load',
-                side_effect=[
-                    {'1': {'commune_code': 4112, 'daira_id': 1}},
-                    {'1': {'wilaya_id': 41}},
-                ],
+                return_value={'1': {'wilaya_id': 41}},
             ),
         ):
             ok, errors = sign_up(
@@ -104,7 +105,6 @@ class TestSignIn(unittest.TestCase):
         user.password = kwargs.get('password', 'hashed_pw')
         user.username = kwargs.get('username', 'test')
         user.id = kwargs.get('id', 1)
-        user.to_dict.return_value = kwargs.get('to_dict', {'id': 1, 'username': 'test'})
         return user
 
     def test_sign_in_success_returns_true(self) -> None:

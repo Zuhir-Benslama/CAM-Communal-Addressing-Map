@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from qgis.PyQt.QtWidgets import QStackedWidget
 
+from ..form_specs import CITY_ROWS
 from ._builder import build_page
 
 if TYPE_CHECKING:
@@ -16,8 +17,5 @@ def build_city_page(dialog: 'PopupDialog', stack: QStackedWidget) -> None:
         stack,
         object_name='cityPage',
         save_kind='city',
-        rows=[
-            ('_combo_subd_type', 'combo', 'subd_type', 'Type:'),
-            ('_field_subd_name', 'edit', 'subd_name', 'Name:'),
-        ],
+        rows=CITY_ROWS,
     )

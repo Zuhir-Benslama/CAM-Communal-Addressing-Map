@@ -21,6 +21,7 @@ email                : zuhirbenslama@protonmail.com
  ***************************************************************************/
 """
 
+import contextlib
 import logging
 from collections.abc import Callable
 from enum import Enum
@@ -35,7 +36,7 @@ from qgis.PyQt.QtWidgets import (
     QVBoxLayout,
 )
 
-from ..constants import DEFAULT_THEME, current_locale
+from ..constants import DEFAULT_THEME, LOCALE_AR, current_locale
 from ..gui.identify_tool import IdentifyTool
 from ..gui.measure_tool import MeasureTool
 from ..gui.popup_dialog import PopupDialog
@@ -153,7 +154,7 @@ class MainDialog(
         super().__init__(parent)
         self.iface = iface
         self._tr_locale = current_locale()
-        if self._tr_locale == 'ar':
+        if self._tr_locale == LOCALE_AR:
             QApplication.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         else:
             QApplication.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
@@ -247,6 +248,14 @@ class MainDialog(
         canvas.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         canvas.customContextMenuRequested.connect(self.on_edition_release)
         canvas.mapToolSet.connect(self._on_map_tool_changed)
+
+    def disconnect_map_canvas(self) -> None:
+        """Detach from the singleton map canvas before plugin unload."""
+        canvas = self.iface.mapCanvas()
+        with contextlib.suppress(TypeError, RuntimeError):
+            canvas.customContextMenuRequested.disconnect(self.on_edition_release)
+        with contextlib.suppress(TypeError, RuntimeError):
+            canvas.mapToolSet.disconnect(self._on_map_tool_changed)
 
     def _setup_i18n(self) -> None:
         """Clear toolbar button texts, flush i18n cache, translate combos."""

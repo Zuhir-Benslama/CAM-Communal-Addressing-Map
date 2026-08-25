@@ -252,28 +252,3 @@ def query_missing_rep(state: str) -> list:
         return [{'value': row[0], 'total': row[1]} for row in rows]
     finally:
         session.close()
-
-
-def get_zone_distribution(wilaya_number: int) -> list:
-    """Query zone type distribution within a given wilaya.
-
-    Filters zones by users whose wilaya_code matches. Returns list of
-    (type_name, count) tuples for chart rendering.
-    """
-    session = get_session()
-    try:
-        result = session.execute(
-            text(
-                'SELECT z.type, COUNT(*) AS total '
-                'FROM zone z '
-                'JOIN "user" u ON u.id = z.user_id '
-                'WHERE u.wilaya_code = :wilaya '
-                'GROUP BY z.type '
-                'ORDER BY total DESC'
-            ),
-            {'wilaya': wilaya_number},
-        )
-        rows = result.fetchall()
-        return [(row[0], row[1]) for row in rows]
-    finally:
-        session.close()

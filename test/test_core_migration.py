@@ -10,11 +10,9 @@ from app.core.migration import (
     COLUMN_MAP,
     GEOMETRY_TYPES,
     NEW_TABLES,
-    SPATIALITE_LIB,
     _create_spatial_indexes,
     _merge_auth_users,
     _migrate_data,
-    _migrate_lookup_tables,
     _register_geometry_columns,
     create_spatial_index,
     init_spatialite,
@@ -81,16 +79,6 @@ class TestConstants(unittest.TestCase):
             self.assertIn(cfg[0], ('POLYGON', 'LINESTRING', 'POINT'))
             self.assertEqual(cfg[1], 4326)
 
-    def test_lookup_table_ddl_is_empty(self):
-        from app.core.migration import LOOKUP_TABLE_DDL
-
-        self.assertIsInstance(LOOKUP_TABLE_DDL, dict)
-        self.assertEqual(len(LOOKUP_TABLE_DDL), 0)
-
-    def test_spatialite_lib_default(self):
-        self.assertIsInstance(SPATIALITE_LIB, str)
-        self.assertTrue(len(SPATIALITE_LIB) > 0)
-
 
 # ---------------------------------------------------------------------------
 # init_spatialite
@@ -100,9 +88,13 @@ class TestConstants(unittest.TestCase):
 class TestInitSpatiaLite(unittest.TestCase):
     def test_calls_enable_load_and_load_extension(self):
         conn = MagicMock()
-        init_spatialite(conn)
+        with patch(
+            'app.core.migration.find_mod_spatialite_dll',
+            return_value='/fake/mod_spatialite.so',
+        ):
+            init_spatialite(conn)
         conn.enable_load_extension.assert_called_once_with(True)
-        conn.load_extension.assert_called_once_with(SPATIALITE_LIB)
+        conn.load_extension.assert_called_once_with('/fake/mod_spatialite.so')
         conn.execute.assert_called_once_with('SELECT InitSpatialMetadata(1)')
 
 
@@ -171,20 +163,6 @@ class TestCreateSpatialIndex(unittest.TestCase):
         conn = MagicMock()
         with self.assertRaises(ValueError):
             create_spatial_index(conn, 'roads', 'col; DROP')
-
-
-# ---------------------------------------------------------------------------
-# _migrate_lookup_tables
-# ---------------------------------------------------------------------------
-
-
-class TestMigrateLookupTables(unittest.TestCase):
-    def test_empty_lookup_ddl_noop(self):
-        old = MagicMock()
-        new = MagicMock()
-        _migrate_lookup_tables(old, new)
-        old.execute.assert_not_called()
-        new.execute.assert_not_called()
 
 
 # ---------------------------------------------------------------------------
@@ -477,13 +455,19 @@ class TestMergeAuthUsers(unittest.TestCase):
             tc.close()
 
             original_connect = sqlite3.connect
-            call_count = [0]
             target_mock = MagicMock()
-            target_mock.execute.side_effect = sqlite3.OperationalError('constraint')
             target_mock.total_changes = 0
 
+            def _raise_on_insert(sql, *a, **kw):
+                if sql.lstrip().upper().startswith('INSERT'):
+                    raise sqlite3.OperationalError('constraint')
+                cursor = MagicMock()
+                cursor.fetchall.return_value = []
+                return cursor
+
+            target_mock.execute.side_effect = _raise_on_insert
+
             def _connect(path, *a, **kw):
-                call_count[0] += 1
                 if path == target_path:
                     return target_mock
                 return original_connect(path, *a, **kw)
@@ -529,6 +513,84 @@ class TestMergeAuthUsers(unittest.TestCase):
             ):
                 _merge_auth_users(target_path, auth_path)
             self.assertTrue(any('Merged' in m for m in cm.output))
+        finally:
+            os.unlink(auth_path)
+            os.unlink(target_path)
+
+    def test_malicious_column_name_is_rejected(self):
+        """Columns from an untrusted auth file must not reach raw SQL."""
+        with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as af:
+            auth_path = af.name
+        with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as tf:
+            target_path = tf.name
+        try:
+            ac = sqlite3.connect(auth_path)
+            # A crafted column name that breaks out of the double-quoted
+            # identifier when interpolated.  Built from parts so source
+            # formatters cannot alter the payload; the doubled "" inside
+            # the DDL identifier yields a single '"' in the stored name.
+            d = chr(34)  # double quote
+            q = chr(39)  # single quote
+            hostile_col = f'x{d}) VALUES({q}p{q}); DROP TABLE user;--'
+            ac.execute(
+                f'CREATE TABLE user ({d}id{d} TEXT, {d}{d}{hostile_col}{d} TEXT)'
+            )
+            ac.execute(f'INSERT INTO user VALUES ({q}u1{q}, {q}evil{q})')
+            ac.commit()
+            ac.close()
+
+            tc = sqlite3.connect(target_path)
+            tc.execute('CREATE TABLE user (id TEXT PRIMARY KEY, username TEXT)')
+            tc.commit()
+            tc.close()
+
+            with self.assertLogs('app.core.migration', level='WARNING'):
+                _merge_auth_users(target_path, auth_path)
+
+            tc = sqlite3.connect(target_path)
+            tables = {
+                r[0]
+                for r in tc.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table'"
+                ).fetchall()
+            }
+            usernames = [
+                row[1] if len(row) > 1 else None
+                for row in tc.execute('SELECT * FROM user').fetchall()
+            ]
+            tc.close()
+            # The hostile column must not have been interpolated: the user
+            # table was not dropped and no rogue payload was stored.
+            self.assertIn('user', tables)
+            self.assertNotIn('evil', usernames)
+        finally:
+            os.unlink(auth_path)
+            os.unlink(target_path)
+
+    def test_unknown_columns_are_skipped(self):
+        """Columns absent from the target schema are ignored, not inserted."""
+        with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as af:
+            auth_path = af.name
+        with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as tf:
+            target_path = tf.name
+        try:
+            ac = sqlite3.connect(auth_path)
+            ac.execute('CREATE TABLE user (id TEXT, username TEXT, legacy_col TEXT)')
+            ac.execute("INSERT INTO user VALUES ('u1', 'alice', 'junk')")
+            ac.commit()
+            ac.close()
+
+            tc = sqlite3.connect(target_path)
+            tc.execute('CREATE TABLE user (id TEXT PRIMARY KEY, username TEXT)')
+            tc.commit()
+            tc.close()
+
+            _merge_auth_users(target_path, auth_path)
+
+            tc = sqlite3.connect(target_path)
+            rows = tc.execute('SELECT id, username FROM user ORDER BY id').fetchall()
+            tc.close()
+            self.assertEqual(rows, [('u1', 'alice')])
         finally:
             os.unlink(auth_path)
             os.unlink(target_path)

@@ -2,7 +2,6 @@
 
 import json
 import logging
-import sqlite3
 from pathlib import Path
 from typing import Any
 
@@ -10,11 +9,14 @@ import toml
 
 from ..core.database import get_session
 from ..shared.constants import (
-    COMMUNES_DB,
-    COMMUNES_JSON,
     COOKIE_FILE,
     QGIS_CONFIG_FILE,
     WILAYAS_JSON,
+)
+from ..shared.geo import (
+    find_commune_by_code,
+    get_commune_wkt,
+    load_communes,
 )
 from ..users.models import User
 
@@ -23,27 +25,14 @@ logger = logging.getLogger(__name__)
 
 def _load_localites() -> list[dict[str, Any]]:
     """Load commune metadata from communes.json."""
-    try:
-        with Path(COMMUNES_JSON).open(encoding='utf-8') as f:
-            return list(json.load(f).values())
-    except (FileNotFoundError, json.JSONDecodeError):
-        logger.exception('Failed to load %s', COMMUNES_JSON)
-        return []
+    return load_communes()
 
 
 def _get_commune_by_code(commune_code: str) -> dict[str, Any] | None:
     """Look up a commune by its commune_code (handles int/str)."""
     if not commune_code:
         return None
-    try:
-        code = int(commune_code)
-    except (ValueError, TypeError):
-        return None
-    for c in _load_localites():
-        v = c.get('commune_code')
-        if v is not None and int(v) == code:
-            return c
-    return None
+    return find_commune_by_code(_load_localites(), commune_code)
 
 
 def load_session_cookie() -> dict[str, Any] | None:
@@ -51,7 +40,13 @@ def load_session_cookie() -> dict[str, Any] | None:
     try:
         with Path(COOKIE_FILE).open(encoding='utf-8') as f:
             return toml.load(f)
-    except (OSError, toml.TomlDecodeError):
+    except FileNotFoundError:
+        return None
+    except toml.TomlDecodeError:
+        logger.warning('Corrupt session cookie file %s', COOKIE_FILE, exc_info=True)
+        return None
+    except OSError:
+        logger.warning('Failed to read session cookie %s', COOKIE_FILE, exc_info=True)
         return None
 
 
@@ -90,7 +85,9 @@ def get_current_user() -> dict | None:
                 if w:
                     wilaya_name = w.get('wilaya_ar', '')
             except (FileNotFoundError, json.JSONDecodeError):
-                pass
+                logger.warning(
+                    'Failed to load wilaya names from %s', WILAYAS_JSON, exc_info=True
+                )
         return {
             'id': user.id,
             'commune_code': user.commune_code,
@@ -120,17 +117,7 @@ def get_user_location() -> str | None:
     commune_id = commune.get('commune_id')
     if not commune_id:
         return None
-
-    try:
-        with sqlite3.connect(COMMUNES_DB) as conn:
-            sql = 'SELECT wkt FROM geometries WHERE commune_id = ?'
-            cur = conn.execute(sql, (commune_id,))
-            row = cur.fetchone()
-            if row:
-                return row[0]
-    except sqlite3.Error:
-        logger.exception('Failed to query %s', COMMUNES_DB)
-    return None
+    return get_commune_wkt(commune_id)
 
 
 def create_cookie(cookie: str, uid: str) -> None:

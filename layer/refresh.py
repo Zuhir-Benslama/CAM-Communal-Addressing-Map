@@ -136,22 +136,28 @@ def refresh_layer_from_db(_iface: Any, layer_name: str, model_name: str) -> None
         field_names = [field.name() for field in layer.fields()]
 
         layer.startEditing()
+        try:
+            ids = [feature.id() for feature in layer.getFeatures()]
+            provider.deleteFeatures(ids)
 
-        ids = [feature.id() for feature in layer.getFeatures()]
-        provider.deleteFeatures(ids)
+            if new_fields:
+                provider.addAttributes(new_fields)
+                layer.updateFields()
+                field_names = [f.name() for f in layer.fields()]
 
-        if new_fields:
-            provider.addAttributes(new_fields)
-            layer.updateFields()
-            field_names = [f.name() for f in layer.fields()]
+            for result, geom_wkt in results:
+                feature = _build_feature(result, geom_wkt, field_names, all_fields)
+                if feature:
+                    provider.addFeature(feature)
+        except Exception:
+            layer.rollBack()
+            raise
 
-        for result, geom_wkt in results:
-            feature = _build_feature(result, geom_wkt, field_names, all_fields)
-            if feature:
-                provider.addFeature(feature)
-
-        layer.commitChanges()
-        layer.triggerRepaint()
+        if not layer.commitChanges():
+            logger.error('Commit failed for %s: %s', layer_name, layer.commitErrors())
+            layer.rollBack()
+        else:
+            layer.triggerRepaint()
     finally:
         session.close()
 

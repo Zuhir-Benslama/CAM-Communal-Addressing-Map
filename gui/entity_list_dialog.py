@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import logging
-
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import (
     QDialog,
@@ -21,8 +19,6 @@ from ..app.orders import models as _models
 from ..app.shared.utils import get_all_fields_and_labels, locale_value
 from ..constants import current_locale, current_theme
 from ..scripts.widget_texts import apply_widget_texts, get_string
-
-logger = logging.getLogger(__name__)
 
 
 class EntityListDialog(QDialog):

@@ -4,11 +4,11 @@ and the plugin's Import Database feature.
 """
 
 import logging
-import os
 import sqlite3
 from pathlib import Path
 
 from ..shared.utils import validate_safe_name
+from .config import find_mod_spatialite_dll
 
 logger = logging.getLogger(__name__)
 
@@ -89,8 +89,6 @@ COLUMN_MAP = {
         'uid': 'user_id',
     },
 }
-
-LOOKUP_TABLE_DDL: dict[str, str] = {}
 
 NEW_TABLES = {
     'user': """
@@ -222,11 +220,6 @@ NEW_TABLES = {
     """,
 }
 
-SPATIALITE_LIB = os.environ.get(
-    'SPATIALITE_LIB',
-    '/usr/libspatialite50/lib/mod_spatialite.so',
-)
-
 GEOMETRY_TYPES = {
     'zone': ('POLYGON', 4326, 2, 3),
     'subdivision': ('POLYGON', 4326, 2, 3),
@@ -240,7 +233,7 @@ GEOMETRY_TYPES = {
 def init_spatialite(conn: sqlite3.Connection) -> None:
     """Initialize SpatiaLite metadata in the new database."""
     conn.enable_load_extension(True)
-    conn.load_extension(SPATIALITE_LIB)
+    conn.load_extension(find_mod_spatialite_dll())
     conn.execute('SELECT InitSpatialMetadata(1)')
 
 
@@ -265,27 +258,6 @@ def create_spatial_index(conn: sqlite3.Connection, table: str, col: str) -> None
     validate_safe_name(table)
     validate_safe_name(col)
     conn.execute('SELECT CreateSpatialIndex(?, ?)', (table, col))
-
-
-def _migrate_lookup_tables(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
-    """Copy lookup table data from old to new database."""
-    for name, ddl in LOOKUP_TABLE_DDL.items():
-        validate_safe_name(name)
-        new.execute(ddl)
-        old_cur = old.execute(f'SELECT * FROM "{name}"')  # nosec S608 - name validated by validate_safe_name()
-        old_rows = old_cur.fetchall()
-        if old_rows:
-            cols = [desc[0] for desc in old_cur.description]
-            placeholders = ','.join('?' for _ in cols)
-            col_list = ','.join(f'"{c}"' for c in cols)
-            for row in old_rows:
-                new.execute(
-                    f'INSERT INTO "{name}" ({col_list}) VALUES ({placeholders})',  # nosec S608 - name validated by validate_safe_name()
-                    tuple(row[c] for c in cols),
-                )
-            logger.info('  %s: %d rows', name, len(old_rows))
-        else:
-            logger.info('  %s: 0 rows (skipped)', name)
 
 
 def _register_geometry_columns(new: sqlite3.Connection) -> None:
@@ -368,7 +340,22 @@ def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
 
         target = sqlite3.connect(new_path)
         try:
-            cols = users[0].keys()
+            try:
+                target_cols = {
+                    row[1] for row in target.execute("PRAGMA table_info('user')")
+                }
+            except sqlite3.Error:
+                logger.exception('  Failed to read target user table schema')
+                return
+            cols = []
+            for c in users[0].keys():  # noqa: SIM118 - sqlite3.Row, not dict
+                if c not in target_cols:
+                    logger.warning(
+                        '  auth DB column %r not in target schema (skipped)', c
+                    )
+                    continue
+                validate_safe_name(c)
+                cols.append(c)
             placeholders = ','.join('?' for _ in cols)
             col_list = ','.join(f'"{c}"' for c in cols)
             merged = 0
@@ -417,9 +404,6 @@ def migrate_database(
 
         logger.info('Initializing SpatiaLite metadata...')
         init_spatialite(new)
-
-        logger.info('Creating lookup tables...')
-        _migrate_lookup_tables(old, new)
 
         logger.info('Creating spatial tables...')
         for table, ddl in NEW_TABLES.items():

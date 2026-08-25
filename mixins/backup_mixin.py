@@ -76,8 +76,10 @@ class BackupMixin:
             return
 
         try:
-            self._replace_db_file(source_path, DATABASE_FILE)
+            # Release pooled connections to the old file BEFORE swapping
+            # it, otherwise they keep writing to the orphaned inode.
             reset_connection_pool()
+            self._replace_db_file(source_path, DATABASE_FILE)
         except (OSError, shutil.Error) as e:
             logger.exception('Failed to restore database')
             QMessageBox.critical(

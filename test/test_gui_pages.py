@@ -52,6 +52,7 @@ class TestBuildAddUserPage(unittest.TestCase):
     qt: ClassVar[Any]
     app: ClassVar[Any]
     mod: ClassVar[Any]
+    _prev_qtwidgets: ClassVar[Any]
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -136,6 +137,7 @@ class TestBuildSettingsPage(unittest.TestCase):
     qt: ClassVar[Any]
     app: ClassVar[Any]
     mod: ClassVar[Any]
+    _prev_qtwidgets: ClassVar[Any]
 
     @classmethod
     def setUpClass(cls) -> None:

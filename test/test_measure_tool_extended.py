@@ -327,15 +327,33 @@ class TestMeasureToolClear(unittest.TestCase):
         self.tool.clear()
         self.tool.rubber_band.reset.assert_called()
 
-    def test_clear_disconnects_signals(self):
+    def test_clear_keeps_signals_connected(self):
+        """clear() must not touch signals so measuring can resume (Key_R)."""
         self.tool.clear()
+        self.canvas.extentsChanged.disconnect.assert_not_called()
+        self.canvas.scaleChanged.disconnect.assert_not_called()
+        # Still connected exactly once from __init__.
+        self.canvas.extentsChanged.connect.assert_called_once()
+        self.canvas.scaleChanged.connect.assert_called_once()
+
+    def test_dispose_disconnects_signals(self):
+        self.tool.dispose()
         self.canvas.extentsChanged.disconnect.assert_called()
         self.canvas.scaleChanged.disconnect.assert_called()
 
-    def test_clear_reconnects_signals(self):
-        self.tool.clear()
-        self.canvas.extentsChanged.connect.assert_called()
-        self.canvas.scaleChanged.connect.assert_called()
+    def test_dispose_removes_rubber_band_from_scene(self):
+        band = self.tool.rubber_band
+        self.tool.dispose()
+        self.canvas.scene().removeItem.assert_any_call(band)
+
+    def test_dispose_empties_state(self):
+        self.tool.points = [MagicMock()]
+        self.tool.markers = [MagicMock()]
+        self.tool.labels = [MagicMock()]
+        self.tool.dispose()
+        self.assertEqual(self.tool.points, [])
+        self.assertEqual(self.tool.markers, [])
+        self.assertEqual(self.tool.labels, [])
 
     def test_clear_works_when_already_empty(self):
         self.tool.points = []

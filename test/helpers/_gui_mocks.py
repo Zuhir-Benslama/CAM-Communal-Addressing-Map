@@ -343,6 +343,9 @@ def _setup_gui_domain_mocks():
     _constants.LAYER_ZONES = 'zones'
     _constants.LAYER_NUMBERING = 'numbering'
     _constants.LAYER_PANELS = 'panels'
+    _constants.LOCALE_AR = 'ar'
+    _constants.LOCALE_FR = 'fr'
+    _constants.LOCALE_EN = 'en'
     _constants.NOTIFY_DURATION = 5
     _constants.SRID = 4326
     _constants.DEFAULT_PANEL_DIM = '60x80'

@@ -212,38 +212,23 @@ class TestCommuneIdFromCode(unittest.TestCase):
     def setUpClass(cls):
         cls.mod = _load_module()
 
-    @patch('plans_adressage.layer.utils.COMMUNES_JSON', '/fake/communes.json')
-    @patch('plans_adressage.layer.utils.Path')
-    def test_found(self, mock_path_cls):
-        data = {'1': {'commune_code': '4112', 'commune_id': 99}}
-        mock_path_cls.return_value.open.return_value.__enter__ = MagicMock(
-            return_value=MagicMock()
-        )
-        mock_path_cls.return_value.open.return_value.__exit__ = MagicMock(
-            return_value=False
-        )
-        with patch.object(self.mod.json, 'load', return_value=data):
-            result = self.mod._commune_id_from_code('4112')
-        self.assertEqual(result, 99)
-
-    @patch('plans_adressage.layer.utils.COMMUNES_JSON', '/fake/communes.json')
-    @patch('plans_adressage.layer.utils.Path')
-    def test_not_found(self, mock_path_cls):
-        data = {'1': {'commune_code': '9999', 'commune_id': 1}}
-        mock_path_cls.return_value.open.return_value.__enter__ = MagicMock(
-            return_value=MagicMock()
-        )
-        mock_path_cls.return_value.open.return_value.__exit__ = MagicMock(
-            return_value=False
-        )
-        with patch.object(self.mod.json, 'load', return_value=data):
-            result = self.mod._commune_id_from_code('4112')
+    @patch(
+        'plans_adressage.app.shared.geo.COMMUNES_JSON',
+        '/nonexistent/communes.json',
+    )
+    def test_file_not_found(self):
+        result = self.mod._commune_id_from_code('4112')
         self.assertIsNone(result)
 
-    @patch('plans_adressage.layer.utils.COMMUNES_JSON', '/fake/communes.json')
-    @patch('plans_adressage.layer.utils.Path')
-    def test_file_not_found(self, mock_path_cls):
-        mock_path_cls.return_value.open.side_effect = FileNotFoundError
+    @patch('plans_adressage.layer.utils.load_communes')
+    def test_found(self, mock_load):
+        mock_load.return_value = [{'commune_code': '4112', 'commune_id': 99}]
+        result = self.mod._commune_id_from_code('4112')
+        self.assertEqual(result, 99)
+
+    @patch('plans_adressage.layer.utils.load_communes')
+    def test_not_found(self, mock_load):
+        mock_load.return_value = [{'commune_code': '9999', 'commune_id': 1}]
         result = self.mod._commune_id_from_code('4112')
         self.assertIsNone(result)
 
@@ -253,32 +238,56 @@ class TestWktFromCommuneId(unittest.TestCase):
     def setUpClass(cls):
         cls.mod = _load_module()
 
-    @patch('plans_adressage.layer.utils.COMMUNES_DB', '/fake/communes.db')
-    @patch('plans_adressage.layer.utils.sqlite3')
+    @patch('plans_adressage.layer.utils.get_commune_wkt')
+    def test_found(self, mock_wkt):
+        mock_wkt.return_value = 'MULTIPOLYGON(...)'
+        result = self.mod._wkt_from_commune_id(42)
+        self.assertEqual(result, 'MULTIPOLYGON(...)')
+
+    @patch('plans_adressage.layer.utils.get_commune_wkt')
+    def test_not_found(self, mock_wkt):
+        mock_wkt.return_value = None
+        result = self.mod._wkt_from_commune_id(999)
+        self.assertIsNone(result)
+
+
+class TestGetCommuneWkt(unittest.TestCase):
+    """Error/row handling of the shared communes.db lookup."""
+
+    @patch('app.shared.geo.COMMUNES_DB', '/fake/communes.db')
+    @patch('app.shared.geo.sqlite3')
     def test_found(self, mock_sqlite):
+        from app.shared.geo import get_commune_wkt
+
         mock_conn = MagicMock()
         mock_conn.execute.return_value.fetchone.return_value = ('MULTIPOLYGON(...)',)
         mock_sqlite.connect.return_value.__enter__ = MagicMock(return_value=mock_conn)
         mock_sqlite.connect.return_value.__exit__ = MagicMock(return_value=False)
-        result = self.mod._wkt_from_commune_id(42)
+        result = get_commune_wkt(42)
         self.assertEqual(result, 'MULTIPOLYGON(...)')
 
-    @patch('plans_adressage.layer.utils.COMMUNES_DB', '/fake/communes.db')
-    @patch('plans_adressage.layer.utils.sqlite3')
+    @patch('app.shared.geo.COMMUNES_DB', '/fake/communes.db')
+    @patch('app.shared.geo.sqlite3')
     def test_not_found(self, mock_sqlite):
+        from app.shared.geo import get_commune_wkt
+
         mock_conn = MagicMock()
         mock_conn.execute.return_value.fetchone.return_value = None
         mock_sqlite.connect.return_value.__enter__ = MagicMock(return_value=mock_conn)
         mock_sqlite.connect.return_value.__exit__ = MagicMock(return_value=False)
-        result = self.mod._wkt_from_commune_id(999)
+        result = get_commune_wkt(999)
         self.assertIsNone(result)
 
-    @patch('plans_adressage.layer.utils.COMMUNES_DB', '/fake/communes.db')
-    @patch('plans_adressage.layer.utils.sqlite3')
+    @patch('app.shared.geo.COMMUNES_DB', '/fake/communes.db')
+    @patch('app.shared.geo.sqlite3')
     def test_sql_error(self, mock_sqlite):
-        mock_sqlite.Error = Exception
-        mock_sqlite.connect.side_effect = mock_sqlite.Error('db error')
-        result = self.mod._wkt_from_commune_id(1)
+        import sqlite3
+
+        from app.shared.geo import get_commune_wkt
+
+        mock_sqlite.Error = sqlite3.Error
+        mock_sqlite.connect.side_effect = sqlite3.Error('db error')
+        result = get_commune_wkt(1)
         self.assertIsNone(result)
 
 

@@ -114,8 +114,12 @@ SETTINGS_KEY_LOCALE = 'locale'
 THEME_DARK = Theme.DARK
 THEME_LIGHT = Theme.LIGHT
 
+LOCALE_AR = 'ar'
+LOCALE_FR = 'fr'
+LOCALE_EN = 'en'
+
 AVAILABLE_LOCALES = [
-    ('ar', 'Arabic'),
-    ('fr', 'Français'),
-    ('en', 'English'),
+    (LOCALE_AR, 'Arabic'),
+    (LOCALE_FR, 'Français'),
+    (LOCALE_EN, 'English'),
 ]

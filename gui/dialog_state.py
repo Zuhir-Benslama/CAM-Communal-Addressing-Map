@@ -14,6 +14,7 @@ from qgis.PyQt.QtWidgets import QApplication, QFileDialog
 from ..constants import (
     AVAILABLE_LOCALES,
     DEFAULT_THEME,
+    LOCALE_AR,
     SETTINGS_APP,
     SETTINGS_KEY_LOCALE,
     SETTINGS_KEY_THEME,
@@ -129,8 +130,8 @@ def init_theme_locale(dialog: MainDialog) -> None:
     dialog._combo_theme.addItem(get_string(light_arabic, loc), THEME_LIGHT)
     saved_theme = settings.value(SETTINGS_KEY_THEME, DEFAULT_THEME)
     theme_map = {
-        '\u0641\u0627\u062a\u062d': THEME_LIGHT,
-        '\u062f\u0627\u0643\u0646': THEME_DARK,
+        ARABIC_THEME_NAMES['light']: THEME_LIGHT,
+        ARABIC_THEME_NAMES['dark']: THEME_DARK,
     }
     saved_theme = theme_map.get(saved_theme, saved_theme)
     try:
@@ -183,7 +184,7 @@ def on_locale_changed(dialog: MainDialog, _idx: int) -> None:
     fill_org_category(dialog._combo_org_cat)
     fill_activity_category(dialog._combo_activity_cat)
     dialog._update_action_button_texts(dialog._combo_layer_selector.currentIndex())
-    if code == 'ar':
+    if code == LOCALE_AR:
         QApplication.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
     else:
         QApplication.setLayoutDirection(Qt.LayoutDirection.LeftToRight)

@@ -113,8 +113,7 @@ class MeasureTool(QgsMapToolEmitPoint):
             )
 
         elif event.key() == Qt.Key.Key_E:
-            self.clear()
-            self.canvas.unsetMapTool(self)
+            self.unset_map_tool()
             self.iface.messageBar().pushMessage(
                 _i18n_tr('Finish', current_locale()),
                 _i18n_tr('Measurement tool terminated', current_locale()),
@@ -187,42 +186,34 @@ class MeasureTool(QgsMapToolEmitPoint):
         transform = self.canvas.getCoordinateTransform()
 
         for label in self.labels:
-            if hasattr(label, 'mid_point'):
-                # Convert map coordinates to screen coordinates
-                screen_pos = transform.transform(label.mid_point)
+            # Convert map coordinates to screen coordinates
+            screen_pos = transform.transform(label.mid_point)
 
-                # Center the label on the point
-                if isinstance(label, QGraphicsItemGroup):
-                    # For QGraphicsItemGroup, adjust for the text size
-                    for item in label.childItems():
-                        if isinstance(item, QGraphicsSimpleTextItem):
-                            text_rect = item.boundingRect()
-                            label.setPos(
-                                screen_pos.x() - text_rect.width() / 2,
-                                screen_pos.y() - text_rect.height() / 2,
-                            )
-                            break
-                else:
-                    label.setPos(screen_pos.x(), screen_pos.y())
+            # Center the label on the point (adjusting for the text size)
+            for item in label.childItems():
+                if isinstance(item, QGraphicsSimpleTextItem):
+                    text_rect = item.boundingRect()
+                    label.setPos(
+                        screen_pos.x() - text_rect.width() / 2,
+                        screen_pos.y() - text_rect.height() / 2,
+                    )
+                    break
 
-                # Optional: Adjust font size based on scale
-                current_scale = self.canvas.scale()
-                font_size = max(8, min(14, int(10000 / current_scale)))
-                for item in label.childItems():
-                    if isinstance(item, (QGraphicsSimpleTextItem, QGraphicsTextItem)):
-                        font = item.font()
-                        font.setPointSize(font_size)
-                        item.setFont(font)
+            # Optional: Adjust font size based on scale
+            current_scale = self.canvas.scale()
+            font_size = max(8, min(14, int(10000 / current_scale)))
+            for item in label.childItems():
+                if isinstance(item, (QGraphicsSimpleTextItem, QGraphicsTextItem)):
+                    font = item.font()
+                    font.setPointSize(font_size)
+                    item.setFont(font)
 
     def clear(self) -> None:
-        """Clear all markers, labels, and reset the measurement."""
-        # Disconnect signals first to avoid duplicate updates
-        try:
-            self.canvas.extentsChanged.disconnect(self.updateLabels)
-            self.canvas.scaleChanged.disconnect(self.updateLabels)
-        except TypeError:
-            pass
+        """Clear all markers, labels, and reset the measurement.
 
+        Signal connections are intentionally left intact so the tool can
+        keep measuring after a restart (Key_R).
+        """
         self.rubber_band.reset(QgsWkbTypes.LineGeometry)
         for marker in self.markers:
             self.canvas.scene().removeItem(marker)
@@ -235,11 +226,23 @@ class MeasureTool(QgsMapToolEmitPoint):
         self.points.clear()
         QToolTip.hideText()
 
-        # Reconnect signals if you plan to continue using the tool
-        self.canvas.extentsChanged.connect(self.updateLabels)
-        self.canvas.scaleChanged.connect(self.updateLabels)
+    def dispose(self) -> None:
+        """Permanently tear down the tool.
+
+        Disconnects canvas signals and removes the rubber band from the
+        scene so a discarded instance cannot leak.  The tool must not be
+        reused afterwards.
+        """
+        try:
+            self.canvas.extentsChanged.disconnect(self.updateLabels)
+            self.canvas.scaleChanged.disconnect(self.updateLabels)
+        except TypeError:
+            pass
+        self.clear()
+        self.canvas.scene().removeItem(self.rubber_band)
+        self.rubber_band.deleteLater()
 
     def unset_map_tool(self) -> None:
-        """Clear measurements and unset the measure tool from canvas."""
-        self.clear()
+        """Dispose measurements and unset the measure tool from canvas."""
+        self.dispose()
         self.canvas.unsetMapTool(self)

@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 from ..app.core.database import get_session
 from ..app.orders import models as _models
 from ..app.users.repository import qgis_config
-from ..constants import LAYER_KEY, current_locale
+from ..constants import LAYER_KEY, LOCALE_AR, current_locale
 from ..scripts.widget_texts import get_string
 
 logger = logging.getLogger(__name__)
@@ -175,7 +175,7 @@ class IdentifyTool(QgsMapToolIdentify):
                     model = getattr(_models, model_name, None)
                     if model is None:
                         logger.warning('Unknown model: %s', model_name)
-                        return
+                        break
 
                     query = session.query(model).filter(model.id == feature_id).first()
 
@@ -200,7 +200,7 @@ class IdentifyTool(QgsMapToolIdentify):
     def _locale_feature_attr(self, feature: QgsFeature, base_name: str) -> str:
         """Read locale-appropriate attribute from a QGIS feature."""
         loc = current_locale()
-        if loc != 'ar':
+        if loc != LOCALE_AR:
             locale_field = f'{base_name}_{loc}'
             if locale_field in feature.fields().names():
                 locale_val = feature[locale_field]

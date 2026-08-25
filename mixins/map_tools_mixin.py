@@ -33,6 +33,8 @@ class MapToolsMixin:
         """Activate identify tool for feature selection on the active layer."""
         if self.ref_identify_tool:
             self.ref_identify_tool.unset_map_tool()
+        if self.identify_tool:
+            self.identify_tool.unset_map_tool()
         canvas = self.iface.mapCanvas()
         self.identify_tool = IdentifyTool(canvas)
         self.identify_tool.set_iface(self.iface)
@@ -42,6 +44,8 @@ class MapToolsMixin:
 
     def activate_measure(self: HasMapToolsContext) -> None:
         """Activate the distance measurement tool on the map canvas."""
+        if self.measure_tool:
+            self.measure_tool.dispose()
         self.measure_tool = MeasureTool(self.iface.mapCanvas(), self.iface)
         self.iface.mapCanvas().setMapTool(self.measure_tool)
 
@@ -108,6 +112,8 @@ class MapToolsMixin:
             layer = project.mapLayersByName(layer_name)
             if layer:
                 self.iface.setActiveLayer(layer[0])
+                if self.ref_identify_tool:
+                    self.ref_identify_tool.unset_map_tool()
                 canvas = self.iface.mapCanvas()
                 self.ref_identify_tool = IdentifyTool(
                     canvas,

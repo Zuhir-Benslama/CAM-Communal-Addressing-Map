@@ -10,8 +10,8 @@ setup_gui_mocks()
 import sys as _sys
 
 _qtwidgets = _sys.modules['qgis.PyQt.QtWidgets']
-_qtwidgets.QLabel = lambda *a, **kw: MagicMock()
-_qtwidgets.QPushButton = lambda *a, **kw: MagicMock()
+setattr(_qtwidgets, 'QLabel', lambda *a, **kw: MagicMock())
+setattr(_qtwidgets, 'QPushButton', lambda *a, **kw: MagicMock())
 
 
 class TestTabWidget(unittest.TestCase):

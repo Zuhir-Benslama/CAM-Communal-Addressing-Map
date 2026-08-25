@@ -18,8 +18,8 @@ from ..app.orders.repository import (
     query_missing_pan,
     query_missing_rep,
 )
+from ..app.shared.utils import run_reporting_script
 from ..constants import (
-    _SUBPROCESS_FLAGS,
     LAYER_FACILITIES,
     LAYER_ROADS,
     LAYER_SUBDIVISIONS,
@@ -28,10 +28,8 @@ from ..constants import (
     PAN_PLANNED,
     PAN_TO_FIX,
     PAN_TO_MOVE,
-    REPORTING_SCRIPT,
     TMP_JSON,
     current_theme,
-    get_qgis_python,
     get_theme_qss,
 )
 from ._protocols import HasReportContext, HasTranslation
@@ -56,14 +54,6 @@ class ReportMixin:
             logger.exception('Error saving JSON file')
             return False
 
-        script_path = REPORTING_SCRIPT
-        command: list[str] = [
-            f'{get_qgis_python()}',
-            str(script_path),
-            '--method',
-            method,
-        ]
-
         success_msg = (
             self._tr('Report saved to your documents')
             if label == 'report'
@@ -76,13 +66,7 @@ class ReportMixin:
         )
 
         try:
-            subprocess.run(  # nosec S603 - command built from internal constants only
-                command,
-                capture_output=True,
-                text=True,
-                check=True,
-                **_SUBPROCESS_FLAGS,
-            )
+            run_reporting_script(method)
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Information)
             msg.setWindowTitle(self._tr('Success'))

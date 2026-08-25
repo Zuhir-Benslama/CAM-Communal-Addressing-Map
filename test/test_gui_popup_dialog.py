@@ -78,7 +78,8 @@ class TestPopupDialog(unittest.TestCase):
             }
             self.dialog.layer_name_key = 'roads'
             self.dialog.set_form()
-            mock_get_session.return_value.close.assert_called_once()
+            # Unknown model: bails out before any session is opened.
+            mock_get_session.assert_not_called()
 
 
 if __name__ == '__main__':

@@ -157,7 +157,7 @@ class TestBuildMainPage(unittest.TestCase):
     def _make_dialog(self) -> Any:
         dialog = type('MockDialog', (), {})()
         dialog._page_stack = MagicMock()
-        dialog._held_widgets: list = []
+        dialog._held_widgets = []
         dialog._main_stack = MagicMock()
         return dialog
 
@@ -197,7 +197,7 @@ class TestBuildFormPage(unittest.TestCase):
     def _make_dialog(self) -> Any:
         dialog = type('MockDialog', (), {})()
         dialog._main_stack = MagicMock()
-        dialog._held_widgets: list = []
+        dialog._held_widgets = []
         return dialog
 
     def test_creates_combo_layer_selector(self):
