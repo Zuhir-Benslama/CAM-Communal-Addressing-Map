@@ -10,6 +10,8 @@ from qgis.gui import QgisInterface
 class HasTranslation(Protocol):
     """Mixin host provides translation method."""
 
+    _tr_locale: str
+
     def _tr(self, source: str) -> str:
         """Translate *source* string for the current locale."""
 

@@ -168,6 +168,81 @@ def add_zone(
     return _add_entity(instance)
 
 
+def _scalar_count(table: str) -> int:
+    """Return the row count of *table* (mapped to a literal via safe-name)."""
+    name = _SAFE_TABLES.get(table)
+    if name is None:
+        msg = f'Unsafe table for counting: {table!r}'
+        raise ValueError(msg)
+    session = get_session()
+    try:
+        result = session.execute(text(f'select count(*) as cpt from {name}'))
+        row = result.fetchone()
+        return row[0] if row else 0
+    finally:
+        session.close()
+
+
+# Allow-list of table names referenceable by the reporting statistics. Keys are
+# the entity names used by callers; values are the SQL identifiers (which come
+# from our own schema, never user input).
+_SAFE_TABLES = {
+    'numbering': 'numbering',
+    'panel_sign': 'panel_sign',
+    'zone': 'zone',
+    'road': 'road',
+    'subdivision': 'subdivision',
+    'organization': 'organization',
+}
+
+
+def count_numberings_total() -> int:
+    """Total number of numbering entries."""
+    return _scalar_count('numbering')
+
+
+def count_panels_total() -> int:
+    """Total number of panel signs."""
+    return _scalar_count('panel_sign')
+
+
+def count_zones() -> int:
+    """Total number of zones."""
+    return _scalar_count('zone')
+
+
+def count_roads() -> int:
+    """Total number of roads."""
+    return _scalar_count('road')
+
+
+def count_subdivisions() -> int:
+    """Total number of subdivisions."""
+    return _scalar_count('subdivision')
+
+
+def count_organizations() -> int:
+    """Total number of organizations (facilities)."""
+    return _scalar_count('organization')
+
+
+def count_panels_by_dimension(dimensions: str | None = None) -> int:
+    """Count panel signs, optionally filtered by *dimensions*."""
+    session = get_session()
+    try:
+        if dimensions is None:
+            result = session.execute(text('select count(*) as cpt from panel_sign'))
+        else:
+            result = session.execute(
+                text('select count(*) as cpt from panel_sign where dimensions = :d'),
+                {'d': dimensions},
+            )
+        row = result.fetchone()
+        return row[0] if row else 0
+    finally:
+        session.close()
+
+
 def count_numberings(state: str) -> int:
     """Count numberings by state (query Num view in Views.sql)."""
     session = get_session()

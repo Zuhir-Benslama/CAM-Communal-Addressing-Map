@@ -25,6 +25,7 @@ class TestReportMixin(unittest.TestCase):
     def setUp(self):
         self.mixin = self.mod.ReportMixin()
         self.mixin._tr = lambda s: s
+        self.mixin._tr_locale = 'ar'
         self.mixin.current_user = {'wilaya': '16', 'commune': 'test'}
         self.mixin._output_dir = '/tmp'
 

@@ -23,6 +23,7 @@ from .app.shared.constants import (
     CUSTOM_STYLE_DIR,
     DAIRA_JSON,
     DATABASE_FILE,
+    DEFAULT_PANEL_DIM,
     DEFAULT_STYLE_DIR,
     ICON_PNG,
     LAYER_FACILITIES,

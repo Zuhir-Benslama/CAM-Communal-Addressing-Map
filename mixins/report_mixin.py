@@ -13,13 +13,21 @@ from qgis.PyQt.QtWidgets import QMessageBox
 
 from ..app.orders.repository import (
     count_numberings,
+    count_numberings_total,
+    count_organizations,
     count_panels,
+    count_panels_by_dimension,
+    count_panels_total,
+    count_roads,
+    count_subdivisions,
+    count_zones,
     query_missing_num,
     query_missing_pan,
     query_missing_rep,
 )
 from ..app.shared.utils import run_reporting_script
 from ..constants import (
+    DEFAULT_PANEL_DIM,
     LAYER_FACILITIES,
     LAYER_ROADS,
     LAYER_SUBDIVISIONS,
@@ -101,10 +109,12 @@ class ReportMixin:
             logger.error('No current user for report generation')
             return False
         report_data = {
+            'locale': self._tr_locale,
             'prog': count_numberings(NUM_PLANNED),
             'wrong': count_numberings('numbered_mismatched'),
             'right': count_numberings('numbered_matched'),
             'booked': count_numberings('booked'),
+            'num_total': count_numberings_total(),
             'date': datetime.now().astimezone().date().strftime('%Y/%m/%d'),
             'pan_city0': count_panels(LAYER_SUBDIVISIONS, PAN_MOUNTED),
             'pan_org0': count_panels(LAYER_FACILITIES, PAN_MOUNTED),
@@ -118,8 +128,15 @@ class ReportMixin:
             'pan_city3': count_panels(LAYER_SUBDIVISIONS, PAN_TO_FIX),
             'pan_org3': count_panels(LAYER_FACILITIES, PAN_TO_FIX),
             'pan_road3': count_panels(LAYER_ROADS, PAN_TO_FIX),
+            'pan_total': count_panels_total(),
+            'pan_std': count_panels_by_dimension(DEFAULT_PANEL_DIM),
+            'zones': count_zones(),
+            'roads': count_roads(),
+            'subs': count_subdivisions(),
+            'orgs': count_organizations(),
             'wilaya': self.current_user.get('wilaya'),
             'commune': self.current_user.get('commune'),
+            'creation_date': datetime.now().astimezone().date().strftime('%Y-%m-%d'),
             'output_dir': self._output_dir,
         }
         return self._run_report('2', report_data, label='report')

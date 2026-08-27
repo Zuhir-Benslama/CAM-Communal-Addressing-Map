@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 from datetime import datetime
+from pathlib import Path
 
 # Allow running as a standalone script via subprocess
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -24,9 +25,9 @@ from app.shared.constants import (
     SITUATION_PNG,
     SYMBOLS_SVG,
     TEMPLATE_CMD,
-    TEMPLATE_REP,
     TMP_JSON,
 )
+from app.shared.odt_report import build_statistical_report
 
 logger = logging.getLogger(__name__)
 
@@ -39,19 +40,16 @@ def _output_path(data_dict: dict, filename: str) -> str:
 
 
 def generate_report() -> None:
-    """Generate a report ODT from template."""
-    template_path = TEMPLATE_REP
-
+    """Generate the enriched statistical report ODT programmatically."""
     with open(TMP_JSON, encoding='utf-8') as file:
         data_dict = json.load(file)
-        t = Template(
-            template_path,
+        output_path = Path(
             _output_path(
                 data_dict,
                 f'rapport_{datetime.now().astimezone().date().strftime("%Y-%m-%d")}.odt',
-            ),
+            )
         )
-        t.render(data_dict)
+        build_statistical_report(data_dict, output_path)
 
 
 def generate_order_form() -> None:

@@ -37,9 +37,9 @@ Themes are applied immediately. Language change requires restarting QGIS.
 
 ```bash
 # Copy plugin to QGIS profile
-cp -r plans_adressage ~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/
+cp -r CAM ~/.local/share/QGIS/QGIS3/profiles/default/python/plugins/
 # Or use the new-style profile path
-cp -r plans_adressage ~/.local/share/profiles/default/python/plugins/
+cp -r CAM ~/.local/share/profiles/default/python/plugins/
 ```
 
 Then enable the plugin in QGIS: Plugins → Manage and Install Plugins → Installed → CAM.
@@ -100,66 +100,58 @@ This plugin was originally developed on Windows and required significant changes
 ## Running Tests
 
 ```bash
-cd plans_adressage
-python3 -m pytest test/test_db_ops.py -v
+cd CAM
+python3 -m pytest test/ -v
 ```
 
 ## Project Structure
 
 ```
-plans_adressage/
-├── CAM.py                       # Plugin entry point
-├── CAM_dialog.py                # Main dialog (inherits mixins)
+CAM/
 ├── __init__.py                  # Plugin loader (classFactory)
-├── constants.py                 # App-wide constants & utilities
+├── constants.py                 # Theme/locale constants
 ├── resources.py / resources.qrc # Compiled Qt resources
 ├── metadata.txt                 # QGIS plugin metadata
 ├── Makefile / pb_tool.cfg       # Build/deploy automation
 ├── requirements.txt             # Python dependencies
 ├── SECURITY.md / TODO.md        # Docs
 │
-├── auth/                        # Authentication package
-│   ├── operations.py            # sign_up, sign_in, logout, JWT
-│   └── decorators.py            # login_required decorator
+├── app/                         # Application logic (no QGIS coupling)
+│   ├── main.py                  # CAM plugin class (entry point)
+│   ├── core/
+│   │   ├── base.py              # SQLAlchemy declarative Base
+│   │   ├── config.py            # Theme QSS + mod_spatialite discovery
+│   │   ├── database.py          # Engine/session ConnectionPool singleton
+│   │   ├── migration.py         # DB migrations
+│   │   ├── security.py          # bcrypt password hashing
+│   │   └── _schema_migrations.py# Schema upgrade helpers
+│   ├── orders/
+│   │   ├── repository.py        # add_*/list queries for feature layers
+│   │   └── models/              # SQLAlchemy ORM models (road, zone, ...)
+│   ├── users/
+│   │   ├── service.py           # sign_up, sign_in, logout, JWT
+│   │   ├── repository.py        # User/cookie persistence
+│   │   ├── models.py            # SQLAlchemy User model
+│   │   └── schemas.py           # Marshmallow validation schemas
+│   └── shared/
+│       ├── constants.py         # App-wide constants
+│       ├── exceptions.py        # Custom exceptions
+│       ├── geo.py               # Geometry helpers
+│       └── utils.py             # Locale + misc utilities
 │
-├── db/                          # Database operations package
-│   ├── operations.py            # Queries, config, password hashing
-│   ├── schema.py                # Marshmallow validation schemas
-│   └── writers.py               # add_* functions for all layers
-│
-├── models/                      # SQLAlchemy ORM models
-│   ├── base.py                  # Engine, session, Base
-│   ├── user.py                  # User model
-│   ├── lookup.py                # Lookup tables
-│   └── spatial.py               # Spatial models (Road, Zone, etc.)
-│
-├── gui/                         # GUI components & Python-QML bridge code
-│   ├── main_dialog.py           # Main dialog (QML-backed)
-│   ├── popup_dialog.py          # Feature attribute editor (QML-backed)
-│   ├── entity_list_dialog.py    # Paginated entity list (QML-backed)
+├── gui/                         # Qt Widgets UI
+│   ├── main_dialog.py           # Main dialog (composes the mixins below)
+│   ├── popup_dialog.py          # Feature attribute editor
+│   ├── popup_handlers.py        # Popup save/edit logic
+│   ├── entity_list_dialog.py    # Paginated entity list
+│   ├── dialog_state.py          # Shared theme/locale/action state
+│   ├── dialog_helpers.py        # Shared widget helpers
+│   ├── form_specs.py            # Form field definitions
 │   ├── identify_tool.py         # Map identify tool
 │   ├── measure_tool.py          # Distance measurement tool
-│   └── ui_fillers.py            # ComboBox population functions
-│
-├── qml/                         # Qt Quick / QML UI definitions
-│   ├── qmldir                   # QML module directory
-│   ├── theme/
-│   │   └── Theme.qml            # Theme colour singleton
-│   ├── maindialog/
-│   │   ├── MainDialog.qml       # Main dialog shell
-│   │   ├── LoginPage.qml        # Login screen
-│   │   ├── AddUserPage.qml      # User registration
-│   │   └── MainPage.qml         # Main operational UI + 6 form pages
-│   ├── popup/
-│   │   └── PopupDialog.qml      # Feature attribute editor
-│   ├── entitylist/
-│   │   └── EntityListDialog.qml # Paginated entity list
-│   └── components/
-│       ├── StyledButton.qml     # Reusable styled button
-│       ├── StyledComboBox.qml   # QML combo with theme integration
-│       ├── StyledGroupBox.qml   # Themed group box
-│       ├── StyledLabel.qml      # Themed label
-│       └── StyledTextField.qml  # Themed text input
+│   ├── ui_fillers.py            # ComboBox population functions
+│   ├── pages/                   # Main dialog pages (login, add_user, main, settings)
+│   └── popup_pages/             # Per-layer popup editors (road, zone, ...)
 │
 ├── mixins/                      # MainDialog mixin classes
 │   ├── auth_mixin.py            # Authentication UI
@@ -171,7 +163,8 @@ plans_adressage/
 │   ├── layer_ops_mixin.py       # Tab/layer management
 │   ├── map_tools_mixin.py       # Map tool switching
 │   ├── report_mixin.py          # Report generation
-│   └── symbol_export_mixin.py   # Symbol style export
+│   ├── symbol_export_mixin.py   # Symbol style export
+│   └── _protocols.py            # Shared protocol definitions
 │
 ├── layer/                       # Layer utilities
 │   ├── editing.py               # start/stop editing, save
@@ -179,28 +172,21 @@ plans_adressage/
 │   └── utils.py                 # Layer creation helpers
 │
 ├── scripts/                     # Standalone scripts
+│   ├── widget_texts.py          # i18n string lookup
 │   ├── lookup_data.py           # Lookup tables & i18n (active)
+│   ├── migrate_db.py            # DB migration helper
+│   ├── reporting.py             # Report generation helper
 │   └── plugin_upload.py         # Plugin upload helper
 │
-├── resources/                   # Static assets
-│   ├── icon.png / map.png / situation.png
-│   ├── chart.svg / north_arrow.svg / scale_bar.svg / symbols.svg
-│   └── DejaVuSans.ttf
-│
-├── templates/                   # ODT report templates
-│   ├── cmd.odt / rep.odt
-│   └── map_a0.odt / map_a3.odt
-│
+├── resources/                   # Static assets (icons, QSS templates, fonts)
+├── templates/                   # ODT report templates (cmd/rep/map_a0/map_a3)
 ├── data/                        # Runtime data
 │   ├── database.sqlite          # Spatial database
-│   ├── auth.sqlite              # Auth database
-│   ├── qgis_config.json / cookie.toml / tmp.json
-│   └── Views.sql
+│   ├── cookie.toml              # Session cookie
+│   ├── qgis_config.json         # App configuration
+│   └── Views.sql                # SQL view definitions
 │
-├── test/                        # Unit tests
-│   ├── test_db_ops.py
-│   ├── test_init.py
-│   └── ...
+├── test/                        # Unit tests (mocked, no QGIS required)
 ├── i18n/ icons/ style/ help/ template_data/
 └── README.md
 ```

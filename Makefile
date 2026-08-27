@@ -52,8 +52,6 @@ EXTRA_DIRS = mixins gui layer scripts resources templates data icons i18n style 
 
 COMPILED_RESOURCE_FILES = resources.py
 
-PEP8EXCLUDE=pydev,conf.py,third_party,ui
-
 # QGISDIR points to the location where your plugin should be installed.
 # This varies by platform, relative to your HOME directory:
 #	* Linux:
@@ -230,28 +228,17 @@ doc:
 	@echo "------------------------------------"
 	cd help; make html
 
-pylint:
+lint:
 	@echo
-	@echo "-----------------"
-	@echo "Pylint violations"
-	@echo "-----------------"
-	@pylint --reports=n --rcfile=pylintrc . || true
-	@echo
-	@echo "----------------------"
-	@echo "If you get a 'no module named qgis.core' error, try sourcing"
-	@echo "the helper script we have provided first then run make pylint."
-	@echo "e.g. source run-env-linux.sh <path to qgis install>; make pylint"
-	@echo "----------------------"
+	@echo "-------------------"
+	@echo "Ruff lint checks"
+	@echo "-------------------"
+	@ruff check .
+	@ruff format --check .
 
-
-# Run pep8 style checking
-#http://pypi.python.org/pypi/pep8
-pep8:
+typecheck:
 	@echo
-	@echo "-----------"
-	@echo "PEP8 issues"
-	@echo "-----------"
-	@pep8 --repeat --max-line-length=88 --ignore=E203,E121,E122,E123,E124,E125,E126,E127,E128,W504 --exclude $(PEP8EXCLUDE) . || true
-	@echo "-----------"
-	@echo "Ignored in PEP8 check:"
-	@echo $(PEP8EXCLUDE)
+	@echo "-------------------"
+	@echo "Mypy type checks"
+	@echo "-------------------"
+	@mypy app gui layer mixins constants.py
