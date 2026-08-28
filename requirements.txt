@@ -9,7 +9,3 @@ python-bidi>=0.6
 arabic-reshaper>=3.0
 bcrypt>=4.3
 py3o.template>=0.10
-
-# Dev / quality
-ruff>=0.11
-pytest>=8.0

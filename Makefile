@@ -105,11 +105,11 @@ test: compile
 	@echo "----------------------"
 	@echo "Regression Test Suite"
 	@echo "----------------------"
-	@-export PYTHONPATH=`pwd`:$(PYTHONPATH); \
+	@export PYTHONPATH=`pwd`:$(PYTHONPATH); \
 		export QGIS_DEBUG=0; \
 		export QGIS_LOG_FILE=/dev/null; \
 		python3 -m pytest test/ -v --ignore=test/test_qgis_environment.py \
-		3>&1 1>&2 2>&3 3>&- || true
+		--cov --cov-report=term-missing --cov-fail-under=80
 	@echo "----------------------"
 	@echo "If you get a 'no module named qgis.core error, try sourcing"
 	@echo "the helper script we have provided first then run make test."

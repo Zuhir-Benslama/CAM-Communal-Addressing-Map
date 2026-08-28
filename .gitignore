@@ -48,6 +48,10 @@ venv/
 template_data/communes.geojson
 template_data/communes_wkt.json
 template_data/replacements/*.bak
+# 52MB raw pg_dump; tracked as GeoPackage instead (communes.gpkg),
+# regenerate with scripts/generate_communes_gpkg.py
+template_data/replacements/communes_with_geom.sql
+template_data/replacements/communes_with_geom.sql.gz
 
 # Unrelated assets
 liquid-glass/
