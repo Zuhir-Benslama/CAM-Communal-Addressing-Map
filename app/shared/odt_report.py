@@ -40,6 +40,8 @@ _ACCENT = '#1f4e79'  # deep blue used for title band and section headers
 _ACCENT_LIGHT = '#ddebf7'
 _ZEBRA = '#f2f7fc'
 _WHITE = '#ffffff'
+_CELL_BORDER = '0.5pt solid #7f7f7f'
+_CELL_PADDING = '0.12cm'
 
 
 def _q(tag: str, uri: str) -> str:
@@ -173,9 +175,6 @@ class _OdtBuilder:
         p = self._paragraph(self.text, 'TitleRow')
         self._span(p, 'TitleText', value)
 
-    def subtitle(self, value: str) -> None:
-        self._paragraph(self.text, 'Subtitle').text = value
-
     def blank(self, style: str = 'Spacer') -> None:
         self._paragraph(self.text, style)
 
@@ -294,12 +293,6 @@ def _styles_xml() -> bytes:
     )
     _text_style(
         auto,
-        'Subtitle',
-        'paragraph',
-        **{'paragraph-properties': {'text-align': 'center', 'margin-bottom': '0.4cm'}},
-    )
-    _text_style(
-        auto,
         'SectionHeader',
         'paragraph',
         **{
@@ -401,8 +394,8 @@ def _styles_xml() -> bytes:
         'table-cell',
         **{
             'table-cell-properties': {
-                'border': '0.5pt solid #7f7f7f',
-                'padding': '0.12cm',
+                'border': _CELL_BORDER,
+                'padding': _CELL_PADDING,
             }
         },
     )
@@ -412,8 +405,8 @@ def _styles_xml() -> bytes:
         'table-cell',
         **{
             'table-cell-properties': {
-                'border': '0.5pt solid #7f7f7f',
-                'padding': '0.12cm',
+                'border': _CELL_BORDER,
+                'padding': _CELL_PADDING,
                 'background-color': _ZEBRA,
             }
         },
@@ -424,8 +417,8 @@ def _styles_xml() -> bytes:
         'table-cell',
         **{
             'table-cell-properties': {
-                'border': '0.5pt solid #1f3864',
-                'padding': '0.12cm',
+                'border': f'0.5pt solid {_ACCENT}',
+                'padding': _CELL_PADDING,
                 'background-color': _ACCENT,
             }
         },

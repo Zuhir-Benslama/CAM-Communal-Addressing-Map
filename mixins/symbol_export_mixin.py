@@ -14,7 +14,6 @@ from qgis.core import (
     QgsLayoutExporter,
     QgsLayoutItemLegend,
     QgsLayoutItemMap,
-    QgsLayoutItemPage,
     QgsLayoutItemPicture,
     QgsLayoutItemScaleBar,
     QgsLayoutPoint,
@@ -31,7 +30,6 @@ from qgis.PyQt.QtGui import QColor, QFont
 
 from ..constants import (
     LAYER_MUNICIPALITY,
-    LAYER_NAMES,
     NORTH_ARROW_SVG,
     SCALE_BAR_SVG,
     SITUATION_PNG,
@@ -89,17 +87,14 @@ class SymbolExportMixin:
         return legend
 
     @staticmethod
-    def _populate_legend_model(legend, layers_to_hide):
-        """Populate legend with visible desired layers."""
+    def _populate_legend_model(legend, visible_layers):
+        """Populate legend with the layers shown in the layout map."""
         legend_model = legend.model()
         root = legend_model.rootGroup()
         root.removeAllChildren()
 
-        for layer_name in LAYER_NAMES:
-            for layer in QgsProject.instance().mapLayers().values():
-                if layer.name() == layer_name and layer.name() not in layers_to_hide:
-                    root.addLayer(layer)
-                    break
+        for layer in visible_layers:
+            root.addLayer(layer)
 
         legend.setLegendFilterByMapEnabled(False)
         legend.adjustBoxSize()
@@ -148,7 +143,7 @@ class SymbolExportMixin:
         layout.addLayoutItem(map_item)
 
         legend = self._build_legend(layout, map_item)
-        self._populate_legend_model(legend, layers_to_hide)
+        self._populate_legend_model(legend, visible_layers)
         self._adjust_page_size(layout, map_item, legend)
 
         output_path = SYMBOLS_SVG
@@ -158,6 +153,7 @@ class SymbolExportMixin:
         svg_settings.dpi = 900
 
         result = exporter.exportToSvg(str(output_path), svg_settings)
+        project.layoutManager().removeLayout(layout)
 
         if result == QgsLayoutExporter.Success:
             logger.info(
@@ -168,8 +164,11 @@ class SymbolExportMixin:
         logger.error('Export failed!')
         return None
 
-    def map_situation(self: HasSymbolMapContext) -> None:
-        """Export a situation map highlighting the municipality to PNG."""
+    def map_situation(self: HasSymbolMapContext) -> bool:
+        """Export a situation map highlighting the municipality to PNG.
+
+        Returns True only when the image was written successfully.
+        """
         project = QgsProject.instance()
 
         municipality_layers = QgsProject.instance().mapLayersByName(LAYER_MUNICIPALITY)
@@ -178,7 +177,7 @@ class SymbolExportMixin:
                 'Municipality layer "%s" not found for situation map',
                 LAYER_MUNICIPALITY,
             )
-            return
+            return False
         municipality_layer = municipality_layers[0]
 
         base_layer = None
@@ -195,7 +194,7 @@ class SymbolExportMixin:
             logger.warning(
                 'No base map layer (satellite or raster) available for situation map'
             )
-            return
+            return False
 
         red_symbol = QgsFillSymbol.createSimple(
             {'color': '255,0,0,100', 'outline_color': '255,0,0', 'outline_width': '0.6'}
@@ -226,21 +225,27 @@ class SymbolExportMixin:
         exporter = QgsLayoutExporter(layout)
         settings = QgsLayoutExporter.ImageExportSettings()
         output_path = SITUATION_PNG
-        exporter.exportToImage(str(output_path), settings)
+        result = exporter.exportToImage(str(output_path), settings)
+        project.layoutManager().removeLayout(layout)
 
+        if result != QgsLayoutExporter.Success:
+            logger.error('Situation map export to %s failed', output_path)
+            return False
         logger.info('Map exported to %s', output_path)
+        return True
 
-    def north(self: HasIface) -> None:
-        """Export a north arrow SVG aligned with the current map rotation."""
+    def north(self: HasIface) -> bool:
+        """Export a north arrow SVG aligned with the current map rotation.
+
+        Returns True only when the SVG was written successfully.
+        """
         project = QgsProject.instance()
         layout = QgsPrintLayout(project)
         layout.initializeDefaults()
         layout.setName('NorthArrowLayout')
 
-        page = QgsLayoutItemPage(layout)
+        page = layout.pageCollection().pages()[0]
         page.setPageSize(QgsLayoutSize(50, 50, QgsUnitTypes.LayoutMillimeters))
-
-        layout.pageCollection().addPage(page)
 
         north_arrow = QgsLayoutItemPicture(layout)
         north_arrow.setPicturePath(
@@ -268,18 +273,27 @@ class SymbolExportMixin:
 
         exporter = QgsLayoutExporter(layout)
         output_path = NORTH_ARROW_SVG
-        exporter.exportToSvg(str(output_path), export_settings)
+        result = exporter.exportToSvg(str(output_path), export_settings)
+        project.layoutManager().removeLayout(layout)
 
-    def scale(self: HasScaleContext) -> None:
-        """Export a scale bar SVG matching the current map canvas scale."""
+        if result != QgsLayoutExporter.Success:
+            logger.error('North arrow export to %s failed', output_path)
+            return False
+        logger.info('North arrow exported to %s', output_path)
+        return True
+
+    def scale(self: HasScaleContext) -> bool:
+        """Export a scale bar SVG matching the current map canvas scale.
+
+        Returns True only when the SVG was written successfully.
+        """
         project = QgsProject.instance()
         layout = QgsPrintLayout(project)
         layout.initializeDefaults()
         layout.setName('ScaleBarLayout')
 
-        page = QgsLayoutItemPage(layout)
+        page = layout.pageCollection().pages()[0]
         page.setPageSize(QgsLayoutSize(1, 1, QgsUnitTypes.LayoutMillimeters))
-        layout.pageCollection().addPage(page)
 
         map_item = QgsLayoutItemMap(layout)
         map_item.setRect(QRectF(10, 10, 80, 80))
@@ -329,4 +343,11 @@ class SymbolExportMixin:
 
         output_path = SCALE_BAR_SVG
         exporter = QgsLayoutExporter(layout)
-        exporter.exportToSvg(str(output_path), export_settings)
+        result = exporter.exportToSvg(str(output_path), export_settings)
+        project.layoutManager().removeLayout(layout)
+
+        if result != QgsLayoutExporter.Success:
+            logger.error('Scale bar export to %s failed', output_path)
+            return False
+        logger.info('Scale bar exported to %s', output_path)
+        return True

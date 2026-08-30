@@ -201,14 +201,14 @@ class HasDrawSignals(Protocol):
 class HasExportMethods(Protocol):
     """Mixin host provides export-related methods."""
 
-    def north(self) -> None:
-        """Render a north arrow on the layout."""
+    def north(self) -> bool:
+        """Export a north arrow SVG; True only on success."""
 
-    def scale(self) -> None:
-        """Render a scale bar on the layout."""
+    def scale(self) -> bool:
+        """Export a scale bar SVG; True only on success."""
 
-    def map_situation(self) -> None:
-        """Render a situation map on the layout."""
+    def map_situation(self) -> bool:
+        """Export a situation map PNG; True only on success."""
 
     def symbols(self) -> str | None:
         """Render legend symbols on the layout."""
@@ -421,3 +421,9 @@ class HasFullAuthContext(
 
     def _show_error(self, text: str) -> None:
         """Show a critical error message dialog."""
+
+    def disconnect_map_canvas(self) -> None:
+        """Detach from the singleton map canvas before unload."""
+
+    def _restore_layout_direction(self) -> None:
+        """Restore the application layout direction at dialog close."""

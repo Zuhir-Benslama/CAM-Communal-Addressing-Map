@@ -201,6 +201,8 @@ class AuthMixin:
         page = self.router.findChild(QWidget, 'login')
         if page:
             self.router.setCurrentWidget(page)
+        self.disconnect_map_canvas()
+        self._restore_layout_direction()
         event.accept()
 
     def on_select_wilaya(self: HasLocationWidgets, _index: Any) -> None:

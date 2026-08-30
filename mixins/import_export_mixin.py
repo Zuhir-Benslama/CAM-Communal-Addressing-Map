@@ -56,8 +56,8 @@ class ImportExportMixin:
         The job runs in the background; :meth:`_on_map_render_finished`
         continues the export when it completes. Returns None on failure.
         """
-        self.north()
-        self.scale()
+        if not self.north() or not self.scale():
+            return None
 
         refresh_all_layers(self.iface)
 
@@ -165,8 +165,8 @@ class ImportExportMixin:
         if not self._validate_export_ready():
             return
 
-        if include_situation:
-            self.map_situation()
+        if include_situation and not self.map_situation():
+            return
 
         job = self._start_map_render()
         if job is None:

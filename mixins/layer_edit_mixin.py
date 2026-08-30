@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import contextlib
 import logging
+from collections.abc import Callable
 from typing import Any
 
 from qgis.core import QgsProject
@@ -109,6 +110,31 @@ class LayerEditMixin:
             return {f'{field_base}_{loc}': value}
         return {}
 
+    def _add_feature(
+        self: HasBasicEditContext,
+        *,
+        repo_fn: Callable[..., Any],
+        kwargs: dict[str, Any],
+        success_message: str,
+        error_message: str | Callable[[Exception], str],
+        failure_hint: str,
+    ) -> bool:
+        """Persist a new feature via *repo_fn* and report the outcome.
+
+        Shows *success_message* on success. On failure logs *failure_hint*
+        and shows *error_message* (a plain string or a callable receiving
+        the exception). Returns True only when the feature was persisted.
+        """
+        try:
+            repo_fn(**kwargs)
+        except SQLAlchemyError as exc:
+            logger.exception(failure_hint)
+            message = error_message(exc) if callable(error_message) else error_message
+            self._show_error(message)
+            return False
+        self._show_success(success_message)
+        return True
+
     def add_panel(
         self: HasFullEditContext,
     ) -> None:
@@ -124,13 +150,13 @@ class LayerEditMixin:
         if not geometry_wkt or not feature_id:
             return
         try:
-            layer = ref_data.get('layer_name')
-            ref = ref_data.get('id')
             kwargs = {
                 'geometry_wkt': geometry_wkt,
                 'record_id': feature_id,
                 'mount_status': self.mount_status.currentData(),
             }
+            layer = ref_data.get('layer_name')
+            ref = ref_data.get('id')
             if layer == LAYER_FACILITIES:
                 add_panel_sign(
                     **kwargs, road_id=None, subdivision_id=None, organization_id=ref
@@ -143,6 +169,9 @@ class LayerEditMixin:
                 add_panel_sign(
                     **kwargs, road_id=None, subdivision_id=ref, organization_id=None
                 )
+            else:
+                logger.warning('Unsupported reference layer for panel: %s', layer)
+                return
 
             if self.measure_tool:
                 self.show_confirm_dialog(
@@ -171,21 +200,22 @@ class LayerEditMixin:
         geometry_wkt, feature_id = self._get_geometry_and_id('organization')
         if not geometry_wkt or not feature_id:
             return
-        try:
-            name_val = validate_text(self.org_name.text())
-            kwargs = {
-                'geometry_wkt': geometry_wkt,
-                'record_id': feature_id,
-                'org_cat': self.org_cat.currentData(),
-                'org_name': name_val,
-                'org_type': self.org_type.currentData(),
-            }
-            kwargs.update(self._make_locale_kwargs('org_name', name_val))
-            add_organization(**kwargs)
-            self._show_success('Facility added successfully')
-        except SQLAlchemyError:
-            logger.exception('Failed to add organization')
-            self._show_error('Cannot add facility, it already exists')
+        name_val = validate_text(self.org_name.text())
+        kwargs = {
+            'geometry_wkt': geometry_wkt,
+            'record_id': feature_id,
+            'org_cat': self.org_cat.currentData(),
+            'org_name': name_val,
+            'org_type': self.org_type.currentData(),
+        }
+        kwargs.update(self._make_locale_kwargs('org_name', name_val))
+        self._add_feature(
+            repo_fn=add_organization,
+            kwargs=kwargs,
+            success_message='Facility added successfully',
+            error_message='Cannot add facility, it already exists',
+            failure_hint='Failed to add organization',
+        )
 
     def add_road(
         self: HasBasicEditContext,
@@ -196,21 +226,22 @@ class LayerEditMixin:
         geometry_wkt, feature_id = self._get_geometry_and_id('road')
         if not geometry_wkt or not feature_id:
             return
-        try:
-            name_val = validate_text(self.road_name.text())
-            kwargs = {
-                'geometry_wkt': geometry_wkt,
-                'record_id': feature_id,
-                'road_decision': None,
-                'road_name': name_val,
-                'type_road': self.type_road.currentData(),
-            }
-            kwargs.update(self._make_locale_kwargs('road_name', name_val))
-            add_road(**kwargs)
-            self._show_success('Road added successfully')
-        except SQLAlchemyError:
-            logger.exception('Failed to add road')
-            self._show_error('Cannot add road, it already exists')
+        name_val = validate_text(self.road_name.text())
+        kwargs = {
+            'geometry_wkt': geometry_wkt,
+            'record_id': feature_id,
+            'road_decision': None,
+            'road_name': name_val,
+            'type_road': self.type_road.currentData(),
+        }
+        kwargs.update(self._make_locale_kwargs('road_name', name_val))
+        self._add_feature(
+            repo_fn=add_road,
+            kwargs=kwargs,
+            success_message='Road added successfully',
+            error_message='Cannot add road, it already exists',
+            failure_hint='Failed to add road',
+        )
 
     def show_confirm_dialog(
         self: HasTranslation,
@@ -256,27 +287,39 @@ class LayerEditMixin:
             logger.warning('Failed to get id from identify tool: %s', e)
             ref_data = None
         try:
-            common = {
-                'geometry_wkt': geometry_wkt,
-                'record_id': feature_id,
-                'repetition': validate_text(self.repetition.text()),
-                'value': validate_text(self.num_val.text()),
-                'state': self.num_state.currentData(),
-                'activity_cat': self.activity_cat.currentData(),
-                'activity_type': self.activity_type.currentData(),
-            }
-            if ref_data and ref_data.get('layer_name') == LAYER_ROADS:
-                add_numbering(
-                    **common,
-                    road_id=ref_data.get('id'),
-                    subdivision_id=None,
-                )
-            elif ref_data and ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
-                add_numbering(
-                    **common,
-                    road_id=None,
-                    subdivision_id=ref_data.get('id'),
-                )
+            try:
+                common = {
+                    'geometry_wkt': geometry_wkt,
+                    'record_id': feature_id,
+                    'repetition': validate_text(self.repetition.text()),
+                    'value': validate_text(self.num_val.text()),
+                    'state': self.num_state.currentData(),
+                    'activity_cat': self.activity_cat.currentData(),
+                    'activity_type': self.activity_type.currentData(),
+                }
+                if ref_data and ref_data.get('layer_name') == LAYER_ROADS:
+                    add_numbering(
+                        **common,
+                        road_id=ref_data.get('id'),
+                        subdivision_id=None,
+                    )
+                elif ref_data and ref_data.get('layer_name') == LAYER_SUBDIVISIONS:
+                    add_numbering(
+                        **common,
+                        road_id=None,
+                        subdivision_id=ref_data.get('id'),
+                    )
+                else:
+                    layer = ref_data.get('layer_name') if ref_data else None
+                    logger.warning(
+                        'Unsupported reference layer for numbering: %s',
+                        layer,
+                    )
+                    return
+            except (SQLAlchemyError, TypeError, AttributeError, ValueError) as e:
+                logger.exception('Failed to add numbering')
+                self._show_error(str(e))
+                return
 
             if self.measure_tool:
                 self.show_confirm_dialog(
@@ -289,13 +332,10 @@ class LayerEditMixin:
                 )
             else:
                 self._show_success('Numbering added successfully')
-        except (SQLAlchemyError, TypeError, AttributeError, ValueError) as e:
-            logger.exception('Failed to add numbering')
-            self._show_error(str(e))
-
-        self.num_val.setFocus()
-        self.num_val.clear()
-        self._draw_handler(LAYER_NUMBERING)
+            self.num_val.setFocus()
+            self.num_val.clear()
+        finally:
+            self._draw_handler(LAYER_NUMBERING)
 
     def add_city(
         self: HasBasicEditContext,
@@ -306,20 +346,21 @@ class LayerEditMixin:
         geometry_wkt, feature_id = self._get_geometry_and_id('subdivision')
         if not geometry_wkt or not feature_id:
             return
-        try:
-            name_val = validate_text(self.subd_name.text())
-            kwargs = {
-                'geometry_wkt': geometry_wkt,
-                'record_id': feature_id,
-                'name': name_val,
-                'subdivision_type': self.subd_type.currentData(),
-            }
-            kwargs.update(self._make_locale_kwargs('name', name_val))
-            add_subdivision(**kwargs)
-            self._show_success('Subdivision added successfully')
-        except SQLAlchemyError as e:
-            logger.exception('Failed to add city')
-            self._show_error(str(e))
+        name_val = validate_text(self.subd_name.text())
+        kwargs = {
+            'geometry_wkt': geometry_wkt,
+            'record_id': feature_id,
+            'name': name_val,
+            'subdivision_type': self.subd_type.currentData(),
+        }
+        kwargs.update(self._make_locale_kwargs('name', name_val))
+        self._add_feature(
+            repo_fn=add_subdivision,
+            kwargs=kwargs,
+            success_message='Subdivision added successfully',
+            error_message=lambda exc: str(exc),
+            failure_hint='Failed to add city',
+        )
 
     def add_zone(
         self: HasBasicEditContext,
@@ -330,17 +371,18 @@ class LayerEditMixin:
         geometry_wkt, feature_id = self._get_geometry_and_id('zone')
         if not geometry_wkt or not feature_id:
             return
-        try:
-            name_val = validate_text(self.nom_zone.text())
-            kwargs = {
-                'geometry_wkt': geometry_wkt,
-                'record_id': feature_id,
-                'name': name_val,
-                'zone_type': self.zone_type.currentData(),
-            }
-            kwargs.update(self._make_locale_kwargs('name', name_val))
-            add_zone(**kwargs)
-            self._show_success('Zone added successfully')
-        except SQLAlchemyError:
-            logger.exception('Failed to add zone')
-            self._show_error('Cannot add zone, zone already exists')
+        name_val = validate_text(self.nom_zone.text())
+        kwargs = {
+            'geometry_wkt': geometry_wkt,
+            'record_id': feature_id,
+            'name': name_val,
+            'zone_type': self.zone_type.currentData(),
+        }
+        kwargs.update(self._make_locale_kwargs('name', name_val))
+        self._add_feature(
+            repo_fn=add_zone,
+            kwargs=kwargs,
+            success_message='Zone added successfully',
+            error_message='Cannot add zone, zone already exists',
+            failure_hint='Failed to add zone',
+        )

@@ -283,6 +283,7 @@ def _migrate_data(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
 
         placeholders = ','.join('?' for _ in new_cols)
         new_col_list = ','.join(f'"{c}"' for c in new_cols)
+        row_key = 'pkuid' if 'pkuid' in old_cols else 'id'
 
         migrated = 0
         for row in old_rows:
@@ -297,7 +298,7 @@ def _migrate_data(old: sqlite3.Connection, new: sqlite3.Connection) -> None:
                 logger.warning(
                     '  %s row %s: %s',
                     table,
-                    row.get('pkuid', row.get('id', '?')),
+                    row[row_key],
                     e,
                 )
         logger.info('  %s: %d / %d rows migrated', table, migrated, len(old_rows))
@@ -361,12 +362,12 @@ def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
             merged = 0
             for row in users:
                 try:
-                    target.execute(
+                    cursor = target.execute(
                         f'INSERT OR IGNORE INTO user ({col_list}) '  # nosec S608 - user is a fixed table name
                         f'VALUES ({placeholders})',
                         tuple(row[c] for c in cols),
                     )
-                    if target.total_changes > 0:
+                    if cursor.rowcount > 0:
                         merged += 1
                 except (sqlite3.OperationalError, ValueError) as e:
                     logger.warning('  user %s: %s', row['id'], e)

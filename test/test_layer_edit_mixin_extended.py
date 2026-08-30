@@ -721,8 +721,10 @@ class TestAddNumbering(unittest.TestCase):
         self.h.mixin.measure_tool = None
         with patch.object(self.h.mixin, '_show_error'):
             self.h.mixin.add_numbering()
-        self.h.mixin.num_val.setFocus.assert_called_once()
-        self.h.mixin.num_val.clear.assert_called_once()
+        # No supported reference was bound: the value the user typed must
+        # not be wiped and no success path may run.
+        self.h.mixin.num_val.setFocus.assert_not_called()
+        self.h.mixin.num_val.clear.assert_not_called()
         self.h.mixin._draw_handler.assert_called_once_with(LAYER_NUMBERING)
 
 

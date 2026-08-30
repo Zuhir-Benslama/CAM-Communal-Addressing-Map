@@ -168,6 +168,7 @@ def _build_data_section(dialog: MainDialog, layout: QVBoxLayout) -> QWidget:
 
 def _build_form_page(dialog: MainDialog) -> None:
     page = QWidget()
+    page.setObjectName('mainForm')
     layout = QVBoxLayout(page)
     layout.setContentsMargins(8, 8, 8, 8)
     layout.setSpacing(12)

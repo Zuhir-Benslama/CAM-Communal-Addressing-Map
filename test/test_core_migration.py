@@ -481,7 +481,8 @@ class TestMergeAuthUsers(unittest.TestCase):
             os.unlink(auth_path)
             os.unlink(target_path)
 
-    def test_merge_total_changes_tracked(self):
+    def test_merge_counts_only_inserted_users(self):
+        """INSERT OR IGNORE rows that are ignored must not count as merged."""
         with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as af:
             auth_path = af.name
         with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as tf:
@@ -490,29 +491,20 @@ class TestMergeAuthUsers(unittest.TestCase):
             ac = sqlite3.connect(auth_path)
             ac.execute('CREATE TABLE user (id TEXT, username TEXT)')
             ac.execute("INSERT INTO user VALUES ('u1', 'alice')")
+            ac.execute("INSERT INTO user VALUES ('u2', 'bob')")
             ac.commit()
             ac.close()
 
             tc = sqlite3.connect(target_path)
-            tc.execute('CREATE TABLE user (id TEXT, username TEXT)')
+            # u1 already exists in the target, so its INSERT OR IGNORE is a no-op.
+            tc.execute('CREATE TABLE user (id TEXT PRIMARY KEY, username TEXT)')
+            tc.execute("INSERT INTO user VALUES ('u1', 'alice')")
             tc.commit()
             tc.close()
 
-            original_connect = sqlite3.connect
-
-            def _connect(path, *a, **kw):
-                if path == target_path:
-                    m = MagicMock()
-                    m.total_changes = 0
-                    return m
-                return original_connect(path, *a, **kw)
-
-            with (
-                patch('app.core.migration.sqlite3.connect', side_effect=_connect),
-                self.assertLogs('app.core.migration', level='INFO') as cm,
-            ):
+            with self.assertLogs('app.core.migration', level='INFO') as cm:
                 _merge_auth_users(target_path, auth_path)
-            self.assertTrue(any('Merged' in m for m in cm.output))
+            self.assertTrue(any('Merged 1 user(s)' in m for m in cm.output))
         finally:
             os.unlink(auth_path)
             os.unlink(target_path)

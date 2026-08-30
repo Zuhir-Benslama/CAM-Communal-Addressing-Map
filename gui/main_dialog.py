@@ -34,6 +34,7 @@ from qgis.PyQt.QtWidgets import (
     QMessageBox,
     QStackedWidget,
     QVBoxLayout,
+    QWidget,
 )
 
 from ..constants import DEFAULT_THEME, LOCALE_AR, current_locale
@@ -108,8 +109,8 @@ class Action(Enum):
     EDIT = 'edit'
 
 
-# Dispatch table for _on_submit — maps action names to 0-argument handlers.
-_SUBMIT_DISPATCH: dict[Action, Callable[[], None]] = {}
+# Submit actions are dispatched per instance via ``self._submit_dispatch``
+# (populated in :meth:`MainDialog._populate_dispatch`).
 
 
 def _run_init_steps(steps: list[tuple[str, Callable[..., Any]]]) -> None:
@@ -154,6 +155,7 @@ class MainDialog(
         super().__init__(parent)
         self.iface = iface
         self._tr_locale = current_locale()
+        self._previous_layout_dir = QApplication.layoutDirection()
         if self._tr_locale == LOCALE_AR:
             QApplication.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         else:
@@ -161,6 +163,7 @@ class MainDialog(
 
         self._current_theme = DEFAULT_THEME
         self._settings_visible = False
+        self._submit_dispatch: dict[Action, Callable[[], None]] = {}
 
         _run_init_steps(
             [
@@ -271,30 +274,28 @@ class MainDialog(
     # ------------------------------------------------------------------
 
     def _populate_dispatch(self) -> None:
-        _SUBMIT_DISPATCH.update(
-            {
-                Action.LOGIN: self.login_user,
-                Action.ADD_USR: self.submit_add_usr,
-                Action.RESTORE_DB: self.restore_database,
-                Action.ZONE: self.add_zone,
-                Action.ROAD: self.add_road,
-                Action.ORG: self.add_organization,
-                Action.CITY: self.add_city,
-                Action.NUM: self.add_numbering,
-                Action.PAN: self.add_panel,
-                Action.DRAW: self.start_drawing,
-                Action.SELECT: self.start_selecting,
-                Action.EDIT: self.start_editing,
-                Action.MEASURE: self.activate_measure,
-                Action.SAVE_ACTION: lambda: on_save_action(self),
-                Action.SAVE_NEW_TYPE: self._save_new_type,
-                Action.LIST_ROADS: self.list_road_entries,
-                Action.LIST_ORGS: self.list_organizations,
-                Action.LIST_SUBDS: self.list_subdivisions,
-                Action.LIST_NUMS: self.list_numberings,
-                Action.LIST_PANELS: self.list_panel_signs,
-            }
-        )
+        self._submit_dispatch = {
+            Action.LOGIN: self.login_user,
+            Action.ADD_USR: self.submit_add_usr,
+            Action.RESTORE_DB: self.restore_database,
+            Action.ZONE: self.add_zone,
+            Action.ROAD: self.add_road,
+            Action.ORG: self.add_organization,
+            Action.CITY: self.add_city,
+            Action.NUM: self.add_numbering,
+            Action.PAN: self.add_panel,
+            Action.DRAW: self.start_drawing,
+            Action.SELECT: self.start_selecting,
+            Action.EDIT: self.start_editing,
+            Action.MEASURE: self.activate_measure,
+            Action.SAVE_ACTION: lambda: on_save_action(self),
+            Action.SAVE_NEW_TYPE: self._save_new_type,
+            Action.LIST_ROADS: self.list_road_entries,
+            Action.LIST_ORGS: self.list_organizations,
+            Action.LIST_SUBDS: self.list_subdivisions,
+            Action.LIST_NUMS: self.list_numberings,
+            Action.LIST_PANELS: self.list_panel_signs,
+        }
 
     def _connect_signals(self) -> None:
         # Login page
@@ -332,7 +333,6 @@ class MainDialog(
         self._combo_locale.currentIndexChanged.connect(
             lambda i: on_locale_changed(self, i)
         )
-        self._combo_map_options.currentIndexChanged.connect(self._on_map_option_changed)
 
         # Save buttons
         self._btn_save_zone.clicked.connect(lambda: self._on_submit(Action.ZONE))
@@ -369,32 +369,29 @@ class MainDialog(
                 page_name = Action(page_name)
             except ValueError:
                 return
-        handler = _SUBMIT_DISPATCH.get(page_name)
+        handler = self._submit_dispatch.get(page_name)
         if handler is not None:
             handler()
         else:
             logger.error('Unknown submit action: %s', page_name)
 
-    def _on_map_option_changed(self, index: int) -> None:
-        logger.info(
-            'map_options changed: index=%d, text=%s, data=%s',
-            index,
-            self._combo_map_options.currentText(),
-            self._combo_map_options.currentData(),
-        )
-
     def _switch_page(self, page_name: str) -> None:
-        mapping = {
-            'login': 0,
-            'add_usr': 1,
-            'main': 2,
-        }
-        idx = mapping.get(page_name, 0)
-        self._page_stack.setCurrentIndex(idx)
+        page = self._page_stack.findChild(QWidget, page_name)
+        if page is not None:
+            self._page_stack.setCurrentWidget(page)
+        else:
+            logger.warning('Unknown page: %s', page_name)
 
     def _toggle_settings(self) -> None:
         self._settings_visible = not self._settings_visible
-        self._main_stack.setCurrentIndex(1 if self._settings_visible else 0)
+        target = 'settingsTab' if self._settings_visible else 'mainForm'
+        page = self._main_stack.findChild(QWidget, target)
+        if page is not None:
+            self._main_stack.setCurrentWidget(page)
+
+    def _restore_layout_direction(self) -> None:
+        """Restore the application layout direction saved at startup."""
+        QApplication.setLayoutDirection(self._previous_layout_dir)
 
     # ------------------------------------------------------------------
     # State

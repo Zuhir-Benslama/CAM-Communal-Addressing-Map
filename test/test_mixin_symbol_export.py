@@ -207,7 +207,6 @@ class TestSymbolExportMixin(unittest.TestCase):
         with (
             patch.object(self.mod, 'QgsProject') as mock_qp,
             patch.object(self.mod, 'QgsPrintLayout'),
-            patch.object(self.mod, 'QgsLayoutItemPage'),
             patch.object(self.mod, 'QgsLayoutItemPicture'),
             patch.object(self.mod, 'QgsApplication'),
             patch.object(self.mod, 'QgsLayoutExporter'),
@@ -220,7 +219,6 @@ class TestSymbolExportMixin(unittest.TestCase):
         with (
             patch.object(self.mod, 'QgsProject') as mock_qp,
             patch.object(self.mod, 'QgsPrintLayout'),
-            patch.object(self.mod, 'QgsLayoutItemPage'),
             patch.object(self.mod, 'QgsLayoutItemPicture') as mock_pic,
             patch.object(self.mod, 'QgsApplication'),
             patch.object(self.mod, 'QgsLayoutExporter'),
@@ -240,7 +238,6 @@ class TestSymbolExportMixin(unittest.TestCase):
         with (
             patch.object(self.mod, 'QgsProject') as mock_qp,
             patch.object(self.mod, 'QgsPrintLayout'),
-            patch.object(self.mod, 'QgsLayoutItemPage'),
             patch.object(self.mod, 'QgsLayoutItemMap'),
             patch.object(self.mod, 'QgsLayoutItemScaleBar') as mock_bar,
             patch.object(self.mod, 'QgsBasicNumericFormat'),
@@ -258,7 +255,6 @@ class TestSymbolExportMixin(unittest.TestCase):
         with (
             patch.object(self.mod, 'QgsProject') as mock_qp,
             patch.object(self.mod, 'QgsPrintLayout'),
-            patch.object(self.mod, 'QgsLayoutItemPage'),
             patch.object(self.mod, 'QgsLayoutItemMap'),
             patch.object(self.mod, 'QgsLayoutItemScaleBar') as mock_bar,
             patch.object(self.mod, 'QgsBasicNumericFormat'),
@@ -276,7 +272,6 @@ class TestSymbolExportMixin(unittest.TestCase):
         with (
             patch.object(self.mod, 'QgsProject') as mock_qp,
             patch.object(self.mod, 'QgsPrintLayout'),
-            patch.object(self.mod, 'QgsLayoutItemPage'),
             patch.object(self.mod, 'QgsLayoutItemMap'),
             patch.object(self.mod, 'QgsLayoutItemScaleBar'),
             patch.object(self.mod, 'QgsBasicNumericFormat'),

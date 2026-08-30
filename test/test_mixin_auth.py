@@ -62,6 +62,8 @@ class TestAuthMixin(unittest.TestCase):
             setattr(self.mixin, attr, None)
         self.mixin.stop = MagicMock()
         self.mixin.on_opt_selected = MagicMock()
+        self.mixin.disconnect_map_canvas = MagicMock()
+        self.mixin._restore_layout_direction = MagicMock()
 
         # Override validate_text to accept a single string argument
         self.mod.validate_text = MagicMock(side_effect=lambda x: (True, x))
@@ -238,6 +240,8 @@ class TestAuthMixin(unittest.TestCase):
             self.mixin.closeEvent(event)
             mock_logout.assert_called_once()
             self.mixin.popup_dialog.close.assert_called_once()
+            self.mixin.disconnect_map_canvas.assert_called_once()
+            self.mixin._restore_layout_direction.assert_called_once()
             event.accept.assert_called_once()
 
     def test_closeEvent_without_identify_tool(self):
@@ -248,6 +252,8 @@ class TestAuthMixin(unittest.TestCase):
         with patch.object(self.mod, 'logout') as mock_logout:
             self.mixin.closeEvent(event)
             mock_logout.assert_called_once_with(iface=self.mixin.iface, dlg=None)
+            self.mixin.disconnect_map_canvas.assert_called_once()
+            self.mixin._restore_layout_direction.assert_called_once()
             event.accept.assert_called_once()
 
     def test_on_select_wilaya(self):
