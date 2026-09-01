@@ -150,6 +150,8 @@ def refresh_layer_from_db(_iface: Any, layer_name: str, model_name: str) -> None
                 if feature:
                     provider.addFeature(feature)
         except Exception:
+            # QGIS providers raise arbitrary exception types mid-edit;
+            # roll back the transaction then re-raise for the caller.
             layer.rollBack()
             raise
 

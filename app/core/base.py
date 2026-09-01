@@ -1,10 +1,13 @@
 """SQLAlchemy declarative base and shared ORM utilities."""
 
+import logging
 from datetime import datetime
 from typing import Any
 
 from sqlalchemy import Column, DateTime
 from sqlalchemy.orm import declarative_base
+
+logger = logging.getLogger(__name__)
 
 Base = declarative_base()
 
@@ -46,7 +49,11 @@ def _allowlist_columns(model_class: type, **kwargs: Any) -> dict:
                 else:
                     col_map[attr.key] = attr.key
         except AttributeError:
-            pass
+            # Not an ORM-mapped class: fall back to the plain column map.
+            logger.debug(
+                'No SQLAlchemy mapper for %s; using column-only allowlist',
+                type(model_class).__name__,
+            )
 
         _ALLOWLIST_CACHE[model_class] = col_map
 

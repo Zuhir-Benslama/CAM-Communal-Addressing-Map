@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import logging
+
 from qgis.core import QgsDistanceArea, QgsPointXY, QgsWkbTypes
 from qgis.gui import (
     QgisInterface,
@@ -22,6 +24,8 @@ from qgis.PyQt.QtWidgets import (
 
 from ..constants import current_locale
 from ..i18n import tr as _i18n_tr
+
+logger = logging.getLogger(__name__)
 
 
 class MeasureTool(QgsMapToolEmitPoint):
@@ -237,7 +241,8 @@ class MeasureTool(QgsMapToolEmitPoint):
             self.canvas.extentsChanged.disconnect(self.updateLabels)
             self.canvas.scaleChanged.disconnect(self.updateLabels)
         except TypeError:
-            pass
+            # Signal was already disconnected — nothing to clean up.
+            logger.debug('Canvas signals already disconnected', exc_info=True)
         self.clear()
         self.canvas.scene().removeItem(self.rubber_band)
         self.rubber_band.deleteLater()
