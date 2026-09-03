@@ -18,7 +18,14 @@ from ..app.core.config import get_theme_qss
 from ..app.core.database import get_session
 from ..app.orders import models as _models
 from ..app.users.repository import qgis_config
-from ..constants import current_locale, current_theme
+from ..constants import (
+    POPUP_MIN_HEIGHT,
+    POPUP_MIN_WIDTH,
+    POPUP_RESIZE_HEIGHT,
+    POPUP_RESIZE_WIDTH,
+    current_locale,
+    current_theme,
+)
 from ..scripts.widget_texts import get_string
 from .popup_handlers import (
     POPULATE_DISPATCH,
@@ -226,8 +233,8 @@ class PopupDialog(QDialog):
 
     def _init_ui(self) -> None:
         self.setObjectName('camPopupDialog')
-        self.setMinimumSize(700, 500)
-        self.resize(760, 560)
+        self.setMinimumSize(POPUP_MIN_WIDTH, POPUP_MIN_HEIGHT)
+        self.resize(POPUP_RESIZE_WIDTH, POPUP_RESIZE_HEIGHT)
         self.setSizeGripEnabled(True)
 
         layout = QVBoxLayout(self)

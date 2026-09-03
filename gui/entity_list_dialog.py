@@ -17,7 +17,13 @@ from ..app.core.config import get_theme_qss
 from ..app.core.database import get_session
 from ..app.orders import models as _models
 from ..app.shared.utils import get_all_fields_and_labels, locale_value
-from ..constants import current_locale, current_theme
+from ..constants import (
+    POPUP_MIN_WIDTH,
+    POPUP_RESIZE_HEIGHT,
+    POPUP_RESIZE_WIDTH,
+    current_locale,
+    current_theme,
+)
 from ..scripts.widget_texts import apply_widget_texts, get_string
 
 
@@ -49,8 +55,8 @@ class EntityListDialog(QDialog):
 
     def _init_ui(self) -> None:
         self.setObjectName('camEntityListDialog')
-        self.setMinimumSize(700, 520)
-        self.resize(760, 560)
+        self.setMinimumSize(POPUP_MIN_WIDTH, POPUP_RESIZE_HEIGHT - 40)
+        self.resize(POPUP_RESIZE_WIDTH, POPUP_RESIZE_HEIGHT)
         self.setSizeGripEnabled(True)
 
         layout = QVBoxLayout(self)

@@ -16,6 +16,8 @@ from qgis.PyQt.QtWidgets import QApplication, QMessageBox
 from ..app.shared.utils import run_reporting_script
 from ..constants import (
     MAP_PNG,
+    REPORT_METHOD_MAP_A3,
+    REPORT_METHOD_MAP_A4,
     TMP_JSON,
     validate_text,
 )
@@ -211,9 +213,9 @@ class ImportExportMixin:
     def export_to_image(self: HasFormWidgets) -> None:
         selected_value = self.paper.currentData()
         if selected_value == 'A0':
-            self._render_and_export('4', include_situation=True)
+            self._render_and_export(REPORT_METHOD_MAP_A4, include_situation=True)
         elif selected_value == 'A3':
-            self._render_and_export('3')
+            self._render_and_export(REPORT_METHOD_MAP_A3)
         else:
             QMessageBox.critical(
                 self,

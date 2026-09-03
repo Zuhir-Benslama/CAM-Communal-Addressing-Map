@@ -89,6 +89,7 @@ class HasNavWidgets(Protocol):
 
     menu: Any
     router: Any
+    _navigate: Any
 
 
 @runtime_checkable

@@ -14,12 +14,40 @@ from qgis.PyQt.QtWidgets import (
 
 from ...scripts.widget_texts import get_string
 from ..form_specs import FieldRow
+from ._specs import PAGE_SPECS
 
 if TYPE_CHECKING:
     from ..popup_dialog import PopupDialog
 
 
-def build_page(
+def build_named_page(
+    dialog: 'PopupDialog',
+    stack: QStackedWidget,
+    *,
+    name: str,
+) -> None:
+    """Build the popup form page identified by *name*.
+
+    The page's object name, save kind, and field rows come from
+    :data:`_specs.PAGE_SPECS` — see :mod:`gui.form_specs`.
+    """
+    spec = PAGE_SPECS[name]
+    _build_page(
+        dialog,
+        stack,
+        object_name=spec['object_name'],
+        save_kind=spec['save_kind'],
+        rows=spec['rows'],
+    )
+
+
+def build_all_pages(dialog: 'PopupDialog', stack: QStackedWidget) -> None:
+    """Build every popup form page in spec order."""
+    for name in PAGE_SPECS:
+        build_named_page(dialog, stack, name=name)
+
+
+def _build_page(
     dialog: 'PopupDialog',
     stack: QStackedWidget,
     *,

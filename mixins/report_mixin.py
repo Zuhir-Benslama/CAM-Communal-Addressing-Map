@@ -36,6 +36,8 @@ from ..constants import (
     PAN_PLANNED,
     PAN_TO_FIX,
     PAN_TO_MOVE,
+    REPORT_METHOD_ORDER,
+    REPORT_METHOD_REPORT,
     TMP_JSON,
     current_theme,
     get_theme_qss,
@@ -139,7 +141,7 @@ class ReportMixin:
             'creation_date': datetime.now().astimezone().date().strftime('%Y-%m-%d'),
             'output_dir': self._output_dir,
         }
-        return self._run_report('2', report_data, label='report')
+        return self._run_report(REPORT_METHOD_REPORT, report_data, label='report')
 
     def purchase_order(self: HasReportContext) -> bool:
         """Generate a purchase order via the external reporting script."""
@@ -156,4 +158,4 @@ class ReportMixin:
             'items4': query_missing_rep(NUM_PLANNED),
             'output_dir': self._output_dir,
         }
-        return self._run_report('1', order_data, label='order')
+        return self._run_report(REPORT_METHOD_ORDER, order_data, label='order')

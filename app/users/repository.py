@@ -88,12 +88,15 @@ def get_current_user() -> dict | None:
                 logger.warning(
                     'Failed to load wilaya names from %s', WILAYAS_JSON, exc_info=True
                 )
+        commune_name = ''
+        if commune:
+            commune_name = commune.get('commune_ar') or commune.get('commune_fr') or ''
         return {
             'id': user.id,
             'commune_code': user.commune_code,
             'wilaya_code': user.wilaya_code,
             'wilaya': wilaya_name,
-            'commune': commune['commune_ar'] if commune else '',
+            'commune': commune_name,
             'first_name': user.first_name,
             'last_name': user.last_name,
         }

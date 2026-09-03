@@ -3,6 +3,7 @@ current schema.  Used by both the CLI tool (``scripts/migrate_db.py``)
 and the plugin's Import Database feature.
 """
 
+import contextlib
 import logging
 import sqlite3
 from pathlib import Path
@@ -314,6 +315,19 @@ def _create_spatial_indexes(new: sqlite3.Connection) -> None:
             logger.exception('  %s.geometry index creation failed', table)
 
 
+def _read_target_cols(target: sqlite3.Connection) -> set[str] | None:
+    """Return the set of columns on the target ``user`` table.
+
+    Returns None if the schema cannot be read (the caller should abort
+    without writing anything).
+    """
+    try:
+        return {row[1] for row in target.execute("PRAGMA table_info('user')")}
+    except sqlite3.Error:
+        logger.exception('  Failed to read target user table schema')
+        return None
+
+
 def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
     """Merge users from a standalone auth database into the new DB.
 
@@ -324,9 +338,8 @@ def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
         logger.info('  auth file not found: %s (skipped)', auth_path)
         return
 
-    auth = sqlite3.connect(auth_path)
-    auth.row_factory = sqlite3.Row
-    try:
+    with contextlib.closing(sqlite3.connect(auth_path)) as auth:
+        auth.row_factory = sqlite3.Row
         cur = auth.execute(
             "SELECT name FROM sqlite_master WHERE type='table' AND name='user'"
         )
@@ -339,14 +352,9 @@ def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
             logger.info('  auth DB: 0 users (skipped)')
             return
 
-        target = sqlite3.connect(new_path)
-        try:
-            try:
-                target_cols = {
-                    row[1] for row in target.execute("PRAGMA table_info('user')")
-                }
-            except sqlite3.Error:
-                logger.exception('  Failed to read target user table schema')
+        with contextlib.closing(sqlite3.connect(new_path)) as target:
+            target_cols = _read_target_cols(target)
+            if target_cols is None:
                 return
             cols = []
             for c in users[0].keys():  # noqa: SIM118 - sqlite3.Row, not dict
@@ -373,10 +381,6 @@ def _merge_auth_users(new_path: str, auth_path: str | None) -> None:
                     logger.warning('  user %s: %s', row['id'], e)
             target.commit()
             logger.info('  Merged %d user(s) from %s', merged, auth_path)
-        finally:
-            target.close()
-    finally:
-        auth.close()
 
 
 def migrate_database(

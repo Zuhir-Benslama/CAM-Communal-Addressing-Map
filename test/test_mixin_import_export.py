@@ -68,13 +68,13 @@ class TestImportExportMixin(unittest.TestCase):
     def test_render_and_export_missing_type_plan(self):
         self.mixin.type_plan = None
         with patch.object(self.mod, 'QMessageBox') as mock_mb:
-            self.mixin._render_and_export('3')
+            self.mixin._render_and_export(self.mod.REPORT_METHOD_MAP_A3)
             mock_mb.critical.assert_called_once()
 
     def test_render_and_export_missing_type_to_hide(self):
         self.mixin.type_to_hide = None
         with patch.object(self.mod, 'QMessageBox') as mock_mb:
-            self.mixin._render_and_export('3')
+            self.mixin._render_and_export(self.mod.REPORT_METHOD_MAP_A3)
             mock_mb.critical.assert_called_once()
 
     def test_render_and_export_renders_and_saves(self):
@@ -94,7 +94,7 @@ class TestImportExportMixin(unittest.TestCase):
             patch.object(self.mod, 'json') as mock_json,
             patch.object(self.mod, 'QMessageBox') as mock_mb,
         ):
-            self.mixin._render_and_export('3')
+            self.mixin._render_and_export(self.mod.REPORT_METHOD_MAP_A3)
 
             self.mixin.north.assert_called_once()
             self.mixin.scale.assert_called_once()
@@ -127,7 +127,9 @@ class TestImportExportMixin(unittest.TestCase):
             patch.object(self.mod, 'json'),
             patch.object(self.mod, 'QMessageBox'),
         ):
-            self.mixin._render_and_export('4', include_situation=True)
+            self.mixin._render_and_export(
+                self.mod.REPORT_METHOD_MAP_A4, include_situation=True
+            )
             self.mixin.map_situation.assert_called_once()
 
     def test_render_and_export_image_save_failure(self):
@@ -145,7 +147,7 @@ class TestImportExportMixin(unittest.TestCase):
             patch.object(self.mod, 'QgsMapSettings'),
             patch.object(self.mod, 'json') as mock_json,
         ):
-            self.mixin._render_and_export('3')
+            self.mixin._render_and_export(self.mod.REPORT_METHOD_MAP_A3)
             self._finish_render(mock_job)
             mock_image.save.assert_called_once()
             mock_json.dump.assert_not_called()
@@ -164,7 +166,7 @@ class TestImportExportMixin(unittest.TestCase):
             patch.object(self.mod, 'QgsMapSettings'),
             patch.object(self.mod, 'json') as mock_json,
         ):
-            self.mixin._render_and_export('3')
+            self.mixin._render_and_export(self.mod.REPORT_METHOD_MAP_A3)
             self._finish_render(mock_job)
             mock_json.dump.assert_not_called()
 
@@ -184,7 +186,7 @@ class TestImportExportMixin(unittest.TestCase):
         ):
             mock_json.dump = MagicMock(side_effect=OSError('write error'))
             # Should not raise despite JSON write failure
-            self.mixin._render_and_export('3')
+            self.mixin._render_and_export(self.mod.REPORT_METHOD_MAP_A3)
             self._finish_render(mock_job)
 
     def test_render_and_export_reentrant_call_ignored(self):
@@ -202,14 +204,14 @@ class TestImportExportMixin(unittest.TestCase):
             ) as mock_job_cls,
             patch.object(self.mod, 'QgsMapSettings'),
         ):
-            self.mixin._render_and_export('3')
+            self.mixin._render_and_export(self.mod.REPORT_METHOD_MAP_A3)
             # Second request while the render is still running is ignored.
-            self.mixin._render_and_export('3')
+            self.mixin._render_and_export(self.mod.REPORT_METHOD_MAP_A3)
             self.assertEqual(mock_job_cls.call_count, 1)
 
             self._finish_render(mock_job)
             # After completion a new export may start.
-            self.mixin._render_and_export('3')
+            self.mixin._render_and_export(self.mod.REPORT_METHOD_MAP_A3)
             self.assertEqual(mock_job_cls.call_count, 2)
 
     def test_export_to_image1_a0(self):
@@ -217,14 +219,16 @@ class TestImportExportMixin(unittest.TestCase):
         self.mixin.paper.currentData = MagicMock(return_value='A0')
         with patch.object(self.mixin, '_render_and_export') as mock_render:
             self.mixin.export_to_image()
-            mock_render.assert_called_once_with('4', include_situation=True)
+            mock_render.assert_called_once_with(
+                self.mod.REPORT_METHOD_MAP_A4, include_situation=True
+            )
 
     def test_export_to_image1_a3(self):
         self.mixin.paper = MagicMock()
         self.mixin.paper.currentData = MagicMock(return_value='A3')
         with patch.object(self.mixin, '_render_and_export') as mock_render:
             self.mixin.export_to_image()
-            mock_render.assert_called_once_with('3')
+            mock_render.assert_called_once_with(self.mod.REPORT_METHOD_MAP_A3)
 
     def test_export_to_image1_other(self):
         self.mixin.paper = MagicMock()
@@ -268,7 +272,7 @@ class TestImportExportMixin(unittest.TestCase):
             patch.object(self.mod, 'QgsMapSettings'),
             patch.object(self.mod, 'validate_text', return_value='valid'),
         ):
-            self.mixin._render_and_export('3')
+            self.mixin._render_and_export(self.mod.REPORT_METHOD_MAP_A3)
         self.mod.run_reporting_script.assert_not_called()
 
     def test_invoke_reporting_script_process_error(self):
@@ -278,7 +282,7 @@ class TestImportExportMixin(unittest.TestCase):
         err.stderr = 'boom'
         self.mod.run_reporting_script.side_effect = err
         with patch.object(self.mod, 'QMessageBox') as mock_mb:
-            self.mixin._invoke_reporting_script('3')
+            self.mixin._invoke_reporting_script(self.mod.REPORT_METHOD_MAP_A3)
             mock_mb.critical.assert_called_once()
             self.assertIn('boom', mock_mb.critical.call_args[0][2])
 
@@ -289,12 +293,12 @@ class TestImportExportMixin(unittest.TestCase):
         err.stderr = None
         self.mod.run_reporting_script.side_effect = err
         with patch.object(self.mod, 'QMessageBox'):
-            self.mixin._invoke_reporting_script('3')
+            self.mixin._invoke_reporting_script(self.mod.REPORT_METHOD_MAP_A3)
 
     def test_invoke_reporting_script_oserror(self):
         self.mod.run_reporting_script.side_effect = OSError('spawn failed')
         with patch.object(self.mod, 'QMessageBox') as mock_mb:
-            self.mixin._invoke_reporting_script('3')
+            self.mixin._invoke_reporting_script(self.mod.REPORT_METHOD_MAP_A3)
             mock_mb.critical.assert_called_once()
 
 

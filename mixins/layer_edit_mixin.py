@@ -286,6 +286,7 @@ class LayerEditMixin:
         except (TypeError, AttributeError) as e:
             logger.warning('Failed to get id from identify tool: %s', e)
             ref_data = None
+
         try:
             try:
                 common = {

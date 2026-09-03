@@ -10,7 +10,7 @@ from typing import Any
 
 import toml
 from marshmallow import ValidationError
-from qgis.core import QgsMessageLog, QgsProject
+from qgis.core import QgsProject
 from sqlalchemy.exc import SQLAlchemyError
 
 from ..core.database import get_session
@@ -131,8 +131,7 @@ def sign_in(
             session.commit()
         except (SQLAlchemyError, OSError) as e:
             session.rollback()
-            QgsMessageLog.logMessage(f'sign_in error: {e}', 'CAM', level=2)
-            logger.exception('An error occurred')
+            logger.exception('Sign-in error: %s', e)
             return False, None, str(e)
         else:
             return True, user.username, None

@@ -349,6 +349,47 @@ def _setup_gui_domain_mocks():
     _constants.NOTIFY_DURATION = 5
     _constants.SRID = 4326
     _constants.DEFAULT_PANEL_DIM = '60x80'
+
+    # Layout/export constants (numeric values used in arithmetic)
+    _constants.SYMBOL_DPI = 900
+    _constants.EXPORT_DPI = 300
+    _constants.SYMBOL_FONT_SIZE = 14
+    _constants.BOLD_FONT_POINT_SIZE = 30
+    _constants.LEGEND_SYMBOL_WIDTH = 15
+    _constants.LEGEND_SYMBOL_HEIGHT = 10
+    _constants.SITUATION_MAP_WIDTH = 257
+    _constants.SITUATION_MAP_HEIGHT = 170
+    _constants.SITUATION_MAP_SCALE = 150000
+    _constants.NORTH_ARROW_PAGE = 50
+    _constants.NORTH_ARROW_SIZE = 40
+    _constants.NORTH_ARROW_POS = 25
+    _constants.SCALE_BAR_PAGE = 1
+    _constants.SCALE_BAR_RECT = 80
+    _constants.SCALE_BAR_LENGTH_MM = 100
+    _constants.SCALE_BAR_THRESHOLD_KM = 1000
+    _constants.MAP_PAGE_MARGIN = 20
+    _constants.MAP_SYMBOL_LAYOUT_W = 200
+    _constants.MAP_SYMBOL_LAYOUT_H = 350
+    _constants.PAGE_SPACING = 20
+
+    # Geometry zone-check result codes
+    _constants.ZONE_OUTSIDE = 0
+    _constants.ZONE_POINT_WITHIN = 1
+    _constants.ZONE_POLYGON_INTERSECT = 2
+    _constants.ZONE_LINE_INTERSECT = 3
+
+    # Measure tool constants
+    _constants.MEASURE_COLOR = '255,0,0'
+    _constants.MEASURE_FILL_COLOR = '255,0,0,180'
+    _constants.MEASURE_MARKER_ICON_SIZE = 12
+    _constants.MEASURE_MARKER_PEN_WIDTH = 2
+    _constants.MEASURE_LABEL_FONT_SIZE = 11
+    _constants.MEASURE_LABEL_MIN_SIZE = 8
+    _constants.MEASURE_LABEL_MAX_SIZE = 14
+    _constants.MEASURE_LABEL_Z_VALUE = 1000
+    _constants.MEASURE_BLUR_RADIUS = 5
+    _constants.MEASURE_BAR_DURATION = 10
+
     sys.modules['plans_adressage.constants'] = _constants
 
     _lookup = MagicMock()

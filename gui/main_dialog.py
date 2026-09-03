@@ -37,7 +37,14 @@ from qgis.PyQt.QtWidgets import (
     QWidget,
 )
 
-from ..constants import DEFAULT_THEME, LOCALE_AR, current_locale
+from ..constants import (
+    DEFAULT_THEME,
+    DIALOG_DEFAULT_HEIGHT,
+    DIALOG_MIN_WIDTH,
+    DIALOG_RESIZE_HEIGHT,
+    LOCALE_AR,
+    current_locale,
+)
 from ..gui.identify_tool import IdentifyTool
 from ..gui.measure_tool import MeasureTool
 from ..gui.popup_dialog import PopupDialog
@@ -190,8 +197,8 @@ class MainDialog(
 
     def _init_ui(self) -> None:
         self.setObjectName('camMainDialog')
-        self.setMinimumSize(360, 680)
-        self.resize(360, 720)
+        self.setMinimumSize(DIALOG_MIN_WIDTH, DIALOG_DEFAULT_HEIGHT)
+        self.resize(DIALOG_MIN_WIDTH, DIALOG_RESIZE_HEIGHT)
         self.setSizeGripEnabled(True)
 
         main_layout = QVBoxLayout(self)

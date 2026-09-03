@@ -97,19 +97,6 @@ def org_types_for_category(
     return result
 
 
-def org_subcategories(category: str) -> list[str]:
-    """Return distinct subcategories for an org category."""
-    seen: set[str] = set()
-    result: list[str] = []
-    for entry in organization_types():
-        if entry.get('category', '') == category:
-            subcategory = entry.get('subcat', '')
-            if subcategory and subcategory not in seen:
-                seen.add(subcategory)
-                result.append(subcategory)
-    return result
-
-
 # ---------------------------------------------------------------------------
 # Activity types: {sector, type, cat_fr?, cat_en?, type_fr?, type_en?}
 # ---------------------------------------------------------------------------
@@ -159,19 +146,6 @@ def activity_types_for_category(
     return result
 
 
-def activity_subcategories(cat: str) -> list[str]:
-    """Return distinct subcategories for an activity category."""
-    seen: set[str] = set()
-    result: list[str] = []
-    for entry in activity_types():
-        if entry.get('sector', '') == cat:
-            subcategory = entry.get('subcat', '')
-            if subcategory and subcategory not in seen:
-                seen.add(subcategory)
-                result.append(subcategory)
-    return result
-
-
 # ---------------------------------------------------------------------------
 # Administrative geography — communes, dairas, wilayas
 # ---------------------------------------------------------------------------
@@ -195,26 +169,6 @@ def wilayas_data() -> dict[str, dict[str, Any]]:
 def dairas_data() -> dict[str, dict[str, Any]]:
     """Return all dairas as a dict keyed by daira_id (str)."""
     return _load('daira.json')
-
-
-def _commune_code_key(c: dict[str, Any]) -> int:
-    """Return the commune_code as int (handles both int and str storage)."""
-    v = c.get('commune_code', 0)
-    return int(v) if v is not None else 0
-
-
-def _lookup_wilaya_for_commune_code(commune_code: str) -> int | None:
-    """Resolve a commune_code (str) to a wilaya_id via the daira."""
-    code = int(commune_code) if commune_code else None
-    if code is None:
-        return None
-    for c in communes_list():
-        if _commune_code_key(c) == code:
-            daira = dairas_data().get(str(c['daira_id']))
-            if daira:
-                return int(daira['wilaya_id'])
-            return None
-    return None
 
 
 # ---------------------------------------------------------------------------

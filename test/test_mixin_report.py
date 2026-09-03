@@ -49,7 +49,7 @@ class TestReportMixin(unittest.TestCase):
         ):
             result = self.mixin.generate_report()
             self.assertTrue(result)
-            mock_run.assert_called_once_with('2')
+            mock_run.assert_called_once_with(self.mod.REPORT_METHOD_REPORT)
 
     def test_purchase_order_success(self):
         with (

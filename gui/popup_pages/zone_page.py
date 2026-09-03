@@ -4,18 +4,11 @@ from typing import TYPE_CHECKING
 
 from qgis.PyQt.QtWidgets import QStackedWidget
 
-from ..form_specs import ZONE_ROWS
-from ._builder import build_page
+from ._builder import build_named_page
 
 if TYPE_CHECKING:
     from ..popup_dialog import PopupDialog
 
 
 def build_zone_page(dialog: 'PopupDialog', stack: QStackedWidget) -> None:
-    build_page(
-        dialog,
-        stack,
-        object_name='zonePage',
-        save_kind='zone',
-        rows=ZONE_ROWS,
-    )
+    build_named_page(dialog, stack, name='zone')

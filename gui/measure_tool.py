@@ -22,7 +22,19 @@ from qgis.PyQt.QtWidgets import (
     QToolTip,
 )
 
-from ..constants import current_locale
+from ..constants import (
+    MEASURE_BAR_DURATION,
+    MEASURE_BLUR_RADIUS,
+    MEASURE_COLOR,
+    MEASURE_FILL_COLOR,
+    MEASURE_LABEL_FONT_SIZE,
+    MEASURE_LABEL_MAX_SIZE,
+    MEASURE_LABEL_MIN_SIZE,
+    MEASURE_LABEL_Z_VALUE,
+    MEASURE_MARKER_ICON_SIZE,
+    MEASURE_MARKER_PEN_WIDTH,
+    current_locale,
+)
 from ..i18n import tr as _i18n_tr
 
 logger = logging.getLogger(__name__)
@@ -41,8 +53,10 @@ class MeasureTool(QgsMapToolEmitPoint):
         self.da.setEllipsoid('WGS84')
 
         self.rubber_band = QgsRubberBand(self.canvas, QgsWkbTypes.LineGeometry)
-        self.rubber_band.setColor(QColor(255, 0, 0, 180))
-        self.rubber_band.setWidth(2)
+        self.rubber_band.setColor(
+            QColor(*[int(c) for c in MEASURE_FILL_COLOR.split(',')])
+        )
+        self.rubber_band.setWidth(MEASURE_MARKER_PEN_WIDTH)
 
         self.markers: list[QgsVertexMarker] = []
         self.labels: list[QGraphicsItemGroup] = []
@@ -62,10 +76,10 @@ class MeasureTool(QgsMapToolEmitPoint):
 
         marker = QgsVertexMarker(self.canvas)
         marker.setCenter(point)
-        marker.setColor(QColor(255, 0, 0))
+        marker.setColor(QColor(*[int(c) for c in MEASURE_COLOR.split(',')]))
         marker.setIconType(QgsVertexMarker.ICON_CROSS)
-        marker.setIconSize(12)
-        marker.setPenWidth(2)
+        marker.setIconSize(MEASURE_MARKER_ICON_SIZE)
+        marker.setPenWidth(MEASURE_MARKER_PEN_WIDTH)
         self.markers.append(marker)
 
         if len(self.points) == 1:
@@ -85,7 +99,10 @@ class MeasureTool(QgsMapToolEmitPoint):
             )
             msg = f'{total_dist:.2f} {_i18n_tr("m", current_locale())}'
             self.iface.messageBar().pushMessage(
-                _i18n_tr('Total Distance', current_locale()), msg, level=0, duration=10
+                _i18n_tr('Total Distance', current_locale()),
+                msg,
+                level=0,
+                duration=MEASURE_BAR_DURATION,
             )
 
     def canvasMoveEvent(self, event: QMouseEvent) -> None:
@@ -113,7 +130,7 @@ class MeasureTool(QgsMapToolEmitPoint):
                 _i18n_tr('Update', current_locale()),
                 _i18n_tr('Restart Measurement', current_locale()),
                 level=1,
-                duration=10,
+                duration=MEASURE_BAR_DURATION,
             )
 
         elif event.key() == Qt.Key.Key_E:
@@ -122,7 +139,7 @@ class MeasureTool(QgsMapToolEmitPoint):
                 _i18n_tr('Finish', current_locale()),
                 _i18n_tr('Measurement tool terminated', current_locale()),
                 level=0,
-                duration=10,
+                duration=MEASURE_BAR_DURATION,
             )
 
         elif event.key() == Qt.Key.Key_P:
@@ -134,7 +151,10 @@ class MeasureTool(QgsMapToolEmitPoint):
             )
             level = 1 if self.paused else 0
             self.iface.messageBar().pushMessage(
-                _i18n_tr('Status', current_locale()), state, level=level, duration=10
+                _i18n_tr('Status', current_locale()),
+                state,
+                level=level,
+                duration=MEASURE_BAR_DURATION,
             )
 
     def addDistanceLabel(self, point1: QgsPointXY, point2: QgsPointXY) -> None:
@@ -161,17 +181,17 @@ class MeasureTool(QgsMapToolEmitPoint):
         group = QGraphicsItemGroup()
         group.mid_point = mid_point
 
-        font = QFont('Arial', 11)
+        font = QFont('Arial', MEASURE_LABEL_FONT_SIZE)
         text_item = QGraphicsSimpleTextItem(label_text)
         text_item.setFont(font)
         text_rect = text_item.boundingRect()
 
         shadow = QGraphicsDropShadowEffect()
-        shadow.setBlurRadius(5)
+        shadow.setBlurRadius(MEASURE_BLUR_RADIUS)
         shadow.setOffset(0)
         shadow.setColor(QColor(255, 255, 255))
         text_item.setGraphicsEffect(shadow)
-        text_item.setBrush(QColor(255, 0, 0))
+        text_item.setBrush(QColor(*[int(c) for c in MEASURE_COLOR.split(',')]))
         group.addToGroup(text_item)
 
         # Position the group at the correct screen coordinates
@@ -180,7 +200,7 @@ class MeasureTool(QgsMapToolEmitPoint):
             screen_pos.x() - text_rect.width() / 2,
             screen_pos.y() - text_rect.height() / 2,
         )
-        group.setZValue(1000)  # Ensure labels stay on top
+        group.setZValue(MEASURE_LABEL_Z_VALUE)  # Ensure labels stay on top
 
         self.canvas.scene().addItem(group)
         self.labels.append(group)
@@ -205,7 +225,10 @@ class MeasureTool(QgsMapToolEmitPoint):
 
             # Optional: Adjust font size based on scale
             current_scale = self.canvas.scale()
-            font_size = max(8, min(14, int(10000 / current_scale)))
+            font_size = max(
+                MEASURE_LABEL_MIN_SIZE,
+                min(MEASURE_LABEL_MAX_SIZE, int(10000 / current_scale)),
+            )
             for item in label.childItems():
                 if isinstance(item, (QGraphicsSimpleTextItem, QGraphicsTextItem)):
                     font = item.font()

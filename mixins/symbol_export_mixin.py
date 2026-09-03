@@ -29,10 +29,29 @@ from qgis.PyQt.QtCore import QRectF, Qt
 from qgis.PyQt.QtGui import QColor, QFont
 
 from ..constants import (
+    BOLD_FONT_POINT_SIZE,
+    EXPORT_DPI,
     LAYER_MUNICIPALITY,
+    LEGEND_SYMBOL_HEIGHT,
+    LEGEND_SYMBOL_WIDTH,
+    MAP_PAGE_MARGIN,
+    MAP_SYMBOL_LAYOUT_H,
+    MAP_SYMBOL_LAYOUT_W,
+    NORTH_ARROW_PAGE,
+    NORTH_ARROW_POS,
+    NORTH_ARROW_SIZE,
     NORTH_ARROW_SVG,
+    SCALE_BAR_LENGTH_MM,
+    SCALE_BAR_PAGE,
+    SCALE_BAR_RECT,
     SCALE_BAR_SVG,
+    SCALE_BAR_THRESHOLD_KM,
+    SITUATION_MAP_HEIGHT,
+    SITUATION_MAP_SCALE,
+    SITUATION_MAP_WIDTH,
     SITUATION_PNG,
+    SYMBOL_DPI,
+    SYMBOL_FONT_SIZE,
     SYMBOLS_SVG,
 )
 from ._protocols import (
@@ -55,18 +74,18 @@ class SymbolExportMixin:
         legend = QgsLayoutItemLegend(layout)
         legend.setLinkedMap(map_item)
         legend.setAutoUpdateModel(False)
-        legend.setSymbolWidth(15)
-        legend.setSymbolHeight(10)
+        legend.setSymbolWidth(LEGEND_SYMBOL_WIDTH)
+        legend.setSymbolHeight(LEGEND_SYMBOL_HEIGHT)
         legend.setColumnCount(2)
         legend.setSplitLayer(True)
         legend.setEqualColumnWidth(True)
 
         text_format = QgsTextFormat()
-        text_format.setSize(14)
+        text_format.setSize(SYMBOL_FONT_SIZE)
         text_format.setColor(QColor(0, 0, 0))
         font = QFont()
         font.setBold(True)
-        font.setPointSize(30)
+        font.setPointSize(BOLD_FONT_POINT_SIZE)
         font.setUnderline(True)
         text_format.setFont(font)
 
@@ -105,8 +124,8 @@ class SymbolExportMixin:
         map_rect = map_item.sceneBoundingRect()
         legend_rect = legend.sceneBoundingRect()
 
-        total_width = max(map_rect.right(), legend_rect.right()) + 20
-        total_height = max(map_rect.bottom(), legend_rect.bottom()) + 20
+        total_width = max(map_rect.right(), legend_rect.right()) + MAP_PAGE_MARGIN
+        total_height = max(map_rect.bottom(), legend_rect.bottom()) + MAP_PAGE_MARGIN
 
         page = layout.pageCollection().pages()[0]
         page.setPageSize(
@@ -117,7 +136,7 @@ class SymbolExportMixin:
             ),
         )
 
-        if legend_rect.height() < total_height - 40:
+        if legend_rect.height() < total_height - 2 * MAP_PAGE_MARGIN:
             new_y = (total_height - legend_rect.height()) / 2
             legend.setPos(legend.scenePos().x(), new_y)
 
@@ -139,7 +158,14 @@ class SymbolExportMixin:
 
         map_item = QgsLayoutItemMap(layout)
         map_item.setLayers(visible_layers)
-        map_item.attemptSetSceneRect(QRectF(20, 20, 200, 350))
+        map_item.attemptSetSceneRect(
+            QRectF(
+                MAP_PAGE_MARGIN,
+                MAP_PAGE_MARGIN,
+                MAP_SYMBOL_LAYOUT_W,
+                MAP_SYMBOL_LAYOUT_H,
+            )
+        )
         layout.addLayoutItem(map_item)
 
         legend = self._build_legend(layout, map_item)
@@ -150,7 +176,7 @@ class SymbolExportMixin:
         exporter = QgsLayoutExporter(layout)
         svg_settings = QgsLayoutExporter.SvgExportSettings()
         svg_settings.forceVectorOutput = True
-        svg_settings.dpi = 900
+        svg_settings.dpi = SYMBOL_DPI
 
         result = exporter.exportToSvg(str(output_path), svg_settings)
         project.layoutManager().removeLayout(layout)
@@ -211,13 +237,22 @@ class SymbolExportMixin:
 
         page = layout.pageCollection().pages()[0]
         page.setPageSize(
-            QgsLayoutSize(257, 170, QgsUnitTypes.LayoutMillimeters),
+            QgsLayoutSize(
+                SITUATION_MAP_WIDTH,
+                SITUATION_MAP_HEIGHT,
+                QgsUnitTypes.LayoutMillimeters,
+            ),
         )
 
         map_item = QgsLayoutItemMap(layout)
-        map_item.setRect(20, 20, 257, 170)
+        map_item.setRect(
+            MAP_PAGE_MARGIN,
+            MAP_PAGE_MARGIN,
+            SITUATION_MAP_WIDTH,
+            SITUATION_MAP_HEIGHT,
+        )
         map_item.setExtent(municipality_layer.extent())
-        map_item.setScale(150000)
+        map_item.setScale(SITUATION_MAP_SCALE)
         map_item.setLayers([base_layer, municipality_copy])
 
         layout.addLayoutItem(map_item)
@@ -245,17 +280,25 @@ class SymbolExportMixin:
         layout.setName('NorthArrowLayout')
 
         page = layout.pageCollection().pages()[0]
-        page.setPageSize(QgsLayoutSize(50, 50, QgsUnitTypes.LayoutMillimeters))
+        page.setPageSize(
+            QgsLayoutSize(
+                NORTH_ARROW_PAGE, NORTH_ARROW_PAGE, QgsUnitTypes.LayoutMillimeters
+            )
+        )
 
         north_arrow = QgsLayoutItemPicture(layout)
         north_arrow.setPicturePath(
             QgsApplication.svgPaths()[0] + '/arrows/NorthArrow_11.svg',
         )
         north_arrow.attemptResize(
-            QgsLayoutSize(40, 40, QgsUnitTypes.LayoutMillimeters),
+            QgsLayoutSize(
+                NORTH_ARROW_SIZE, NORTH_ARROW_SIZE, QgsUnitTypes.LayoutMillimeters
+            ),
         )
         north_arrow.attemptMove(
-            QgsLayoutPoint(25, 25, QgsUnitTypes.LayoutMillimeters),
+            QgsLayoutPoint(
+                NORTH_ARROW_POS, NORTH_ARROW_POS, QgsUnitTypes.LayoutMillimeters
+            ),
         )
         north_arrow.setPictureAnchor(QgsLayoutItemPicture.Middle)
         north_arrow.setResizeMode(QgsLayoutItemPicture.Zoom)
@@ -268,7 +311,7 @@ class SymbolExportMixin:
         north_arrow.setRotation(map_rotation)
 
         export_settings = QgsLayoutExporter.SvgExportSettings()
-        export_settings.dpi = 300
+        export_settings.dpi = EXPORT_DPI
         export_settings.cropToContents = True
 
         exporter = QgsLayoutExporter(layout)
@@ -293,16 +336,20 @@ class SymbolExportMixin:
         layout.setName('ScaleBarLayout')
 
         page = layout.pageCollection().pages()[0]
-        page.setPageSize(QgsLayoutSize(1, 1, QgsUnitTypes.LayoutMillimeters))
+        page.setPageSize(
+            QgsLayoutSize(
+                SCALE_BAR_PAGE, SCALE_BAR_PAGE, QgsUnitTypes.LayoutMillimeters
+            )
+        )
 
         map_item = QgsLayoutItemMap(layout)
-        map_item.setRect(QRectF(10, 10, 80, 80))
+        map_item.setRect(QRectF(10, 10, SCALE_BAR_RECT, SCALE_BAR_RECT))
         map_item.zoomToExtent(self.iface.mapCanvas().extent())
         layout.addLayoutItem(map_item)
 
         map_settings = self.iface.mapCanvas().mapSettings()
         scale_val = map_settings.scale()
-        bar_length_mm = 100
+        bar_length_mm = SCALE_BAR_LENGTH_MM
         meters_per_mm = scale_val / 1000.0
         total_length_m = meters_per_mm * bar_length_mm
 
@@ -314,7 +361,7 @@ class SymbolExportMixin:
             QgsLayoutPoint(10, 85, QgsUnitTypes.LayoutMillimeters),
         )
 
-        if total_length_m >= 1000:
+        if total_length_m >= SCALE_BAR_THRESHOLD_KM:
             scale_bar.setUnits(QgsUnitTypes.DistanceKilometers)
             scale_bar.setUnitsPerSegment(0.1)
             scale_bar.setUnitLabel(self._tr('km'))
@@ -337,7 +384,7 @@ class SymbolExportMixin:
         page.setBackgroundColor(QColor(0, 0, 0, 0))
 
         export_settings = QgsLayoutExporter.SvgExportSettings()
-        export_settings.dpi = 900
+        export_settings.dpi = SYMBOL_DPI
         export_settings.cropToContents = True
         export_settings.transparentBackground = True
 

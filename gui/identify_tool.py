@@ -10,15 +10,21 @@ from qgis.core import QgsExpression, QgsFeature, QgsFeatureRequest, QgsMapLayer
 from qgis.gui import QgisInterface, QgsMapToolIdentify
 from qgis.PyQt.QtCore import Qt, pyqtSignal
 from qgis.PyQt.QtGui import QMouseEvent
-from qgis.PyQt.QtWidgets import QMenu
+from qgis.PyQt.QtWidgets import QMenu, QMessageBox
 
 if TYPE_CHECKING:
     from .popup_dialog import PopupDialog
 
+from sqlalchemy.exc import SQLAlchemyError
+
 from ..app.core.database import get_session
 from ..app.orders import models as _models
 from ..app.users.repository import qgis_config
-from ..constants import LAYER_KEY, LOCALE_AR, current_locale
+from ..constants import (
+    LAYER_KEY,
+    LOCALE_AR,
+    current_locale,
+)
 from ..scripts.widget_texts import get_string
 
 logger = logging.getLogger(__name__)
@@ -168,32 +174,42 @@ class IdentifyTool(QgsMapToolIdentify):
         layer_name = layer.name()
         data_list = qgis_config().get('mapper') or []
         for data in data_list:
-            if data.get('layer') == layer_name:
-                session = get_session()
-                try:
-                    model_name = data.get('model')
-                    model = getattr(_models, model_name, None)
-                    if model is None:
-                        logger.warning('Unknown model: %s', model_name)
-                        break
+            if data.get('layer') != layer_name:
+                continue
+            session = get_session()
+            try:
+                model_name = data.get('model')
+                model = getattr(_models, model_name, None)
+                if model is None:
+                    logger.warning('Unknown model: %s', model_name)
+                    break
 
-                    query = session.query(model).filter(model.id == feature_id).first()
+                query = session.query(model).filter(model.id == feature_id).first()
 
-                    if query:
-                        query.delete(session)
-                finally:
-                    session.close()
-
-                request = QgsFeatureRequest().setFilterExpression(
-                    f'"id" = {QgsExpression.quotedValue(feature_id)}'
+                if query:
+                    query.delete(session)
+            except (SQLAlchemyError, ValueError) as e:
+                session.rollback()
+                logger.exception('Failed to delete feature %s from DB', feature_id)
+                QMessageBox.critical(
+                    self.dlg if self.dlg else None,
+                    get_string('Error', current_locale()),
+                    str(e),
                 )
-                layer.startEditing()
-                features_to_remove = layer.getFeatures(request)
-                for feature in features_to_remove:
-                    layer.deleteFeature(feature.id())
+                continue
+            finally:
+                session.close()
 
-                layer.commitChanges()
-                layer.triggerRepaint()
+            request = QgsFeatureRequest().setFilterExpression(
+                f'"id" = {QgsExpression.quotedValue(feature_id)}'
+            )
+            layer.startEditing()
+            features_to_remove = layer.getFeatures(request)
+            for feature in features_to_remove:
+                layer.deleteFeature(feature.id())
+
+            layer.commitChanges()
+            layer.triggerRepaint()
 
         self.canvas.refresh()
 

@@ -171,17 +171,19 @@ class AuthMixin:
         QMessageBox.critical(self, self._tr('Error'), self._tr('Failed to Map layer.'))
         return False
 
-    def private_route(self: HasNavWidgets, page_index: Any) -> None:
-        """Navigate to a private (authenticated) page in the stacked widget."""
+    def _navigate(self: HasNavWidgets, page_index: Any) -> None:
+        """Navigate to a page in the stacked widget by object name."""
         page = self.router.findChild(QWidget, page_index)
         if page:
             self.router.setCurrentWidget(page)
 
+    def private_route(self: HasNavWidgets, page_index: Any) -> None:
+        """Navigate to a private (authenticated) page in the stacked widget."""
+        self._navigate(page_index)
+
     def public_route(self: HasNavWidgets, page_index: Any) -> None:
         """Navigate to a public (login/register) page in the stacked widget."""
-        page = self.router.findChild(QWidget, page_index)
-        if page:
-            self.router.setCurrentWidget(page)
+        self._navigate(page_index)
 
     def closeEvent(
         self: HasFullAuthContext,

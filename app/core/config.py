@@ -86,7 +86,7 @@ def normalize_theme(theme_name: Theme | str | None) -> Theme:
         try:
             return Theme(key)
         except ValueError:
-            pass
+            logger.debug('Unknown theme %r; using default', theme_name)
     return DEFAULT_THEME
 
 

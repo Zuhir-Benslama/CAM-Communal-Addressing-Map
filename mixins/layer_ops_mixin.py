@@ -27,6 +27,10 @@ from ..constants import (
     LAYER_ROADS,
     LAYER_SUBDIVISIONS,
     SRID,
+    ZONE_LINE_INTERSECT,
+    ZONE_OUTSIDE,
+    ZONE_POINT_WITHIN,
+    ZONE_POLYGON_INTERSECT,
 )
 from ..gui.entity_list_dialog import EntityListDialog
 from ._protocols import (
@@ -218,37 +222,37 @@ class LayerOpsMixin:
 
     def list_numberings(self) -> None:
         """Open an entity list dialog for numberings."""
-        dlg = EntityListDialog(model_name='Numbering', list_of='Numberings')
+        dlg = EntityListDialog(model_name='Numbering', list_of=LAYER_NUMBERING)
         dlg.exec()
 
     def list_panel_signs(self) -> None:
         """Open an entity list dialog for panel signs."""
-        dlg = EntityListDialog(model_name='PanelSign', list_of='Panels')
+        dlg = EntityListDialog(model_name='PanelSign', list_of=LAYER_PANELS)
         dlg.exec()
 
     def _check_geometry_in_zone(self, geometry_wkt: str) -> int:
         """Check if geometry is within the user's allowed zone.
 
         Returns:
-            0 = outside zone
-            1 = Point within polygon
-            2 = Polygon intersects zone
-            3 = LineString intersects zone
+            ZONE_OUTSIDE — outside zone
+            ZONE_POINT_WITHIN — Point within polygon
+            ZONE_POLYGON_INTERSECT — Polygon intersects zone
+            ZONE_LINE_INTERSECT — LineString intersects zone
         """
         user_location = get_user_location()
         if user_location is None:
             logger.warning('No user location available; skipping zone check')
-            return 1
+            return ZONE_POINT_WITHIN
         uloc = wkt.loads(user_location)
         current_obj = wkt.loads(geometry_wkt)
 
         if isinstance(current_obj, Point) and current_obj.within(uloc):
-            return 1
+            return ZONE_POINT_WITHIN
         if isinstance(current_obj, Polygon) and current_obj.intersects(uloc):
-            return 2
+            return ZONE_POLYGON_INTERSECT
         if isinstance(current_obj, LineString) and current_obj.intersects(uloc):
-            return 3
-        return 0
+            return ZONE_LINE_INTERSECT
+        return ZONE_OUTSIDE
 
     def on_feature_added(
         self: HasLayerOpsContext,
@@ -264,7 +268,7 @@ class LayerOpsMixin:
             if obj.isValid():
                 case = self._check_geometry_in_zone(obj.geometry().asWkt())
 
-                if case == 0:
+                if case == ZONE_OUTSIDE:
                     del_obj = layer.getFeature(fid)
                     if del_obj.isValid():
                         layer.deleteFeature(fid)
@@ -295,7 +299,7 @@ class LayerOpsMixin:
 
             case = self._check_geometry_in_zone(feature.geometry().asWkt())
 
-            if case == 0:
+            if case == ZONE_OUTSIDE:
                 layer.rollBack()
                 QMessageBox.warning(
                     self,

@@ -52,11 +52,6 @@ def _locale() -> str:
     return current_locale()
 
 
-def _load_localites() -> list[dict]:
-    """Load commune metadata from JSON file."""
-    return communes_list()
-
-
 def fill_wilayas_list(combobox: QComboBox) -> None:
     """Populate a combobox with distinct wilaya names from JSON."""
     loc = _locale()

@@ -21,6 +21,10 @@ from app.shared.constants import (
     MAP_A3_TEMPLATE,
     MAP_PNG,
     NORTH_ARROW_SVG,
+    REPORT_METHOD_MAP_A3,
+    REPORT_METHOD_MAP_A4,
+    REPORT_METHOD_ORDER,
+    REPORT_METHOD_REPORT,
     SCALE_BAR_SVG,
     SITUATION_PNG,
     SYMBOLS_SVG,
@@ -85,10 +89,12 @@ def _find_soffice() -> str:
     )
 
 
-def map_a3() -> None:
-    """Generate A3 map and convert to PDF."""
-    template_path = MAP_A3_TEMPLATE
+def _generate_map(template_path: Path, *, extra_images: bool = False) -> None:
+    """Generate a map ODT from *template_path* and convert to PDF.
 
+    When *extra_images* is True (for the A0/A4 template), the situation
+    and chart images are also embedded.
+    """
     with open(TMP_JSON, encoding='utf-8') as file:
         data_dict = json.load(file)
         output_dir = data_dict.get('output_dir', '.')
@@ -96,82 +102,21 @@ def map_a3() -> None:
 
         t = Template(
             template_path,
-            _output_path(
-                data_dict,
-                f'map_{num_plan}.odt',
-            ),
+            _output_path(data_dict, f'map_{num_plan}.odt'),
         )
         t.set_image_path('staticimage.map', MAP_PNG)
         t.set_image_path('staticimage.north', NORTH_ARROW_SVG)
         t.set_image_path('staticimage.legend', SYMBOLS_SVG)
         t.set_image_path('staticimage.scale', SCALE_BAR_SVG)
+        if extra_images:
+            t.set_image_path('staticimage.situation', SITUATION_PNG)
+            t.set_image_path('staticimage.chart', CHART_SVG)
 
         t.render(data_dict)
 
         soffice_path = _find_soffice()
         input_filename = _output_path(data_dict, f'map_{num_plan}.odt')
-        pdf_filename = f'map_{num_plan}.pdf'
-
         os.makedirs(output_dir, exist_ok=True)
-
-        command = [
-            soffice_path,
-            '--headless',
-            '--convert-to',
-            'pdf',
-            '--outdir',
-            output_dir,
-            input_filename,
-        ]
-
-        try:
-            subprocess.run(command, check=True)
-            logger.info(
-                'Converted to PDF successfully: %s',
-                os.path.join(output_dir, pdf_filename),
-            )
-            try:
-                os.remove(input_filename)
-                logger.info('Deleted file: %s', input_filename)
-            except FileNotFoundError:
-                logger.warning('File not found: %s', input_filename)
-            except PermissionError:
-                logger.warning(
-                    'No permission to delete: %s',
-                    input_filename,
-                )
-            except OSError as e:
-                logger.error('Error deleting file: %s', e)
-        except subprocess.CalledProcessError as e:
-            logger.error('Conversion failed: %s', e)
-
-
-def map_a4() -> None:
-    """Generate A4 map and convert to PDF."""
-    template_path = MAP_A0_TEMPLATE
-
-    with open(TMP_JSON, encoding='utf-8') as file:
-        data_dict = json.load(file)
-        output_dir = data_dict.get('output_dir', '.')
-        num_plan = data_dict.get('num_plan', 'map')
-
-        t = Template(
-            template_path,
-            _output_path(
-                data_dict,
-                f'map_{num_plan}.odt',
-            ),
-        )
-        t.set_image_path('staticimage.map', MAP_PNG)
-        t.set_image_path('staticimage.north', NORTH_ARROW_SVG)
-        t.set_image_path('staticimage.legend', SYMBOLS_SVG)
-        t.set_image_path('staticimage.scale', SCALE_BAR_SVG)
-        t.set_image_path('staticimage.situation', SITUATION_PNG)
-        t.set_image_path('staticimage.chart', CHART_SVG)
-        t.render(data_dict)
-        soffice_path = _find_soffice()
-
-        input_filename = _output_path(data_dict, f'map_{num_plan}.odt')
 
         command = [
             soffice_path,
@@ -195,14 +140,21 @@ def map_a4() -> None:
             except FileNotFoundError:
                 logger.warning('File not found: %s', input_filename)
             except PermissionError:
-                logger.warning(
-                    'No permission to delete: %s',
-                    input_filename,
-                )
+                logger.warning('No permission to delete: %s', input_filename)
             except OSError as e:
                 logger.error('Error deleting file: %s', e)
         except subprocess.CalledProcessError as e:
             logger.error('Conversion failed: %s', e)
+
+
+def map_a3() -> None:
+    """Generate A3 map and convert to PDF."""
+    _generate_map(MAP_A3_TEMPLATE)
+
+
+def map_a4() -> None:
+    """Generate A4 map and convert to PDF."""
+    _generate_map(MAP_A0_TEMPLATE, extra_images=True)
 
 
 if __name__ == '__main__':
@@ -218,13 +170,13 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.method == 1:
+    if args.method == REPORT_METHOD_ORDER:
         generate_order_form()
-    elif args.method == 2:
+    elif args.method == REPORT_METHOD_REPORT:
         generate_report()
-    elif args.method == 3:
+    elif args.method == REPORT_METHOD_MAP_A3:
         map_a3()
-    elif args.method == 4:
+    elif args.method == REPORT_METHOD_MAP_A4:
         map_a4()
     else:
         logger.warning('Method %s not recognized.', args.method)
