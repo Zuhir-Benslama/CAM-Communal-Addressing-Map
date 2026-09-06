@@ -585,6 +585,443 @@ class TestMainDialogCore(unittest.TestCase):
         ):
             dialog._save_new_type()
 
+    # ------------------------------------------------------------------
+    # _run_init_steps
+    # ------------------------------------------------------------------
+
+    def test_run_init_steps_runs_all(self) -> None:
+        calls = []
+        steps = [
+            ('a', lambda: calls.append('a')),
+            ('b', lambda: calls.append('b')),
+        ]
+        self.assertIsNone(self.main_dialog._run_init_steps(steps))
+        self.assertEqual(calls, ['a', 'b'])
+
+    def test_run_init_steps_logs_and_reraises(self) -> None:
+        def boom():
+            raise ValueError('x')
+
+        steps = [('a', boom)]
+        with (
+            patch.object(self.main_dialog.logger, 'exception') as mock_exc,
+            self.assertRaises(ValueError),
+        ):
+            self.main_dialog._run_init_steps(steps)
+        mock_exc.assert_called_once_with('Init step %r failed', 'a')
+
+    # ------------------------------------------------------------------
+    # _on_submit
+    # ------------------------------------------------------------------
+
+    def test_on_submit_dispatches_action(self) -> None:
+        dialog = self._make_raw()
+        handler = MagicMock()
+        dialog._submit_dispatch = {self.main_dialog.Action.DRAW: handler}
+        dialog._on_submit(self.main_dialog.Action.DRAW)
+        handler.assert_called_once()
+
+    def test_on_submit_accepts_string(self) -> None:
+        dialog = self._make_raw()
+        handler = MagicMock()
+        dialog._submit_dispatch = {self.main_dialog.Action.DRAW: handler}
+        dialog._on_submit('draw')
+        handler.assert_called_once()
+
+    def test_on_submit_ignores_unknown_string(self) -> None:
+        dialog = self._make_raw()
+        dialog._submit_dispatch = {}
+        self.assertIsNone(dialog._on_submit('no_such_action'))
+
+    def test_on_submit_unknown_action_logs(self) -> None:
+        dialog = self._make_raw()
+        dialog._submit_dispatch = {}
+        with patch.object(self.main_dialog.logger, 'error') as mock_err:
+            dialog._on_submit(self.main_dialog.Action.DRAW)
+        mock_err.assert_called_once()
+
+    # ------------------------------------------------------------------
+    # _switch_page
+    # ------------------------------------------------------------------
+
+    def test_switch_page_finds_and_activates(self) -> None:
+        dialog = self._make_raw()
+        page = MagicMock()
+        dialog._page_stack = MagicMock()
+        dialog._page_stack.findChild.return_value = page
+        dialog._switch_page('login')
+        dialog._page_stack.setCurrentWidget.assert_called_once_with(page)
+
+    def test_switch_page_logs_when_missing(self) -> None:
+        dialog = self._make_raw()
+        dialog._page_stack = MagicMock()
+        dialog._page_stack.findChild.return_value = None
+        with patch.object(self.main_dialog.logger, 'warning') as mock_warn:
+            dialog._switch_page('nope')
+        mock_warn.assert_called()
+
+    # ------------------------------------------------------------------
+    # _toggle_settings
+    # ------------------------------------------------------------------
+
+    def test_toggle_settings_shows_settings(self) -> None:
+        dialog = self._make_raw()
+        dialog._settings_visible = False
+        dialog._main_stack = MagicMock()
+        dialog._main_stack.findChild.return_value = MagicMock()
+        dialog._toggle_settings()
+        self.assertTrue(dialog._settings_visible)
+        dialog._main_stack.setCurrentWidget.assert_called_once()
+
+    def test_toggle_settings_hides_when_visible(self) -> None:
+        dialog = self._make_raw()
+        dialog._settings_visible = True
+        dialog._main_stack = MagicMock()
+        dialog._main_stack.findChild.return_value = MagicMock()
+        dialog._toggle_settings()
+        self.assertFalse(dialog._settings_visible)
+
+    # ------------------------------------------------------------------
+    # _restore_layout_direction
+    # ------------------------------------------------------------------
+
+    def test_restore_layout_direction(self) -> None:
+        dialog = self._make_raw()
+        dialog._previous_layout_dir = MagicMock()
+        with patch.object(
+            self.main_dialog.QApplication, 'setLayoutDirection'
+        ) as mock_set:
+            dialog._restore_layout_direction()
+        mock_set.assert_called_once_with(dialog._previous_layout_dir)
+
+    # ------------------------------------------------------------------
+    # _default_layer_keys / _layer_key_map
+    # ------------------------------------------------------------------
+
+    def test_default_layer_keys(self) -> None:
+        self.assertEqual(
+            self.main_dialog.MainDialog._default_layer_keys(),
+            ['zone', 'road', 'org', 'city', 'num', 'pan'],
+        )
+
+    def test_layer_key_map_when_no_stack(self) -> None:
+        dialog = self._make_raw()
+        dialog._form_stack = None
+        self.assertEqual(
+            dialog._layer_key_map(),
+            ['zone', 'road', 'org', 'city', 'num', 'pan'],
+        )
+
+    def test_layer_key_map_derives_from_stack(self) -> None:
+        dialog = self._make_raw()
+
+        def make_widget(name):
+            w = MagicMock()
+            w.objectName.return_value = name
+            return w
+
+        stack = MagicMock()
+        stack.count.return_value = 3
+        stack.widget.side_effect = [
+            make_widget('zoneForm'),
+            make_widget('roadForm'),
+            make_widget('plain'),
+        ]
+        dialog._form_stack = stack
+        self.assertEqual(dialog._layer_key_map(), ['zone', 'road', 'plain'])
+
+    # ------------------------------------------------------------------
+    # _validate_layer_maps
+    # ------------------------------------------------------------------
+
+    def test_validate_layer_maps_ok(self) -> None:
+        dialog = self._make_raw()
+        stack = MagicMock()
+        stack.count.return_value = 6
+        dialog._form_stack = stack
+        self.assertIsNone(dialog._validate_layer_maps())
+
+    def test_validate_layer_maps_no_stack(self) -> None:
+        dialog = self._make_raw()
+        dialog._form_stack = None
+        self.assertIsNone(dialog._validate_layer_maps())
+
+    def test_validate_layer_maps_raises_on_mismatch(self) -> None:
+        dialog = self._make_raw()
+        stack = MagicMock()
+        stack.count.return_value = 3
+        dialog._form_stack = stack
+        with self.assertRaises(AssertionError):
+            dialog._validate_layer_maps()
+
+    # ------------------------------------------------------------------
+    # _setup_i18n / _setup_widget_aliases
+    # ------------------------------------------------------------------
+
+    def test_setup_i18n_clears_button_texts(self) -> None:
+        dialog = self._make_raw()
+        for b in ('_btn_draw', '_btn_select', '_btn_edit', '_btn_measure'):
+            setattr(dialog, b, MagicMock())
+        with (
+            patch.object(self.main_dialog, 'clear_i18n_cache') as mock_clear,
+            patch.object(self.main_dialog, 'translate_internal_combos') as mock_tr,
+        ):
+            dialog._setup_i18n()
+        dialog._btn_draw.setText.assert_called_once_with('')
+        mock_clear.assert_called_once()
+        mock_tr.assert_called_once_with(dialog)
+
+    def test_setup_widget_aliases_assigns_attributes(self) -> None:
+        dialog = self._make_raw()
+        source_names = [
+            '_combo_map_options',
+            '_field_username',
+            '_field_password',
+            '_field_fname',
+            '_field_lname',
+            '_field_email',
+            '_field_pnum',
+            '_field_uname',
+            '_field_pwd',
+            '_label_username',
+            '_combo_paper',
+            '_combo_zone_type',
+            '_field_nom_zone',
+            '_combo_type_road',
+            '_field_road_name',
+            '_combo_org_cat',
+            '_combo_org_type',
+            '_field_org_name',
+            '_combo_subd_type',
+            '_field_subd_name',
+            '_combo_road_ref',
+            '_field_num_val',
+            '_field_repetition',
+            '_combo_num_state',
+            '_combo_activity_cat',
+            '_combo_activity_type',
+            '_combo_mount_status',
+            '_combo_panel_ref',
+        ]
+        for name in source_names:
+            setattr(dialog, name, MagicMock())
+        dialog._setup_widget_aliases()
+        self.assertIs(dialog.map_options, dialog._combo_map_options)
+        self.assertIs(dialog.username, dialog._field_username)
+        self.assertIs(dialog.panel_ref, dialog._combo_panel_ref)
+
+    # ------------------------------------------------------------------
+    # _populate_dispatch
+    # ------------------------------------------------------------------
+
+    def test_populate_dispatch_maps_actions(self) -> None:
+        dialog = self._make_raw()
+        dialog.login_user = MagicMock()
+        dialog._populate_dispatch()
+        self.assertEqual(
+            dialog._submit_dispatch[self.main_dialog.Action.LOGIN],
+            dialog.login_user,
+        )
+        self.assertEqual(
+            dialog._submit_dispatch[self.main_dialog.Action.LIST_ROADS],
+            dialog.list_road_entries,
+        )
+
+    # ------------------------------------------------------------------
+    # _on_feature_changed
+    # ------------------------------------------------------------------
+
+    def test_on_feature_changed_non_string_ignored(self) -> None:
+        dialog = self._make_raw()
+        dialog.feature_combo = self.QComboBox()
+        dialog.feature_combo.addItem('x', None)
+        dialog._label_subtype = MagicMock()
+        dialog._field_new_type = MagicMock()
+        dialog.subtype_combo = MagicMock()
+        with patch.object(self.main_dialog, 'fill_subtype_combo') as mock_fill:
+            dialog._on_feature_changed(0)
+        mock_fill.assert_not_called()
+
+    def test_on_feature_changed_activity(self) -> None:
+        dialog = self._make_raw()
+        dialog.feature_combo = self.QComboBox()
+        dialog.feature_combo.addItem('Activity', 'Activities')
+        dialog.feature_combo.setCurrentIndex(0)
+        dialog._label_subtype = MagicMock()
+        dialog._field_new_type = MagicMock()
+        dialog.subtype_combo = MagicMock()
+        with (
+            patch.object(self.main_dialog, 'ACTIVITY_KEY', 'Activities'),
+            patch.object(self.main_dialog, 'fill_subtype_combo') as mock_fill,
+        ):
+            dialog._on_feature_changed(0)
+        dialog._label_subtype.setVisible.assert_called_once_with(True)
+        dialog._field_new_type.setVisible.assert_called_once_with(True)
+        mock_fill.assert_called_once()
+
+    def test_on_feature_changed_non_activity(self) -> None:
+        dialog = self._make_raw()
+        dialog.feature_combo = self.QComboBox()
+        dialog.feature_combo.addItem('Road', 'road')
+        dialog.feature_combo.setCurrentIndex(0)
+        dialog._label_subtype = MagicMock()
+        dialog._field_new_type = MagicMock()
+        dialog.subtype_combo = MagicMock()
+        with patch.object(self.main_dialog, 'fill_subtype_combo'):
+            dialog._on_feature_changed(0)
+        dialog._label_subtype.setVisible.assert_called_once_with(False)
+        dialog._field_new_type.setVisible.assert_called_once_with(False)
+
+    # ------------------------------------------------------------------
+    # _save_new_type failure path
+    # ------------------------------------------------------------------
+
+    def test_save_new_type_shows_warning_on_failure(self) -> None:
+        dialog = self._make_raw()
+        dialog.feature_combo = self.QComboBox()
+        dialog.feature_combo.addItem('Road', 'road')
+        dialog.feature_combo.setCurrentIndex(0)
+        dialog.subtype_combo = self.QComboBox()
+        dialog.subtype_combo.addItem('Local', 'local')
+        dialog._field_new_type = self.QLineEdit()
+        with (
+            patch.object(self.main_dialog, 'save_new_type_to_json', return_value=False),
+            patch.object(self.main_dialog.QMessageBox, 'warning') as mock_warn,
+        ):
+            dialog._save_new_type()
+        mock_warn.assert_called_once()
+
+    # ------------------------------------------------------------------
+    # _setup_map_canvas / disconnect_map_canvas
+    # ------------------------------------------------------------------
+
+    def test_setup_map_canvas_wires_signals(self) -> None:
+        dialog = self._make_raw()
+        canvas = dialog.iface.mapCanvas()
+        dialog._setup_map_canvas()
+        canvas.setContextMenuPolicy.assert_called_once_with(
+            self.main_dialog.Qt.ContextMenuPolicy.CustomContextMenu
+        )
+        canvas.customContextMenuRequested.connect.assert_called_once_with(
+            dialog.on_edition_release
+        )
+        canvas.mapToolSet.connect.assert_called_once_with(dialog._on_map_tool_changed)
+
+    def test_disconnect_map_canvas(self) -> None:
+        dialog = self._make_raw()
+        canvas = dialog.iface.mapCanvas()
+        dialog.disconnect_map_canvas()
+        canvas.customContextMenuRequested.disconnect.assert_called_once_with(
+            dialog.on_edition_release
+        )
+        canvas.mapToolSet.disconnect.assert_called_once_with(
+            dialog._on_map_tool_changed
+        )
+
+    def test_disconnect_map_canvas_suppresses_errors(self) -> None:
+        dialog = self._make_raw()
+        canvas = dialog.iface.mapCanvas()
+        canvas.customContextMenuRequested.disconnect.side_effect = TypeError
+        canvas.mapToolSet.disconnect.side_effect = RuntimeError
+        self.assertIsNone(dialog.disconnect_map_canvas())
+
+    # ------------------------------------------------------------------
+    # _connect_signals
+    # ------------------------------------------------------------------
+
+    def _wire_connect_signals_widgets(self, dialog) -> None:
+        names = [
+            '_btn_sign_in',
+            '_btn_add_user',
+            '_btn_restore_db',
+            '_btn_save_add',
+            '_btn_cancel_add',
+            '_btn_gear',
+            '_btn_draw',
+            '_btn_select',
+            '_btn_edit',
+            '_btn_measure',
+            '_combo_layer_selector',
+            'wilaya_list',
+            '_combo_org_cat',
+            '_combo_activity_cat',
+            'feature_combo',
+            '_combo_action',
+            '_combo_theme',
+            '_combo_locale',
+            '_btn_save_zone',
+            '_btn_save_road',
+            '_btn_save_org',
+            '_btn_save_city',
+            '_btn_save_num',
+            '_btn_save_pan',
+            '_btn_save_action',
+            '_btn_save_new_type',
+            '_btn_list_roads',
+            '_btn_list_orgs',
+            '_btn_list_cities',
+            '_btn_list_nums',
+            '_btn_list_panels',
+            '_btn_select_road_ref',
+            '_btn_select_panel_ref',
+        ]
+        for name in names:
+            setattr(dialog, name, MagicMock())
+
+    def test_connect_signals_wires_login(self) -> None:
+        dialog = self._make_raw()
+        self._wire_connect_signals_widgets(dialog)
+        dialog._connect_signals()
+        dialog._btn_sign_in.clicked.connect.assert_called_once()
+
+    def test_connect_signals_wires_all_buttons(self) -> None:
+        dialog = self._make_raw()
+        self._wire_connect_signals_widgets(dialog)
+        dialog._connect_signals()
+        for name in (
+            '_btn_add_user',
+            '_btn_restore_db',
+            '_btn_save_add',
+            '_btn_cancel_add',
+            '_btn_gear',
+            '_btn_draw',
+            '_btn_select',
+            '_btn_edit',
+            '_btn_measure',
+            '_btn_save_zone',
+            '_btn_save_road',
+            '_btn_save_org',
+            '_btn_save_city',
+            '_btn_save_num',
+            '_btn_save_pan',
+            '_btn_save_action',
+            '_btn_save_new_type',
+            '_btn_list_roads',
+            '_btn_list_orgs',
+            '_btn_list_cities',
+            '_btn_list_nums',
+            '_btn_list_panels',
+            '_btn_select_road_ref',
+            '_btn_select_panel_ref',
+        ):
+            getattr(dialog, name).clicked.connect.assert_called_once()
+
+    def test_connect_signals_wires_combos(self) -> None:
+        dialog = self._make_raw()
+        self._wire_connect_signals_widgets(dialog)
+        dialog._connect_signals()
+        for name in (
+            '_combo_layer_selector',
+            'wilaya_list',
+            '_combo_org_cat',
+            '_combo_activity_cat',
+            'feature_combo',
+            '_combo_action',
+            '_combo_theme',
+            '_combo_locale',
+        ):
+            getattr(dialog, name).currentIndexChanged.connect.assert_called_once()
+
 
 if __name__ == '__main__':
     unittest.main()
