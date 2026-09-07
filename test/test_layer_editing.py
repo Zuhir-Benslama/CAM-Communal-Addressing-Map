@@ -77,6 +77,53 @@ class TestEditing(unittest.TestCase):
         self.mod.update_layer(self.iface, 'nonexistent')
         self.iface.actionVertexTool.assert_not_called()
 
+    def test_activate_add_feature_unsupported_geometry(self):
+        self.layer.geometryType.return_value = 99
+        self.mod._activate_add_feature(self.iface, self.layer)
+        self.layer.startEditing.assert_called_once()
+        self.iface.actionAddFeature().trigger.assert_not_called()
+        self.iface.messageBar().pushMessage.assert_called_once()
+
+    @patch('plans_adressage.layer.editing.QgsProject')
+    def test_start_editing_layer_non_vector(self, mock_project):
+        non_vector_layer = make_mock_layer()
+        non_vector_layer.type.return_value = 1
+        mock_project.instance.return_value.mapLayersByName.return_value = [
+            non_vector_layer,
+        ]
+        self.mod.start_editing_layer(self.iface, 'raster_layer')
+        self.iface.messageBar().pushMessage.assert_called_once()
+        non_vector_layer.startEditing.assert_not_called()
+
+    @patch('plans_adressage.layer.editing.QgsProject')
+    def test_update_layer_non_vector(self, mock_project):
+        non_vector_layer = make_mock_layer()
+        non_vector_layer.type.return_value = 1
+        mock_project.instance.return_value.mapLayersByName.return_value = [
+            non_vector_layer,
+        ]
+        self.mod.update_layer(self.iface, 'raster_layer')
+        non_vector_layer.startEditing.assert_not_called()
+
+    @patch('plans_adressage.layer.editing.QgsProject')
+    def test_update_layer_already_editable(self, mock_project):
+        self.layer.isEditable.return_value = True
+        mock_project.instance.return_value.mapLayersByName.return_value = [
+            self.layer,
+        ]
+        self.mod.update_layer(self.iface, 'test_layer')
+        self.layer.startEditing.assert_not_called()
+        self.iface.mapCanvas().refresh.assert_called()
+
+    @patch('plans_adressage.layer.editing.QgsProject')
+    def test_update_layer_no_vertex_tool_action(self, mock_project):
+        self.iface.actionVertexTool.return_value = None
+        mock_project.instance.return_value.mapLayersByName.return_value = [
+            self.layer,
+        ]
+        self.mod.update_layer(self.iface, 'test_layer')
+        self.iface.mapCanvas().refresh.assert_called()
+
 
 if __name__ == '__main__':
     unittest.main()

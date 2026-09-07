@@ -762,5 +762,122 @@ class TestOnReferenceSelected(unittest.TestCase):
         self.assertEqual(d._ref_layer, 'facilities')
 
 
+# ======================================================================
+# PopupDialog._connect_signals
+# ======================================================================
+
+
+@unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
+class TestConnectSignals(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.app = get_qapp()
+        cls.mod = _load_module()
+
+    def test_org_page_connects_cat_changed(self):
+        d = _make_mock_dialog(layer_name_value='org')
+        self.mod.PopupDialog._connect_signals(d)
+        d._combo_org_cat.currentIndexChanged.connect.assert_called_once()
+
+    def test_num_page_connects_ref_and_activity(self):
+        d = _make_mock_dialog(
+            layer_name_value='num',
+            _btn_select_ref=MagicMock(),
+            _combo_activity_cat=MagicMock(),
+        )
+        self.mod.PopupDialog._connect_signals(d)
+        d._btn_select_ref.clicked.connect.assert_called_once()
+        d._combo_activity_cat.currentIndexChanged.connect.assert_called_once()
+
+    def test_pan_page_connects_panel_ref(self):
+        d = _make_mock_dialog(
+            layer_name_value='pan',
+            _btn_select_panel_ref=MagicMock(),
+        )
+        self.mod.PopupDialog._connect_signals(d)
+        d._btn_select_panel_ref.clicked.connect.assert_called_once()
+
+    def test_zone_page_no_signals(self):
+        d = _make_mock_dialog(layer_name_value='zone')
+        self.mod.PopupDialog._connect_signals(d)
+
+
+# ======================================================================
+# PopupDialog._populate_combos
+# ======================================================================
+
+
+@unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
+class TestPopulateCombos(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.app = get_qapp()
+        cls.mod = _load_module()
+
+    def test_zone_page(self):
+        d = _make_mock_dialog(layer_name_value='zone')
+        with patch.object(self.mod, 'fill_zone_type') as mock_fill:
+            self.mod.PopupDialog._populate_combos(d)
+            mock_fill.assert_called_once_with(d._combo_zone_type)
+
+    def test_roads_page(self):
+        d = _make_mock_dialog(layer_name_value='roads')
+        with patch.object(self.mod, 'fill_road_type') as mock_fill:
+            self.mod.PopupDialog._populate_combos(d)
+            mock_fill.assert_called_once_with(d._combo_road_type)
+
+    def test_org_page_with_category(self):
+        d = _make_mock_dialog(layer_name_value='org')
+        d._combo_org_cat.currentData.return_value = 'health'
+        with (
+            patch.object(self.mod, 'fill_org_category') as mock_cat,
+            patch.object(self.mod, 'fill_org_type') as mock_type,
+        ):
+            self.mod.PopupDialog._populate_combos(d)
+            mock_cat.assert_called_once_with(d._combo_org_cat)
+            mock_type.assert_called_once_with(d._combo_org_type, 'health')
+
+    def test_org_page_no_category_no_type_fill(self):
+        d = _make_mock_dialog(layer_name_value='org')
+        d._combo_org_cat.currentData.return_value = None
+        with (
+            patch.object(self.mod, 'fill_org_category'),
+            patch.object(self.mod, 'fill_org_type') as mock_type,
+        ):
+            self.mod.PopupDialog._populate_combos(d)
+            mock_type.assert_not_called()
+
+    def test_city_page(self):
+        d = _make_mock_dialog(layer_name_value='city')
+        with patch.object(self.mod, 'fill_subdivision_type') as mock_fill:
+            self.mod.PopupDialog._populate_combos(d)
+            mock_fill.assert_called_once_with(d._combo_subd_type)
+
+    def test_num_page(self):
+        d = _make_mock_dialog(layer_name_value='num')
+        d._combo_activity_cat.currentData.return_value = 'residential'
+        with (
+            patch.object(self.mod, 'fill_road_reference') as mock_road_ref,
+            patch.object(self.mod, 'fill_numbering_state') as mock_state,
+            patch.object(self.mod, 'fill_activity_category') as mock_cat,
+            patch.object(self.mod, 'fill_activity_type') as mock_type,
+        ):
+            self.mod.PopupDialog._populate_combos(d)
+            mock_road_ref.assert_called_once_with(d._combo_road_ref)
+            mock_state.assert_called_once_with(d._combo_num_state)
+            mock_cat.assert_called_once_with(d._combo_activity_cat)
+            mock_type.assert_called_once_with(d._combo_activity_type, 'residential')
+
+    def test_pan_page(self):
+        d = _make_mock_dialog(layer_name_value='pan')
+        with (
+            patch.object(self.mod, 'fill_mounting_status') as mock_status,
+            patch.object(self.mod, 'fill_panel_reference') as mock_ref,
+        ):
+            self.mod.PopupDialog._populate_combos(d)
+            mock_status.assert_called_once_with(d._combo_mount_status)
+            mock_ref.assert_called_once_with(d._combo_panel_ref)
+
+
 if __name__ == '__main__':
     unittest.main()

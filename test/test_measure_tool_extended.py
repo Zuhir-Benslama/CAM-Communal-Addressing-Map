@@ -364,6 +364,86 @@ class TestMeasureToolClear(unittest.TestCase):
         self.assertEqual(self.tool.markers, [])
         self.assertEqual(self.tool.labels, [])
 
+    def test_dispose_type_error_on_disconnect(self):
+        self.canvas.extentsChanged.disconnect.side_effect = TypeError
+        self.canvas.scaleChanged.disconnect.side_effect = TypeError
+        self.tool.dispose()
+        self.canvas.scene().removeItem.assert_called()
+
+    def _patch_label_classes(self):
+        """Patch module-level Qt graphics classes with real types so
+        isinstance() checks in updateLabels work."""
+        simple_text = type('QGraphicsSimpleTextItem', (), {})
+        text = type('QGraphicsTextItem', (), {})
+        self._simple_text_patch = patch.object(
+            self.mod, 'QGraphicsSimpleTextItem', simple_text
+        )
+        self._text_patch = patch.object(self.mod, 'QGraphicsTextItem', text)
+        self._simple_text_patch.start()
+        self._text_patch.start()
+
+    def tearDown(self):
+        if hasattr(self, '_simple_text_patch'):
+            self._simple_text_patch.stop()
+            self._text_patch.stop()
+
+    def test_update_labels_positions(self):
+        self._patch_label_classes()
+        label = MagicMock()
+        label.mid_point = MagicMock()
+        child = MagicMock()
+        child.__class__ = self.mod.QGraphicsSimpleTextItem
+        child.boundingRect.return_value = MagicMock(
+            width=lambda: 100, height=lambda: 20
+        )
+        label.childItems.return_value = [child]
+        self.tool.labels = [label]
+        self.canvas.scale.return_value = 1000
+        self.tool.updateLabels()
+        label.setPos.assert_called()
+
+    def test_update_labels_adjusts_font_size(self):
+        self._patch_label_classes()
+        label = MagicMock()
+        label.mid_point = MagicMock()
+        child = MagicMock()
+        child.__class__ = self.mod.QGraphicsSimpleTextItem
+        child.boundingRect.return_value = MagicMock(
+            width=lambda: 100, height=lambda: 20
+        )
+        fake_font = MagicMock()
+        child.font.return_value = fake_font
+        label.childItems.return_value = [child]
+        self.tool.labels = [label]
+        self.canvas.scale.return_value = 500
+        self.tool.updateLabels()
+        child.setFont.assert_called()
+
+
+@unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
+class TestMeasureToolExtendedClear(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.app = get_qapp()
+        setup_gui_mocks()
+        spec = importlib.util.spec_from_file_location(
+            'plans_adressage.gui.measure_tool',
+            'gui/measure_tool.py',
+        )
+        cls.mod = importlib.util.module_from_spec(spec)
+        sys.modules['plans_adressage.gui.measure_tool'] = cls.mod
+        spec.loader.exec_module(cls.mod)
+
+    def setUp(self):
+        self.canvas = MagicMock()
+        self.iface = MagicMock()
+        self.tool = self.mod.MeasureTool(self.canvas, self.iface)
+
+    def test_clear_hides_tooltip(self):
+        with patch.object(self.mod.QToolTip, 'hideText') as mock_hide:
+            self.tool.clear()
+            mock_hide.assert_called_once()
+
 
 @unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
 class TestMeasureToolUnsetMapTool(unittest.TestCase):

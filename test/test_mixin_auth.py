@@ -256,6 +256,34 @@ class TestAuthMixin(unittest.TestCase):
             self.mixin._restore_layout_direction.assert_called_once()
             event.accept.assert_called_once()
 
+    def test_closeEvent_no_login_page_found(self):
+        event = MagicMock()
+        self.mixin.identify_tool = None
+        self.mixin.popup_dialog = None
+        self.mixin.router.findChild = MagicMock(return_value=None)
+        with patch.object(self.mod, 'logout'):
+            self.mixin.closeEvent(event)
+            self.mixin.router.setCurrentWidget.assert_not_called()
+            event.accept.assert_called_once()
+
+    def test_submit_add_usr_failure_no_errors_silent(self):
+        sign_up = MagicMock(return_value=(False, None))
+        with (
+            patch.object(self.mod, 'sign_up', sign_up),
+            patch.object(self.mixin, '_show_error') as mock_err,
+        ):
+            self.mixin.submit_add_usr()
+            mock_err.assert_not_called()
+
+    def test_login_user_no_error_no_route(self):
+        sign_in = MagicMock(return_value=(False, None, None))
+        with (
+            patch.object(self.mod, 'sign_in', sign_in),
+            patch.object(self.mixin, '_show_error') as mock_err,
+        ):
+            self.mixin.login_user()
+            mock_err.assert_not_called()
+
     def test_on_select_wilaya(self):
         with patch.object(self.mod, 'fill_commune_of_wilaya') as mock_fill:
             self.mixin.on_select_wilaya(0)
@@ -270,6 +298,110 @@ class TestAuthMixin(unittest.TestCase):
         with patch.object(self.mod, 'fill_activity_type') as mock_fill:
             self.mixin.on_select_activity_cat(0)
             mock_fill.assert_called_once()
+
+    def test_add_map_layer_no_selection(self):
+        self.mixin.map_options = MagicMock()
+        self.mixin.map_options.currentText = MagicMock(return_value='')
+        self.mixin.map_options.currentData = MagicMock(return_value=None)
+        self.mixin.map_options.count = MagicMock(return_value=0)
+        self.mixin.map_options.currentIndex = MagicMock(return_value=-1)
+        with patch.object(self.mod, 'QMessageBox') as mock_mb:
+            result = self.mixin.add_map_layer()
+            self.assertFalse(result)
+            mock_mb.warning.assert_called_once()
+
+    def test_add_map_layer_unknown_label(self):
+        self.mixin.map_options = MagicMock()
+        self.mixin.map_options.currentText = MagicMock(return_value='Unknown Layer')
+        self.mixin.map_options.currentData = MagicMock(return_value='some_value')
+        self.mixin.map_options.count = MagicMock(return_value=1)
+        self.mixin.map_options.currentIndex = MagicMock(return_value=0)
+        with patch.object(self.mod, 'QMessageBox') as mock_mb:
+            result = self.mixin.add_map_layer()
+            self.assertFalse(result)
+            mock_mb.critical.assert_called_once()
+
+    def test_add_map_layer_raster_dialog_cancel(self):
+        self.mixin.map_options = MagicMock()
+        self.mixin.map_options.currentText = MagicMock(return_value='Raster')
+        self.mixin.map_options.currentData = MagicMock(return_value='raster_data')
+        mock_dialog = MagicMock()
+        mock_dialog.exec.return_value = False
+        with (
+            patch.object(self.mod, 'QFileDialog', return_value=mock_dialog),
+            patch.object(self.mod, 'get_dialog_qss', return_value=''),
+            patch.object(self.mod, 'current_theme', return_value='dark'),
+        ):
+            result = self.mixin._add_raster_file('Raster')
+            self.assertFalse(result)
+
+    def test_add_map_layer_raster_label_sets_flags(self):
+        self.mixin.map_options = MagicMock()
+        self.mixin.map_options.currentText = MagicMock(return_value='Raster')
+        self.mixin.map_options.currentData = MagicMock(return_value='raster_data')
+        self.mixin.map_options.count = MagicMock(return_value=1)
+        self.mixin.map_options.currentIndex = MagicMock(return_value=0)
+        with patch.object(
+            self.mixin, '_add_raster_file', return_value=True
+        ) as mock_add:
+            result = self.mixin.add_map_layer()
+            self.assertTrue(result)
+            mock_add.assert_called_once_with('Raster')
+            self.assertIsNone(self.mixin.sat_view)
+            self.assertEqual(self.mixin.rast, 'Raster')
+
+    def test_add_map_layer_raster_no_selected_file(self):
+        mock_dialog = MagicMock()
+        mock_dialog.exec.return_value = True
+        mock_dialog.selectedFiles.return_value = ['']
+        with (
+            patch.object(self.mod, 'QFileDialog', return_value=mock_dialog),
+            patch.object(self.mod, 'get_dialog_qss', return_value=''),
+            patch.object(self.mod, 'current_theme', return_value='dark'),
+        ):
+            result = self.mixin._add_raster_file('Raster')
+            self.assertFalse(result)
+
+    def test_add_map_layer_raster_invalid_layer(self):
+        mock_dialog = MagicMock()
+        mock_dialog.exec.return_value = True
+        mock_dialog.selectedFiles.return_value = ['/tmp/map.tif']
+        raster_layer = MagicMock()
+        raster_layer.isValid.return_value = False
+        with (
+            patch.object(self.mod, 'QFileDialog', return_value=mock_dialog),
+            patch.object(self.mod, 'QgsRasterLayer', return_value=raster_layer),
+            patch.object(self.mod, 'get_dialog_qss', return_value=''),
+            patch.object(self.mod, 'current_theme', return_value='dark'),
+        ):
+            result = self.mixin._add_raster_file('Raster')
+            self.assertFalse(result)
+
+    def test_add_map_layer_raster_valid_layer_adds_to_project(self):
+        mock_dialog = MagicMock()
+        mock_dialog.exec.return_value = True
+        mock_dialog.selectedFiles.return_value = ['/tmp/map.tif']
+        raster_layer = MagicMock()
+        raster_layer.isValid.return_value = True
+        with (
+            patch.object(self.mod, 'QFileDialog', return_value=mock_dialog),
+            patch.object(self.mod, 'QgsRasterLayer') as mock_raster_cls,
+            patch.object(self.mod, 'QgsProject') as mock_project,
+            patch.object(self.mod, 'get_dialog_qss', return_value=''),
+            patch.object(self.mod, 'current_theme', return_value='dark'),
+        ):
+            mock_raster_cls.return_value = raster_layer
+            result = self.mixin._add_raster_file('Raster')
+            self.assertTrue(result)
+            mock_raster_cls.assert_called_once_with('/tmp/map.tif', 'Raster')
+            mock_project.instance().addMapLayer.assert_called_once_with(raster_layer)
+
+    def test_fill_map_options_empty(self):
+        qgis_config = MagicMock(return_value={'map_layers': []})
+        with patch.object(self.mod, 'qgis_config', qgis_config):
+            self.mixin.fill_map_options()
+            self.mixin.map_options.clear.assert_called_once()
+            self.mixin.map_options.addItem.assert_not_called()
 
 
 if __name__ == '__main__':

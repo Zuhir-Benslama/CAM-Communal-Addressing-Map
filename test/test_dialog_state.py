@@ -451,5 +451,156 @@ class TestOnSaveAction(unittest.TestCase):
             dialog.backup.assert_called_once()
 
 
+class TestPopulateCombos(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        setup_gui_mocks()
+        _ensure_constants()
+        _ensure_widget_texts()
+        _ensure_ui_fillers()
+        spec = importlib.util.spec_from_file_location(
+            'plans_adressage.gui.dialog_state',
+            'gui/dialog_state.py',
+        )
+        cls.mod = importlib.util.module_from_spec(spec)
+        sys.modules['plans_adressage.gui.dialog_state'] = cls.mod
+        spec.loader.exec_module(cls.mod)
+
+    def test_populate_combos_fills_all(self):
+        dialog = MagicMock()
+        dialog._tr_locale = 'ar'
+        dialog.LAYER_INDEX_MAP = ['Zones', 'Roads']
+        self.mod.populate_combos(dialog)
+        self.assertTrue(dialog._combo_layer_selector.addItem.call_count >= 2)
+        self.assertTrue(dialog._combo_action.addItem.call_count >= 1)
+
+
+class TestTranslateInternalCombos(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        setup_gui_mocks()
+        _ensure_constants()
+        _ensure_widget_texts()
+        _ensure_ui_fillers()
+        spec = importlib.util.spec_from_file_location(
+            'plans_adressage.gui.dialog_state',
+            'gui/dialog_state.py',
+        )
+        cls.mod = importlib.util.module_from_spec(spec)
+        sys.modules['plans_adressage.gui.dialog_state'] = cls.mod
+        spec.loader.exec_module(cls.mod)
+
+    def test_translates_layer_names(self):
+        dialog = MagicMock()
+        dialog._tr_locale = 'ar'
+        dialog.LAYER_INDEX_MAP = ['Zones', 'Roads']
+        dialog._combo_theme.count.return_value = 0
+        dialog._combo_action.count.return_value = 0
+        dialog._combo_locale.count.return_value = 0
+        self.mod.translate_internal_combos(dialog)
+        self.assertTrue(dialog._combo_layer_selector.setItemText.call_count >= 2)
+
+    def test_translates_themes(self):
+        dialog = MagicMock()
+        dialog._tr_locale = 'en'
+        dialog.LAYER_INDEX_MAP = []
+        dialog._combo_theme.count.return_value = 2
+        dialog._combo_theme.itemData.side_effect = ['dark', 'light']
+        dialog._combo_action.count.return_value = 0
+        dialog._combo_locale.count.return_value = 0
+        self.mod.translate_internal_combos(dialog)
+        self.assertTrue(dialog._combo_theme.setItemText.call_count >= 1)
+
+    def test_translates_actions(self):
+        dialog = MagicMock()
+        dialog._tr_locale = 'en'
+        dialog.LAYER_INDEX_MAP = []
+        dialog._combo_theme.count.return_value = 0
+        dialog._combo_action.count.return_value = 2
+        dialog._combo_action.itemData.side_effect = ['report', 'backup']
+        dialog._combo_locale.count.return_value = 0
+        self.mod.translate_internal_combos(dialog)
+        self.assertTrue(dialog._combo_action.setItemText.call_count >= 1)
+
+    def test_translates_locales(self):
+        dialog = MagicMock()
+        dialog._tr_locale = 'en'
+        dialog.LAYER_INDEX_MAP = []
+        dialog._combo_theme.count.return_value = 0
+        dialog._combo_action.count.return_value = 0
+        dialog._combo_locale.count.return_value = 3
+        dialog._combo_locale.itemData.side_effect = ['ar', 'fr', 'en']
+        self.mod.translate_internal_combos(dialog)
+        self.assertTrue(dialog._combo_locale.setItemText.call_count >= 1)
+
+
+class TestOnThemeChanged(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        setup_gui_mocks()
+        _ensure_constants()
+        _ensure_widget_texts()
+        _ensure_ui_fillers()
+        spec = importlib.util.spec_from_file_location(
+            'plans_adressage.gui.dialog_state',
+            'gui/dialog_state.py',
+        )
+        cls.mod = importlib.util.module_from_spec(spec)
+        sys.modules['plans_adressage.gui.dialog_state'] = cls.mod
+        spec.loader.exec_module(cls.mod)
+
+    def test_saves_theme_and_applies(self):
+        dialog = MagicMock()
+        dialog._combo_theme.currentData.return_value = 'light'
+        with patch.object(self.mod, 'QSettings') as MockSettings:
+            settings_inst = MagicMock()
+            MockSettings.return_value = settings_inst
+            self.mod.on_theme_changed(dialog, 1)
+            settings_inst.setValue.assert_called_with('theme', 'light')
+            dialog.apply_theme.assert_called_once()
+
+
+class TestInitThemeLocaleValueError(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        setup_gui_mocks()
+        _ensure_constants()
+        _ensure_widget_texts()
+        _ensure_ui_fillers()
+        spec = importlib.util.spec_from_file_location(
+            'plans_adressage.gui.dialog_state',
+            'gui/dialog_state.py',
+        )
+        cls.mod = importlib.util.module_from_spec(spec)
+        sys.modules['plans_adressage.gui.dialog_state'] = cls.mod
+        spec.loader.exec_module(cls.mod)
+
+    def test_finddata_valueerror_sets_idx_minus_1(self):
+        dialog = MagicMock()
+        dialog._tr_locale = 'en'
+        dialog._combo_theme.findData.side_effect = ValueError('bad')
+        dialog._combo_theme.currentData.return_value = 'dark'
+        dialog._combo_locale.findData.return_value = 0
+        with patch.object(self.mod, 'QSettings') as MockSettings:
+            settings_inst = MagicMock()
+            settings_inst.value.return_value = ''
+            MockSettings.return_value = settings_inst
+            self.mod.init_theme_locale(dialog)
+            dialog._combo_theme.setCurrentIndex.assert_not_called()
+
+    def test_finddata_typeerror_sets_idx_minus_1(self):
+        dialog = MagicMock()
+        dialog._tr_locale = 'en'
+        dialog._combo_theme.findData.side_effect = TypeError('bad')
+        dialog._combo_theme.currentData.return_value = 'light'
+        dialog._combo_locale.findData.return_value = 0
+        with patch.object(self.mod, 'QSettings') as MockSettings:
+            settings_inst = MagicMock()
+            settings_inst.value.return_value = ''
+            MockSettings.return_value = settings_inst
+            self.mod.init_theme_locale(dialog)
+            dialog._combo_theme.setCurrentIndex.assert_not_called()
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -534,5 +534,126 @@ class TestIdentifyToolFeatureAsRef(unittest.TestCase):
         self.tool.ref_selected.emit.assert_called_once_with('pk-1', '')
 
 
+@unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
+class TestIdentifyToolBuildMenus(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.app = get_qapp()
+        setup_gui_mocks()
+        gui_mod = sys.modules.get('qgis.gui')
+        if not hasattr(gui_mod.QgsMapToolIdentify, 'TopDownAll'):
+            gui_mod.QgsMapToolIdentify.TopDownAll = 1
+        if not hasattr(gui_mod.QgsMapToolIdentify, 'identify'):
+            gui_mod.QgsMapToolIdentify.identify = lambda self, *a: []
+
+        spec = importlib.util.spec_from_file_location(
+            'plans_adressage.gui.identify_tool',
+            'gui/identify_tool.py',
+        )
+        cls.mod = importlib.util.module_from_spec(spec)
+        sys.modules['plans_adressage.gui.identify_tool'] = cls.mod
+        spec.loader.exec_module(cls.mod)
+
+    def setUp(self):
+        self.canvas = MagicMock()
+        self.tool = self.mod.IdentifyTool(self.canvas)
+        self.tool.set_active_layer(MagicMock())
+        self.tool.set_iface(MagicMock())
+
+    def _make_event(self):
+        event = MagicMock()
+        event.globalPos.return_value = MagicMock()
+        return event
+
+    def test_build_form_menu(self):
+        feature = MagicMock()
+        feature.__getitem__ = lambda s, k: 'Road'
+        menu = self.tool._build_form_menu(feature, self._make_event())
+        self.assertIsNotNone(menu)
+
+    def test_build_ref_menu(self):
+        feature = MagicMock()
+        feature.__getitem__ = lambda s, k: 'Avenue'
+        feature.fields.return_value.names.return_value = ['name', 'type']
+        menu = self.tool._build_ref_menu(feature, self._make_event())
+        self.assertIsNotNone(menu)
+
+    def test_handle_identify_results_form_mode(self):
+        result = MagicMock()
+        result.mFeature = MagicMock()
+        result.mFeature.__getitem__ = lambda s, k: 'test'
+        event = self._make_event()
+        with patch.object(self.tool, '_build_form_menu') as mock_menu:
+            self.tool._handle_identify_results([result], event)
+            mock_menu.assert_called_once()
+
+    def test_handle_identify_results_ref_mode(self):
+        self.tool.mode = self.mod.IdentifyMode.REF
+        result = MagicMock()
+        result.mFeature = MagicMock()
+        result.mFeature.__getitem__ = lambda s, k: 'test'
+        result.mFeature.fields.return_value.names.return_value = ['name', 'type']
+        event = self._make_event()
+        with patch.object(self.tool, '_build_ref_menu') as mock_menu:
+            self.tool._handle_identify_results([result], event)
+            mock_menu.assert_called_once()
+
+
+@unittest.skipIf(get_qapp() is None, 'Qt bindings not available')
+class TestIdentifyToolEdgeCases(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.app = get_qapp()
+        setup_gui_mocks()
+        spec = importlib.util.spec_from_file_location(
+            'plans_adressage.gui.identify_tool',
+            'gui/identify_tool.py',
+        )
+        cls.mod = importlib.util.module_from_spec(spec)
+        sys.modules['plans_adressage.gui.identify_tool'] = cls.mod
+        spec.loader.exec_module(cls.mod)
+
+    def test_display_or_update_form_no_layer(self):
+        tool = self.mod.IdentifyTool(MagicMock())
+        tool._active_layer = None
+        tool.display_or_update_form_feature('pk-1')
+        self.assertIsNone(tool.dlg)
+
+    def test_delete_feature_no_layer(self):
+        tool = self.mod.IdentifyTool(MagicMock())
+        tool._active_layer = None
+        tool.delete_feature('pk-1')
+        self.assertIsNone(tool.get_active_layer())
+        tool.canvas.refresh.assert_not_called()
+
+    def test_delete_feature_db_error(self):
+        canvas = MagicMock()
+        tool = self.mod.IdentifyTool(canvas)
+        layer = MagicMock()
+        layer.name.return_value = 'Roads'
+        tool.set_active_layer(layer)
+
+        from sqlalchemy.exc import SQLAlchemyError
+
+        mock_session = MagicMock()
+        mock_session.query.return_value.filter.side_effect = SQLAlchemyError('db err')
+        with (
+            patch.object(self.mod, 'get_session', return_value=mock_session),
+            patch.object(self.mod, 'qgis_config') as mock_cfg,
+        ):
+            mock_cfg.return_value = {
+                'mapper': [{'layer': 'Roads', 'model': 'Road'}],
+            }
+            tool.delete_feature('pk-1')
+            mock_session.rollback.assert_called_once()
+            mock_session.close.assert_called_once()
+
+    def test_get_id_returns_empty_layer_name_when_no_layer(self):
+        tool = self.mod.IdentifyTool(MagicMock())
+        tool.feature_id = 'pk-1'
+        result = tool.get_id()
+        self.assertEqual(result['layer_name'], '')
+
+
 if __name__ == '__main__':
     unittest.main()
