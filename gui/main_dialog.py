@@ -25,6 +25,7 @@ import contextlib
 import logging
 from collections.abc import Callable
 from enum import Enum
+from functools import partial
 from typing import Any, ClassVar
 
 from qgis.PyQt.QtCore import Qt
@@ -157,6 +158,36 @@ class MainDialog(
     - SymbolExportMixin: SVG/PNG layout exports (legend, scale bar...).
     - ReportMixin: statistical reports and purchase orders.
     """
+
+    # Button name → submit action wiring (see _connect_signals)
+    _SUBMIT_BUTTONS: ClassVar[tuple[tuple[str, Action], ...]] = (
+        ('_btn_sign_in', Action.LOGIN),
+        ('_btn_restore_db', Action.RESTORE_DB),
+        ('_btn_save_add', Action.ADD_USR),
+        ('_btn_draw', Action.DRAW),
+        ('_btn_select', Action.SELECT),
+        ('_btn_edit', Action.EDIT),
+        ('_btn_measure', Action.MEASURE),
+        ('_btn_save_zone', Action.ZONE),
+        ('_btn_save_road', Action.ROAD),
+        ('_btn_save_org', Action.ORG),
+        ('_btn_save_city', Action.CITY),
+        ('_btn_save_num', Action.NUM),
+        ('_btn_save_pan', Action.PAN),
+        ('_btn_save_action', Action.SAVE_ACTION),
+        ('_btn_save_new_type', Action.SAVE_NEW_TYPE),
+        ('_btn_list_roads', Action.LIST_ROADS),
+        ('_btn_list_orgs', Action.LIST_ORGS),
+        ('_btn_list_cities', Action.LIST_SUBDS),
+        ('_btn_list_nums', Action.LIST_NUMS),
+        ('_btn_list_panels', Action.LIST_PANELS),
+    )
+
+    # Button name → page key wiring (see _connect_signals)
+    _PAGE_BUTTONS: ClassVar[tuple[tuple[str, str], ...]] = (
+        ('_btn_add_user', 'add_usr'),
+        ('_btn_cancel_add', 'login'),
+    )
 
     def __init__(self, iface, parent=None) -> None:
         super().__init__(parent)
@@ -305,25 +336,19 @@ class MainDialog(
         }
 
     def _connect_signals(self) -> None:
-        # Login page
-        self._btn_sign_in.clicked.connect(lambda: self._on_submit(Action.LOGIN))
-        self._btn_add_user.clicked.connect(lambda: self._switch_page('add_usr'))
-        self._btn_restore_db.clicked.connect(lambda: self._on_submit(Action.RESTORE_DB))
+        for button_attr, action in self._SUBMIT_BUTTONS:
+            getattr(self, button_attr).clicked.connect(
+                partial(self._on_submit_button, action)
+            )
+        for button_attr, page_name in self._PAGE_BUTTONS:
+            getattr(self, button_attr).clicked.connect(
+                partial(self._on_page_button, page_name)
+            )
 
-        # Add User page
-        self._btn_save_add.clicked.connect(lambda: self._on_submit(Action.ADD_USR))
-        self._btn_cancel_add.clicked.connect(lambda: self._switch_page('login'))
-
-        # Main page toolbar
+        # Plain signal routing (no closure arguments to bind)
         self._btn_gear.clicked.connect(self._toggle_settings)
-
-        # Main page actions
-        self._btn_draw.clicked.connect(lambda: self._on_submit(Action.DRAW))
-        self._btn_select.clicked.connect(lambda: self._on_submit(Action.SELECT))
-        self._btn_edit.clicked.connect(lambda: self._on_submit(Action.EDIT))
-        self._btn_measure.clicked.connect(lambda: self._on_submit(Action.MEASURE))
-
-        # Combo signals
+        self._btn_select_road_ref.clicked.connect(self.select_ref_handler)
+        self._btn_select_panel_ref.clicked.connect(self.select_panel_ref_handler)
         self._combo_layer_selector.currentIndexChanged.connect(self._on_layer_changed)
         self.wilaya_list.currentIndexChanged.connect(self.on_select_wilaya)
         self._combo_org_cat.currentIndexChanged.connect(self.on_select_org_cat)
@@ -331,44 +356,15 @@ class MainDialog(
             self.on_select_activity_cat
         )
         self.feature_combo.currentIndexChanged.connect(self._on_feature_changed)
-        self._combo_action.currentIndexChanged.connect(
-            lambda i: on_action_changed(self, i)
-        )
-        self._combo_theme.currentIndexChanged.connect(
-            lambda i: on_theme_changed(self, i)
-        )
-        self._combo_locale.currentIndexChanged.connect(
-            lambda i: on_locale_changed(self, i)
-        )
+        self._combo_action.currentIndexChanged.connect(partial(on_action_changed, self))
+        self._combo_theme.currentIndexChanged.connect(partial(on_theme_changed, self))
+        self._combo_locale.currentIndexChanged.connect(partial(on_locale_changed, self))
 
-        # Save buttons
-        self._btn_save_zone.clicked.connect(lambda: self._on_submit(Action.ZONE))
-        self._btn_save_road.clicked.connect(lambda: self._on_submit(Action.ROAD))
-        self._btn_save_org.clicked.connect(lambda: self._on_submit(Action.ORG))
-        self._btn_save_city.clicked.connect(lambda: self._on_submit(Action.CITY))
-        self._btn_save_num.clicked.connect(lambda: self._on_submit(Action.NUM))
-        self._btn_save_pan.clicked.connect(lambda: self._on_submit(Action.PAN))
-        self._btn_save_action.clicked.connect(
-            lambda: self._on_submit(Action.SAVE_ACTION)
-        )
-        self._btn_save_new_type.clicked.connect(
-            lambda: self._on_submit(Action.SAVE_NEW_TYPE)
-        )
+    def _on_submit_button(self, action: Action, _checked: bool = False) -> None:
+        self._on_submit(action)
 
-        # List buttons
-        self._btn_list_roads.clicked.connect(lambda: self._on_submit(Action.LIST_ROADS))
-        self._btn_list_orgs.clicked.connect(lambda: self._on_submit(Action.LIST_ORGS))
-        self._btn_list_cities.clicked.connect(
-            lambda: self._on_submit(Action.LIST_SUBDS)
-        )
-        self._btn_list_nums.clicked.connect(lambda: self._on_submit(Action.LIST_NUMS))
-        self._btn_list_panels.clicked.connect(
-            lambda: self._on_submit(Action.LIST_PANELS)
-        )
-
-        # Reference selection buttons
-        self._btn_select_road_ref.clicked.connect(self.select_ref_handler)
-        self._btn_select_panel_ref.clicked.connect(self.select_panel_ref_handler)
+    def _on_page_button(self, page_name: str, _checked: bool = False) -> None:
+        self._switch_page(page_name)
 
     def _on_submit(self, page_name: Action | str) -> None:
         if isinstance(page_name, str):

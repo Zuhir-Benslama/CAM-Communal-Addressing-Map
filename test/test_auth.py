@@ -301,6 +301,23 @@ class TestLookupWilayaCode(unittest.TestCase):
             result = _lookup_wilaya_code('1601')
         self.assertIsNone(result)
 
+    def test_returns_none_when_wilaya_id_non_numeric(self) -> None:
+        from app.users.service import _lookup_wilaya_code
+
+        commune = {'daira_id': 1}
+        with (
+            patch('app.users.service.DAIRA_JSON', '/dev/null'),
+            patch('app.users.service.open'),
+            patch(
+                'app.users.service.json.load',
+                return_value={'1': {'wilaya_id': 'unknown'}},
+            ),
+            patch('app.users.service.find_commune_by_code', return_value=commune),
+            patch('app.users.service.load_communes', return_value=[]),
+        ):
+            result = _lookup_wilaya_code('1601')
+        self.assertIsNone(result)
+
 
 class TestSignUpDbError(unittest.TestCase):
     def setUp(self) -> None:

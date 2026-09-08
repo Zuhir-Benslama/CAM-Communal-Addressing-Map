@@ -54,12 +54,36 @@ class TestFindModSpatialiteDLL(unittest.TestCase):
         result = find_mod_spatialite_dll()
         self.assertEqual(result, 'mod_spatialite.so')
 
+    @patch('app.core.config.Path.exists', return_value=True)
     @patch('app.core.config.os.getenv')
-    def test_env_var_override(self, mock_getenv: MagicMock) -> None:
+    def test_env_var_override(
+        self, mock_getenv: MagicMock, _mock_exists: MagicMock
+    ) -> None:
         mock_getenv.return_value = '/custom/path/mod_spatialite.so'
         result = find_mod_spatialite_dll()
         self.assertEqual(result, '/custom/path/mod_spatialite.so')
         mock_getenv.assert_called_once_with('MOD_SPATIALITE_DLL')
+
+    @patch(
+        'app.core.config._find_via_ldconfig', return_value='/found/mod_spatialite.so'
+    )
+    @patch('app.core.config._find_in_candidate_paths', return_value=None)
+    @patch('app.core.config.os.uname')
+    @patch('app.core.config.os.name', new='posix')
+    @patch('app.core.config.Path.exists', return_value=False)
+    @patch('app.core.config.os.getenv')
+    def test_env_var_missing_path_falls_back(
+        self,
+        mock_getenv,
+        _mock_exists,
+        mock_uname,
+        _mock_cands,
+        _mock_ldconfig,
+    ) -> None:
+        mock_getenv.return_value = '/custom/path/mod_spatialite.so'
+        mock_uname.return_value.sysname = 'Linux'
+        result = find_mod_spatialite_dll()
+        self.assertEqual(result, '/found/mod_spatialite.so')
 
 
 class TestPasswordFunctions(unittest.TestCase):

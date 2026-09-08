@@ -403,6 +403,7 @@ def migrate_database(
     old = sqlite3.connect(old_path)
     old.row_factory = sqlite3.Row
     new = sqlite3.connect(new_path)
+    success = False
     try:
         new.execute('PRAGMA foreign_keys = OFF')
         new.execute('PRAGMA journal_mode = WAL')
@@ -430,7 +431,14 @@ def migrate_database(
 
         new.execute('PRAGMA foreign_keys = ON')
         new.commit()
+        success = True
         logger.info('Migration complete: %s', new_path)
     finally:
         new.close()
         old.close()
+        if not success:
+            # A failed migration leaves a partial database (and WAL/SHM
+            # sidecars) that would block a retry; clean them up.
+            for suffix in ('', '-wal', '-shm'):
+                with contextlib.suppress(OSError):
+                    Path(new_path + suffix).unlink()

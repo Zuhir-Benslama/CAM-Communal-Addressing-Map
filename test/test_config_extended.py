@@ -1,6 +1,5 @@
 """Extended tests for app.core.config — covers find_mod_spatialite_dll, _find_via_ldconfig, etc."""
 
-import os
 import subprocess
 import types
 import unittest
@@ -88,9 +87,32 @@ class TestFindViaLdconfig(unittest.TestCase):
 
 
 class TestFindModSpatialiteDll(unittest.TestCase):
-    @patch.dict(os.environ, {'MOD_SPATIALITE_DLL': '/env/path/mod_spatialite.so'})
-    def test_env_var(self):
+    @patch('app.core.config.Path.exists', return_value=True)
+    @patch('app.core.config.os.getenv', return_value='/env/path/mod_spatialite.so')
+    def test_env_var(self, _mock_getenv, _mock_exists):
         self.assertEqual(find_mod_spatialite_dll(), '/env/path/mod_spatialite.so')
+
+    @patch('app.core.config.os.name', new='nt')
+    @patch('app.core.config.os.getenv', return_value='mod_spatialite_custom.dll')
+    def test_env_var_bare_name(self, _mock_getenv):
+        self.assertEqual(find_mod_spatialite_dll(), 'mod_spatialite_custom.dll')
+
+    @patch('app.core.config._find_via_ldconfig', return_value='/ldconfig/path.so')
+    @patch('app.core.config._find_in_candidate_paths', return_value=None)
+    @patch('app.core.config.os.uname')
+    @patch('app.core.config.os.name', new='posix')
+    @patch('app.core.config.Path.exists', return_value=False)
+    @patch('app.core.config.os.getenv', return_value='/env/path/mod_spatialite.so')
+    def test_env_var_missing_falls_back_to_discovery(
+        self,
+        _mock_getenv,
+        _mock_exists,
+        mock_uname,
+        _mock_cands,
+        _mock_ldconfig,
+    ):
+        mock_uname.return_value = types.SimpleNamespace(sysname='Linux')
+        self.assertEqual(find_mod_spatialite_dll(), '/ldconfig/path.so')
 
     @patch('app.core.config.os.name', 'nt')
     def test_windows(self):

@@ -266,11 +266,11 @@ def update_panel(dialog: 'PopupDialog') -> None:
             **kwargs,
         )
         _notify_success(dialog, 'This panel has been updated successfully')
+        _finish_update(dialog)
     except (ValueError, SQLAlchemyError) as e:
         _notify_failure(dialog, 'Cannot update panel', e)
     finally:
         session.close()
-    _finish_update(dialog)
 
 
 def update_numbering(dialog: 'PopupDialog') -> None:
@@ -289,8 +289,8 @@ def update_numbering(dialog: 'PopupDialog') -> None:
         Numbering.update(session, record_id=dialog.attribute, **kwargs)
 
         _notify_success(dialog, 'This numbering has been updated successfully')
+        _finish_update(dialog)
     except (ValueError, SQLAlchemyError) as e:
         _notify_failure(dialog, 'Cannot update numbering', e)
     finally:
         session.close()
-    _finish_update(dialog)

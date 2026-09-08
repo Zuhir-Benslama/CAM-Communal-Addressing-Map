@@ -649,6 +649,7 @@ class TestUpdatePanel(unittest.TestCase):
 
         with (
             patch.object(self.mod, '_notify_failure') as mock_nf,
+            patch.object(self.mod, '_finish_update') as mock_fu,
             patch.object(self.mod, 'get_session'),
         ):
             dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
@@ -659,6 +660,7 @@ class TestUpdatePanel(unittest.TestCase):
             self.mod.update_panel(dialog)
             mock_nf.assert_called_once()
             self.assertIn('Cannot update panel', mock_nf.call_args[0])
+            mock_fu.assert_not_called()
 
 
 class TestUpdateNumbering(unittest.TestCase):
@@ -779,6 +781,7 @@ class TestUpdateNumbering(unittest.TestCase):
     def test_error_path(self):
         with (
             patch.object(self.mod, '_notify_failure') as mock_nf,
+            patch.object(self.mod, '_finish_update') as mock_fu,
             patch.object(self.mod, 'get_session'),
         ):
             dialog = _make_dialog(_ref_id='org-1', _ref_layer='facilities')
@@ -795,6 +798,7 @@ class TestUpdateNumbering(unittest.TestCase):
             self.mod.update_numbering(dialog)
             mock_nf.assert_called_once()
             self.assertIn('Cannot update numbering', mock_nf.call_args[0])
+            mock_fu.assert_not_called()
 
 
 if __name__ == '__main__':

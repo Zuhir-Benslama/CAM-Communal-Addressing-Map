@@ -78,12 +78,14 @@ class ConnectionPool:
                             "VALUES (4326, 'EPSG', 4326, 'WGS 84', "
                             "'+proj=longlat +datum=WGS84 +no_defs')"
                         )
-                except (OperationalError, SQLAlchemyError):
-                    logger.warning(
-                        'InitSpatialMetadata(1) failed \u2014 spatial queries '
-                        'may not work correctly',
-                        exc_info=True,
+                except (OperationalError, SQLAlchemyError) as exc:
+                    logger.exception(
+                        'InitSpatialMetadata failed \u2014 spatial queries will '
+                        'not work correctly'
                     )
+                    raise RuntimeError(
+                        'Failed to initialize SpatiaLite metadata'
+                    ) from exc
 
             Base.metadata.create_all(self._engine)
             _migrate_users_from_auth(self._engine)

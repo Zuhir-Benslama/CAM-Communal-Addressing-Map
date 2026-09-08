@@ -1,7 +1,7 @@
 """SQLAlchemy declarative base and shared ORM utilities."""
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from sqlalchemy import Column, DateTime
@@ -12,14 +12,19 @@ logger = logging.getLogger(__name__)
 Base = declarative_base()
 
 
+def _utcnow() -> datetime:
+    """Return the current UTC time as a naive datetime (UTC semantics)."""
+    return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
 class TimestampMixin:  # pylint: disable=too-few-public-methods
     """Mixin that adds ``created_at`` / ``updated_at`` datetime columns."""
 
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=_utcnow)
     updated_at = Column(
         DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow,
+        default=_utcnow,
+        onupdate=_utcnow,
     )
 
 

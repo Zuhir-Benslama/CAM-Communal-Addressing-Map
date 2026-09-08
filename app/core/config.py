@@ -139,10 +139,25 @@ def _find_via_ldconfig() -> str | None:
 
 
 def find_mod_spatialite_dll() -> str:
-    """Locate the mod_spatialite shared library on the system."""
+    """Locate the mod_spatialite shared library on the system.
+
+    An explicit ``MOD_SPATIALITE_DLL`` env var wins, unless it names a
+    path that does not exist — in that case fall back to discovery instead
+    of returning a dead path that would fail at load_extension time.
+    """
     env_path = os.getenv('MOD_SPATIALITE_DLL')
     if env_path:
-        return env_path
+        # Bare module names (e.g. 'mod_spatialite.dll') have no directory
+        # component and are resolved by the OS library search, so they
+        # cannot be existence-checked.
+        if os.path.dirname(env_path) and not Path(env_path).exists():
+            logger.warning(
+                'MOD_SPATIALITE_DLL points to a missing file; '
+                'falling back to discovery: %s',
+                env_path,
+            )
+        else:
+            return env_path
     if os.name == 'nt':
         return 'mod_spatialite.dll'
     if os.uname().sysname == 'Darwin':

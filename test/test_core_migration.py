@@ -165,6 +165,58 @@ class TestMigrateDatabase(unittest.TestCase):
                 if os.path.exists(p):
                     os.unlink(p)
 
+    def test_failed_migration_removes_partial_output(self):
+        with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as of:
+            old_path = of.name
+        new_path = old_path + '_new.db'
+        try:
+            _make_old_db(old_path)
+
+            with (
+                patch(
+                    'app.core.migration.init_spatialite',
+                    side_effect=RuntimeError('boom'),
+                ),
+                self.assertRaises(RuntimeError),
+            ):
+                migrate_database(old_path, new_path)
+
+            self.assertFalse(os.path.exists(new_path))
+            self.assertFalse(os.path.exists(new_path + '-wal'))
+            self.assertFalse(os.path.exists(new_path + '-shm'))
+        finally:
+            for p in (old_path, new_path):
+                if os.path.exists(p):
+                    os.unlink(p)
+
+    def test_retry_after_failed_migration_succeeds(self):
+        with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as of:
+            old_path = of.name
+        new_path = old_path + '_new.db'
+        try:
+            _make_old_db(old_path)
+
+            with (
+                patch(
+                    'app.core.migration.init_spatialite',
+                    side_effect=RuntimeError('boom'),
+                ),
+                self.assertRaises(RuntimeError),
+            ):
+                migrate_database(old_path, new_path)
+
+            with (
+                patch('app.core.migration.init_spatialite'),
+                patch('app.core.migration._register_geometry_columns'),
+                patch('app.core.migration._create_spatial_indexes'),
+            ):
+                migrate_database(old_path, new_path)
+            self.assertTrue(os.path.exists(new_path))
+        finally:
+            for p in (old_path, new_path):
+                if os.path.exists(p):
+                    os.unlink(p)
+
     def test_migrate_database_sets_pragmas(self):
         with tempfile.NamedTemporaryFile(suffix='.db', delete=False) as of:
             old_path = of.name

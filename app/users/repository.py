@@ -2,6 +2,7 @@
 
 import json
 import logging
+import os
 from pathlib import Path
 from typing import Any
 
@@ -124,13 +125,17 @@ def get_user_location() -> str | None:
 
 
 def create_cookie(cookie: str, uid: str) -> None:
-    """Persist a session cookie to disk (permissions 0600)."""
+    """Persist a session cookie to disk with 0600 permissions.
+
+    The file is created with explicit mode bits via ``os.open`` so it is
+    never world-readable, even transiently.
+    """
     data = {'Session': {'cookie': cookie, 'uid': uid}}
-    filename = COOKIE_FILE
+    filename = Path(COOKIE_FILE)
     try:
-        with Path(filename).open('w', encoding='utf-8') as f:
+        fd = os.open(filename, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+        with os.fdopen(fd, 'w', encoding='utf-8') as f:
             toml.dump(data, f)
-        Path(filename).chmod(0o600)
     except (OSError, PermissionError):
         logger.exception('Failed to write cookie file %s', filename)
         raise

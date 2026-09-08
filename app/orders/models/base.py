@@ -23,6 +23,8 @@ def _parent_zone_id(session: Session, geometry: Any) -> str | None:
     """Return the ID of the Zone that contains *geometry*, or None."""
     from .zone import Zone
 
+    if geometry is None:
+        return None
     try:
         zone = session.query(Zone).filter(ST_Within(geometry, Zone.geometry)).first()
         return zone.id if zone else None
@@ -37,6 +39,8 @@ def _has_child_entities(session: Session, zone_geometry: Any) -> bool:
     from .road import Road
     from .subdivision import Subdivision
 
+    if zone_geometry is None:
+        return False
     try:
         for cls in (Road, Organization, Subdivision):
             if (

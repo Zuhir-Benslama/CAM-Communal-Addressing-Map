@@ -174,12 +174,13 @@ class TestConnectSpatialite(unittest.TestCase):
         ]
         self.assertEqual(len(init_calls), 0)
 
-    def test_metadata_error_logs_warning(self):
+    def test_metadata_error_raises(self):
         from sqlalchemy.exc import OperationalError
 
         conn = self._make_conn()
         conn.execute.side_effect = OperationalError('stmt', {}, Exception('fail'))
-        self.assertIsNone(self._invoke_listener(conn))
+        with self.assertRaises(RuntimeError):
+            self._invoke_listener(conn)
 
 
 class TestConnectSpatialiteExtended(unittest.TestCase):

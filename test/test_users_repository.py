@@ -1,7 +1,7 @@
 """Tests for app.users.repository."""
 
 import unittest
-from unittest.mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, patch
 
 
 class TestLoadSessionCookie(unittest.TestCase):
@@ -60,17 +60,19 @@ class TestGetUserLocation(unittest.TestCase):
 
 class TestCreateCookie(unittest.TestCase):
     @patch('app.users.repository.toml')
-    def test_creates_file(self, mock_toml):
-        with patch('builtins.open', mock_open()):
-            from app.users.repository import create_cookie
+    @patch('app.users.repository.os.fdopen')
+    @patch('app.users.repository.os.open')
+    def test_creates_file(self, mock_open, mock_fdopen, mock_toml):
+        from app.users.repository import create_cookie
 
-            with patch('app.users.repository.Path'):
-                create_cookie('test_cookie', 'uid123')
-                mock_toml.dump.assert_called_once()
+        create_cookie('test_cookie', 'uid123')
+        mock_toml.dump.assert_called_once()
+        mock_open.assert_called_once()
 
-    @patch('app.users.repository.Path')
-    def test_raises_on_permission_error(self, mock_path_cls):
-        mock_path_cls.return_value.open.side_effect = PermissionError
+    @patch('app.users.repository.os.fdopen')
+    @patch('app.users.repository.os.open')
+    def test_raises_on_permission_error(self, mock_open, mock_fdopen):
+        mock_open.side_effect = PermissionError
         from app.users.repository import create_cookie
 
         with self.assertRaises(PermissionError):

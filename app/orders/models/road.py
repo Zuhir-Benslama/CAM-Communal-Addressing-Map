@@ -10,7 +10,7 @@ from sqlalchemy import Column, ForeignKey, String, Text
 from sqlalchemy.orm import Session, relationship
 
 from ...shared.constants import SRID
-from .base import _BaseSpatialModel, _has_child_entities, _parent_zone_id
+from .base import _BaseSpatialModel, _parent_zone_id
 
 
 class Road(_BaseSpatialModel):
@@ -56,9 +56,8 @@ class Road(_BaseSpatialModel):
     user = relationship('User', backref='roads', foreign_keys=[user_id])
 
     def _refresh_derived(self, session: Session) -> None:
-        """Recompute parent zone and has_child flag from the current geometry."""
+        """Recompute the parent zone from the current geometry."""
         self.zone_id = _parent_zone_id(session, self.geometry)
-        self.has_child = _has_child_entities(session, self.geometry)
 
     def delete(self, session: Session) -> None:
         """Delete road and recalc parent zone has_child."""

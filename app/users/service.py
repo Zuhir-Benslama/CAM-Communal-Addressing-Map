@@ -44,9 +44,17 @@ def _lookup_wilaya_code(commune_code: str) -> int | None:
     if not commune:
         return None
     daira = dairas.get(str(commune.get('daira_id')))
-    if daira:
+    if not daira:
+        return None
+    try:
         return int(daira.get('wilaya_id', 0))
-    return None
+    except (TypeError, ValueError):
+        logger.warning(
+            'Invalid wilaya_id for commune code %s',
+            commune_code,
+            exc_info=True,
+        )
+        return None
 
 
 def sign_up(
@@ -93,7 +101,8 @@ def sign_up(
             session.commit()
         except SQLAlchemyError as e:
             session.rollback()
-            return False, [str(e)]
+            logger.exception('Sign-up error: %s', e)
+            return False, ['Sign-up failed. Check the QGIS log for details.']
         finally:
             session.close()
     except ValidationError as err:
@@ -119,9 +128,11 @@ def sign_in(
         try:
             user = session.query(User).filter_by(username=username).first()
             if not user:
-                return False, None, "Username doesn't exist"
+                # Single generic message: do not disclose whether a username
+                # exists (avoids user enumeration).
+                return False, None, 'Invalid username or password'
             if not verify_password(password, user.password):
-                return False, None, 'Wrong password try again !'
+                return False, None, 'Invalid username or password'
             session_token = secrets.token_urlsafe(32)
             user.session_token = session_token
             # Write the cookie before committing: if either step fails the
@@ -132,7 +143,7 @@ def sign_in(
         except (SQLAlchemyError, OSError) as e:
             session.rollback()
             logger.exception('Sign-in error: %s', e)
-            return False, None, str(e)
+            return False, None, 'Sign-in failed. Check the QGIS log for details.'
         else:
             return True, user.username, None
         finally:

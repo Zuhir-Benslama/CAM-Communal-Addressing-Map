@@ -52,6 +52,14 @@ class TestParentZoneId(unittest.TestCase):
         result = _parent_zone_id(mock_session, 'POINT(0 0)')
         self.assertIsNone(result)
 
+    def test_returns_none_when_geometry_is_none(self):
+        from app.orders.models.base import _parent_zone_id
+
+        mock_session = MagicMock()
+        result = _parent_zone_id(mock_session, None)
+        self.assertIsNone(result)
+        mock_session.query.assert_not_called()
+
 
 class TestHasChildEntities(unittest.TestCase):
     def test_returns_true_when_children_exist(self):
@@ -80,6 +88,14 @@ class TestHasChildEntities(unittest.TestCase):
         mock_session.query.side_effect = SQLAlchemyError('fail')
         result = _has_child_entities(mock_session, 'POLYGON((0 0,1 0,1 1,0 1,0 0))')
         self.assertFalse(result)
+
+    def test_returns_false_when_geometry_is_none(self):
+        from app.orders.models.base import _has_child_entities
+
+        mock_session = MagicMock()
+        result = _has_child_entities(mock_session, None)
+        self.assertFalse(result)
+        mock_session.query.assert_not_called()
 
 
 class TestBaseSpatialModelRegistry(unittest.TestCase):
