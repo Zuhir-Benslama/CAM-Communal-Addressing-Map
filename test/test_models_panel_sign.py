@@ -3,6 +3,8 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
+from app.users.models import User  # noqa: F401  (register User for mapper config)
+
 
 class TestPanelSignLabel(unittest.TestCase):
     @patch('app.orders.models.panel_sign.locale_value', return_value='Avenue Test')
@@ -97,3 +99,53 @@ class TestValidateReference(unittest.TestCase):
         mock_session.query.return_value.filter.return_value.first.return_value = None
         with self.assertRaises(ValueError):
             PanelSign._validate_reference(mock_session, mock_cls, 999, 'Road')
+
+
+class TestPanelSignSave(unittest.TestCase):
+    def _make_panel(self, road_id=None, subdivision_id=None, organization_id=None):
+        from app.orders.models.panel_sign import PanelSign
+
+        ps = PanelSign()
+        ps.road_id = road_id
+        ps.subdivision_id = subdivision_id
+        ps.organization_id = organization_id
+        ps.type = None
+        return ps
+
+    @patch('app.orders.models.base._BaseSpatialModel.save')
+    def test_save_sets_type_from_road_ref(self, mock_super_save):
+        ps = self._make_panel(road_id='r1')
+        session = MagicMock()
+        session.query.return_value.filter.return_value.first.return_value = MagicMock()
+        ps.save(session)
+        self.assertEqual(ps.type, 'Roads')
+        mock_super_save.assert_called_once_with(session)
+
+    @patch('app.orders.models.base._BaseSpatialModel.save')
+    def test_save_sets_type_from_org_ref(self, mock_super_save):
+        ps = self._make_panel(organization_id='o1')
+        session = MagicMock()
+        session.query.return_value.filter.return_value.first.return_value = MagicMock()
+        ps.save(session)
+        self.assertEqual(ps.type, 'Facilities')
+
+    @patch('app.orders.models.base._BaseSpatialModel.save')
+    def test_save_sets_type_from_subdivision_ref(self, mock_super_save):
+        ps = self._make_panel(subdivision_id='s1')
+        session = MagicMock()
+        session.query.return_value.filter.return_value.first.return_value = MagicMock()
+        ps.save(session)
+        self.assertEqual(ps.type, 'Subdivisions')
+
+    @patch('app.orders.models.base._BaseSpatialModel.save')
+    def test_save_leaves_type_none_without_refs(self, mock_super_save):
+        ps = self._make_panel()
+        ps.save(MagicMock())
+        self.assertIsNone(ps.type)
+
+    def test_save_raises_when_reference_missing(self):
+        ps = self._make_panel(road_id='missing')
+        session = MagicMock()
+        session.query.return_value.filter.return_value.first.return_value = None
+        with self.assertRaises(ValueError):
+            ps.save(session)

@@ -103,3 +103,113 @@ class TestCAM(unittest.TestCase):
             self.plugin.run()
             self.plugin.dock_widget.raise_.assert_called()
             self.plugin.dock_widget.show.assert_called()
+
+    def test_run_no_dock_no_op(self):
+        with (
+            patch.object(self.mod, 'MainDialog'),
+            patch.object(self.mod, 'QDockWidget'),
+            patch.object(self.mod, 'QTimer'),
+            patch.object(self.mod, 'current_locale', return_value='en'),
+            patch.object(self.mod, 'get_string', return_value='CAM'),
+        ):
+            self.plugin.first_start = False
+            if hasattr(self.plugin, 'dock_widget'):
+                delattr(self.plugin, 'dock_widget')
+            self.plugin.run()
+
+    def test_run_main_dialog_error(self):
+        with (
+            patch.object(self.mod, 'MainDialog', side_effect=Exception('boom')),
+            patch.object(self.mod, 'QDockWidget'),
+            patch.object(self.mod, 'current_locale', return_value='en'),
+            patch.object(
+                self.mod, 'get_string', return_value='Failed to create dialog'
+            ),
+        ):
+            self.plugin.first_start = True
+            self.plugin.run()
+            self.assertFalse(self.plugin.first_start)
+            self.mod.QMessageBox.critical.assert_called_once()
+
+    def test_init_locale_falls_back_to_system(self):
+        org_app_settings = MagicMock()
+        org_app_settings.value.return_value = ''
+        system_settings = MagicMock()
+        system_settings.value.return_value = 'fr_FR'
+
+        def fake_qsettings(org=None, app=None):
+            if org is not None or app is not None:
+                return org_app_settings
+            return system_settings
+
+        with patch.object(self.mod, 'QSettings', side_effect=fake_qsettings):
+            plugin = self.mod.CAM(self.iface)
+        self.assertEqual(plugin._locale_code, 'fr')
+
+    def test_init_locale_falls_back_to_en(self):
+        org_app_settings = MagicMock()
+        org_app_settings.value.return_value = ''
+        system_settings = MagicMock()
+        system_settings.value.return_value = ''
+
+        def fake_qsettings(org=None, app=None):
+            if org is not None or app is not None:
+                return org_app_settings
+            return system_settings
+
+        with patch.object(self.mod, 'QSettings', side_effect=fake_qsettings):
+            plugin = self.mod.CAM(self.iface)
+        self.assertEqual(plugin._locale_code, 'en')
+
+    def test_add_action_sets_tips(self):
+        action = self.plugin.add_action(
+            '/fake/icon.png',
+            'Test',
+            MagicMock(),
+            status_tip='tip',
+            whats_this='what',
+        )
+        action.setStatusTip.assert_called_with('tip')
+        action.setWhatsThis.assert_called_with('what')
+
+    def test_add_action_toolbar_only(self):
+        self.plugin.add_action(
+            '/fake/icon.png',
+            'Test',
+            MagicMock(),
+            add_to_menu=False,
+            add_to_toolbar=True,
+        )
+        self.iface.addToolBarIcon.assert_called_once()
+        self.iface.addPluginToMenu.assert_not_called()
+
+    def test_unload_disconnects_dlg(self):
+        self.plugin.dlg = MagicMock()
+        self.plugin.add_action('/fake/icon.png', 'Test', MagicMock())
+        self.plugin.unload()
+        self.plugin.dlg.disconnect_map_canvas.assert_called_once()
+
+    def test_normalize_dock_width_resizes_when_wide(self):
+        dock = MagicMock()
+        dock.width.return_value = 900
+        dock.height.return_value = 400
+        self.plugin.dock_widget = dock
+        self.plugin._normalize_dock_width()
+        dock.setMinimumWidth.assert_called_once_with(580)
+        dock.resize.assert_called_once_with(680, 400)
+
+    def test_normalize_dock_width_resizes_when_narrow(self):
+        dock = MagicMock()
+        dock.width.return_value = 500
+        dock.height.return_value = 400
+        self.plugin.dock_widget = dock
+        self.plugin._normalize_dock_width()
+        dock.resize.assert_called_once_with(680, 400)
+
+    def test_normalize_dock_width_keeps_width_in_range(self):
+        dock = MagicMock()
+        dock.width.return_value = 680
+        dock.height.return_value = 400
+        self.plugin.dock_widget = dock
+        self.plugin._normalize_dock_width()
+        dock.resize.assert_not_called()
